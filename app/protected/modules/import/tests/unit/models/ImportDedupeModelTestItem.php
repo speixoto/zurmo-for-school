@@ -34,41 +34,66 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Defines the import rules for importing into the contacts module.
-     */
-    class ContactsImportRules extends ImportRules
+    class ImportDedupeModelTestItem extends OwnedSecurableItem
     {
-        public static function getModelClassName()
+        public static function getByName($name)
         {
-            return 'Contact';
+            return self::getByNameOrEquivalent('name', $name);
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'relations' => array(
+                    'primaryEmail'     => array(static::HAS_ONE,   'Email', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'secondaryEmail'   => array(static::HAS_ONE,   'Email', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+                'elements' => array(
+                    'primaryEmail'        => 'EmailAddressInformation',
+                    'secondaryEmail'      => 'EmailAddressInformation'
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ImportModule';
         }
 
         /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
          */
-        public static function getDerivedAttributeTypes()
+        protected static function getLabel($language = null)
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('ContactState', 'FullName'));
+            return 'ImportDedupeModelTestItem';
         }
 
         /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
          */
-        public static function getNonImportableAttributeNames()
+        protected static function getPluralLabel($language = null)
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
-        }
-
-        /**
-         * Get fields for which dedupe ruled would be executed
-         * @return array
-         */
-        public static function getDedupeAttributes()
-        {
-            return array('secondaryEmail__emailAddress');
+            return 'ImportDedupeModelTestItems';
         }
     }
 ?>

@@ -34,32 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Defines the import rules for importing into the contacts module.
-     */
-    class ContactsImportRules extends ImportRules
+    class ImportDedupeModelTestItemImportRules extends ImportRules
     {
         public static function getModelClassName()
         {
-            return 'Contact';
-        }
-
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
-        {
-            return array_merge(parent::getDerivedAttributeTypes(), array('ContactState', 'FullName'));
-        }
-
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
-        {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
+            return 'ImportDedupeModelTestItem';
         }
 
         /**
@@ -68,7 +47,7 @@
          */
         public static function getDedupeAttributes()
         {
-            return array('secondaryEmail__emailAddress');
+            return array('name', 'primaryEmail__emailAddress', 'secondaryEmail__emailAddress');
         }
     }
 ?>

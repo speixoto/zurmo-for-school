@@ -84,186 +84,534 @@
             $this->assertFalse(strpos($content, 'leads/default/details?id') === false);
         }
 
-        public function testImportNameAndRelatedNameWithApostrophes()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
+//        public function testImportNameAndRelatedNameWithApostrophes()
+//        {
+//            Yii::app()->user->userModel = User::getByUsername('super');
+//
+//            $testModels                        = ImportModelTestItem::getAll();
+//            $this->assertEquals(0, count($testModels));
+//            $import                                = new Import();
+//            $serializedData['importRulesType']     = 'ImportModelTestItem';
+//            $serializedData['firstRowIsHeaderRow'] = true;
+//            $import->serializedData                = serialize($serializedData);
+//            $this->assertTrue($import->save());
+//
+//            ImportTestHelper::createTempTableByFileNameAndTableName('importApostropheTest.csv', $import->getTempTableName(), true);
+//
+//            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+//
+//            $mappingData = array(
+//                'column_0'   => ImportMappingUtil::makeStringColumnMappingData      ('string'),
+//                'column_1'   => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
+//                'column_2' => array('attributeIndexOrDerivedType' => 'hasOne', 'type' => 'importColumn',
+//                    'mappingRulesData' => array(
+//                        'RelatedModelValueTypeMappingRuleForm' =>
+//                        array('type' => RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME))),
+//            );
+//
+//            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+//            $page         = 0;
+//            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+//            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+//            $dataProvider->getPagination()->setCurrentPage($page);
+//            $importResultsUtil = new ImportResultsUtil($import);
+//            $messageLogger     = new ImportMessageLogger();
+//            ImportUtil::importByDataProvider($dataProvider,
+//                $importRules,
+//                $mappingData,
+//                $importResultsUtil,
+//                new ExplicitReadWriteModelPermissions(),
+//                $messageLogger);
+//            $importResultsUtil->processStatusAndMessagesForEachRow();
+//
+//            //Confirm that 2 ImportModelTestItem models were created and 2 ImportModelTestItem2 were created
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(2, count($testModels));
+//            $this->assertEquals("Barrel'o Fun", $testModels[0]->lastName);
+//            $this->assertEquals('bLastName', $testModels[1]->lastName);
+//            $testModels = ImportModelTestItem2::getAll();
+//            $this->assertEquals(2, count($testModels));
+//            $this->assertEquals("D'Angelo Inc", $testModels[0]->name);
+//            $this->assertEquals('Dartmouth Financial Services', $testModels[1]->name);
+//
+//            //Clear out data in table
+//            ImportModelTestItem::deleteAll();
+//        }
+//
+//        /**
+//         * Test tag cloud and multi-select attribute import.
+//         * @depends testImportNameAndRelatedNameWithApostrophes
+//         */
+//        public function testSetDataAnalyzerMultiSelectAndTagCloudImport()
+//        {
+//            $super = User::getByUsername('super');
+//            $jim   = User::getByUsername('jim');
+//            Yii::app()->user->userModel = $jim;
+//
+//            $testModels                        = ImportModelTestItem::getAll();
+//            $this->assertEquals(0, count($testModels));
+//            $import                                = new Import();
+//            $serializedData['importRulesType']     = 'ImportModelTestItem';
+//            $serializedData['firstRowIsHeaderRow'] = true;
+//            $import->serializedData                = serialize($serializedData);
+//            $this->assertTrue($import->save());
+//
+//            ImportTestHelper::createTempTableByFileNameAndTableName('importMultiSelectDropDownTest.csv', $import->getTempTableName(), true);
+//
+//            $this->assertEquals(6, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+//
+//            $multiDropDownInstructionsData    = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
+//                                                              array('Multi 5', 'Multi 4'),
+//                                                              CustomFieldsInstructionData::MAP_MISSING_VALUES => array());
+//            $tagCloudInstructionsData         = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
+//                                                              array('Cloud 5', 'Cloud 4'),
+//                                                              CustomFieldsInstructionData::MAP_MISSING_VALUES => array());
+//            $mappingData = array(
+//                'column_0'   => ImportMappingUtil::makeStringColumnMappingData      ('string'),
+//                'column_1'   => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
+//                'column_2'  => ImportMappingUtil::
+//                                makeMultiSelectDropDownColumnMappingData('multiDropDown', null,
+//                                                                         $multiDropDownInstructionsData),
+//                'column_3'  => ImportMappingUtil::
+//                                makeTagCloudColumnMappingData('tagCloud', null, $tagCloudInstructionsData)
+//            );
+//
+//            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+//            $page         = 0;
+//            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+//            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+//            $dataProvider->getPagination()->setCurrentPage($page);
+//            $importResultsUtil = new ImportResultsUtil($import);
+//            $messageLogger     = new ImportMessageLogger();
+//            ImportUtil::importByDataProvider($dataProvider,
+//                                             $importRules,
+//                                             $mappingData,
+//                                             $importResultsUtil,
+//                                             new ExplicitReadWriteModelPermissions(),
+//                                             $messageLogger);
+//            $importResultsUtil->processStatusAndMessagesForEachRow();
+//
+//            //Confirm the missing custom field values were properly added.
+//            $customFieldData = CustomFieldData::getByName('ImportTestMultiDropDown');
+//            $values = array(
+//                'Multi 1',
+//                'Multi 2',
+//                'Multi 3',
+//                'Multi 4',
+//                'Multi 5',
+//            );
+//            $this->assertEquals($values, unserialize($customFieldData->serializedData));
+//            $customFieldData = CustomFieldData::getByName('ImportTestTagCloud');
+//                        $values = array(
+//                'Cloud 1',
+//                'Cloud 2',
+//                'Cloud 3',
+//                'Cloud 4',
+//                'Cloud 5',
+//            );
+//            $this->assertEquals($values, unserialize($customFieldData->serializedData));
+//
+//            //Confirm that 5 models where created.
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(5, count($testModels));
+//
+//            foreach ($testModels as $model)
+//            {
+//                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+//            }
+//
+//            //Confirm the values of the multi-select and tag cloud are as expected.
+//            $this->assertEquals(0, $testModels[2]->multiDropDown->values->count());
+//            $this->assertEquals(2, $testModels[2]->tagCloud->values->count());
+//            $this->assertEquals(2, $testModels[3]->multiDropDown->values->count());
+//            $this->assertEquals(0, $testModels[3]->tagCloud->values->count());
+//
+//            $this->assertEquals(2, $testModels[1]->multiDropDown->values->count());
+//            $this->assertEquals('Multi 4', $testModels[1]->multiDropDown->values[0]->value);
+//            $this->assertEquals('Multi 2', $testModels[1]->multiDropDown->values[1]->value);
+//            $this->assertEquals(2, $testModels[1]->tagCloud->values->count());
+//            $this->assertEquals('Cloud 1', $testModels[1]->tagCloud->values[0]->value);
+//            $this->assertEquals('Cloud 4', $testModels[1]->tagCloud->values[1]->value);
+//
+//            $this->assertEquals(2, $testModels[4]->multiDropDown->values->count());
+//            $this->assertEquals('Multi 1', $testModels[4]->multiDropDown->values[0]->value);
+//            $this->assertEquals('Multi 5', $testModels[4]->multiDropDown->values[1]->value);
+//            $this->assertEquals(2, $testModels[4]->tagCloud->values->count());
+//            $this->assertEquals('Cloud 5', $testModels[4]->tagCloud->values[0]->value);
+//            $this->assertEquals('Cloud 2', $testModels[4]->tagCloud->values[1]->value);
+//            //Confirm 10 rows were processed as 'created'.
+//            $this->assertEquals(5, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
+//                                                                 . ImportRowDataResultsUtil::CREATED));
+//
+//            //Confirm that 0 rows were processed as 'updated'.
+//            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::UPDATED));
+//
+//            //Confirm 0 rows were processed as 'errors'.
+//            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR));
+//
+//            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR);
+//            $this->assertEquals(0, count($beansWithErrors));
+//
+//            //Clear out data in table
+//            ImportModelTestItem::deleteAll();
+//        }
+//
+//        /**
+//         * Test when a normal user who can only view records he owns, tries to import records assigned to another user.
+//         * @depends testSetDataAnalyzerMultiSelectAndTagCloudImport
+//         */
+//        public function testImportSwitchingOwnerButShouldStillCreate()
+//        {
+//            $super = User::getByUsername('super');
+//            $jim   = User::getByUsername('jim');
+//            Yii::app()->user->userModel = $jim;
+//
+//            //Confirm Jim can can only view ImportModelTestItems he owns.
+//            $item       = NamedSecurableItem::getByName('ImportModule');
+//            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+//
+//            $testModels                        = ImportModelTestItem::getAll();
+//            $this->assertEquals(0, count($testModels));
+//            $import                                = new Import();
+//            $serializedData['importRulesType']     = 'ImportModelTestItem';
+//            $serializedData['firstRowIsHeaderRow'] = true;
+//            $import->serializedData                = serialize($serializedData);
+//            $this->assertTrue($import->save());
+//
+//            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
+//
+//            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+//
+//            $columnMappingData         = array('attributeIndexOrDerivedType' => 'owner',
+//                                               'type'                        => 'extraColumn',
+//                                               'mappingRulesData'            => array(
+//                                                   'DefaultModelNameIdMappingRuleForm' =>
+//                                                   array('defaultModelId' => $super->id),
+//                                                   'UserValueTypeModelAttributeMappingRuleForm' =>
+//                                                   array('type' =>
+//                                                   UserValueTypeModelAttributeMappingRuleForm::ZURMO_USER_ID)));
+//
+//            $mappingData = array(
+//                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
+//                'column_1'  => ImportMappingUtil::makeStringColumnMappingData      ('string'),
+//                'column_2'  => $columnMappingData
+//            );
+//
+//            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+//            $page         = 0;
+//            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+//            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+//            $dataProvider->getPagination()->setCurrentPage($page);
+//            $importResultsUtil = new ImportResultsUtil($import);
+//            $messageLogger     = new ImportMessageLogger();
+//            ImportUtil::importByDataProvider($dataProvider,
+//                                             $importRules,
+//                                             $mappingData,
+//                                             $importResultsUtil,
+//                                             new ExplicitReadWriteModelPermissions(),
+//                                             $messageLogger);
+//            $importResultsUtil->processStatusAndMessagesForEachRow();
+//
+//            //Confirm that 2 models where created.
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(2, count($testModels));
+//
+//            foreach ($testModels as $model)
+//            {
+//                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+//            }
+//
+//            //Confirm 10 rows were processed as 'created'.
+//            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
+//                                                                 . ImportRowDataResultsUtil::CREATED));
+//
+//            //Confirm that 0 rows were processed as 'updated'.
+//            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::UPDATED));
+//
+//            //Confirm 2 rows were processed as 'errors'.
+//            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR));
+//
+//            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR);
+//            $this->assertEquals(0, count($beansWithErrors));
+//
+//            //Clear out data in table
+//            Yii::app()->user->userModel = $super;
+//            ImportModelTestItem::deleteAll();
+//        }
+//
+//        /**
+//         * @depends testImportSwitchingOwnerButShouldStillCreate
+//         */
+//        public function testImportWithoutCurrencyValues()
+//        {
+//            Yii::app()->user->userModel = User::getByUsername('super');
+//
+//            $testModels                        = ImportModelTestItem::getAll();
+//            $this->assertEquals(0, count($testModels));
+//            $import                                = new Import();
+//            $serializedData['importRulesType']     = 'ImportModelTestItem';
+//            $serializedData['firstRowIsHeaderRow'] = true;
+//            $import->serializedData                = serialize($serializedData);
+//            $this->assertTrue($import->save());
+//
+//            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
+//
+//            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+//
+//            $mappingData = array(
+//                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
+//                'column_1'  => ImportMappingUtil::makeStringColumnMappingData      ('string')
+//            );
+//
+//            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+//            $page         = 0;
+//            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+//            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+//            $dataProvider->getPagination()->setCurrentPage($page);
+//            $importResultsUtil = new ImportResultsUtil($import);
+//            $messageLogger     = new ImportMessageLogger();
+//            ImportUtil::importByDataProvider($dataProvider,
+//                                             $importRules,
+//                                             $mappingData,
+//                                             $importResultsUtil,
+//                                             new ExplicitReadWriteModelPermissions(),
+//                                             $messageLogger);
+//            $importResultsUtil->processStatusAndMessagesForEachRow();
+//
+//            //Confirm that 2 models where created.
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(2, count($testModels));
+//            $jim = User::getByUsername('jim');
+//            foreach ($testModels as $model)
+//            {
+//                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+//            }
+//
+//            //Confirm 10 rows were processed as 'created'.
+//            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
+//                                                                 . ImportRowDataResultsUtil::CREATED));
+//
+//            //Confirm that 0 rows were processed as 'updated'.
+//            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::UPDATED));
+//
+//            //Confirm 2 rows were processed as 'errors'.
+//            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR));
+//
+//            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR);
+//            $this->assertEquals(0, count($beansWithErrors));
+//
+//            //Confirm the base code is USD
+//            $this->assertEquals('USD', Yii::app()->currencyHelper->getBaseCode());
+//
+//            //Creating an object produces the correct currency code.
+//            $testItem           = new ImportModelTestItem();
+//            $this->assertEquals('USD', $testItem->currencyValue->currency->code);
+//            $testItem->string   = 'test';
+//            $testItem->lastName = 'testAlso';
+//            $this->assertTrue($testItem->save());
+//            $testItemId         = $testItem->id;
+//            $testItem->forget();
+//
+//            //The currency code, even though not set, shows up correctly based on the base code.
+//            $testItem = ImportModelTestItem::getById($testItemId);
+//            $this->assertEquals('USD', $testItem->currencyValue->currency->code);
+//
+//            //Test that the related currency information is not empty for the imported objects.
+//            $this->assertEquals('USD', $testModels[0]->currencyValue->currency->code);
+//
+//            //Clear out data in table
+//            ImportModelTestItem::deleteAll();
+//        }
+//
+//        /**
+//         * @depends testImportWithoutCurrencyValues
+//         */
+//        public function testSimpleImportWithStringAndFullNameWhichAreRequiredAttributeOnImportTestModelItem()
+//        {
+//            Yii::app()->user->userModel = User::getByUsername('super');
+//
+//            $testModels                        = ImportModelTestItem::getAll();
+//            $this->assertEquals(0, count($testModels));
+//            $import                                = new Import();
+//            $serializedData['importRulesType']     = 'ImportModelTestItem';
+//            $serializedData['firstRowIsHeaderRow'] = true;
+//            $import->serializedData                = serialize($serializedData);
+//            $this->assertTrue($import->save());
+//
+//            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
+//
+//            $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+//
+//            $mappingData = array(
+//                'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',
+//                                    'mappingRulesData' => array(
+//                                        'DefaultValueModelAttributeMappingRuleForm' =>
+//                                        array('defaultValue' => null))),
+//                'column_23' => array('attributeIndexOrDerivedType' => 'FullName',     'type' => 'importColumn',
+//                                    'mappingRulesData' => array(
+//                                        'FullNameDefaultValueModelAttributeMappingRuleForm' =>
+//                                        array('defaultValue' => null))),
+//                                        );
+//
+//            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+//            $page         = 0;
+//            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+//            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+//            $dataProvider->getPagination()->setCurrentPage($page);
+//            $importResultsUtil = new ImportResultsUtil($import);
+//            $messageLogger     = new ImportMessageLogger();
+//            ImportUtil::importByDataProvider($dataProvider,
+//                                             $importRules,
+//                                             $mappingData,
+//                                             $importResultsUtil,
+//                                             new ExplicitReadWriteModelPermissions(),
+//                                             $messageLogger);
+//            $importResultsUtil->processStatusAndMessagesForEachRow();
+//
+//            //Confirm that 10 models where created.
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(10, count($testModels));
+//            $jim = User::getByUsername('jim');
+//            foreach ($testModels as $model)
+//            {
+//                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+//            }
+//
+//            //Confirm 10 rows were processed as 'created'.
+//            $this->assertEquals(10, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
+//                                                                 . ImportRowDataResultsUtil::CREATED));
+//
+//            //Confirm that 0 rows were processed as 'updated'.
+//            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::UPDATED));
+//
+//            //Confirm 2 rows were processed as 'errors'.
+//            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR));
+//
+//            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
+//                                                                 . ImportRowDataResultsUtil::ERROR);
+//            $this->assertEquals(2, count($beansWithErrors));
+//
+//            //Confirm the messages are as expected.
+//            $compareMessages = array(
+//                'Import - Last Name specified is too long.',
+//                'Import - Last Name - Last Name cannot be blank.',
+//            );
+//            $this->assertEquals($compareMessages, unserialize(current($beansWithErrors)->serializedMessages));
+//
+//            $compareMessages = array(
+//                'Import - String This field is required and neither a value nor a default value was specified.',
+//                'Import - Full name value required, but missing.',
+//                'Import - Last Name - Last Name cannot be blank.',
+//                'Import - String - String cannot be blank.',
+//            );
+//            $this->assertEquals($compareMessages, unserialize(next($beansWithErrors)->serializedMessages));
+//
+//            //Clear out data in table
+//            ImportModelTestItem::deleteAll();
+//        }
+//
+//        /**
+//         * @depends testSimpleImportWithStringAndFullNameWhichAreRequiredAttributeOnImportTestModelItem
+//         */
+//        public function testSettingExplicitReadWriteModelPermissionsDuringImport()
+//        {
+//            Yii::app()->user->userModel = User::getByUsername('super');
+//
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(0, count($testModels));
+//
+//            //Add a read only user for import. Then all models should be readable by jim in addition to super.
+//            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+//            $explicitReadWriteModelPermissions->addReadOnlyPermitable(User::getByUsername('jim'));
+//
+//            $testModels                        = ImportModelTestItem::getAll();
+//            $this->assertEquals(0, count($testModels));
+//            $import                                = new Import();
+//            $serializedData['importRulesType']     = 'ImportModelTestItem';
+//            $serializedData['firstRowIsHeaderRow'] = true;
+//            $import->serializedData                = serialize($serializedData);
+//            $this->assertTrue($import->save());
+//
+//            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
+//
+//            $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+//
+//            $mappingData = array(
+//                'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',
+//                                    'mappingRulesData' => array(
+//                                        'DefaultValueModelAttributeMappingRuleForm' =>
+//                                        array('defaultValue' => null))),
+//                'column_23' => array('attributeIndexOrDerivedType' => 'FullName',     'type' => 'importColumn',
+//                                    'mappingRulesData' => array(
+//                                        'FullNameDefaultValueModelAttributeMappingRuleForm' =>
+//                                        array('defaultValue' => null))),
+//                                        );
+//
+//            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+//            $page         = 0;
+//            $config       = array('pagination' => array('pageSize' => 3)); //This way all rows are processed.
+//            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+//            $dataProvider->getPagination()->setCurrentPage($page);
+//            $importResultsUtil = new ImportResultsUtil($import);
+//            $messageLogger     = new ImportMessageLogger();
+//            ImportUtil::importByDataProvider($dataProvider,
+//                                             $importRules,
+//                                             $mappingData,
+//                                             $importResultsUtil,
+//                                             $explicitReadWriteModelPermissions,
+//                                             $messageLogger);
+//            $importResultsUtil->processStatusAndMessagesForEachRow();
+//
+//            //Confirm that 3 models where created.
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(3, count($testModels));
+//            $jim = User::getByUsername('jim');
+//            foreach ($testModels as $model)
+//            {
+//                $this->assertEquals(array(Permission::READ, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+//            }
+//
+//            //Clear out data in table
+//            ImportModelTestItem::deleteAll();
+//
+//            //Now test with read/write permissions being set.
+//            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+//            $explicitReadWriteModelPermissions->addReadWritePermitable(User::getByUsername('jim'));
+//            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+//            $dataProvider->getPagination()->setCurrentPage($page);
+//            $importResultsUtil = new ImportResultsUtil($import);
+//            $messageLogger     = new ImportMessageLogger();
+//            ImportUtil::importByDataProvider($dataProvider,
+//                                             $importRules,
+//                                             $mappingData,
+//                                             $importResultsUtil,
+//                                             $explicitReadWriteModelPermissions,
+//                                             $messageLogger);
+//            $importResultsUtil->processStatusAndMessagesForEachRow();
+//
+//            //Confirm that 3 models where created.
+//            $testModels = ImportModelTestItem::getAll();
+//            $this->assertEquals(3, count($testModels));
+//            $jim = User::getByUsername('jim');
+//            foreach ($testModels as $model)
+//            {
+//                $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+//            }
+//        }
 
-            $testModels                        = ImportModelTestItem::getAll();
-            $this->assertEquals(0, count($testModels));
-            $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportModelTestItem';
-            $serializedData['firstRowIsHeaderRow'] = true;
-            $import->serializedData                = serialize($serializedData);
-            $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importApostropheTest.csv', $import->getTempTableName(), true);
-
-            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
-
-            $mappingData = array(
-                'column_0'   => ImportMappingUtil::makeStringColumnMappingData      ('string'),
-                'column_1'   => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
-                'column_2' => array('attributeIndexOrDerivedType' => 'hasOne', 'type' => 'importColumn',
-                    'mappingRulesData' => array(
-                        'RelatedModelValueTypeMappingRuleForm' =>
-                        array('type' => RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME))),
-            );
-
-            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
-            $page         = 0;
-            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
-            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
-            $dataProvider->getPagination()->setCurrentPage($page);
-            $importResultsUtil = new ImportResultsUtil($import);
-            $messageLogger     = new ImportMessageLogger();
-            ImportUtil::importByDataProvider($dataProvider,
-                $importRules,
-                $mappingData,
-                $importResultsUtil,
-                new ExplicitReadWriteModelPermissions(),
-                $messageLogger);
-            $importResultsUtil->processStatusAndMessagesForEachRow();
-
-            //Confirm that 2 ImportModelTestItem models were created and 2 ImportModelTestItem2 were created
-            $testModels = ImportModelTestItem::getAll();
-            $this->assertEquals(2, count($testModels));
-            $this->assertEquals("Barrel'o Fun", $testModels[0]->lastName);
-            $this->assertEquals('bLastName', $testModels[1]->lastName);
-            $testModels = ImportModelTestItem2::getAll();
-            $this->assertEquals(2, count($testModels));
-            $this->assertEquals("D'Angelo Inc", $testModels[0]->name);
-            $this->assertEquals('Dartmouth Financial Services', $testModels[1]->name);
-
-            //Clear out data in table
-            ImportModelTestItem::deleteAll();
-        }
-
-        /**
-         * Test tag cloud and multi-select attribute import.
-         * @depends testImportNameAndRelatedNameWithApostrophes
-         */
-        public function testSetDataAnalyzerMultiSelectAndTagCloudImport()
-        {
-            $super = User::getByUsername('super');
-            $jim   = User::getByUsername('jim');
-            Yii::app()->user->userModel = $jim;
-
-            $testModels                        = ImportModelTestItem::getAll();
-            $this->assertEquals(0, count($testModels));
-            $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportModelTestItem';
-            $serializedData['firstRowIsHeaderRow'] = true;
-            $import->serializedData                = serialize($serializedData);
-            $this->assertTrue($import->save());
-
-            ImportTestHelper::createTempTableByFileNameAndTableName('importMultiSelectDropDownTest.csv', $import->getTempTableName(), true);
-
-            $this->assertEquals(6, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
-
-            $multiDropDownInstructionsData    = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
-                                                              array('Multi 5', 'Multi 4'),
-                                                              CustomFieldsInstructionData::MAP_MISSING_VALUES => array());
-            $tagCloudInstructionsData         = array(CustomFieldsInstructionData::ADD_MISSING_VALUES =>
-                                                              array('Cloud 5', 'Cloud 4'),
-                                                              CustomFieldsInstructionData::MAP_MISSING_VALUES => array());
-            $mappingData = array(
-                'column_0'   => ImportMappingUtil::makeStringColumnMappingData      ('string'),
-                'column_1'   => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
-                'column_2'  => ImportMappingUtil::
-                                makeMultiSelectDropDownColumnMappingData('multiDropDown', null,
-                                                                         $multiDropDownInstructionsData),
-                'column_3'  => ImportMappingUtil::
-                                makeTagCloudColumnMappingData('tagCloud', null, $tagCloudInstructionsData)
-            );
-
-            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
-            $page         = 0;
-            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
-            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
-            $dataProvider->getPagination()->setCurrentPage($page);
-            $importResultsUtil = new ImportResultsUtil($import);
-            $messageLogger     = new ImportMessageLogger();
-            ImportUtil::importByDataProvider($dataProvider,
-                                             $importRules,
-                                             $mappingData,
-                                             $importResultsUtil,
-                                             new ExplicitReadWriteModelPermissions(),
-                                             $messageLogger);
-            $importResultsUtil->processStatusAndMessagesForEachRow();
-
-            //Confirm the missing custom field values were properly added.
-            $customFieldData = CustomFieldData::getByName('ImportTestMultiDropDown');
-            $values = array(
-                'Multi 1',
-                'Multi 2',
-                'Multi 3',
-                'Multi 4',
-                'Multi 5',
-            );
-            $this->assertEquals($values, unserialize($customFieldData->serializedData));
-            $customFieldData = CustomFieldData::getByName('ImportTestTagCloud');
-                        $values = array(
-                'Cloud 1',
-                'Cloud 2',
-                'Cloud 3',
-                'Cloud 4',
-                'Cloud 5',
-            );
-            $this->assertEquals($values, unserialize($customFieldData->serializedData));
-
-            //Confirm that 5 models where created.
-            $testModels = ImportModelTestItem::getAll();
-            $this->assertEquals(5, count($testModels));
-
-            foreach ($testModels as $model)
-            {
-                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
-
-            //Confirm the values of the multi-select and tag cloud are as expected.
-            $this->assertEquals(0, $testModels[2]->multiDropDown->values->count());
-            $this->assertEquals(2, $testModels[2]->tagCloud->values->count());
-            $this->assertEquals(2, $testModels[3]->multiDropDown->values->count());
-            $this->assertEquals(0, $testModels[3]->tagCloud->values->count());
-
-            $this->assertEquals(2, $testModels[1]->multiDropDown->values->count());
-            $this->assertEquals('Multi 4', $testModels[1]->multiDropDown->values[0]->value);
-            $this->assertEquals('Multi 2', $testModels[1]->multiDropDown->values[1]->value);
-            $this->assertEquals(2, $testModels[1]->tagCloud->values->count());
-            $this->assertEquals('Cloud 1', $testModels[1]->tagCloud->values[0]->value);
-            $this->assertEquals('Cloud 4', $testModels[1]->tagCloud->values[1]->value);
-
-            $this->assertEquals(2, $testModels[4]->multiDropDown->values->count());
-            $this->assertEquals('Multi 1', $testModels[4]->multiDropDown->values[0]->value);
-            $this->assertEquals('Multi 5', $testModels[4]->multiDropDown->values[1]->value);
-            $this->assertEquals(2, $testModels[4]->tagCloud->values->count());
-            $this->assertEquals('Cloud 5', $testModels[4]->tagCloud->values[0]->value);
-            $this->assertEquals('Cloud 2', $testModels[4]->tagCloud->values[1]->value);
-            //Confirm 10 rows were processed as 'created'.
-            $this->assertEquals(5, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
-                                                                 . ImportRowDataResultsUtil::CREATED));
-
-            //Confirm that 0 rows were processed as 'updated'.
-            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::UPDATED));
-
-            //Confirm 0 rows were processed as 'errors'.
-            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR));
-
-            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR);
-            $this->assertEquals(0, count($beansWithErrors));
-
-            //Clear out data in table
-            ImportModelTestItem::deleteAll();
-        }
-
-        /**
-         * Test when a normal user who can only view records he owns, tries to import records assigned to another user.
-         * @depends testSetDataAnalyzerMultiSelectAndTagCloudImport
-         */
-        public function testImportSwitchingOwnerButShouldStillCreate()
+        public function testCreateImportDataForEmailDedupe()
         {
             $super = User::getByUsername('super');
             $jim   = User::getByUsername('jim');
@@ -273,34 +621,27 @@
             $item       = NamedSecurableItem::getByName('ImportModule');
             $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
 
-            $testModels                        = ImportModelTestItem::getAll();
+            $testModels                        = ImportDedupeModelTestItem::getAll();
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportModelTestItem';
+            $serializedData['importRulesType']     = 'ImportDedupeModelTestItem';
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
+            ImportTestHelper::createTempTableByFileNameAndTableName('importDedupeTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
-            $columnMappingData         = array('attributeIndexOrDerivedType' => 'owner',
-                                               'type'                        => 'extraColumn',
-                                               'mappingRulesData'            => array(
-                                                   'DefaultModelNameIdMappingRuleForm' =>
-                                                   array('defaultModelId' => $super->id),
-                                                   'UserValueTypeModelAttributeMappingRuleForm' =>
-                                                   array('type' =>
-                                                   UserValueTypeModelAttributeMappingRuleForm::ZURMO_USER_ID)));
-
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' => array('value' => ImportDedupeRulesRadioDropDownElement::DO_NOT_DEDUPE));
             $mappingData = array(
-                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
-                'column_1'  => ImportMappingUtil::makeStringColumnMappingData      ('string'),
-                'column_2'  => $columnMappingData
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
+                'column_1'  => $emailMappingData
             );
 
-            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
             $page         = 0;
             $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
             $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
@@ -316,60 +657,42 @@
             $importResultsUtil->processStatusAndMessagesForEachRow();
 
             //Confirm that 2 models where created.
-            $testModels = ImportModelTestItem::getAll();
+            $testModels = Account::getAll();
             $this->assertEquals(2, count($testModels));
-
-            foreach ($testModels as $model)
-            {
-                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
-
-            //Confirm 10 rows were processed as 'created'.
-            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
-                                                                 . ImportRowDataResultsUtil::CREATED));
-
-            //Confirm that 0 rows were processed as 'updated'.
-            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::UPDATED));
-
-            //Confirm 2 rows were processed as 'errors'.
-            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR));
-
-            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR);
-            $this->assertEquals(0, count($beansWithErrors));
-
-            //Clear out data in table
-            Yii::app()->user->userModel = $super;
-            ImportModelTestItem::deleteAll();
         }
 
-        /**
-         * @depends testImportSwitchingOwnerButShouldStillCreate
-         */
-        public function testImportWithoutCurrencyValues()
+        //On inport of new set containing duplicate data
+        public function testVerifyNewlyImportedDataForEmailDedupe()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
 
-            $testModels                        = ImportModelTestItem::getAll();
-            $this->assertEquals(0, count($testModels));
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getAll();
+            $this->assertEquals(2, count($testModels));
             $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportModelTestItem';
+            $serializedData['importRulesType']     = 'ImportDedupeModelTestItem';
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importEmptyCurrencyTest.csv', $import->getTempTableName(), true);
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmailDedupeTest.csv', $import->getTempTableName(), true);
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND));
             $mappingData = array(
-                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('lastName'),
-                'column_1'  => ImportMappingUtil::makeStringColumnMappingData      ('string')
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
+                'column_1'  => $emailMappingData
             );
 
-            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
             $page         = 0;
             $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
             $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
@@ -384,85 +707,49 @@
                                              $messageLogger);
             $importResultsUtil->processStatusAndMessagesForEachRow();
 
-            //Confirm that 2 models where created.
-            $testModels = ImportModelTestItem::getAll();
-            $this->assertEquals(2, count($testModels));
-            $jim = User::getByUsername('jim');
-            foreach ($testModels as $model)
-            {
-                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
-
-            //Confirm 10 rows were processed as 'created'.
-            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
-                                                                 . ImportRowDataResultsUtil::CREATED));
-
-            //Confirm that 0 rows were processed as 'updated'.
-            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::UPDATED));
-
-            //Confirm 2 rows were processed as 'errors'.
-            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR));
-
-            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR);
-            $this->assertEquals(0, count($beansWithErrors));
-
-            //Confirm the base code is USD
-            $this->assertEquals('USD', Yii::app()->currencyHelper->getBaseCode());
-
-            //Creating an object produces the correct currency code.
-            $testItem           = new ImportModelTestItem();
-            $this->assertEquals('USD', $testItem->currencyValue->currency->code);
-            $testItem->string   = 'test';
-            $testItem->lastName = 'testAlso';
-            $this->assertTrue($testItem->save());
-            $testItemId         = $testItem->id;
-            $testItem->forget();
-
-            //The currency code, even though not set, shows up correctly based on the base code.
-            $testItem = ImportModelTestItem::getById($testItemId);
-            $this->assertEquals('USD', $testItem->currencyValue->currency->code);
-
-            //Test that the related currency information is not empty for the imported objects.
-            $this->assertEquals('USD', $testModels[0]->currencyValue->currency->code);
-
-            //Clear out data in table
-            ImportModelTestItem::deleteAll();
+            //Confirm that 3 models where created.
+            $testModels = Account::getAll();
+            $this->assertEquals(3, count($testModels));
         }
 
-        /**
-         * @depends testImportWithoutCurrencyValues
-         */
-        public function testSimpleImportWithStringAndFullNameWhichAreRequiredAttributeOnImportTestModelItem()
+        //On inport of new set containing duplicate data
+        public function testNewlyImportedDataForUpdateEmailDedupe()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
 
-            $testModels                        = ImportModelTestItem::getAll();
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getByName('abc');
+            $this->assertEquals(1, count($testModels));
+            $testModels                        = Account::getByName('mom');
+            $this->assertEquals(1, count($testModels));
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(0, count($testModels));
+            $testModels                        = Account::getByName('dear');
             $this->assertEquals(0, count($testModels));
             $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportModelTestItem';
+            $serializedData['importRulesType']     = 'ImportDedupeModelTestItem';
             $serializedData['firstRowIsHeaderRow'] = true;
             $import->serializedData                = serialize($serializedData);
             $this->assertTrue($import->save());
 
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmailDedupeTest.csv', $import->getTempTableName(), true);
 
-            $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND));
             $mappingData = array(
-                'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',
-                                    'mappingRulesData' => array(
-                                        'DefaultValueModelAttributeMappingRuleForm' =>
-                                        array('defaultValue' => null))),
-                'column_23' => array('attributeIndexOrDerivedType' => 'FullName',     'type' => 'importColumn',
-                                    'mappingRulesData' => array(
-                                        'FullNameDefaultValueModelAttributeMappingRuleForm' =>
-                                        array('defaultValue' => null))),
-                                        );
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
+                'column_1'  => $emailMappingData
+            );
 
-            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
             $page         = 0;
             $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
             $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
@@ -477,137 +764,18 @@
                                              $messageLogger);
             $importResultsUtil->processStatusAndMessagesForEachRow();
 
-            //Confirm that 10 models where created.
-            $testModels = ImportModelTestItem::getAll();
-            $this->assertEquals(10, count($testModels));
-            $jim = User::getByUsername('jim');
-            foreach ($testModels as $model)
-            {
-                $this->assertEquals(array(Permission::NONE, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
-
-            //Confirm 10 rows were processed as 'created'.
-            $this->assertEquals(10, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
-                                                                 . ImportRowDataResultsUtil::CREATED));
-
-            //Confirm that 0 rows were processed as 'updated'.
-            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::UPDATED));
-
-            //Confirm 2 rows were processed as 'errors'.
-            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR));
-
-            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
-                                                                 . ImportRowDataResultsUtil::ERROR);
-            $this->assertEquals(2, count($beansWithErrors));
-
-            //Confirm the messages are as expected.
-            $compareMessages = array(
-                'Import - Last Name specified is too long.',
-                'Import - Last Name - Last Name cannot be blank.',
-            );
-            $this->assertEquals($compareMessages, unserialize(current($beansWithErrors)->serializedMessages));
-
-            $compareMessages = array(
-                'Import - String This field is required and neither a value nor a default value was specified.',
-                'Import - Full name value required, but missing.',
-                'Import - Last Name - Last Name cannot be blank.',
-                'Import - String - String cannot be blank.',
-            );
-            $this->assertEquals($compareMessages, unserialize(next($beansWithErrors)->serializedMessages));
-
-            //Clear out data in table
-            ImportModelTestItem::deleteAll();
-        }
-
-        /**
-         * @depends testSimpleImportWithStringAndFullNameWhichAreRequiredAttributeOnImportTestModelItem
-         */
-        public function testSettingExplicitReadWriteModelPermissionsDuringImport()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
-            $testModels = ImportModelTestItem::getAll();
-            $this->assertEquals(0, count($testModels));
-
-            //Add a read only user for import. Then all models should be readable by jim in addition to super.
-            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
-            $explicitReadWriteModelPermissions->addReadOnlyPermitable(User::getByUsername('jim'));
-
-            $testModels                        = ImportModelTestItem::getAll();
-            $this->assertEquals(0, count($testModels));
-            $import                                = new Import();
-            $serializedData['importRulesType']     = 'ImportModelTestItem';
-            $serializedData['firstRowIsHeaderRow'] = true;
-            $import->serializedData                = serialize($serializedData);
-            $this->assertTrue($import->save());
-
-            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest.csv', $import->getTempTableName(), true);
-
-            $this->assertEquals(13, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
-
-            $mappingData = array(
-                'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',
-                                    'mappingRulesData' => array(
-                                        'DefaultValueModelAttributeMappingRuleForm' =>
-                                        array('defaultValue' => null))),
-                'column_23' => array('attributeIndexOrDerivedType' => 'FullName',     'type' => 'importColumn',
-                                    'mappingRulesData' => array(
-                                        'FullNameDefaultValueModelAttributeMappingRuleForm' =>
-                                        array('defaultValue' => null))),
-                                        );
-
-            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
-            $page         = 0;
-            $config       = array('pagination' => array('pageSize' => 3)); //This way all rows are processed.
-            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
-            $dataProvider->getPagination()->setCurrentPage($page);
-            $importResultsUtil = new ImportResultsUtil($import);
-            $messageLogger     = new ImportMessageLogger();
-            ImportUtil::importByDataProvider($dataProvider,
-                                             $importRules,
-                                             $mappingData,
-                                             $importResultsUtil,
-                                             $explicitReadWriteModelPermissions,
-                                             $messageLogger);
-            $importResultsUtil->processStatusAndMessagesForEachRow();
-
             //Confirm that 3 models where created.
-            $testModels = ImportModelTestItem::getAll();
+            $testModels = Account::getAll();
             $this->assertEquals(3, count($testModels));
-            $jim = User::getByUsername('jim');
-            foreach ($testModels as $model)
-            {
-                $this->assertEquals(array(Permission::READ, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
 
-            //Clear out data in table
-            ImportModelTestItem::deleteAll();
-
-            //Now test with read/write permissions being set.
-            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
-            $explicitReadWriteModelPermissions->addReadWritePermitable(User::getByUsername('jim'));
-            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
-            $dataProvider->getPagination()->setCurrentPage($page);
-            $importResultsUtil = new ImportResultsUtil($import);
-            $messageLogger     = new ImportMessageLogger();
-            ImportUtil::importByDataProvider($dataProvider,
-                                             $importRules,
-                                             $mappingData,
-                                             $importResultsUtil,
-                                             $explicitReadWriteModelPermissions,
-                                             $messageLogger);
-            $importResultsUtil->processStatusAndMessagesForEachRow();
-
-            //Confirm that 3 models where created.
-            $testModels = ImportModelTestItem::getAll();
-            $this->assertEquals(3, count($testModels));
-            $jim = User::getByUsername('jim');
-            foreach ($testModels as $model)
-            {
-                $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
-            }
+            $testModels                        = Account::getByName('abc');
+            $this->assertEquals(0, count($testModels));
+            $testModels                        = Account::getByName('mom');
+            $this->assertEquals(0, count($testModels));
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $testModels                        = Account::getByName('dear');
+            $this->assertEquals(1, count($testModels));
         }
     }
 ?>
