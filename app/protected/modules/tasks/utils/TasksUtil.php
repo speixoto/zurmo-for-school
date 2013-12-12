@@ -496,7 +496,7 @@
                                                                       {
                                                                         $(this).html('" . $link . "');
                                                                         $(this).attr('class', '" . $targetClass . "');
-                                                                        if(data == '')
+                                                                        if (data == '')
                                                                         {
                                                                             $('#subscriberList').html('');
                                                                         }
