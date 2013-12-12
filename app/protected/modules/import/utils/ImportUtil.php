@@ -130,6 +130,7 @@
                                                                                $model,
                                                                                $mappingData,
                                                                                $rowBean,
+                                                                               $importRowDataResultsUtil,
                                                                                $importSanitizeResultsUtil,
                                                                                $skippedColumns) !== true)
             {
@@ -692,6 +693,7 @@
                                                                                 RedBeanModel $model,
                                                                                 $mappingData,
                                                                                 $rowBean,
+                                                                                ImportRowDataResultsUtil $importRowDataResultsUtil,
                                                                                 ImportSanitizeResultsUtil $importSanitizeResultsUtil,
                                                                                 & $skippedColumns)
         {
