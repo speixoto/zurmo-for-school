@@ -94,6 +94,7 @@
                             'PCRE',
                             'SPL',
                             'Ctype',
+                            'FilePermissionsAfterInstall',
                             'InstanceFolders',
                             'APC',
                             'Soap',
