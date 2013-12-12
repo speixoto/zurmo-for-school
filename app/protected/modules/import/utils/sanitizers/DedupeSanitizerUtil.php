@@ -63,7 +63,10 @@
 
         protected function assertMappingRuleDataIsValid()
         {
-            assert('is_array($this->mappingRuleData["dedupeRule"])');
+            if(isset($this->mappingRuleData["dedupeRule"]))
+            {
+                assert('is_array($this->mappingRuleData["dedupeRule"])');
+            }
         }
 
         /**
@@ -73,8 +76,8 @@
         protected function checkIfRowToBeSkippedAndSetAnalysisMessages($value)
         {
             assert('is_string($value)');
-            $matchedModels  = $this->getMatchedModels();
-            if(count($matchedModels) > 0)
+            $matchedModels  = $this->getMatchedModels($value);
+            if(count($matchedModels) > 0 && isset($this->mappingRuleData["dedupeRule"]))
             {
                 if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
                 {
@@ -102,7 +105,7 @@
          * Gets matched models
          * @return array
          */
-        protected function getMatchedModels()
+        protected function getMatchedModels($value)
         {
             return array();
         }

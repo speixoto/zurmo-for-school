@@ -35,32 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Sanitizer for email duplicate in the records
+     * Import rules for name attribute.
      */
-    class EmailDedupeSanitizerUtil extends DedupeSanitizerUtil
+    class NameAttributeImportRules extends TextAttributeImportRules
     {
-        public static function getLinkedMappingRuleType()
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return 'EmailModelAttributeDedupe';
+            return array('DefaultValueModelAttribute' => 'Text',
+                         'NameModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
         }
 
-        /**
-         * Get matched models
-         * @return array
-         */
-        protected function getMatchedModels($value)
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            $matchedModels = array();
-            $penultimateModelClassName = $this->penultimateModelClassName;
-            if($penultimateModelClassName == 'Account')
-            {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
-            }
-            elseif($penultimateModelClassName == 'Contact')
-            {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
-            }
-            return $matchedModels;
+            return array_merge(parent::getSanitizerUtilTypesInProcessingOrder(), array('NameDedupe'));
         }
     }
 ?>

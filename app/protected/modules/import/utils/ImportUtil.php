@@ -125,24 +125,41 @@
                 }
                 $skippedColumns[] = $idColumnName;
             }
-            //Process the dedupe fields
-            foreach($importRules->getDedupeAttributes() as $dedupeField)
-            {
-                static::processMappedColumnsToCheckForMatchedModelByColumnName($importRules,
+            //Dedupe fields processing
+            if(static::processDedupeAttributesToCheckForSkipIfRequired($importRules,
                                                                                $model,
-                                                                               $dedupeField,
                                                                                $mappingData,
                                                                                $rowBean,
                                                                                $importSanitizeResultsUtil,
-                                                                               $skippedColumns);
-                if (!$importSanitizeResultsUtil->shouldSaveModel())
+                                                                               $skippedColumns) !== true)
+            {
+                if(null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
                 {
-                    $importRowDataResultsUtil->addMessages($importSanitizeResultsUtil->getMessages());
-                    $importRowDataResultsUtil->setStatusToError();
-                    return;
+                    $model = $matchedModel;
+                    $makeNewModel = false;
+                }
+                //Process the dedupe fields
+                foreach($importRules->getDedupeAttributes() as $dedupeField)
+                {
+                    $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
+                    if(false !== $sourceColumnName)
+                    {
+                        $columnMappingData = $mappingData[$sourceColumnName];
+                        static::processImportInformationForAttributeDataAndPopulateModel($importRules,
+                                                                                         $sourceColumnName,
+                                                                                         $columnMappingData,
+                                                                                         $rowBean,
+                                                                                         $importSanitizeResultsUtil,
+                                                                                         $model,
+                                                                                         $afterSaveActionsData);
+                    }
                 }
             }
-
+            else
+            {
+                //as the row should be skipped
+                return;
+            }
             //Process the rest of the mapped colummns. ignoring owner.
             foreach ($mappingData as $columnName => $columnMappingData)
             {
@@ -176,7 +193,6 @@
                                                                                      $afterSaveActionsData);
                 }
             }
-
             $validated = $model->validate();
             if ($validated && $importSanitizeResultsUtil->shouldSaveModel())
             {
@@ -667,36 +683,42 @@
          * Process mapped columns to check for matched record by column
          * @param ImportRules $importRules
          * @param RedBeanModel $model
-         * @param string $targetColumnName
          * @param array $mappingData
          * @param RedBean_OODBBean $rowBean
          * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
          * @param array $skippedColumns
          */
-        protected static function processMappedColumnsToCheckForMatchedModelByColumnName(ImportRules $importRules,
+        protected static function processDedupeAttributesToCheckForSkipIfRequired(ImportRules $importRules,
                                                                                 RedBeanModel $model,
-                                                                                $targetColumnName,
                                                                                 $mappingData,
                                                                                 $rowBean,
                                                                                 ImportSanitizeResultsUtil $importSanitizeResultsUtil,
                                                                                 & $skippedColumns)
         {
             assert('$rowBean instanceof RedBean_OODBBean');
-            $sourceColumnName = static::getMappedColumnNameByMappingData($targetColumnName, $mappingData);
-            if(false !== $sourceColumnName)
+            $isSkipped = false;
+            //Process the dedupe fields
+            foreach($importRules->getDedupeAttributes() as $dedupeField)
             {
-                $columnMappingData      = $mappingData[$sourceColumnName];
-                $attributeValueData     = static::getAttributeValueData($importRules,
-                                                                    $sourceColumnName,
-                                                                    $columnMappingData,
-                                                                    $rowBean,
-                                                                    $importSanitizeResultsUtil);
-                if(null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
+                $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
+                if(false !== $sourceColumnName)
                 {
-                    $model = $matchedModel;
+                    $columnMappingData      = $mappingData[$sourceColumnName];
+                    $attributeValueData     = static::getAttributeValueData($importRules,
+                                                                        $sourceColumnName,
+                                                                        $columnMappingData,
+                                                                        $rowBean,
+                                                                        $importSanitizeResultsUtil);
+                    if (!$importSanitizeResultsUtil->shouldSaveModel())
+                    {
+                        $importRowDataResultsUtil->addMessages($importSanitizeResultsUtil->getMessages());
+                        $importRowDataResultsUtil->setStatusToError();
+                        $isSkipped = true;
+                    }
                 }
-                $skippedColumns[] = $sourceColumnName;
             }
+            $skippedColumns[] = $sourceColumnName;
+            return $isSkipped;
         }
     }
 ?>

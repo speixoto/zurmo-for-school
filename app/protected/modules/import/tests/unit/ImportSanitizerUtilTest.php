@@ -670,6 +670,8 @@
             $this->assertEquals(1, count($messages));
             $compareMessage = 'Email - Email Address Invalid email format.';
             $this->assertEquals($compareMessage, $messages[0]);
+
+            //TODO add the email dedupe test here by checking against the already available email address
         }
 
         public function testSanitizeValueBySanitizerTypesForFullNameTypeThatIsRequired()
