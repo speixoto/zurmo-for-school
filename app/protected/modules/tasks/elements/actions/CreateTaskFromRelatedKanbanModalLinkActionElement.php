@@ -44,7 +44,8 @@
          */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('TasksModule', 'Create Task');
+            return Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
+                                            LabelUtil::getTranslationParamsForAllModules());
         }
 
         public function render()
