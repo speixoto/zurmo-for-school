@@ -41,9 +41,26 @@
     {
         protected $serverUrl = '';
 
-        protected function getApiControllerClassName()
+        protected static $createUsersAndGroups = true;
+
+        protected static $randomNonEveryoneNonAdministratorsGroup = null;
+
+        abstract protected function getApiControllerClassName();
+
+        abstract protected function getModuleBaseApiUrl();
+
+        public static function setUpBeforeClass()
         {
-            // TODO: @Shoaibi: Critical0: Make this abstract
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            if (static::$createUsersAndGroups)
+            {
+                SecurityTestHelper::createUsers();
+                SecurityTestHelper::createGroups();
+            }
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            assert($everyoneGroup->save()); // Not Coding Standard
+            static::setRandomNonEveryoneNonAdministratorsGroup();
         }
 
         protected final function getBaseApiUrl()
@@ -52,21 +69,6 @@
             $entryScript        = 'test.php/';
             $baseApiUrl         = $this->serverUrl . $entryScript . $moduleBaseApiUrl;
             return $baseApiUrl;
-        }
-
-        protected function getModuleBaseApiUrl()
-        {
-            // TODO: @Shoaibi: Critical0: Make this abstract
-        }
-
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-            SecurityTestHelper::createUsers();
-            SecurityTestHelper::createGroups();
-            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
-            assert($everyoneGroup->save()); // Not Coding Standard
         }
 
         public function setUp()
@@ -112,6 +114,19 @@
             $baseUrl                = $this->getBaseApiUrl();
             $url                    = $baseUrl . $relativeUrl;
             return ApiRestTestHelper::createApiCall($url, $method, $headers, $data);
+        }
+
+        protected static function setRandomNonEveryoneNonAdministratorsGroup()
+        {
+            $groups = Group::getAll();
+            foreach ($groups as $group)
+            {
+                if ($group->isDeletable())
+                {
+                    static::$randomNonEveryoneNonAdministratorsGroup = $group;
+                    break;
+                }
+            }
         }
     }
 ?>

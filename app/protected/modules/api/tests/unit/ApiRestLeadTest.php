@@ -160,7 +160,7 @@
             $account->owner = $super;
             $this->assertTrue($account->save());
 
-            $data['firstName']           = "Michael";
+            $data['firstName']           = "Samuel";
             $data['lastName']            = "Smith with no permissions";
             $data['jobTitle']            = "President";
             $data['department']          = "Sales";
@@ -168,7 +168,7 @@
             $data['mobilePhone']         = "653-235-7821";
             $data['officeFax']           = "653-235-7834";
             $data['description']         = "Some desc.";
-            $data['companyName']         = "Michael Co";
+            $data['companyName']         = "Samuel Co";
             $data['website']             = "http://sample.com";
 
             $data['industry']['value']   = $industryValues[2];
@@ -324,7 +324,7 @@
             $account->owner = $super;
             $this->assertTrue($account->save());
 
-            $data['firstName']           = "Michael";
+            $data['firstName']           = "Samuel";
             $data['lastName']            = "Smith with just owner";
             $data['jobTitle']            = "President";
             $data['department']          = "Sales";
@@ -332,7 +332,7 @@
             $data['mobilePhone']         = "653-235-7821";
             $data['officeFax']           = "653-235-7834";
             $data['description']         = "Some desc.";
-            $data['companyName']         = "Michael Co";
+            $data['companyName']         = "Samuel Co";
             $data['website']             = "http://sample.com";
 
             $data['industry']['value']   = $industryValues[2];
@@ -489,7 +489,7 @@
             $account->owner = $super;
             $this->assertTrue($account->save());
 
-            $data['firstName']           = "Michael";
+            $data['firstName']           = "Samuel";
             $data['lastName']            = "Smith with no permissions";
             $data['jobTitle']            = "President";
             $data['department']          = "Sales";
@@ -497,7 +497,7 @@
             $data['mobilePhone']         = "653-235-7821";
             $data['officeFax']           = "653-235-7834";
             $data['description']         = "Some desc.";
-            $data['companyName']         = "Michael Co";
+            $data['companyName']         = "Samuel Co";
             $data['website']             = "http://sample.com";
 
             $data['industry']['value']   = $industryValues[2];
@@ -605,10 +605,10 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $leads = Contact::getByName('Michael Smith with just owner');
+            $leads = Contact::getByName('Samuel Smith with just owner');
             $this->assertEquals(1, count($leads));
             $compareData  = $this->getModelToApiDataUtilData($leads[0]);
-            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
             $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
             $data['department']                                 = "Support";
             $compareData['department']                          = "Support";
@@ -624,7 +624,6 @@
             unset($compareData['modifiedDateTime']);
             ksort($compareData);
             ksort($response['data']);
-            // TODO: @Shoaibi: Critical0: this fails sometimes and falls to default user permissions.
             $this->assertEquals($compareData, $response['data']);
 
             $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
@@ -640,7 +639,6 @@
          */
         public function testListLead()
         {
-            // TODO: @Shoaibi: Critical0: This fails, total Count 0
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $authenticationData = $this->login();
@@ -651,7 +649,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $leads = Contact::getByName('Michael Smith with just owner');
+            $leads = Contact::getByName('Samuel Smith with just owner');
             $this->assertEquals(1, count($leads));
             $compareData  = $this->getModelToApiDataUtilData($leads[0]);
 
@@ -705,7 +703,7 @@
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $this->assertTrue($everyoneGroup->save());
 
-            $leads = Contact::getByName('Michael Smith with just owner');
+            $leads = Contact::getByName('Samuel Smith with just owner');
             $this->assertEquals(1, count($leads));
             $data['department']                = "Support";
 
@@ -1087,7 +1085,7 @@
 
         protected function getModuleBaseApiUrl()
         {
-            return 'contacts/contact/api/';
+            return 'leads/contact/api/';
         }
     }
 ?>

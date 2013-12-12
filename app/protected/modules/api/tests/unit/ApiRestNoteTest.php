@@ -356,7 +356,7 @@
 
             $updateData['description']    = "Updated note description";
             $compareData['description'] = "Updated note description";
-            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
             $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
             $updateData['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
             $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
@@ -370,7 +370,6 @@
             unset($compareData['modifiedDateTime']);
             ksort($compareData);
             ksort($response['data']);
-            // TODO: @Shoaibi: Critical0: this fails sometimes and falls to default user permissions.
             $this->assertEquals($compareData, $response['data']);
 
             $response = $this->createApiCallWithRelativeUrl('read/' . $notes[0]->id, 'GET', $headers);

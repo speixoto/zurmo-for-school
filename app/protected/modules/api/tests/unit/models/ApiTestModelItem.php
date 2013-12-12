@@ -145,7 +145,7 @@
 
         public static function hasReadPermissionsOptimization()
         {
-            // TODO: @Shoaibi: Critical0: Why does ApiRestTestModelItemTest fail without it?
+            // TODO: @Shoaibi: Critical0: Bug in ReadPermissionOptimizationUtil calls
             return true;
         }
     }

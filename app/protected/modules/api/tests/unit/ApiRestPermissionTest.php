@@ -158,5 +158,9 @@
         {
             return 'zurmo/permission/api/';
         }
+
+        protected function getApiControllerClassName()
+        {
+        }
     }
 ?>

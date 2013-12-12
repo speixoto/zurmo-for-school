@@ -580,7 +580,7 @@
 
             $data = array('firstName' => 'Bob6 with just owner');
             $compareData['firstName'] = 'Bob6 with just owner';
-            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
             $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
             $data['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
             $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
@@ -814,7 +814,7 @@
             );
 
             $data['firstName'] = 'Michael6';
-            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
             $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
             $data['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
             $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;

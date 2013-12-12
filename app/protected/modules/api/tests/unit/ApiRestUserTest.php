@@ -39,7 +39,8 @@
     */
     class ApiRestUserTest extends ApiRestTest
     {
-        // TODO: @Shoaibi: Critical0: Tests in here fail.
+        protected static $createUsersAndGroups = false;
+
         public function testGetUser()
         {
             $super = User::getByUsername('super');

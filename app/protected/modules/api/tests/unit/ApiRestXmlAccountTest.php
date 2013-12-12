@@ -841,5 +841,13 @@
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('Sign in required.', $response['message']);
         }
+
+        protected function getApiControllerClassName()
+        {
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+        }
     }
 ?>

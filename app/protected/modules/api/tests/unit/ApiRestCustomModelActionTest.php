@@ -357,7 +357,7 @@
             $compareData  = $this->getModelToApiDataUtilData($testModels[0]);
             $data['name'] = 'new name 2 with just owner';
             $compareData['name'] = 'new name 2 with just owner';
-            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
             $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
             $data['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
             $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
@@ -370,7 +370,6 @@
             ksort($compareData);
             ksort($response['data']);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            // TODO: @Shoaibi: Critical0: this fails sometimes and falls to default user permissions.
             $this->assertEquals($compareData, $response['data']);
 
             $response = $this->createApiCallWithRelativeUrl('customGet/?id=' . $compareData['id'], 'GET', $headers);

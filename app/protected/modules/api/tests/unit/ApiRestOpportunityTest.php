@@ -466,7 +466,6 @@
          */
         public function testUpdateOpportunity()
         {
-            // TODO: @Shoaibi: Critical0: Test fails
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -481,11 +480,11 @@
             $opportunities = Opportunity::getByName('Michael with just owner');
             $this->assertEquals(1, count($opportunities));
             $compareData  = $this->getModelToApiDataUtilData($opportunities[0]);
-            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
             $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
-            $data['probability']                = "15";
-            $data['explicitReadWriteModelPermissions']    = $explicitReadWriteModelPermissions;
-            $compareData['probability'] = "15";
+            $data['description']                                = "changed description";
+            $data['explicitReadWriteModelPermissions']          = $explicitReadWriteModelPermissions;
+            $compareData['description']                         = "changed description";
             $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
             $response =$this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers,
                                                                                                 array('data' => $data));
@@ -497,7 +496,6 @@
             unset($compareData['modifiedDateTime']);
             ksort($compareData);
             ksort($response['data']);
-            // TODO: @Shoaibi: Critical0: this fails sometimes and falls to default user permissions.
             $this->assertEquals($compareData, $response['data']);
 
             $response =$this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
@@ -581,7 +579,7 @@
 
             $opportunities = Opportunity::getByName('Michael with owner only permissions');
             $this->assertEquals(1, count($opportunities));
-            $data['probability']                = "20";
+            $data['description']                = "description 20";
 
             $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
@@ -649,11 +647,11 @@
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
             unset($data);
-            $data['probability']                = "21";
+            $data['description']                = "description 21";
             $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals('21', $response['data']['probability']);
+            $this->assertEquals('description 21', $response['data']['description']);
 
             $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
@@ -1009,7 +1007,7 @@
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('Newest Opportunity', $super);
 
             // Provide data with wrong type.
-            $data['probability']         = "A";
+            $data['probability']         = str_repeat('a', 128);
 
             $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
@@ -1018,7 +1016,7 @@
 
             $id = $opportunity->id;
             $data = array();
-            $data['probability']         = "A";
+            $data['name']         = str_repeat('a', 128);
             $response =$this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);

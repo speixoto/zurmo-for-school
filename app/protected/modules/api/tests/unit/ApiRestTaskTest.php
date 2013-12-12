@@ -381,7 +381,7 @@
             $this->assertEquals(1, count($tasks));
             $compareData        = $this->getModelToApiDataUtilData($tasks[0]);
 
-            $group  = RandomDataUtil::getRandomValueFromArray(Group::getAll());
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
             $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
             $updateData['completed']         = 1;
             $compareData['completed']       = "1";
@@ -400,7 +400,6 @@
             unset($compareData['latestDateTime']);
             ksort($compareData);
             ksort($response['data']);
-            // TODO: @Shoaibi: Critical0: this fails sometimes and falls to default user permissions.
             $this->assertEquals($compareData, $response['data']);
 
             $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);

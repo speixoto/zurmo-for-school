@@ -37,7 +37,7 @@
     /**
     * Base class for API REST functions tests.
     */
-    abstract class ApiRestTest extends ApiBaseTest
+    class ApiRestTest extends ApiBaseTest
     {
         protected function login($username = 'super', $password = 'super', $type = 'json')
         {
@@ -73,6 +73,24 @@
         protected function loginXml($username = 'super', $password = 'super')
         {
             return $this->login($username, $password, 'xml');
+        }
+
+        public function testLogin()
+        {
+            $this->assertTrue($this->login() !== false);
+        }
+
+        public function testLoginXml()
+        {
+            $this->assertTrue($this->loginXml() !== false);
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+        }
+
+        protected function getApiControllerClassName()
+        {
         }
     }
 ?>
