@@ -48,6 +48,11 @@
                         'viewClassName'   => $viewClassName,
                    ),
                     array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreate',
+                        'moduleClassName' => get_class($this->getModule()),
+                        'viewClassName'   => 'AccountModalCreateView',
+                   ),
+                    array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
                    ),

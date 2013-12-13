@@ -52,9 +52,10 @@
         {
             $matchedModels = array();
             $penultimateModelClassName = $this->penultimateModelClassName;
-            if($penultimateModelClassName != null)
+            $classToEvaluate        = new ReflectionClass($penultimateModelClassName);
+            if($penultimateModelClassName != null && $classToEvaluate->isSubclassOf('Item'))
             {
-                $matchedModels = $penultimateModelClassName::getByName($value);
+                $matchedModels = $penultimateModelClassName::getByNameOrEquivalent('name', $value);
             }
             return $matchedModels;
         }
