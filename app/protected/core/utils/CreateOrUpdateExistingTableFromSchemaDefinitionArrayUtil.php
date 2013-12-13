@@ -293,6 +293,7 @@
             $indexColumns   = $indexMetadata['columns'];
             sort($indexColumns);
             // get rid of (767) and other prefixes for
+            // Begin Not Coding Standard
             $indexColumns   = array_map(function ($column)
                                         {
                                             $parenthesisStart = strpos($column, '(');
@@ -302,6 +303,7 @@
                                             }
                                             return $column;
                                         }, $indexColumns);
+            // End Not Coding Standard
             foreach ($existingIndexes as $existingIndexMetadata)
             {
                 $existingIndexColumns = $existingIndexMetadata['columns'];

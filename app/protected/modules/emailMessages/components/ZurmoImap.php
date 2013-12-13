@@ -283,8 +283,16 @@
                 $imapMessage->senderEmail = $imapMessage->fromName;
             }
 
-            $subject                    = imap_mime_header_decode($mailHeaderInfo->subject);
-            $imapMessage->subject       = $subject[0]->text;
+            if (!isset($mailHeaderInfo->subject))
+            {
+                $imapMessage->subject       = Zurmo::t('EmailMessages', 'No Subject');
+            }
+            else
+            {
+                $subject                    = imap_mime_header_decode($mailHeaderInfo->subject);
+                $imapMessage->subject       = $subject[0]->text;
+            }
+
             $imapMessage->textBody      = $this->getPart($messageNumber, 'TEXT/PLAIN', $structure);
             $imapMessage->htmlBody      = $this->getPart($messageNumber, 'TEXT/HTML', $structure);
             $imapMessage->attachments   = $this->getAttachments($structure, $messageNumber);
@@ -293,7 +301,6 @@
             $imapMessage->msgNumber     = $mailHeaderInfo->Msgno;
             $imapMessage->msgId         = $mailHeaderInfo->message_id;
             $imapMessage->headers       = $this->resolveAndParseMessageHeaders($messageNumber);
-
             return $imapMessage;
         }
 

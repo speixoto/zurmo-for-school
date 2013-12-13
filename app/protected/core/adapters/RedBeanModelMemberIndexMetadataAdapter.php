@@ -58,10 +58,12 @@
                 $unique = $indexMetadata['unique'];
             }
             $indexMembers   = $indexMetadata['members'];
+            // Begin Not Coding Standard
             $indexMembers   = array_map(function($indexMember)
                                         {
                                             return RedBeanModelMemberToColumnUtil::resolve($indexMember);
                                         }, $indexMembers);
+            // End Not Coding Standard
             $indexMetadata  = array(
                                     'columns'   => $indexMembers,
                                     'unique'    => $unique,
