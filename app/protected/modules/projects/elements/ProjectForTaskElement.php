@@ -43,7 +43,7 @@
 
         protected function renderNonEditable()
         {
-            if($this->model->project->id > 0)
+            if ($this->model->project->id > 0)
             {
                 return parent::renderNonEditable();
             }

@@ -66,7 +66,7 @@
             $this->assertEquals('Test Email Template',          $emailTemplate->name);
             $this->assertEquals('Test html Content',            $emailTemplate->htmlContent);
             $this->assertEquals('Test text Content',            $emailTemplate->textContent);
-            $this->assertEquals(1, count(EmailTemplate::getAll()));
+            $this->assertEquals(1, EmailTemplate::getCount());
         }
 
         /**
@@ -117,7 +117,36 @@
             $emailTemplate->modelClassName  = 'Contact';
             $this->assertTrue($emailTemplate->save());
             $this->assertEmpty($emailTemplate->getErrors());
-            $this->assertEquals(2, count(EmailTemplate::getAll()));
+            $this->assertEquals(2, EmailTemplate::getCount());
+        }
+
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
+        public function testValidationErrorForInaccessibleModule()
+        {
+            // test against a user who doesn't have access for provided model's modulename
+            $nobody                        = UserTestHelper::createBasicUser('nobody');
+            Yii::app()->user->userModel     = $nobody;
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_WORKFLOW;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->name            = 'Another Test Email Template';
+            $emailTemplate->textContent     = 'Text Content';
+            $emailTemplate->modelClassName  = 'Contact';
+            $this->assertFalse($emailTemplate->save());
+            $errorMessages = $emailTemplate->getErrors();
+            $this->assertEquals(1, count($errorMessages));
+            $this->assertTrue(array_key_exists('modelClassName', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['modelClassName']));
+            $this->assertEquals('Provided class name access is prohibited.', $errorMessages['modelClassName'][0]);
+
+            // grant him access, now save should work
+            $nobody->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $this->assertTrue($nobody->save());
+            $this->assertTrue($emailTemplate->save());
+            $this->assertEmpty($emailTemplate->getErrors());
+            $this->assertEquals(1, EmailTemplate::getCount()); // this is his only template
         }
 
         /**
@@ -147,13 +176,13 @@
             $emailTemplate->htmlContent    = 'Html Content without tags';
             $this->assertTrue($emailTemplate->save());
             $this->assertEmpty($emailTemplate->getErrors());
-            $this->assertEquals(3, count(EmailTemplate::getAll()));
+            $this->assertEquals(4, EmailTemplate::getCount());
             // test with valid merge tags
             $emailTemplate->textContent    = 'Name : [[FIRST^NAME]] [[LAST^NAME]]';
             $emailTemplate->htmlContent    = '<b>Name : [[FIRST^NAME]] [[LAST^NAME]]</b>';
             $this->assertTrue($emailTemplate->save());
             $this->assertEmpty($emailTemplate->getErrors());
-            $this->assertEquals(3, count(EmailTemplate::getAll()));
+            $this->assertEquals(4, EmailTemplate::getCount());
         }
 
         /**
@@ -177,7 +206,7 @@
 
             $emailTemplate->textContent         = 'Text Content';
             $this->assertTrue($emailTemplate->save());
-            $this->assertEquals(4, count(EmailTemplate::getAll()));
+            $this->assertEquals(5, EmailTemplate::getCount());
             $id             = $emailTemplate->id;
             unset($emailTemplate);
             $emailTemplate  = EmailTemplate::getById($id);
@@ -237,10 +266,10 @@
         public function testDeleteEmailTemplate()
         {
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(5, count($emailTemplates));
+            $this->assertEquals(6, count($emailTemplates));
             $emailTemplates[0]->delete();
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(4, count($emailTemplates));
+            $this->assertEquals(5, count($emailTemplates));
         }
     }
 ?>

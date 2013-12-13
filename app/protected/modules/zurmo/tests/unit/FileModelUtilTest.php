@@ -61,7 +61,7 @@
 
         public function testResolveModelsHasManyFilesFromPost()
         {
-            $fileCount = count(FileModel::getAll());
+            $fileCount = FileModel::getCount();
             $this->assertEquals(0, $fileCount);
             $file1 = ZurmoTestHelper::createFileModel('testNote.txt');
             $file2 = ZurmoTestHelper::createFileModel('testNote.txt');
@@ -74,7 +74,7 @@
             $saved = $model->save();
             $this->assertTrue($saved);
 
-            $fileCount = count(FileModel::getAll());
+            $fileCount = FileModel::getCount();
             $this->assertEquals(3, $fileCount);
 
             $modelId = $model->id;
@@ -88,7 +88,7 @@
             FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'myTest');
             $saved = $model->save();
             $this->assertTrue($saved);
-            $fileCount = count(FileModel::getAll());
+            $fileCount = FileModel::getCount();
             $this->assertEquals(4, $fileCount);
             $model->forget();
             $model = ModelWithAttachmentTestItem::getById($modelId);
@@ -99,7 +99,7 @@
             FileModelUtil::resolveModelsHasManyFilesFromPost($model, 'files', 'myTest');
             $saved = $model->save();
             $this->assertTrue($saved);
-            $fileCount = count(FileModel::getAll());
+            $fileCount = FileModel::getCount();
             $this->assertEquals(3, $fileCount);
             $model->forget();
             $model = ModelWithAttachmentTestItem::getById($modelId);

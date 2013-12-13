@@ -61,8 +61,8 @@
             $reCaptchaPrivateKey = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPrivateKey');
             $reCaptchaPublicKey  = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'reCaptchaPublicKey');
 
-            if (is_null($reCaptchaPrivateKey) || empty($reCaptchaPrivateKey) ||
-                is_null($reCaptchaPublicKey)  || empty($reCaptchaPublicKey))
+            if ($reCaptchaPrivateKey === null || empty($reCaptchaPrivateKey) ||
+                $reCaptchaPublicKey === null  || empty($reCaptchaPublicKey))
             {
                 return false;
             }

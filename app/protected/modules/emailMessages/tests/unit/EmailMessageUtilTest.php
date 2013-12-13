@@ -242,7 +242,7 @@
             $contact = new Contact();
             $content = EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent($emailAddress, $contact);
             $this->assertContains('href=',                          $content);
-            $this->assertContains('toAddress=a%40zurmo.com&amp;',   $content);
+            $this->assertContains('toAddress=a%40zurmo.com&amp;',   $content); // Not Coding Standard
         }
 
         public function testResolveTextContent()

@@ -84,7 +84,7 @@
                     }
                     else
                     {
-                        $modelTableName     = RedBeanModel::getTableName($modelClassName);
+                        $modelTableName     = $modelClassName::getTableName();
                         if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                         {
                             throw new NotImplementedException();
@@ -97,7 +97,7 @@
                             }
                             else
                             {
-                                $modelTableName = Person::getTableName('Person');
+                                $modelTableName = Person::getTableName();
                             }
                         }
                         ZurmoDatabaseCompatibilityUtil::
@@ -922,7 +922,7 @@
                                                         'name' => 'securableitem_id',
                                                         'type' => 'INT(11)',
                                                         'unsigned' => 'UNSIGNED',
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => null,
                                                         'default' => null,
                                                     ),
@@ -930,7 +930,7 @@
                                                         'name' => 'munge_id',
                                                         'type' => 'VARCHAR(12)',
                                                         'unsigned' => null,
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => 'COLLATE utf8_unicode_ci',
                                                         'default' => null,
                                                     ),
@@ -938,7 +938,7 @@
                                                         'name' => 'count',
                                                         'type' => 'INT(8)',
                                                         'unsigned' => 'UNSIGNED',
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => null,
                                                         'default' => null,
                                                     ),
@@ -1117,7 +1117,7 @@
         protected static function getMainTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
+            return $modelClassName::getTableName();
         }
 
         /**

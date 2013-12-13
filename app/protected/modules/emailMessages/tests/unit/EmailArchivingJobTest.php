@@ -60,6 +60,7 @@
                 ContactsModule::loadStartingData();
                 $steve->setRight('ContactsModule',  ContactsModule::RIGHT_ACCESS_CONTACTS);
                 $steve->setRight('AccountsModule',  AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+                $steve->save();
 
                 Yii::app()->imap->imapHost        = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapHost'];
                 Yii::app()->imap->imapUsername    = Yii::app()->params['emailTestAccounts']['dropboxImapSettings']['imapUsername'];
@@ -89,6 +90,7 @@
 
         public function setup()
         {
+            ForgetAllCacheUtil::forgetAllCaches(); //Special situation to deal with email box and ensuring the user cache doesn't get corrupted
             parent::setup();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -140,7 +142,7 @@
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -166,7 +168,7 @@
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -216,7 +218,7 @@
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -244,7 +246,7 @@
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -291,7 +293,7 @@
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -339,7 +341,7 @@ To: Steve <steve@example.com>
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -382,7 +384,7 @@ To: Steve <steve@example.com>
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -407,7 +409,7 @@ To: Steve <steve@example.com>
             $this->assertFalse($job->run());
             $this->assertTrue(strpos($job->getErrorMessage(), 'Failed to process Message id') !== false);
 
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageOwnerNotExist', $super));
             $notifications = Notification::getByTypeAndUser('EmailMessageOwnerNotExist', $super);
             $this->assertContains('Email address does not exist in system', $notifications[0]->notificationMessage->textContent);
@@ -427,7 +429,6 @@ To: Steve <steve@example.com>
             {
                 $this->markTestSkipped(Zurmo::t('EmailMessagesModule', 'Test email settings are not configured in perInstanceTest.php file.'));
             }
-            ForgetAllCacheUtil::forgetAllCaches(); //Special situation to deal with email box and ensuring the user cache doesn't get corrupted
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
@@ -453,7 +454,7 @@ To: Steve <steve@example.com>
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -478,7 +479,7 @@ To: Steve <steve@example.com>
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -499,7 +500,7 @@ To: Steve <steve@example.com>
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', $user));
         }
     }

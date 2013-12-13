@@ -67,11 +67,6 @@
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
-        public static function removeAll()
-        {
-            ZurmoRedBean::exec("delete from _right;");
-        }
-
         public static function rightToString($right)
         {
             switch ($right)

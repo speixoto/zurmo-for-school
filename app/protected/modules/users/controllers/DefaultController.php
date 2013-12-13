@@ -583,7 +583,6 @@
             $user = User::getById(intval($id));
             UserAccessUtil::resolveAccessingASystemUser($user);
             $title               = Zurmo::t('ZurmoModule', 'Dashboard');
-            $breadCrumbLinks     = array(strval($user) => array('default/gameDashboard',  'id' => $id), $title);
             $badgeData           = GameBadge::getAllByPersonIndexedByType($user);
             $generalLevelData    = GameLevelUtil::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);
             $rankingData         = GamePointUtil::getUserRankingData($user);

@@ -36,5 +36,20 @@
 
     class AccountsModuleEditView extends GlobalSearchEnabledModuleEditView
     {
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata['global']['panels'][0]['rows'][] =
+                array('cells' =>
+                array(
+                    array(
+                        'elements' => array(
+                            array('attributeName' => 'null', 'type' => 'UpdateAccountLatestActivityDateTime'),
+                        ),
+                    ),
+                ),
+                );
+            return $metadata;
+        }
     }
 ?>

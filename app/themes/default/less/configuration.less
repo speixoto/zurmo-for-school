@@ -659,8 +659,16 @@ table.configuration-list{
 	width:100%;
 	display:block;
 	margin-top:4px;
+	position: relative;
 	.hasCheckBox{
 		margin:0 10px 0 0 !important;
+		z-index: 20;
+	}
+	.z-spinner{
+		display: block;
+		left: -2px;
+		top: 3px;
+		z-index: 0;
 	}
 }
 
@@ -935,7 +943,6 @@ table.configuration-list{
 
 #sample-column-header{
 	position: relative;
-	white-space: nowrap;
 	a{
 		.z-link();
 		.symbly(16px);
@@ -949,9 +956,6 @@ table.configuration-list{
 	}
 	div{
 		display: inline-block;
-		//position: absolute;
-		top: 16px;
-		left: 0;
 		margin-left: 5px;
 	}
 }

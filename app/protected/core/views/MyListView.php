@@ -123,7 +123,8 @@
                                                                 ));
             $sort                     = new RedBeanSort($redBeanModelDataProvider->modelClassName);
             $sort->sortVar            = $redBeanModelDataProvider->getId().'_sort';
-            $sort->route              = 'default/index';
+            $sort->route              = 'defaultPortlet/myListDetails';
+            $sort->params             = array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId']));
             $redBeanModelDataProvider->setSort($sort);
             return $redBeanModelDataProvider;
         }

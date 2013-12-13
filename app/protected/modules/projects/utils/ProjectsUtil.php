@@ -63,7 +63,7 @@
             assert('$task instanceof Task');
             assert('is_string($currentStatusLabel)');
             assert('is_string($newStatusLabel)');
-            if($currentStatusLabel != $newStatusLabel)
+            if ($currentStatusLabel != $newStatusLabel)
             {
                 $project = $task->project;
                 $data    = array('{fromstatus}' => $currentStatusLabel, '{tostatus}' => $newStatusLabel);

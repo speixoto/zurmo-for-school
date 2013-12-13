@@ -136,17 +136,25 @@
 
         public static function renderScriptContentForModuleClassNameChange()
         {
+            // Begin Not Coding Standard
             return "
             $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME .
                         " option[value=\"" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "\"]').remove();
+            $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME .
+                        " option[value=\"" . ActionForWorkflowForm::TYPE_UNSUBSCRIBE_FROM_LIST . "\"]').remove();
             if($(this).val() == 'ContactsModule')
             {
                 $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME . "').
                     append(\"<option value='" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "'>" .
                         ActionForWorkflowForm::getLabelForSubscribeToList() . "</option>\");
+                $('#" . ActionsForWorkflowWizardView::ACTION_TYPE_NAME . "').
+                    append(\"<option value='" . ActionForWorkflowForm::TYPE_UNSUBSCRIBE_FROM_LIST . "'>" .
+                        ActionForWorkflowForm::getLabelForUnsubscribeFromList() . "</option>\");
             }
             ";
+            // End Not Coding Standard
         }
+
         /**
          * @return bool
          */
@@ -299,6 +307,10 @@
                     loadWorkflowAction();
                 }
                 else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_SUBSCRIBE_TO_LIST . "')
+                {
+                    loadWorkflowAction();
+                }
+                else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UNSUBSCRIBE_FROM_LIST . "')
                 {
                     loadWorkflowAction();
                 }

@@ -51,7 +51,7 @@
         public function testSuperUserAllDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->assertEquals(0, count(SavedSearch::getAll()));
+            $this->assertEquals(0, SavedSearch::getCount());
 
             //Test a saved search that validates and passes
             //Test form that validates
@@ -78,7 +78,7 @@
             $this->setGetArray(array('id' => $savedSearches[0]->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/deleteSavedSearch', true);
-            $this->assertEquals(0, count(SavedSearch::getAll()));
+            $this->assertEquals(0, SavedSearch::getCount());
         }
     }
 ?>

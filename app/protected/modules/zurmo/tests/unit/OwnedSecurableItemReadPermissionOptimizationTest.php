@@ -63,7 +63,7 @@
             $model->member = 'test3';
             $model->owner  = $benny;
             assert($model->save()); // Not Coding Standard
-            assert(count(OwnedSecurableTestItem::getAll()) == 3); // Not Coding Standard
+            assert(OwnedSecurableTestItem::getCount() == 3); // Not Coding Standard
             $model = new OwnedSecurableTestItem2();
             $model->member = 'test5';
             assert($model->save()); // Not Coding Standard
@@ -257,12 +257,12 @@
             $model->owner  = $aUser;
             $this->assertTrue($model->save());
             Yii::app()->user->userModel = User::getByUsername('super');
-            $this->assertEquals(4, count(OwnedSecurableTestItem::getAll()));
+            $this->assertEquals(4, OwnedSecurableTestItem::getCount());
             $model = new OwnedSecurableTestItem2();
             $model->member = 'test4';
             $model->owner  = $aUser;
             $this->assertTrue($model->save());
-            $this->assertEquals(2, count(OwnedSecurableTestItem2::getAll()));
+            $this->assertEquals(2, OwnedSecurableTestItem2::getCount());
             Yii::app()->user->userModel = User::getByUsername('aaa');
 
             $quote        = DatabaseCompatibilityUtil::getQuote();

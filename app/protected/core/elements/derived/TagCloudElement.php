@@ -95,5 +95,10 @@
                                   'name' => $this->dataAndLabels[$customFieldValue->value]);
             }
         }
+
+        protected function getFormattedAttributeLabel()
+        {
+            return Yii::app()->format->text($this->model->getAttributeLabel($this->attribute));
+        }
     }
 ?>

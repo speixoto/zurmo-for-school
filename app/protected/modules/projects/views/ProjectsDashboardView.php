@@ -76,7 +76,7 @@
             $this->controllerId        = $controllerId;
             $this->moduleId            = $moduleId;
             $this->uniqueLayoutId      = $uniqueLayoutId;
-            $this->layoutType          = '50,50';
+            $this->layoutType          = '50,50'; // Not Coding Standard
             $this->params              = $params;
         }
 
@@ -117,7 +117,5 @@
             }
             return PortletsSecurityUtil::resolvePortletsForCurrentUser($portlets);
         }
-
-
     }
 ?>

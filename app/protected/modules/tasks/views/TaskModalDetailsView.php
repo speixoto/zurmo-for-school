@@ -46,7 +46,8 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'  => 'TaskModalEditFromModalDetailsLink'),
-                            array('type'  => 'AuditEventsModalListLink'),
+                            array('type'  => 'TaskModalCloneFromModalDetailsLink'),
+                            array('type'  => 'TaskAuditEventsModalListLink'),
                             array('type'  => 'TaskDeleteLink',
                                   'sourceViewId' => 'eval:$this->getSourceViewId()'),
                         ),
@@ -66,7 +67,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                            array('attributeName' => null, 'type' => 'Null'),
+                                            array('attributeName' => null, 'type' => 'Null'), // Not Coding Standard
                                         ),
                                     ),
                                 )
@@ -351,10 +352,10 @@
         protected function resolveSubscriberAjaxOptions()
         {
             return array(
-                'type'    => 'GET',
-                'dataType'=> 'html',
-                'data'    => array(),
-                'success' => 'function(data)
+                'type'     => 'GET',
+                'dataType' => 'html',
+                'data'     => array(),
+                'success'  => 'function(data)
                               {
                                 $("#subscribe-task-link").hide();
                                 $("#subscriberList").replaceWith(data);

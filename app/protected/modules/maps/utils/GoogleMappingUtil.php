@@ -92,7 +92,7 @@
             assert('is_numeric($latitude) || $latitude == null');
             assert('is_numeric($longitude) || $longitude == null');
 
-            $marker_text = "<strong>Location:</strong> <br />$address";
+            $marker_text = ZurmoHtml::encode("<strong>Location:</strong> <br />$address");
             $mapScript = "
             function plotMap()
             {
@@ -112,7 +112,7 @@
                 });
                 var infowindow = new google.maps.InfoWindow(
                 {
-                 content:  '$marker_text'
+                 content:  encodeURIComponent('$marker_text')
                 });
 
                 google.maps.event.addListener(marker, 'click', function()

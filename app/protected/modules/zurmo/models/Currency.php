@@ -90,7 +90,7 @@
         public static function getByCode($code)
         {
             assert('is_string($code)');
-            $tableName = self::getTableName('Currency');
+            $tableName = Currency::getTableName();
             $beans = ZurmoRedBean::find($tableName, "code = '$code'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
@@ -223,7 +223,7 @@
             else
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
-                $tableName = self::getTableName($modelClassName);
+                $tableName = $modelClassName::getTableName();
                 $rows = ZurmoRedBean::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
                 static::$currencyIdRowsByCode[$value] = $rows;
             }

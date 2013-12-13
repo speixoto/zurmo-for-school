@@ -43,7 +43,8 @@
         {
             try
             {
-                $identity = new UserIdentity(Yii::app()->apiRequest->getUsername(), Yii::app()->apiRequest->getPassword());
+                $identity = Yii::app()->authenticationHelper->makeIdentity(Yii::app()->apiRequest->getUsername(),
+                    Yii::app()->apiRequest->getPassword());
                 $identity->authenticate();
             }
             catch (Exception $e)

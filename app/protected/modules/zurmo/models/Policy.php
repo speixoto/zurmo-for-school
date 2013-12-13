@@ -77,11 +77,6 @@
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
-        public static function removeAll()
-        {
-            ZurmoRedBean::exec("delete from policy;");
-        }
-
         public function __toString()
         {
             $s = "{$this->name} = ";

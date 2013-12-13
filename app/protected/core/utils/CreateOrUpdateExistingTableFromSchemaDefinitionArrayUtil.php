@@ -293,15 +293,17 @@
             $indexColumns   = $indexMetadata['columns'];
             sort($indexColumns);
             // get rid of (767) and other prefixes for
+            // Begin Not Coding Standard
             $indexColumns   = array_map(function ($column)
-            {
-                $parenthesisStart = strpos($column, '(');
-                if ($parenthesisStart !== false)
-                {
-                    return substr($column, 0, $parenthesisStart);
-                }
-                return $column;
-            }, $indexColumns);
+                                        {
+                                            $parenthesisStart = strpos($column, '(');
+                                            if ($parenthesisStart !== false)
+                                            {
+                                                return substr($column, 0, $parenthesisStart);
+                                            }
+                                            return $column;
+                                        }, $indexColumns);
+            // End Not Coding Standard
             foreach ($existingIndexes as $existingIndexMetadata)
             {
                 $existingIndexColumns = $existingIndexMetadata['columns'];
@@ -341,7 +343,7 @@
             $upgradeStatements       = CMap::mergeArray($columnUpgradeStatements, $indexUpgradeStatements);
             if (!empty($upgradeStatements))
             {
-                $upgradeStatements  = join(',' . PHP_EOL, $upgradeStatements);
+                $upgradeStatements  = join(',' . PHP_EOL, $upgradeStatements); // Not Coding Standard
                 $query              = "ALTER TABLE `${tableName}` " . PHP_EOL .
                                         $upgradeStatements . ";";
                 return $query;
@@ -355,7 +357,7 @@
             {
                 return array('columnDefinition' => $column, 'method' => 'add');
             }
-            else if (static::doesColumnNeedUpgrade($column, $existingFields[$column['name']]))
+            elseif (static::doesColumnNeedUpgrade($column, $existingFields[$column['name']]))
             {
                 return array('columnDefinition' => $column, 'method' => 'change');
             }
@@ -364,13 +366,99 @@
 
         protected static function doesColumnNeedUpgrade($column, $existingField)
         {
-            if (static::isColumnTypeSameAsExistingField($column, $existingField) &&
+            if (static::isColumnTypeSameAsExistingFieldOrSmaller($column, $existingField) &&
                 static::isColumnNullSameAsExistingField($column, $existingField) &&
                 static::isColumnDefaultValueSameAsExistingField($column, $existingField))
             {
                 return false;
             }
             return true;
+        }
+
+        protected static function isColumnTypeSameAsExistingFieldOrSmaller($column, $existingField)
+        {
+            if (!static::isColumnTypeSameAsExistingField($column, $existingField))
+            {
+                // column type doesn't match field type exactly, lets try to figure out which part it doesn't match.
+                $fieldType          = null;
+                $fieldLength        = null;
+                $fieldUnsigned      = null;
+                list($fieldType, $fieldLength, $fieldUnsigned) = static::resolveExistingFieldTypeAndLengthAndUsigned(
+                                                                                                        $existingField);
+                list($columnType, $columnLength)            = static::resolveColumnTypeAndLength($column['type']);
+                if ($columnType == $fieldType)
+                {
+                    // type is same, unsigned or length might be different.
+                    return static::isColumnLengthShrinkOrConversionToUnsigned($columnLength, $fieldLength,
+                                                                                $column['unsigned'], $fieldUnsigned);
+                }
+                return static::isColumnTypeSmallerThanExistingFieldType($columnType, $fieldType);
+            }
+            return false;
+        }
+
+        protected static function isColumnLengthShrinkOrConversionToUnsigned($columnLength, $fieldLength,
+                                                                                $columnUnsigned, $fieldUnsigned)
+        {
+            //($fieldUnsigned !== $columnUnsigned && $columnUnsigned = 'UNSIGNED') ||
+            // we do not check for signed/unsigned checks as again, we do not know if it would be safe.
+            // changing unsigned to signed might lose some data thats beyond signed range for that column
+            // changing signed to unsigned might lose some signed data;
+            if ($columnLength < $fieldLength)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected static function isColumnTypeSmallerThanExistingFieldType($columnType, $fieldType)
+        {
+            return false;
+            // We have intentionally kept this here but not implemented it.
+            // Design wise its bit tough decision with regard to what to allow and what not to.
+            // For example, do we allow change from a text type to mediumblob?
+            // mediumblob is smaller in size but may be user did that knowingly and he wants us to do in db.
+            // and if we don't then his binary data won't be stored as he expects it to be.
+            // What now?
+            // TODO: @Shoaibi: Low: Implement
+            $integerTypes   = array_keys(DatabaseCompatibilityUtil::resolveIntegerMaxAllowedValuesByType());
+            // TODO: @Shoaibi: Low: Shouldn't these types also come from DbCU
+            $floatTypes     = array('float', 'double', 'decimal');
+            $stringTypes    = array('char', 'varchar', 'tinytext', 'mediumtext', 'text', 'longtext');
+            $blogTypes      = array('tinyblob', 'mediumblob', 'blob', 'longblob');
+            //DatabaseCompatibilityUtil::resolveIntegerMaxAllowedValuesByType
+            // type is different, check if we are switching to higher type or not.
+            // check int types
+            // check float types
+            // check string types(blob inclusive)
+            // if types from totally different domain, then what? int < float < text < blob?
+        }
+
+        protected static function resolveExistingFieldTypeAndLengthAndUsigned(array $existingField)
+        {
+            $existingFieldType          = $existingField['Type'];
+            $existingFieldUnsigned      = null;
+            if (strpos($existingField['Type'], ' ') !== false)
+            {
+                list($existingFieldType, $existingFieldUnsigned) = explode(' ', $existingField['Type']);
+            }
+            list($existingFieldType, $existingFieldLength) = static::resolveColumnTypeAndLength($existingFieldType);
+            return array($existingFieldType, $existingFieldLength, $existingFieldUnsigned);
+        }
+
+        protected static function resolveColumnTypeAndLength($columnTypeAndLength)
+        {
+            $columnType                 = $columnTypeAndLength;
+            $columnLength               = null;
+            $openingBracePosition       = strpos($columnType, '(');
+            $closingBracePosition       = strpos($columnType, ')');
+            if  ($openingBracePosition && $closingBracePosition)
+            {
+                $columnLength    = substr($columnType, $openingBracePosition + 1,
+                                            $closingBracePosition - $openingBracePosition -1);
+                $columnType      = strtolower(substr($columnType, 0, $openingBracePosition));
+            }
+            return array($columnType, $columnLength);
         }
 
         protected static function isColumnTypeSameAsExistingField($column, $existingField)
@@ -387,10 +475,10 @@
 
         protected static function isColumnNullSameAsExistingField($column, $existingField)
         {
-            $notNull = 'NOT NULL';
-            if ($existingField['Null'] == 'YES')
+            $notNull = 'NOT NULL'; // Not Coding Standard
+            if ($existingField['Null'] == 'YES') // Not Coding Standard
             {
-                $notNull = 'NULL';
+                $notNull = 'NULL'; // Not Coding Standard
             }
             return ($column['notNull'] == $notNull);
         }
@@ -398,7 +486,7 @@
         protected static function isColumnDefaultValueSameAsExistingField($column, $existingField)
         {
             $default = null;
-            if ($column['default'] != 'DEFAULT NULL')
+            if ($column['default'] != 'DEFAULT NULL') // Not Coding Standard
             {
                 $default = substr($column['default'], strpos($column['default'], 'DEFAULT '));
             }
@@ -407,7 +495,7 @@
 
         protected static function resolveCreateTableQuery($tableName, $columnsAndIndexesSchema)
         {
-            $columns        = array('`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT');
+            $columns        = array('`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT'); // Not Coding Standard
             $indexes        = array('PRIMARY KEY (id)');
             foreach ($columnsAndIndexesSchema['columns'] as $column)
             {
@@ -419,12 +507,11 @@
             }
             // PHP_EOLs below are purely for readability, sql would work just fine without it.
             $tableMetadata  = CMap::mergeArray($columns, $indexes);
-            $tableMetadata  = join(',' . PHP_EOL, $tableMetadata);
+            $tableMetadata  = join(',' . PHP_EOL, $tableMetadata); // Not Coding Standard
             $query          = "CREATE TABLE `${tableName}` (" . PHP_EOL .
                                 $tableMetadata . PHP_EOL .
-                                " ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;";
+                                " ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;"; // Not Coding Standard
             return $query;
-
         }
 
         protected static function resolveColumnStatementFromDefinition($column, $isAddition = true)
@@ -443,7 +530,7 @@
 
         protected static function resolveIndexStatementCreation($indexName, $indexMetadata, $alterTable = false)
         {
-            $clause = "KEY ${indexName} (" . join(',', $indexMetadata['columns']) . ")";
+            $clause = "KEY ${indexName} (" . join(',', $indexMetadata['columns']) . ")"; // Not Coding Standard
             if ($indexMetadata['unique'])
             {
                 $clause = 'UNIQUE ' . $clause;

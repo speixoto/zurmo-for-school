@@ -39,6 +39,16 @@
      */
     class CurrencyDropDownElement extends DropDownElement
     {
+        public static function resolveDropDownArray($model, $attribute)
+        {
+            $selectedCurrencyId = $model->{$attribute}->id;
+            if ($selectedCurrencyId < 0)
+            {
+                $selectedCurrencyId = null;
+            }
+            return Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData((int)$selectedCurrencyId);
+        }
+
         /**
          * Override to utilize 'id' instead of 'value' as attribute.
          * @return A string containing the element's content.
@@ -81,12 +91,17 @@
          */
         protected function getDropDownArray()
         {
-           $selectedCurrencyId = $this->model->{$this->attribute}->id;
-           if ($selectedCurrencyId < 0)
-           {
-               $selectedCurrencyId = null;
-           }
-           return Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData((int)$selectedCurrencyId);
+            return static::resolveDropDownArray($this->model, $this->attribute);
+        }
+
+        /**
+         * Generate the error content. Used by editable content
+         * @return error content
+         */
+        protected function renderError()
+        {
+            return $this->form->error($this->model, $this->attribute,
+                                      array('inputID' => $this->getEditableInputId($this->attribute, 'id')));
         }
     }
 ?>

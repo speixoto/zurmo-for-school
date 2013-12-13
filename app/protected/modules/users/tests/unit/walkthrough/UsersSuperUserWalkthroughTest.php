@@ -679,7 +679,7 @@
                                                         'username' => $aUser->username,
                                                         'password' => 'bNewPassword',
                                                         'rememberMe' => '0')));
-            if(Yii::app()->edition == 'Community')
+            if (Yii::app()->edition == 'Community')
             {
                 $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/login');
             }

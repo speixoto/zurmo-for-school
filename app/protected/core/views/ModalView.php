@@ -66,7 +66,7 @@
         }
 
         public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto',
-                                                          $width = 600, $position = 'center top+25', $class = "''",// Not Coding Standard
+                                                          $width = 600, $position = 'center top+25', $class = "''", // Not Coding Standard
                                                           $extraCloseScript = null)
         {
             assert('is_string($containerId)');
@@ -87,8 +87,8 @@
                                                                           $containerId = 'modalContainer',
                                                                           $height = 'auto',
                                                                           $width = 600,
-                                                                          $position = 'center top+25',
-                                                                          $class = "''",// Not Coding Standard
+                                                                          $position = 'center top+25', // Not Coding Standard
+                                                                          $class = "''", // Not Coding Standard
                                                                           $extraCloseScript = null)
         {
             assert('is_string($containerId)');
@@ -120,7 +120,7 @@
             return "js:function(){
                 jQuery('#{$containerId}').html('');
                 $(this).makeLargeLoadingSpinner(true, '#{$containerId}');
-                window.scrollTo(0, 0);
+                //window.scrollTo(0, 0);
                 jQuery('#{$containerId}').dialog({
                     'title' : '{$modalTitle}',
                     'autoOpen' : true,

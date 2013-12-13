@@ -51,6 +51,9 @@
         ),
 
         'components' => array(
+            'accountLatestActivityDateTimeObserver' => array(
+                'class' => 'application.modules.accounts.observers.AccountLatestActivityDateTimeObserver',
+            ),
             'additionalModelsConfig' => array(
                 'class'         => 'application.core.components.AdditionalModelsConfig',
                 'zurmoModels'   => array('application.core.models', 'application.core.portlets', 'application.core.kanbanBoard.models'),
@@ -83,6 +86,9 @@
                         'depends'  => array('jquery', 'cookie')),
                 ),
             ),
+            'contactLatestActivityDateTimeObserver' => array(
+                'class' => 'application.modules.contacts.observers.ContactLatestActivityDateTimeObserver',
+            ),
             'currencyHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoCurrencyHelper',
                 'baseCode' => 'USD',
@@ -95,6 +101,7 @@
                 'class' => 'application.core.components.DataEnhancer',
             ),
             'db' => array(
+                'autoConnect'    => false,
                 'emulatePrepare' => true,
                 'charset'        => 'utf8',
             ),
@@ -109,6 +116,7 @@
             ),
             'format' => array(
                 'class' => 'application.core.components.Formatter',
+                'htmlPurifierOptions' => array('Cache.SerializerPermissions' => 0777),
             ),
             'imap' => array(
                 'class'       => 'application.modules.emailMessages.components.ZurmoImap',
@@ -118,6 +126,9 @@
             ),
             'gamificationObserver' => array(
                 'class' => 'application.modules.gamification.observers.GamificationObserver',
+            ),
+            'jobQueue' => array(
+                'class' => 'application.core.components.JobQueue',
             ),
             'licenseManager' => array(
                 'class' => 'application.core.components.LicenseManager',
@@ -132,7 +143,10 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/zurmo.css',
                         //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
-
+                    'css-color' => array(
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/keyframes.css'
+                    ),
                     'js' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yii.js',
@@ -231,6 +245,12 @@
             'phoneHelper' => array(
                 'class'          => 'application.core.components.PhoneHelper',
             ),
+            'request' => array(
+                'class' => 'application.core.components.ZurmoHttpRequest',
+                'enableCsrfValidation' => true,
+                'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
+                'tokenEnabledRoutes' => array('contacts/external/'),
+            ),
             'sanitizer' => array(
                 'class'          => 'application.extensions.esanitizer.ESanitizer',
                 'sanitizeGet'    => false, //off for now
@@ -248,12 +268,6 @@
             'timeZoneHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoTimeZoneHelper',
                 'timeZone'             => 'America/Chicago',
-            ),
-            'request' => array(
-                'class' => 'application.core.components.ZurmoHttpRequest',
-                'enableCsrfValidation' => true,
-                'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
-                'tokenEnabledRoutes' => array('contacts/external/'),
             ),
             'statePersister' => array(
                 'class'     => 'application.modules.zurmo.components.ZurmoDbStatePersister',
@@ -323,6 +337,9 @@
             ),
             'workflowsObserver' => array(
                 'class' => 'application.modules.workflows.observers.WorkflowsObserver',
+            ),
+            'loginHelper' => array(
+                'class'       => 'application.modules.zurmo.components.ZurmoLoginHelper',
             ),
             'lessCompiler' => array(
                 'class'                 => 'application.extensions.lessphp.LessCompiler',

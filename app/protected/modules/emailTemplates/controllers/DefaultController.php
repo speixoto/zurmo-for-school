@@ -196,14 +196,33 @@
             echo $view->render();
         }
 
-        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false)
+        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false, $contactId = null)
         {
+            $contactId     = (int) $contactId;
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             if ($renderJson)
             {
                 header('Content-type: application/json');
-                echo $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+                if ($contactId != null)
+                {
+                    $contact     = Contact::getById($contactId);
+                    $textContent = $emailTemplate->textContent;
+                    $htmlContent = $emailTemplate->htmlContent;
+                    AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+                    $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
+                    $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                            MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+                    $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
+                                               null, $textContent);
+                    $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
+                                               null, $htmlContent);
+                    $emailTemplate->textContent = $textContent;
+                    $emailTemplate->htmlContent = $htmlContent;
+                }
+                $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+                echo $emailTemplate;
                 Yii::app()->end(0, false);
             }
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
@@ -282,10 +301,11 @@
             echo $view->render();
         }
 
-        public function actionGetHtmlContent($id)
+        public function actionGetHtmlContent($id, $className)
         {
+            assert('is_string($className)');
             $modelId = (int) $id;
-            $model = EmailTemplate::getById($modelId);
+            $model = $className::getById($modelId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
             echo $model->htmlContent;
         }

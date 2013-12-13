@@ -717,7 +717,7 @@
 	height: 128px;
 	width: 128px;
 	display: block;
-	cursor: default;
+	cursor: pointer;
 	color: #e2b321;
 	background:url(../images/game-dashboard/random-coin.png) center bottom no-repeat;
 }
@@ -732,11 +732,38 @@
 	display: none;
 }
 
+.game-coin-quantity{
+	font-weight:bold;
+	font-size: 14px;
+	line-height:16px;
+	float: left;
+	position: relative;
+	top: 50px;
+	margin-right: 10px;
+	color: #FFF;
+	i{
+		display: inline-block;
+		line-height: inherit;
+		position:relative;
+		top:3px;
+		margin-left:4px;
+		height: 16px;
+		width: 16px;
+		background-image: url(../images/game-dashboard/z-coin-small.png);
+		-webkit-animation: spinCoin .7s linear infinite;
+		   -moz-animation: spinCoin .7s linear infinite;
+		    -ms-animation: spinCoin .7s linear infinite;
+		     -o-animation: spinCoin .7s linear infinite;
+		        animation: spinCoin .7s linear infinite;
+	}
+}
+
 /*Notification*/
 #header-game-dashboard-link-wrapper{
 	position: relative;
 	overflow: visible;
 }
+
 
 #game-notification{
 	position:absolute;
@@ -754,12 +781,12 @@
 		color:#EFEFEF;
 		.t-shadow(none);
 		font-size: 14px;
-		margin-bottom: 10px;
+		margin-bottom: 15px;
 	}
 	img{
-		float: left;
-		margin-right: 15px;
-		padding-bottom: 15px;
+		//float: left;
+		//margin-right: 15px;
+		//padding-bottom: 15px;
 	}
 	.notification-wrapper{
 		float: left;
@@ -776,4 +803,42 @@
 		padding: 0;
 		text-decoration: underline;
 	}
+}
+
+.collection-item-image{
+	position: relative;
+	display: inline-block;
+	float: left;
+	overflow: hidden;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	height: 85px;
+	min-width: 45px;
+	width: auto;
+	text-align: center;
+	img{
+		position: relative;
+		top:0;
+	}
+}
+
+a#claim-item-link{
+	//display: inline-block;
+	.smaller();
+	font-weight:bold;
+	text-decoration: none;
+	color: #545454;
+	line-height: 1;
+	padding: 2px 6px;
+	position: relative;
+	top:2px;
+	z-index: 5;
+}
+
+.animate-spin{
+	-webkit-animation: spinCoin 1.2s linear infinite;
+	   -moz-animation: spinCoin 1.2s linear infinite;
+	     -o-animation: spinCoin 1.2s linear infinite;
+	    -ms-animation: spinCoin 1.2s linear infinite;
+	        animation: spinCoin 1.2s linear infinite;
 }

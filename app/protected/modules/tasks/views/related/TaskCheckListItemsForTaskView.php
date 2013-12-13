@@ -233,6 +233,7 @@
         protected function registerCheckBoxEventHandlerScript()
         {
             $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/updateStatusViaAjax');
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('checkListItemCheckboxClick',"
                                                       $('.checkListItem').change(function(){
                                                                 $.ajax(
@@ -249,12 +250,12 @@
                                                                         },
                                                                         error : function()
                                                                         {
-
                                                                         }
                                                                     }
                                                                  );
                                                           });
                                                       ", CClientScript::POS_END);
+            // End Not Coding Standard
         }
 
         /**
@@ -270,12 +271,14 @@
          */
         protected function registerSortableScript()
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('checklistitemsSortablescript',"
                                                            $('.taskcheckitemslist').sortable
                                                            ({
                                                                  items: 'li'
                                                            });
                                                       ");
+            // End Not Coding Standard
         }
     }
 ?>

@@ -164,7 +164,7 @@
             $content           = '<div class="attributesContainer">';
             $element           = new EmailTemplatesForWorkflowStaticDropDownElement($this->model, 'emailTemplateId',
                                  $this->form, $params);
-            $innerContent      = '<table><colgroup><col class="col-0"><col class="col-1">' .
+            $innerContent      = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1">' .
                                  '</colgroup><tr>' . $element->render() . '</tr>';
             $element           = new EmailMessageSendAfterDurationElement(
                                  $this->model, null, $this->form, $params);

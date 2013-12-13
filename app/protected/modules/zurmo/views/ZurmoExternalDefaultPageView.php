@@ -92,9 +92,18 @@
                     $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/mobile.css');
                 }
             }
+            if (Yii::app()->getRequest()->isContextiveExternalRequest())
+            {
+                $cs->registerCssFile(Yii::app()->getBaseUrl(true) . '/' . $theme . '/css/gmail.css');
+            }
+            if (Yii::app()->getClientScript()->isIsolationMode())
+            {
+                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/webforms-external.css');
+            }
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');
+                Yii::app()->minScript->generateScriptMap('css-color');
             }
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {

@@ -57,12 +57,35 @@
         {
             return array_merge(parent::getNonImportableAttributeNames(), array('currency', 'isActive', 'language', 'locale',
                                'timeZone', 'manager', 'hash', 'createdByUser', 'modifiedByUser',
-                               'createdDateTime', 'modifiedDateTime'));
+                               'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
+                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
         }
 
         public static function getModelClassName()
         {
             return 'User';
+        }
+
+        /**
+         * Override to add Password as a default field for mapping
+         * @param Array $attributesCollection
+         */
+        protected static function resolveRequiredDerivedAttributesCollection(& $attributesCollection)
+        {
+            $modelClassName = static::getModelClassName();
+            $model          = new $modelClassName(false);
+            $attributeImportRulesClassName = 'PasswordAttributeImportRules';
+            $attributeImportRules          = new $attributeImportRulesClassName($model);
+            $displayLabel                  = $attributeImportRules->getDisplayLabel();
+            ModelAttributeImportMappingCollectionUtil::populateCollection(
+                $attributesCollection,
+                'hash',
+                $displayLabel,
+                'hash',
+                'Password',
+                null,
+                true
+            );
         }
     }
 ?>

@@ -32,48 +32,50 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
-/*.filters-bar{
-	float: none;
-	margin-left: 0;
-	padding-left: 0;
-	> div{
-
-	}
-}*/
-.border-box {
+.border-box,
+.AppNavigation,
+#MenuView {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
-.border-box-sizing {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-.cf,
-.clearfix {
-  *zoom: 1;
 }
 .cf:before,
-.cf:after,
-.clearfix:before,
-.clearfix:after {
+.cf:after {
   content: " ";
   display: table;
 }
-.cf:after,
-.clearfix:after {
+.cf:after {
   clear: both;
 }
-.flyout {
+.cf {
+  *zoom: 1;
+}
+.clearfix,
+.filter-portlet-model-bar {
+  *zoom: 1;
+}
+.clearfix:before,
+.filter-portlet-model-bar:before,
+.clearfix:after,
+.filter-portlet-model-bar:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after,
+.filter-portlet-model-bar:after {
+  clear: both;
+}
+.flyout,
+#search > div {
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -ms-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f5f5f5),color-stop(100%,#ebebeb));
-  background-image: -webkit-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -o-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: linear-gradient(top,#f5f5f5,#ebebeb);
+  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -81,42 +83,268 @@
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   white-space: nowrap;
 }
-.headerDropDown {
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -ms-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f5f5f5),color-stop(100%,#ebebeb));
-  background-image: -webkit-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -o-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: linear-gradient(top,#f5f5f5,#ebebeb);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
-  min-width: 110px;
+.modal-view-toolbar a,
+.modal-view-toolbar input[type="submit"],
+.modal-view-toolbar input[type="button"],
+.form-toolbar a,
+.form-toolbar input[type="submit"],
+.form-toolbar input[type="button"],
+.zButton,
+.z-button,
+a.zButton,
+a.z-button,
+.white-button {
+  border-top: 1px solid rgba(200, 200, 200, 0.4);
+  border-left: 1px solid rgba(185, 185, 185, 0.4);
+  border-right: 1px solid rgba(185, 185, 185, 0.4);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.4);
+  color: #666 !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  text-indent: 0;
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  *zoom: 1;
+}
+.modal-view-toolbar a:before,
+.modal-view-toolbar input[type="submit"]:before,
+.modal-view-toolbar input[type="button"]:before,
+.form-toolbar a:before,
+.form-toolbar input[type="submit"]:before,
+.form-toolbar input[type="button"]:before,
+.zButton:before,
+.z-button:before,
+a.zButton:before,
+a.z-button:before,
+.white-button:before,
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+.white-button:after {
+  content: " ";
+  display: table;
+}
+.modal-view-toolbar a:after,
+.modal-view-toolbar input[type="submit"]:after,
+.modal-view-toolbar input[type="button"]:after,
+.form-toolbar a:after,
+.form-toolbar input[type="submit"]:after,
+.form-toolbar input[type="button"]:after,
+.zButton:after,
+.z-button:after,
+a.zButton:after,
+a.z-button:after,
+.white-button:after {
+  clear: both;
+}
+.modal-view-toolbar a.attachLoading.z-button,
+.modal-view-toolbar input[type="submit"].attachLoading.z-button,
+.modal-view-toolbar input[type="button"].attachLoading.z-button,
+.form-toolbar a.attachLoading.z-button,
+.form-toolbar input[type="submit"].attachLoading.z-button,
+.form-toolbar input[type="button"].attachLoading.z-button,
+.zButton.attachLoading.z-button,
+.z-button.attachLoading.z-button,
+a.zButton.attachLoading.z-button,
+a.z-button.attachLoading.z-button,
+.white-button.attachLoading.z-button {
+  color: #fff;
+}
+.modal-view-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.modal-view-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar a:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="submit"]:not(.attachLoading):not(.green-button) .z-label,
+.form-toolbar input[type="button"]:not(.attachLoading):not(.green-button) .z-label,
+.zButton:not(.attachLoading):not(.green-button) .z-label,
+.z-button:not(.attachLoading):not(.green-button) .z-label,
+a.zButton:not(.attachLoading):not(.green-button) .z-label,
+a.z-button:not(.attachLoading):not(.green-button) .z-label,
+.white-button:not(.attachLoading):not(.green-button) .z-label {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.white-button .z-label {
+  color: #666 !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.default-btn {
+  border-top: 1px solid rgba(200, 200, 200, 0.4);
+  border-left: 1px solid rgba(185, 185, 185, 0.4);
+  border-right: 1px solid rgba(185, 185, 185, 0.4);
+  border-bottom: 1px solid rgba(170, 170, 170, 0.4);
+  color: #666 !important;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.15);
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  text-indent: 0;
+  display: inline-block;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  *zoom: 1;
+}
+.default-btn:before,
+.default-btn:after {
+  content: " ";
+  display: table;
+}
+.default-btn:after {
+  clear: both;
+}
+.default-btn.attachLoading.z-button {
+  color: #fff;
+}
+.default-btn:not(.attachLoading):not(.green-button) .z-label {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.z-button.disabled {
+  pointer-events: none;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-filter: grayscale(85%);
+  -moz-filter: grayscale(85%);
+  -ms-filter: grayscale(85%);
+  -o-filter: grayscale(85%);
+  filter: grayscale(85%);
+  filter: gray;
+  /* IE 6-9 */
+
+}
+/*
+.zButton:not(.attacheLoading),
+.z-button:not(.attachLoading){
+     background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+*/
+.green-button,
+.attachLoading {
+  color: #FFF;
+  cursor: pointer;
+}
+.z-label {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  font-weight: bold;
+  padding: 0 25px;
+  line-height: 25px;
+  display: inline-block;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+  white-space: nowrap;
+}
+.z-label-smaller {
+  padding: 0 15px;
+}
+.zButton.loading .z-spinner,
+.z-button.loading .z-spinner {
+  display: inline-block;
+  position: absolute;
+  margin: 1px 0 0 4px;
+}
+.zButton.loading .z-icon,
+.z-button.loading .z-icon {
+  display: none;
+}
+.z-spinner {
+  z-index: 10;
+  width: 23px;
+  height: 23px;
   display: none;
   position: absolute;
-  left: 0;
-  top: 32px;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  left: 0px;
 }
-.headerDropDown li {
-  line-height: 100%;
+.z-spinner.loading {
+  display: block !important;
 }
-.headerDropDown li > a {
-  color: #666;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 5px 10px 5px 10px;
-  margin: 0 2px;
-}
-.headerDropDown li > a:hover {
+.zLink,
+.z-link {
+  padding: 2px 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
   color: #fff !important;
+  font-size: 11px;
+}
+.zLink:hover,
+.z-link:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+.z-action-link {
+  font-size: 11px;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.z-action-link:hover {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  text-decoration: none;
+}
+.z-action-link-active {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
 }
 .unstyle-panel {
   border: none;
@@ -145,6 +373,9 @@ body > div {
   padding-top: 0;
 }
 #LoginPageView > div {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   padding: 10px;
   display: -ms-flex;
   display: -moz-flex;
@@ -211,20 +442,6 @@ body > div {
 }
 #nav-trigger {
   display: block;
-  border-right: 1px solid #191a48;
-  -webkit-box-shadow: 1px 0 0 0 #292b7a;
-  -moz-box-shadow: 1px 0 0 0 #292b7a;
-  -ms-box-shadow: 1px 0 0 0 #292b7a;
-  -o-box-shadow: 1px 0 0 0 #292b7a;
-  box-shadow: 1px 0 0 0 #292b7a;
-  color: #ffffff;
-}
-#nav-trigger:active {
-  -webkit-text-shadow: 0 1px 0 #575ac6;
-  -moz-text-shadow: 0 1px 0 #575ac6;
-  -ms-text-shadow: 0 1px 0 #575ac6;
-  -o-text-shadow: 0 1px 0 #575ac6;
-  text-shadow: 0 1px 0 #575ac6;
 }
 #corp-logo span {
   display: none;
@@ -246,6 +463,11 @@ body > div {
 }
 #HeaderLinksView > div {
   margin: 0 10px;
+}
+#user-toolbar {
+  position: absolute;
+  right: 3%;
+  top: 0;
 }
 #GlobalSearchAndShortcutsCreateMenuView {
   display: none;
@@ -323,28 +545,28 @@ body > div {
   display: block;
 }
 .split-button + .default-button,
-.split-button + .split-button,
 .default-button + .default-button,
+.split-button + .split-button,
 .default-button + .split-button {
   border-left: none;
   border-top: 1px solid #DFDFDF;
-  -webkit-box-shadow: inset 0 2px 0 0 #fff;
-  -moz-box-shadow: inset 0 2px 0 0 #fff;
-  -ms-box-shadow: inset 0 2px 0 0 #fff;
-  -o-box-shadow: inset 0 2px 0 0 #fff;
-  box-shadow: inset 0 2px 0 0 #fff;
+  -webkit-box-shadow: inset 0 2px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 2px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 2px 0 0 #ffffff;
+  -o-box-shadow: inset 0 2px 0 0 #ffffff;
+  box-shadow: inset 0 2px 0 0 #ffffff;
 }
 .split-button .button-action-trigger,
-.split-button .button-trigger,
 .default-button .button-action-trigger,
+.split-button .button-trigger,
 .default-button .button-trigger {
   text-align: left;
   float: none;
   width: 100%;
 }
 .split-button:hover .button-action-trigger .icon-trigger:before,
-.split-button:hover .button-trigger .icon-trigger:before,
 .default-button:hover .button-action-trigger .icon-trigger:before,
+.split-button:hover .button-trigger .icon-trigger:before,
 .default-button:hover .button-trigger .icon-trigger:before {
   display: none !important;
   background: red !important;
@@ -399,14 +621,14 @@ body > div {
   float: left;
   border: 1px solid #b7b7b7;
   border-top-color: #e7e7e7;
-  border-left-color: #d7d7d7 !important;
+  border-left: 1px solid #d7d7d7 !important;
   border-right-color: #d7d7d7;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 .view-toolbar .mobile-view-toolbar-container {
@@ -449,15 +671,16 @@ body > div {
   border-left-color: #d7d7d7;
   border-right-color: #d7d7d7;
   border-radius: 4px;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
 }
 .AppContainer {
   min-width: 0 !important;
   /* should be 100% but i need to put box-sizing on top level nodes */
+
   margin: 0 10px;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
@@ -488,21 +711,21 @@ body > div {
   -ms-transition: all 0.22s ease-in 0;
   -o-transition: all 0.22s ease-in 0;
   transition: all 0.22s ease-in 0;
-  -webkit-transform: translate3d(0,0,0);
-  -moz-transform: translate3d(0,0,0);
-  -ms-transform: translate3d(0,0,0);
-  -o-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 #HomePageView .AppContent {
   padding-right: 10px !important;
 }
 .AppContent.nav-open {
-  -webkit-transform: translate3d(45px,0,0);
-  -moz-transform: translate3d(45px,0,0);
-  -ms-transform: translate3d(45px,0,0);
-  -o-transform: translate3d(45px,0,0);
-  transform: translate3d(45px,0,0);
+  -webkit-transform: translate3d(45px, 0, 0);
+  -moz-transform: translate3d(45px, 0, 0);
+  -ms-transform: translate3d(45px, 0, 0);
+  -o-transform: translate3d(45px, 0, 0);
+  transform: translate3d(45px, 0, 0);
 }
 .AppNavigation {
   left: 10px;
@@ -516,10 +739,10 @@ body > div {
   -o-box-shadow: none;
   box-shadow: none;
   padding: 0;
-  margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   position: fixed;
   padding: 0 0 0 0;
+  margin: 0;
   z-index: 0;
   float: none;
 }
@@ -590,6 +813,9 @@ body > div {
   -ms-text-shadow: none !important;
   -o-text-shadow: none !important;
   text-shadow: none !important;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 #MenuView > ul > li > a em:before {
   content: "z";
@@ -648,20 +874,6 @@ body > div {
   position: relative;
 }
 #search > div {
-  border: 1px solid #b6b6b6;
-  background-color: #ebebeb;
-  background-repeat: repeat-x;
-  background-image: -ms-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f5f5f5),color-stop(100%,#ebebeb));
-  background-image: -webkit-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -o-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: linear-gradient(top,#f5f5f5,#ebebeb);
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  white-space: nowrap;
   display: none;
   position: absolute;
   margin: 0;
@@ -687,11 +899,12 @@ body > div {
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -ms-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f5f5f5),color-stop(100%,#ebebeb));
-  background-image: -webkit-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: -o-linear-gradient(top,#f5f5f5,#ebebeb);
-  background-image: linear-gradient(top,#f5f5f5,#ebebeb);
+  background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
+  background-image: -webkit-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
+  background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -701,30 +914,9 @@ body > div {
   min-width: 110px;
   display: none;
   position: absolute;
-  left: 0;
-  top: 32px;
-  padding-top: 3px;
-  padding-bottom: 3px;
   left: 43px !important;
   top: -75px !important;
   padding: 3px 0 !important;
-}
-#MenuView #shortcuts > ul li,
-#MenuView #recently-viewed > ul li {
-  line-height: 100%;
-}
-#MenuView #shortcuts > ul li > a,
-#MenuView #recently-viewed > ul li > a {
-  color: #666;
-  font-size: 11px;
-  font-weight: normal;
-  display: block;
-  padding: 5px 10px 5px 10px;
-  margin: 0 2px;
-}
-#MenuView #shortcuts > ul li > a:hover,
-#MenuView #recently-viewed > ul li > a:hover {
-  color: #fff !important;
 }
 #MenuView #shortcuts > ul li,
 #MenuView #recently-viewed > ul li {
@@ -766,8 +958,8 @@ body > div {
   font-weight: normal !important;
 }
 #MenuView #shortcuts > ul a:hover,
-#MenuView #shortcuts > ul a:hover span,
 #MenuView #recently-viewed > ul a:hover,
+#MenuView #shortcuts > ul a:hover span,
 #MenuView #recently-viewed > ul a:hover span {
   color: #fff !important;
 }
@@ -819,6 +1011,14 @@ body > div {
 .latest-activity-toolbar > div:first-child {
   margin-bottom: 10px;
 }
+/*.filters-bar{
+	float: none;
+	margin-left: 0;
+	padding-left: 0;
+	> div{
+
+	}
+}*/
 #filter-latest-activities-link {
   margin-left: 5px !important;
 }
@@ -826,29 +1026,14 @@ body > div {
   padding-left: 3px;
   padding-bottom: 10px;
   height: auto;
-  *zoom: 1;
-}
-.filter-portlet-model-bar:before,
-.filter-portlet-model-bar:after {
-  content: " ";
-  display: table;
-}
-.filter-portlet-model-bar:after {
-  clear: both;
 }
 .filter-portlet-model-bar label {
   line-height: 1;
   float: left;
   margin: 10px 0 0 2px;
 }
-.filter-portlet-model-bar label:hover {
-  background-color: #7CB830;
-}
 .filter-portlet-model-bar > .ui-buttonset {
   padding-top: 0;
-}
-.filter-portlet-model-bar .ui-state-active {
-  background-color: #7CB830;
 }
 #more-search-link,
 #select-list-attributes-link,
@@ -895,6 +1080,7 @@ body > div {
   /*.right-side-edit-view-panel{
 		display:none;
 	}*/
+
 }
 .model-details-summary {
   padding-left: 65px;
@@ -1029,11 +1215,11 @@ div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar {
   border-radius: 4px;
   float: left;
   margin: 0 0 15px 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
 div#LeaderboardView > .view-toolbar-container > .view-toolbar .unread-count,
@@ -1045,21 +1231,21 @@ div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .z-
   display: none;
 }
 div#LeaderboardView > .view-toolbar-container > .view-toolbar > a,
-div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a,
 div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar > a,
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a,
 div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .parent > a {
   padding: 0 0 0 0;
 }
 div#LeaderboardView > .view-toolbar-container > .view-toolbar > a:before,
-div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a:before,
 div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar > a:before,
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a:before,
 div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .parent > a:before {
   display: inline-block;
   margin: 0 5px 0 5px;
 }
 div#LeaderboardView > .view-toolbar-container > .view-toolbar > a:after,
-div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a:after,
 div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar > a:after,
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a:after,
 div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .parent > a:after {
   margin-left: 5px;
 }
@@ -1100,7 +1286,7 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0, 0, 0, 0.65);
   position: absolute;
   width: 100%;
   display: block;
@@ -1131,8 +1317,8 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
   display: block;
   margin: 0;
   padding: 20px;
-  border-top: 1px solid rgba(83,112,115,0.4);
-  border-bottom: 1px solid rgba(32,50,52,0.5);
+  border-top: 1px solid rgba(83, 112, 115, 0.4);
+  border-bottom: 1px solid rgba(32, 50, 52, 0.5);
 }
 .gd-mini-stats-card {
   padding-bottom: 20px;

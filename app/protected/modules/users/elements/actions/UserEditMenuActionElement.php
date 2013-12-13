@@ -59,7 +59,5 @@
             }
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/edit/', $params);
         }
-
-
     }
 ?>

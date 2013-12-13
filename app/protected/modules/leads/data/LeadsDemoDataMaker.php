@@ -57,7 +57,7 @@
             $contactStates = ContactState::getAll();
             $statesBeginningWithStartingState = $this->getStatesBeforeOrStartingWithStartingState($contactStates);
             //If leads are turned off as part of custom management then ignore lead data
-            if(count($statesBeginningWithStartingState) == 0)
+            if (count($statesBeginningWithStartingState) == 0)
             {
                 return;
             }

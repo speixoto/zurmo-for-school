@@ -138,7 +138,7 @@
         public static function showCoin(CController $controller)
         {
             //Reporting and Data cleanup actions should show coins more frequently
-            if($controller->getModule()->getId() == 'reports')
+            if ($controller->getModule()->getId() == 'reports')
             {
                 $value = mt_rand(1, 25);
             }
@@ -146,7 +146,7 @@
             {
                 $value = mt_rand(1, 50);
             }
-            if($value == 7)
+            if ($value == 7)
             {
                 return true;
             }

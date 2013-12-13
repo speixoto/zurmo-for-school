@@ -40,6 +40,12 @@
 
         const TYPE_CONTACT  = 2;
 
+        /**
+         * Php caching for a single request
+         * @var array
+         */
+        private static $cachedDataAndLabelsByType = array();
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -162,13 +168,19 @@
         public function validateModelExists($attribute, $params)
         {
             $passedValidation = true;
-            if (!empty($this->$attribute))
+            $modelClassName = $this->$attribute;
+            if (!empty($modelClassName))
             {
-                if (@class_exists($this->$attribute))
+                if (@class_exists($modelClassName))
                 {
-                    if (!is_subclass_of($this->$attribute, 'RedBeanModel'))
+                    if (!is_subclass_of($modelClassName, 'RedBeanModel'))
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
+                        $passedValidation = false;
+                    }
+                    elseif (!RightsUtil::canUserAccessModule($modelClassName::getModuleClassName(), Yii::app()->user->userModel))
+                    {
+                        $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name access is prohibited.'));
                         $passedValidation = false;
                     }
                 }
@@ -218,13 +230,18 @@
         public static function getDataAndLabelsByType($type)
         {
             assert('is_int($type)');
+            if (isset(self::$cachedDataAndLabelsByType[$type]))
+            {
+                return self::$cachedDataAndLabelsByType[$type];
+            }
             $dataAndLabels = array();
             $emailTemplates = static::getByType($type);
             foreach ($emailTemplates as $emailTemplate)
             {
                 $dataAndLabels[$emailTemplate->id] = strval($emailTemplate);
             }
-            return $dataAndLabels;
+            self::$cachedDataAndLabelsByType[$type] = $dataAndLabels;
+            return self::$cachedDataAndLabelsByType[$type];
         }
 
         public static function getGamificationRulesType()

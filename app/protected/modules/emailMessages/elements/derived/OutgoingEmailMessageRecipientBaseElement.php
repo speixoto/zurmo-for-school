@@ -52,6 +52,26 @@
             return $recipientType;
         }
 
+        protected function getRecipientTypeForId()
+        {
+            $recipientType  = $this->params['recipientType'];
+            switch ($recipientType)
+            {
+                case EmailMessageRecipient::TYPE_TO:
+                    $type = 'to';
+                    break;
+                case EmailMessageRecipient::TYPE_CC:
+                    $type = 'cc';
+                    break;
+                case EmailMessageRecipient::TYPE_BCC:
+                    $type = 'bcc';
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+            return $type;
+        }
+
         protected function getFormName()
         {
             return get_class($this->model);
@@ -64,7 +84,7 @@
 
         protected function getAttributeNameWithRecipientType()
         {
-            return $this->attribute . '_' . $this->getRecipientType();
+            return $this->attribute . '_' . $this->getRecipientTypeForId();
         }
 
         protected function getUnqualifiedIdForIdField()
@@ -74,7 +94,7 @@
 
         protected function getUnqualifiedNameForIdField()
         {
-            return "[" . $this->attribute ."][" . $this->getRecipientType() . "]";
+            return "[" . $this->attribute ."][" . $this->getRecipientTypeForId() . "]"; // Not Coding Standard
         }
 
         protected function getWidgetSourceUrl()
@@ -114,7 +134,7 @@
 
         protected function resolveIdAndNameByModel(RedBeanModel $recipient)
         {
-            if ($recipient->type == constant('EmailMessageRecipient::TYPE_' . strtoupper($this->getRecipientType())))
+            if ($recipient->type == $this->params['recipientType'])
             {
                 return array('id'   => $recipient->toAddress,
                                 $this->getWidgetPropertyToSearch() => $recipient->toName .

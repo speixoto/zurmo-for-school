@@ -453,7 +453,6 @@
             if (empty($tableRows))
             {
                 return null;
-
             }
             $tableContent  = '<table>';
             $tableContent .= '<thead><tr>';

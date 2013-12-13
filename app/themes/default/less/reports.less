@@ -861,7 +861,6 @@
     }
 }
 
-
 .email-message-recipient-rows{
     //.box-sizing();
     .hasDropDown{
@@ -904,6 +903,26 @@
 .email-message-recipient-type-selector-container{
     width: 22%;
     margin:0 0 15px 0;
+}
+
+.operation-duration-fields{
+	&.twoFields{
+		> input, .hasDropDown{
+			width: 49% !important;
+			float: left;
+			margin-left: 2%;
+		}
+	}
+	&.threeFields{
+		> input, .hasDropDown{
+			width: 32% !important;
+			float: left;
+			margin-left: 2%;
+		}
+	}
+	> :first-child{
+		margin-left: 0 !important;
+	}
 }
 
 .all-related-field{

@@ -91,6 +91,7 @@
                 'moduleId'              => $this->getModule()->getId(),
                 'uniquePortletPageId'   => $portlet->getUniquePortletPageId(),
             );
+            $this->resolveAddingRelationModelIdToPortletParams($portlet);
             $configurableView = $portlet->getView()->getConfigurationView();
             $view = new ModalView($this, $configurableView);
             echo $view->render();
@@ -99,6 +100,7 @@
         protected function actionModalConfigValidate()
         {
             $portlet = Portlet::getById(intval($_GET['portletId']));
+            $this->resolveAddingRelationModelIdToPortletParams($portlet);
             $configurableView = $portlet->getView()->getConfigurationView();
             $configurableView->validate();
             Yii::app()->end(0, false);
@@ -145,6 +147,13 @@
             $view = new AjaxPageView(new PortletRefreshView($portlet, $uniqueLayoutId, $this->getModule()->getId(),
                                                             (bool)$portletsAreRemovable));
             echo $view->render();
+        }
+        
+        /**
+         * Override in children classes if you want to add relationModelId to portlet params
+         */
+        protected function resolveAddingRelationModelIdToPortletParams($portlet)
+        {
         }
     }
 ?>

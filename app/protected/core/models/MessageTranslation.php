@@ -59,7 +59,7 @@
                 ),
                 'indexes' => array(
                     'sourceLanguageTranslation' => array(
-                        'members'   => array('messagesource_id', 'language','translation(767)'),
+                        'members'   => array('messagesource_id', 'language', 'translation(767)'),
                         'unique'    => true,
                     )
                 ),
@@ -84,7 +84,7 @@
             {
                 $modelClassName = get_called_class();
             }
-            $tableName = self::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             $bean = ZurmoRedBean::findOne(
                                $tableName,
                                ' messagesource_id = :sourceId AND language = :languageCode',

@@ -36,5 +36,53 @@
 
     class ContactsModuleForm extends GlobalSearchEnabledModuleForm
     {
+        public $updateLatestActivityDateTimeWhenATaskIsCompleted;
+
+        public $updateLatestActivityDateTimeWhenANoteIsCreated;
+
+        public $updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived;
+
+        public $updateLatestActivityDateTimeWhenAMeetingIsInThePast;
+
+        public function rules()
+        {
+            return array_merge(parent::rules(), array(
+                array('updateLatestActivityDateTimeWhenATaskIsCompleted',        'boolean'),
+                array('updateLatestActivityDateTimeWhenANoteIsCreated',          'boolean'),
+                array('updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived', 'boolean'),
+                array('updateLatestActivityDateTimeWhenAMeetingIsInThePast',     'boolean'),
+            ));
+        }
+
+        public function attributeLabels()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::attributeLabels(), array(
+                'updateLatestActivityDateTimeWhenATaskIsCompleted' =>
+                    Zurmo::t('TasksModule', 'A TasksModuleSingularLowerCaseLabel is completed', $params),
+                'updateLatestActivityDateTimeWhenANoteIsCreated' =>
+                    Zurmo::t('NotesModule', 'A NotesModuleSingularLowerCaseLabel is created', $params),
+                'updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived' =>
+                    Zurmo::t('EmailMessagesModule', 'An EmailMessagesModuleSingularLowerCaseLabel is sent or archived', $params),
+                'updateLatestActivityDateTimeWhenAMeetingIsInThePast' =>
+                    Zurmo::t('MeetingsModule', 'A MeetingsModuleSingularLowerCaseLabel is in the past', $params),
+            ));
+        }
+
+        /**
+         * Override to cast booleans properly
+         */
+        public function setAttributes($values,$safeOnly = true)
+        {
+            parent::setAttributes($values,$safeOnly);
+            $this->updateLatestActivityDateTimeWhenATaskIsCompleted =
+                (bool) $this->updateLatestActivityDateTimeWhenATaskIsCompleted;
+            $this->updateLatestActivityDateTimeWhenANoteIsCreated =
+                (bool) $this->updateLatestActivityDateTimeWhenANoteIsCreated;
+            $this->updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived =
+                (bool) $this->updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived;
+            $this->updateLatestActivityDateTimeWhenAMeetingIsInThePast =
+                (bool) $this->updateLatestActivityDateTimeWhenAMeetingIsInThePast;
+        }
     }
 ?>

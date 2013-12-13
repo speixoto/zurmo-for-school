@@ -100,7 +100,7 @@
             $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
             $gameCoin->addValue(1);
             $saved = $gameCoin->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -109,17 +109,17 @@
         public function actionRedeemCollection($id)
         {
             $gameCollection = GameCollection::getById((int)$id);
-            if($gameCollection->person->getClassId('Item') != Yii::app()->user->userModel->getClassId('Item'))
+            if ($gameCollection->person->getClassId('Item') != Yii::app()->user->userModel->getClassId('Item'))
             {
                 throw new NotSupportedException();
             }
-            if($gameCollection->redeem())
+            if ($gameCollection->redeem())
             {
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($gameCollection->type);
                 $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
                 $gameCoin->addValue($gameCollectionRules::getCoinRedemptionValue());
                 $saved = $gameCoin->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
@@ -127,12 +127,11 @@
             echo UserGameDashboardView::renderCollectionContent(Yii::app()->user->userModel, $gameCollection);
         }
 
-
         public function actionRefreshGameDashboardCoinContainer($id)
         {
             $user     = User::getById((int)$id);
             $gameCoin = GameCoin::resolveByPerson($user);
-            echo UserGameDashboardView::renderCoinsContent($gameCoin->value);
+            echo UserGameDashboardView::renderCoinsContent($gameCoin->value, $user);
         }
     }
 ?>

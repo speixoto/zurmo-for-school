@@ -286,7 +286,7 @@
                 {
                     if (isset($attributeData['required']) && $attributeData['required'] == true)
                     {
-                        $customRequiredFields[] = array($attributeId, 'required');
+                        $customRequiredFields[] = $attributeId;
                     }
                 }
             }
@@ -356,8 +356,8 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true
-                    && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true &&
+                       isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $dropDownAttributeTypes = array('CheckBox', 'RadioDropDown', 'DropDown');
                     $allAttributes = ContactWebFormsUtil::getAllAttributes();
@@ -385,8 +385,8 @@
             $ContactWebFormAttributes = unserialize($contactWebForm->serializedData);
             foreach ($ContactWebFormAttributes as $attributeName => $attribute)
             {
-                if (isset($attribute['hidden']) && $attribute['hidden'] == true
-                    && isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
+                if (isset($attribute['hidden']) && $attribute['hidden'] == true &&
+                       isset($attribute['hiddenValue']) && !empty($attribute['hiddenValue']))
                 {
                     $webFormEntryAttributes[$attributeName] = $attribute['hiddenValue'];
                 }
@@ -429,7 +429,7 @@
         public static function getPlacedAttributeContent($attributeData)
         {
             $label = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Label'));
-            $value = ZurmoHtml::tag('label', array(), Zurmo::t('ContactWebFormsModule', 'Value'));
+            $value = ZurmoHtml::tag('label', array(), Zurmo::t('Core', 'Value'));
             $content  = ZurmoHtml::openTag('li');
             $content .= ZurmoHtml::openTag('div', array('class' => 'dynamic-row webform-chosen-field clearfix'));
             $content .= ZurmoHtml::tag('span', array('class' => 'is-required-checkbox'),
@@ -464,8 +464,8 @@
             }
             if ($designerType == 'DateTime' && !empty($value))
             {
-                $sanitizedAttributeValue =
-                    DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
+                $sanitizedAttributeValue = DateTimeUtil::
+                                               convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($value);
             }
             return DataUtil::purifyHtml($sanitizedAttributeValue);
         }

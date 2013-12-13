@@ -152,7 +152,7 @@
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
             $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
-            if($automaticMappingDisabled === false)
+            if ($automaticMappingDisabled === false)
             {
                 if ($elementInformation['attributeName'] == 'probability')
                 {
@@ -165,7 +165,7 @@
         {
             parent::renderAfterFormLayout($form);
             $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
-            if($automaticMappingDisabled === false)
+            if ($automaticMappingDisabled === false)
             {
                 $this->registerStageToProbabilityMappingScript($form);
             }
@@ -180,7 +180,7 @@
             {
                 $jsonEncodedMapping = CJSON::encode($mappingData);
                 // In case of edit, we need the exact value from db
-                if($this->model->id > 0)
+                if ($this->model->id > 0)
                 {
                     $initialCallToFunction = "";
                 }
@@ -209,7 +209,7 @@
                         }
                     });
                  }
-                 ".$initialCallToFunction
+                 ".$initialCallToFunction // Not Coding Standard
                  );
             }
         }

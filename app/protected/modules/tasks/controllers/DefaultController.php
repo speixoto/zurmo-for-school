@@ -55,16 +55,56 @@
             );
         }
 
+        public function actionList()
+        {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $task                           = new Task(false);
+            $searchForm                     = new TasksSearchForm($task);
+            $listAttributesSelector         = new ListAttributesSelector('TasksListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+
+            $dataProvider  = $this->resolveSearchDataProvider(
+                                                        $searchForm,
+                                                        $pageSize,
+                                                        null,
+                                                        'TasksSearchView'
+                                                    );
+            if ((isset($_GET['ajax']) && $_GET['ajax'] == 'list-view'))
+            {
+                if(isset($_GET['openToTaskId']))
+                {
+                    unset($_GET['openToTaskId']);
+                }
+                $mixedView  = $this->makeListView(
+                            $searchForm,
+                            $dataProvider
+                        );
+                $view       = new TasksPageView($mixedView);
+            }
+            else
+            {
+                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                   'SecuredActionBarForTasksSearchAndListView',
+                                    null, null, null);
+                $view       = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser(
+                                                        $this, $mixedView));
+            }
+            echo $view->render();
+        }
+
         public function actionDetails($id, $redirectUrl = null)
         {
             $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-            if($task->project->id > 0)
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), 'TasksModule'), $task);
+            if ($task->project->id > 0)
             {
                 $this->redirect(Yii::app()->createUrl('projects/default/details',
                                                       array('id' => $task->project->id, 'openToTaskId' => $task->id)));
             }
-            elseif($task->activityItems->count() > 0)
+            elseif ($task->activityItems->count() > 0)
             {
                 try
                 {
@@ -81,8 +121,8 @@
             }
             else
             {
-                //todo: redirect to task list view, and open modal details, once we have a task details view
-                $this->redirect(Yii::app()->createUrl('home/default/index'));
+                $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                                                      array('openToTaskId' => $id)));
             }
         }
 
@@ -90,12 +130,12 @@
         {
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 $this->redirect(Yii::app()->createUrl('projects/default/details',
                                                       array('id' => $task->project->id, 'openToTaskId' => $task->id)));
             }
-            elseif($task->activityItems->count() > 0)
+            elseif ($task->activityItems->count() > 0)
             {
                 try
                 {
@@ -112,8 +152,8 @@
             }
             else
             {
-                //todo: redirect to task list view, and open modal details, once we have a task details view
-                $this->redirect(Yii::app()->createUrl('home/default/index'));
+                $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                                                      array('openToTaskId' => $id)));
             }
         }
 
@@ -184,6 +224,7 @@
         {
             $task    = $this->processSubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
             echo $content;
         }
 
@@ -195,7 +236,8 @@
         {
             $task    = $this->processUnsubscriptionRequest($id);
             $content = TasksUtil::getTaskSubscriberData($task);
-            if($content == null)
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'detail-subscribe-task-link', 'detail-unsubscribe-task-link');
+            if ($content == null)
             {
                 echo "";
             }
@@ -211,7 +253,10 @@
          */
         public function actionAddKanbanSubscriber($id)
         {
-            $this->processSubscriptionRequest($id);
+            $task = $this->processSubscriptionRequest($id);
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            echo $content;
         }
 
         /**
@@ -220,7 +265,17 @@
          */
         public function actionRemoveKanbanSubscriber($id)
         {
-            $this->processUnsubscriptionRequest($id);
+            $task = $this->processUnsubscriptionRequest($id);
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+            if ($content == null)
+            {
+                echo "";
+            }
+            else
+            {
+                echo $content;
+            }
         }
 
         /**
@@ -233,7 +288,7 @@
                                                       $relationModuleId = null)
         {
             $task  = new Task();
-            if($relationAttributeName == 'project' && $relationModelId != null)
+            if ($relationAttributeName == 'project' && $relationModelId != null)
             {
                 $project = Project::getById((int)$relationModelId);
                 $task->project = $project;
@@ -260,15 +315,13 @@
          * @param string $relationAttributeName
          * @param string $relationModelId
          * @param string $relationModuleId
-         * @param string $portletId
-         * @param string $uniqueLayoutId
          */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
         {
-            if($id == null)
+            if ($id == null)
             {
                 $task  = new Task();
-                if($relationAttributeName == 'project' && $relationModelId != null)
+                if ($relationAttributeName == 'project' && $relationModelId != null)
                 {
                     $project = Project::getById((int)$relationModelId);
                     $task->project = $project;
@@ -286,7 +339,7 @@
             }
             $task       = $this->attemptToSaveModelFromPost($task, null, false);
             //Log event for project audit
-            if($relationAttributeName == 'project')
+            if ($relationAttributeName == 'project')
             {
                 ProjectsUtil::logAddTaskEvent($task);
             }
@@ -298,7 +351,7 @@
          */
         public function actionModalSave($id = null)
         {
-            if($id == null)
+            if ($id == null)
             {
                 $task = new Task();
             }
@@ -323,19 +376,13 @@
 
         /**
          * Copy task in the modal view
-         * @param string $relationAttributeName
-         * @param string $relationModelId
-         * @param string $relationModuleId
+         * @param string $id
          */
-        public function actionModalCopyFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
+        public function actionModalCopyFromRelation($id)
         {
-            $copyToTask   = new Task();
-            $task   = Task::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-            TaskActivityCopyModelUtil::copy($task, $copyToTask);
-            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            $copyToTask = $this->processTaskCopy($id);
             //Log event for project audit
-            if($relationAttributeName == 'project')
+            if ($copyToTask->project->id > 0)
             {
                 ProjectsUtil::logAddTaskEvent($copyToTask);
             }
@@ -350,6 +397,7 @@
         {
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), 'TasksModule'), $task);
             $this->attemptToValidateAndSaveFromModalDetails($task);
             $this->processModalDetails($task);
         }
@@ -386,7 +434,7 @@
                 {
                     $controllerUtil   = static::getZurmoControllerUtil();
                     $controllerUtil->validateAjaxFromPost($task, 'Task');
-                    if($isNewModel)
+                    if ($isNewModel)
                     {
                         TasksNotificationUtil::makeAndSubmitNewTaskNotificationMessage($task);
                     }
@@ -430,29 +478,35 @@
             $getData = GetUtil::getData();
             $counter = 1;
             $response = array();
-            if(count($getData['items']) > 0)
+            if (count($getData['items']) > 0)
             {
-                foreach($getData['items'] as $taskId)
+                foreach ($getData['items'] as $taskId)
                 {
-                    if($taskId != '')
+                    if ($taskId != '')
                     {
                         $kanbanItem  = KanbanItem::getByTask(intval($taskId));
                         $task        = Task::getById(intval($taskId));
                         //if kanban type is completed
-                        if($type == KanbanItem::TYPE_COMPLETED)
+                        if ($type == KanbanItem::TYPE_COMPLETED)
                         {
                             //kanban update has to be done first
                             $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($type, $task);
                             $kanbanItem->type = intval($type);
                             $kanbanItem->save();
-                            $this->processStatusUpdateViaAjax($taskId, Task::STATUS_COMPLETED, false);
+                            //set the scenario
+                            $task->setScenario('kanbanViewDrag');
+                            $this->processStatusUpdateViaAjax($task, Task::STATUS_COMPLETED, false);
                             $response['button'] = '';
                             $response['status'] = Task::getStatusDisplayName($task->status);
+                            $response['owner']  = $task->owner->getFullName();
+                            $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+                            $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+                            $response['subscriptionContent']  = $subscriptionContent;
                         }
                         else
                         {
                             //When in the same column
-                            if($type == $kanbanItem->type)
+                            if ($type == $kanbanItem->type)
                             {
                                 $kanbanItem->sortOrder = $counter;
                                 $kanbanItem->save();
@@ -465,13 +519,17 @@
                                 $kanbanItem->type = intval($type);
                                 $kanbanItem->save();
                                 $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
-                                $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+                                $this->processStatusUpdateViaAjax($task, $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
+                                $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+                                $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
                                 $response['button'] = $content;
                                 $response['status'] = Task::getStatusDisplayName($task->status);
+                                $response['owner']  = $task->owner->getFullName();
+                                $response['subscriptionContent']  = $subscriptionContent;
                             }
                         }
                         $counter++;
@@ -481,16 +539,24 @@
             echo CJSON::encode($response);
         }
 
-        /**
+       /**
         * Update task status in kanban view
         * @param int $targetStatus
         * @param int $taskId
         */
         public function actionUpdateStatusInKanbanView($targetStatus, $taskId, $sourceKanbanType)
         {
+           $response = array();
            //Run update queries for update task staus and update type and sort order in kanban column
-           $this->processStatusUpdateViaAjax($taskId, $targetStatus, false);
+           $task = Task::getById(intval($taskId));
+           //set the scenario
+           $task->setScenario('kanbanViewButtonClick');
+           $this->processStatusUpdateViaAjax($task, $targetStatus, false);
            TasksUtil::processKanbanItemUpdateOnButtonAction(intval($targetStatus), intval($taskId), intval($sourceKanbanType));
+           $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+           $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
+           $response['subscriptionContent']  = $subscriptionContent;
+           echo CJSON::encode($response);
         }
 
         /**
@@ -499,12 +565,17 @@
          * @param int $status
          * @param bool $showCompletionDate whether to show completion date
          */
-        protected function processStatusUpdateViaAjax($id, $status, $showCompletionDate = true)
+        protected function processStatusUpdateViaAjax(Task $task, $status, $showCompletionDate = true)
         {
-            $task          = Task::getById(intval($id));
             $currentStatus = $task->status;
             $task->status = intval($status);
-            if(intval($status) == Task::STATUS_COMPLETED)
+            //check for owner in case a user start the task
+            if ($currentStatus == Task::STATUS_NEW && $currentStatus != $task->status)
+            {
+                $task->owner = Yii::app()->user->userModel;
+            }
+
+            if (intval($status) == Task::STATUS_COMPLETED)
             {
                 foreach ($task->checkListItems as $checkItem)
                 {
@@ -515,7 +586,7 @@
                 $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $task->completed         = true;
                 $task->save();
-                if($showCompletionDate)
+                if ($showCompletionDate)
                 {
                     echo TasksUtil::renderCompletionDateTime($task);
                 }
@@ -526,7 +597,7 @@
                 $task->completed         = false;
                 $task->save();
             }
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 ProjectsUtil::logTaskStatusChangeEvent($task,
                                                        Task::getStatusDisplayName(intval($currentStatus)),
@@ -540,9 +611,8 @@
          */
         protected function processSubscriptionRequest($id)
         {
-
             $task = Task::getById(intval($id));
-            if(!$task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel))
+            if (!$task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel))
             {
                 $notificationSubscriber = new NotificationSubscriber();
                 $notificationSubscriber->person = Yii::app()->user->userModel;
@@ -562,49 +632,20 @@
         protected function processUnsubscriptionRequest($id)
         {
             $task = Task::getById(intval($id));
-            foreach($task->notificationSubscribers as $notificationSubscriber)
+            foreach ($task->notificationSubscribers as $notificationSubscriber)
             {
-                if($notificationSubscriber->person->getClassId('Item') == Yii::app()->user->userModel->getClassId('Item'))
+                if ($notificationSubscriber->person->getClassId('Item') == Yii::app()->user->userModel->getClassId('Item'))
                 {
                     $task->notificationSubscribers->remove($notificationSubscriber);
                     break;
                 }
             }
             $saved = $task->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             return $task;
-        }
-
-        /**
-         * Update description
-         * @param int $id
-         */
-        public function actionUpdateDescriptionViaAjax()
-        {
-            $getData = GetUtil::getData();
-            $descriptionId = $getData['id'];
-            $descriptionFieldArray = explode('_' , $descriptionId);
-            $model   = Task::getById(intval($descriptionFieldArray[1]));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($model);
-            $model->description = $getData['update_value'];
-            if($model->save())
-            {
-                if($model->description != '')
-                {
-                    echo $model->description;
-                }
-                else
-                {
-                    echo Zurmo::t('TasksModule', 'Click here to enter description');
-                }
-            }
-            else
-            {
-                throw new FailedToSaveModelException();
-            }
         }
 
         /**
@@ -624,7 +665,7 @@
         {
             $task              = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($task);
-            if(!$task->delete())
+            if (!$task->delete())
             {
                 throw new FailedToDeleteModelException();
             }
@@ -642,15 +683,187 @@
                 $oldStatus = $task->status;
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
-
-                if(empty ($errorData) && $oldStatus != $task->status)
-                {
-                    //may need to reset the kanban type and sort as well
-                    TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($task);
-                }
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
+        }
+
+        public function actionExport()
+        {
+            $this->export('TasksSearchView');
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getSearchFormClassName()
+        {
+            return 'TasksSearchForm';
+        }
+
+        /**
+         * Action for displaying a mass edit form and also action when that form is first submitted.
+         * When the form is submitted, in the event that the quantity of models to update is greater
+         * than the pageSize, then once the pageSize quantity has been reached, the user will be
+         * redirected to the makeMassEditProgressView.
+         * In the mass edit progress view, a javascript refresh will take place that will call a refresh
+         * action, usually massEditProgressSave.
+         * If there is no need for a progress view, then a flash message will be added and the user will
+         * be redirected to the list view for the model.  A flash message will appear providing information
+         * on the updated records.
+         * @see Controler->makeMassEditProgressView
+         * @see Controller->processMassEdit
+         * @see
+         */
+        public function actionMassEdit()
+        {
+            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
+            $task               = new Task(false);
+            $activeAttributes   = $this->resolveActiveAttributesFromMassEditPost();
+            $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
+                                            new TasksSearchForm($task),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'TasksSearchView');
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $task                = $this->processMassEdit(
+                                        $pageSize,
+                                        $activeAttributes,
+                                        $selectedRecordCount,
+                                        'TasksPageView',
+                                        $task,
+                                        TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                        $dataProvider
+                                    );
+            $massEditView       = $this->makeMassEditView(
+                                        $task,
+                                        $activeAttributes,
+                                        $selectedRecordCount,
+                                        TasksModule::getModuleLabelByTypeAndLanguage('Plural')
+                                       );
+            $view               = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $massEditView));
+            echo $view->render();
+        }
+
+        /**
+         * Action called in the event that the mass edit quantity is larger than the pageSize.
+         * This action is called after the pageSize quantity has been updated and continues to be
+         * called until the mass edit action is complete.  For example, if there are 20 records to update
+         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
+         * the actionMassEdit is called upon the initial form submission.
+         */
+        public function actionMassEditProgressSave()
+        {
+            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
+            $task           = new Task(false);
+            $dataProvider   = $this->getDataProviderByResolvingSelectAllFromGet(
+                                            new TasksSearchForm($task),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'TasksSearchView'
+                                        );
+            $this->processMassEditProgressSave(
+                        'Task',
+                        $pageSize,
+                        TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                        $dataProvider
+                    );
+        }
+
+        /**
+         * Action for displaying a mass delete form and also action when that form is first submitted.
+         * When the form is submitted, in the event that the quantity of models to delete is greater
+         * than the pageSize, then once the pageSize quantity has been reached, the user will be
+         * redirected to the makeMassDeleteProgressView.
+         * In the mass delete progress view, a javascript refresh will take place that will call a refresh
+         * action, usually makeMassDeleteProgressView.
+         * If there is no need for a progress view, then a flash message will be added and the user will
+         * be redirected to the list view for the model.  A flash message will appear providing information
+         * on the delete records.
+         * @see Controller->makeMassDeleteProgressView
+         * @see Controller->processMassDelete
+         * @see
+         */
+        public function actionMassDelete()
+        {
+            $params          = LabelUtil::getTranslationParamsForAllModules();
+            $title           = Zurmo::t('TasksModule', 'Mass Delete TasksModulePluralLabel', $params);
+            $breadCrumbLinks = array(
+                 $title,
+            );
+            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
+            $task            = new Task(false);
+
+            $activeAttributes   = $this->resolveActiveAttributesFromMassDeletePost();
+            $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
+                                            new TasksSearchForm($task),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'TasksSearchView');
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $task             = $this->processMassDelete(
+                                                            $pageSize,
+                                                            $activeAttributes,
+                                                            $selectedRecordCount,
+                                                            'TasksPageView',
+                                                            $task,
+                                                            TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                                            $dataProvider
+                                                          );
+            $massDeleteView     = $this->makeMassDeleteView(
+                                                             $task,
+                                                             $activeAttributes,
+                                                             $selectedRecordCount,
+                                                             TasksModule::getModuleLabelByTypeAndLanguage('Plural')
+                                                            );
+            $view               = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $massDeleteView));
+            echo $view->render();
+        }
+
+        /**
+         * Action called in the event that the mass delete quantity is larger than the pageSize.
+         * This action is called after the pageSize quantity has been delted and continues to be
+         * called until the mass delete action is complete.  For example, if there are 20 records to delete
+         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
+         * the actionMassDelete is called upon the initial form submission.
+         */
+        public function actionMassDeleteProgress()
+        {
+            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
+            $task        = new Task(false);
+            $dataProvider   = $this->getDataProviderByResolvingSelectAllFromGet(
+                                          new TasksSearchForm($task),
+                                          $pageSize,
+                                          Yii::app()->user->userModel->id,
+                                          null,
+                                          'TasksSearchView'
+                                        );
+            $this->processMassDeleteProgress(
+                                                'Task',
+                                                $pageSize,
+                                                TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                                $dataProvider
+                                             );
+        }
+
+        /**
+         * Process task copy
+         * @param string $id
+         * @return Task
+         */
+        private function processTaskCopy($id)
+        {
+            $copyToTask   = new Task();
+            $task   = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            TaskActivityCopyModelUtil::copy($task, $copyToTask);
+            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            return $copyToTask;
         }
     }
 ?>

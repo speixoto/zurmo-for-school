@@ -72,14 +72,14 @@
         {
             assert('is_string($stringTime) || $stringTime == null');
             $searchAttributeData = parent::makeSearchAttributeData($stringTime);
-            assert("count(\$searchAttributeData['clauses']) == 2");
-            $searchAttributeData['clauses'][3] =
+            assert("count(\$searchAttributeData['clauses']) == 4");
+            $searchAttributeData['clauses'][5] =
             array(
                 'attributeName'        => 'owner',
                 'operatorType'         => 'equals',
                 'value'                => Yii::app()->user->userModel->id,
             );
-            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            $searchAttributeData['structure'] = '(1 and 2 and (3 or 4) and 5)';
             return $searchAttributeData;
         }
 
@@ -109,6 +109,13 @@
         public function resolvePortletModuleId()
         {
             return 'home';
+        }
+
+        public static function getAdditionalOptionMenuItems()
+        {
+            return array(array('label' => 'Create Meeting',
+                            'url' => Yii::app()->createUrl('/meetings/default/createMeeting',
+                                                    array('redirectUrl' => Yii::app()->request->getRequestUri()))));
         }
     }
 ?>

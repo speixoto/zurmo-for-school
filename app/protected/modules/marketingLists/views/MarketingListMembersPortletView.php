@@ -209,8 +209,8 @@
         protected function getPortletDetailsUrl()
         {
             return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
-                                                array_merge($_GET, array( 'portletId' => $this->getPortletId(),
-                                                                            'uniqueLayoutId' => $this->uniqueLayoutId)));
+                                                array_merge($_GET, array( 'portletId'      => $this->getPortletId(),
+                                                                          'uniqueLayoutId' => $this->uniqueLayoutId)));
         }
 
         protected function getPortletId()

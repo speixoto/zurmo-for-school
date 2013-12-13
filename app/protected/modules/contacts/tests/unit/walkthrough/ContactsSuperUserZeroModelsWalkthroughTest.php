@@ -53,7 +53,7 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            $this->assertEquals(0, count(Contact::getAll()));
+            $this->assertEquals(0, Contact::getCount());
             //At this point the zero model ui should show up for contacts and leads
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/list');
             $this->assertFalse(strpos($content, 'Arthur Conan') === false);
@@ -69,7 +69,7 @@
             $this->assertFalse(strpos($content, 'Thomas Paine') === false);
 
             $this->assertTrue($contact->delete());
-            $this->assertEquals(0, count(Contact::getAll()));
+            $this->assertEquals(0, Contact::getCount());
 
             //Create lead.
             $lead = LeadTestHelper::createLeadByNameForOwner('Jammy', $super);

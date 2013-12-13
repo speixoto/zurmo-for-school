@@ -60,7 +60,7 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Breaks'      => Zurmo::t('GamificationModule', 'Breaks'),
+            return array(   'Breaks'      => Zurmo::t('GamificationModule', 'Brakes'),
                             'Seat'        => Zurmo::t('GamificationModule', 'Seat'),
                             'Gauge'       => Zurmo::t('GamificationModule', 'Gauge'),
                             'Gear'        => Zurmo::t('GamificationModule', 'Gear'),

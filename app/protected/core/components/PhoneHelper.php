@@ -39,22 +39,21 @@
      */
     class PhoneHelper extends CApplicationComponent
     {
-        
         public function resolvePhoneNumberContentForDialing($content, $inputId, $model)
         {
             return $content;
         }
-        
+
         public function resolvePersonCardViewOfficePhoneNumberContent($content, $model)
         {
             return ZurmoHtml::tag('span', array('class' => 'icon-office-phone'), $content);
         }
-        
+
         public function resolvePersonCardViewMobilePhoneNumberContent($content, $model)
         {
             return ZurmoHtml::tag('span', array('class' => 'icon-mobile-phone'), $content);
         }
-        
+
         public function resolvePhoneListViewColumnValue($content, $inputId, $model)
         {
             return $content;

@@ -56,7 +56,6 @@
 
         public function testRunWithoutAnyValueForOverwriteExistingReadTables()
         {
-
             $output = array();
             $this->runUpdateSchema($output);
             $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
@@ -140,7 +139,6 @@
             $this->assertTrue(array_search('Building contactwebform_read', $output) !== false);
             $this->assertTrue(array_search('Building project_read', $output) !== false);
             $this->assertTrue(array_search('Schema update complete.', $output) !== false);
-
         }
 
         protected function runUpdateSchema(& $output, $overwriteExistingReadTables = null)

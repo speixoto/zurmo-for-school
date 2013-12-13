@@ -207,5 +207,11 @@
         {
             return true;
         }
+
+        public function setLatestActivityDateTime($dateTime)
+        {
+            assert('is_string($dateTime)');
+            $this->unrestrictedSet('latestActivityDateTime', $dateTime);
+        }
     }
 ?>

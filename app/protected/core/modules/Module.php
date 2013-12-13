@@ -484,7 +484,6 @@
             return false;
         }
 
-
         /**
          * Override and return a string of the StatemetadataAdataper class if the module's primary model supports
          * states.  An example is leads or contacts where the lead is only contacts in a certain state.

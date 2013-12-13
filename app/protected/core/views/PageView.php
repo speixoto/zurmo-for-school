@@ -60,7 +60,6 @@
         public function __construct(View $containedView)
         {
             $this->containedView = $containedView;
-
         }
 
         public function render()
@@ -311,6 +310,7 @@
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');
+                Yii::app()->minScript->generateScriptMap('css-color');
                 if (!YII_DEBUG && !defined('IS_TEST'))
                 {
                     Yii::app()->minScript->generateScriptMap('js');

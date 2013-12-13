@@ -36,7 +36,7 @@
 
     class ExportItemToCsvFileUtil extends ExportItemToOutputUtil
     {
-        const DEFAULT_DELIMITER = ',';
+        const DEFAULT_DELIMITER = ','; // Not Coding Standard
 
         const DEFAULT_ENCLOSURE = '"';
 
@@ -48,10 +48,11 @@
          * @param string $exportFileName
          * @param bool $download Should send generated csv string to output or not.
          * @param bool $allowHeaderOnlyConversion
+         * @param bool $shouldTrim Should trim data before exporting
          * @return string|void
          */
         public static function export($data, $headerData = array(), $exportFileName = 'exports.csv',
-                                                $download = false, $allowHeaderOnlyConversion = false)
+                                      $download = false, $allowHeaderOnlyConversion = false, $shouldTrim = false)
         {
             assert('is_array($headerData)');
             assert('is_string($exportFileName)');
@@ -67,6 +68,10 @@
                 }
                 foreach ($data as $row)
                 {
+                    if ($shouldTrim)
+                    {
+                        $row = array_map('trim', $row);
+                    }
                     $output .= self::arraytoCsv($row);
                 }
             }

@@ -96,7 +96,6 @@
          */
         protected function renderTextField()
         {
-
             $this->registerScriptForAutoCompleteTextField();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
@@ -163,7 +162,6 @@
 
         protected function makeSourceUrl()
         {
-
             return Yii::app()->createUrl('workflows/default/inQueuesAutoComplete',
                                          array('formClassName' => get_class($this->model)));
         }
@@ -174,6 +172,7 @@
          */
         protected function getOnSelectOptionForAutoComplete()
         {
+            // Begin Not Coding Standard
             return 'js:function(event, ui){
                                             jQuery("#' . $this->getEditableInputId(static::getModelItemIdInputName()) . '").unbind("change.ajax");
                                             jQuery("#' . $this->getEditableInputId(static::getModelItemIdInputName()) . '").bind("change.ajax", basicSearchHandler);
@@ -182,6 +181,7 @@
                                             jQuery("#' . $this->getEditableInputId(static::getModelClassNameInputName()) .
                                                 '").val(ui.item["modelClassName"]).trigger("change");
             }';
+            // End Not Coding Standard
         }
         //todo: somehow we need to do scope binding. look at how global is done
 
@@ -224,13 +224,14 @@
 
         protected function renderScopeChangeScript()
         {
+            // Begin Not Coding Standard
             $script = '$("#' . $this->getIdForTextField() . '").bind("focus", function(event, ui){
                             $("#' . $this->getIdForTextField() . '").autocomplete("option", "source", "' .
                             $this->makeSourceUrl() . '&" + $.param($("#' .
                             $this->getEditableInputId(SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME) . '").serializeArray()));
                         });
                        ';
-            /// End Not Coding Standard
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('WorkflowMixedModelsAndNameAttributeSearchScopeChanges', $script);
         }
     }

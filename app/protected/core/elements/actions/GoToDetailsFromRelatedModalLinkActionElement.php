@@ -36,7 +36,6 @@
 
     class GoToDetailsFromRelatedModalLinkActionElement extends LinkActionElement
     {
-
         protected function getDefaultLabel()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();

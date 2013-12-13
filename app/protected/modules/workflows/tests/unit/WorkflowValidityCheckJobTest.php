@@ -66,7 +66,7 @@
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
 
-            $this->assertEquals(0, count(Notification::getAll()));
+            $this->assertEquals(0, Notification::getCount());
             $job = new WorkflowValidityCheckJob();
             $this->assertTrue($job->run());
             $notifications = Notification::getAll();

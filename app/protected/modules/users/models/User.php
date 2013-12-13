@@ -56,7 +56,7 @@
             {
                 throw new NotFoundException();
             }
-            RedBeansCache::cacheBean($bean, User::getTableName('User') . $bean->id);
+            RedBeansCache::cacheBean($bean, User::getTableName() . $bean->id);
             return self::makeModel($bean);
         }
 
@@ -126,7 +126,7 @@
             // in order to mix in the Person - this is metadata wise,
             // User doesn't get any functionality from Person.
             $modelClassName = 'Person';
-            $tableName = self::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             if ($bean === null)
             {
                 $personBean = ZurmoRedBean::dispense($tableName);
@@ -753,6 +753,8 @@
                     array('lastLoginDateTime',    'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
+                    'currency' => 'CurrencyDropDown',
+                    'role'     => 'Role',
                 ),
                 'defaultSortAttribute' => 'lastName',
                 'noExport' => array(

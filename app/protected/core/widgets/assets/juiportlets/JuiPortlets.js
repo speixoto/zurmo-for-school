@@ -62,6 +62,7 @@ var juiPortlets = {
         $(settings.widgetSelector, $(juiPortlets.columnsClass)).each(function () {
             var thisWidgetSettings = juiPortlets.getWidgetSettings(this.id);
             if (thisWidgetSettings.removable) {
+                $('#' + this.id).find(settings.handleSelector).find('.remove-portlet').unbind('click');
                 $('#' + this.id).find(settings.handleSelector).find('.remove-portlet').mousedown(function (e) {
                     e.stopPropagation();
                 }).click(function () {
@@ -229,6 +230,9 @@ var juiPortlets = {
                         notSortable += '#' + this.id + ',';
                     }
                 });
+                if(notSortable != null){
+                    notSortable = notSortable.substring(0, notSortable.length - 1);
+                }
                 return $('> li:not(' + notSortable + ')', juiPortlets.columnsClass);
             })();
 

@@ -88,7 +88,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/createEmailMessage');
 
             //confirm there are no email messages currently
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
@@ -103,7 +103,7 @@
             $this->assertContains(Zurmo::t('emailMessagesModule', 'Subject cannot be blank.'), $content);
 
             //Confirm that no email messages was sent
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
@@ -125,7 +125,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/createEmailMessage', true);
 
             //confirm there is one email
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 

@@ -76,8 +76,15 @@
             }
             elseif ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
             {
-                $found = $this->resolveFoundNameByValue($rowBean);
-                if($found === null)
+                try
+                {
+                    $found = $this->resolveFoundNameByValue($rowBean);
+                }
+                catch (NotFoundException $e)
+                {
+                    $found = null;
+                }
+                if ($found === null)
                 {
                     return;
                 }
@@ -170,7 +177,18 @@
                 {
                     throw new NotSupportedException();
                 }
-                $modelsFound = $relationModelClassName::getByName($value);
+                try
+                {
+                    $modelsFound = $relationModelClassName::getByName($value);
+                    if (!is_array($modelsFound))
+                    {
+                        $modelsFound = array($modelsFound);
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                    $modelsFound = array();
+                }
                 if (count($modelsFound) == 0)
                 {
                     $newRelatedModel       = new $relationModelClassName();

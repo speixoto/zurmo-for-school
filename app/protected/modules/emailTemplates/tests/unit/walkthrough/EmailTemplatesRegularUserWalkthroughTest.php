@@ -73,6 +73,8 @@
 
         public function testRegularUserAllDefaultControllerActions()
         {
+            $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
+            $this->assertTrue($this->user->save());
             $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
                                                                                 'Test Subject Regular 01',
                                                                                 'Contact',
@@ -126,9 +128,6 @@
          */
         public function testRegularUserCreateActionForWorkflow()
         {
-            // TODO: @Shoaibi/@Jason: Low: Even if a user doesn't have module permission he can send that modelClassName in POST
-            // nobody needs access to meetings and contact to have that in ddl.
-            $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
             $this->user->setRight('MeetingsModule', MeetingsModule::getAccessRight());
             $this->assertTrue($this->user->save());
 

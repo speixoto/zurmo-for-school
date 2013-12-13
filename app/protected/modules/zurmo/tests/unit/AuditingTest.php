@@ -208,7 +208,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('jimmy');
             $beforeCount = AuditEvent::getCount();
-            if(Yii::app()->edition == 'Community')
+            if (Yii::app()->edition == 'Community')
             {
                 $differential = 0;
             }

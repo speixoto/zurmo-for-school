@@ -146,7 +146,8 @@
             {
                 $errorSummaryContent = null;
             }
-            $formLayout = new DetailsViewFormLayout($metadataWithRenderedElements, $maxCellsPerRow, $errorSummaryContent);
+            $formLayout = new DetailsViewFormLayout($metadataWithRenderedElements, $maxCellsPerRow,
+                                                    $errorSummaryContent, $this->getFormLayoutUniqueId());
             $formLayout->alwaysShowErrorSummary = $this->alwaysShowErrorSummary();
             $formLayout->labelsHaveOwnCells($this->doesLabelHaveOwnCell());
             $formLayout->setMorePanelsLinkLabel($this->getMorePanelsLinkLabel());
@@ -417,6 +418,15 @@
         protected function alwaysShowErrorSummary()
         {
             return false;
+        }
+
+        /**
+         * Gets form layout unique id
+         * @return null
+         */
+        protected function getFormLayoutUniqueId()
+        {
+            return null;
         }
     }
 ?>

@@ -295,7 +295,7 @@
             $model->delete();
 
             // Test with different quatations.
-            $tableName      = TestDatabaseBulkInsertModel::getTableName('TestDatabaseBulkInsertModel');
+            $tableName      = TestDatabaseBulkInsertModel::getTableName();
             $columnNames    = array('number', 'string');
             $insertData     = array(
                 array(999  , 'It\'s string with quatation.'),
@@ -312,17 +312,10 @@
                 $this->assertEquals($bulkInsertedRows[$i]['string'], $insertData[$i][1]);
             }
 
-            $models = TestDatabaseBulkInsertModel::getAll();
-            if (count($models) > 0)
-            {
-                foreach ($models as $model)
-                {
-                    $model->delete();
-                }
-            }
+            TestDatabaseBulkInsertModel::deleteAll();
 
             // Test when there are less rows of data then bulk quantity for one loop.
-            $tableName      = TestDatabaseBulkInsertModel::getTableName('TestDatabaseBulkInsertModel');
+            $tableName      = TestDatabaseBulkInsertModel::getTableName();
             $columnNames    = array('number', 'string');
             $numberOfRows   = 50;
             $bulkQuantity   = 100;
@@ -337,14 +330,7 @@
                 $this->assertEquals($bulkInsertedRows[$i]['string'], $insertData[$i][1]);
             }
 
-            $models = TestDatabaseBulkInsertModel::getAll();
-            if (count($models) > 0)
-            {
-                foreach ($models as $model)
-                {
-                    $model->delete();
-                }
-            }
+            TestDatabaseBulkInsertModel::deleteAll();
 
             // Test when there is much data, for multiple loops of bulk insert.
             $numberOfRows         = 520;
@@ -376,6 +362,29 @@
                 $this->assertEquals($bulkInsertedRows[$i]['number'], $insertData[$i][0]);
                 $this->assertEquals($bulkInsertedRows[$i]['string'], $insertData[$i][1]);
             }
+
+            TestDatabaseBulkInsertModel::deleteAll();
+
+            //Test with shouldTrim
+            $tableName      = TestDatabaseBulkInsertModel::getTableName();
+            $columnNames    = array('number', 'string');
+            $insertData     = array(
+                array(999  , ' It\'s string with quotation. '),
+                array(1000 , " It\`s string with quotation."),
+                array(1001 , 'It\'s string with "quotation". '),
+                array(1002 , 'It\'s string with "quotation".'),
+            );
+            DatabaseCompatibilityUtil::bulkInsert($tableName, $insertData, $columnNames, 4, true);
+
+            $bulkInsertedRows      = ZurmoRedBean::getAll("select * from $tableName order by id");
+            $this->assertEquals(count($bulkInsertedRows), 4);
+            for ($i = 0; $i < 4; $i++)
+            {
+                $this->assertEquals($bulkInsertedRows[$i]['number'], trim($insertData[$i][0]));
+                $this->assertEquals($bulkInsertedRows[$i]['string'], trim($insertData[$i][1]));
+            }
+
+            TestDatabaseBulkInsertModel::deleteAll();
         }
 
         protected function createDumpDataForBulkInsert($number)
@@ -628,7 +637,7 @@
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 $tableRowsCountTotal = DatabaseCompatibilityUtil::getTableRowsCountTotal();
-                ZurmoRedBean::exec("create table temptesttable (temptable_id int(11) unsigned not null)");
+                ZurmoRedBean::exec("create table if not exists temptesttable (temptable_id int(11) unsigned not null)");
                 ZurmoRedBean::exec("insert into temptesttable (temptable_id) values (2)");
                 ZurmoRedBean::exec("insert into temptesttable (temptable_id) values (9)");
                 $tableRowsCountTotalAfterQuery = DatabaseCompatibilityUtil::getTableRowsCountTotal();

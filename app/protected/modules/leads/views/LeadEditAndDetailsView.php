@@ -62,6 +62,7 @@
                         'state',
                         'account',
                         'owner',
+                        'latestActivityDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -223,6 +224,11 @@
         {
             return Zurmo::t('LeadsModule', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            return ContactDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel(), null);
         }
     }
 ?>

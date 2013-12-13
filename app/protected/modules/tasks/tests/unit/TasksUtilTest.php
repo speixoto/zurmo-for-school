@@ -79,19 +79,24 @@
 
             $task = Task::getById($id);
             $this->assertEquals(0, $task->notificationSubscribers->offsetGet(0)->hasReadLatest);
+            $this->assertEquals(0, $task->notificationSubscribers->offsetGet(1)->hasReadLatest);
             //After running for super, nothing will change.
             TasksUtil::markUserHasReadLatest($task, $steven);
+            TasksUtil::markUserHasReadLatest($task, $super);
             $id = $task->id;
             $task->forget();
             unset($task);
 
             $task = Task::getById($id);
-            //TODO@Mayank Need to check with Jason
-            //$this->assertEquals(1, $task->notificationSubscribers->offsetGet(0)->hasReadLatest);
+            foreach ($task->notificationSubscribers as $position => $subscriber)
+            {
+                $this->assertEquals(1, $subscriber->hasReadLatest);
+            }
         }
 
         /**
          * @covers getTaskSubscriberData
+         * @covers renderSubscriberImageAndLinkContent
          */
         public function testGetTaskSubscriberData()
         {
@@ -102,6 +107,7 @@
 
             $content = TasksUtil::getTaskSubscriberData($task);
             $this->assertTrue(strpos($content, 'gravatar') > 0);
+            $this->assertTrue(strpos($content, 'users/default/details') !== false);
         }
 
         /**
@@ -116,7 +122,7 @@
 
             $subscribers = TasksUtil::getTaskSubscribers($task);
             $found = false;
-            foreach($subscribers as $subscriber)
+            foreach ($subscribers as $subscriber)
             {
                 if ($subscriber->id == $user->id)
                 {
@@ -153,7 +159,7 @@
         public function testGetModalDetailsTitle()
         {
             $title = TasksUtil::getModalDetailsTitle();
-            $this->assertEquals('Collaborate On This Task',$title);
+            $this->assertEquals('Collaborate On This Task', $title);
         }
 
         /**
@@ -162,13 +168,13 @@
         public function testGetModalTitleForCreateTask()
         {
             $title = TasksUtil::getModalTitleForCreateTask();
-            $this->assertEquals('Create Task',$title);
+            $this->assertEquals('Create Task', $title);
 
             $title = TasksUtil::getModalTitleForCreateTask("Edit");
-            $this->assertEquals('Edit Task',$title);
+            $this->assertEquals('Edit Task', $title);
 
             $title = TasksUtil::getModalTitleForCreateTask("Copy");
-            $this->assertEquals('Copy Task',$title);
+            $this->assertEquals('Copy Task', $title);
         }
 
         /**
@@ -177,7 +183,7 @@
         public function testGetModalEditTitle()
         {
             $title = TasksUtil::getModalEditTitle();
-            $this->assertEquals('Edit Task',$title);
+            $this->assertEquals('Edit Task', $title);
         }
 
         /**
@@ -199,23 +205,62 @@
         {
             $tasks  = Task::getByName('MyTest');
             $task   = $tasks[0];
-            $notificationSubscriber = new NotificationSubscriber();
-            $notificationSubscriber->person = Yii::app()->user->userModel;
-            $task->notificationSubscribers->add($notificationSubscriber);
+            $sally  = UserTestHelper::createBasicUser('sally');
+            $maggi  = UserTestHelper::createBasicUser('maggi');
+            $task->owner = $sally;
+            $task->requestedByUser = $maggi;
             $task->save();
-            $link = TasksUtil::getKanbanSubscriptionLink($task,0);
-            $this->assertTrue(strpos($link, 'unsubscribe-task-link') > 0);
-
-            foreach($task->notificationSubscribers as $notificationSubscriber)
+            if ($task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel) === false)
             {
-                if($notificationSubscriber->person == Yii::app()->user->userModel)
+                $notificationSubscriber = new NotificationSubscriber();
+                $notificationSubscriber->person = Yii::app()->user->userModel;
+                $task->notificationSubscribers->add($notificationSubscriber);
+                $task->save();
+            }
+            $link = TasksUtil::getKanbanSubscriptionLink($task, 0);
+            $this->assertTrue(strpos($link, 'unsubscribe-task-link') > 0);
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            foreach ($task->notificationSubscribers as $notificationSubscriber)
+            {
+                $user = $notificationSubscriber->person->castDown(array($modelDerivationPathToItem));
+                if ($user->id == Yii::app()->user->userModel->id)
                 {
                     $task->notificationSubscribers->remove($notificationSubscriber);
                 }
             }
             $task->save();
-            $link = TasksUtil::getKanbanSubscriptionLink($task,0);
+            $link = TasksUtil::getKanbanSubscriptionLink($task, 0);
             $this->assertTrue(strpos($link, 'subscribe-task-link') > 0);
+        }
+
+        /**
+         * @covers resolveDetailSubscribeUrl
+         */
+        public function testResolveDetailSubscriptionLink()
+        {
+            $tasks  = Task::getByName('MyTest');
+            $task   = $tasks[0];
+            if ($task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel) === false)
+            {
+                $notificationSubscriber = new NotificationSubscriber();
+                $notificationSubscriber->person = Yii::app()->user->userModel;
+                $task->notificationSubscribers->add($notificationSubscriber);
+                $task->save();
+            }
+            $link = TasksUtil::getDetailSubscriptionLink($task, 0);
+            $this->assertTrue(strpos($link, 'detail-unsubscribe-task-link') > 0);
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
+            foreach ($task->notificationSubscribers as $index => $notificationSubscriber)
+            {
+                $user = $notificationSubscriber->person->castDown(array($modelDerivationPathToItem));
+                if ($user->id == Yii::app()->user->userModel->id)
+                {
+                    $task->notificationSubscribers->remove($notificationSubscriber);
+                }
+            }
+            $task->save();
+            $link = TasksUtil::getDetailSubscriptionLink($task, 0);
+            $this->assertTrue(strpos($link, 'detail-subscribe-task-link') > 0);
         }
 
         /**
@@ -299,6 +344,253 @@
             $task   = $tasks[0];
             $content = TasksUtil::renderCompletionDateTime($task);
             $this->assertTrue(strpos($content, 'Completed On:') > 0);
+        }
+
+        /**
+         * @covers resolveFirstRelatedModel
+         */
+        public function testResolveFirstRelatedModel()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $accounts = Account::getByName('anAccount');
+
+            $user                   = UserTestHelper::createBasicUser('Tilly');
+            $dueStamp               = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
+            $task                   = new Task();
+            $task->name             = 'MyFirstRelatedTask';
+            $task->owner            = $user;
+            $task->requestedByUser  = $user;
+            $task->dueDateTime      = $dueStamp;
+            $task->activityItems->add($accounts[0]);
+            $this->assertTrue($task->save());
+            $id = $task->id;
+            unset($task);
+            $task = Task::getById($id);
+            $model = TasksUtil::resolveFirstRelatedModel($task);
+            $this->assertEquals('anAccount', $model->name);
+        }
+
+        /**
+         * @covers resolveFirstRelatedModel
+         * @covers resolveFirstRelatedModelStringValue
+         * @covers castDownActivityItem
+         */
+        public function testResolveFirstRelatedModelForProject()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $project = ProjectTestHelper::createProjectByNameForOwner('MyRelatedProject', Yii::app()->user->userModel);
+            $dueStamp               = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
+            $task                   = new Task();
+            $task->name             = 'MyFirstRelatedTask';
+            $task->dueDateTime      = $dueStamp;
+            $task->project          = $project;
+            $this->assertTrue($task->save());
+            $id = $task->id;
+            unset($task);
+            $task = Task::getById($id);
+            $model = TasksUtil::resolveFirstRelatedModel($task);
+            $this->assertEquals('MyRelatedProject', $model->name);
+            $content = TasksUtil::resolveFirstRelatedModelStringValue($task);
+            $this->assertEquals('MyRelatedProject', $content);
+        }
+
+        /**
+         * @covers addSubscriber
+         */
+        public function testAddSubscriberToTask()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $user = User::getByUsername('tilly');
+            $task = new Task();
+            $task->name = 'MyTest';
+            $task->owner = $user;
+            $nowStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($task->save());
+            $this->assertEquals($user, $task->owner);
+
+            //There would be two here as default subscribers are added
+            $this->assertEquals(2, count($task->notificationSubscribers));
+            $user = Yii::app()->user->userModel;
+            TasksUtil::addSubscriber($user, $task);
+            $task->save();
+            $this->assertEquals(2, count($task->notificationSubscribers));
+        }
+
+        /**
+         * @covers sortKanbanColumnItems
+         * @covers checkKanbanTypeByStatusAndUpdateIfRequired
+         */
+        public function testSortKanbanColumnItems()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $project                = ProjectTestHelper::createProjectByNameForOwner('MyKanbanProject', Yii::app()->user->userModel);
+            $dueStamp               = DateTimeUtil::convertTimestampToDbFormatDateTime(time()  + 10000);
+
+            //First kanban task
+            $task                   = TaskTestHelper::createTaskByNameWithProjectAndStatus('MyFirstKanbanTask',
+                                                                              Yii::app()->user->userModel,
+                                                                              $project,
+                                                                              Task::STATUS_IN_PROGRESS);
+            $kanbanItem1            = KanbanItem::getByTask($task->id);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem1->type);
+            $this->assertEquals($task->project->id, $kanbanItem1->kanbanRelatedItem->id);
+            $task2                  = TaskTestHelper::createTaskByNameWithProjectAndStatus('MySecondKanbanTask',
+                                                                              Yii::app()->user->userModel,
+                                                                              $project,
+                                                                              Task::STATUS_IN_PROGRESS);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem2->type);
+            $this->assertEquals($task2->project->id, $kanbanItem2->kanbanRelatedItem->id);
+            $task3                  = TaskTestHelper::createTaskByNameWithProjectAndStatus('MyThirdKanbanTask',
+                                                                              Yii::app()->user->userModel,
+                                                                              $project,
+                                                                              Task::STATUS_IN_PROGRESS);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem3->type);
+            $this->assertEquals($task3->project->id, $kanbanItem3->kanbanRelatedItem->id);
+            $sourceKanbanType       = TasksUtil::resolveKanbanItemTypeForTaskStatus(Task::STATUS_IN_PROGRESS);
+            TasksUtil::sortKanbanColumnItems($sourceKanbanType, $task->project);
+            $kanbanItem             = KanbanItem::getByTask($task->id);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals($task->id, $kanbanItem->task->id);
+            $this->assertEquals(1, $kanbanItem->sortOrder);
+            $this->assertEquals($task2->id, $kanbanItem2->task->id);
+            $this->assertEquals(2, $kanbanItem2->sortOrder);
+            $this->assertEquals($task3->id, $kanbanItem3->task->id);
+            $this->assertEquals(3, $kanbanItem3->sortOrder);
+
+            //Update status and check checkKanbanTypeByStatusAndUpdateIfRequired
+            $task->status          = Task::STATUS_NEW;
+            $this->assertTrue($task->save());
+            TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($task);
+
+            $kanbanItem             = KanbanItem::getByTask($task->id);
+            $this->assertEquals(KanbanItem::TYPE_SOMEDAY, $kanbanItem->type);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem2->type);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem3->type);
+
+            $this->assertEquals($task->id, $kanbanItem->task->id);
+            $this->assertEquals(1, $kanbanItem->sortOrder);
+            $this->assertEquals($task2->id, $kanbanItem2->task->id);
+            $this->assertEquals(1, $kanbanItem2->sortOrder);
+            $this->assertEquals($task3->id, $kanbanItem3->task->id);
+            $this->assertEquals(2, $kanbanItem3->sortOrder);
+        }
+
+        /**
+         * @covers processKanbanItemUpdateOnButtonAction
+         */
+        public function testProcessKanbanItemUpdateWithSourceKanbanTypeAsSomeDay()
+        {
+            $tasks          = Task::getByName('MyFirstKanbanTask');
+            $task           = $tasks[0];
+            $tasks          = Task::getByName('MySecondKanbanTask');
+            $task2          = $tasks[0];
+            $tasks          = Task::getByName('MyThirdKanbanTask');
+            $task3          = $tasks[0];
+            $kanbanItem     = KanbanItem::getByTask($task->id);
+            $task->setScenario('kanbanViewButtonClick');
+            TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_IN_PROGRESS, $task->id, $kanbanItem->type);
+            $kanbanItem             = KanbanItem::getByTask($task->id);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals($task->id, $kanbanItem->task->id);
+            $this->assertEquals(3, $kanbanItem->sortOrder);
+            $this->assertEquals($task2->id, $kanbanItem2->task->id);
+            $this->assertEquals(1, $kanbanItem2->sortOrder);
+            $this->assertEquals($task3->id, $kanbanItem3->task->id);
+            $this->assertEquals(2, $kanbanItem3->sortOrder);
+        }
+
+        /**
+         * @covers processKanbanItemUpdateOnButtonAction
+         */
+        public function testProcessKanbanItemUpdateWithSourceKanbanTypeAsInProgress()
+        {
+            $tasks          = Task::getByName('MyFirstKanbanTask');
+            $task           = $tasks[0];
+            $tasks          = Task::getByName('MySecondKanbanTask');
+            $task2          = $tasks[0];
+            $tasks          = Task::getByName('MyThirdKanbanTask');
+            $task3          = $tasks[0];
+            $kanbanItem2     = KanbanItem::getByTask($task2->id);
+            $task2->setScenario('kanbanViewButtonClick');
+            //Check for target status waiting for acceptance(should not change sort order)
+            TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_AWAITING_ACCEPTANCE, $task2->id, $kanbanItem2->type);
+            $kanbanItem             = KanbanItem::getByTask($task->id);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals($task->id, $kanbanItem->task->id);
+            $this->assertEquals(3, $kanbanItem->sortOrder);
+            $this->assertEquals($task2->id, $kanbanItem2->task->id);
+            $this->assertEquals(1, $kanbanItem2->sortOrder);
+            $this->assertEquals($task3->id, $kanbanItem3->task->id);
+            $this->assertEquals(2, $kanbanItem3->sortOrder);
+
+            $task2->setScenario('kanbanViewButtonClick');
+            //Check for target status rejected(should not change sort order)
+            TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_REJECTED, $task2->id, $kanbanItem2->type);
+            $kanbanItem             = KanbanItem::getByTask($task->id);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals($task->id, $kanbanItem->task->id);
+            $this->assertEquals(3, $kanbanItem->sortOrder);
+            $this->assertEquals($task2->id, $kanbanItem2->task->id);
+            $this->assertEquals(1, $kanbanItem2->sortOrder);
+            $this->assertEquals($task3->id, $kanbanItem3->task->id);
+            $this->assertEquals(2, $kanbanItem3->sortOrder);
+
+            $task2->setScenario('kanbanViewButtonClick');
+            //Check for target status in progress(should not change sort order)
+            TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_IN_PROGRESS, $task2->id, $kanbanItem2->type);
+            $kanbanItem             = KanbanItem::getByTask($task->id);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals($task->id, $kanbanItem->task->id);
+            $this->assertEquals(3, $kanbanItem->sortOrder);
+            $this->assertEquals($task2->id, $kanbanItem2->task->id);
+            $this->assertEquals(1, $kanbanItem2->sortOrder);
+            $this->assertEquals($task3->id, $kanbanItem3->task->id);
+            $this->assertEquals(2, $kanbanItem3->sortOrder);
+
+            $task2->setScenario('kanbanViewButtonClick');
+            //Check for target status completed(should change sort order)
+            TasksUtil::processKanbanItemUpdateOnButtonAction(Task::STATUS_COMPLETED, $task2->id, $kanbanItem2->type);
+            $kanbanItem             = KanbanItem::getByTask($task->id);
+            $kanbanItem2            = KanbanItem::getByTask($task2->id);
+            $kanbanItem3            = KanbanItem::getByTask($task3->id);
+            $this->assertEquals($task->id, $kanbanItem->task->id);
+            $this->assertEquals(2, $kanbanItem->sortOrder);
+            $this->assertEquals($task2->id, $kanbanItem2->task->id);
+            $this->assertEquals(KanbanItem::TYPE_COMPLETED, $kanbanItem2->type);
+            $this->assertEquals(1, $kanbanItem2->sortOrder);
+            $this->assertEquals($task3->id, $kanbanItem3->task->id);
+            $this->assertEquals(1, $kanbanItem3->sortOrder);
+        }
+
+        /**
+         * @covers resolveAndRenderTaskCardDetailsSubscribersContent
+         */
+        public function testResolveAndRenderTaskCardDetailsSubscribersContent()
+        {
+            $hellodear      = UserTestHelper::createBasicUser('hellodear');
+            $task           = new Task();
+            $task->name     = 'MyCardTest';
+            $task->owner    = $hellodear;
+            $this->assertTrue($task->save());
+
+            $task = Task::getById($task->id);
+            $user = Yii::app()->user->userModel;
+            TasksUtil::addSubscriber($hellodear, $task);
+            $this->assertTrue($task->save());
+            $content = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $this->assertTrue(strpos($content, 'gravatar') > 0);
+            $this->assertTrue(strpos($content, 'users/default/details') !== false);
+            $this->assertTrue(strpos($content, 'hellodear') !== false);
+            $this->assertTrue(strpos($content, 'task-owner') !== false);
         }
     }
 ?>

@@ -61,12 +61,12 @@
                                   'itemOptions' => array('class' => 'hasDetailsFlyout'),
                                   'model'       => 'eval:$this->params["relationModel"]',
                             ),
-                            array('type'            => 'CreateTaskFromRelatedKanbanModalLink',
-                                  'routeModuleId'   => 'eval:$this->moduleId',
-                                  'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
-                                  'ajaxOptions'     => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
+                            array('type'                => 'CreateTaskFromRelatedKanbanModalLink',
+                                  'routeModuleId'       => 'eval:$this->moduleId',
+                                  'routeParameters'     => 'eval:$this->getCreateLinkRouteParameters()',
+                                  'ajaxOptions'         => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
                                   'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
-                                  'modalContainerId'=> 'eval:TasksUtil::getModalContainerId()'
+                                  'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()'
                             ),
 
                         ),
@@ -127,7 +127,7 @@
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
             $this->registerKanbanGridScript();
-            $this->resolveShouldOpenToTask();
+            TasksUtil::resolveShouldOpenToTask($this->getGridId());
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             $content .= $this->renderScripts();
             $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
@@ -386,18 +386,8 @@
             {
                 $script  = "$('#" . $this->getGridId() . "').show();";
                 $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
-
             }
-            Yii::app()->clientScript->registerScript('taskKanbanDetailScript',$script);
-        }
-
-        protected function resolveShouldOpenToTask()
-        {
-            $getData = GetUtil::getData();
-            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
-            {
-                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
-            }
+            Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
         }
 
         /**
@@ -452,10 +442,21 @@
          */
         protected function getCGridViewBeforeAjaxUpdate()
         {
+            // Begin Not Coding Standard
             return 'js:function(id, options){
                             $(".ui-overlay-block").fadeIn(50);
                             $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block");
                     }';
+            // End Not Coding Standard
+        }
+
+        /**
+         * Show the table on empty as we need the javascripts initialized when first task is created
+         * @return boolean
+         */
+        protected function getShowTableOnEmpty()
+        {
+            return true;
         }
     }
 ?>

@@ -198,8 +198,8 @@
          */
         public function testExportAction()
         {
-            $notificationsBeforeCount        = count(Notification::getAll());
-            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+            $notificationsBeforeCount        = Notification::getCount();
+            $notificationMessagesBeforeCount = NotificationMessage::getCount();
 
             $savedReports = SavedReport::getAll();
             $this->assertEquals(2, count($savedReports));
@@ -237,8 +237,8 @@
             $this->assertEquals('reports', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
-            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+            $this->assertEquals($notificationsBeforeCount + 1, Notification::getCount());
+            $this->assertEquals($notificationMessagesBeforeCount + 1, NotificationMessage::getCount());
         }
 
         /**
@@ -327,6 +327,17 @@
             $this->setPostArray($postData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/drillDownDetails');
             $this->assertTrue(strpos($content, '<th id="report-results-grid-view2_c2">Currency Value</th>') !== false);
+            $this->assertContains('No results found', $content);
+
+            //Check drillDown works with runtime filters
+            $this->setPostArray(array('SummationReportWizardForm' => array('Filters' => array(
+                array('attributeIndexOrDerivedType' => 'string',
+                    'operator'                    => OperatorRules::TYPE_EQUALS,
+                    'value'                       => 'string1')))));
+            $this->runControllerWithNoExceptionsAndGetContent('reports/default/applyRuntimeFilters', true);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/drillDownDetails');
+            $this->assertTrue(strpos($content, '<th id="report-results-grid-view2_c2">Currency Value</th>') !== false);
+            $this->assertContains('1 result(s)', $content);
         }
 
         /**

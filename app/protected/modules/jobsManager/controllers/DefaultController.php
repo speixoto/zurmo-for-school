@@ -164,8 +164,36 @@
                         makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
             $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
-            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template);
+            $isJobInProgress = false;
+            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName,
+                                                               $isJobInProgress, $template);
             echo ZurmoHtml::script('$("#progress-table").hide(); $("#complete-table").show();');
+        }
+
+        public function actionQueueJob($type, $delay = 0, $messageLoggerClassName = 'MessageLogger')
+        {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                echo Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
+                Yii::app()->end(0, false);
+            }
+            if(!Yii::app()->jobQueue->isEnabled())
+            {
+                echo Zurmo::t('JobsManagerModule', 'Job queuing must be enabled in order to queue a job');
+                Yii::app()->end(0, false);
+            }
+            $breadCrumbLinks = array(
+                Zurmo::t('JobsManagerModule',
+                         'JobsManagerModuleSingularLabel',
+                         LabelUtil::getTranslationParamsForAllModules()) => array('/jobsManager/default'),
+                         Yii::app()->jobQueue->getQueueJobLabel(),
+            );
+            $messageLogger = new $messageLoggerClassName();
+            $queueJobView = new QueueJobView($this->getId(), $this->getModule()->getId(), $type, (int)$delay, $messageLogger);
+            $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
+                        makeViewWithBreadcrumbsForCurrentUser($this, $queueJobView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
+            echo $view->render();
+            $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
         }
     }
 ?>

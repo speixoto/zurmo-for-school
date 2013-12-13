@@ -84,7 +84,7 @@
 
         public static function getByUserIdAndModelId($userId, $modelId, $countOnly = false)
         {
-            assert('is_int($userId) || is_string($userId) || is_null($userId)');
+            assert('is_int($userId) || is_string($userId) || $userId === null');
             assert('is_int($modelId) || is_string($modelId)');
             $relationName = static::getRelationName();
             $searchAttributeData = array();
@@ -158,8 +158,9 @@
         protected static function getIndexesDefinition()
         {
             $relatedModelClassName = static::getRelatedModelClassName();
-            $relatedColumnName = static::getTableName($relatedModelClassName) . '_id';
-            $baseStarredColumnName = static::getTableName(get_class()) . '_id';
+            $relatedColumnName = $relatedModelClassName::getTableName() . '_id';
+            // can't use self:: here as getTableName() uses get_called_class
+            $baseStarredColumnName = BaseStarredModel::getTableName() . '_id';
             return array($baseStarredColumnName . '_' . $relatedColumnName => array(
                                                 'members' => array($baseStarredColumnName, $relatedColumnName),
                                                 'unique' => true,

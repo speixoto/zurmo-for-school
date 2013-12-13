@@ -65,7 +65,7 @@
 
         public function testProcessAfterSaveWhenSendIsInFuture()
         {
-            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(0, WorkflowMessageInQueue::getCount());
             $workflow         = new Workflow();
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;

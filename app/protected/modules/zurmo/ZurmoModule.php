@@ -107,7 +107,7 @@
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Languages')",
+                        'titleLabel'       => "eval:Zurmo::t('Core', 'Languages')",
                         'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Active Languages')",
                         'route'            => '/zurmo/language/configurationList',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,

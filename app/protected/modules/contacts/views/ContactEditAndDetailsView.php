@@ -61,6 +61,7 @@
                         'owner',
                         'state',
                         'googleWebTrackingId',
+                        'latestActivityDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -204,6 +205,11 @@
         {
             $this->registerCopyAddressFromAccountScript();
             return parent::renderContent();
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            return ContactDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel(), null);
         }
 
         protected function getNewModelTitleLabel()

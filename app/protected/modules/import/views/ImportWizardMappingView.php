@@ -206,7 +206,7 @@
                                                                        $mappingDataRow['type'],
                                                                        $mappingDataRow['attributeIndexOrDerivedType'],
                                                                        $ajaxOnChangeUrl);
-                
+
                 $firstCell   .= $mappingFormLayoutUtil->renderMappingRulesElements(
                                       $columnName,
                                       $mappingDataRow['attributeIndexOrDerivedType'],
@@ -214,7 +214,7 @@
                                       $mappingDataRow['type'],
                                       $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
                 $row['cells'][] = $firstCell;
-                        
+
                 if ($firstRowIsHeaderRow)
                 {
                     assert('$mappingDataRow["headerValue"] == null || is_string($mappingDataRow["headerValue"])');
@@ -222,7 +222,7 @@
                                                                                     $mappingDataRow['headerValue']);
                 }
                 $row['cells'][] = $mappingFormLayoutUtil->renderImportColumnContent ($columnName,
-                                                                                 $mappingDataRow['sampleValue']);                
+                                                                                 $mappingDataRow['sampleValue']);
                 $metadata['rows'][] = $row;
             }
             return $metadata;
