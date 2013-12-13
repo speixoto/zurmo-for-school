@@ -94,6 +94,7 @@
                                                             ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $contactWebFormModelForm->setCustomDisplayLabels($customDisplayLabels);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
+            $contactWebFormModelForm->resolveRequiredValidatorsForModel($customRequiredFields);
             $postVariableName                        = get_class($contactWebFormModelForm);
             if (isset($_POST[$postVariableName]))
             {
@@ -281,6 +282,11 @@
                 if ($data['cells'][0]['elements'][0]['type'] == 'EmailAddressInformation')
                 {
                     $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['hideOptOut'] = true;
+                }
+                if ($data['cells'][0]['elements'][0]['type'] == 'TagCloud')
+                {
+                    $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['type'] =
+                    'MultiSelectDropDown';
                 }
             }
             return $metadata;

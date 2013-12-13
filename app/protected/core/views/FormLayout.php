@@ -95,7 +95,7 @@
             $this->metadata            = $metadata;
             $this->maxCellsPerRow      = $maxCellsPerRow;
             $this->errorSummaryContent = $errorSummaryContent;
-            if($uniqueId == null)
+            if ($uniqueId == null)
             {
                 $this->uniqueId       = $this->makeUniqueId();
             }

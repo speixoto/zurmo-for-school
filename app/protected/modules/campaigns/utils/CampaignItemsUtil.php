@@ -104,7 +104,7 @@
                 {
                     $contacts[] = Contact::getById((int)$contactId);
                 }
-                catch(NotFoundException $e)
+                catch (NotFoundException $e)
                 {
                     //Do nothing, just skip
                 }
