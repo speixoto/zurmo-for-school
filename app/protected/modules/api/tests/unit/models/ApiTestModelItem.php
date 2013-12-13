@@ -142,11 +142,5 @@
         {
             return true;
         }
-
-        public static function hasReadPermissionsOptimization()
-        {
-            // TODO: @Shoaibi: Critical0: Bug in ReadPermissionOptimizationUtil calls
-            return false;
-        }
     }
 ?>

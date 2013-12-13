@@ -71,12 +71,6 @@
             return true;
         }
 
-        public static function hasReadPermissionsOptimization()
-        {
-            // TODO: @Shoaibi: Critical0: Bug in ReadPermissionOptimizationUtil calls
-            return false;
-        }
-
         public static function getModuleClassName()
         {
             return 'ApiModule';
