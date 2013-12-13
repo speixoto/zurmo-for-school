@@ -84,7 +84,7 @@
                                     array('{lineBreak}'           => "\n",
                                           '{strongStartTag}'      => null,
                                           '{strongEndTag}'        => null,
-                                          '{updaterName}'         => strval($user),
+                                          '{updaterName}'         => strval($comment->createdByUser),
                                           '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
                                                                      'SingularLowerCase'),
                                           '{commentDescription}'  => strval($comment),
