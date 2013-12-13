@@ -146,7 +146,7 @@
                                                   $z_themeColorHeader)
         {
             $lessCompiler = new lessc;
-            $lessCompiler->setPreserveComments(true);
+            $lessCompiler->setPreserveComments(false);
             $lessCompiler->setFormatter($formatterName);
             $lessCompiler->setImportDir($this->getLessFilesPath());
             $lessCompiler->setVariables(array(
