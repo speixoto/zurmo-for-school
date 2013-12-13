@@ -34,20 +34,42 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Import rules for any attributes that are type Email.
-     */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class AccountModalCreateViewDesignerRules extends EditAndDetailsViewDesignerRules
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        public function allowEditInLayoutTool()
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            return true;
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        public function getDisplayName()
         {
-            return array('Email', 'Required', 'EmailDedupe');
+            return Zurmo::t('TasksModule', 'Modal Create View');
+        }
+
+        public function maxCellsPerRow()
+        {
+            return 1;
+        }
+
+        public function canConfigureLayoutPanelsType()
+        {
+            return true;
+        }
+
+        public function getSavableMetadataRules()
+        {
+            return array();
+        }
+
+        public function getNonPlaceableLayoutAttributeNames()
+        {
+            return array(
+                'createdDateTime',
+                'modifiedDateTime',
+                'createdByUser',
+                'modifiedByUser',
+                'id'
+            );
         }
     }
 ?>

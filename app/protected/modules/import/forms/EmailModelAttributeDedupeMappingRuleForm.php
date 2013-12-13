@@ -35,19 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Import rules for any attributes that are type Email.
+     * This form is used for dedupe for email attribute
      */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class EmailModelAttributeDedupeMappingRuleForm extends ModelAttributeDedupeMappingRuleForm
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
-        {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
-        }
-
-        public static function getSanitizerUtilTypesInProcessingOrder()
-        {
-            return array('Email', 'Required', 'EmailDedupe');
-        }
+        
     }
 ?>

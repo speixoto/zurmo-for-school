@@ -324,5 +324,44 @@
         {
             $this->export('AccountsSearchView');
         }
+
+        /**
+         * Modal create for account
+         */
+        public function actionModalCreate()
+        {
+            $account = new Account();
+            if (isset($_POST['Account']) && Yii::app()->request->isAjaxRequest)
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false);
+                if($account->id > 0)
+                {
+                    echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
+                    Yii::app()->end(0, false);
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
+
+            }
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
+                                                                                      'AccountModalCreateView',
+                                                                                      $account, 'Edit');
+        }
+
+        /**
+         * Modal validate for account
+         */
+        public function actionModalValidate()
+        {
+            $account = new Account();
+            if (isset($_POST['ajax']) && Yii::app()->request->isAjaxRequest)
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false, true);
+                echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
+                Yii::app()->end(0, false);
+            }
+        }
     }
 ?>

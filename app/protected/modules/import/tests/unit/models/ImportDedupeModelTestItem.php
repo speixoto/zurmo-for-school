@@ -34,20 +34,66 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Import rules for any attributes that are type Email.
-     */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class ImportDedupeModelTestItem extends OwnedSecurableItem
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        public static function getByName($name)
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            return self::getByNameOrEquivalent('name', $name);
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        public static function getDefaultMetadata()
         {
-            return array('Email', 'Required', 'EmailDedupe');
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'relations' => array(
+                    'primaryEmail'     => array(static::HAS_ONE,   'Email', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'secondaryEmail'   => array(static::HAS_ONE,   'Email', static::OWNED,
+                                                static::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+                'elements' => array(
+                    'primaryEmail'        => 'EmailAddressInformation',
+                    'secondaryEmail'      => 'EmailAddressInformation'
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ImportModule';
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return 'ImportDedupeModelTestItem';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ImportDedupeModelTestItems';
         }
     }
 ?>

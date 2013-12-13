@@ -97,26 +97,25 @@
             $externalSystemId          = null;
             $importSanitizeResultsUtil = new ImportSanitizeResultsUtil();
             $afterSaveActionsData      = array();
+            $attributeValueData        = array();
+            $skippedColumns            = array();
+
+            $model = new $modelClassName();
+            $model->setScenario('importModel');
 
             //Process the 'id' column first if available.
-            if (false !== $idColumnName = static::getIdColumnNameByMappingData($mappingData))
+            if (false !== $idColumnName = static::getMappedColumnNameByMappingData('id', $mappingData))
             {
                 $columnMappingData = $mappingData[$idColumnName];
-                $attributeImportRules = AttributeImportRulesFactory::
-                                        makeByImportRulesTypeAndAttributeIndexOrDerivedType(
-                                        $importRules::getType(), $columnMappingData['attributeIndexOrDerivedType']);
-                $valueReadyToSanitize = static::
-                                        resolveValueToSanitizeByValueAndColumnType($rowBean->$idColumnName,
-                                                                                   $columnMappingData['type']);
-                $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize,
-                                                                                     $idColumnName,
-                                                                                     $columnMappingData,
-                                                                                     $importSanitizeResultsUtil);
+                $attributeValueData     = static::getAttributeValueData($importRules,
+                                                                        $idColumnName,
+                                                                        $columnMappingData,
+                                                                        $rowBean,
+                                                                        $importSanitizeResultsUtil);
                 assert('count($attributeValueData) == 0 || count($attributeValueData) == 1');
                 if (isset($attributeValueData['id']) && $attributeValueData['id'] != null)
                 {
                     $model        = $modelClassName::getById($attributeValueData['id']);
-                    $makeNewModel = false;
                 }
                 elseif (isset($attributeValueData[ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME]) &&
                         $attributeValueData[ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME] != null)
@@ -124,23 +123,58 @@
                     $externalSystemId = $attributeValueData
                                         [ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME];
                 }
+                $skippedColumns[] = $idColumnName;
             }
-            if ($makeNewModel)
+            //Dedupe fields processing
+            if(static::processDedupeAttributesToCheckForSkipIfRequired($importRules,
+                                                                               $model,
+                                                                               $mappingData,
+                                                                               $rowBean,
+                                                                               $importRowDataResultsUtil,
+                                                                               $importSanitizeResultsUtil,
+                                                                               $skippedColumns) !== true)
             {
-                $model = new $modelClassName();
-                $model->setScenario('importModel');
+                if(null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
+                {
+                    $model = $matchedModel;
+                    $makeNewModel = false;
+                }
+                //Process the dedupe fields
+                foreach($importRules->getDedupeAttributes() as $dedupeField)
+                {
+                    $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
+                    if(false !== $sourceColumnName)
+                    {
+                        $columnMappingData = $mappingData[$sourceColumnName];
+                        static::processImportInformationForAttributeDataAndPopulateModel($importRules,
+                                                                                         $sourceColumnName,
+                                                                                         $columnMappingData,
+                                                                                         $rowBean,
+                                                                                         $importSanitizeResultsUtil,
+                                                                                         $model,
+                                                                                         $afterSaveActionsData);
+                    }
+                }
             }
-
+            else
+            {
+                //as the row should be skipped
+                return;
+            }
             //Process the rest of the mapped colummns. ignoring owner.
             foreach ($mappingData as $columnName => $columnMappingData)
             {
                 if ($columnMappingData['attributeIndexOrDerivedType'] != null &&
                     $columnMappingData['attributeIndexOrDerivedType'] != 'owner' &&
-                    $idColumnName != $columnName)
+                    in_array($columnName, $skippedColumns) === false)
                 {
-                    static::sanitizeValueAndPopulateModel($rowBean, $importRules, $model, $columnName, $modelClassName,
-                                                          $columnMappingData, $importSanitizeResultsUtil,
-                                                          $afterSaveActionsData);
+                    static::processImportInformationForAttributeDataAndPopulateModel($importRules,
+                                                                                     $columnName,
+                                                                                     $columnMappingData,
+                                                                                     $rowBean,
+                                                                                     $importSanitizeResultsUtil,
+                                                                                     $model,
+                                                                                     $afterSaveActionsData);
                 }
             }
 
@@ -149,14 +183,17 @@
             {
                 if ($columnMappingData['attributeIndexOrDerivedType'] != null &&
                     $columnMappingData['attributeIndexOrDerivedType'] == 'owner' &&
-                    $idColumnName != $columnName)
+                    in_array($columnName, $skippedColumns) === false)
                 {
-                    static::sanitizeValueAndPopulateModel($rowBean, $importRules, $model, $columnName, $modelClassName,
-                                                          $columnMappingData, $importSanitizeResultsUtil,
-                                                          $afterSaveActionsData);
+                    static::processImportInformationForAttributeDataAndPopulateModel($importRules,
+                                                                                     $columnName,
+                                                                                     $columnMappingData,
+                                                                                     $rowBean,
+                                                                                     $importSanitizeResultsUtil,
+                                                                                     $model,
+                                                                                     $afterSaveActionsData);
                 }
             }
-
             $validated = $model->validate();
             if ($validated && $importSanitizeResultsUtil->shouldSaveModel())
             {
@@ -252,75 +289,51 @@
             return ZurmoHtml::link(strval($model), $urlToModel, array('class' => 'simple-link', 'target' => 'blank'));
         }
 
-        protected static function sanitizeValueAndPopulateModel(RedBean_OODBBean $rowBean,
-                                                                ImportRules $importRules,
+        protected static function sanitizeValueAndPopulateModel(ImportRules $importRules,
                                                                 RedBeanModel $model,
-                                                                $columnName,
-                                                                $modelClassName,
                                                                 $columnMappingData,
-                                                                ImportSanitizeResultsUtil $importSanitizeResultsUtil,
+                                                                $attributeValueData,
                                                                 & $afterSaveActionsData)
         {
             assert('is_array($afterSaveActionsData)');
-            assert('is_string($columnName)');
-            assert('is_string($modelClassName)');
             assert('$columnMappingData["type"] == "importColumn" ||
             $columnMappingData["type"] == "extraColumn"');
-                $attributeImportRules = AttributeImportRulesFactory::
-                                        makeByImportRulesTypeAndAttributeIndexOrDerivedType(
-                                        $importRules::getType(), $columnMappingData['attributeIndexOrDerivedType']);
-                $valueReadyToSanitize = static::
-                                        resolveValueToSanitizeByValueAndColumnType($rowBean->$columnName,
-                                                                                   $columnMappingData['type']);
 
-                if ($attributeImportRules instanceof NonDerivedAttributeImportRules &&
-                   $attributeImportRules->getModelClassName() != $modelClassName)
-                {
-                    static::resolveModelForAttributeIndexWithMultipleNonDerivedAttributes($model,
-                                                                                          $attributeImportRules,
-                                                                                          $valueReadyToSanitize,
-                                                                                          $columnName,
-                                                                                          $columnMappingData,
-                                                                                          $importSanitizeResultsUtil);
-                }
-                elseif ($attributeImportRules instanceof ModelDerivedAttributeImportRules)
-                {
-                    static::resolveModelForModelDerivedAttribute(                      $model,
-                                                                                       $importRules::getType(),
-                                                                                       $attributeImportRules,
-                                                                                       $valueReadyToSanitize,
-                                                                                       $columnName,
-                                                                                       $columnMappingData,
-                                                                                       $importSanitizeResultsUtil);
-                }
-                elseif ($attributeImportRules instanceof AfterSaveActionDerivedAttributeImportRules)
-                {
-                    static::resolveAfterSaveActionDerivedAttributeImportRules(  $afterSaveActionsData,
-                                                                                $attributeImportRules,
-                                                                                $valueReadyToSanitize,
-                                                                                $columnName,
-                                                                                $columnMappingData,
-                                                                                $importSanitizeResultsUtil);
-                }
-                elseif ($attributeImportRules instanceof AfterSaveActionNonDerivedAttributeImportRules)
-                {
-                    static::resolveAfterSaveActionNonDerivedAttributeImportRules($afterSaveActionsData,
-                                                                                 $attributeImportRules,
-                                                                                 $valueReadyToSanitize,
-                                                                                 $columnName,
-                                                                                 $columnMappingData,
-                                                                                 $importSanitizeResultsUtil);
-                }
-                else
-                {
-                    static::
-                    resolveModelForAttributeIndexWithSingleAttributeOrDerivedAttribute($model,
-                                                                                       $attributeImportRules,
-                                                                                       $valueReadyToSanitize,
-                                                                                       $columnName,
-                                                                                       $columnMappingData,
-                                                                                       $importSanitizeResultsUtil);
-                }
+            $modelClassName       = get_class($model);
+            $attributeImportRules = static::getAttributeImportRules($importRules, $columnMappingData);
+            if ($attributeImportRules instanceof NonDerivedAttributeImportRules &&
+               $attributeImportRules->getModelClassName() != $modelClassName)
+            {
+                static::resolveModelForAttributeIndexWithMultipleNonDerivedAttributes($model,
+                                                                                      $attributeImportRules,
+                                                                                      $attributeValueData,
+                                                                                      $columnMappingData);
+            }
+            elseif ($attributeImportRules instanceof ModelDerivedAttributeImportRules)
+            {
+                static::resolveModelForModelDerivedAttribute( $model,
+                                                              $importRules::getType(),
+                                                              $attributeImportRules,
+                                                              $attributeValueData);
+            }
+            elseif ($attributeImportRules instanceof AfterSaveActionDerivedAttributeImportRules)
+            {
+                static::resolveAfterSaveActionDerivedAttributeImportRules(  $afterSaveActionsData,
+                                                                            $attributeImportRules,
+                                                                            $attributeValueData);
+            }
+            elseif ($attributeImportRules instanceof AfterSaveActionNonDerivedAttributeImportRules)
+            {
+                static::resolveAfterSaveActionNonDerivedAttributeImportRules($afterSaveActionsData,
+                                                                             $attributeImportRules,
+                                                                             $attributeValueData);
+            }
+            else
+            {
+                static::
+                resolveModelForAttributeIndexWithSingleAttributeOrDerivedAttribute($model,
+                                                                                   $attributeValueData);
+            }
         }
 
         protected static function processAfterSaveActions($afterSaveActionsData, RedBeanModel $model)
@@ -335,47 +348,45 @@
             }
         }
 
-        protected static function getIdColumnNameByMappingData($mappingData)
+        /**
+         * Get mapped column name by mapping data
+         * @param string $modelColumnName
+         * @param array $mappingData
+         * @return boolean
+         * @throws NotSupportedException
+         */
+        protected static function getMappedColumnNameByMappingData($modelColumnName, $mappingData)
         {
             assert('is_array($mappingData)');
-            $idColumnName = null;
+            assert('is_string($modelColumnName)');
+            $mappedColumnName = null;
             $valueFound   = false;
             foreach ($mappingData as $columnName => $columnMappingData)
             {
-                if ($columnMappingData['attributeIndexOrDerivedType'] == 'id')
+                if ($columnMappingData['attributeIndexOrDerivedType'] == $modelColumnName)
                 {
                     if ($valueFound || $columnMappingData['type'] != 'importColumn')
                     {
                         throw new NotSupportedException();
                     }
-                    $idColumnName = $columnName;
+                    $mappedColumnName = $columnName;
                     $valueFound   = true;
                 }
             }
-            if ($idColumnName != null)
+            if ($mappedColumnName != null)
             {
-                return $idColumnName;
+                return $mappedColumnName;
             }
             return false;
         }
 
         protected static function resolveModelForAttributeIndexWithMultipleNonDerivedAttributes(
                                   RedBeanModel $model,
-                                  AttributeImportRules $attributeImportRules,
-                                  $valueReadyToSanitize,
-                                  $columnName,
-                                  $columnMappingData,
-                                  ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+                                  $attributeImportRules,
+                                  $attributeValueData,
+                                  $columnMappingData)
         {
-            assert('is_string($columnName)');
             assert('is_array($columnMappingData)');
-            if ($attributeImportRules->getModelClassName() == null)
-            {
-                throw new NotSupportedException();
-            }
-            $attributeValueData     = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
-                                                                                   $columnMappingData,
-                                                                                   $importSanitizeResultsUtil);
             $attributeName          = AttributeImportRulesFactory::
                                       getAttributeNameFromAttributeNameByAttributeIndexOrDerivedType(
                                       $columnMappingData['attributeIndexOrDerivedType']);
@@ -397,17 +408,8 @@
 
         protected static function resolveModelForAttributeIndexWithSingleAttributeOrDerivedAttribute(
                                   RedBeanModel $model,
-                                  AttributeImportRules $attributeImportRules,
-                                  $valueReadyToSanitize,
-                                  $columnName,
-                                  $columnMappingData,
-                                  ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+                                  $attributeValueData)
         {
-            assert('is_string($columnName)');
-            assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
-                                                                                 $columnMappingData,
-                                                                                 $importSanitizeResultsUtil);
             foreach ($attributeValueData as $attributeName => $value)
             {
                 if ( $model->$attributeName instanceof RedBeanManyToManyRelatedModels)
@@ -436,18 +438,10 @@
         protected static function resolveAfterSaveActionDerivedAttributeImportRules(
                                   & $afterSaveActionsData,
                                   DerivedAttributeImportRules $attributeImportRules,
-                                  $valueReadyToSanitize,
-                                  $columnName,
-                                  $columnMappingData,
-                                  ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+                                  $attributeValueData)
         {
             assert('is_array($afterSaveActionsData)');
             assert('$attributeImportRules instanceof AfterSaveActionDerivedAttributeImportRules');
-            assert('is_string($columnName)');
-            assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
-                                                                                 $columnMappingData,
-                                                                                 $importSanitizeResultsUtil);
             if ($attributeValueData != null)
             {
                 $afterSaveActionsData[] = array(get_class($attributeImportRules), $attributeValueData);
@@ -469,40 +463,25 @@
         protected static function resolveAfterSaveActionNonDerivedAttributeImportRules(
                                   & $afterSaveActionsData,
                                   NonDerivedAttributeImportRules $attributeImportRules,
-                                  $valueReadyToSanitize,
-                                  $columnName,
-                                  $columnMappingData,
-                                  ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+                                  $attributeValueData)
         {
             assert('is_array($afterSaveActionsData)');
             assert('$attributeImportRules instanceof AfterSaveActionNonDerivedAttributeImportRules');
-            assert('is_string($columnName)');
-            assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
-                                                                                 $columnMappingData,
-                                                                                 $importSanitizeResultsUtil);
             if ($attributeValueData != null)
             {
                 $afterSaveActionsData[] = array(get_class($attributeImportRules), $attributeValueData);
             }
         }
 
+
         protected static function resolveModelForModelDerivedAttribute(
                                   RedBeanModel $model,
                                   $importRulesType,
                                   AttributeImportRules $attributeImportRules,
-                                  $valueReadyToSanitize,
-                                  $columnName,
-                                  $columnMappingData,
-                                  ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+                                  $attributeValueData)
         {
             assert('is_string($importRulesType)');
             assert('$attributeImportRules instanceof ModelDerivedAttributeImportRules');
-            assert('is_string($columnName)');
-            assert('is_array($columnMappingData)');
-            $attributeValueData   = $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
-                                                                                 $columnMappingData,
-                                                                                 $importSanitizeResultsUtil);
             assert('count($attributeValueData) == 1');
             assert('$attributeImportRules::getDerivedAttributeName() != null');
             $derivedAttributeName = $attributeImportRules::getDerivedAttributeName();
@@ -611,6 +590,137 @@
             }
             Yii::app()->custom->runImportsForImportCommand($messageLogger, $importName);
             $messageStreamer->add(Zurmo::t('ImportModule', 'Ending import.'));
+        }
+
+        /**
+         * Get Penultimate ModelClassName By Import Rules
+         * @param type $importRules
+         * @return type
+         */
+        public static function getPenultimateModelClassNameByImportRules(ImportRules $importRules)
+        {
+            $importingIntoModelClassName = $importRules::getType() . 'ImportRules';
+            return $importingIntoModelClassName::getModelClassName();
+        }
+
+        /**
+         * Gets attribute value data
+         * @param AttributeImportRules $attributeImportRules
+         * @param string $columnName
+         * @param array $columnMappingData
+         * @param string $valueReadyToSanitize
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
+         */
+        protected static function getAttributeValueData(ImportRules $importRules,
+                                                 $columnName,
+                                                 $columnMappingData,
+                                                 $rowBean,
+                                                 ImportSanitizeResultsUtil $importSanitizeResultsUtil)
+        {
+            $attributeImportRules = static::getAttributeImportRules($importRules, $columnMappingData);
+            $valueReadyToSanitize = static::
+                                    resolveValueToSanitizeByValueAndColumnType($rowBean->$columnName,
+                                                                               $columnMappingData['type']);
+
+            return $attributeImportRules->resolveValueForImport($valueReadyToSanitize, $columnName,
+                                                                $columnMappingData,
+                                                                $importSanitizeResultsUtil);
+        }
+
+        /**
+         * Get attribute import rules
+         * @param ImportRules $importRules
+         * @param array $columnMappingData
+         * @return object containing attribute import rules
+         * @throws NotSupportedException
+         */
+        protected static function getAttributeImportRules(ImportRules $importRules, $columnMappingData)
+        {
+            $attributeImportRules =  AttributeImportRulesFactory::
+                                        makeByImportRulesTypeAndAttributeIndexOrDerivedType(
+                                            $importRules::getType(),
+                                            $columnMappingData['attributeIndexOrDerivedType'],
+                                            self::getPenultimateModelClassNameByImportRules($importRules));
+            if ($attributeImportRules->getModelClassName() == null)
+            {
+                throw new NotSupportedException();
+            }
+            return $attributeImportRules;
+        }
+
+        /**
+         * Process import information, get attribute value data and populates the model
+         * @param ImportRules $importRules
+         * @param string $columnName
+         * @param array $columnMappingData
+         * @param RedBean_OODBBean $rowBean
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
+         * @param RedBeanModel $model
+         * @param array $afterSaveActionsData
+         */
+        protected static function processImportInformationForAttributeDataAndPopulateModel(ImportRules $importRules,
+                                                                                    $columnName,
+                                                                                    $columnMappingData,
+                                                                                    $rowBean,
+                                                                                    ImportSanitizeResultsUtil $importSanitizeResultsUtil,
+                                                                                    RedBeanModel $model,
+                                                                                    & $afterSaveActionsData)
+        {
+            assert('$rowBean instanceof RedBean_OODBBean');
+            $attributeValueData = static::getAttributeValueData($importRules,
+                                                                $columnName,
+                                                                $columnMappingData,
+                                                                $rowBean,
+                                                                $importSanitizeResultsUtil);
+            static::sanitizeValueAndPopulateModel($importRules,
+                                                  $model,
+                                                  $columnMappingData,
+                                                  $attributeValueData,
+                                                  $afterSaveActionsData);
+        }
+
+
+        /**
+         * Process mapped columns to check for matched record by column
+         * @param ImportRules $importRules
+         * @param RedBeanModel $model
+         * @param array $mappingData
+         * @param RedBean_OODBBean $rowBean
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
+         * @param array $skippedColumns
+         */
+        protected static function processDedupeAttributesToCheckForSkipIfRequired(ImportRules $importRules,
+                                                                                RedBeanModel $model,
+                                                                                $mappingData,
+                                                                                $rowBean,
+                                                                                ImportRowDataResultsUtil $importRowDataResultsUtil,
+                                                                                ImportSanitizeResultsUtil $importSanitizeResultsUtil,
+                                                                                & $skippedColumns)
+        {
+            assert('$rowBean instanceof RedBean_OODBBean');
+            $isSkipped = false;
+            //Process the dedupe fields
+            foreach($importRules->getDedupeAttributes() as $dedupeField)
+            {
+                $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
+                if(false !== $sourceColumnName)
+                {
+                    $columnMappingData      = $mappingData[$sourceColumnName];
+                    $attributeValueData     = static::getAttributeValueData($importRules,
+                                                                        $sourceColumnName,
+                                                                        $columnMappingData,
+                                                                        $rowBean,
+                                                                        $importSanitizeResultsUtil);
+                    if (!$importSanitizeResultsUtil->shouldSaveModel())
+                    {
+                        $importRowDataResultsUtil->addMessages($importSanitizeResultsUtil->getMessages());
+                        $importRowDataResultsUtil->setStatusToError();
+                        $isSkipped = true;
+                    }
+                }
+            }
+            $skippedColumns[] = $sourceColumnName;
+            return $isSkipped;
         }
     }
 ?>

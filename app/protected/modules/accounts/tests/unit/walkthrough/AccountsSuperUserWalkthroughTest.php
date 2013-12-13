@@ -651,5 +651,14 @@
             );
             $this->assertTag($matcher, $content);
         }
+
+        public function testSuperUserModalCreateAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('modalTransferInformation' => array('sourceIdFieldId' => 'Contact_38_account_id',
+                                                                         'sourceNameFieldId' => 'Contact_38_account_name',
+                                                                         'modalId' => 'modalContainer-contact-inline-create-form-38')));
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalCreate');
+        }
     }
 ?>

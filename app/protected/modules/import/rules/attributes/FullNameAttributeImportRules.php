@@ -41,7 +41,8 @@
     {
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array('FullNameDefaultValueModelAttribute' => 'Text');
+            return array('FullNameDefaultValueModelAttribute' => 'Text',
+                         'FullNameModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
         }
 
         public function getDisplayLabel()
@@ -59,7 +60,7 @@
 
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('FullName', 'FullNameRequired');
+            return array('FullName', 'FullNameRequired', 'FullNameDedupe');
         }
 
         /**

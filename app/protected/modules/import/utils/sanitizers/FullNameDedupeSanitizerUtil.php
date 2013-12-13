@@ -35,19 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Import rules for any attributes that are type Email.
+     * Sanitizer for full name attributes.
      */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class FullNameDedupeSanitizerUtil extends DedupeSanitizerUtil
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        public static function getLinkedMappingRuleType()
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            return 'FullNameModelAttributeDedupe';
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        /**
+         * Get matched models
+         * @return array
+         */
+        protected function getMatchedModels($value)
         {
-            return array('Email', 'Required', 'EmailDedupe');
+            $matchedModels  = ContactSearch::getContactsByFullName($value, 10);
+            return $matchedModels;
         }
     }
 ?>

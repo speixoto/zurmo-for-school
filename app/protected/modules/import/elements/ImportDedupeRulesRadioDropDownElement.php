@@ -35,19 +35,34 @@
      ********************************************************************************/
 
     /**
-     * Import rules for any attributes that are type Email.
+     * Display radio buttons for selecting the rules for dedupe
+     * @see EmailAttributeImportRules
      */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class ImportDedupeRulesRadioDropDownElement extends RadioDropDownElement
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        const DO_NOT_DEDUPE = 1;
+
+        const SKIP_ROW_ON_MATCH_FOUND = 2;
+
+        const UPDATE_ROW_ON_MATCH_FOUND = 3;
+
+        protected function renderControlEditable()
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            $content = null;
+            $content .= $this->form->radioButtonList(
+                $this->model,
+                $this->attribute,
+                $this->getDropDownArray(),
+                $this->getEditableHtmlOptions()
+            );
+            return $content;
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        protected function getDropDownArray()
         {
-            return array('Email', 'Required', 'EmailDedupe');
+            return array( self::DO_NOT_DEDUPE             => Zurmo::t('ImportModule', 'Do not dedupe'),
+                          self::SKIP_ROW_ON_MATCH_FOUND   => Zurmo::t('ImportModule', 'When a match is found, skip row'),
+                          self::UPDATE_ROW_ON_MATCH_FOUND => Zurmo::t('ImportModule', 'When a match is found, update existing record'));
         }
     }
 ?>
