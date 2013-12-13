@@ -391,7 +391,7 @@ SPT;
             $htmlOptions   = array();
             $disabledClass = null;
             $disabled      = false;
-            if (!$canCollect)
+            if (!$canCollect || $userId != Yii::app()->user->userModel->id)
             {
                 $disabledClass = ' disabled';
                 $disabled      = true;
