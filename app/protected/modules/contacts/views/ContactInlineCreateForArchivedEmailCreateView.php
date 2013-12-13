@@ -102,7 +102,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'account', 'type' => 'AccountWithCreateOption'),
+                                                array('attributeName' => 'account', 'type' => 'AccountSelectOrCreate'),
                                             ),
                                         ),
                                     )

@@ -41,13 +41,13 @@
      * to search on account.  Also includes a hidden input for the user
      * id.
      */
-    class AccountWithCreateOptionElement extends AccountElement
+    class AccountSelectOrCreateElement extends AccountElement
     {
         protected static $moduleId = 'accounts';
 
         /**
          * Renders extra html content
-         * @return null
+         * @return string
          */
         protected function renderExtraHtmlContent()
         {
@@ -73,11 +73,20 @@
             return $content;
         }
 
+        /**
+         * Get id for create link
+         * @return string
+         */
         protected function getIdForCreateLink()
         {
             return $this->getEditableInputId($this->attribute, 'CreateLink');
         }
 
+        /**
+         * Resolve ajax options for modal view
+         * @param string $linkId
+         * @return string
+         */
         protected function resolveAjaxOptionsForModalView($linkId)
         {
             assert('is_string($linkId)');
@@ -86,6 +95,10 @@
                      'center top+25', $class = "'task-dialog'");
         }
 
+        /**
+         * Gets create account label
+         * @return string
+         */
         private function getCreateAccountLabel()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
