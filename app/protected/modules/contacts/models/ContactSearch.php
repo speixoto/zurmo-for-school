@@ -174,8 +174,9 @@
         }
 
         /**
-         * For a give Contact name, run a full search by
-         * full name and retrieve contact models.
+         * For a give Contact name, run a full search by full name and retrieve contact models.
+         * This is required in case we are importing the data for contacts and search is performed for
+         * exact full name to identify the duplicates
          * @param string $fullName
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
@@ -203,7 +204,7 @@
             $where  = RedBeanModelDataProvider::makeWhere('Contact', $metadata, $joinTablesAdapter);
             if ($where != null)
             {
-                $where .= 'and';
+                $where .= ' and ';
             }
             $where .= self::getWherePartForFullNameSearch($fullName);
             static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
@@ -221,7 +222,7 @@
             $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
                                                                    '\' \'',
                                                                    'person.lastname'));
-            return "       $fullNameSql = '$fullName'";
+            return "$fullNameSql = '$fullName'";
         }
     }
 ?>

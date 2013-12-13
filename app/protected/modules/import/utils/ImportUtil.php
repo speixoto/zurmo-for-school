@@ -599,8 +599,8 @@
          */
         public static function getPenultimateModelClassNameByImportRules(ImportRules $importRules)
         {
-            $importingIntoModelClassName = $importRules::getType() . 'ImportRules';
-            return $importingIntoModelClassName::getModelClassName();
+            $importRulesClassName  = $importRules::getType() . 'ImportRules';
+            return $importRulesClassName::getModelClassName();
         }
 
         /**

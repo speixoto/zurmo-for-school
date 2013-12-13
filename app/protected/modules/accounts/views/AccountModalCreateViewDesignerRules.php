@@ -43,7 +43,7 @@
 
         public function getDisplayName()
         {
-            return Zurmo::t('TasksModule', 'Modal Create View');
+            return Zurmo::t('AccountsModule', 'Modal Create View');
         }
 
         public function maxCellsPerRow()

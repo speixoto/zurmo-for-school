@@ -51,6 +51,7 @@
          * Given an import rules type and an attribute index or derived type string, make an AttributeImportRules object.
          * @param string $importRulesType
          * @param string $attributeIndexOrDerivedType
+         * @param string $penultimateModelClassName
          * @return object AttributeImportRules
          */
         public static function makeByImportRulesTypeAndAttributeIndexOrDerivedType($importRulesType,
@@ -59,6 +60,7 @@
         {
             assert('is_string($importRulesType)');
             assert('is_string($attributeIndexOrDerivedType)');
+            assert('is_null($penultimateModelClassName) || is_string($penultimateModelClassName)');
             $importRulesTypeClassName = ImportRulesUtil::getImportRulesClassNameByType($importRulesType);
             $attributeImportRulesType = $importRulesTypeClassName::getAttributeImportRulesType(
                                         $attributeIndexOrDerivedType);

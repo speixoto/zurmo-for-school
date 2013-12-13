@@ -77,7 +77,7 @@
          */
         protected function resolveActiveFormAjaxValidationOptions()
         {
-            $url               = Yii::app()->createUrl('accounts/default/modalValidate', GetUtil::getData());
+            $url               = Yii::app()->createUrl('accounts/default/modalCreate', GetUtil::getData());
             // Begin Not Coding Standard
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(

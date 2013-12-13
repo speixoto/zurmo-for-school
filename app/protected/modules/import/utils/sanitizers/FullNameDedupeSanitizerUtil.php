@@ -50,7 +50,7 @@
          */
         protected function getMatchedModels($value)
         {
-            $matchedModels  = ContactSearch::getContactsByFullName($value, 10);
+            $matchedModels  = ContactSearch::getContactsByFullName($value, 1);
             return $matchedModels;
         }
     }

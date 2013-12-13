@@ -331,6 +331,7 @@
         public function actionModalCreate()
         {
             $account = new Account();
+            $this->validateCreateModalPostData();
             if (isset($_POST['Account']) && Yii::app()->request->isAjaxRequest)
             {
                 $account = $this->attemptToSaveModelFromPost($account, null, false);
@@ -353,7 +354,7 @@
         /**
          * Modal validate for account
          */
-        public function actionModalValidate()
+        protected function validateCreateModalPostData()
         {
             $account = new Account();
             if (isset($_POST['ajax']) && Yii::app()->request->isAjaxRequest)

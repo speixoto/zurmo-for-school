@@ -52,13 +52,9 @@
         {
             $matchedModels = array();
             $penultimateModelClassName = $this->penultimateModelClassName;
-            if($penultimateModelClassName == 'Account')
+            if($penultimateModelClassName != null)
             {
-                $matchedModels  = Account::getByName($value);
-            }
-            elseif($penultimateModelClassName == 'Contact')
-            {
-                $matchedModels  = Contact::getByName($value);
+                $matchedModels = $penultimateModelClassName::getByName($value);
             }
             return $matchedModels;
         }
