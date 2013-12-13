@@ -225,7 +225,11 @@
             }
         }
 
-        protected static function resolveAjaxOptionsForGameDashboardModel($id)
+        /**
+         * @param $id
+         * @return array
+         */
+        public static function resolveAjaxOptionsForGameDashboardModel($id)
         {
             $id      = static::USER_GAME_DASHBOARD_LINK_ID;
             // Begin Not Coding Standard

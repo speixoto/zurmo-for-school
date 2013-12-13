@@ -131,7 +131,7 @@
         {
             $user     = User::getById((int)$id);
             $gameCoin = GameCoin::resolveByPerson($user);
-            echo UserGameDashboardView::renderCoinsContent($gameCoin->value);
+            echo UserGameDashboardView::renderCoinsContent($gameCoin->value, $user);
         }
     }
 ?>
