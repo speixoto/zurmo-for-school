@@ -3129,7 +3129,7 @@
          * @param $validator
          * @param array $params
          */
-        public function addValidator($attribute, $validator, $params=array())
+        public function addValidator($attribute, $validator, $params = array())
         {
             if ($attribute != null && $validator != null)
             {
