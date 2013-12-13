@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * A job for marking campaigns as completed which have all recipients processed.
+     * A base job for processing in queue items
      */
-    class CampaignMarkCompletedJob extends AutoresponderOrCampaignBaseJob
+    abstract class InQueueJob extends BaseJob
     {
         /**
          * @see BaseJob::$loadJobQueueOnCleanupAndFallback
@@ -46,21 +46,52 @@
         protected static $loadJobQueueOnCleanupAndFallback = true;
 
         /**
-         * @returns Translated label that describes this job type.
+         * @see parent::resolveJobsForQueue()
          */
-        public static function getDisplayName()
+        public static function resolveJobsForQueue()
         {
-           return Zurmo::t('CampaignsModule', 'Mark campaigns as completed');
+            parent::resolveJobsForQueue();
+            $pageSize       = static::JOB_QUEUE_PAGE_SIZE;
+            $offset         = 0;
+            $timeStamp      = time();
+            do
+            {
+                $queueModels = static::getModelsTResolveToJobQueue($pageSize, $offset, static::getType(), $timeStamp);
+                $offset      = $offset + $pageSize;
+                if (is_array($queueModels) && count($queueModels) > 0)
+                {
+                    foreach ($queueModels as $queueModel)
+                    {
+                        InQueueUtil::resolveToAddJobToQueueAfterSaveOfModel($queueModel, static::getType());
+                    }
+                }
+            }
+            while (is_array($queueModels) && count($queueModels) > 0);
         }
 
-        /**
-         * @see BaseJob::run()
-         */
-        public function run()
+        protected function resolveBatchSize()
         {
-            // we use same size user specified for outgoing items
-            $batchSize = $this->resolveBatchSize();
-            return CampaignsUtil::markProcessedCampaignsAsCompleted($batchSize);
+            return InQueueBatchSizeConfigUtil::getBatchSize();
+        }
+
+        public static function getModelsTResolveToJobQueue($pageSize, $offset, $modelClassName, $timeStamp)
+        {
+            assert('is_int($pageSize) || $pageSize == null');
+            assert('is_int($offset)');
+            assert('is_string($modelClassName)');
+            assert('is_int($timeStamp)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'processDateTime',
+                    'operatorType'         => 'greaterThan',
+                    'value'                => DateTimeUtil::convertTimestampToDbFormatDateTime($timeStamp),
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $where = RedBeanModelDataProvider::makeWhere($modelClassName, $searchAttributeData, $joinTablesAdapter);
+            return $modelClassName::getSubset($joinTablesAdapter, $offset, $pageSize, $where, null);
         }
     }
 ?>

@@ -298,12 +298,18 @@
                                                                                     0,
                                                                                     $autoresponder->id);
             $this->assertCount(10, $unprocessedItems);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(5);
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
                                                                                     0,
                                                                                     $autoresponder->id);
             $this->assertCount(5, $unprocessedItems);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(2, $jobs);
+            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]);
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[5][0]);
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(3);
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
@@ -311,11 +317,16 @@
                                                                                         $autoresponder->id);
             $this->assertCount(2, $unprocessedItems);
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(10);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(
                                                                                         0,
                                                                                         $autoresponder->id);
             $this->assertCount(0, $unprocessedItems);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]);
         }
 
         /**

@@ -43,51 +43,54 @@
          * @see JobManagerCommand.  This method is called from the JobManagerCommand which is a commandline
          * tool to run jobs.  Based on the 'type' specified this method will call to run the monitor or a
          * regular non-monitor job.
-         * @param string $type
-         * @param int $timeLimit
+         * @param $type
+         * @param $timeLimit
          * @param $messageLoggerClassName
+         * @param $isJobInProgress
          * @param string $template
          * @param string $lineBreak
          */
         public static function runFromJobManagerCommandOrBrowser($type, $timeLimit, $messageLoggerClassName,
-                                                                 $template = "{message}\n", $lineBreak = "\n")
+                                                                 & $isJobInProgress, $template = "{message}\n",
+                                                                 $lineBreak = "\n")
         {
             assert('is_string($type)');
             assert('is_int($timeLimit)');
             assert('is_string($messageLoggerClassName) && (
                     is_subclass_of($messageLoggerClassName, "MessageLogger") ||
                     $messageLoggerClassName == "MessageLogger")');
+            assert('is_bool($isJobInProgress)');
             assert('is_string($template)');
             assert('is_string($lineBreak)');
             set_time_limit($timeLimit);
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
-                                  array('{seconds}' => $timeLimit)));
             echo $lineBreak;
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
-                                  array('{type}' => $type,
-                                         '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
             $messageLogger = new $messageLoggerClassName($messageStreamer);
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
+                            array('{seconds}' => $timeLimit)));
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Starting job type: {type}',
+                            array('{type}' => $type)));
             $messageLogger->addDebugMessage('Showing Debug Messages');
             if ($type == 'Monitor')
             {
-                static::runMonitorJob($messageLogger);
+                static::runMonitorJob($messageLogger, $isJobInProgress);
             }
             else
             {
-                static::runNonMonitorJob($type, $messageLogger);
+                static::runNonMonitorJob($type, $messageLogger, $isJobInProgress);
             }
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
-                                  array('{type}' => $type,
-                                         '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Ending job type: {type}',
+                            array('{type}' => $type)));
         }
 
         /**
-         * Run the monitor job.
+         * @param MessageLogger $messageLogger
+         * @param $isJobInProgress
          */
-        public static function runMonitorJob(MessageLogger $messageLogger)
+        public static function runMonitorJob(MessageLogger $messageLogger, & $isJobInProgress)
         {
+            assert('is_bool($isJobInProgress)');
             try
             {
                 $jobInProcess = JobInProcess::getByType('Monitor');
@@ -96,6 +99,10 @@
                 {
                     $messageLogger->addInfoMessage("Existing monitor job is stuck");
                     self::makeMonitorStuckJobNotification();
+                }
+                else
+                {
+                    $isJobInProgress = true;
                 }
             }
             catch (NotFoundException $e)
@@ -138,15 +145,19 @@
 
         /**
          * Given a 'type' of job, run the job.  This is for non-monitor jobs only.
-         * @param string $type
+         * @param $type
+         * @param MessageLogger $messageLogger
+         * @param $isJobInProgress
          */
-        public static function runNonMonitorJob($type, MessageLogger $messageLogger)
+        public static function runNonMonitorJob($type, MessageLogger $messageLogger, & $isJobInProgress)
         {
             assert('is_string($type) && $type != "Monitor"');
+            assert('is_bool($isJobInProgress)');
             try
             {
-                $jobInProcess = JobInProcess::getByType($type);
+                $jobInProcess    = JobInProcess::getByType($type);
                 $messageLogger->addInfoMessage("Existing job detected");
+                $isJobInProgress = true;
             }
             catch (NotFoundException $e)
             {
@@ -176,7 +187,16 @@
                     $jobLog->message       = $errorMessage;
                 }
                 $jobLog->isProcessed = false;
-                $s = $jobLog->save();
+                if(!$jobLog->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
+                $stuckJob               = StuckJob::getByType($type);
+                $stuckJob->quantity     = 0;
+                if(!$stuckJob->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
             }
         }
 
@@ -200,14 +220,6 @@
                 return true;
             }
             return false;
-        }
-
-        protected static function getLocalizedDateTimeTimeZoneString()
-        {
-            $content = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                        DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-            $content .= ' ' . Yii::app()->user->userModel->timeZone;
-            return $content;
         }
     }
 ?>

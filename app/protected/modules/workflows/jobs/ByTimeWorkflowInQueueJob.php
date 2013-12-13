@@ -37,13 +37,8 @@
     /**
      * A job for processing expired By-Time workflow objects
      */
-    class ByTimeWorkflowInQueueJob extends BaseJob
+    class ByTimeWorkflowInQueueJob extends InQueueJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -74,20 +69,39 @@
             {
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
-                foreach (ByTimeWorkflowInQueue::getModelsToProcess(self::$pageSize) as $byTimeWorkflowInQueue)
+                $processedModelsCount       = 0;
+                $batchSize                  = $this->resolveBatchSize();
+                if($batchSize != null)
                 {
-                    try
+                    $resolvedBatchSize = $batchSize + 1;
+                }
+                else
+                {
+                    $resolvedBatchSize = null;
+                }
+                foreach (ByTimeWorkflowInQueue::getModelsToProcess($resolvedBatchSize) as $byTimeWorkflowInQueue)
+                {
+                    if($processedModelsCount < $batchSize || $batchSize == null)
                     {
-                        $model = $this->resolveModel($byTimeWorkflowInQueue);
-                        $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
-                        $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                        try
+                        {
+                            $model = $this->resolveModel($byTimeWorkflowInQueue);
+                            $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
+                            $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                        }
+                        catch (NotFoundException $e)
+                        {
+                            WorkflowUtil::handleProcessingException($e,
+                                'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
+                        }
+                        $byTimeWorkflowInQueue->delete();
+                        $processedModelsCount++;
                     }
-                    catch (NotFoundException $e)
+                    else
                     {
-                        WorkflowUtil::handleProcessingException($e,
-                            'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
+                        Yii::app()->jobQueue->add('ByTimeWorkflowInQueue', 5);
+                        break;
                     }
-                    $byTimeWorkflowInQueue->delete();
                 }
                 Yii::app()->user->userModel = $originalUser;
                 return true;

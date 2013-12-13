@@ -64,8 +64,11 @@
             $byTimeWorkflowInQueue->modelItem       = $model;
             $byTimeWorkflowInQueue->processDateTime = '2007-02-02 00:00:00';
             $byTimeWorkflowInQueue->savedWorkflow   = $savedWorkflow;
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $saved = $byTimeWorkflowInQueue->save();
             $this->assertTrue($saved);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
             $id = $byTimeWorkflowInQueue->id;
             $byTimeWorkflowInQueue->forget();
 

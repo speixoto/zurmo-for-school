@@ -34,15 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class AutoresponderOrCampaignBatchSizeConfigUtil
-     */
-    class AutoresponderOrCampaignBatchSizeConfigUtil extends BatchSizeConfigUtil
+    class StuckJobTest extends ZurmoBaseTest
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
 
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
+        public function testSetAndGet()
+        {
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'abc';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJobId = $stuckJob->id;
+            $stuckJob->forget();
+            $stuckJob           = StuckJob::getById($stuckJobId);
+            $this->assertEquals('abc', $stuckJob->type);
+            $this->assertEquals(3    , $stuckJob->quantity);
+            $this->assertTrue($stuckJob->delete());
+        }
 
-        const CONFIG_DEFAULT_VALUE   = 100;
+        public function testGetByType()
+        {
+            $this->assertEquals(0, count(StuckJob::getAll()));
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'abc';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'abc';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJob           = new StuckJob();
+            $stuckJob->type     = 'def';
+            $stuckJob->quantity = 3;
+            $this->assertTrue($stuckJob->save());
+            $stuckJob = StuckJob::getByType('abc');
+            $this->assertEquals(1, count($stuckJob));
+            $this->assertEquals('abc', $stuckJob->type);
+            $this->assertTrue($stuckJob->id > 0);
+            $stuckJob = StuckJob::getByType('def');
+            $this->assertEquals(1, count($stuckJob));
+            $this->assertEquals('def', $stuckJob->type);
+            $this->assertTrue($stuckJob->id > 0);
+            $stuckJob = StuckJob::getByType('hij');
+            $this->assertEquals(1, count($stuckJob));
+            $this->assertTrue($stuckJob->id < 0);
+        }
     }
 ?>

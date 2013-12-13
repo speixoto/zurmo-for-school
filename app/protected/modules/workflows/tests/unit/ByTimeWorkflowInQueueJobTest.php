@@ -45,14 +45,14 @@
         {
             $model       = WorkflowTestHelper::createWorkflowModelTestItem('Green', '514');
             $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
-                                 'operator'                    => OperatorRules::TYPE_EQUALS,
-                                 'value'                       => '514',
-                                 'durationInterval'             => '5');
+                                    'operator'                    => OperatorRules::TYPE_EQUALS,
+                                    'value'                       => '514',
+                                    'durationInterval'             => '5');
             $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
-                                       ActionForWorkflowForm::ACTION_ATTRIBUTES =>
-                                            array('string' => array('shouldSetValue'    => '1',
-                                                  'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                  'value'  => 'jason'))));
+                                    ActionForWorkflowForm::ACTION_ATTRIBUTES =>
+                                    array('string' => array('shouldSetValue'    => '1',
+                                        'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                        'value'  => 'jason'))));
             $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
             WorkflowTestHelper::createExpiredByTimeWorkflowInQueue($model, $savedWorkflow);
 
@@ -61,6 +61,40 @@
             $this->assertTrue($job->run());
             $this->assertEquals(0, ByTimeWorkflowInQueue::getCount());
             $this->assertEquals('jason', $model->string);
+        }
+
+        public function testPagedRun()
+        {
+            $model = WorkflowTestHelper::createWorkflowModelTestItem('Blue', '514');
+            $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
+                                    'operator'                    => OperatorRules::TYPE_EQUALS,
+                                    'value'                       => '514',
+                                    'durationInterval'             => '5');
+            $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
+                                ActionForWorkflowForm::ACTION_ATTRIBUTES =>
+                                array('string' => array('shouldSetValue'    => '1',
+                                    'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                    'value'  => 'jason'))));
+            $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
+            for ($index = 0; $index < 10; $index++)
+            {
+                WorkflowTestHelper::createExpiredByTimeWorkflowInQueue($model, $savedWorkflow);
+            }
+            InQueueBatchSizeConfigUtil::setBatchSize(5);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertEquals(10, count(ByTimeWorkflowInQueue::getAll()));
+            $job = new ByTimeWorkflowInQueueJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(5, count(ByTimeWorkflowInQueue::getAll()));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('ByTimeWorkflowInQueue', $jobs[key($jobs)][0]);
+
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(ByTimeWorkflowInQueue::getAll()));
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
         }
     }
 ?>

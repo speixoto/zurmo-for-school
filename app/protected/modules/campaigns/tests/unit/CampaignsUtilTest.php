@@ -169,7 +169,13 @@
             $campaign01->forgetAll();
             $campaign02->forgetAll();
             $campaign03->forgetAll();
+            Yii::app()->jobQueue->deleteAll();
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(0, $jobs);
             $this->assertTrue(CampaignsUtil::markProcessedCampaignsAsCompleted(1));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignMarkCompleted', $jobs[5][0]);
             $campaign01 = Campaign::getById($campaign01Id);
             $this->assertNotNull($campaign01);
             $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign01->status);
@@ -183,7 +189,12 @@
             $campaign01->forgetAll();
             $campaign02->forgetAll();
             $campaign03->forgetAll();
+            Yii::app()->jobQueue->deleteAll();
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(0, $jobs);
             $this->assertTrue(CampaignsUtil::markProcessedCampaignsAsCompleted());
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(0, $jobs);
             $campaign01 = Campaign::getById($campaign01Id);
             $this->assertNotNull($campaign01);
             $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign01->status);

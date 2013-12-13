@@ -34,15 +34,50 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class AutoresponderOrCampaignBatchSizeConfigUtil
-     */
-    class AutoresponderOrCampaignBatchSizeConfigUtil extends BatchSizeConfigUtil
+    class JobQueueTest extends BaseTest
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+        }
 
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
+        public function testAddAndGetAll()
+        {
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            Yii::app()->jobQueue->add('aJob', 15);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $queuedJobs[15]);
+            $this->assertEquals('aJob', $queuedJobs[15][0]);
+            //Try to add it again
+            Yii::app()->jobQueue->add('aJob', 15);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $queuedJobs[15]);
+            $this->assertEquals('aJob', $queuedJobs[15][0]);
+            //Try to add a new job
+            Yii::app()->jobQueue->add('bJob', 15);
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(2, $queuedJobs[15]);
+            $this->assertEquals('aJob', $queuedJobs[15][0]);
+            $this->assertEquals('bJob', $queuedJobs[15][1]);
+            //Add an immediate job
+            Yii::app()->jobQueue->add('cJob');
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $queuedJobs[0]);
+            $this->assertEquals('cJob', $queuedJobs[0][0]);
+        }
 
-        const CONFIG_DEFAULT_VALUE   = 100;
+        /**
+         * @depends testAddAndGetAll
+         */
+        public function testDeleteAll()
+        {
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(2, $queuedJobs);
+            $this->assertCount(2, $queuedJobs[15]);
+            $this->assertCount(1, $queuedJobs[0]);
+            Yii::app()->jobQueue->deleteAll();
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(0, $queuedJobs);
+        }
     }
 ?>

@@ -479,7 +479,12 @@
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertEmpty($campaignItems);
             //Process open campaigns.
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
@@ -544,8 +549,20 @@
                 $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
                 $this->assertEmpty($campaignItems);
             }
-
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(5));
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            //First process 2 so we can show that the job gets queued up to run again
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(2));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]);
+            //Now process 3 more.
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(3));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             foreach ($campaignIds as $index => $campaignId)
             {
                 $campaign           = Campaign::getById($campaignId);

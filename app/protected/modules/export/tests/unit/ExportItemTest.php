@@ -35,14 +35,51 @@
      ********************************************************************************/
 
     /**
-     * Class AutoresponderOrCampaignBatchSizeConfigUtil
-     */
-    class AutoresponderOrCampaignBatchSizeConfigUtil extends BatchSizeConfigUtil
+    * Test ExportItemToCsvFileUtil functions.
+    */
+    class ExportItemTest extends ZurmoBaseTest
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            $super = SecurityTestHelper::createSuperAdmin();
+        }
 
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
+        public function testCreateAndEditExportItem()
+        {
+            $idsToExport = array(1,2,3);
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 0;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($idsToExport);
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
+            $this->assertTrue($exportItem->save());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[0][0]);
 
-        const CONFIG_DEFAULT_VALUE   = 100;
+            //Now edit existing exportItem. The queuedJobs should not change
+            $exportItemId = $exportItem->id;
+            $exportItem->forget();
+            $exportItem   = ExportItem::getById($exportItemId);
+            $this->assertTrue($exportItem->save());
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[0][0]);
+
+            //Now create a new export item that is already complete, should not create a queue job.
+            $idsToExport = array(1,2,3);
+            $exportItem = new ExportItem();
+            $exportItem->isCompleted = 1;
+            $exportItem->exportFileType = 'csv';
+            $exportItem->exportFileName = 'test';
+            $exportItem->modelClassName = 'Account';
+            $exportItem->serializedData = serialize($idsToExport);
+            $this->assertTrue($exportItem->save());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[0][0]);
+        }
     }
 ?>

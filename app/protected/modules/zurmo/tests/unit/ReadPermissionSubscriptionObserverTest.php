@@ -34,65 +34,62 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoBaseTest extends BaseTest
+    class ReadPermissionSubscriptionObserverTest extends ZurmoBaseTest
     {
-        public static $activateDefaultLanguages = false;
+        protected static $billy;
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            ZurmoDatabaseCompatibilityUtil::createActualPermissionsCacheTable();
-            ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
-            PermissionsCache::forgetAll();
-            RightsCache::forgetAll();
-            PoliciesCache::forgetAll();
-            Currency::resetCaches();  //php only cache
-            $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
-            $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
-            $contactLatestActivityDateTimeObserver = new ContactLatestActivityDateTimeObserver();
-            $contactLatestActivityDateTimeObserver->init(); //runs init();
-            $accountLatestActivityDateTimeObserver = new AccountLatestActivityDateTimeObserver();
-            $accountLatestActivityDateTimeObserver->init(); //runs init();
-            Yii::app()->gameHelper;
-            Yii::app()->gamificationObserver; //runs init();
-            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
-            Yii::app()->emailHelper->sendEmailThroughTransport = false;
-            Yii::app()->jobQueue->deleteAll();
+            SecurityTestHelper::createSuperAdmin();
+            self::$billy = UserTestHelper::createBasicUser('Billy');
         }
 
         public function setUp()
         {
             parent::setUp();
-            Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        protected static function startOutputBuffer()
+        public function testOnCreateOwnerChangeAndDeleteModel()
         {
-            ob_start();
-        }
+            //test on a model that is not observed
+            $marketingList = new MarketingList();
+            $marketingList->name = 'test';
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertTrue($marketingList->save());
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
 
-        protected static function endAndGetOutputBuffer()
-        {
-            $content = ob_get_contents();
-            ob_end_clean();
-            self::cleanUpOutputBuffer();
-            return $content;
-        }
+            //test on a model that is observed
+            $account = new Account();
+            $account->name = 'an account';
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertTrue($account->save());
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('ReadPermissionSubscriptionQuickUpdate', $jobs[5][0]);
 
-        protected function endPrintOutputBufferAndFail()
-        {
-            echo $this->endAndGetOutputBuffer();
-            $this->fail();
-        }
+            //test on a model that is updated, but not created
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $account->name = 'a new name';
+            $this->assertTrue($account->save());
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
 
-        private static function cleanUpOutputBuffer()
-        {
-            while (count(ob_get_status(true)) > 1)
-            {
-                ob_end_clean();
-            }
+            //now test that the owner changes
+            $account->owner = self::$billy;
+            $this->assertTrue($account->save());
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('ReadPermissionSubscriptionQuickUpdate', $jobs[5][0]);
+
+            //Now delete model
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertTrue($account->delete());
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('ReadPermissionSubscriptionQuickUpdate', $jobs[5][0]);
         }
     }
 ?>

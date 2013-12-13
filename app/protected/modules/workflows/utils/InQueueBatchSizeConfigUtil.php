@@ -35,14 +35,14 @@
      ********************************************************************************/
 
     /**
-     * Class AutoresponderOrCampaignBatchSizeConfigUtil
+     * Class InQueueBatchSizeConfigUtil
      */
-    class AutoresponderOrCampaignBatchSizeConfigUtil extends BatchSizeConfigUtil
+    class InQueueBatchSizeConfigUtil extends BatchSizeConfigUtil
     {
-        const CONFIG_KEY             = 'AutoresponderOrCampaignBatchSize';
+        const CONFIG_KEY             = 'InQueueBatchSize';
 
-        const CONFIG_MODULE_NAME     = 'AutorespondersModule';
+        const CONFIG_MODULE_NAME     = 'WorkflowsModule';
 
-        const CONFIG_DEFAULT_VALUE   = 100;
+        const CONFIG_DEFAULT_VALUE   = 200;
     }
 ?>
