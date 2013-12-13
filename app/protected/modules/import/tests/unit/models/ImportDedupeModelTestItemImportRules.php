@@ -34,20 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Import rules for any attributes that are type Email.
-     */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class ImportDedupeModelTestItemImportRules extends ImportRules
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        public static function getModelClassName()
         {
-            return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+            return 'ImportDedupeModelTestItem';
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        /**
+         * Get fields for which dedupe ruled would be executed
+         * @return array
+         */
+        public static function getDedupeAttributes()
         {
-            return array('Email', 'Required', 'EmailDedupe');
+            return array('name', 'primaryEmail__emailAddress', 'secondaryEmail__emailAddress');
         }
     }
 ?>

@@ -35,40 +35,74 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the contacts module.
+     * Display the account selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on account.  Also includes a hidden input for the user
+     * id.
      */
-    class ContactsImportRules extends ImportRules
+    class AccountSelectOrCreateElement extends AccountElement
     {
-        public static function getModelClassName()
+        protected static $moduleId = 'accounts';
+
+        /**
+         * Renders extra html content
+         * @return string
+         */
+        protected function renderExtraHtmlContent()
         {
-            return 'Contact';
+            return $this->renderCreateAccountModalLink();
         }
 
         /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
+         * Render create account modal link
          * @return array
          */
-        public static function getDerivedAttributeTypes()
+        private function renderCreateAccountModalLink()
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('ContactState', 'FullName'));
+            $id      = $this->getIdForCreateLink();
+            $label   = $this->getCreateAccountLabel();
+            $content = ZurmoHtml::ajaxLink('<br/>' . $label,
+                Yii::app()->createUrl('accounts/default/modalCreate', $this->getSelectLinkUrlParams()),
+                $this->resolveAjaxOptionsForModalView($id),
+                array(
+                'id'        => $id,
+                'style'     => $this->getSelectLinkStartingStyle(),
+                )
+            );
+            return $content;
         }
 
         /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
+         * Get id for create link
+         * @return string
          */
-        public static function getNonImportableAttributeNames()
+        protected function getIdForCreateLink()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
+            return $this->getEditableInputId($this->attribute, 'CreateLink');
         }
 
         /**
-         * Get fields for which dedupe ruled would be executed
-         * @return array
+         * Resolve ajax options for modal view
+         * @param string $linkId
+         * @return string
          */
-        public static function getDedupeAttributes()
+        protected function resolveAjaxOptionsForModalView($linkId)
         {
-            return array('secondaryEmail__emailAddress', 'FullName');
+            assert('is_string($linkId)');
+            $title  = $this->getCreateAccountLabel();
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId(), 'auto', 600,
+                     'center top+25', $class = "'task-dialog'");
+        }
+
+        /**
+         * Gets create account label
+         * @return string
+         */
+        private function getCreateAccountLabel()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('AccountsModule', 'Create AccountsModuleSingularLabel', $params);
         }
     }
 ?>

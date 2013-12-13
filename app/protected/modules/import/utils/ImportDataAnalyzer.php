@@ -150,10 +150,12 @@
                 foreach ($this->sanitizableColumnNames as $columnName)
                 {
                     $attributeIndexOrDerivedType = $this->mappingData[$columnName]['attributeIndexOrDerivedType'];
+                    $penultimateModelClassName   = ImportUtil::getPenultimateModelClassNameByImportRules($this->importRules);
                     $attributeImportRules = AttributeImportRulesFactory::
                                             makeByImportRulesTypeAndAttributeIndexOrDerivedType(
                                             $this->importRules->getType(),
-                                            $attributeIndexOrDerivedType);
+                                            $attributeIndexOrDerivedType,
+                                            $penultimateModelClassName);
                     $modelClassName       = $attributeImportRules->getModelClassName();
                     $attributeName        = static::resolveAttributeNameByRules($attributeImportRules);
                     if (null != $attributeValueSanitizerUtilTypes = $attributeImportRules->getSanitizerUtilTypesInProcessingOrder())
@@ -163,7 +165,8 @@
                         {
                             $sanitizer = ImportSanitizerUtilFactory::
                                          make($attributeValueSanitizerUtilType, $modelClassName, $attributeName,
-                                         $columnName, $this->mappingData[$columnName]);
+                                         $columnName, $this->mappingData[$columnName], null, $penultimateModelClassName,
+                                         $attributeIndexOrDerivedType);
                             $sanitizer->analyzeByRow($rowBean);
                             if ($sanitizer->getShouldSkipRow())
                             {
@@ -182,6 +185,7 @@
                         }
                     }
                 }
+
                 if (!empty($columnMessages))
                 {
                     $rowBean->serializedAnalysisMessages = serialize($columnMessages);

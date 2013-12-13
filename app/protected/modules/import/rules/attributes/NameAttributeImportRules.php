@@ -35,19 +35,19 @@
      ********************************************************************************/
 
     /**
-     * Import rules for any attributes that are type Email.
+     * Import rules for name attribute.
      */
-    class EmailAttributeImportRules extends NonDerivedAttributeImportRules
+    class NameAttributeImportRules extends TextAttributeImportRules
     {
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
             return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+                         'NameModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('Email', 'Required', 'EmailDedupe');
+            return array_merge(parent::getSanitizerUtilTypesInProcessingOrder(), array('NameDedupe'));
         }
     }
 ?>
