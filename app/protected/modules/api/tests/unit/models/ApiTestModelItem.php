@@ -146,7 +146,7 @@
         public static function hasReadPermissionsOptimization()
         {
             // TODO: @Shoaibi: Critical0: Bug in ReadPermissionOptimizationUtil calls
-            return true;
+            return false;
         }
     }
 ?>
