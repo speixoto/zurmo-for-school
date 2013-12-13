@@ -35,40 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the contacts module.
+     * This form is used for dedupe for full name
      */
-    class ContactsImportRules extends ImportRules
+    class FullNameModelAttributeDedupeMappingRuleForm extends ModelAttributeDedupeMappingRuleForm
     {
-        public static function getModelClassName()
-        {
-            return 'Contact';
-        }
 
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
-        {
-            return array_merge(parent::getDerivedAttributeTypes(), array('ContactState', 'FullName'));
-        }
-
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
-        {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
-        }
-
-        /**
-         * Get fields for which dedupe ruled would be executed
-         * @return array
-         */
-        public static function getDedupeAttributes()
-        {
-            return array('secondaryEmail__emailAddress', 'FullName');
-        }
     }
 ?>

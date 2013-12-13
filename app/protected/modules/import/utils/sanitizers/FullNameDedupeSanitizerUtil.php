@@ -35,40 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the contacts module.
+     * Sanitizer for full name attributes.
      */
-    class ContactsImportRules extends ImportRules
+    class FullNameDedupeSanitizerUtil extends DedupeSanitizerUtil
     {
-        public static function getModelClassName()
+        public static function getLinkedMappingRuleType()
         {
-            return 'Contact';
+            return 'FullNameModelAttributeDedupe';
         }
 
         /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
+         * Get matched models
          * @return array
          */
-        public static function getDerivedAttributeTypes()
+        protected function getMatchedModels($value)
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('ContactState', 'FullName'));
-        }
-
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
-        {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
-        }
-
-        /**
-         * Get fields for which dedupe ruled would be executed
-         * @return array
-         */
-        public static function getDedupeAttributes()
-        {
-            return array('secondaryEmail__emailAddress', 'FullName');
+            $matchedModels  = ContactSearch::getContactsByFullName($value, 10);
+            return $matchedModels;
         }
     }
 ?>

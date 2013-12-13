@@ -172,5 +172,56 @@
             static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
             return Contact::getSubset($joinTablesAdapter, null, $pageSize, $where);
         }
+
+        /**
+         * For a give Contact name, run a full search by
+         * full name and retrieve contact models.
+         * @param string $fullName
+         * @param int $pageSize
+         * @param null|string $stateMetadataAdapterClassName
+         * @param $autoCompleteOptions
+         */
+        public static function getContactsByFullName($fullName, $pageSize,
+                                                    $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
+        {
+            assert('is_string($fullName)');
+            assert('is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            $personTableName   = Person::getTableName();
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Contact');
+            if (!$joinTablesAdapter->isTableInFromTables('person'))
+            {
+                $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
+            }
+            $metadata = array('clauses' => array(), 'structure' => '');
+            if ($stateMetadataAdapterClassName != null)
+            {
+                $stateMetadataAdapter = new $stateMetadataAdapterClassName($metadata);
+                $metadata = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+                $metadata['structure'] = '(' . $metadata['structure'] . ')';
+            }
+            $where  = RedBeanModelDataProvider::makeWhere('Contact', $metadata, $joinTablesAdapter);
+            if ($where != null)
+            {
+                $where .= 'and';
+            }
+            $where .= self::getWherePartForFullNameSearch($fullName);
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
+            return Contact::getSubset($joinTablesAdapter, null, $pageSize, $where, "person.firstname, person.lastname");
+        }
+
+        /**
+         * Gets where part for full name search
+         * @param string $fullName
+         * @return string
+         */
+        protected static function getWherePartForFullNameSearch($fullName)
+        {
+            assert('is_string($fullName)');
+            $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
+                                                                   '\' \'',
+                                                                   'person.lastname'));
+            return "       $fullNameSql = '$fullName'";
+        }
     }
 ?>
