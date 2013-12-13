@@ -348,6 +348,7 @@
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
+                    'webforms-external.less'
                 ),
             ),
         ),

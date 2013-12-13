@@ -55,6 +55,7 @@
         'lessFilesToCompile'    => array(
             'ie.less',
             'mobile.less',
+            'webforms-external.less',
             'zurmo.less'
         ),
     );
