@@ -496,7 +496,7 @@
                                                                       {
                                                                         $(this).html('" . $link . "');
                                                                         $(this).attr('class', '" . $targetClass . "');
-                                                                        if(data == '')
+                                                                        if (data == '')
                                                                         {
                                                                             $('#subscriberList').html('');
                                                                         }
@@ -716,7 +716,7 @@
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
             $script = " $(document).off('click.taskDetailLink', '#{$sourceId} .task-kanban-detail-link');
                         $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function()
-                          {
+                        {
                             var id = $(this).attr('id');
                             var idParts = id.split('-');
                             var taskId = parseInt(idParts[1]);
@@ -728,6 +728,7 @@
                                 'update'     : '{$ajaxOptions['update']}',
                                 'success': function(html){jQuery('#{$modalId}').html(html)}
                             });
+                            return false;
                           }
                         );";
              Yii::app()->clientScript->registerScript('taskModalDetailsScript' . $sourceId, $script);

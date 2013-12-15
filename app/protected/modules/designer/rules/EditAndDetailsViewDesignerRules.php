@@ -52,6 +52,7 @@
         {
             return array(
                 'createdDateTime',
+                'latestActivityDateTime',
                 'modifiedDateTime',
                 'createdByUser',
                 'modifiedByUser',

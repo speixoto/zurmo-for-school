@@ -34,30 +34,27 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Projects dashboard link.
-     */
-    class ProjectsDashboardMenuActionElement extends MenuActionElement
+    class ProjectListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
+        public function renderGridViewData()
         {
-            return Zurmo::t('ZurmoModule', 'Dashboard');
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl('projects/default/dashboardDetails');
-        }
-
-        public function getActionType()
-        {
-            return null;
+            if ($this->getIsLink())
+            {
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                            '$data->' . $this->attribute, $this->attribute, 'projects'),
+                );
+            }
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
+            }
         }
     }
 ?>
