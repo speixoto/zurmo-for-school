@@ -39,8 +39,13 @@
      * ZurmoRedBeanPluginQueryLogger doesn't contain all data we need to log, so we had to extend this class.
      * Code is optimized, so data are written only once to file, in EndRequestBehavior
      */
-    class ZurmoRedBeanQueryFileLogger extends ZurmoFileLogger
+    class ZurmoRedBeanQueryFileLogger extends ZurmoFileLogger implements RedBean_ILogger
     {
+        /**
+         * @var string log file name
+         */
+        protected $logFile = 'redBeanSqlQuery.log';
+
         /**
          * Save sql query logs into file
          */

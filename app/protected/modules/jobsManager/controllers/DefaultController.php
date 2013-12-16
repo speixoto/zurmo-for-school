@@ -164,7 +164,7 @@
                         makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
             $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
-            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template);
+            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, true, $template);
             echo ZurmoHtml::script('$("#progress-table").hide(); $("#complete-table").show();');
         }
     }

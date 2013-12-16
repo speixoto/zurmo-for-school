@@ -46,13 +46,17 @@
          */
         protected $template = "{message}";
 
-        public function __construct($template = null)
+        protected $jobManagerFileLogger;
+
+        public function __construct($template = null, $jobManagerFileLogger)
         {
             assert('is_string($template) || $template == null');
+            assert('$jobManagerFileLogger instance of JobManagerFileLogger');
             if ($template != null)
             {
                 $this->template = $template;
             }
+            $this->jobManagerFileLogger = $jobManagerFileLogger;
         }
 
         /**
@@ -63,7 +67,7 @@
         {
             assert('is_string($message) && $message !=""');
             $message = strtr($this->template, array('{message}' => $message));
-            Yii::app()->jobManagerFileLogger->log($message);
+            $this->jobManagerFileLogger->log($message);
         }
 
         /**
@@ -74,7 +78,7 @@
         public function addIgnoringTemplate($message)
         {
             assert('is_string($message) && $message !=""');
-            Yii::app()->jobManagerLogger->log($message);
+            $this->jobManagerFileLogger->log($message);
         }
 
         public function setEmptyTemplate()

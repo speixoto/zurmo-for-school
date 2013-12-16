@@ -46,10 +46,12 @@
          * @param string $type
          * @param int $timeLimit
          * @param $messageLoggerClassName
+         * @param bool $useMessageStreamer
          * @param string $template
          * @param string $lineBreak
          */
         public static function runFromJobManagerCommandOrBrowser($type, $timeLimit, $messageLoggerClassName,
+                                                                 $useMessageStreamer = true,
                                                                  $template = "{message}\n", $lineBreak = "\n")
         {
             assert('is_string($type)');
@@ -61,7 +63,7 @@
             assert('is_string($lineBreak)');
             set_time_limit($timeLimit);
 
-            $jobManagerFileLoggerComponent = Yii::createComponent(
+            $jobManagerFileLogger = Yii::createComponent(
                 array(
                     'class'       => 'application.modules.jobsManager.components.JobManagerFileLogger',
                     'maxFileSize' => '2048',
@@ -69,20 +71,30 @@
                     'logPath'     => Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'jobLogs'
                 )
             );
-            $jobManagerFileLoggerComponent->init();
-            Yii::app()->setComponent('jobManagerFileLogger', $jobManagerFileLoggerComponent);
-            Yii::app()->jobManagerFileLogger->init();
 
-            $jobManagerFileMessageStreamer = new JobManagerFileLogRouteMessageStreamer("{message}\n");
+            $jobManagerFileMessageStreamer = new JobManagerFileLogRouteMessageStreamer("{message}\n", $jobManagerFileLogger);
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
-            $messageLogger = new $messageLoggerClassName(array($messageStreamer, $jobManagerFileMessageStreamer));
+            $streamers = array($messageStreamer, $jobManagerFileMessageStreamer);
 
-            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
-                                           array('{seconds}' => $timeLimit)));
-            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
-                                           array('{type}' => $type,
-                                                 '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+
+            foreach ($streamers as $streamer)
+            {
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
+                                                array('{seconds}' => $timeLimit)));
+                echo $lineBreak;
+                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
+                                               array('{type}' => $type,
+                                                     '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+            }
+            if ($useMessageStreamer)
+            {
+                $messageLogger = new $messageLoggerClassName(array($messageStreamer, $jobManagerFileMessageStreamer));
+            }
+            else
+            {
+                $messageLogger = new $messageLoggerClassName(array($jobManagerFileMessageStreamer));
+            }
             $messageLogger->addDebugMessage('Showing Debug Messages');
             if ($type == 'Monitor')
             {
@@ -92,9 +104,12 @@
             {
                 static::runNonMonitorJob($type, $messageLogger);
             }
-            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
-                                           array('{type}' => $type,
-                                                 '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())) . PHP_EOL);
+            foreach ($streamers as $streamer)
+            {
+                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
+                                               array('{type}' => $type,
+                                                     '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+            }
         }
 
         /**
@@ -153,6 +168,7 @@
         /**
          * Given a 'type' of job, run the job.  This is for non-monitor jobs only.
          * @param string $type
+         * @param MessageLogger $messageLogger
          */
         public static function runNonMonitorJob($type, MessageLogger $messageLogger)
         {
@@ -190,7 +206,7 @@
                     $jobLog->message       = $errorMessage;
                 }
                 $jobLog->isProcessed = false;
-                $s = $jobLog->save();
+                $jobLog->save();
             }
         }
 

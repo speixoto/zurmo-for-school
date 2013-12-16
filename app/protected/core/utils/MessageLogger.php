@@ -70,7 +70,7 @@
         {
             assert('$messageStreamer == null || $messageStreamer instanceof MessageStreamer || $messageStreamer instanceof JobManagerFileLogRouteMessageStreamer || is_array($messageStreamer)');
             $messageStreamers = array();
-            if ($messageStreamer instanceof MessageStreamer)
+            if ($messageStreamer instanceof MessageStreamer || $messageStreamer instanceof JobManagerFileLogRouteMessageStreamer)
             {
                 $messageStreamers[] = $messageStreamer;
             }

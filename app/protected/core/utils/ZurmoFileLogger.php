@@ -37,7 +37,7 @@
     /**
      * Log data into file.
      */
-    class ZurmoFileLogger extends CApplicationComponent implements RedBean_ILogger
+    class ZurmoFileLogger extends CApplicationComponent
     {
         /**
          * @var integer maximum log file size
