@@ -52,7 +52,7 @@
             {
                 return null;
             }
-            return ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key, $cache);
+            return static::getByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key, $cache);
         }
 
         /**
@@ -118,7 +118,7 @@
             {
                 return null;
             }
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key, $value, $cache);
+            static::setByUserAndModuleName(Yii::app()->user->userModel, $moduleName, $key, $value, $cache);
         }
 
         /**

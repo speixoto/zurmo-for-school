@@ -37,7 +37,7 @@
     /**
     * Tasks API Controller
     */
-    class TasksTaskApiController extends ZurmoModuleApiController
+    class TasksTaskApiController extends ZurmoSecurableItemApiController
     {
         protected static function getSearchFormClassName()
         {

@@ -131,6 +131,7 @@
                 $inputContent .= $this->renderSelectLink();
                 $content       = $content . ZurmoHtml::tag('div', array('class' => 'has-model-select'), $inputContent);
             }
+            $content .= $this->renderExtraHtmlContent();
             return $content;
         }
 
@@ -488,6 +489,15 @@
         protected function getOnSelectOptionForAutoComplete($idInputName)
         {
             return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}';
+        }
+
+        /**
+         * Renders extra html content
+         * @return null
+         */
+        protected function renderExtraHtmlContent()
+        {
+            return null;
         }
     }
 ?>

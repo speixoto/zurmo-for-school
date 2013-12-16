@@ -37,7 +37,7 @@
     /**
     * Api test controller, used to test actions related to ApiTestModelItem
     */
-    class ApiTestModelItemApiController extends ZurmoModuleApiController
+    class ApiTestModelItemApiController extends ZurmoSecurableItemApiController
     {
         protected function getModelName()
         {
