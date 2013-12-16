@@ -620,8 +620,6 @@
             $item       = NamedSecurableItem::getByName('ImportModule');
             $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
 
-            $testModels                        = ImportDedupeModelTestItem::getAll();
-            $this->assertEquals(0, count($testModels));
             $import                                = new Import();
             $serializedData['importRulesType']     = 'Accounts';
             $serializedData['firstRowIsHeaderRow'] = true;

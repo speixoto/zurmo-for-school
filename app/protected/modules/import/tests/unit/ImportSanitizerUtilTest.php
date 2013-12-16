@@ -674,6 +674,9 @@
 
         public function testSanitizeValueBySanitizerTypesForFullNameTypeThatIsRequired()
         {
+            $user = User::getByUsername('super');
+            Yii::app()->user->userModel = $user;
+            
             //Test a non-required FullName with no value or default value.
             $importSanitizeResultsUtil = new ImportSanitizeResultsUtil();
             $columnMappingData         = array('type' => 'importColumn', 'mappingRulesData' => array(
