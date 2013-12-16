@@ -159,13 +159,13 @@
                    $action == self::TASK_NEW_COMMENT)
             {
                 $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
-                if ($action == self::TASK_NEW_COMMENT && $relatedUser != null)
+                if ($relatedUser != null)
                 {
                     foreach ($peopleToSendNotification as $key => $person)
                     {
                         if ($person->getClassId('Item') == $relatedUser->getClassId('Item'))
                         {
-                            unset($peopleToSendNotification[$key]);
+                           unset($peopleToSendNotification[$key]);
                         }
                     }
                 }
