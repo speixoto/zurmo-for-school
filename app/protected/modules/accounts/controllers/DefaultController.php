@@ -48,6 +48,11 @@
                         'viewClassName'   => $viewClassName,
                    ),
                     array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreate',
+                        'moduleClassName' => get_class($this->getModule()),
+                        'viewClassName'   => 'AccountModalCreateView',
+                   ),
+                    array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
                    ),
@@ -323,6 +328,46 @@
         public function actionExport()
         {
             $this->export('AccountsSearchView');
+        }
+
+        /**
+         * Modal create for account
+         */
+        public function actionModalCreate()
+        {
+            $account = new Account();
+            $this->validateCreateModalPostData();
+            if (isset($_POST['Account']) && Yii::app()->request->isAjaxRequest)
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false);
+                if($account->id > 0)
+                {
+                    echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
+                    Yii::app()->end(0, false);
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
+
+            }
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
+                                                                                      'AccountModalCreateView',
+                                                                                      $account, 'Edit');
+        }
+
+        /**
+         * Modal validate for account
+         */
+        protected function validateCreateModalPostData()
+        {
+            $account = new Account();
+            if (isset($_POST['ajax']) && Yii::app()->request->isAjaxRequest)
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false, true);
+                echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
+                Yii::app()->end(0, false);
+            }
         }
     }
 ?>

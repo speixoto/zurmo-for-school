@@ -71,7 +71,7 @@
                 throw new NotSupportedException();
             }
             assert('is_string($name)');
-            $bean = ZurmoRedBean::findOne(EmailAccount::getTableName('EmailAccount'),
+            $bean = ZurmoRedBean::findOne(EmailAccount::getTableName(),
                                "_user_id = ? AND name = ?", array($user->id, $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)

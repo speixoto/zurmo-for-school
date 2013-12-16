@@ -78,7 +78,7 @@
             {
                 $modelClassName = get_called_class();
             }
-            $tableName = self::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             $bean = ZurmoRedBean::findOne(
                                $tableName,
                                ' category = :category AND source = :source',

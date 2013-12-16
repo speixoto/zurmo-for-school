@@ -127,7 +127,7 @@
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
             $this->registerKanbanGridScript();
-            $this->resolveShouldOpenToTask();
+            TasksUtil::resolveShouldOpenToTask($this->getGridId());
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             $content .= $this->renderScripts();
             $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
@@ -388,15 +388,6 @@
                 $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
             }
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
-        }
-
-        protected function resolveShouldOpenToTask()
-        {
-            $getData = GetUtil::getData();
-            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
-            {
-                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
-            }
         }
 
         /**

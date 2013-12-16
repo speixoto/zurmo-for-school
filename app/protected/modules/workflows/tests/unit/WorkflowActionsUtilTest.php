@@ -203,7 +203,7 @@
             $saved         = $savedWorkflow->save();
             $this->assertTrue($saved);
 
-            $this->assertEquals(0, count(WorkflowModelTestItem2::getAll()));
+            $this->assertEquals(0, WorkflowModelTestItem2::getCount());
             WorkflowActionsUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
             $workflowModelTestItem2s = WorkflowModelTestItem2::getAll();
             $this->assertEquals(1, count($workflowModelTestItem2s));

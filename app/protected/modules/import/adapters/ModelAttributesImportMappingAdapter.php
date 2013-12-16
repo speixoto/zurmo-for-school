@@ -76,7 +76,6 @@
                      $this->isAttributeAHasOneOwnedRelationThatShouldBehaveAsNotOwnedRelation($attributeName))
                 {
                    $type         = ModelAttributeToMixedTypeUtil::getType($this->model, $attributeName);
-
                    $resolvedType = static::resolveAttributeImportTypeByAttributeName($type, $attributeName);
                     ModelAttributeImportMappingCollectionUtil::populateCollection(
                         $attributes,
@@ -246,6 +245,10 @@
             if ($attributeName =='username')
             {
                 return 'Username';
+            }
+            if ($attributeName =='name')
+            {
+                return 'Name';
             }
             return $type;
         }

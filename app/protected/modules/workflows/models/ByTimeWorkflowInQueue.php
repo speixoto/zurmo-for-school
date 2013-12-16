@@ -173,7 +173,7 @@
          */
         public static function getModelsToProcess($pageSize)
         {
-            assert('is_int($pageSize)');
+            assert('is_int($pageSize) || $pageSize == null');
             $timeStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -187,6 +187,12 @@
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('ByTimeWorkflowInQueue');
             $where = RedBeanModelDataProvider::makeWhere('ByTimeWorkflowInQueue', $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+        }
+
+        protected function afterSave()
+        {
+            InQueueUtil::resolveToAddJobToQueueAfterSaveOfModel($this, 'ByTimeWorkflowInQueue');
+            parent::afterSave();
         }
     }
 ?>

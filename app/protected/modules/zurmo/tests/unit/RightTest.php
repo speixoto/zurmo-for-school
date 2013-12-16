@@ -210,7 +210,7 @@
             unset($salesStaff);
             unset($everyone);
 
-            Right::removeAll();
+            Right::deleteAll();
             //Clear the cache since the method above removeAll calls directly to the database.
             RightsCache::forgetAll();
 
@@ -293,7 +293,7 @@
             $this->assertEquals(Right::ALLOW, $userInParentRole    ->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
             $this->assertEquals(Right::ALLOW, $userInChildChildRole->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
 
-            Right::removeAll();
+            Right::deleteAll();
             //Clear the cache since the method above removeAll calls directly to the database.
             RightsCache::forgetAll();
 

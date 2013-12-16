@@ -715,11 +715,13 @@
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
             $script = " $(document).off('click.taskDetailLink', '#{$sourceId} .task-kanban-detail-link');
-                        $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function(){
+                        $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function()
+                        {
                             var id = $(this).attr('id');
                             var idParts = id.split('-');
                             var taskId = parseInt(idParts[1]);
-                            $.ajax({
+                            $.ajax(
+                            {
                                 'type' : 'GET',
                                 'url'  : '{$url}' + '?id=' + taskId,
                                 'beforeSend' : {$ajaxOptions['beforeSend']},
@@ -939,6 +941,10 @@
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
             }
+            else
+            {
+                $sortOrder = 1;
+            }
             return $sortOrder;
         }
 
@@ -966,31 +972,28 @@
          */
         public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
         {
-            if ($task->project->id > 0 || $task->activityItems->count() > 0)
+            $kanbanItem = KanbanItem::getByTask($task->id);
+            //It should be created here but check for create as well here
+            if ($kanbanItem == null)
             {
-                $kanbanItem = KanbanItem::getByTask($task->id);
-                //It should be created here but check for create as well here
-                if ($kanbanItem == null)
+                $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+            }
+            $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+            if ($kanbanItem->type != $kanbanTypeByStatus)
+            {
+                $sourceKanbanItemType = $kanbanItem->type;
+                //put the item at the end
+                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
+                $kanbanItem->type = $kanbanTypeByStatus;
+                $kanbanItem->save();
+                //Resort the source column
+                if ($task->project->id > 0)
                 {
-                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
                 }
-                $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-                if ($kanbanItem->type != $kanbanTypeByStatus)
+                elseif ($task->activityItems->count() > 0)
                 {
-                    $sourceKanbanItemType = $kanbanItem->type;
-                    //put the item at the end
-                    $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
-                    $kanbanItem->type = $kanbanTypeByStatus;
-                    $kanbanItem->save();
-                    //Resort the source column
-                    if ($task->project->id > 0)
-                    {
-                        TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
-                    }
-                    else
-                    {
-                        TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
-                    }
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
                 }
             }
         }
@@ -1126,6 +1129,18 @@
                           }
                         );";
              Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Resolve that should task be opened in modal detal view
+         */
+        public static function resolveShouldOpenToTask($gridId)
+        {
+            $getData = GetUtil::getData();
+            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            {
+                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+            }
         }
     }
 ?>

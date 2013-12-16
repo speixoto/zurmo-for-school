@@ -72,7 +72,8 @@
             foreach ($this->model->attributeNames() as $attributeName)
             {
                 if (!$this->model->isRelation($attributeName) ||
-                    $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE)
+                    $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
+                    $this->model->getRelationType($attributeName) == RedBeanModel::HAS_MANY_BELONGS_TO)
                 {
                     if ($this->model instanceof Item)
                     {

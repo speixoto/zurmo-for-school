@@ -165,6 +165,7 @@
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
             $messageLogger = new MessageLogger($messageStreamer);
+            $messageLogger->logDateTimeStamp = false;
             if (!$reuse)
             {
                 if (!is_writable(sys_get_temp_dir()))

@@ -119,10 +119,10 @@
             $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
             WorkflowTestHelper::createExpiredByTimeWorkflowInQueue($model, $savedWorkflow);
 
-            $this->assertEquals(1, count(ByTimeWorkflowInQueue::getAll()));
+            $this->assertEquals(1, ByTimeWorkflowInQueue::getCount());
             $job = new ByTimeWorkflowInQueueJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(ByTimeWorkflowInQueue::getAll()));
+            $this->assertEquals(0, ByTimeWorkflowInQueue::getCount());
             $this->assertEquals('jason', $model->string);
         }
     }

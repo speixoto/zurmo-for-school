@@ -40,6 +40,7 @@
         public function attach($owner)
         {
             $owner->attachEventHandler('onEndRequest', array($this, 'handleGamification'));
+            $owner->attachEventHandler('onEndRequest', array($this, 'handleJobQueue'));
             $owner->attachEventHandler('onEndRequest', array($this, 'handleEndRequest'));
         }
 

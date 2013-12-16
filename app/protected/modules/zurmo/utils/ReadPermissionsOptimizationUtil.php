@@ -84,7 +84,7 @@
                     }
                     else
                     {
-                        $modelTableName     = RedBeanModel::getTableName($modelClassName);
+                        $modelTableName     = $modelClassName::getTableName();
                         if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                         {
                             throw new NotImplementedException();
@@ -97,7 +97,7 @@
                             }
                             else
                             {
-                                $modelTableName = Person::getTableName('Person');
+                                $modelTableName = Person::getTableName();
                             }
                         }
                         ZurmoDatabaseCompatibilityUtil::
@@ -1117,7 +1117,7 @@
         protected static function getMainTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
+            return $modelClassName::getTableName();
         }
 
         /**

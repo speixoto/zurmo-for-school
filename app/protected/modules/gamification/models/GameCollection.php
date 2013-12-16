@@ -172,7 +172,7 @@
                 ),
                 'relations' => array(
                     'person' => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
-                                      static::LINK_TYPE_SPECIFIC, 'person'),
+                        static::LINK_TYPE_SPECIFIC, 'person'),
                 ),
                 'rules' => array(
                     array('type',           'required'),

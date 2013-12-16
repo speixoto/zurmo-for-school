@@ -143,8 +143,8 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
-            $notificationsBeforeCount        = count(Notification::getAll());
-            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+            $notificationsBeforeCount        = Notification::getCount();
+            $notificationMessagesBeforeCount = NotificationMessage::getCount();
 
             Contact::deleteAll();
             $leads = array();
@@ -174,13 +174,13 @@
             $this->assertEquals('leads', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
-            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+            $this->assertEquals($notificationsBeforeCount + 1, Notification::getCount());
+            $this->assertEquals($notificationMessagesBeforeCount + 1, NotificationMessage::getCount());
 
             // Check export job, when many ids are selected.
             // This will probably never happen, but we need test for this case too.
-            $notificationsBeforeCount        = count(Notification::getAll());
-            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+            $notificationsBeforeCount        = Notification::getCount();
+            $notificationMessagesBeforeCount = NotificationMessage::getCount();
 
             // Now test case when multiple ids are selected
             ExportItem::deleteAll();
@@ -218,8 +218,8 @@
             $this->assertEquals('leads', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
-            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+            $this->assertEquals($notificationsBeforeCount + 1, Notification::getCount());
+            $this->assertEquals($notificationMessagesBeforeCount + 1, NotificationMessage::getCount());
         }
     }
 ?>

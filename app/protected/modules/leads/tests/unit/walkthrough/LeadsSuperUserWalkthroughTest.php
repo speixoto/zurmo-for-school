@@ -472,9 +472,9 @@
             $this->assertTrue($lead5->state == $startingLeadState);
             $this->setGetArray(array('id' => $lead5->id));
             $this->setPostArray(array('Account' => array('name' => 'someAccountName')));
-            $this->assertEquals(0, count(Account::getAll()));
+            $this->assertEquals(0, Account::getCount());
             $this->runControllerWithRedirectExceptionAndGetContent('leads/default/convert');
-            $this->assertEquals(1, count(Account::getAll()));
+            $this->assertEquals(1, Account::getCount());
             $lead5Id = $lead5->id;
             $lead5->forget();
             $contact5 = Contact::getById($lead5Id);
@@ -488,9 +488,9 @@
             $this->setGetArray(array('id' => $lead6->id));
             $this->setPostArray(array('AccountSelectForm' => array('accountId' => $account->id,
                                                                    'accountName' => 'someNewAccount')));
-            $this->assertEquals(2, count(Account::getAll()));
+            $this->assertEquals(2, Account::getCount());
             $this->runControllerWithRedirectExceptionAndGetContent('leads/default/convert');
-            $this->assertEquals(2, count(Account::getAll()));
+            $this->assertEquals(2, Account::getCount());
             $lead6Id = $lead6->id;
             $lead6->forget();
             $contact6 = Contact::getById($lead6Id);

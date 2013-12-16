@@ -128,10 +128,10 @@
             WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize(array($emailMessages[1])));
 
             RedBeanModelsCache::forgetAll(true); //simulates page change, required to confirm Item does not get trashed
-            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(1, WorkflowMessageInQueue::getCount());
             $job = new WorkflowMessageInQueueJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(0, WorkflowMessageInQueue::getCount());
 
             RedBeanModelsCache::forgetAll(true); //simulates page change, required to confirm Item does not get trashed
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
@@ -159,10 +159,10 @@
             $deleted = $savedWorkflow->delete();
             $this->assertTrue($deleted);
 
-            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(1, WorkflowMessageInQueue::getCount());
             $job = new WorkflowMessageInQueueJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(0, WorkflowMessageInQueue::getCount());
                         $model->forget();
         }
     }

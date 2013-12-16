@@ -83,7 +83,11 @@
             );
             $selectedListAttributes = array('name', 'officePhone');
             $data = $adapter->resolveMetadataFromSelectedListAttributes('AccountsListView', $selectedListAttributes);
-            $compareMetadata = array('panels' =>
+            $compareMetadata = array(
+                'nonPlaceableAttributeNames' => array(
+                    'account',
+                ),
+                'panels' =>
                 array(
                     array(
                         'rows' => array(
@@ -530,8 +534,7 @@
             $account = new Account();
             $adapter = new ModelAttributesAdapter($account);
             $attributes = $adapter->getStandardAttributes();
-            $this->assertEquals(20, count($attributes));
-
+            $this->assertEquals(21, count($attributes));
             $this->assertEquals('Name',                      $attributes['name']                  ['attributeLabel']);
             $this->assertEquals('Industry',                  $attributes['industry']              ['attributeLabel']);
             $this->assertEquals('Type',                      $attributes['type']                  ['attributeLabel']);
@@ -541,6 +544,7 @@
             $this->assertEquals('DropDown', $attributes['industry']              ['elementType']);
             $this->assertEquals('DropDown', $attributes['type']                  ['elementType']);
             $this->assertEquals('DateTime', $attributes['latestActivityDateTime']['elementType']);
+            $this->assertEquals('Account',  $attributes['account']               ['elementType']);
 
             $this->assertTrue(!isset($attributes['notes']));
         }

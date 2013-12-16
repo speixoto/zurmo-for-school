@@ -40,11 +40,43 @@
     class CampaignGenerateDueCampaignItemsJob extends AutoresponderOrCampaignBaseJob
     {
         /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
+
+        /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
            return Zurmo::t('CampaignsModule', 'Generate campaign items');
+        }
+
+        /**
+         * @see parent::resolveJobsForQueue()
+         */
+        public static function resolveJobsForQueue()
+        {
+            parent::resolveJobsForQueue();
+            $pageSize       = static::JOB_QUEUE_PAGE_SIZE;
+            $offset         = 0;
+            $timeStamp      = time();
+            do
+            {
+                $campaigns = Campaign::getByStatusAndSendingTime(
+                                Campaign::STATUS_ACTIVE, $timeStamp, $pageSize, $offset, false);
+                $offset    = $offset + $pageSize;
+                if (is_array($campaigns) && count($campaigns) > 0)
+                {
+                    foreach ($campaigns as $campaign)
+                    {
+                        Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($campaign, 'sendOnDateTime',
+                                                'CampaignGenerateDueCampaignItems');
+                    }
+                }
+            }
+            while (is_array($campaigns) && count($campaigns) > 0);
         }
 
         /**

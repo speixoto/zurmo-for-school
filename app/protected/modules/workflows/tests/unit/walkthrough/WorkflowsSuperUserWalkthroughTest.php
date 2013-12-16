@@ -70,7 +70,7 @@
          */
         public function testCreateAction()
         {
-            $this->assertEquals(0, count(SavedWorkflow::getAll()));
+            $this->assertEquals(0, SavedWorkflow::getCount());
             $content = $this->runControllerWithExitExceptionAndGetContent     ('workflows/default/create');
             $this->assertFalse(strpos($content, 'On-Save Workflow') === false);
             $this->assertFalse(strpos($content, 'Time-Based Workflow') === false);
