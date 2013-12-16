@@ -35,10 +35,7 @@
     padding:15px;
 }
 .add-custom-field{
-    .panel-buffer{
-        height:30px;
-    }
-    .panel-buffer > div{
+	.left-column > div{
         width: 100%;
         float:left;
     }
@@ -46,23 +43,20 @@
         margin-right:130px;
         width:auto;
     }
-    .configure-custom-field-button{
-        position: relative;
-        top: 1px;
-        &:before{
-            content: "n";
-            .symbly(16px);
-            margin-right:5px;
-            position:relative;
-            top:0px;
-        }
-    }
 }
 
 #attributeTypeNameButton{
-    margin:0 0 0 -115px;
-    float:right;
-    clear:right;
+    margin:0 0 0 -105px;
+	span{
+		padding: 0 15px;
+	}
+	span:before{
+		content: "n";
+		.symbly(16px);
+		margin-right:5px;
+		position:relative;
+		top:0px;
+	}
 }
 
 

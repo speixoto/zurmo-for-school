@@ -10023,10 +10023,7 @@ div.wide.form .errorMessage {
 .panel-buffer {
   padding: 15px;
 }
-.add-custom-field .panel-buffer {
-  height: 30px;
-}
-.add-custom-field .panel-buffer > div {
+.add-custom-field .left-column > div {
   width: 100%;
   float: left;
 }
@@ -10034,11 +10031,13 @@ div.wide.form .errorMessage {
   margin-right: 130px;
   width: auto;
 }
-.add-custom-field .configure-custom-field-button {
-  position: relative;
-  top: 1px;
+#attributeTypeNameButton {
+  margin: 0 0 0 -105px;
 }
-.add-custom-field .configure-custom-field-button:before {
+#attributeTypeNameButton span {
+  padding: 0 15px;
+}
+#attributeTypeNameButton span:before {
   content: "n";
   font-weight: normal !important;
   font-size: 16px;
@@ -10046,11 +10045,6 @@ div.wide.form .errorMessage {
   margin-right: 5px;
   position: relative;
   top: 0px;
-}
-#attributeTypeNameButton {
-  margin: 0 0 0 -115px;
-  float: right;
-  clear: right;
 }
 .lead-conversion-radiobutton {
   display: block;
