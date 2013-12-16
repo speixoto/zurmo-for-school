@@ -717,9 +717,9 @@
                         $importRowDataResultsUtil->setStatusToError();
                         $isSkipped = true;
                     }
+                    $skippedColumns[] = $sourceColumnName;
                 }
             }
-            $skippedColumns[] = $sourceColumnName;
             return $isSkipped;
         }
     }
