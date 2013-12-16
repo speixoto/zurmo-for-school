@@ -39,18 +39,6 @@
     */
     class ApiRestOpportunityTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetOpportunity()
         {
             $super = User::getByUsername('super');
@@ -65,14 +53,19 @@
             $this->assertTrue(ContactsModule::loadStartingData());
 
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('First Opportunity', $super);
+            $compareData  = $this->getModelToApiDataUtilData($opportunity);
 
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($opportunity);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
-
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/read/' . $opportunity->id, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunity->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
         }
 
         /**
@@ -92,20 +85,20 @@
             $opportunities = Opportunity::getByName('First Opportunity');
             $this->assertEquals(1, count($opportunities));
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/read/' . $opportunities[0]->id, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
         /**
-        * @depends testApiServerUrl
-        */
+         * @depends testGetOpportunity
+         */
         public function testCreateOpportunity()
         {
             $super = User::getByUsername('super');
@@ -147,7 +140,7 @@
             $account->owner = $super;
             $this->assertTrue($account->save());
 
-            $data['name']           = "Michael";
+            $data['name']           = "Michael with no permissions";
             $data['closeDate']            = "2002-04-03";
             $data['description']          = "Opportunity description";
 
@@ -161,9 +154,269 @@
             );
             $data['stage']['value']     = $stageValues[1];
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/create/', 'POST', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('id', $response['data']);
+            $OpportunityId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            $data['owner'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['createdByUser']    = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modifiedByUser'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+
+            // unset explicit permissions, we won't use these in comparison.
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            // We need to unset some empty values from response.
+            $data['probability'] = '50';
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['stage']['id']);
+            unset($response['data']['source']['id']);
+            unset($response['data']['amount']['id']);
+            unset($response['data']['amount']['rateToBase']);
+            unset($response['data']['id']);
+            ksort($data);
+            ksort($response['data']);
+            $this->assertEquals($data, $response['data']);;
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $OpportunityId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+         * @depends testCreateOpportunity
+         */
+        public function testCreateOpportunityWithSpecificOwner()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $billy  = User::getByUsername('billy');
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $sourceValues = array(
+                'Word of Mouth',
+                'Outbound',
+                'Trade Show',
+            );
+            $sourceFieldData = CustomFieldData::getByName('LeadSources');
+            $sourceFieldData->serializedData = serialize($sourceValues);
+            $this->assertTrue($sourceFieldData->save());
+
+            $stageValues = array(
+                'Prospecting',
+                'Negotiating',
+                'Close Won',
+            );
+            $stageFieldData = CustomFieldData::getByName('SalesStages');
+            $stageFieldData->serializedData = serialize($stageValues);
+            $this->assertTrue($stageFieldData->save());
+
+            $currencies                 = Currency::getAll();
+            $currencyValue              = new CurrencyValue();
+            $currencyValue->value       = 100;
+            $currencyValue->currency    = $currencies[0];
+            $this->assertEquals('USD', $currencyValue->currency->code);
+
+            $account        = new Account();
+            $account->name  = 'Some Account';
+            $account->owner = $super;
+            $this->assertTrue($account->save());
+
+            $data['name']                 = "Michael with just owner";
+            $data['closeDate']            = "2002-04-03";
+            $data['description']          = "Opportunity description";
+
+            $data['source']['value']     = $sourceValues[1];
+            $data['account']['id']       = $account->id;
+            $data['amount']       = array(
+                'value' => $currencyValue->value,
+                'currency' => array(
+                    'id' => $currencyValue->currency->id
+                )
+            );
+            $data['stage']['value']     = $stageValues[1];
+            $data['owner']['id']        = $billy->id;
+
+            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('id', $response['data']);
+            $OpportunityId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+
+            $data['owner'] = array(
+                'id' => $billy->id,
+                'username' => 'billy'
+            );
+            $data['createdByUser']    = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+            $data['modifiedByUser'] = array(
+                'id' => $super->id,
+                'username' => 'super'
+            );
+
+            // unset explicit permissions, we won't use these in comparison.
+            unset($response['data']['explicitReadWriteModelPermissions']);
+            // We need to unset some empty values from response.
+            $data['probability'] = '50';
+            unset($response['data']['createdDateTime']);
+            unset($response['data']['modifiedDateTime']);
+            unset($response['data']['stage']['id']);
+            unset($response['data']['source']['id']);
+            unset($response['data']['amount']['id']);
+            unset($response['data']['amount']['rateToBase']);
+            unset($response['data']['id']);
+            ksort($data);
+            ksort($response['data']);
+            $this->assertEquals($data, $response['data']);;
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $OpportunityId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($billy->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals(1, $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
+        }
+
+        /**
+         * @depends testCreateOpportunity
+         */
+        public function testCreateOpportunityWithSpecificExplicitPermissions()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $sourceValues = array(
+                'Word of Mouth',
+                'Outbound',
+                'Trade Show',
+            );
+            $sourceFieldData = CustomFieldData::getByName('LeadSources');
+            $sourceFieldData->serializedData = serialize($sourceValues);
+            $this->assertTrue($sourceFieldData->save());
+
+            $stageValues = array(
+                'Prospecting',
+                'Negotiating',
+                'Close Won',
+            );
+            $stageFieldData = CustomFieldData::getByName('SalesStages');
+            $stageFieldData->serializedData = serialize($stageValues);
+            $this->assertTrue($stageFieldData->save());
+
+            $currencies                 = Currency::getAll();
+            $currencyValue              = new CurrencyValue();
+            $currencyValue->value       = 100;
+            $currencyValue->currency    = $currencies[0];
+            $this->assertEquals('USD', $currencyValue->currency->code);
+
+            $account        = new Account();
+            $account->name  = 'Some Account';
+            $account->owner = $super;
+            $this->assertTrue($account->save());
+
+            $data['name']           = "Michael with owner only permissions";
+            $data['closeDate']            = "2002-04-03";
+            $data['description']          = "Opportunity description";
+
+            $data['source']['value']     = $sourceValues[1];
+            $data['account']['id']       = $account->id;
+            $data['amount']       = array(
+                'value' => $currencyValue->value,
+                'currency' => array(
+                    'id' => $currencyValue->currency->id
+                )
+            );
+            $data['stage']['value']     = $stageValues[1];
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
+
+            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('id', $response['data']);
+            $OpportunityId     = $response['data']['id'];
+
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            // following also works. wonder why.
+            //$this->assertTrue(null === $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
 
             $data['owner'] = array(
                 'id' => $super->id,
@@ -190,6 +443,22 @@
             ksort($data);
             ksort($response['data']);
             $this->assertEquals($data, $response['data']);;
+
+            $response = $this->createApiCallWithRelativeUrl('read/' . $OpportunityId, 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertArrayHasKey('data', $response);
+            $this->assertArrayHasKey('owner', $response['data']);
+            $this->assertCount(2, $response['data']['owner']);
+            $this->assertArrayHasKey('id', $response['data']['owner']);
+            $this->assertEquals($super->id, $response['data']['owner']['id']);
+
+            $this->assertArrayHasKey('explicitReadWriteModelPermissions', $response['data']);
+            $this->assertCount(2, $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertArrayHasKey('type', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['type']);
+            $this->assertArrayHasKey('nonEveryoneGroup', $response['data']['explicitReadWriteModelPermissions']);
+            $this->assertEquals('', $response['data']['explicitReadWriteModelPermissions']['nonEveryoneGroup']);
         }
 
         /**
@@ -197,7 +466,6 @@
          */
         public function testUpdateOpportunity()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -209,26 +477,28 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $opportunities = Opportunity::getByName('Michael');
+            $opportunities = Opportunity::getByName('Michael with just owner');
             $this->assertEquals(1, count($opportunities));
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($opportunities[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
-
-            $data['probability']                = "15";
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
-
+            $compareData  = $this->getModelToApiDataUtilData($opportunities[0]);
+            $group  = static::$randomNonEveryoneNonAdministratorsGroup;
+            $explicitReadWriteModelPermissions = array('type' => 2, 'nonEveryoneGroup' => $group->id);
+            $data['description']                                = "changed description";
+            $data['explicitReadWriteModelPermissions']          = $explicitReadWriteModelPermissions;
+            $compareData['description']                         = "changed description";
+            $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
+            $response =$this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers,
+                                                                                                array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
             // We need to unset some empty values from response and dates.
             unset($response['data']['modifiedDateTime']);
             unset($compareData['modifiedDateTime']);
-            $compareData['probability'] = "15";
             ksort($compareData);
             ksort($response['data']);
             $this->assertEquals($compareData, $response['data']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/read/' . $compareData['id'], 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             unset($response['data']['modifiedDateTime']);
@@ -241,7 +511,6 @@
          */
         public function testListOpportunities()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -253,24 +522,21 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $opportunities = Opportunity::getByName('Michael');
+            $opportunities = Opportunity::getByName('Michael with owner only permissions');
             $this->assertEquals(1, count($opportunities));
+            $compareData  = $this->getModelToApiDataUtilData($opportunities[0]);
 
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($opportunities[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
-
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/' , 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals(1, count($response['data']['items']));
-            $this->assertEquals(1, $response['data']['totalCount']);
+            $this->assertEquals(3, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(1, $response['data']['currentPage']);
-            $this->assertEquals(array($compareData), $response['data']['items']);
+            $this->assertEquals($compareData, $response['data']['items'][2]);
         }
 
         public function testListOpportunityAttributes()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -283,7 +549,7 @@
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new Opportunity());
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/listAttributes/' , 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
@@ -311,21 +577,21 @@
             $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $this->assertTrue($everyoneGroup->save());
 
-            $opportunities = Opportunity::getByName('Michael');
+            $opportunities = Opportunity::getByName('Michael with owner only permissions');
             $this->assertEquals(1, count($opportunities));
-            $data['probability']                = "20";
+            $data['description']                = "description 20";
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/read/' . $opportunities[0]->id, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
@@ -337,17 +603,17 @@
             $saved = $notAllowedUser->save();
             $this->assertTrue($saved);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/read/' . $opportunities[0]->id, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
@@ -365,7 +631,7 @@
             $data['explicitReadWriteModelPermissions'] = array(
                 'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
@@ -376,18 +642,18 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/read/' . $opportunities[0]->id, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
             unset($data);
-            $data['probability']                = "21";
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $data['description']                = "description 21";
+            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals('21', $response['data']['probability']);
+            $this->assertEquals('description 21', $response['data']['description']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
@@ -402,11 +668,11 @@
             );
 
             //Test Delete
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/read/' . $opportunities[0]->id, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
@@ -418,6 +684,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            Opportunity::deleteAll();
             $anotherUser = User::getByUsername('steven');
 
             $authenticationData = $this->login();
@@ -448,7 +715,7 @@
                 'sort' => 'name',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -461,7 +728,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, count($response['data']['items']));
@@ -474,7 +741,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['name'] = 'First Opportunity';
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
@@ -486,7 +753,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['name'] = 'First Opportunity 2';
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(0, $response['data']['totalCount']);
@@ -504,7 +771,7 @@
                 'sort' => 'name.desc',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -517,7 +784,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, count($response['data']['items']));
@@ -538,7 +805,7 @@
                 'sort' => 'name.desc',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
@@ -593,7 +860,7 @@
                 'sort' => 'name.asc',
            );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -605,7 +872,7 @@
 
             // Get second page
             $data['pagination']['page'] = 2;
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -672,7 +939,7 @@
                 'sort' => 'name.desc',
            );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -684,7 +951,7 @@
 
             // Get second page
             $data['pagination']['page'] = 2;
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -694,9 +961,6 @@
             $this->assertEquals('First Opportunity', $response['data']['items'][0]['name']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditOpportunityWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -714,7 +978,7 @@
             // Provide data without required fields.
             $data['companyName']         = "Test 123";
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/create/', 'POST', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(4, count($response['errors']));
@@ -722,15 +986,12 @@
             $id = $opportunity->id;
             $data = array();
             $data['name']                = '';
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/update/' . $id, 'PUT', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditOpportunityWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');
@@ -746,20 +1007,31 @@
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('Newest Opportunity', $super);
 
             // Provide data with wrong type.
-            $data['probability']         = "A";
+            $data['probability']         = str_repeat('a', 128);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/create/', 'POST', $headers, array('data' => $data));
+            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(5, count($response['errors']));
 
             $id = $opportunity->id;
             $data = array();
-            $data['probability']         = "A";
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/opportunities/opportunity/api/update/' . $id, 'PUT', $headers, array('data' => $data));
+            $data['name']         = str_repeat('a', 128);
+            $response =$this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.opportunities.controllers.OpportunityApiController', true);
+            return 'OpportunitiesOpportunityApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'opportunities/opportunity/api/';
         }
     }
 ?>

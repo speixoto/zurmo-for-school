@@ -35,13 +35,20 @@
      ********************************************************************************/
 
     /**
-    * Contacts API Controller
-    */
-    class ContactsContactApiController extends ZurmoSecurableItemApiController
+     * Helper class used to convert models into arrays, includes permissions in returned output
+     */
+    class RedBeanModelToApiDataWithPermissionsUtil extends RedBeanModelToApiDataUtil
     {
-        protected static function getSearchFormClassName()
+        public function getData()
         {
-            return 'ContactsSearchForm';
+            $data = parent::getData();
+            if ($this->model instanceof SecurableItem)
+            {
+                $element        = new DerivedExplicitReadWriteModelPermissionsElement($this->model, null, null);
+                $permissions    = $element->resolveModelPermissionsArray();
+                $data           = CMap::mergeArray($permissions, $data);
+            }
+            return $data;
         }
     }
 ?>

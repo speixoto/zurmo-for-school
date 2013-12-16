@@ -234,6 +234,7 @@
                                   ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
         {
             assert('$securableItem->id > 0');
+            $optimizeReadPermissions = $securableItem::hasReadPermissionsOptimization();
             $securableItem->setTreatCurrentUserAsOwnerForPermissions(true);
             $saveSecurableItem = false;
             if ($explicitReadWriteModelPermissions->getReadOnlyPermitablesCount() > 0)
@@ -241,7 +242,7 @@
                 $saveSecurableItem = true;
                 foreach ($explicitReadWriteModelPermissions->getReadOnlyPermitables() as $permitable)
                 {
-                    if ($securableItem->addPermissions($permitable, Permission::READ))
+                    if ($securableItem->addPermissions($permitable, Permission::READ) && $optimizeReadPermissions)
                     {
                         if ($permitable instanceof Group)
                         {
@@ -265,7 +266,8 @@
                 $saveSecurableItem = true;
                 foreach ($explicitReadWriteModelPermissions->getReadWritePermitables() as $permitable)
                 {
-                    if ($securableItem->addPermissions($permitable, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER))
+                    if ($securableItem->addPermissions($permitable, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER)
+                                                                                            && $optimizeReadPermissions)
                     {
                         if ($permitable instanceof Group)
                         {
@@ -290,19 +292,22 @@
                 foreach ($explicitReadWriteModelPermissions->getReadOnlyPermitablesToRemove() as $permitable)
                 {
                     $securableItem->removePermissions($permitable, Permission::READ, Permission::ALLOW);
-                    if ($permitable instanceof Group)
+                    if ($optimizeReadPermissions)
                     {
-                        ReadPermissionsOptimizationUtil::
-                        securableItemLostPermissionsForGroup($securableItem, $permitable);
-                    }
-                    elseif ($permitable instanceof User)
-                    {
-                        ReadPermissionsOptimizationUtil::
-                        securableItemLostPermissionsForUser($securableItem, $permitable);
-                    }
-                    else
-                    {
-                        throw new NotSupportedException();
+                        if ($permitable instanceof Group)
+                        {
+                            ReadPermissionsOptimizationUtil::
+                            securableItemLostPermissionsForGroup($securableItem, $permitable);
+                        }
+                        elseif ($permitable instanceof User)
+                        {
+                            ReadPermissionsOptimizationUtil::
+                            securableItemLostPermissionsForUser($securableItem, $permitable);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
                     }
                 }
             }
@@ -313,19 +318,22 @@
                 {
                     $securableItem->removePermissions($permitable,
                                                       Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::ALLOW);
-                    if ($permitable instanceof Group)
+                    if ($optimizeReadPermissions)
                     {
-                        ReadPermissionsOptimizationUtil::
-                        securableItemLostPermissionsForGroup($securableItem, $permitable);
-                    }
-                    elseif ($permitable instanceof User)
-                    {
-                        ReadPermissionsOptimizationUtil::
-                        securableItemLostPermissionsForUser($securableItem, $permitable);
-                    }
-                    else
-                    {
-                        throw new NotSupportedException();
+                        if ($permitable instanceof Group)
+                        {
+                            ReadPermissionsOptimizationUtil::
+                            securableItemLostPermissionsForGroup($securableItem, $permitable);
+                        }
+                        elseif ($permitable instanceof User)
+                        {
+                            ReadPermissionsOptimizationUtil::
+                            securableItemLostPermissionsForUser($securableItem, $permitable);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
                     }
                 }
             }

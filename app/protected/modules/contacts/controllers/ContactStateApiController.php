@@ -103,8 +103,7 @@
                 }
                 foreach ($states as $model)
                 {
-                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                    $data['items'][] = $redBeanModelToApiDataUtil->getData();
+                    $data['items'][] = static::getModelToApiDataUtilData($model);
                 }
 
                 $data['totalCount'] = count($data['items']);

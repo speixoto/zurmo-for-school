@@ -34,14 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-    * Contacts API Controller
-    */
-    class ContactsContactApiController extends ZurmoSecurableItemApiController
+    class ZurmoPermissionApiController extends ZurmoModuleApiController
     {
-        protected static function getSearchFormClassName()
+        public function actionListDefault()
         {
-            return 'ContactsSearchForm';
+            $data               = ZurmoControllerUtil::resolveUserDefaultPermissionsForCurrentUser();
+            $resultClassName    = Yii::app()->apiRequest->getResultClassName();
+            $result             = new $resultClassName(ApiResponse::STATUS_SUCCESS, $data, null, null);
+            Yii::app()->apiHelper->sendResponse($result);
         }
     }
 ?>
