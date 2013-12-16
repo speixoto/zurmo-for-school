@@ -74,7 +74,7 @@
                     $content .= ' - ' . $item['descriptionLabel'];
                 }
                 $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLinkText()),
-                                        Yii::app()->createUrl($item['route']));
+                                        Yii::app()->createUrl($item['route']), array('class' => 'white-button'));
                 $content .= '</li>';
             }
             $content .= '</ul>';

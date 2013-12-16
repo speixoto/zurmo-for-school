@@ -102,7 +102,7 @@
                 $content .= '<h4>' . $item['titleLabel'] . '</h4>';
                 $content .= ' - ' . $item['descriptionLabel'];
                 $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getLinkText()),
-                                        Yii::app()->createUrl($item['route'], $routeParams));
+                                        Yii::app()->createUrl($item['route'], $routeParams), array('class' => 'white-button'));
                 $content .= '</li>';
             }
             $content .= '</ul>';

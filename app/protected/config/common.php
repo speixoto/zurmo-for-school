@@ -141,6 +141,7 @@
                 'groupMap' => array(
                     'css' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/zurmo.css',
+                        //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
                     'css-color' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
@@ -339,6 +340,16 @@
             ),
             'loginHelper' => array(
                 'class'       => 'application.modules.zurmo.components.ZurmoLoginHelper',
+            ),
+            'lessCompiler' => array(
+                'class'                 => 'application.extensions.lessphp.LessCompiler',
+                'formatterName'         => 'lessjs',
+                'mainLessFileToCompile' => 'zurmo.less',
+                'lessFilesToCompile'    => array(
+                    'ie.less',
+                    'mobile.less',
+                    'webforms-external.less'
+                ),
             ),
         ),
         'controllerMap' => array(

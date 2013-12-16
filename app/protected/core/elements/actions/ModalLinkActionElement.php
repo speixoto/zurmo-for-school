@@ -40,7 +40,7 @@
 
         public function render()
         {
-            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
+            return ZurmoHtml::ajaxLink($this->resolveLabelAndWrap(), $this->route, $this->getAjaxOptions(), $this->resolveHtmlOptionsForRendering());
         }
 
         public function renderMenuItem()

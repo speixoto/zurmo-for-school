@@ -137,8 +137,8 @@
                 $content .= '</div>';
 
                 $content .= '<div class="multiselect-nav">';
-                $content .= ZurmoHtml::button( '7', array( 'id' => $id . 'moveRight', 'class' => 'icon-right-arrow' ) ); //used 7, 8 becuase those are rendered as icons with symbly, other option is to make it an A with a SPAN inside it
-                $content .= ZurmoHtml::button( '8', array( 'id' => $id . 'moveLeft', 'class' => 'icon-left-arrow' ) );
+                $content .= ZurmoHtml::button( '7', array( 'id' => $id . 'moveRight', 'class' => 'white-button icon-right-arrow' ) ); //used 7, 8 becuase those are rendered as icons with symbly, other option is to make it an A with a SPAN inside it
+                $content .= ZurmoHtml::button( '8', array( 'id' => $id . 'moveLeft', 'class' => 'white-button icon-left-arrow' ) );
                 $content .= '</div>';
             }
             if ($this->hasRightSideBox === true)
@@ -152,8 +152,8 @@
                 if ($this->allowSorting)
                 {
                     $content .= '<div class="multiselect-nav' . $this->resolveMultiselectNavigationClassesContent() . '">';
-                    $content .= ZurmoHtml::button( '5', array( 'id' => $id . 'moveUp', 'class' => 'icon-up-arrow' ) );     // value "up" in icon font
-                    $content .= ZurmoHtml::button( '6', array( 'id' => $id . 'moveDown', 'class' => 'icon-down-arrow' ) ); // value "down" in icon font
+                    $content .= ZurmoHtml::button( '5', array( 'id' => $id . 'moveUp', 'class' => 'white-button icon-up-arrow' ) );     // value "up" in icon font
+                    $content .= ZurmoHtml::button( '6', array( 'id' => $id . 'moveDown', 'class' => 'white-button icon-down-arrow' ) ); // value "down" in icon font
                     $content .= '</div>';
                 }
             }

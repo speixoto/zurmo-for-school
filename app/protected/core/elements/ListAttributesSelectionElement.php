@@ -47,7 +47,7 @@
             assert('$this->model->getListAttributesSelector() != null');
             $content      = $this->renderSelectionContent();
             $content      = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
-            $linkContent  = $this->renderApplyResetContent() . $this->renderApplyLinkContent();
+            $linkContent  = $this->renderApplyLinkContent() . $this->renderApplyResetContent();
             $linkContent  = ZurmoHtml::tag('div', array('class' => 'form-toolbar clearfix'), $linkContent);
             $this->renderEditableScripts();
             return $content . ZurmoHtml::tag('div', array('class' => 'view-toolbar-container'), $linkContent);
@@ -136,7 +136,7 @@
             $params                = array();
             $params['label']       = Zurmo::t('Core', 'Reset');
             $params['htmlOptions'] = array('id'  => 'list-attributes-reset',
-                                           'class' => 'default-btn',
+                                           'class' => 'cancel-button',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
