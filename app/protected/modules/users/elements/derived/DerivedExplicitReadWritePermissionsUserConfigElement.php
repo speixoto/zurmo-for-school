@@ -45,7 +45,7 @@
             assert('$this->model->user instanceof User');
         }
 
-        protected function getPermissionTypes()
+        protected static function getPermissionTypes()
         {
             return array(
                 UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER =>

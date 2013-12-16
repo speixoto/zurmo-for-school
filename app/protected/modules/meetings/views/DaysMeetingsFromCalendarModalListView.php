@@ -42,7 +42,7 @@
         protected $redirectUrl;
 
         protected $ownerOnly = false;
-        
+
         protected $relationModuleId;
 
         /**
@@ -114,7 +114,7 @@
         {
             return array();
         }
-        
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -157,7 +157,7 @@
 
             return parent::getGridViewWidgetPath();
         }
-        
+
         /**
          * Override to handle security/access resolution on links.
          */
@@ -238,13 +238,13 @@
             }
             return $this->dataProvider;
         }
-        
+
         protected function getCreateMeetingUrl()
         {
-            if(!$this->relationModel && !$this->relationModuleId)
+            if (!$this->relationModel && !$this->relationModuleId)
             {
                 return Yii::app()->createUrl('/meetings/default/createMeeting',
-                                             array('redirectUrl' => $this->redirectUrl));
+                                             array('redirectUrl' => $this->redirectUrl, 'startDate' => $this->stringTime));
             }
             else
             {
@@ -252,13 +252,14 @@
                     'relationAttributeName' => get_class($this->relationModel),
                     'relationModelId'       => $this->relationModel->id,
                     'relationModuleId'      => $this->relationModuleId,
+                    'startDate'             => $this->stringTime,
                     'redirectUrl'           => $this->redirectUrl,
                 );
                 return Yii::app()->createUrl($this->moduleId . '/' .
-                                        $this->controllerId . '/createFromRelation/', $params);
+                                        $this->controllerId . '/createFromRelationAndStartDate/', $params);
             }
         }
-        
+
         /**
          * Override to add link for meeting creation
          */

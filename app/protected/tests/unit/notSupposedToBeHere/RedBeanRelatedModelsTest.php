@@ -155,7 +155,7 @@
             $this->assertEquals(1, count($accounts));
             $account = $accounts[0];
 
-            $this->assertEquals(self::CONTACTS, count(Contact::getAll()));
+            $this->assertEquals(self::CONTACTS, Contact::getCount());
 
             $this->assertEquals(self::CONTACTS - 1, $account->contacts->count());
             $account->contacts->removeAll();
@@ -164,7 +164,7 @@
             unset($account);
 
             // None of the contacts should be removed since they are not owned by the account.
-            $this->assertEquals(self::CONTACTS, count(Contact::getAll()));
+            $this->assertEquals(self::CONTACTS, Contact::getCount());
         }
 
         public function testSomethingOpaqueThatICantThinkHowToDescribe()

@@ -106,9 +106,9 @@
         {
             $id = $task->id;
             $kanbanItem  = KanbanItem::getByTask($id);
-            assert('is_null($kanbanItem)');
+            assert('$kanbanItem === null');
             $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
-            assert('!is_null($kanbanItem)');
+            assert('$kanbanItem !== null');
             return $kanbanItem;
         }
     }

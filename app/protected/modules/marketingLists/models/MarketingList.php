@@ -134,11 +134,6 @@
             return 'MarketingListGamification';
         }
 
-        public static function hasPermissions()
-        {
-            return true;
-        }
-
         public function addNewMember($contactId, $unsubscribed = false, $contact = null)
         {
             $member                     = new MarketingListMember();

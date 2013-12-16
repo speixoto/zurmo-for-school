@@ -87,7 +87,7 @@
             EmailMessage::deleteAll();
             // Expunge all emails from dropbox
             Yii::app()->imap->deleteMessages(true);
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -101,7 +101,7 @@
             Yii::app()->imap->connect();
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(1, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 

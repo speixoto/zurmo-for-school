@@ -47,6 +47,7 @@
             if (Yii::app()->isApplicationInstalled())
             {
                 $owner->attachEventHandler('onEndRequest', array($this, 'handleGamification'));
+                $owner->attachEventHandler('onEndRequest', array($this, 'handleJobQueue'));
             }
             $owner->attachEventHandler('onEndRequest', array($this, 'handleSaveGlobalStateCheck'));
             $owner->attachEventHandler('onEndRequest', array($this, 'handleEndLogRouteEvents'));
@@ -102,6 +103,7 @@
 
         public function handleEndRequest($event)
         {
+            RedBeanDatabase::close();
             exit;
         }
 
@@ -116,6 +118,14 @@
                 Yii::app()->gameHelper->processDeferredPoints();
                 Yii::app()->gameHelper->resolveNewBadges();
                 Yii::app()->gameHelper->resolveLevelChange();
+            }
+        }
+
+        public function handleJobQueue($event)
+        {
+            if (Yii::app()->user->userModel != null)
+            {
+                Yii::app()->jobQueue->processAll();
             }
         }
     }

@@ -98,13 +98,5 @@
             $title = Zurmo::t('ZurmoModule', 'Audit Trail');
             return ModalView::getAjaxOptionsForModalLink($title);
         }
-
-        /**
-         * @return string
-         */
-        protected function getModalContainerId()
-        {
-            return 'AuditEventsModalContainer';
-        }
     }
 ?>

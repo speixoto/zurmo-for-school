@@ -384,7 +384,7 @@
                 $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
             $config               = array('pagination' => array('pageSize' => $pageSize));
-            $filteredByStatus       = $this->resolveFilteredByStatus();
+            $filteredByStatus     = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
                                                            $config, (int)$filteredByStatus);
@@ -477,7 +477,6 @@
                                                        new ZurmoActiveForm(),
                                                        $importWizardForm->importRulesType,
                                                        $mappableAttributeIndicesAndDerivedTypes);
-
             $content                                 = $mappingFormLayoutUtil->renderMappingRulesElements(
                                                        $columnName,
                                                        $attributeIndexOrDerivedType,
@@ -688,8 +687,8 @@
         protected function getImportPageView($progressBarAndStepsView, $importView)
         {
             $breadCrumbLinks = array(
-                Zurmo::t('ZurmoModule', 'Import'),
-                Zurmo::t('ZurmoModule', 'Create')
+                Zurmo::t('ImportModule', 'Import'),
+                Zurmo::t('ZurmoModule',  'Create')
             );
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
                 $this,

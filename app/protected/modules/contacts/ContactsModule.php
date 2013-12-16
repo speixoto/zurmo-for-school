@@ -95,7 +95,11 @@
                         'right'  => self::RIGHT_CREATE_CONTACTS,
                         'mobile' => true,
                     ),
-                )
+                ),
+                'updateLatestActivityDateTimeWhenATaskIsCompleted'        => true,
+                'updateLatestActivityDateTimeWhenANoteIsCreated'          => true,
+                'updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived' => true,
+                'updateLatestActivityDateTimeWhenAMeetingIsInThePast'     => true,
             );
             return $metadata;
         }
@@ -223,6 +227,46 @@
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('ContactsModule', 'Contacts', array(), null, $language);
+        }
+
+        public static function shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted()
+        {
+            $metadata = static::getMetadata();
+            if (isset($metadata['global']['updateLatestActivityDateTimeWhenATaskIsCompleted']))
+            {
+                return (bool) $metadata['global']['updateLatestActivityDateTimeWhenATaskIsCompleted'];
+            }
+            return false;
+        }
+
+        public static function shouldUpdateLatestActivityDateTimeWhenANoteIsCreated()
+        {
+            $metadata = static::getMetadata();
+            if (isset($metadata['global']['updateLatestActivityDateTimeWhenANoteIsCreated']))
+            {
+                return (bool) $metadata['global']['updateLatestActivityDateTimeWhenANoteIsCreated'];
+            }
+            return false;
+        }
+
+        public static function shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived()
+        {
+            $metadata = static::getMetadata();
+            if (isset($metadata['global']['updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived']))
+            {
+                return (bool) $metadata['global']['updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived'];
+            }
+            return false;
+        }
+
+        public static function shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast()
+        {
+            $metadata = static::getMetadata();
+            if (isset($metadata['global']['updateLatestActivityDateTimeWhenAMeetingIsInThePast']))
+            {
+                return (bool) $metadata['global']['updateLatestActivityDateTimeWhenAMeetingIsInThePast'];
+            }
+            return false;
         }
     }
 ?>

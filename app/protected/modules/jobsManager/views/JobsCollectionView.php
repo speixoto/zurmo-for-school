@@ -174,7 +174,7 @@
                     $runJobLink = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ZurmoModule', 'Run')),
                                     Yii::app()->createUrl(
                                         $this->moduleId . '/' . $this->controllerId . '/runJob', array('type' => $type)),
-                                    array('class' => 'z-button run-button'));
+                                    array('class' => 'white-button run-button'));
                     $content .= '<td class="button-column-right">' . $runJobLink . '</td>';
                 }
                 $content .= '</tr>';

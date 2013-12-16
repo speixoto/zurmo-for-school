@@ -42,11 +42,12 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelLink'),
                             array('type' => 'SaveButton'),
+                            array('type' => 'CancelLink'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'account',
                         'name',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

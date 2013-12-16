@@ -51,7 +51,9 @@
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'account',
                         'owner',
+                        'latestActivityDateTime'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -173,6 +175,11 @@
         public static function getModuleClassName()
         {
             return 'AccountsModule';
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            return AccountDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel());
         }
     }
 ?>

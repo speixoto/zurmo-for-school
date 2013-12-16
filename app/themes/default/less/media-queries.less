@@ -115,13 +115,25 @@
 		float: none;
 		margin:0 0 15px 0;
 	}
+
+	#AboutView{
+		#rightCol,
+		#leftCol{
+			width: 100%;
+			float: none;
+			padding: 15px 15px 0 15px;
+			> div{
+				float: none;
+			}
+		}
+	}
 }
 
 @media all and (max-width: 801px){ /*and (max-height: 451px)*/
 	#LoginPageView{
 		padding-top:0;
 		> div{
-			.box-sizing();
+			//.box-sizing();
 			padding:10px;
 			display: -ms-flex;
 			display: -moz-flex;

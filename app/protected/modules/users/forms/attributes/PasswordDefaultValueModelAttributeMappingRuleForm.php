@@ -63,6 +63,14 @@
                                                          'hash',
                                                          static::getAttributeName(),
                                                          $requiredRuleIsApplicable);
+            //Remove the has length rule
+            foreach ($defaultValueApplicableModelAttributeRules as $index => $rule)
+            {
+                if ($rule[1] == 'length')
+                {
+                    unset($defaultValueApplicableModelAttributeRules[$index]);
+                }
+            }
             return array_merge(parent::rules(), $defaultValueApplicableModelAttributeRules);
         }
 

@@ -47,11 +47,11 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             //Test running a TestJob that it creates a JobLog and does not leave a JobInProcess
-            $this->assertEquals(0, count(JobInProcess::getAll()));
-            $this->assertEquals(0, count(JobLog::getAll()));
+            $this->assertEquals(0, JobInProcess::getCount());
+            $this->assertEquals(0, JobLog::getCount());
 
             JobsManagerUtil::runNonMonitorJob('Test', new MessageLogger());
-            $this->assertEquals(0, count(JobInProcess::getAll()));
+            $this->assertEquals(0, JobInProcess::getCount());
             $jobLogs = JobLog::getAll();
             $this->assertEquals(1, count($jobLogs));
             $this->assertEquals('Test', $jobLogs[0]->type);
@@ -60,7 +60,7 @@
 
             //Now test a job that always fails
             JobsManagerUtil::runNonMonitorJob('TestAlwaysFails', new MessageLogger());
-            $this->assertEquals(0, count(JobInProcess::getAll()));
+            $this->assertEquals(0, JobInProcess::getCount());
             $jobLogs = JobLog::getAll();
             $this->assertEquals(2, count($jobLogs));
             $this->assertEquals('TestAlwaysFails', $jobLogs[1]->type);
@@ -76,7 +76,7 @@
             $jobInProcess->type    = 'Test';
             $this->assertTrue($jobInProcess->save());
             //Set the createdDateTime as way in the past, so that it is over the threshold
-            $sql  = "update " . Item::getTableName('Item'). " set createddatetime = '1980-06-03 18:33:03' where id = " .
+            $sql  = "update " . Item::getTableName(). " set createddatetime = '1980-06-03 18:33:03' where id = " .
                     $jobInProcess->getClassId('Item');
             ZurmoRedBean::exec($sql);
             $jobInProcessId        = $jobInProcess->id;

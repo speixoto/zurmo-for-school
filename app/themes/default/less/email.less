@@ -152,7 +152,7 @@
     font-weight: normal;
     &:before{
         position: relative;
-        color:#545454 !important;
+        color:@textColor !important;
         content:"6";
         .symbly(18px);
         top:1px;
@@ -164,7 +164,7 @@
     font-weight: normal;
     &:before{
         position: relative;
-        color:#545454 !important;
+        color:@textColor !important;
         content:"5";
         .symbly(18px);
         top:1px;
@@ -203,9 +203,13 @@
     div.overlay-label-field{
         padding-bottom: 0;
     }
+	.redactor_box iframe{
+		min-height: 300px !important;
+	}
 }
+
 .recipient{
-    ++.cf;
+    .clearfix();;
     > label{
         float: left;
         width: 3%;
@@ -216,6 +220,7 @@
         width: 96%;
     }
 }
+
 #cc-bcc-fields{
     .recipient{
         margin-top: 15px;
@@ -224,7 +229,7 @@
 
 /*email modal*/
 #NoUserEmailConfigurationYetView{
-    ++.cf;
+    .clearfix();;
     padding:0 0 30px 0;
 	.large-icon{
 		margin-top: 0;

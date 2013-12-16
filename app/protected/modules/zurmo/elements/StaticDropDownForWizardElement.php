@@ -58,7 +58,7 @@
         {
             $htmlOptions                 = parent::getEditableHtmlOptions();
             $htmlOptions['class']        = 'flexible-drop-down';
-            if ( $this->resolveOperatorIsOneOf() || $this->alwaysMultiple)
+            if ( $this->resolveOperatorRequiresMultiSelect() || $this->alwaysMultiple)
             {
                 $htmlOptions['multiple']  = true;
                 $htmlOptions['class']    .= ' multiple ignore-style';
@@ -66,9 +66,10 @@
             return $htmlOptions;
         }
 
-        protected function resolveOperatorIsOneOf()
+        protected function resolveOperatorRequiresMultiSelect()
         {
-            if (($this->model instanceof OperatorInterface  && $this->model->operator == 'oneOf'))
+            if (($this->model instanceof OperatorInterface  &&
+                in_array($this->model->operator, OperatorStaticDropDownElement::getValuesRequiringMultiSelect())))
             {
                 return true;
             }

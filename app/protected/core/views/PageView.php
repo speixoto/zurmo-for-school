@@ -281,8 +281,8 @@
                                   "</style>";
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
-                                                                                $themeBaseUrl . '/less/newui.less?version='.rand() .'"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' .
+                                                                                $themeBaseUrl . '/less/default-theme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
@@ -293,7 +293,7 @@
             }
             else
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/newui.css');
+                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . Yii::app()->themeManager->getActiveThemeColor() . '.css');
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
@@ -310,6 +310,7 @@
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');
+                Yii::app()->minScript->generateScriptMap('css-color');
                 if (!YII_DEBUG && !defined('IS_TEST'))
                 {
                     Yii::app()->minScript->generateScriptMap('js');

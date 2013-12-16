@@ -40,6 +40,12 @@
     class ProcessOutboundEmailJob extends BaseJob
     {
         /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
+
+        /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
@@ -58,16 +64,6 @@
         public static function getRecommendedRunFrequencyContent()
         {
             return Zurmo::t('EmailMessagesModule', 'Every 1 minute.');
-        }
-
-        /**
-         * @returns the threshold for how long a job is allowed to run. This is the 'threshold'. If a job
-         * is running longer than the threshold, the monitor job might take action on it since it would be
-         * considered 'stuck'.
-         */
-        public static function getRunTimeThresholdInSeconds()
-        {
-            return 300;
         }
 
         /**

@@ -89,7 +89,7 @@
                     $$key   = $defaultValue;
                 }
             }
-            // field is set to be NOT NULL in db, its default can't be 'NULL', unsetting variable.
+            // field is set to be NOT NULL in db, its default can't be 'NULL', unsetting variable. // Not Coding Standard
             if ($notNull !== 'NULL') // Not Coding Standard
             {
                 $default    = null;
@@ -113,7 +113,7 @@
 
         protected static function resolveForeignKeyNameByModelName($className)
         {
-            return RedBeanModel::getTableName($className) . '_id';
+            return $className::getTableName() . '_id';
         }
     }
 ?>

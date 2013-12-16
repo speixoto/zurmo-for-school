@@ -127,7 +127,7 @@
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
             $this->registerKanbanGridScript();
-            $this->resolveShouldOpenToTask();
+            TasksUtil::resolveShouldOpenToTask($this->getGridId());
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             $content .= $this->renderScripts();
             $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
@@ -390,15 +390,6 @@
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
         }
 
-        protected function resolveShouldOpenToTask()
-        {
-            $getData = GetUtil::getData();
-            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
-            {
-                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
-            }
-        }
-
         /**
          * Calling TaskKanbanBoardExtendedGridView::registerKanbanColumnSortableScript in order to reinitialize
          * the sorting for the card columns after the board is refreshed
@@ -457,6 +448,15 @@
                             $(this).makeLargeLoadingSpinner(true, ".ui-overlay-block");
                     }';
             // End Not Coding Standard
+        }
+
+        /**
+         * Show the table on empty as we need the javascripts initialized when first task is created
+         * @return boolean
+         */
+        protected function getShowTableOnEmpty()
+        {
+            return true;
         }
     }
 ?>

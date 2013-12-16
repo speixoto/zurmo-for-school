@@ -102,7 +102,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'account', 'type' => 'Account'),
+                                                array('attributeName' => 'account', 'type' => 'AccountSelectOrCreate'),
                                             ),
                                         ),
                                     )
@@ -217,6 +217,10 @@
         protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
         {
             $elementInformation['inputPrefix']  = array(get_class($this->model), $this->uniqueId);
+            if ($elementInformation['attributeName'] == 'account')
+            {
+               $elementInformation['type'] = 'AccountSelectOrCreate';
+            }
         }
 
         public static function getDisplayDescription()

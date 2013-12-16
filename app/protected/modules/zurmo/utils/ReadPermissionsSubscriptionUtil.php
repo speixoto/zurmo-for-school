@@ -113,7 +113,7 @@
         protected static function getModelTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
+            return $modelClassName::getTableName();
         }
 
         public static function getSubscriptionTableName($modelClassName)
@@ -138,16 +138,13 @@
                 {
                     foreach ($modelClassNames as $modelClassName)
                     {
+                        $onlyOwnedModels = false;
                         if ($modelClassName != 'Account')
                         {
-                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                                Yii::app()->user->userModel, $partialBuild, true);
+                            $onlyOwnedModels = true;
                         }
-                        else
-                        {
-                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                                Yii::app()->user->userModel, $partialBuild, false);
-                        }
+                        static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                                                Yii::app()->user->userModel, $partialBuild, $onlyOwnedModels);
                     }
                 }
             }
@@ -319,7 +316,7 @@
         {
             assert('$user instanceof User');
             $tableName = self::getSubscriptionTableName($modelClassName);
-            $modelTableName = RedBeanModel::getTableName($modelClassName);
+            $modelTableName = $modelClassName::getTableName();
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastUpdateTimestamp);
             $sql = "SELECT {$tableName}.modelid, {$modelTableName}.name FROM $tableName" .
                 " left join " . ModelCreationApiSyncUtil::TABLE_NAME . " isct " .

@@ -46,18 +46,6 @@
             return array('ApiTestModelItem2');
         }
 
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testLanguage()
         {
             $super = User::getByUsername('super');
@@ -71,7 +59,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
                 'ZURMO_LANG: fr',
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/read/2/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/2/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('Sign in required.', $response['message']);
@@ -85,10 +73,21 @@
                 'ZURMO_LANG: fr'
             );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/read/2/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/2/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('The ID specified was invalid.', $response['message']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.api.controllers.TestModelItem2ApiController', true);
+            return 'ApiTestModelItem2ApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'api/testModelItem2/api/';
         }
     }
 ?>

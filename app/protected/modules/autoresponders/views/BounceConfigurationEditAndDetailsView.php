@@ -68,5 +68,12 @@
             );
             return CMap::mergeArray($parentMetadata, $metadata);
         }
+
+        protected function getMessageForLabelInput()
+        {
+            return Zurmo::t('EmailMessagesModule',
+                'Emails in the specified folder will be deleted by Zurmo after processing. ' .
+                'DO NOT use a personal email for Bounce handling');
+        }
     }
 ?>
