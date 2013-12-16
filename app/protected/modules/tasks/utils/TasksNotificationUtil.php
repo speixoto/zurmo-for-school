@@ -165,7 +165,7 @@
                     {
                         if ($person->getClassId('Item') == $relatedUser->getClassId('Item'))
                         {
-                           unset($peopleToSendNotification[$key]);
+                            unset($peopleToSendNotification[$key]);
                         }
                     }
                 }
