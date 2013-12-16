@@ -3891,6 +3891,10 @@ div.wide.form a {
   left: 5px;
   display: block !important;
 }
+.has-model-select + .simple-link {
+  display: block;
+  margin-top: 5px;
+}
 .has-date-select {
   clear: left;
   padding: 0 !important;
@@ -6660,7 +6664,6 @@ input[type="button"].portlet-create-button:focus {
   font-size: 11px;
   color: #6C8092;
   border: none !important;
-  margin-left: 10px;
 }
 .simple-link:before,
 .simple-link:after {
@@ -13069,6 +13072,7 @@ a.user-link {
 }
 .email-matching-actions a {
   text-decoration: none;
+  color: #6C8092;
 }
 .email-matching-show-more,
 .email-matching-show-less {
