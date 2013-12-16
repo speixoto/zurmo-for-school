@@ -259,6 +259,7 @@
                 'class'     => 'application.modules.zurmo.components.ZurmoDbStatePersister',
             ),
             'urlManager' => array (
+                'class' => 'application.core.components.ZurmoUrlManager',
                 'urlFormat' => 'path',
                 'caseSensitive' => true,
                 'showScriptName' => false,

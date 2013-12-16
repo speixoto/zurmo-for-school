@@ -35,23 +35,35 @@
      ********************************************************************************/
 
     /**
-     * Class ZurmoShortUrlController for managing the ShortUrls
+     * A job for removing old shortUrl models
      */
-    class ZurmoShortUrlController extends ZurmoModuleController
+    class ShortUrlCleanupJob extends BaseJob
     {
-        public function actionRedirect($hash)
+        /**
+         * @returns Translated label that describes this job type.
+         */
+        public static function getDisplayName()
         {
-            assert('is_string($hash)');
-            try
-            {
-                $url = ShortUrl::getUrlByHash($hash);
-                $this->redirect($url);
-            }
-            catch (NotFoundException $exception)
-            {
-                //TODO: @sergio: We should render a not found page
-                //Do nothing
-            }
+            return Zurmo::t('ZurmoModule', 'Short Url Cleanup Job');
+        }
+
+        /**
+         * @return The type of the NotificationRules
+         */
+        public static function getType()
+        {
+            return 'ShortUrlCleanup';
+        }
+
+        public static function getRecommendedRunFrequencyContent()
+        {
+            return Zurmo::t('JobsManagerModule', 'Once a week.');
+        }
+
+        public function run()
+        {
+            ShortUrl::deleteOld();
+            return true;
         }
     }
 ?>

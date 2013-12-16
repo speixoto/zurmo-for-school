@@ -76,8 +76,8 @@
         public static function getEmailContent(RedBeanModel $model, Comment $comment, User $user)
         {
             $emailContent  = new EmailMessageContent();
-            $url           = ShortUrlUtil::createShortUrl(static::getUrlToEmail($model));
-
+            $url           = static::getUrlToEmail($model);
+            $shortUrl      = ShortUrlUtil::createShortUrl($url);
             $textContent   = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} ",
@@ -88,10 +88,22 @@
                                           '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
                                                                      'SingularLowerCase'),
                                           '{commentDescription}'  => strval($comment),
-                                          '{url}'                 => $url
+                                          '{url}'                 => $shortUrl
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::
-                                                resolveNotificationTextTemplate($textContent, $user);
+                                                resolveNotificationTextTemplate($textContent);
+            $htmlContent = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
+                                             "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
+                                             "\"{commentDescription}.\"",
+                               array('{lineBreak}'           => "<br/>",
+                                     '{strongStartTag}'      => '<strong>',
+                                     '{strongEndTag}'        => '</strong>',
+                                     '{updaterName}'         => strval($comment->createdByUser),
+                                     '{commentDescription}'  => strval($comment),
+                                     '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
+                                                                'SingularLowerCase'), $url)
+                                   ));
+            $emailContent->htmlContent  = EmailNotificationUtil::resolveNotificationHtmlTemplate($htmlContent);
             return $emailContent;
         }
 

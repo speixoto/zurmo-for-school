@@ -34,24 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class ZurmoShortUrlController for managing the ShortUrls
-     */
-    class ZurmoShortUrlController extends ZurmoModuleController
+    class ZurmoUrlManager extends CUrlManager
     {
-        public function actionRedirect($hash)
+        /**
+         * Override to showScriptName if OS is not linux
+         * @param string $route
+         * @param array $params
+         * @param string $ampersand
+         * @return string
+         */
+        protected function createUrlDefault($route,$params,$ampersand)
         {
-            assert('is_string($hash)');
-            try
+           if (!$this->showScriptName and !$this->isOsLinux())
+           {
+               $this->showScriptName = true;
+           }
+           return parent::createUrlDefault($route,$params,$ampersand);
+        }
+
+        /**
+         * Override to showScriptName if OS is not linux
+         * @return string
+         */
+        public function getBaseUrl()
+        {
+            if (!$this->showScriptName and !$this->isOsLinux())
             {
-                $url = ShortUrl::getUrlByHash($hash);
-                $this->redirect($url);
+                $this->showScriptName = true;
             }
-            catch (NotFoundException $exception)
+            return parent::getBaseUrl();
+        }
+
+        private function isOsLinux()
+        {
+            if (PHP_OS == 'Linux')
             {
-                //TODO: @sergio: We should render a not found page
-                //Do nothing
+                return true;
             }
+            return false;
         }
     }
 ?>
