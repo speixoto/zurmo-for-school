@@ -83,9 +83,6 @@
 .module-intro-steps > div,
 .module-intro-steps h3,
 .module-intro-steps p,
-.continuum > div,
-.import-item-stage-status,
-.email-recipient-stage-status,
 #kanban-board,
 #kanban-board .drop-zone-container,
 #kanban-board .drop-zone,
@@ -6988,6 +6985,15 @@ div.hasHalfs > div input {
 .editable-cell:after:hover {
   cursor: pointer;
 }
+.pillbox .icon-projects-list {
+  font-size: 22px;
+  top: -2px !important;
+}
+.pillbox .icon-permissions,
+.pillbox .icon-rights,
+.pillbox .icon-policies {
+  top: -2px !important;
+}
 i[class^="icon"] {
   color: #656565;
   font-weight: normal;
@@ -6999,9 +7005,6 @@ i[class^="icon"] {
   margin: 0 0 0 0;
   position: relative;
   top: -2px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 .z-label i[class^="icon"] {
   margin-right: 5px;
@@ -7043,6 +7046,7 @@ i[class^="icon"] {
 .icon-details:after {
   content: 'T';
 }
+.icon-config:after,
 .icon-options:after {
   content: "n";
 }
@@ -7205,14 +7209,8 @@ i[class^="icon"] {
 .icon-policies:after {
   content: '\007D';
 }
-.pillbox .icon-projects-list {
-  font-size: 22px;
-  top: -2px !important;
-}
-.pillbox .icon-permissions,
-.pillbox .icon-rights,
-.pillbox .icon-policies {
-  top: -2px !important;
+.icon-google:after {
+  content: '\221E';
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -15251,8 +15249,7 @@ a + .autoresponder-stats {
   -o-box-shadow: inset 0 0 1px 1px #efefef;
   box-shadow: inset 0 0 1px 1px #efefef;
 }
-.import-item-stage-status,
-.email-recipient-stage-status {
+.continuum div[class*="stage"] {
   text-align: center;
   float: left;
   margin-left: 2%;
@@ -15268,8 +15265,7 @@ a + .autoresponder-stats {
   display: inline-block;
   border-left: 1px solid #bababa;
 }
-.import-item-stage-status.stage-true i,
-.email-recipient-stage-status.stage-true i {
+.continuum div[class*="stage"].stage-true i {
   color: #97c43d;
   -webkit-text-shadow: 0 0 5px #97c43d;
   -moz-text-shadow: 0 0 5px #97c43d;
@@ -15277,8 +15273,7 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #97c43d;
   text-shadow: 0 0 5px #97c43d;
 }
-.import-item-stage-status.stage-false i,
-.email-recipient-stage-status.stage-false i {
+.continuum div[class*="stage"].stage-false i {
   color: #c43d53;
   -webkit-text-shadow: 0 0 5px #c43d53;
   -moz-text-shadow: 0 0 5px #c43d53;
@@ -15286,8 +15281,7 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #c43d53;
   text-shadow: 0 0 5px #c43d53;
 }
-.import-item-stage-status i,
-.email-recipient-stage-status i {
+.continuum div[class*="stage"] i {
   font-weight: bold;
   line-height: 1;
   padding: 0 6px;
@@ -15298,12 +15292,10 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
 }
-.import-item-stage-status:first-child,
-.email-recipient-stage-status:first-child {
+.continuum div[class*="stage"]:first-child {
   border-left: none;
 }
-.import-item-stage-status span,
-.email-recipient-stage-status span {
+.continuum div[class*="stage"] span {
   font-size: 10px;
   font-weight: bold;
 }
