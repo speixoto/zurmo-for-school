@@ -57,17 +57,67 @@
 
             $monitorJob = new MonitorJob();
             $this->assertEquals(0, count(JobInProcess::getAll()));
+            $this->assertEquals(0, count(StuckJob::getAll()));
             $this->assertEquals(0, count(Notification::getAll()));
             $jobInProcess = new JobInProcess();
             $jobInProcess->type = 'Test';
             $this->assertTrue($jobInProcess->save());
             //Should make createdDateTime long enough in past to trigger as stuck.
-            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 1000);
+            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
             $sql = "Update item set createddatetime = '" . $createdDateTime . "' where id = " .
                    $jobInProcess->getClassId('Item');
             ZurmoRedBean::exec($sql);
             $jobInProcess->forget();
             $monitorJob->run();
+            $this->assertEquals(0, count(JobInProcess::getAll()));
+            //should still be 0 but the quantity should increase
+            $this->assertEquals(0, count(Notification::getAll()));
+            //There should now be one stuck job with quantity 1
+            $stuckJobs = StuckJob::getAll();
+            $this->assertEquals(1, count($stuckJobs));
+            $this->assertEquals('Test', $stuckJobs[0]->type);
+            $this->assertEquals(1, $stuckJobs[0]->quantity);
+
+            //Now it should increase to 2
+            $jobInProcess = new JobInProcess();
+            $jobInProcess->type = 'Test';
+            $this->assertTrue($jobInProcess->save());
+            //Should make createdDateTime long enough in past to trigger as stuck.
+            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
+            $sql = "Update item set createddatetime = '" . $createdDateTime . "' where id = " .
+                $jobInProcess->getClassId('Item');
+            ZurmoRedBean::exec($sql);
+            $jobInProcess->forget();
+            $monitorJob->run();
+            $this->assertEquals(0, count(JobInProcess::getAll()));
+            //should still be 0 but the quantity should increase
+            $this->assertEquals(0, count(Notification::getAll()));
+            //There should now be one stuck job with quantity 1
+            $stuckJobs = StuckJob::getAll();
+            $this->assertEquals(1, count($stuckJobs));
+            $this->assertEquals('Test', $stuckJobs[0]->type);
+            $this->assertEquals(2, $stuckJobs[0]->quantity);
+
+            //Set quantity to 3, then run monitor again and notification should go out.
+            $stuckJobs[0]->quantity = 3;
+            $this->assertTrue($stuckJobs[0]->save());
+
+            $jobInProcess = new JobInProcess();
+            $jobInProcess->type = 'Test';
+            $this->assertTrue($jobInProcess->save());
+            //Should make createdDateTime long enough in past to trigger as stuck.
+            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
+            $sql = "Update item set createddatetime = '" . $createdDateTime . "' where id = " .
+                $jobInProcess->getClassId('Item');
+            ZurmoRedBean::exec($sql);
+            $jobInProcess->forget();
+
+            //Now the threshold of 4 should be reached and we should send a notification
+            $monitorJob->run();
+            $stuckJobs = StuckJob::getAll();
+            $this->assertEquals(1, count($stuckJobs));
+            $this->assertEquals('Test', $stuckJobs[0]->type);
+            $this->assertEquals(4, $stuckJobs[0]->quantity);
             $this->assertEquals(1, count(Notification::getAll()));
             //Confirm an email was sent
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());

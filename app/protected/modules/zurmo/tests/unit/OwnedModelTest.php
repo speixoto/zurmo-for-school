@@ -64,13 +64,13 @@
             $model->specific    = $ownedModel;
             $saved = $model->save();
             $this->assertTrue($saved);
-            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
+            $this->assertEquals(1, ExtendsOwnedModel::getCount());
             $ownedModel = new ExtendsOwnedModel();
             $ownedModel->member = 'some member 2';
             $model->specific    = $ownedModel;
             $saved = $model->save();
             $this->assertTrue($saved);
-            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
+            $this->assertEquals(1, ExtendsOwnedModel::getCount());
             $modelId = $model->id;
             $model->forget();
             $model = TestOwnedLinkSpecificModel::getById($modelId);
@@ -79,7 +79,7 @@
             $model->specific    = $ownedModel;
             $saved = $model->save();
             $this->assertTrue($saved);
-            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
+            $this->assertEquals(1, ExtendsOwnedModel::getCount());
         }
     }
 ?>

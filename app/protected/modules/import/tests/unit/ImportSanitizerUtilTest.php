@@ -674,6 +674,7 @@
 
         public function testSanitizeValueBySanitizerTypesForFullNameTypeThatIsRequired()
         {
+            Yii::app()->user->userModel = User::getByUsername('super');
             //Test a non-required FullName with no value or default value.
             $importSanitizeResultsUtil = new ImportSanitizeResultsUtil();
             $columnMappingData         = array('type' => 'importColumn', 'mappingRulesData' => array(
@@ -801,9 +802,9 @@
 
             //Update the external system id.
 
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem3'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(ImportModelTestItem3::getTableName());
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName('ImportModelTestItem3')
+            ZurmoRedBean::exec("update " . ImportModelTestItem3::getTableName()
             . " set $externalSystemIdColumnName = 'Q' where id = {$importModelTestItem3Model3->id}");
 
             //Test a non-required related model with an invalid value
@@ -1043,9 +1044,9 @@
             $importModelTestItem2Model3 = ImportTestHelper::createImportModelTestItem2('ccc');
 
             //Update the external system id.
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem2'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(ImportModelTestItem2::getTableName());
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName('ImportModelTestItem2')
+            ZurmoRedBean::exec("update " . ImportModelTestItem2::getTableName()
             . " set $externalSystemIdColumnName = 'R' where id = {$importModelTestItem2Model3->id}");
 
             //Test a non-required related model with an invalid value
@@ -1150,9 +1151,9 @@
             $importModelTestItem1Model3 = ImportTestHelper::createImportModelTestItem('ccc', 'zzzz');
 
             //Update the external system id.
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('ImportModelTestItem'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(ImportModelTestItem::getTableName());
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName('ImportModelTestItem')
+            ZurmoRedBean::exec("update " . ImportModelTestItem::getTableName()
             . " set $externalSystemIdColumnName = 'J' where id = {$importModelTestItem1Model3->id}");
 
             //Test the id attribute with an invalid value
@@ -1546,9 +1547,9 @@
             $sally = UserTestHelper::createBasicUser('sally');
 
             //Update the external system id.
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('User'));
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing(User::getTableName());
             $externalSystemIdColumnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            ZurmoRedBean::exec("update " . User::getTableName('User')
+            ZurmoRedBean::exec("update " . User::getTableName()
             . " set $externalSystemIdColumnName = 'K' where id = {$jimmy->id}");
 
             //Test a required user with no value or default value.

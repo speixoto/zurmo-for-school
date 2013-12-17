@@ -139,5 +139,15 @@
                                 getDataIndexedByDataAndTranslatedLabelsByLanguage($dropDownModel->data, Yii::app()->language);
             return $dataAndLabels;
         }
+
+        /**
+         * Generate the error content. Used by editable content
+         * @return error content
+         */
+        protected function renderError()
+        {
+            return $this->form->error($this->model, $this->attribute,
+                                      array('inputID' => $this->getEditableInputId($this->attribute, 'value')));
+        }
     }
 ?>

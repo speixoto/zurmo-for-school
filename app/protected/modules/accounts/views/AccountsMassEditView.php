@@ -47,6 +47,7 @@
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'account',
                         'name',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

@@ -86,7 +86,7 @@
                 $meta = $model::getDefaultMetadata();
                 if (isset($meta[$model]['rules']))
                 {
-                    $tableName      = RedBeanModel::getTableName($model);
+                    $tableName      = $model::getTableName();
                     $columns = ZurmoRedBean::$writer->getColumns($tableName);
                     foreach ($meta[$model]['rules'] as $rule)
                     {
@@ -213,7 +213,7 @@
             $this->assertEquals($beforeRowCount, $afterRowCount);
 
             //Check Account fields
-            $tableName = RedBeanModel::getTableName('Account');
+            $tableName = Account::getTableName();
             $columns   = ZurmoRedBean::$writer->getColumns($tableName);
             $unsigned   = '';
             if (!RedBeanModelMemberRulesToColumnAdapter::ASSUME_SIGNED)
@@ -263,7 +263,7 @@
             $this->assertEquals(128, strlen($modifiedAccount->string128));
 
             //Check Account fields
-            $tableName = RedBeanModel::getTableName('Account');
+            $tableName = Account::getTableName();
             $columns   = ZurmoRedBean::$writer->getColumns($tableName);
             $this->assertEquals('varchar(128)',     $columns['string128']);
         }

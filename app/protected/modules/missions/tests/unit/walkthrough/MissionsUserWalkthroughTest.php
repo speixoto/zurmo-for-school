@@ -145,7 +145,7 @@
             $this->assertNotContains(strval($steven->primaryEmail),   $recipents);
             $this->assertContains   (strval($mary->primaryEmail),     $recipents);
             $this->assertContains   (strval($sally->primaryEmail),    $recipents);
-            $this->assertEquals     (4,         count(User::getAll()));
+            $this->assertEquals     (4,         User::getCount());
         }
 
         /**

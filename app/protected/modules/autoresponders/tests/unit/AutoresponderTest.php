@@ -133,7 +133,7 @@
 
             $autoresponder->textContent                     = 'Text Content';
             $this->assertTrue($autoresponder->save());
-            $this->assertEquals(3, count(Autoresponder::getAll()));
+            $this->assertEquals(3, Autoresponder::getCount());
             $id = $autoresponder->id;
             unset($autoresponder);
             $autoresponder = Autoresponder::getById($id);
@@ -167,7 +167,7 @@
             $autoresponder->forgetAll();
             $autoresponder = Autoresponder::getById($autoresponderId);
             $this->assertEquals($htmlContent, $autoresponder->htmlContent);
-            $this->assertEquals(4, count(Autoresponder::getAll()));
+            $this->assertEquals(4, Autoresponder::getCount());
         }
 
         /**

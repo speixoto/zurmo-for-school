@@ -37,5 +37,9 @@
     abstract class RelatedListLinkActionElement extends LinkActionElement
     {
         //abstract public function getActionModel();
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return array('class' => 'portlet-create-button');
+        }
     }
 ?>

@@ -63,6 +63,11 @@
          * This action is if you trigger a contact model and then want to subscribe the contact to a marketing list
          */
         const TYPE_SUBSCRIBE_TO_LIST = 'SubscribeToList';
+        
+        /**
+         * This action is if you trigger a contact model and then want to unsubscribe the contact from a marketing list
+         */
+        const TYPE_UNSUBSCRIBE_FROM_LIST = 'UnsubscribeFromList';
 
         /**
          * When performing actions on related models, if there are MANY related models RELATION_FILTER_ALL means the
@@ -129,17 +134,23 @@
         public static function getTypeDataAndLabels()
         {
                 return array(
-                    self::TYPE_UPDATE_SELF       => Zurmo::t('Core', 'Update'),
-                    self::TYPE_UPDATE_RELATED    => Zurmo::t('WorkflowsModule', 'Update Related'),
-                    self::TYPE_CREATE            => Zurmo::t('Core', 'Create'),
-                    self::TYPE_CREATE_RELATED    => Zurmo::t('WorkflowsModule', 'Create Related'),
-                    self::TYPE_SUBSCRIBE_TO_LIST => self::getLabelForSubscribeToList(),
+                    self::TYPE_UPDATE_SELF              => Zurmo::t('Core', 'Update'),
+                    self::TYPE_UPDATE_RELATED           => Zurmo::t('WorkflowsModule', 'Update Related'),
+                    self::TYPE_CREATE                   => Zurmo::t('Core', 'Create'),
+                    self::TYPE_CREATE_RELATED           => Zurmo::t('WorkflowsModule', 'Create Related'),
+                    self::TYPE_SUBSCRIBE_TO_LIST        => self::getLabelForSubscribeToList(),
+                    self::TYPE_UNSUBSCRIBE_FROM_LIST    => self::getLabelForUnsubscribeFromList(),
                 );
         }
 
         public static function getLabelForSubscribeToList()
         {
             return Zurmo::t('Core', 'Subscribe To List');
+        }
+        
+        public static function getLabelForUnsubscribeFromList()
+        {
+            return Zurmo::t('Core', 'Unsubscribe From List');
         }
 
         /**
@@ -222,7 +233,7 @@
 
         public function isModelActionVariant()
         {
-            if ($this->type != self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type != self::TYPE_SUBSCRIBE_TO_LIST && $this->type != self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return true;
             }
@@ -242,7 +253,7 @@
          */
         public function resolveAllRequiredActionAttributeFormsAndLabelsAndSort()
         {
-            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST || $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return $this->resolveActionAttributeFormsAndLabelsAndSortForSubscribeToList();
             }
@@ -324,7 +335,7 @@
         {
             assert('is_string($attribute)');
             assert('$this->type != null');
-            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST || $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return 'MarketingList';
             }
@@ -398,7 +409,7 @@
         {
             if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_CREATE ||
                 $this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE_RELATED ||
-                $this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+                $this->type == self::TYPE_SUBSCRIBE_TO_LIST || $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return true;
             }
@@ -563,7 +574,9 @@
         public function getDisplayLabel()
         {
             $typeDataAndLabels = ActionForWorkflowForm::getTypeDataAndLabels();
-            if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_UPDATE_SELF || 
+                    $this->type == self::TYPE_SUBSCRIBE_TO_LIST || 
+                    $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return $typeDataAndLabels[$this->type];
             }
@@ -679,7 +692,9 @@
          */
         protected function getModelClassNameAndResolveForRelations()
         {
-            if ($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+            if ($this->type == self::TYPE_UPDATE_SELF || 
+                    $this->type == self::TYPE_SUBSCRIBE_TO_LIST || 
+                    $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return $this->_modelClassName;
             }
@@ -783,7 +798,7 @@
             assert('$this->type != null');
             foreach ($valuesAttributes as $attribute => $attributeData)
             {
-                if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST)
+                if ($this->type == self::TYPE_SUBSCRIBE_TO_LIST || $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
                 {
                     $form = new MarketingListWorkflowActionAttributeForm('MarketingList', 'id');
                 }

@@ -63,7 +63,7 @@
                 }
                 throw new NotFoundException();
             }
-            $bean = ZurmoRedBean::load(static::getTableName('Dashboard'), $ids[0]);
+            $bean = ZurmoRedBean::load(Dashboard::getTableName(), $ids[0]);
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -204,7 +204,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('HomeModule', 'Dashboards', array(), null, $language);
+            return Zurmo::t('ZurmoModule', 'Dashboards', array(), null, $language);
         }
     }
 ?>

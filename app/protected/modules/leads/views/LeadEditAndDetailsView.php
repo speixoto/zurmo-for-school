@@ -225,5 +225,10 @@
             return Zurmo::t('LeadsModule', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            return ContactDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel(), null);
+        }
     }
 ?>

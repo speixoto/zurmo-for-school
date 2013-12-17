@@ -55,10 +55,50 @@
             );
         }
 
+        public function actionList()
+        {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $task                           = new Task(false);
+            $searchForm                     = new TasksSearchForm($task);
+            $listAttributesSelector         = new ListAttributesSelector('TasksListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+
+            $dataProvider  = $this->resolveSearchDataProvider(
+                                                        $searchForm,
+                                                        $pageSize,
+                                                        null,
+                                                        'TasksSearchView'
+                                                    );
+            if ((isset($_GET['ajax']) && $_GET['ajax'] == 'list-view'))
+            {
+                if(isset($_GET['openToTaskId']))
+                {
+                    unset($_GET['openToTaskId']);
+                }
+                $mixedView  = $this->makeListView(
+                            $searchForm,
+                            $dataProvider
+                        );
+                $view       = new TasksPageView($mixedView);
+            }
+            else
+            {
+                $mixedView  = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                   'SecuredActionBarForTasksSearchAndListView',
+                                    null, null, null);
+                $view       = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser(
+                                                        $this, $mixedView));
+            }
+            echo $view->render();
+        }
+
         public function actionDetails($id, $redirectUrl = null)
         {
             $task = static::getModelAndCatchNotFoundAndDisplayError('Task', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), 'TasksModule'), $task);
             if ($task->project->id > 0)
             {
                 $this->redirect(Yii::app()->createUrl('projects/default/details',
@@ -81,8 +121,8 @@
             }
             else
             {
-                //todo: redirect to task list view, and open modal details, once we have a task details view
-                $this->redirect(Yii::app()->createUrl('home/default/index'));
+                $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                                                      array('openToTaskId' => $id)));
             }
         }
 
@@ -112,8 +152,8 @@
             }
             else
             {
-                //todo: redirect to task list view, and open modal details, once we have a task details view
-                $this->redirect(Yii::app()->createUrl('home/default/index'));
+                $this->redirect(Yii::app()->createUrl('tasks/default/list',
+                                                      array('openToTaskId' => $id)));
             }
         }
 
@@ -275,8 +315,6 @@
          * @param string $relationAttributeName
          * @param string $relationModelId
          * @param string $relationModuleId
-         * @param string $portletId
-         * @param string $uniqueLayoutId
          */
         public function actionModalSaveFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
         {
@@ -338,19 +376,13 @@
 
         /**
          * Copy task in the modal view
-         * @param string $relationAttributeName
-         * @param string $relationModelId
-         * @param string $relationModuleId
+         * @param string $id
          */
-        public function actionModalCopyFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $id = null)
+        public function actionModalCopyFromRelation($id)
         {
-            $copyToTask   = new Task();
-            $task   = Task::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
-            TaskActivityCopyModelUtil::copy($task, $copyToTask);
-            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            $copyToTask = $this->processTaskCopy($id);
             //Log event for project audit
-            if ($relationAttributeName == 'project')
+            if ($copyToTask->project->id > 0)
             {
                 ProjectsUtil::logAddTaskEvent($copyToTask);
             }
@@ -365,6 +397,7 @@
         {
             $task = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($task), 'TasksModule'), $task);
             $this->attemptToValidateAndSaveFromModalDetails($task);
             $this->processModalDetails($task);
         }
@@ -653,6 +686,184 @@
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
+        }
+
+        public function actionExport()
+        {
+            $this->export('TasksSearchView');
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getSearchFormClassName()
+        {
+            return 'TasksSearchForm';
+        }
+
+        /**
+         * Action for displaying a mass edit form and also action when that form is first submitted.
+         * When the form is submitted, in the event that the quantity of models to update is greater
+         * than the pageSize, then once the pageSize quantity has been reached, the user will be
+         * redirected to the makeMassEditProgressView.
+         * In the mass edit progress view, a javascript refresh will take place that will call a refresh
+         * action, usually massEditProgressSave.
+         * If there is no need for a progress view, then a flash message will be added and the user will
+         * be redirected to the list view for the model.  A flash message will appear providing information
+         * on the updated records.
+         * @see Controler->makeMassEditProgressView
+         * @see Controller->processMassEdit
+         * @see
+         */
+        public function actionMassEdit()
+        {
+            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
+            $task               = new Task(false);
+            $activeAttributes   = $this->resolveActiveAttributesFromMassEditPost();
+            $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
+                                            new TasksSearchForm($task),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'TasksSearchView');
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $task                = $this->processMassEdit(
+                                        $pageSize,
+                                        $activeAttributes,
+                                        $selectedRecordCount,
+                                        'TasksPageView',
+                                        $task,
+                                        TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                        $dataProvider
+                                    );
+            $massEditView       = $this->makeMassEditView(
+                                        $task,
+                                        $activeAttributes,
+                                        $selectedRecordCount,
+                                        TasksModule::getModuleLabelByTypeAndLanguage('Plural')
+                                       );
+            $view               = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $massEditView));
+            echo $view->render();
+        }
+
+        /**
+         * Action called in the event that the mass edit quantity is larger than the pageSize.
+         * This action is called after the pageSize quantity has been updated and continues to be
+         * called until the mass edit action is complete.  For example, if there are 20 records to update
+         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
+         * the actionMassEdit is called upon the initial form submission.
+         */
+        public function actionMassEditProgressSave()
+        {
+            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('massEditProgressPageSize');
+            $task           = new Task(false);
+            $dataProvider   = $this->getDataProviderByResolvingSelectAllFromGet(
+                                            new TasksSearchForm($task),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'TasksSearchView'
+                                        );
+            $this->processMassEditProgressSave(
+                        'Task',
+                        $pageSize,
+                        TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                        $dataProvider
+                    );
+        }
+
+        /**
+         * Action for displaying a mass delete form and also action when that form is first submitted.
+         * When the form is submitted, in the event that the quantity of models to delete is greater
+         * than the pageSize, then once the pageSize quantity has been reached, the user will be
+         * redirected to the makeMassDeleteProgressView.
+         * In the mass delete progress view, a javascript refresh will take place that will call a refresh
+         * action, usually makeMassDeleteProgressView.
+         * If there is no need for a progress view, then a flash message will be added and the user will
+         * be redirected to the list view for the model.  A flash message will appear providing information
+         * on the delete records.
+         * @see Controller->makeMassDeleteProgressView
+         * @see Controller->processMassDelete
+         * @see
+         */
+        public function actionMassDelete()
+        {
+            $params          = LabelUtil::getTranslationParamsForAllModules();
+            $title           = Zurmo::t('TasksModule', 'Mass Delete TasksModulePluralLabel', $params);
+            $breadCrumbLinks = array(
+                 $title,
+            );
+            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
+            $task            = new Task(false);
+
+            $activeAttributes   = $this->resolveActiveAttributesFromMassDeletePost();
+            $dataProvider       = $this->getDataProviderByResolvingSelectAllFromGet(
+                                            new TasksSearchForm($task),
+                                            $pageSize,
+                                            Yii::app()->user->userModel->id,
+                                            null,
+                                            'TasksSearchView');
+            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $task             = $this->processMassDelete(
+                                                            $pageSize,
+                                                            $activeAttributes,
+                                                            $selectedRecordCount,
+                                                            'TasksPageView',
+                                                            $task,
+                                                            TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                                            $dataProvider
+                                                          );
+            $massDeleteView     = $this->makeMassDeleteView(
+                                                             $task,
+                                                             $activeAttributes,
+                                                             $selectedRecordCount,
+                                                             TasksModule::getModuleLabelByTypeAndLanguage('Plural')
+                                                            );
+            $view               = new TasksPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $massDeleteView));
+            echo $view->render();
+        }
+
+        /**
+         * Action called in the event that the mass delete quantity is larger than the pageSize.
+         * This action is called after the pageSize quantity has been delted and continues to be
+         * called until the mass delete action is complete.  For example, if there are 20 records to delete
+         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
+         * the actionMassDelete is called upon the initial form submission.
+         */
+        public function actionMassDeleteProgress()
+        {
+            $pageSize       = Yii::app()->pagination->resolveActiveForCurrentUserByType('massDeleteProgressPageSize');
+            $task        = new Task(false);
+            $dataProvider   = $this->getDataProviderByResolvingSelectAllFromGet(
+                                          new TasksSearchForm($task),
+                                          $pageSize,
+                                          Yii::app()->user->userModel->id,
+                                          null,
+                                          'TasksSearchView'
+                                        );
+            $this->processMassDeleteProgress(
+                                                'Task',
+                                                $pageSize,
+                                                TasksModule::getModuleLabelByTypeAndLanguage('Plural'),
+                                                $dataProvider
+                                             );
+        }
+
+        /**
+         * Process task copy
+         * @param string $id
+         * @return Task
+         */
+        private function processTaskCopy($id)
+        {
+            $copyToTask   = new Task();
+            $task   = Task::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($task);
+            TaskActivityCopyModelUtil::copy($task, $copyToTask);
+            $copyToTask   = $this->attemptToSaveModelFromPost($copyToTask, null, false);
+            return $copyToTask;
         }
     }
 ?>

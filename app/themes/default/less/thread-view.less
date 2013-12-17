@@ -106,7 +106,7 @@
 		padding:5px 0;
     }
     th{
-		color: #545454;
+		color: @textColor;
     }
     td{
 	
@@ -296,8 +296,10 @@
     }
     .delete-comment, .edit-comment{
         .smaller();
+	    color: @themeColor;
         a{
             .opacity(50);
+	        color: @themeColor;
             &:hover{
                 .opacity(100);
             }
@@ -337,7 +339,7 @@
     position: relative;
     top: 5px;
     display: block;
-    ++.z-action-link;
+    .z-action-link();
 }
 
 
@@ -345,7 +347,7 @@
 #CommentInlineEditForModelView,
 #CommentsForRelatedModelView{
     max-width: 600px;
-    .box-sizing();
+    //.box-sizing();
     .wide.form{
         .unstyle-panel();
     }
@@ -404,12 +406,13 @@
 
 #ConversationsPageView ~ .token-input-dropdown{
     min-width: 0 !important;
-    .box-sizing();
+    //.box-sizing();
 }
 
 .unread{
 	td, td a{
 		font-weight:bold;
+		color: @themeColor;
 	}
 }
 
@@ -474,7 +477,7 @@
 
 a.user-link{
     font-weight: bold;
-    color: #545454 !important;
+    color: @textColor;
 }
 
 .mission-status{
@@ -528,6 +531,7 @@ a.user-link{
         margin-left: 80px;
         .smaller();
         .opacity(50);
+	    color: @themeColor;
         &:hover{
             .opacity(100);
         }

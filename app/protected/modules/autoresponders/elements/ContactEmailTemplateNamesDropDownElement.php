@@ -36,7 +36,7 @@
 
     abstract class ContactEmailTemplateNamesDropDownElement extends StaticDropDownFormElement
     {
-        const DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS    = true;
+        const DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS   = true;
 
         const DISABLE_TEXTBOX_WHEN_AJAX_IN_PROGRESS    = true;
 
@@ -103,8 +103,10 @@
 
                         function deleteExistingAttachments()
                         {
-                            $("table.files tr.template-download td.name span.upload-actions.delete button.icon-delete")
+                            $("table.files tr.template-download td.name span.upload-actions.delete button.icon-delete:first")
                                 .click();
+                            $("table.files tr.template-download")
+                                .remove();
                         }
 
                         function updateAddFilesWithDataFromAjax(filesIds, notificationBarId)
@@ -159,6 +161,7 @@
                                 var subjectElement      = $("#" + subjectId);
                                 var textContentElement  = $("#" + textContentId);
                                 var htmlContentElement  = $("#" + htmlContentId);
+                                var contactId           = ' . $this->getContactId() . ';
                                 var redActorElement     = $("#" + htmlContentId).parent().find(".redactor_editor");
                                 $.ajax(
                                     {
@@ -168,7 +171,8 @@
                                         {
                                             id: selectedOptionValue,
                                             renderJson: true,
-                                            includeFilesInJson: true
+                                            includeFilesInJson: true,
+                                            contactId: contactId
                                         },
                                         beforeSend: function(request, settings)
                                                     {
@@ -194,6 +198,7 @@
                                                                                         htmlContentElement,
                                                                                         subjectElement,
                                                                                         data);
+                                                        subjectElement.focus();
                                                         updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },
                                         error:      function(request, status, error)
@@ -317,6 +322,11 @@
         protected function getCloneExitingFilesUrl()
         {
             return Yii::app()->createUrl('/zurmo/fileModel/cloneExistingFiles');
+        }
+
+        protected function getContactId()
+        {
+            return 'null';
         }
     }
 ?>

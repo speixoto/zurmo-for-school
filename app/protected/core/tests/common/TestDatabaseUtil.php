@@ -62,7 +62,7 @@
                 }
                 else
                 {
-                    ZurmoRedBean::exec("delete from $tableName");
+                    ZurmoRedBean::$writer->wipe($tableName);
                 }
             }
         }

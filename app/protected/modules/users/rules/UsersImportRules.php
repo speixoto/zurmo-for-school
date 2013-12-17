@@ -65,5 +65,27 @@
         {
             return 'User';
         }
+
+        /**
+         * Override to add Password as a default field for mapping
+         * @param Array $attributesCollection
+         */
+        protected static function resolveRequiredDerivedAttributesCollection(& $attributesCollection)
+        {
+            $modelClassName = static::getModelClassName();
+            $model          = new $modelClassName(false);
+            $attributeImportRulesClassName = 'PasswordAttributeImportRules';
+            $attributeImportRules          = new $attributeImportRulesClassName($model);
+            $displayLabel                  = $attributeImportRules->getDisplayLabel();
+            ModelAttributeImportMappingCollectionUtil::populateCollection(
+                $attributesCollection,
+                'hash',
+                $displayLabel,
+                'hash',
+                'Password',
+                null,
+                true
+            );
+        }
     }
 ?>

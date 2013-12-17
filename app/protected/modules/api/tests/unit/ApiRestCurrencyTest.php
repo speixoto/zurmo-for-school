@@ -39,18 +39,6 @@
     */
     class ApiRestCurrencyTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetCurrency()
         {
             $super = User::getByUsername('super');
@@ -64,18 +52,14 @@
             );
 
             $currencies                 = Currency::getAll();
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($currencies[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($currencies[0]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/currency/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testListCurrencies()
         {
             $super = User::getByUsername('super');
@@ -92,12 +76,11 @@
             $compareData = array();
             foreach ($currencies as $currency)
             {
-                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($currency);
-                $compareData[] = $redBeanModelToApiDataUtil->getData();
+                $compareData[] = $this->getModelToApiDataUtilData($currency);
             }
 
             //Test List
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/currency/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(count($currencies), count($response['data']['items']));
@@ -120,10 +103,21 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new Currency());
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/currency/api/listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.zurmo.controllers.CurrencyApiController', true);
+            return 'ZurmoCurrencyApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'zurmo/currency/api/';
         }
     }
 ?>

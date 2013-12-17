@@ -66,14 +66,24 @@
             $task->activityItems->add($accounts[0]);
             $task->status           = Task::STATUS_IN_PROGRESS;
             $this->assertTrue($task->save());
+            $this->assertEquals(1, KanbanItem::getCount());
             $id = $task->id;
             unset($task);
             $task = Task::getById($id);
 
-            $kanbanItem = KanbanItem::getByTask($task->id);
+            //KanbanItem is created after saving Task
+            $kanbanItems = KanbanItem::getAll();
+            $this->assertCount(1, $kanbanItems);
+            $kanbanItem  = $kanbanItems[0];
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
-            $this->assertEquals($kanbanItem->kanbanRelatedItem, $task->activityItems->offsetGet(0));
-            $this->assertEquals(1, count(KanbanItem::getAll()));
+        }
+
+        public function testGetKanbanItemByTask()
+        {
+            $tasks = Task::getByName('MyTask');
+            $kanbanItem = KanbanItem::getByTask($tasks[0]->id);
+            $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
+            $this->assertEquals($kanbanItem->kanbanRelatedItem, $tasks[0]->activityItems->offsetGet(0));
         }
 
         public function testGetMaximumSortOrderByType()

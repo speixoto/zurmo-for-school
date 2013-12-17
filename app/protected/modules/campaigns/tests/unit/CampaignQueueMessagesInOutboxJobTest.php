@@ -343,23 +343,39 @@
                                                                                     $campaign->id);
             $this->assertCount(10, $unprocessedItems);
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(5);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
                                                                                     0,
                                                                                     $campaign->id);
             $this->assertCount(5, $unprocessedItems);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(2, $jobs);
+            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(3);
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
                                                                                         0,
                                                                                         $campaign->id);
             $this->assertCount(2, $unprocessedItems);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(2, $jobs);
+            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(10);
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue($job->run());
             $unprocessedItems               = CampaignItem::getByProcessedAndCampaignId(
                                                                                         0,
                                                                                         $campaign->id);
             $this->assertCount(0, $unprocessedItems);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(2, $jobs);
+            $this->assertCount(1, $jobs[5]);
+            $this->assertEquals('CampaignMarkCompleted', $jobs[5][0]);
         }
 
         /**

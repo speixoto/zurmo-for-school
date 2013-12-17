@@ -105,6 +105,10 @@
             {
                 self::processSubscribeToListAction();
             }
+            elseif ($this->action->type == ActionForWorkflowForm::TYPE_UNSUBSCRIBE_FROM_LIST)
+            {
+                self::processUnsubscribeFromListAction();
+            }
             else
             {
                 throw new NotSupportedException('Invalid action type: ' . $this->action->type);
@@ -445,6 +449,30 @@
             $marketingListId = $actionAttributes['marketingList']->value;
             $marketingList   = MarketingList::getById((int)$marketingListId);
             $marketingList->addNewMember((int)$this->triggeredModel->id, false);
+        }
+        
+        protected function processUnsubscribeFromListAction()
+        {
+            $actionAttributes = $this->action->getActionAttributes();
+            if (count($actionAttributes) > 1 ||
+               !isset($actionAttributes['marketingList']) ||
+               !$this->triggeredModel instanceof Contact)
+            {
+                throw new NotSupportedException();
+            }
+            $marketingListId = $actionAttributes['marketingList']->value;
+            $members = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingListId, 
+                                                                                    (int)$this->triggeredModel->id, 
+                                                                                    false);
+            if($members !== false)
+            {
+                $member = $members[0];
+                $member->unsubscribed = true;
+                if (!$member->unrestrictedSave())
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
         }
     }
 ?>

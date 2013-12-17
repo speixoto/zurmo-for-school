@@ -36,7 +36,7 @@
     /**
     * Accounts API Controller
     */
-    class AccountsAccountApiController extends ZurmoModuleApiController
+    class AccountsAccountApiController extends ZurmoSecurableItemApiController
     {
         protected static function getSearchFormClassName()
         {

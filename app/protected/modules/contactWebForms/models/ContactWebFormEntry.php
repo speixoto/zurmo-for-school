@@ -161,7 +161,7 @@
         public static function getByHashIndex($hashIndex)
         {
             $modelClassName = get_called_class();
-            $tableName      = self::getTableName($modelClassName);
+            $tableName      = $modelClassName::getTableName();
             $columnName     = self::getColumnNameByAttribute('hashIndex');
             $beans          = ZurmoRedBean::find($tableName, "$columnName = '$hashIndex'");
             assert('count($beans) <= 1');

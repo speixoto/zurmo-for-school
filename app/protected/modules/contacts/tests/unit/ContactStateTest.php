@@ -185,7 +185,7 @@
             $this->assertEquals(2, $attributeForm->startingStateOrder);
 
             //Switching name of existing state
-            $this->assertEquals(7, count(ContactState::getAll()));
+            $this->assertEquals(7, ContactState::getCount());
             $attributeForm->contactStatesDataExistingValues = array(
                 3 => 'New',
                 6 => 'In Progress',
@@ -219,7 +219,7 @@
             );
             $this->assertEquals($compareData, $attributeForm->contactStatesData);
             $this->assertEquals(2, $attributeForm->startingStateOrder);
-            $this->assertEquals(7, count(ContactState::getAll()));
+            $this->assertEquals(7, ContactState::getCount());
         }
     }
 ?>

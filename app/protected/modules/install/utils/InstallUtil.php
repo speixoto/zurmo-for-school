@@ -884,6 +884,36 @@
             return $isWritable;
         }
 
+        public static function isApplicationLogRuntimeWritable($instanceRoot)
+        {
+            $applicationLogFile     = "$instanceRoot/protected/runtime/application.log";
+            $runtimeDirectory       = "$instanceRoot/protected/runtime";
+
+            if (file_exists($applicationLogFile) && is_writable($applicationLogFile))
+            {
+                return true;
+            }
+            elseif (is_writable($runtimeDirectory))
+            {
+                //The application.log file may not exist yet.
+                return true;
+            }
+
+            return false;
+        }
+        
+        public static function isMinScriptCacheRuntimeDirectoryWritable($instanceRoot)
+        {
+            $minScriptCacheRuntimeDirectory   = "$instanceRoot/protected/runtime/minScript/cache";
+
+            if (is_dir($minScriptCacheRuntimeDirectory) && is_writable($minScriptCacheRuntimeDirectory))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        
         /**
          * Writes into perInstance.php that the installation is complete.
          */
@@ -975,6 +1005,7 @@
             $messageStreamer->add(Zurmo::t('InstallModule', 'Creating super user.'));
 
             $messageLogger = new MessageLogger($messageStreamer);
+            $messageLogger->logDateTimeStamp = false;
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Starting database schema creation.'));
             $startTime = microtime(true);
@@ -1112,6 +1143,7 @@
                 {
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Starting to load demo data.'));
                     $messageLogger = new MessageLogger($messageStreamer);
+                    $messageLogger->logDateTimeStamp = false;
                     $startTime = microtime(true);
                     if (isset($args[9]))
                     {

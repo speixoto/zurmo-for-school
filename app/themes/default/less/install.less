@@ -38,7 +38,8 @@
     margin-bottom:20px;
 }
 
-#InstallAccessFailurePageView, #ErrorPageView{
+#InstallAccessFailurePageView,
+#ErrorPageView{
     #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #f6f6f6 );
     .b-shadow( ~"0 0 12px 5px rgba(153, 153, 153, 0.3)" );
     .radius( 5px );
@@ -49,8 +50,8 @@
     padding:20px;
     margin:40px auto;
     a{
-        //++.themeBackgroundColor;
-        padding:1px 4px;
+	    background-color: @themeColor;
+	    padding:1px 4px;
         .radius(2px);
         color:#fff;
         &:hover{
@@ -73,7 +74,7 @@
         .radius( 5px );
         a{
             margin:auto 10px; 
-            ++.z-button;  
+            .z-button();  
         }
     }
 	div.wide.form{
@@ -121,7 +122,7 @@
         /*inside another table to prevent hover effect on the main table*/
         table tr:hover{
             background-color:none;
-            color:#545454;
+            color:@textColor;
         }
         td{
             padding:8px 2px;
@@ -130,7 +131,7 @@
     #install-form{
         padding:15px !important;
         input[type="submit"]{
-            ++.z-button;
+            .z-button();
         }
         table{
             padding-bottom:15px;

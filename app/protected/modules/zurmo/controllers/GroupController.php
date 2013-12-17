@@ -388,8 +388,8 @@
             {
                 $groups = array();
             }
-            $where    = Group::getTableName('Group') . ".name NOT IN( '" . Group::EVERYONE_GROUP_NAME . "', '" . Group::SUPER_ADMINISTRATORS_GROUP_NAME . "')";
-            $orderBy  = Group::getTableName('Group') . '.name asc';
+            $where    = Group::getTableName() . ".name NOT IN( '" . Group::EVERYONE_GROUP_NAME . "', '" . Group::SUPER_ADMINISTRATORS_GROUP_NAME . "')";
+            $orderBy  = Group::getTableName() . '.name asc';
             return array_merge($groups, Group::getSubset(null, null, null, $where, $orderBy));
         }
 

@@ -39,6 +39,13 @@
      */
     class InQueueUtil
     {
+        public static function resolveToAddJobToQueueAfterSaveOfModel($model, $jobType)
+        {
+            assert('$model instanceof WorkflowMessageInQueue || $model instanceof ByTimeWorkflowInQueue');
+            assert('is_string($jobType)');
+            Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($model, 'processDateTime', $jobType);
+        }
+
         protected static function resolveModelAndContent($model)
         {
             try
@@ -58,7 +65,7 @@
         }
 
         /**
-         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @param RedBeanModel $inQueueModel
          * @return An|RedBeanModel
          */
         protected static function resolveModel(RedBeanModel $inQueueModel)

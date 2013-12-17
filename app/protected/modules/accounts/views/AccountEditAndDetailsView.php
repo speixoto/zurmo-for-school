@@ -51,6 +51,7 @@
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'account',
                         'owner',
                         'latestActivityDateTime'
                     ),
@@ -174,6 +175,11 @@
         public static function getModuleClassName()
         {
             return 'AccountsModule';
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            return AccountDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel());
         }
     }
 ?>

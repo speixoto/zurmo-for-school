@@ -88,7 +88,7 @@
 
         public function getRootModelNames()
         {
-            return array('JobLog', 'JobInProcess');
+            return array('JobLog', 'JobInProcess', 'StuckJob');
         }
     }
 ?>

@@ -130,7 +130,7 @@
             $this->assertEquals(1, count($dashboards));
 
             //Add a dashboard via the create dashboard action.
-            $this->assertEquals(1, count(Dashboard::getAll()));
+            $this->assertEquals(1, Dashboard::getCount());
             $this->resetGetArray();
             $this->setPostArray(array('Dashboard' => array(
                 'name'    => 'myTestDashboard',

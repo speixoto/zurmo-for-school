@@ -78,8 +78,8 @@
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $selectQueryAdapter->addClause(Account::getTableName('Account'), 'id');
-            $sql                    = SQLQueryUtil::makeQuery(Account::getTableName('Account'),
+            $selectQueryAdapter->addClause(Account::getTableName(), 'id');
+            $sql                    = SQLQueryUtil::makeQuery(Account::getTableName(),
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $content, null, null);
             $rows                   = ZurmoRedBean::getAll($sql);
             $this->assertEquals(0, count($rows));

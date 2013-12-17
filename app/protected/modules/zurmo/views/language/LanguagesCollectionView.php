@@ -68,7 +68,7 @@
 
         public function getTitle()
         {
-            return Zurmo::t('ZurmoModule', 'Languages');
+            return Zurmo::t('Core', 'Languages');
         }
 
         public function isUniqueToAPage()
@@ -267,8 +267,12 @@ EOD;
                         $languageCode
                     )
                 ),
-                'class' => 'action-button attachLoading z-button green-button'
+                'class' => 'attachLoading z-button'
             );
+            if ($action == 'deactivate')
+            {
+                $buttonHtml['class'] .= ' cancel-button';
+            }
             if ($action == 'deactivate' && !$languageData['canDeactivate'])
             {
                 $buttonHtml['class'] .= ' disabled';

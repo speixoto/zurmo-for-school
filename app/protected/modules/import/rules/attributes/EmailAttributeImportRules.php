@@ -41,12 +41,13 @@
     {
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array('DefaultValueModelAttribute' => 'Text');
+            return array('DefaultValueModelAttribute' => 'Text',
+                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('Email', 'Required');
+            return array('Email', 'Required', 'EmailDedupe');
         }
     }
 ?>

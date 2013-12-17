@@ -110,5 +110,14 @@
                 )
             );
         }
+
+        protected function afterSave()
+        {
+            if ($this->isNewModel && !$this->isCompleted)
+            {
+                Yii::app()->jobQueue->add('Export');
+            }
+            parent::afterSave();
+        }
     }
 ?>
