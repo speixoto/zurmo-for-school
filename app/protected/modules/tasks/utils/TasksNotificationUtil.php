@@ -159,11 +159,22 @@
                    $action == self::TASK_NEW_COMMENT)
             {
                 $peopleToSendNotification = TasksUtil::getTaskSubscribers($task);
-                if ($relatedUser != null)
+                if ($action == self::TASK_NEW_COMMENT && $relatedUser != null)
                 {
                     foreach ($peopleToSendNotification as $key => $person)
                     {
                         if ($person->getClassId('Item') == $relatedUser->getClassId('Item'))
+                        {
+                            unset($peopleToSendNotification[$key]);
+                        }
+                    }
+                }
+                if(($action == self::TASK_STATUS_BECOMES_COMPLETED) &&
+                                    (Yii::app()->user->userModel->id == $task->owner->id))
+                {
+                    foreach ($peopleToSendNotification as $key => $person)
+                    {
+                        if ($person->getClassId('Item') == $task->owner->getClassId('Item'))
                         {
                             unset($peopleToSendNotification[$key]);
                         }
