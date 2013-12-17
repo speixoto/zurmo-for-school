@@ -64,5 +64,17 @@
                           self::SKIP_ROW_ON_MATCH_FOUND   => Zurmo::t('ImportModule', 'When a match is found, skip row'),
                           self::UPDATE_ROW_ON_MATCH_FOUND => Zurmo::t('ImportModule', 'When a match is found, update existing record'));
         }
+
+        protected function getEditableHtmlOptions()
+        {
+            $htmlOptions = parent::getEditableHtmlOptions();
+            $htmlOptions['template'] =  '<div class="radio-input">{input}{label}</div>';
+            $htmlOptions['separator'] = '';
+            if (isset($htmlOptions['empty']))
+            {
+                unset($htmlOptions['empty']);
+            }
+            return $htmlOptions;
+        }
     }
 ?>

@@ -8391,8 +8391,9 @@ table.configuration-list tr:last-child td {
   width: 35%;
 }
 .mapping-rules > div {
-  width: 49.5%;
+  width: 49%;
   display: inline-block;
+  vertical-align: top;
 }
 .mapping-rules > div > .has-model-select,
 .mapping-rules > div > .hasDropDown,
@@ -8400,12 +8401,21 @@ table.configuration-list tr:last-child td {
   width: 65% !important;
   display: inline-block;
 }
+.mapping-rules > div .radio-input {
+  display: block;
+  width: 100%;
+  line-height: 1.5;
+}
+.mapping-rules > div .radio-input label {
+  width: auto;
+  line-height: inherit;
+}
 .mapping-rules > div:last-child {
   width: 100%;
 }
 .mapping-rules > div + div:last-child {
-  width: 49.5%;
-  margin-left: 1%;
+  width: 49%;
+  margin-left: 2%;
 }
 .mapping-rules.multiple table {
   width: 49.5% !important;

@@ -971,21 +971,31 @@ table.configuration-list{
 		//.box-sizing();
 	}
 	> div{
-		width: 49.5%;
+		width: 49%;
 		display: inline-block;
+		vertical-align: top;
 		> .has-model-select,
 		> .hasDropDown,
 		> input{
 			width: 65% !important;
 			display: inline-block;
 		}
+		.radio-input{
+			display: block;
+			width: 100%;
+			line-height: 1.5;
+			label{
+				width: auto;
+				line-height: inherit;
+			}
+		}
 	}
 	> div:last-child{
 		width: 100%;
 	}
 	> div + div:last-child{
-		width: 49.5%;
-		margin-left: 1%;
+		width: 49%;
+		margin-left: 2%;
 	}
 }
 
