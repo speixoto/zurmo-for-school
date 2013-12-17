@@ -103,6 +103,10 @@
             $everyone->setRight('ProjectsModule',      ProjectsModule::RIGHT_ACCESS_PROJECTS, Right::ALLOW);
             $everyone->setRight('ProjectsModule',      ProjectsModule::RIGHT_CREATE_PROJECTS, Right::ALLOW);
             $everyone->setRight('ProjectsModule',      ProjectsModule::RIGHT_DELETE_PROJECTS, Right::ALLOW);
+            $everyone->setRight('AccountAccountAffiliationsModule',
+                                AccountAccountAffiliationsModule::RIGHT_ACCESS_ACCOUNT_ACCOUNT_AFFILIATIONS, Right::ALLOW);
+            $everyone->setRight('AccountContactAffiliationsModule',
+                                AccountContactAffiliationsModule::RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS, Right::ALLOW);
             $saved = $everyone->save();
             assert('$saved');
         }
