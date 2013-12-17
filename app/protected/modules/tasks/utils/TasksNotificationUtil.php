@@ -169,6 +169,17 @@
                         }
                     }
                 }
+                if(($action == self::TASK_STATUS_BECOMES_COMPLETED) &&
+                                    (Yii::app()->user->userModel->id == $task->owner->id))
+                {
+                    foreach ($peopleToSendNotification as $key => $person)
+                    {
+                        if ($person->getClassId('Item') == $task->owner->getClassId('Item'))
+                        {
+                            unset($peopleToSendNotification[$key]);
+                        }
+                    }
+                }
             }
             return $peopleToSendNotification;
         }
