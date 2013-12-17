@@ -77,8 +77,10 @@
                 'column_5'  => array('attributeIndexOrDerivedType'          => 'role',
                                      'type'                                 => 'importColumn',
                                      'mappingRulesData'                     => array(
-                                          'DefaultModelNameIdMappingRuleForm'    => array('defaultModelId' => $role->id),
-                                          'RelatedModelValueTypeMappingRuleForm' => array('type' =>RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)))
+                                          'DefaultModelNameIdMappingRuleForm'    => 
+                                          array('defaultModelId' => $role->id),
+                                          'RelatedModelValueTypeMappingRuleForm' => 
+                                          array('type' => RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)))
                 );
             $serializedData                = unserialize($import->serializedData);
             $serializedData['mappingData'] = $mappingData;
