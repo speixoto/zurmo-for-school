@@ -41,6 +41,8 @@
     {
         const DEFAULT_THEME_COLOR = 'blue';
 
+        protected $useCustomTheme = true;
+
         public function resolveAndGetThemeColorValue(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
@@ -124,6 +126,10 @@
                           'amazon'      => Zurmo::t('Core', 'Amazon'),
                           'sweden'      => Zurmo::t('Core', 'Sweden'),
                           'pink'        => Zurmo::t('Core', 'Pink'));
+            if ($this->useCustomTheme)
+            {
+                $data['custom'] = Zurmo::t('Core', 'Custom');
+            }
             return $data;
         }
 
@@ -165,6 +171,10 @@
                           'amazon'      => 6,
                           'sweden'      => 7,
                           'pink'        => 8);
+            if ($this->useCustomTheme)
+            {
+                $data['custom'] = 1;
+            }
             return $data;
         }
 
@@ -208,6 +218,10 @@
                           'sweden'      => array('#545454', '#034C8C', '#024873', '#97c43d', '#f2ec5c'),
                           'pink'        => array('#545454', '#323232', '#565656', '#97c43d', '#ff4f84')
             );
+            if ($this->useCustomTheme)
+            {
+                $data['custom'] = array('#545454', '#323232', '#565656', '#97c43d', '#ff4f84');
+            }
             return $data;
         }
     }

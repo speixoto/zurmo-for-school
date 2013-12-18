@@ -34,32 +34,8 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Form to all editing and viewing of user interface configuration values in the user interface.
-     */
-    class ZurmoUserInterfaceConfigurationForm extends ConfigurationForm
+    class ThemeColorConfigurationElement extends ThemeColorElement
     {
-        public $themeColor;
-
-        public $customThemeColor1;
-
-        public $customThemeColor2;
-
-        public $customThemeColor3;
-
-        public $logoFileData;
-
-        const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
-        const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
-        const DEFAULT_LOGO_HEIGHT           = 32;
-        const DEFAULT_LOGO_WIDTH            = 107;
-        const LOGO_THUMB_FILE_NAME_PREFIX   = 'logoThumb-';
-
-        public function rules()
-        {
-            return array(
-                array('logoFileData', 'type', 'type' => 'array'),
-            );
-        }
+        protected $shouldDisableLocked = false;
     }
 ?>
