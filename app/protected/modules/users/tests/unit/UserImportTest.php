@@ -80,9 +80,9 @@
                 'column_5'  => array('attributeIndexOrDerivedType'          => 'role',
                                      'type'                                 => 'importColumn',
                                      'mappingRulesData' => array(
-                                        'DefaultModelNameIdMappingRuleForm'    => 
+                                        'DefaultModelNameIdMappingRuleForm'    =>
                                         array('defaultModelId' => null),
-                                        'RelatedModelValueTypeMappingRuleForm' => 
+                                        'RelatedModelValueTypeMappingRuleForm' =>
                                         array('type' => RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)))
             );
 
