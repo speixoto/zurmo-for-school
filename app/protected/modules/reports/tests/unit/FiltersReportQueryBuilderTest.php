@@ -1408,8 +1408,8 @@
             $filter->secondValue                   = '1991-06-05';
             $filter->availableAtRunTime            = true;
             $content                               = $builder->makeQueryContent(array($filter));
-            $compareContent                        = "((({$q}item1{$q}.{$q}createddatetime{$q} >= {$q}1991-05-05 00:00:00{$q}) " .
-                                                     "and ({$q}item1{$q}.{$q}createddatetime{$q} <= {$q}1991-06-05 23:59:59{$q})))";
+            $compareContent                        = "((({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-05-05 00:00:00') " .
+                                                     "and ({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-06-05 23:59:59')))";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(4, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
