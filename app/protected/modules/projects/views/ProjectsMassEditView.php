@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class UsersMassEditView extends MassEditView
+    class ProjectsMassEditView extends MassEditView
     {
         public static function getDefaultMetadata()
         {
@@ -47,18 +47,7 @@
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
-                        'isActive',
-                        'title',
-                        'firstName',
-                        'lastName',
-                        'username',
-                        'hash',
-                        'newPassword',
-                        'newPassword_repeat',
-                        'isRootUser',
-                        'isSystemUser',
-                        'lastLoginDateTime',
-                        'serializedAvatarData'
+                        'name',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -68,7 +57,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'department', 'type' => 'Text'),
+                                                array('attributeName' => 'owner', 'type' => 'User'),
                                             ),
                                         ),
                                     )
@@ -77,7 +66,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'manager', 'type' => 'User'),
+                                                array('attributeName' => 'status', 'type' => 'ProjectStatusDropDown'),
                                             ),
                                         ),
                                     )
