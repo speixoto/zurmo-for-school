@@ -77,7 +77,7 @@
             }
             else
             {
-                return $this->resolveAndGetThemeColorValue(Yii::app()->user->userModel);
+                //return $this->resolveAndGetThemeColorValue(Yii::app()->user->userModel);
             }
         }
 
@@ -103,6 +103,17 @@
         {
             assert('is_string($value) || $value == null');
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'backgroundTexture', $value);
+        }
+
+        public function setCustomThemeColorsArray($colorsArray)
+        {
+            assert('is_array($colorsArray)');
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'customThemeColorsArray', $colorsArray);
+        }
+
+        public function getCustomThemeColorsArray()
+        {
+            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'customThemeColorsArray');
         }
 
         public function getDefaultThemeColor()
@@ -220,7 +231,12 @@
             );
             if ($this->useCustomTheme)
             {
-                $data['custom'] = array('#545454', '#323232', '#565656', '#97c43d', '#ff4f84');
+                $customThemeColorsArray = $this->getCustomThemeColorsArray();
+                $data['custom'] = array('#545454',
+                                        $customThemeColorsArray[0],
+                                        $customThemeColorsArray[1],
+                                        '#97c43d',
+                                        $customThemeColorsArray[2]);
             }
             return $data;
         }

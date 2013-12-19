@@ -37,5 +37,71 @@
     class ThemeColorConfigurationElement extends ThemeColorElement
     {
         protected $shouldDisableLocked = false;
+
+        public function renderControlEditable()
+        {
+            assert('$this->model instanceof ZurmoUserInterfaceConfigurationForm');
+            $content  = parent::renderControlEditable();
+            $content .= $this->renderCustomThemeColorChooser();
+            return $content;
+        }
+
+        protected  function renderCustomThemeColorChooser()
+        {
+            $attribute   = 'customThemeColor1';
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip($attribute);
+            $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
+                'inputName'            => $this->getEditableInputName($attribute),
+                'inputId'              => $this->getEditableInputId($attribute),
+                'inputValue'           => $this->model->$attribute,
+            ));
+            $cClipWidget->endClip();
+            $content = $cClipWidget->getController()->clips[$attribute];
+            $attribute   = 'customThemeColor2';
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip($attribute);
+            $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
+                'inputName'            => $this->getEditableInputName($attribute),
+                'inputId'              => $this->getEditableInputId($attribute),
+                'inputValue'           => $this->model->$attribute,
+            ));
+            $cClipWidget->endClip();
+            $content .= $cClipWidget->getController()->clips[$attribute];
+            $attribute   = 'customThemeColor3';
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip($attribute);
+            $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
+                'inputName'            => $this->getEditableInputName($attribute),
+                'inputId'              => $this->getEditableInputId($attribute),
+                'inputValue'           => $this->model->$attribute,
+            ));
+            $cClipWidget->endClip();
+            $content .= $cClipWidget->getController()->clips[$attribute];
+            return ZurmoHtml::tag('div', array('id' => 'customThemeColorPicker'), $content);
+        }
+
+        public function registerScript()
+        {
+            $customThemePosition = count(Yii::app()->themeManager->getThemeColorNamesAndLabels());
+            $inputId             = $this->getEditableInputId() . '_14';
+            Yii::app()->clientScript->registerScript('customThemeColorPicker', "
+                $('#edit-form').change(function()
+                {
+                    if ($('#{$inputId}').attr('checked'))
+                    {
+                        $('#customThemeColorPicker').show();
+                        console.log('show');
+                    }
+                    else
+                    {
+                        $('#customThemeColorPicker').hide();
+                        console.log('hide');
+                    }
+                });
+            ", CClientScript::POS_END);
+            parent::registerScript();
+        }
+
     }
 ?>
