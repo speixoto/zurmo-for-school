@@ -130,6 +130,11 @@
             $customThemeColorsArray[0] = $form->customThemeColor1;
             $customThemeColorsArray[1] = $form->customThemeColor2;
             $customThemeColorsArray[2] = $form->customThemeColor3;
+            if ($customThemeColorsArray != Yii::app()->themeManager->customThemeColorsArray)
+            {
+                //TODO: @sergio: We should only compile the customThemeColors
+                Yii::app()->lessCompiler->compile();
+            }
             Yii::app()->themeManager->customThemeColorsArray = $customThemeColorsArray;
             Yii::app()->themeManager->globalThemeColor       = $form->themeColor;
             Yii::app()->themeManager->forceAllUsersTheme     = $form->forceAllUsersTheme;
