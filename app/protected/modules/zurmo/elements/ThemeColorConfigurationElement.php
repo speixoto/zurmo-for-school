@@ -46,6 +46,11 @@
             return $content;
         }
 
+        protected function shouldRenderControlEditable()
+        {
+            return true;
+        }
+
         protected  function renderCustomThemeColorChooser()
         {
             $attribute   = 'customThemeColor1';

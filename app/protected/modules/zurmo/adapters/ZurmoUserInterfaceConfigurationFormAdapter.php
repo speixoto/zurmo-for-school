@@ -133,6 +133,10 @@
             Yii::app()->themeManager->customThemeColorsArray = $customThemeColorsArray;
             Yii::app()->themeManager->globalThemeColor       = $form->themeColor;
             Yii::app()->themeManager->forceAllUsersTheme     = $form->forceAllUsersTheme;
+            if ($form->forceAllUsersTheme)
+            {
+                static::changeAllUsersThemeColorToGlobalThemeColor();
+            }
         }
 
         public static function resolveLogoWidth()
@@ -213,6 +217,16 @@
             list($logoWidth, $logoHeight) = getimagesize($destinationPath);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoWidth', $logoWidth);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoHeight', $logoHeight);
+        }
+
+        public static function changeAllUsersThemeColorToGlobalThemeColor()
+        {
+            $users            = User::getAll();
+            $globalThemeColor = Yii::app()->themeManager->globalThemeColor;
+            foreach ($users as $user)
+            {
+                Yii::app()->themeManager->setThemeColorValue($user, $globalThemeColor);
+            }
         }
     }
 ?>

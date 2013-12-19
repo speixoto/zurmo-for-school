@@ -47,6 +47,10 @@
          */
         protected function renderControlEditable()
         {
+            if (!$this->shouldRenderControlEditable())
+            {
+                return null;
+            }
             $gameLevel = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $content = null;
             $content .= $this->form->radioButtonList(
@@ -59,6 +63,15 @@
             );
             $this->registerScript();
             return $content;
+        }
+
+        protected function shouldRenderControlEditable()
+        {
+            if (Yii::app()->themeManager->forceAllUsersTheme)
+            {
+                return false;
+            }
+            return true;
         }
 
         protected function renderControlNonEditable()
