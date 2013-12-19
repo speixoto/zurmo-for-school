@@ -78,7 +78,12 @@
             ));
             $cClipWidget->endClip();
             $content .= $cClipWidget->getController()->clips[$attribute];
-            return ZurmoHtml::tag('div', array('id' => 'customThemeColorPicker'), $content);
+            return ZurmoHtml::tag('div',
+                                  array(
+                                      'id' => 'customThemeColorPicker',
+                                      'style' => $this->getStyleForInitialColorPicker(),
+                                  ),
+                                  $content);
         }
 
         public function registerScript()
@@ -91,17 +96,23 @@
                     if ($('#{$inputId}').attr('checked'))
                     {
                         $('#customThemeColorPicker').show();
-                        console.log('show');
                     }
                     else
                     {
                         $('#customThemeColorPicker').hide();
-                        console.log('hide');
                     }
                 });
             ", CClientScript::POS_END);
             parent::registerScript();
         }
 
+        protected function getStyleForInitialColorPicker()
+        {
+            $attribute = $this->attribute;
+            if ($this->model->$attribute != 'custom')
+            {
+                return 'display: none';
+            }
+        }
     }
 ?>

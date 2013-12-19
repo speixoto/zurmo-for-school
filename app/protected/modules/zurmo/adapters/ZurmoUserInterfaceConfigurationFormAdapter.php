@@ -46,6 +46,7 @@
         public static function makeFormFromGlobalConfiguration()
         {
             $form = new ZurmoUserInterfaceConfigurationForm();
+            self::getThemeAttributes($form);
             self::getLogoAttributes($form);
             return $form;
         }
@@ -55,6 +56,7 @@
          */
         public static function setConfigurationFromForm(ZurmoUserInterfaceConfigurationForm $form)
         {
+            self::setThemeAttributes($form);
             self::setLogoAttributes($form);
         }
 
@@ -80,6 +82,16 @@
                                           'thumbnail_url'     => $logoThumbFileSrc);
            }
            $form->logoFileData  = $logoFileData;
+        }
+
+        public static function getThemeAttributes(& $form)
+        {
+            $customThemeColorsArray   = Yii::app()->themeManager->customThemeColorsArray;
+            $form->themeColor         = Yii::app()->themeManager->globalThemeColor;
+            $form->customThemeColor1  = $customThemeColorsArray[0];
+            $form->customThemeColor2  = $customThemeColorsArray[1];
+            $form->customThemeColor3  = $customThemeColorsArray[2];
+            $form->forceAllUsersTheme = Yii::app()->themeManager->forceAllUsersTheme;
         }
 
         public static function setLogoAttributes($form)
@@ -110,6 +122,17 @@
                ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoThumbFileModelId', $thumbFileId);
                Yii::app()->user->setState('logoFileName', null);
            }
+        }
+
+        public static function setThemeAttributes($form)
+        {
+            $customThemeColorsArray    = array();
+            $customThemeColorsArray[0] = $form->customThemeColor1;
+            $customThemeColorsArray[1] = $form->customThemeColor2;
+            $customThemeColorsArray[2] = $form->customThemeColor3;
+            Yii::app()->themeManager->customThemeColorsArray = $customThemeColorsArray;
+            Yii::app()->themeManager->globalThemeColor       = $form->themeColor;
+            Yii::app()->themeManager->forceAllUsersTheme     = $form->forceAllUsersTheme;
         }
 
         public static function resolveLogoWidth()

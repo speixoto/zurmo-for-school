@@ -47,6 +47,8 @@
 
         public $customThemeColor3;
 
+        public $forceAllUsersTheme;
+
         public $logoFileData;
 
         const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
@@ -58,7 +60,12 @@
         public function rules()
         {
             return array(
-                array('logoFileData', 'type', 'type' => 'array'),
+                array('themeColor',          'type', 'type' => 'string'),
+                array('customThemeColor1',   'type', 'type' => 'string'),
+                array('customThemeColor2',   'type', 'type' => 'string'),
+                array('customThemeColor3',   'type', 'type' => 'string'),
+                array('forceAllUsersTheme',  'type', 'type' => 'integer'),
+                array('logoFileData',        'type', 'type' => 'array'),
             );
         }
     }

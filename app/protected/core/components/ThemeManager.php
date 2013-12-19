@@ -77,7 +77,7 @@
             }
             else
             {
-                //return $this->resolveAndGetThemeColorValue(Yii::app()->user->userModel);
+                return $this->resolveAndGetThemeColorValue(Yii::app()->user->userModel);
             }
         }
 
@@ -114,6 +114,28 @@
         public function getCustomThemeColorsArray()
         {
             return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'customThemeColorsArray');
+        }
+
+        public function setForceAllUsersTheme($value)
+        {
+            //assert('is_boolean($value)');
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'forceAllUsersTheme', $value);
+        }
+
+        public function getForceAllUsersTheme()
+        {
+            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'forceAllUsersTheme');
+        }
+
+        public function setGlobalThemeColor($value)
+        {
+            //assert('is_string($value)');
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'globalThemeColor', $value);
+        }
+
+        public function getGlobalThemeColor()
+        {
+            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'globalThemeColor');
         }
 
         public function getDefaultThemeColor()

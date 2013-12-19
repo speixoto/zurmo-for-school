@@ -72,6 +72,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'forceAllUsersTheme', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'SettingsLogoFileUpload'),
                                             ),
                                         ),
