@@ -126,14 +126,14 @@
 
         public static function setThemeAttributes($form)
         {
+            $shouldCompile             = false;
             $customThemeColorsArray    = array();
             $customThemeColorsArray[0] = $form->customThemeColor1;
             $customThemeColorsArray[1] = $form->customThemeColor2;
             $customThemeColorsArray[2] = $form->customThemeColor3;
             if ($customThemeColorsArray != Yii::app()->themeManager->customThemeColorsArray)
             {
-                //TODO: @sergio: We should only compile the customThemeColors
-                Yii::app()->lessCompiler->compile();
+                $shouldCompile = true:
             }
             Yii::app()->themeManager->customThemeColorsArray = $customThemeColorsArray;
             Yii::app()->themeManager->globalThemeColor       = $form->themeColor;
@@ -141,6 +141,11 @@
             if ($form->forceAllUsersTheme)
             {
                 static::changeAllUsersThemeColorToGlobalThemeColor();
+            }
+            if ($shouldCompile)
+            {
+                //TODO: @sergio: We should only compile the customThemeColors
+                Yii::app()->lessCompiler->compile();
             }
         }
 
