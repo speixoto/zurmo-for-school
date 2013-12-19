@@ -3136,5 +3136,48 @@
                 $this->validators[] = CValidator::createValidator($validator, $this, $attribute, $params);
             }
         }
+
+        /**
+         * @param string $relation
+         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return bool
+         */
+        public static function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
+                                                                $precedingRelation = null)
+        {
+            assert('is_string($relation)');
+            assert('$precedingModel instanceof RedBeanModel || $precedingModel === null');
+            assert('is_string($precedingRelation) || $precedingRelation == null');
+            if ($precedingModel == null || $precedingRelation == null)
+            {
+                return false;
+            }
+            $modelClassName          = get_called_class();
+            $precedingModelClassName = get_class($precedingModel);
+            //Check if the relation is a derived relation in which case return false because it is handled by
+            //@see self::inferredRelationLinksToPrecedingRelation
+            if (!$precedingModelClassName::isAnAttribute($precedingRelation))
+            {
+                return false;
+            }
+            if ($precedingModelClassName != $modelClassName::getRelationModelClassName($relation))
+            {
+                return false;
+            }
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
+            {
+                return true;
+            }
+            //Check for LINK_TYPE_SPECIFIC
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $precedingModelClassName::getRelationLinkName($precedingRelation) == $modelClassName::getRelationLinkName($relation))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 ?>

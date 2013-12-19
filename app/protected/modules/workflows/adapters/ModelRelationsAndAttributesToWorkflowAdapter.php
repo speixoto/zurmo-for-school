@@ -1003,34 +1003,8 @@
         protected function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
                                                             $precedingRelation = null)
         {
-            assert('is_string($relation)');
-            if ($precedingModel == null || $precedingRelation == null)
-            {
-                return false;
-            }
-            //Check if the relation is a derived relation in which case return false because it is handled by
-            //@see self::inferredRelationLinksToPrecedingRelation
-            if (!$precedingModel->isAttribute($precedingRelation))
-            {
-                return false;
-            }
-            if (get_class($precedingModel) != $this->model->getRelationmodelClassName($relation))
-            {
-                return false;
-            }
-            if ( $precedingModel->getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
-                $this->model->getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
-            {
-                return true;
-            }
-            //Check for LINK_TYPE_SPECIFIC
-            if ( $precedingModel->getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
-                $this->model->getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
-                $precedingModel->getRelationLinkName($precedingRelation) == $this->model->getRelationLinkName($relation))
-            {
-                return true;
-            }
-            return false;
+            $modelClassName = get_class($this->model);
+            return $modelClassName::relationLinksToPrecedingRelation($relation, $precedingModel, $precedingRelation);
         }
 
         /**
