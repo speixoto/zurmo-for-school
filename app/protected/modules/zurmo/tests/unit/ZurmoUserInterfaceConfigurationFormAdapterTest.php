@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoConfigurationFormAdapterTest extends ZurmoBaseTest
+    class ZurmoUserInterfaceConfigurationFormAdapterTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -52,25 +52,34 @@
         public function testMakeFormAndSetConfigurationFromForm()
         {
             $billy = User::getByUsername('billy');
-            Yii::app()->timeZoneHelper->setTimeZone           ('America/New_York');
-            Yii::app()->pagination->setGlobalValueByType('listPageSize',          50);
-            Yii::app()->pagination->setGlobalValueByType('subListPageSize',       51);
-            Yii::app()->pagination->setGlobalValueByType('modalListPageSize',     52);
-            Yii::app()->pagination->setGlobalValueByType('dashboardListPageSize', 53);
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'demoCompany');
-            $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
-            $this->assertEquals('America/New_York',              $form->timeZone);
-            $this->assertEquals(50,                              $form->listPageSize);
-            $this->assertEquals(51,                              $form->subListPageSize);
-            $this->assertEquals(52,                              $form->modalListPageSize);
-            $this->assertEquals(53,                              $form->dashboardListPageSize);
-            $this->assertEquals('demoCompany',                   $form->applicationName);
-            $form->timeZone              = 'America/Chicago';
-            $form->listPageSize          = 60;
-            $form->subListPageSize       = 61;
-            $form->modalListPageSize     = 62;
-            $form->dashboardListPageSize = 63;
-            $form->applicationName       = 'demoCompany2';
+            Yii::app()->themeManager->customThemeColorsArray = array('#111111', '#222222', '#333333');
+            Yii::app()->themeManager->globalThemeColor = 'custom';
+            Yii::app()->themeManager->forceAllUsersTheme = true;
+            $logoFileName = 'testLogo.png';
+            $logoFilePath = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName;
+            ZurmoUserInterfaceConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $logoFilePath, null, ZurmoUserInterfaceConfigurationForm::DEFAULT_LOGO_HEIGHT);
+            $logoFileId   = ZurmoUserInterfaceConfigurationFormAdapter::saveLogoFile($logoFileName, $logoFilePath, 'logoFileModelId');
+            ZurmoUserInterfaceConfigurationFormAdapter::publishLogo($logoFileName, $logoFilePath);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', $logoFileId);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoThumbFileModelId', $logoFileId);
+            //Getting values
+            $form = ZurmoUserInterfaceConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $this->assertEquals($logoFileName, $form->logoFileData['name']);
+            $this->assertEquals('custom',      $form->themeColor);
+            $this->assertEquals('#111111',     $form->customThemeColor1);
+            $this->assertEquals('#222222',     $form->customThemeColor2);
+            $this->assertEquals('#333333',     $form->customThemeColor3);
+            $this->assertEquals('1',           $form->forceAllUsersTheme);
+            //Setting values
+            $form->themeColor            = 'lime';
+            $form->customThemeColor1     = '#999999';
+            $form->customThemeColor2     = '#888888';
+            $form->customThemeColor3     = '#777777';
+            $logoFileName2               = 'testLogo2.png';
+            $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
+            copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName2);
+            copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . ZurmoUserInterfaceConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $logoFileName2);
+            Yii::app()->user->setState('logoFileName', $logoFileName2);
             ZurmoConfigurationFormAdapter::setConfigurationFromForm($form);
             $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $this->assertEquals('America/Chicago',  $form->timeZone);
@@ -79,6 +88,7 @@
             $this->assertEquals(62,                 $form->modalListPageSize);
             $this->assertEquals(63,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany2',     $form->applicationName);
+            $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
         }
     }
 ?>

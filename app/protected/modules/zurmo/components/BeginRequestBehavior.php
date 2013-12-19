@@ -544,7 +544,7 @@
                     {
                         $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileModel->name;
                         file_put_contents($logoFilePath, $logoFileModel->fileContent->content, LOCK_EX);
-                        ZurmoConfigurationFormAdapter::publishLogo($logoFileModel->name, $logoFilePath);
+                        ZurmoUserInterfaceConfigurationFormAdapter::publishLogo($logoFileModel->name, $logoFilePath);
                     }
                     else
                     {
