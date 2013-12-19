@@ -68,7 +68,7 @@
          */
         public static function getDedupeAttributes()
         {
-            return array('secondaryEmail__emailAddress', 'FullName');
+            return array('primaryEmail__emailAddress', 'secondaryEmail__emailAddress', 'FullName');
         }
     }
 ?>

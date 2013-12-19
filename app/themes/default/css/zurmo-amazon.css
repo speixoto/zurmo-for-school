@@ -8768,6 +8768,29 @@ table.configuration-list tr:last-child td {
 .color-swatch .theme-color-3 {
   margin-right: 10px;
 }
+#customThemeColorPicker {
+  display: none;
+  position: relative;
+  z-index: 10;
+  width: 45%;
+  clear: left;
+  padding-left: 25px;
+}
+#customThemeColorPicker > div {
+  min-width: 65px;
+  width: 30%;
+  margin-left: 5%;
+  float: left;
+  position: relative;
+}
+#customThemeColorPicker > div:first-child {
+  margin-left: 0;
+}
+#customThemeColorPicker .iris-picker {
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
 .user-menu-preferences td {
   padding-left: 0 !important;
 }
@@ -9464,15 +9487,11 @@ div.wide.form .errorMessage {
   top: 0;
   right: 0;
   margin: 0;
-  border: solid red;
-  border-width: 0 0 100px 200px;
   opacity: 0;
   filter: alpha(opacity=0);
-  -moz-transform: translate(-300px,0) scale(4);
+  font-size: 200px;
   direction: ltr;
   cursor: pointer;
-  height: 30px;
-  width: auto;
 }
 .addfileinput-button:hover span {
   color: #257282;
