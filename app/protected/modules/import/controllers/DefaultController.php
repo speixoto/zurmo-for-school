@@ -253,9 +253,6 @@
          */
         public function actionStep5($id, $step = null, $pageSize = null)
         {
-            //clear the state set for dedupe
-            Yii::app()->user->setState('DedupeImportedAttributeValues', null);
-
             $getData              = GetUtil::getData();
             if (isset($getData['nextParams']))
             {
@@ -365,9 +362,6 @@
          */
         public function actionStep6($id, $step = null, $pageSize = null)
         {
-            //clear the state set for dedupe
-            Yii::app()->user->setState('DedupeImportedAttributeValues', null);
-
             $getData              = GetUtil::getData();
             if (isset($getData['nextParams']))
             {
