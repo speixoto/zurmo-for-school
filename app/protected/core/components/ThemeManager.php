@@ -143,7 +143,7 @@
             return self::DEFAULT_THEME_COLOR;
         }
 
-        public function getThemeColorNamesAndLabels()
+        public function getThemeColorNamesAndLabels($orderByLevel = false)
         {
             $data = array('blue'        => Zurmo::t('Core', 'Blue'),
                           'brown'       => Zurmo::t('Core', 'Brown'),
@@ -161,7 +161,15 @@
                           'pink'        => Zurmo::t('Core', 'Pink'));
             if ($this->useCustomTheme)
             {
-                $data['custom'] = Zurmo::t('Core', 'Custom');
+                $customArray = array('custom' => Zurmo::t('Core', 'Custom'));
+                if ($orderByLevel)
+                {
+                    $data = array_merge($customArray, $data);
+                }
+                else
+                {
+                    $data = array_merge($data, $customArray);
+                }
             }
             return $data;
         }
@@ -208,6 +216,7 @@
             {
                 $data['custom'] = 1;
             }
+            asort($data);
             return $data;
         }
 

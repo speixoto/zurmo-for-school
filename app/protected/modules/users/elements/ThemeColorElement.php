@@ -41,6 +41,8 @@
     {
         protected $shouldDisableLocked = true;
 
+        protected $orderByUnlockLevel  = true;
+
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
@@ -80,7 +82,7 @@
         }
 
         /**
-         * Clear out html options for 'empty' since it is not applicable for a rado dropdown.
+         * Clear out html options for 'empty' since it is not applicable for a radio dropdown.
          * @see DropDownElement::getEditableHtmlOptions()
          */
         protected function getEditableHtmlOptions()
@@ -112,7 +114,7 @@
         {
             $namesAndUnlockedAtLevels = Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel();
             $data = array();
-            foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
+            foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels($this->orderByUnlockLevel) as $name => $label)
             {
                 $label = '<span class="theme-color-1"></span><span class="theme-color-2">' .
                          '</span><span class="theme-color-3"></span>' . $label;

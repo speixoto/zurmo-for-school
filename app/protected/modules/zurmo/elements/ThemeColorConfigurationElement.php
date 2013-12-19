@@ -38,6 +38,8 @@
     {
         protected $shouldDisableLocked = false;
 
+        protected $orderByUnlockLevel  = false;
+
         public function renderControlEditable()
         {
             assert('$this->model instanceof ZurmoUserInterfaceConfigurationForm');
@@ -97,8 +99,8 @@
 
         public function registerScript()
         {
-            $customThemePosition = count(Yii::app()->themeManager->getThemeColorNamesAndLabels());
-            $inputId             = $this->getEditableInputId() . '_14';
+            $customThemePosition = count(Yii::app()->themeManager->getThemeColorNamesAndLabels()) - 1;
+            $inputId             = $this->getEditableInputId() . '_' . $customThemePosition;
             Yii::app()->clientScript->registerScript('customThemeColorPicker', "
                 if ($('#{$inputId}').attr('checked')){
                     $('#customThemeColorPicker').show(0);
