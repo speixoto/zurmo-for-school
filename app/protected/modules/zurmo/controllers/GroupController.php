@@ -320,7 +320,7 @@
          * the _set is blocking the entry of a reserved name and _set is used
          * by setAttributes which comes before validate is called.
          */
-        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
+        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true, $returnOnValidate = false)
         {
             assert('$redirectUrlParams == null || is_array($redirectUrlParams)');
             $postVariableName = get_class($model);

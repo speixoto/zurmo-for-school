@@ -280,7 +280,7 @@
          * Override to handle UserStatus processing.
          * @see ZurmoBaseController::attemptToSaveModelFromPost()
          */
-        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
+        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true, $returnOnValidate = false)
         {
             assert('$model instanceof User || $model instanceof UserPasswordForm || $model instanceof UserAvatarForm');
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');

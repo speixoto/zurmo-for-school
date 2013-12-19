@@ -155,7 +155,7 @@
             assert('is_bool($isJobInProgress)');
             try
             {
-                $jobInProcess    = JobInProcess::getByType($type);
+                JobInProcess::getByType($type);
                 $messageLogger->addInfoMessage("Existing job detected");
                 $isJobInProgress = true;
             }
