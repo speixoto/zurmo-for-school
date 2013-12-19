@@ -76,5 +76,10 @@
         {
             return static::getSingularModuleLabel($language);
         }
+
+        public static function getDefaultDataMakerClassName()
+        {
+            return 'AccountContactAffiliationsDefaultDataMaker';
+        }
     }
 ?>

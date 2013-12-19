@@ -84,7 +84,7 @@
                 'relations' => array(
                     'primaryAccount'   => array(static::HAS_ONE, 'Account', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'primaryAccountAffiliation'),
-                    'secondaryAccount' => array(static::HAS_ONE, 'Contact', static::NOT_OWNED,
+                    'secondaryAccount' => array(static::HAS_ONE, 'Account', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'secondaryAccountAffiliation'),
                 ),
                 'elements' => array(
@@ -119,7 +119,7 @@
         {
             try
             {
-                return strval($this->accountA) . ' ' . strval($this->accountB);
+                return strval($this->primaryAccount) . ' ' . strval($this->secondaryAccount);
             }
             catch (AccessDeniedSecurityException $e)
             {

@@ -35,24 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the MarketingList Model.
+     * Report rules to be used with the AccountAccountAffiliation Model.
      */
-    class AutorespondersReportRules extends ReportRules
+    class AccountAccountAffiliationsReportRules extends ReportRules
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'Autoresponder' => array(
-                    'nonReportable' => array('files'),
-                ),
-                'AutoresponderItem' => array(
-                    'nonReportable' => array('autoresponderItemActivities', 'emailMessage'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
-        }
     }
 ?>

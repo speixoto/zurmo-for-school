@@ -84,6 +84,7 @@
                 ),
                 'rules' => array(
                     array('primary', 'boolean'),
+                    array('primary', 'readOnly'),
                     array('primary', 'default', 'value' => false),
 
                 ),
@@ -122,18 +123,13 @@
             return true;
         }
 
-        public static function getDefaultDataMakerClassName()
-        {
-            return 'AccountContactAffiliationsDefaultDataMaker';
-        }
-
         protected static function translatedAttributeLabels($language)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'account' => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',  $params, null, $language),
-                    'contact' => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',  $params, null, $language),
+                    'contact' => Zurmo::t('AccountsModule', 'ContactsModuleSingularLabel',  $params, null, $language),
                     'role'    => Zurmo::t('AccountContactAffiliationsModule', 'Role', null,  null, $language),
                     'primary' => Zurmo::t('AccountContactAffiliationsModule', 'Primary Relationship', null,  null, $language),
                 )

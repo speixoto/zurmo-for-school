@@ -85,7 +85,7 @@
                     'account'          => array(static::HAS_MANY_BELONGS_TO,  'Account'),
                     'primaryAccountAffiliations'   => array(static::HAS_MANY, 'AccountAccountAffiliation',
                                                             static::NOT_OWNED, static::LINK_TYPE_SPECIFIC,
-                                                            'priamryAccountAffiliation'),
+                                                            'primaryAccountAffiliation'),
                     'secondaryAccountAffiliations' => array(static::HAS_MANY, 'AccountAccountAffiliation',
                                                             static::NOT_OWNED, static::LINK_TYPE_SPECIFIC,
                                                             'secondaryAccountAffiliation'),
