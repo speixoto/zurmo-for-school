@@ -48,16 +48,27 @@
 
         public $inputId;
 
-        public $inputValue = '#000000';
+        public $inputValue;
+
+        public $swatchName;
 
         public function run()
         {
             $javaScript = "
-                $(document).ready(function()
-                {
-                    $('#{$this->inputId}').iris();
-                }
-                );
+                $(document).ready(function(){
+                    $('#{$this->inputId}').iris({
+                        change: function(event, ui) {
+                            $('#{$this->inputId}').css('border-color', ui.color.toString());
+                            $('.custom .{$this->swatchName}').css('background-color', ui.color.toString());
+                        }
+                    });
+                    $('#{$this->inputId}').focus(function(){
+                        $('#{$this->inputId}').iris('show');
+                    });
+                    $('#{$this->inputId}').focusout(function(){
+                        $('#{$this->inputId}').iris('hide');
+                    });
+                });
             ";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $javaScript, CClientScript::POS_END);
             echo ZurmoHtml::textField($this->inputName, $this->inputValue, array('id' => $this->inputId));

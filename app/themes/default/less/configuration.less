@@ -1345,6 +1345,30 @@ table.configuration-list{
 	}
 }
 
+#customThemeColorPicker{
+	display: none;
+	position: relative;
+	z-index: 10;
+	width: 45%;
+	clear: left;
+	padding-left: 25px;
+	> div{
+		min-width: 65px;
+		width: 30%;
+		margin-left: 5%;
+		float: left;
+		position: relative;
+		&:first-child{
+			margin-left: 0;
+		}
+	}
+	.iris-picker{
+		position: absolute;
+		left: 0;
+		top: 100%;
+	}
+}
+
 /*Menu Prefernces*/
 .user-menu-preferences{
 	td{

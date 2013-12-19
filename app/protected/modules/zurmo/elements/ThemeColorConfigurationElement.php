@@ -60,9 +60,10 @@
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'swatchName'           => 'theme-color-1'
             ));
             $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips[$attribute];
+            $content = ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor2';
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
@@ -70,9 +71,10 @@
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'swatchName'           => 'theme-color-2'
             ));
             $cClipWidget->endClip();
-            $content .= $cClipWidget->getController()->clips[$attribute];
+            $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor3';
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
@@ -80,12 +82,14 @@
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'swatchName'           => 'theme-color-3'
             ));
             $cClipWidget->endClip();
-            $content .= $cClipWidget->getController()->clips[$attribute];
+            $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             return ZurmoHtml::tag('div',
                                   array(
                                       'id' => 'customThemeColorPicker',
+                                      'class' => 'clearfix',
                                       'style' => $this->getStyleForInitialColorPicker(),
                                   ),
                                   $content);
@@ -96,15 +100,14 @@
             $customThemePosition = count(Yii::app()->themeManager->getThemeColorNamesAndLabels());
             $inputId             = $this->getEditableInputId() . '_14';
             Yii::app()->clientScript->registerScript('customThemeColorPicker', "
-                $('#edit-form').change(function()
-                {
-                    if ($('#{$inputId}').attr('checked'))
-                    {
-                        $('#customThemeColorPicker').show();
-                    }
-                    else
-                    {
-                        $('#customThemeColorPicker').hide();
+                if ($('#{$inputId}').attr('checked')){
+                    $('#customThemeColorPicker').show(0);
+                }
+                $('#edit-form').change(function(){
+                    if ($('#{$inputId}').attr('checked')){
+                        $('#customThemeColorPicker').slideDown();
+                    } else {
+                        $('#customThemeColorPicker').slideUp();
                     }
                 });
             ", CClientScript::POS_END);
