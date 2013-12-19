@@ -60,7 +60,7 @@
             $model          = new $modelClassName(false);
             if ($value == null)
             {
-                if ($this->mappingRuleData['defaultStateId'] != null)
+                if (isset($this->mappingRuleData['defaultStateId']) && $this->mappingRuleData['defaultStateId'] != null)
                 {
                     try
                     {
@@ -84,8 +84,11 @@
 
         protected function assertMappingRuleDataIsValid()
         {
-            assert('$this->mappingRuleData["defaultStateId"] == null || is_string($this->mappingRuleData["defaultStateId"]) ||
-                    is_int($this->mappingRuleData["defaultStateId"])');
+            if(isset($this->mappingRuleData['defaultStateId']))
+            {
+                assert('$this->mappingRuleData["defaultStateId"] == null || is_string($this->mappingRuleData["defaultStateId"]) ||
+                        is_int($this->mappingRuleData["defaultStateId"])');
+            }
         }
     }
 ?>

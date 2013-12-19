@@ -81,13 +81,7 @@
             {
                 if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
                 {
-                    $this->shouldSkipRow = true;
-                    $label = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
-                    $this->analysisMessages[] = $label;
-                    if($this->importSanitizeResultsUtil != null)
-                    {
-                        $this->importSanitizeResultsUtil->setModelShouldNotBeSaved();
-                    }
+                    $this->setDataOnSkipRow();
                 }
                 elseif($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND)
                 {
@@ -99,6 +93,21 @@
                     }
                 }
             }
+            elseif($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND
+                && $this->checkIfAlreadyImported($value))
+            {
+                $this->setDataOnSkipRow();
+            }
+            elseif($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND
+                && $this->checkIfAlreadyImported($value))
+            {
+                $label = Zurmo::t('ImportModule', 'The matched record in imported csv would be updated with the values of this record');
+                $this->analysisMessages[] = $label;
+            }
+            else
+            {
+                $this->setAttributeImportedValues($value);
+            }
         }
 
         /**
@@ -108,6 +117,67 @@
         protected function getMatchedModels($value)
         {
             return array();
+        }
+
+        /**
+         * Set data to skip row
+         */
+        protected function setDataOnSkipRow()
+        {
+            $this->shouldSkipRow      = true;
+            $label                    = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
+            $this->analysisMessages[] = $label;
+            if($this->importSanitizeResultsUtil != null)
+            {
+                $this->importSanitizeResultsUtil->setModelShouldNotBeSaved();
+            }
+        }
+
+        /**
+         * Set attribute imported values
+         * @param string $value
+         */
+        protected function setAttributeImportedValues($value)
+        {
+            $data = unserialize($this->getAttributeImportedValues());
+            if(isset($data[$this->columnName]))
+            {
+                $attributeData              = $data[$this->columnName];
+                $attributeData[]            = $value;
+                $data[$this->columnName]    = $attributeData;
+            }
+            else
+            {
+                $data[$this->columnName]    = array($value);
+            }
+            Yii::app()->user->setState('DedupeImportedAttributeValues', serialize($data));
+        }
+
+        /**
+         * Get attribute imported values
+         * @return string
+         */
+        protected function getAttributeImportedValues()
+        {
+            return Yii::app()->user->getState('DedupeImportedAttributeValues');
+        }
+
+        /**
+         * Checks if the value is already imported
+         * @param string $value
+         * @return boolean
+         */
+        protected function checkIfAlreadyImported($value)
+        {
+            $data = unserialize($this->getAttributeImportedValues());
+            if(isset($data[$this->columnName]))
+            {
+                if(in_array($value, $data[$this->columnName]))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 ?>

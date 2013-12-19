@@ -253,6 +253,9 @@
          */
         public function actionStep5($id, $step = null, $pageSize = null)
         {
+            //clear the state set for dedupe
+            Yii::app()->user->setState('DedupeImportedAttributeValues', null);
+
             $getData              = GetUtil::getData();
             if (isset($getData['nextParams']))
             {
@@ -272,7 +275,7 @@
                 $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
             $config               = array('pagination' => array('pageSize' => $pageSize));
-            $filteredByStatus       = $this->resolveFilteredByStatus();
+            $filteredByStatus     = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
                                                            $config, null, $filteredByStatus);
@@ -362,6 +365,9 @@
          */
         public function actionStep6($id, $step = null, $pageSize = null)
         {
+            //clear the state set for dedupe
+            Yii::app()->user->setState('DedupeImportedAttributeValues', null);
+
             $getData              = GetUtil::getData();
             if (isset($getData['nextParams']))
             {
