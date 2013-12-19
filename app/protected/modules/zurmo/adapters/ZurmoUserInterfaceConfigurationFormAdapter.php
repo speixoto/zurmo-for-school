@@ -133,7 +133,7 @@
             $customThemeColorsArray[2] = $form->customThemeColor3;
             if ($customThemeColorsArray != Yii::app()->themeManager->customThemeColorsArray)
             {
-                $shouldCompile = true:
+                $shouldCompile = true;
             }
             Yii::app()->themeManager->customThemeColorsArray = $customThemeColorsArray;
             Yii::app()->themeManager->globalThemeColor       = $form->themeColor;
