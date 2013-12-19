@@ -116,8 +116,11 @@
             $data = array();
             foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels($this->orderByUnlockLevel) as $name => $label)
             {
-                $label = '<span class="theme-color-1"></span><span class="theme-color-2">' .
-                         '</span><span class="theme-color-3"></span>' . $label;
+                $colorArray = Yii::app()->themeManager->themeColorNamesAndColors[$name];
+                $spans  = '<span class="theme-color-1" style="background-color:' . $colorArray[1] . '"></span>';
+                $spans .= '<span class="theme-color-2" style="background-color:' . $colorArray[2] . '"></span>';
+                $spans .= '<span class="theme-color-3" style="background-color:' . $colorArray[4] . '"></span>';
+                $label  = $spans . $label;
                 $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
                 if ($unlockedAtLevel > (int)$gameLevel->value && $this->shouldDisableLocked)
                 {
