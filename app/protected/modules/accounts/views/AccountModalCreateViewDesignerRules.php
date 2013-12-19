@@ -51,6 +51,11 @@
             return 1;
         }
 
+        public function canMergeAndSplitCells()
+        {
+            return false;
+        }
+
         public function canConfigureLayoutPanelsType()
         {
             return true;
