@@ -211,6 +211,7 @@
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $this, $this->name);
             }
+            parent::afterSave();
         }
     }
 ?>
