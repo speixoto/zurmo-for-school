@@ -61,6 +61,7 @@
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'swatchName'           => 'theme-color-1'
             ));
             $cClipWidget->endClip();
             $content = ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
@@ -71,6 +72,7 @@
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'swatchName'           => 'theme-color-2'
             ));
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
@@ -81,6 +83,7 @@
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'swatchName'           => 'theme-color-3'
             ));
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
