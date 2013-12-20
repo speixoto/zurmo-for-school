@@ -63,10 +63,16 @@
                         }
                     });
                     $('#{$this->inputId}').focus(function(){
+                        $('#ZurmoUserInterfaceConfigurationForm_customThemeColor1').iris('hide');
+                        $('#ZurmoUserInterfaceConfigurationForm_customThemeColor2').iris('hide');
+                        $('#ZurmoUserInterfaceConfigurationForm_customThemeColor3').iris('hide');
                         $('#{$this->inputId}').iris('show');
                     });
-                    $('#{$this->inputId}').focusout(function(){
-                        $('#{$this->inputId}').iris('hide');
+                    $(document).click(function (e) {
+                        if (!$(e.target).is('#{$this->inputId}, .iris-picker, .iris-picker-inner')) {
+                            $('#{$this->inputId}').iris('hide');
+                            return false;
+                        }
                     });
                 });
             ";
