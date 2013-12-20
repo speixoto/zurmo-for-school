@@ -141,7 +141,7 @@
             //Rarely the person attributes are not part of the user, memcache needs to be restarted to solve this
             //problem as you can't use the system once this occurs. this check below will clear the specific cache
             //that causes this. Still need to figure out what is setting the cache wrong to begin with
-            if(!User::isAnAttribute('lastName'))
+            if (!User::isAnAttribute('lastName'))
             {
                 User::forgetBeanModel('User');
             }
