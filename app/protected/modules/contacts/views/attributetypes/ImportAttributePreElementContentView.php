@@ -45,7 +45,7 @@
         public function run()
         {
             $attributes = $this->attributes;
-            $content = null;
+            $content = '<tr>';
             foreach($this->selectedModels as $model)
             {
                 foreach($attributes as $attribute)
@@ -54,6 +54,7 @@
                     $content .= $this->decorateItem($nonFormattedContent);
                 }
             }
+            $content = ZurmoHtml::tag('tr', array(), $content);
             echo $content;
         }
 
@@ -61,7 +62,7 @@
         {
             //Apply the template here. This should be a link here with class as attribute-someclassname
             //register the script here to populate the model here on click of it.
-            return $content;
+            return '<td>' . $content . '</td>';
         }
     }
 ?>
