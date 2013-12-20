@@ -34,38 +34,34 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
-     */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class ImportAttributePreElementContentView extends ZurmoWidget
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public $selectedModels;
+
+        public $attributes;
+
+        public $itemTemplate;
+
+        public function run()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            $attributes = $this->attributes;
+            $content = null;
+            foreach($this->selectedModels as $model)
+            {
+                foreach($attributes as $attribute)
+                {
+                    $nonFormattedContent = $model->$attribute;
+                    $content .= $this->decorateItem($nonFormattedContent);
+                }
+            }
+            echo $content;
+        }
+
+        protected function decorateItem($content)
+        {
+            //Apply the template here. This should be a link here with class as attribute-someclassname
+            //register the script here to populate the model here on click of it.
+            return $content;
         }
     }
 ?>

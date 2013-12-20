@@ -442,5 +442,30 @@
                                                    LabelUtil::getTranslationParamsForAllModules());
             }
         }
+
+        public function actionListViewMerge()
+        {
+            $getData = GetUtil::getData();
+            $contactsList = array();
+            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
+            {
+                $selectedIds = explode(',', $getData['selectedIds']);
+                foreach($selectedIds as $id)
+                {
+                    $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
+                    $contactsList[] = $contact;
+                }
+            }
+            $model = new ContactsListDuplicateMergedModelForm('listViewMerge');
+            $model->selectedContacts = $contactsList;
+            if($model->validate())
+            {
+                $titleBarAndEditView = $this->makeListMergeView(
+                                            $this->attemptToSaveModelFromPost($contactsList[0], null), 'ContactsMerged', $contactsList);
+                $view = new ContactsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+                echo $view->render();
+            }
+        }
     }
 ?>
