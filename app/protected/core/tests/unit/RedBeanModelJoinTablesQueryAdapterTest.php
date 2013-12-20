@@ -240,6 +240,14 @@
             $this->assertEquals('queryfrommodel2', $alias);
         }
 
+        public function testGetAlreadyFromJoinedTableAliasName()
+        {
+            $adapter = new RedBeanModelJoinTablesQueryAdapter('QueryFromModel');
+            $this->assertNull($adapter->GetAlreadyFromJoinedTableAliasName('zz'));
+            $alias = $adapter->addFromTableAndGetAliasName('z', 'joinid');
+            $this->assertEquals($alias, $adapter->getAlreadyFromJoinedTableAliasName('z'));
+        }
+
         public function testAddLeftTableAndGetAliasNameWithSpecifiedOnTableAliasName()
         {
             $quote = DatabaseCompatibilityUtil::getQuote();

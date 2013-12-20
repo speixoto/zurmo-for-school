@@ -59,7 +59,7 @@
         public function actionConfigurationList()
         {
             $breadCrumbLinks = array(
-                Zurmo::t('ZurmoModule', 'Languages'),
+                Zurmo::t('Core', 'Languages'),
             );
             $messageBoxContent = Zurmo::t('ZurmoModule', 'Don\'t see a language that you want to load? ' .
                                                          'Help us make Zurmo better by contributing on a translation. ' .

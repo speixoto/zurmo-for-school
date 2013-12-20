@@ -109,10 +109,6 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-            if (!Yii::app()->getRequest()->isAnExternalRequestVariant())
-            {
-                $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
-            }
         }
 
         protected function attachNonApiRequestBehaviorsForNonInstalledApplication(CComponent $owner)
@@ -262,33 +258,6 @@
             if ($redirect)
             {
                 $url = Yii::app()->createUrl('install/default');
-                Yii::app()->request->redirect($url);
-            }
-        }
-
-        public function handleBrowserCheck($event)
-        {
-            $browserName = Yii::app()->browser->getName();
-            if (isset($_GET['ignoreBrowserCheck']))
-            {
-                $browserIsSupported = ($_GET['ignoreBrowserCheck'] == 1) ? 1 : 0;
-            }
-            else
-            {
-                $browserIsSupported = in_array($browserName, array('msie', 'mozilla', 'chrome', 'safari'));
-            }
-            if (array_key_exists('r', $_GET)                                   &&
-                in_array($_GET['r'], array('zurmo/default/unsupportedBrowser')) &&
-                $browserIsSupported)
-            {
-                $url = Yii::app()->createUrl('/zurmo/default');
-                Yii::app()->request->redirect($url);
-            }
-            if ((!array_key_exists('r', $_GET) ||
-                 !in_array($_GET['r'], array('zurmo/default/unsupportedBrowser'))) &&
-                !$browserIsSupported)
-            {
-                $url = Yii::app()->createUrl('zurmo/default/unsupportedBrowser', array('name' => $browserName));
                 Yii::app()->request->redirect($url);
             }
         }

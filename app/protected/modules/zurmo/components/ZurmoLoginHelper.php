@@ -35,29 +35,12 @@
      ********************************************************************************/
 
     /**
-     * Projects dashboard link.
+     * Component for assisting extra login features like googlePlusSignIn
      */
-    class ProjectsDashboardMenuActionElement extends MenuActionElement
+    class ZurmoLoginHelper extends CApplicationComponent
     {
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
+        public function resolveExtraLoginViewContent()
         {
-            return Zurmo::t('ZurmoModule', 'Dashboard');
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl('projects/default/dashboardDetails');
-        }
-
-        public function getActionType()
-        {
-            return null;
         }
     }
 ?>

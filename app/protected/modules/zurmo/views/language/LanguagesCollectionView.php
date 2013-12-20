@@ -68,7 +68,7 @@
 
         public function getTitle()
         {
-            return Zurmo::t('ZurmoModule', 'Languages');
+            return Zurmo::t('Core', 'Languages');
         }
 
         public function isUniqueToAPage()
