@@ -46,6 +46,10 @@
         public function resolveAndGetThemeColorValue(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
+            if ($this->forceAllUsersTheme)
+            {
+                return $this->globalThemeColor;
+            }
             if ( null != $themeColor = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'themeColor'))
             {
                 return $themeColor;
@@ -118,7 +122,7 @@
 
         public function setForceAllUsersTheme($value)
         {
-            //assert('is_boolean($value)');
+            $value = (bool) $value;
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'forceAllUsersTheme', $value);
         }
 
@@ -129,7 +133,7 @@
 
         public function setGlobalThemeColor($value)
         {
-            //assert('is_string($value)');
+            assert('is_string($value)');
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'globalThemeColor', $value);
         }
 
@@ -143,7 +147,7 @@
             return self::DEFAULT_THEME_COLOR;
         }
 
-        public function getThemeColorNamesAndLabels($orderByLevel = false)
+        public function getThemeColorNamesAndLabels()
         {
             $data = array('blue'        => Zurmo::t('Core', 'Blue'),
                           'brown'       => Zurmo::t('Core', 'Brown'),
@@ -162,14 +166,7 @@
             if ($this->useCustomTheme)
             {
                 $customArray = array('custom' => Zurmo::t('Core', 'Custom'));
-                if ($orderByLevel)
-                {
-                    $data = array_merge($customArray, $data);
-                }
-                else
-                {
-                    $data = array_merge($data, $customArray);
-                }
+                $data        = array_merge($customArray, $data);
             }
             return $data;
         }
@@ -216,7 +213,6 @@
             {
                 $data['custom'] = 1;
             }
-            asort($data);
             return $data;
         }
 

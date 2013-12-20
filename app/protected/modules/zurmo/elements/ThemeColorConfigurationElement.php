@@ -38,91 +38,9 @@
     {
         protected $shouldDisableLocked = false;
 
-        protected $orderByUnlockLevel  = false;
-
-        public function renderControlEditable()
-        {
-            assert('$this->model instanceof ZurmoUserInterfaceConfigurationForm');
-            $content  = parent::renderControlEditable();
-            $content .= $this->renderCustomThemeColorChooser();
-            return $content;
-        }
-
         protected function shouldRenderControlEditable()
         {
             return true;
-        }
-
-        protected  function renderCustomThemeColorChooser()
-        {
-            $attribute   = 'customThemeColor1';
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip($attribute);
-            $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
-                'inputName'            => $this->getEditableInputName($attribute),
-                'inputId'              => $this->getEditableInputId($attribute),
-                'inputValue'           => $this->model->$attribute,
-                'swatchName'           => 'theme-color-1'
-            ));
-            $cClipWidget->endClip();
-            $content = ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
-            $attribute   = 'customThemeColor2';
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip($attribute);
-            $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
-                'inputName'            => $this->getEditableInputName($attribute),
-                'inputId'              => $this->getEditableInputId($attribute),
-                'inputValue'           => $this->model->$attribute,
-                'swatchName'           => 'theme-color-2'
-            ));
-            $cClipWidget->endClip();
-            $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
-            $attribute   = 'customThemeColor3';
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip($attribute);
-            $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
-                'inputName'            => $this->getEditableInputName($attribute),
-                'inputId'              => $this->getEditableInputId($attribute),
-                'inputValue'           => $this->model->$attribute,
-                'swatchName'           => 'theme-color-3'
-            ));
-            $cClipWidget->endClip();
-            $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
-            return ZurmoHtml::tag('div',
-                                  array(
-                                      'id' => 'customThemeColorPicker',
-                                      'class' => 'clearfix',
-                                      'style' => $this->getStyleForInitialColorPicker(),
-                                  ),
-                                  $content);
-        }
-
-        public function registerScript()
-        {
-            $customThemePosition = count(Yii::app()->themeManager->getThemeColorNamesAndLabels()) - 1;
-            $inputId             = $this->getEditableInputId() . '_' . $customThemePosition;
-            Yii::app()->clientScript->registerScript('customThemeColorPicker', "
-                if ($('#{$inputId}').attr('checked')){
-                    $('#customThemeColorPicker').show(0);
-                }
-                $('#edit-form').change(function(){
-                    if ($('#{$inputId}').attr('checked')){
-                        $('#customThemeColorPicker').slideDown();
-                    } else {
-                        $('#customThemeColorPicker').slideUp();
-                    }
-                });
-            ", CClientScript::POS_END);
-            parent::registerScript();
-        }
-
-        protected function getStyleForInitialColorPicker()
-        {
-            $attribute = $this->attribute;
-            if ($this->model->$attribute != 'custom')
-            {
-                return 'display: none';
-            }
         }
     }
 ?>

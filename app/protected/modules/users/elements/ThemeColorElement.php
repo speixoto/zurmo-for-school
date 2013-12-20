@@ -41,8 +41,6 @@
     {
         protected $shouldDisableLocked = true;
 
-        protected $orderByUnlockLevel  = true;
-
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
@@ -114,7 +112,7 @@
         {
             $namesAndUnlockedAtLevels = Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel();
             $data = array();
-            foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels($this->orderByUnlockLevel) as $name => $label)
+            foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
             {
                 $colorArray = Yii::app()->themeManager->themeColorNamesAndColors[$name];
                 $spans  = '<span class="theme-color-1" style="background-color:' . $colorArray[1] . '"></span>';
