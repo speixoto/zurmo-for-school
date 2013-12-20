@@ -50,31 +50,14 @@
 
         public $inputValue;
 
-        public $swatchName;
-
         public function run()
         {
             $javaScript = "
-                $(document).ready(function(){
-                    $('#{$this->inputId}').iris({
-                        change: function(event, ui) {
-                            $('#{$this->inputId}').css('border-color', ui.color.toString());
-                            $('.custom .{$this->swatchName}').css('background-color', ui.color.toString());
-                        }
-                    });
-                    $('#{$this->inputId}').focus(function(){
-                        $('#ZurmoUserInterfaceConfigurationForm_customThemeColor1').iris('hide');
-                        $('#ZurmoUserInterfaceConfigurationForm_customThemeColor2').iris('hide');
-                        $('#ZurmoUserInterfaceConfigurationForm_customThemeColor3').iris('hide');
-                        $('#{$this->inputId}').iris('show');
-                    });
-                    $(document).click(function (e) {
-                        if (!$(e.target).is('#{$this->inputId}, .iris-picker, .iris-picker-inner')) {
-                            $('#{$this->inputId}').iris('hide');
-                            return false;
-                        }
-                    });
-                });
+                $(document).ready(function()
+                {
+                    $('#{$this->inputId}').iris();
+                }
+                );
             ";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $javaScript, CClientScript::POS_END);
             echo ZurmoHtml::textField($this->inputName, $this->inputValue, array('id' => $this->inputId));

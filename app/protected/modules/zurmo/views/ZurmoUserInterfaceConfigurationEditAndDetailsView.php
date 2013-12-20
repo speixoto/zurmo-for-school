@@ -81,9 +81,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                      'type'          => 'CustomThemeColorArray',
-                                                      'label'         => 'dsaadsdsa'),
+                                                array('attributeName' => 'null', 'type' => 'CustomThemeColorArray'),
                                             ),
                                         ),
                                     )
