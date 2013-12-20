@@ -8802,6 +8802,7 @@ table.configuration-list tr:last-child td {
   position: absolute;
   left: 0;
   top: 100%;
+  display: none;
 }
 .user-menu-preferences td {
   padding-left: 0 !important;
