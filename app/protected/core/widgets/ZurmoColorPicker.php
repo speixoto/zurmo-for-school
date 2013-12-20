@@ -50,18 +50,31 @@
 
         public $inputValue;
 
+        /**
+         * @var string a javascript function that will be invoked after the color changes.
+         */
+        public $change = "{}";
+
+        /**
+         * @var array HTML attributes for the input color container
+         */
+        public $htmlOptions=array();
+
         public function run()
         {
             $javaScript = "
                 $(document).ready(function()
                 {
-                    $('#{$this->inputId}').iris();
+                    $('#{$this->inputId}').iris({
+                        hide: false,
+                        change: {$this->change},
+                    });
                 }
                 );
             ";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $javaScript, CClientScript::POS_END);
-            echo ZurmoHtml::textField($this->inputName, $this->inputValue, array('id' => $this->inputId));
+            $this->htmlOptions['id'] = $this->inputId;
+            echo ZurmoHtml::textField($this->inputName, $this->inputValue, $this->htmlOptions);
         }
-
     }
 ?>

@@ -41,6 +41,8 @@
     {
         protected $shouldDisableLocked = true;
 
+        protected $showLocked = true;
+
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
@@ -131,7 +133,10 @@
                 {
                     $content = $label;
                 }
-                $data[$name] = $content;
+                if (($unlockedAtLevel <= 1) || $this->showLocked)
+                {
+                    $data[$name] = $content;
+                }
             }
             return $data;
         }

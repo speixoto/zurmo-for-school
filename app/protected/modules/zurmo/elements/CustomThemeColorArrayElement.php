@@ -38,6 +38,7 @@
     {
         protected function renderControlEditable()
         {
+            $this->registerScript();
             $content = $this->renderCustomThemeColorChooser();
             return $content;
         }
@@ -55,32 +56,50 @@
         protected  function renderCustomThemeColorChooser()
         {
             $attribute   = 'customThemeColor1';
+            $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'htmlOptions'          => array('class' => 'color-picker'),
+                'change'               => "function(event, ui) {
+                                                    $('#{$inputId}').css('border-color', ui.color.toString());
+                                                    $('.custom .theme-color-1').css('background-color', ui.color.toString());
+                                          }",
             ));
             $cClipWidget->endClip();
             $content = ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor2';
+            $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
-                'inputId'              => $this->getEditableInputId($attribute),
+                'inputId'              => $inputId,
                 'inputValue'           => $this->model->$attribute,
+                'htmlOptions'          => array('class' => 'color-picker'),
+                'change'               => "function(event, ui) {
+                                                    $('#{$inputId}').css('border-color', ui.color.toString());
+                                                    $('.custom .theme-color-2').css('background-color', ui.color.toString());
+                                          }",
             ));
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor3';
+            $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
                 'inputValue'           => $this->model->$attribute,
+                'htmlOptions'          => array('class' => 'color-picker'),
+                'change'               => "function(event, ui) {
+                                                    $('#{$inputId}').css('border-color', ui.color.toString());
+                                                    $('.custom .theme-color-3').css('background-color', ui.color.toString());
+                                          }",
             ));
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
@@ -90,6 +109,22 @@
                     'class' => 'clearfix',
                 ),
                 $content);
+        }
+
+        public function registerScript()
+        {
+            $script = "
+                            $('.color-picker').focus(function(){
+                                $('.color-picker').iris('hide');
+                                $(this).iris('show');
+                            });
+                            $(document).click(function(e) {
+                                if (!$(e.target).is('.color-picker, .iris-picker, .iris-picker-inner')) {
+                                    $('.color-picker').iris('hide');
+                                }
+                            });
+                      ";
+            Yii::app()->clientScript->registerScript('changeThemeColorArray', $script);
         }
     }
 ?>

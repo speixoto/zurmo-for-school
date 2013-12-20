@@ -38,6 +38,8 @@
     {
         protected $shouldDisableLocked = false;
 
+        protected $showLocked = false;
+
         protected function shouldRenderControlEditable()
         {
             return true;
