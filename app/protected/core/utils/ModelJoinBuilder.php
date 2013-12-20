@@ -829,7 +829,7 @@
             else
             {
                 $existingTableAliasName   = $this->joinTablesAdapter->getAlreadyFromJoinedTableAliasName($attributeTableName);
-                if($existingTableAliasName != null)
+                if ($existingTableAliasName != null)
                 {
                     $tableAliasName = $existingTableAliasName;
                 }

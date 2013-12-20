@@ -244,8 +244,8 @@
         {
             $adapter = new RedBeanModelJoinTablesQueryAdapter('QueryFromModel');
             $this->assertNull($adapter->GetAlreadyFromJoinedTableAliasName('zz'));
-            $alias = $adapter->addLeftTableAndGetAliasName('z', 'joinid');
-            $this->assertEquals($alias, $adapter->GetAlreadyFromJoinedTableAliasName('z'));
+            $alias = $adapter->addFromTableAndGetAliasName('z', 'joinid');
+            $this->assertEquals($alias, $adapter->getAlreadyFromJoinedTableAliasName('z'));
         }
 
         public function testAddLeftTableAndGetAliasNameWithSpecifiedOnTableAliasName()
