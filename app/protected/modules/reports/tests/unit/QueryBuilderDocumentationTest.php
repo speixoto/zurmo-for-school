@@ -126,5 +126,48 @@
                           "{$q}item1{$q}.{$q}id{$q} = {$q}securableitem1{$q}.{$q}item_id{$q} order by {$q}item1{$q}.{$q}createddatetime{$q} asc limit 10 offset 0";
             $this->assertEquals($compareSql, $sql);
         }
+
+        /**
+         * Running a report centered on notes, with a display attribute from notes and accounts. With a created
+         * by dateTime filter should produce proper query filter notes.
+         * This test just makes sure the sql is structured properly
+         */
+        public function testFiltersWorksOnAccountsAndNoteReport()
+        {
+            $report = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $filter = new FilterForReportForm('NotesModule', 'Note', $report->getType());
+            $filter->attributeIndexOrDerivedType = 'createdDateTime';
+            $filter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN;
+            $filter->value                       = '1991-05-05';
+            $filter->secondValue                 = '1991-06-05';
+            $filter->availableAtRunTime          = true;
+            $report->addFilter($filter);
+            $report->setFiltersStructure('1');
+            $report->setModuleClassName('NotesModule');
+            $displayAttribute = new DisplayAttributeForReportForm('NotesModule', 'Note', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'description';
+            $report->addDisplayAttribute($displayAttribute);
+            $displayAttribute2 = new DisplayAttributeForReportForm('NotesModule', 'Note', $report->getType());
+            $displayAttribute2->attributeIndexOrDerivedType = 'Account__activityItems__Inferred___name';
+            $report->addDisplayAttribute($displayAttribute2);
+            $reportDataProvider = new RowsAndColumnsReportDataProvider($report);
+            $sql                = $reportDataProvider->makeSqlQueryForDisplay();
+            $q                  = DatabaseCompatibilityUtil::getQuote();
+            $compareSql = "select {$q}note{$q}.{$q}id{$q} noteid, {$q}account{$q}.{$q}id{$q} accountid " .
+                "from ({$q}note{$q}, {$q}activity{$q}, {$q}ownedsecurableitem{$q} ownedsecurableitem1, {$q}securableitem{$q} securableitem1, {$q}item{$q} item1) " .
+                "left join {$q}activity_item{$q} on {$q}activity_item{$q}.{$q}activity_id{$q} = {$q}activity{$q}.{$q}id{$q} " .
+                "left join {$q}item{$q} on {$q}item{$q}.{$q}id{$q} = {$q}activity_item{$q}.{$q}item_id{$q} " .
+                "left join {$q}securableitem{$q} on {$q}securableitem{$q}.{$q}item_id{$q} = {$q}item{$q}.{$q}id{$q} " .
+                "left join {$q}ownedsecurableitem{$q} on {$q}ownedsecurableitem{$q}.{$q}securableitem_id{$q} = {$q}securableitem{$q}.{$q}id{$q} " .
+                "left join {$q}account{$q} on {$q}account{$q}.{$q}ownedsecurableitem_id{$q} = {$q}ownedsecurableitem{$q}.{$q}id{$q} " .
+                "where ((({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-05-05 00:00:00') " .
+                "and ({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-06-05 23:59:59'))) " .
+                "and {$q}activity{$q}.{$q}id{$q} = {$q}note{$q}.{$q}activity_id{$q} " .
+                "and {$q}ownedsecurableitem1{$q}.{$q}id{$q} = {$q}activity{$q}.{$q}ownedsecurableitem_id{$q} " .
+                "and {$q}securableitem1{$q}.{$q}id{$q} = {$q}ownedsecurableitem1{$q}.{$q}securableitem_id{$q} " .
+                "and {$q}item1{$q}.{$q}id{$q} = {$q}securableitem1{$q}.{$q}item_id{$q} limit 10 offset 0";
+            $this->assertEquals($compareSql, $sql);
+        }
     }
 ?>

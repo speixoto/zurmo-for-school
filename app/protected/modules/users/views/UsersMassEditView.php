@@ -47,6 +47,7 @@
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'isActive',
                         'title',
                         'firstName',
                         'lastName',
@@ -54,6 +55,10 @@
                         'hash',
                         'newPassword',
                         'newPassword_repeat',
+                        'isRootUser',
+                        'isSystemUser',
+                        'lastLoginDateTime',
+                        'serializedAvatarData'
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(

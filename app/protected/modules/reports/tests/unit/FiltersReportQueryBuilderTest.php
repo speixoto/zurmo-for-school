@@ -1388,6 +1388,33 @@
             $this->assertEquals('reportmodeltestitem',        $leftTablesAndAliases[0]['onTableAliasName']);
         }
 
+        public function testCreatedDateTimeFilterWithInferredRelationModelAttributeAsDisplay()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Meeting');
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter,
+                                                                                             Report::CURRENCY_CONVERSION_TYPE_ACTUAL);
+            $displayAttribute                      = new DisplayAttributeForReportForm('MeetingsModule', 'Meeting',
+                                                                                       Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType = 'Account__activityItems__Inferred___name';
+            $builder->makeQueryContent(array($displayAttribute));
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1');
+            $filter                                = new FilterForReportForm('MeetingsModule', 'Meeting',
+                                                                             Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType   = 'createdDateTime';
+            $filter->valueType                     = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN;
+            $filter->value                         = '1991-05-05';
+            $filter->secondValue                   = '1991-06-05';
+            $filter->availableAtRunTime            = true;
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "((({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-05-05 00:00:00') " .
+                                                     "and ({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-06-05 23:59:59')))";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(4, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
         {
             //todo: test casting down more than one level. not sure how to test this.. since meetings is only one skip past activity not really testing that castDown fully

@@ -239,6 +239,80 @@
         }
 
         /**
+         * Action for displaying a mass edit form and also action when that form is first submitted.
+         * When the form is submitted, in the event that the quantity of models to update is greater
+         * than the pageSize, then once the pageSize quantity has been reached, the user will be
+         * redirected to the makeMassEditProgressView.
+         * In the mass edit progress view, a javascript refresh will take place that will call a refresh
+         * action, usually massEditProgressSave.
+         * If there is no need for a progress view, then a flash message will be added and the user will
+         * be redirected to the list view for the model.  A flash message will appear providing information
+         * on the updated records.
+         * @see Controler->makeMassEditProgressView
+         * @see Controller->processMassEdit
+         * @see
+         */
+        public function actionMassEdit()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massEditProgressPageSize');
+            $project = new Project(false);
+            $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                new ProjectsSearchForm($project),
+                $pageSize,
+                Yii::app()->user->userModel->id,
+                null,
+                'ProjectsSearchView');
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $project = $this->processMassEdit(
+                $pageSize,
+                $activeAttributes,
+                $selectedRecordCount,
+                'ProjectsPageView',
+                $project,
+                ProjectsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                $dataProvider
+            );
+            $massEditView = $this->makeMassEditView(
+                $project,
+                $activeAttributes,
+                $selectedRecordCount,
+                ProjectsModule::getModuleLabelByTypeAndLanguage('Plural')
+            );
+            $view = new ProjectsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $massEditView));
+            echo $view->render();
+        }
+
+        /**
+         * Action called in the event that the mass edit quantity is larger than the pageSize.
+         * This action is called after the pageSize quantity has been updated and continues to be
+         * called until the mass edit action is complete.  For example, if there are 20 records to update
+         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
+         * the actionMassEdit is called upon the initial form submission.
+         */
+        public function actionMassEditProgressSave()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massEditProgressPageSize');
+            $project = new Project(false);
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                new ProjectsSearchForm($project),
+                $pageSize,
+                Yii::app()->user->userModel->id,
+                null,
+                'ProjectsSearchView'
+            );
+            $this->processMassEditProgressSave(
+                'Project',
+                $pageSize,
+                ProjectsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                $dataProvider
+            );
+        }
+
+        /**
          * Action for displaying a mass delete form and also action when that form is first submitted.
          * When the form is submitted, in the event that the quantity of models to delete is greater
          * than the pageSize, then once the pageSize quantity has been reached, the user will be

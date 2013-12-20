@@ -31,6 +31,18 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2013. All rights reserved".
 
+.pillbox{
+	.icon-projects-list{
+		font-size: 22px;
+		top:-2px !important;
+	}
+	.icon-permissions,
+	.icon-rights,
+	.icon-policies{
+		top:-2px !important;
+	}
+}
+
 i[class^="icon"]{
 	color: #656565;
 	font-weight:normal;
@@ -44,8 +56,6 @@ i[class^="icon"]{
 
 	position: relative;
 	top:-2px;
-
-	.box-sizing();
 }
 
 .z-label{
@@ -99,6 +109,7 @@ i[class^="icon"]{
 	content: 'T';
 }
 
+.icon-config:after,
 .icon-options:after{
 	content: "n";
 }
@@ -309,15 +320,6 @@ i[class^="icon"]{
 	content: '\007D';
 }
 
-
-.pillbox{
-	.icon-projects-list{
-		font-size: 22px;
-		top:-2px !important;
-	}
-	.icon-permissions,
-	.icon-rights,
-	.icon-policies{
-		top:-2px !important;
-	}
+.icon-google:after{
+	content: '\221E';
 }

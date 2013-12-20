@@ -53,7 +53,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'        => 'SaveButton', 'label' => "eval:Zurmo::t('SocialItemsModule', 'Comment')",
+                            array('type'        => 'SaveButton', 'label' => "eval:Zurmo::t('CommentsModule', 'Comment')",
                                   'htmlOptions' => array('id' => 'savePost', 'name' => 'savePost')),
                         ),
                     ),

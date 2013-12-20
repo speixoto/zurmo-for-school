@@ -34,30 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Projects dashboard link.
-     */
-    class ProjectsDashboardMenuActionElement extends MenuActionElement
+    class ProjectsMassEditView extends MassEditView
     {
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
+        public static function getDefaultMetadata()
         {
-            return Zurmo::t('ZurmoModule', 'Dashboard');
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl('projects/default/dashboardDetails');
-        }
-
-        public function getActionType()
-        {
-            return null;
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                            array('type' => 'CancelLink'),
+                        ),
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'name',
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'status', 'type' => 'ProjectStatusDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

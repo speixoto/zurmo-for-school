@@ -204,7 +204,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            return Zurmo::t('HomeModule', 'Dashboards', array(), null, $language);
+            return Zurmo::t('ZurmoModule', 'Dashboards', array(), null, $language);
         }
     }
 ?>

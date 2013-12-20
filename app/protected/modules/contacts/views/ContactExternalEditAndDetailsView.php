@@ -68,7 +68,6 @@
                         'ContactStateDropDown',
                     ),
                     'nonPlaceableAttributeNames' => array(
-                        'title',
                         'owner',
                         'state',
                     ),
