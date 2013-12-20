@@ -462,18 +462,18 @@
             if ($precedingModel->$precedingRelation instanceof RedBeanOneToManyRelatedModels)
             {
                 $relationToUse = null;
-                foreach($model->getAttributes() as $attributeName => $notUsed)
+                foreach ($model->getAttributes() as $attributeName => $notUsed)
                 {
-                    if($model->isRelation($attributeName))
+                    if ($model->isRelation($attributeName))
                     {
-                        if($model::relationLinksToPrecedingRelation($attributeName, $precedingModel, $precedingRelation))
+                        if ($model::relationLinksToPrecedingRelation($attributeName, $precedingModel, $precedingRelation))
                         {
                             $relationToUse = $attributeName;
                             break;
                         }
                     }
                 }
-                if($relationToUse != null)
+                if ($relationToUse != null)
                 {
                     $model->{$relationToUse} = $precedingModel;
                 }
