@@ -52,7 +52,7 @@
          */
         public function processFromContactSide(CEvent $event)
         {
-            $model                   = $event->sender;
+            $model = $event->sender;
             if(isset($model->originalAttributeValues['account']))
             {
                 echo ' OAV ' . "\n";

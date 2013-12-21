@@ -265,15 +265,15 @@
          * Adds a related model. Override to support finding opposing relation and making adjustment
          * so when accessing the opposing model, it will reflect properly the changes to the relation.
          * Ignoring when the relations are for the same model, because there is currently an issue with this being supported
-         * with group/groups. Eventually todo: fix that and we can open it up.
+         * with group/groups. Eventually todo: fix that and we can open it up to relations with the same model.
          */
         public function add(RedBeanModel $model)
         {
             parent::add($model);
-            if((null != $opposingRelationName = $this->getOpposingRelationName($model)) &&
-               get_class($model) != get_class($this->relatedModel))
+            if(get_class($model) != get_class($this->relatedModel) &&
+               (null != $opposingRelationName = $this->getOpposingRelationName($model)))
             {
-                    $model->$opposingRelationName = $this->relatedModel;
+                   $model->$opposingRelationName = $this->relatedModel;
             }
         }
 
@@ -281,14 +281,15 @@
          * Unrelates a model by index. Override to support finding opposing relation and making adjustment
          * so when accessing the opposing model, it will reflect properly the changes to the relation.
          * Ignoring when the relations are for the same model, because there is currently an issue with this being supported
-         * with group/groups. Eventually todo: fix that and we can open it up.
+         * with group/groups. Eventually todo: fix that and we can open it up to relations with the same model.
          */
         public function removeByIndex($i)
         {
             $model = $this->getByIndex($i);
             parent::removeByIndex($i);
-            if((null != $opposingRelationName = $this->getOpposingRelationName($model)) &&
-                    get_class($model) != get_class($this->relatedModel))
+            if((get_class($model) != get_class($this->relatedModel) &&
+                null != $opposingRelationName = $this->getOpposingRelationName($model))
+                    )
             {
                 $model->$opposingRelationName    = null;
                 $this->deferredUnrelatedModels[] = $model;

@@ -3155,10 +3155,10 @@
             assert('is_string($precedingRelation)');
             foreach($model->getAttributes() as $attributeName => $notUsed)
             {
-                if($model->isRelation($attributeName, get_called_class()) &&
+                if($model->isRelation($attributeName) &&
                     ($model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
                         $model->getRelationType($attributeName) ==  RedBeanModel::HAS_MANY_BELONGS_TO) &&
-                    RedBeanModel::relationLinksToPrecedingRelation(get_class($model), $attributeName,
+                    static::relationLinksToPrecedingRelation(get_class($model), $attributeName,
                         $precedingModelClassName, $precedingRelation))
                 {
                     return $attributeName;
