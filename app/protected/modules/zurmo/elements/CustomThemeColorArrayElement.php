@@ -66,7 +66,7 @@
                 'htmlOptions'          => array('class' => 'color-picker'),
                 'change'               => "function(event, ui) {
                                                     $('#{$inputId}').css('border-color', ui.color.toString());
-                                                    $('.custom .theme-color-1').css('background-color', ui.color.toString());
+                                                    $('div.custom .theme-color-1').css('background-color', ui.color.toString());
                                           }",
             ));
             $cClipWidget->endClip();
@@ -82,7 +82,7 @@
                 'htmlOptions'          => array('class' => 'color-picker'),
                 'change'               => "function(event, ui) {
                                                     $('#{$inputId}').css('border-color', ui.color.toString());
-                                                    $('.custom .theme-color-2').css('background-color', ui.color.toString());
+                                                    $('div.custom .theme-color-2').css('background-color', ui.color.toString());
                                           }",
             ));
             $cClipWidget->endClip();
@@ -98,7 +98,7 @@
                 'htmlOptions'          => array('class' => 'color-picker'),
                 'change'               => "function(event, ui) {
                                                     $('#{$inputId}').css('border-color', ui.color.toString());
-                                                    $('.custom .theme-color-3').css('background-color', ui.color.toString());
+                                                    $('div.custom .theme-color-3').css('background-color', ui.color.toString());
                                           }",
             ));
             $cClipWidget->endClip();

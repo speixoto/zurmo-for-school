@@ -66,7 +66,6 @@
                 $(document).ready(function()
                 {
                     $('#{$this->inputId}').iris({
-                        hide: false,
                         change: {$this->change},
                     });
                 }
