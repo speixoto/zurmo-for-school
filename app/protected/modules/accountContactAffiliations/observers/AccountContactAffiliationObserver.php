@@ -42,7 +42,7 @@
     {
         public function init()
         {
-            Contact::model()->attachEventHandler('onBeforeSave', array($this, 'processFromContactSide'));
+            Contact::model()->attachEventHandler('onAfterSave', array($this, 'processFromContactSide'));
             Contact::model()->attachEventHandler('onRedBeanOneToManyRelatedModelsChange',
                                                  array($this, 'processFromContactSide'));
         }
@@ -55,12 +55,42 @@
             $model = $event->sender;
             if(isset($model->originalAttributeValues['account']))
             {
-                echo ' OAV ' . "\n";
-                echo "<pre>";
-                print_r($model->originalAttributeValues['account']);
-                echo "</pre>";
+                if($model->originalAttributeValues['account'][1] > 0)
+                {
+                    //lookup to see if there is a 'primary' affiliation for old acc/con pairing and unmark as primary
+                    $accountContactAffiliations = AccountContactAffiliation::
+                                                    getPrimaryByAccountIdAndContactId(
+                                                    (int)$model->originalAttributeValues['account'][1], (int)$model->id);
+                    //shouldn't be more than one, but if there is unset all of them
+                    foreach($accountContactAffiliations as $accountContactAffiliation)
+                    {
+                        $accountContactAffiliation->primary = false;
+                        $accountContactAffiliation->save();
+                    }
+                }
+                //lookup and see if there is an affiliation for the new acc/con pairing
+                if($model->account->id > 0)
+                {
+                    $accountContactAffiliations = AccountContactAffiliation::getByAccountAndContact($model->account, $model);
+                    //Shouldn't be more than one, but if there is, just mark the first primary.
+                    if(count($accountContactAffiliations) > 0)
+                    {
+                        //If so - mark primary.
+                        $accountContactAffiliations[0]->primary = true;
+                        $accountContactAffiliations[0]->save();
+                    }
+                    else
+                    {
+                        //If not, create and mark primary.
+                        $accountContactAffiliation = new AccountContactAffiliation();
+                        $accountContactAffiliation->primary = true;
+                        $accountContactAffiliation->contact = $model;
+                        $accountContactAffiliation->account = $model->account;
+                        $accountContactAffiliation->save();
+                    }
+                }
             }
-            echo 'BEFORE the account id  is ' . $model->account->id . "\n";
+
         }
     }
 ?>

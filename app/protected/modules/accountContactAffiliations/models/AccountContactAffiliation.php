@@ -74,18 +74,68 @@
                             'AccountsModuleSingularLabel to ContactsModuleSingularLabel Affiliations', $params, null, $language);
         }
 
+        public static function getPrimaryByAccountIdAndContactId($accountId, $contactId)
+        {
+            assert('is_int($accountId)');
+            assert('is_int($contactId)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'account',
+                    'operatorType'         => 'equals',
+                    'value'                => $accountId
+                ),
+                2 => array(
+                    'attributeName'        => 'contact',
+                    'operatorType'         => 'equals',
+                    'value'                => $contactId
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('AccountContactAffiliation');
+            $where             = RedBeanModelDataProvider::makeWhere('AccountContactAffiliation', $searchAttributeData, $joinTablesAdapter);
+            $tableName         = static::getTableName('AccountContactAffiliation');
+            $q                 = DatabaseCompatibilityUtil::getQuote();
+            $where .= " and {$q}{$tableName}{$q}.{$q}primary{$q} = '1'";
+            return self::getSubset($joinTablesAdapter, null, null, $where);
+        }
+
+        public static function getByAccountAndContact(Account $account, Contact $contact)
+        {
+            assert('$account->id > 0');
+            assert('$contact->id > 0');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'account',
+                    'operatorType'         => 'equals',
+                    'value'                => $account->id
+                ),
+                2 => array(
+                    'attributeName'        => 'contact',
+                    'operatorType'         => 'equals',
+                    'value'                => $contact->id
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('AccountContactAffiliation');
+            $where             = RedBeanModelDataProvider::makeWhere('AccountContactAffiliation', $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where);
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'primary',
-                    'role',
                 ),
                 'rules' => array(
                     array('primary', 'boolean'),
                     array('primary', 'readOnly'),
                     array('primary', 'default', 'value' => false),
+                    array('account', 'required'),
+                    array('contact', 'required'),
 
                 ),
                 'relations' => array(
@@ -146,7 +196,21 @@
             {
                 return '';
             }
+        }
 
+        /**
+         * Handle the search scenario for primary
+         */
+        public function isAllowedToSetReadOnlyAttribute($attributeName)
+        {
+            if ( in_array($attributeName, array('primary')))
+            {
+                return true;
+            }
+            else
+            {
+                return parent::isAllowedToSetReadOnlyAttribute($attributeName);
+            }
         }
     }
 ?>

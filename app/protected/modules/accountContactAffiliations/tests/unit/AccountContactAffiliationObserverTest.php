@@ -51,35 +51,73 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            $this->assertEquals(0, count(AccountContactAffiliation::getAll()));
             $account = AccountTestHelper::createAccountByNameForOwner('firstAccount', $super);
-            $contact  = ContactTestHelper::createContactWithAccountByNameForOwner('firstContact', $super, $account);
+            $this->assertEquals(0, count(AccountContactAffiliation::getAll()));
             $contact2 = ContactTestHelper::createContactByNameForOwner('secondContact', $super);
+            $this->assertEquals(0, count(AccountContactAffiliation::getAll()));
+            $contact  = ContactTestHelper::createContactWithAccountByNameForOwner('firstContact', $super, $account);
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(1, count($accountContactAffiliations));
+            $this->assertEquals(1, $accountContactAffiliations[0]->primary);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
 
             //Now make a second account and add the first contact to it. This would switch the contact->account to account2
             $account2 = AccountTestHelper::createAccountByNameForOwner('secondAccount', $super);
             $account2->contacts->add($contact);
             $this->assertTrue($account2->contacts->contains($contact));
+            //still should be the same affiliation until we save
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(1, count($accountContactAffiliations));
+            $this->assertEquals(1, $accountContactAffiliations[0]->primary);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
 
-            echo 'bam -- after this it should show 2 as the new account id and 1 as the old'. "\n";
-            $this->assertTrue ($account2->save()); //todo: should trigger observer change
+            //Now save
+            $this->assertTrue ($account2->save());
             $this->assertTrue ($account2->contacts->contains($contact));
             $this->assertFalse($account->contacts->contains($contact));
-            echo 'the contact related account after switching is: ' . $contact->account->id . "\n";
-            echo 'bamX'. "\n";
+            //The old affiliation should be there but not primary anymore
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(2, count($accountContactAffiliations));
+            $this->assertEquals(0, $accountContactAffiliations[0]->primary);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
+            $this->assertEquals(1, $accountContactAffiliations[1]->primary);
+            $this->assertTrue($accountContactAffiliations[1]->account->isSame($account2));
+            $this->assertTrue($accountContactAffiliations[1]->contact->isSame($contact));
+
             //Now test removing the contact from the second account
             $account2->contacts->remove($contact);
-            echo 'bamZam'. "\n";
-            $this->assertTrue($account2->save()); //todo: should trigger observer change
+            $this->assertTrue($account2->save());
             $this->assertTrue($contact->account->id < 0);
-            echo 'after we removed from account2 con->acc id: ' . $contact->account->id . "\n";
+            //Both affiliations exist, but there is no longer a primary affiliation
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(2, count($accountContactAffiliations));
+            $this->assertEquals(0, $accountContactAffiliations[0]->primary);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
+            $this->assertEquals(0, $accountContactAffiliations[1]->primary);
+            $this->assertTrue($accountContactAffiliations[1]->account->isSame($account2));
+            $this->assertTrue($accountContactAffiliations[1]->contact->isSame($contact));
 
             //Contact is no longer connected to either account at this point.
             $this->assertFalse($account->contacts->contains($contact));
             $this->assertFalse($account2->contacts->contains($contact));
 
-            //todo: we could test that the AccountContactAffiliation models get created etc.... changed.
+            //Now set the account2 as the primary again
+            $account2->contacts->add($contact);
+            $this->assertTrue ($account2->save());
+            //Now the account2 is the primary again
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(2, count($accountContactAffiliations));
+            $this->assertEquals(0, $accountContactAffiliations[0]->primary);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
+            $this->assertEquals(1, $accountContactAffiliations[1]->primary);
+            $this->assertTrue($accountContactAffiliations[1]->account->isSame($account2));
+            $this->assertTrue($accountContactAffiliations[1]->contact->isSame($contact));
         }
-
-
     }
 ?>
