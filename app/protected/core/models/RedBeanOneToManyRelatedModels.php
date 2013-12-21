@@ -43,8 +43,31 @@
      */
     class RedBeanOneToManyRelatedModels extends RedBeanMutableRelatedModels
     {
+        /**
+         * @var RedBeanModel
+         */
+        protected $relatedModel;
+
+        /**
+         * @var string
+         */
         protected $relatedModelClassName;
 
+        /**
+         * @var string
+         */
+        protected $relatedAttributeName;
+
+        /**
+         * Store models that are getting removed when 'removeByIndex' is called. These are later used to process
+         * events on those models for onRedBeanOneToManyRelatedModelChange
+         * @var string
+         */
+        protected $deferredUnrelatedModels = array();
+
+        /**
+         * @var bool
+         */
         protected $owns;
 
         /**
@@ -55,28 +78,44 @@
          */
         protected $linkType;
 
+        /**
+         * @var null | string
+         */
         protected $linkName;
+
+        /**
+         * Cached value when first retrieved
+         * @var null | string
+         */
+        protected $opposingRelationName;
+
+        protected $opposingRelationNameRetrieved = false;
 
         /**
          * Constructs a new RedBeanOneToManyRelatedModels. The models are retrieved lazily.
          * RedBeanOneToManyRelatedModels are only constructed with beans by the model.
          * Beans are never used by the application directly.
          */
-        public function __construct(RedBean_OODBBean $bean, $modelClassName, $relatedModelClassName,
+        public function __construct(RedBeanModel $relatedModel, RedBean_OODBBean $bean, $modelClassName, $relatedModelClassName,
+                                    $relatedAttributeName,
                                     $owns, $linkType, $linkName = null)
         {
             assert('is_string($modelClassName)');
             assert('is_string($relatedModelClassName)');
+            assert('is_string($relatedAttributeName)');
             assert('$modelClassName        != ""');
             assert('$relatedModelClassName != ""');
+            assert('$relatedAttributeName != ""');
             assert('is_bool($owns)');
             assert('is_int($linkType)');
             assert('is_string($linkName) || $linkName == null');
             assert('($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE && $linkName == null) ||
                     ($linkType != RedBeanModel::LINK_TYPE_ASSUMPTIVE && $linkName != null)');
             $this->rewind();
+            $this->relatedModel          = $relatedModel;
             $this->modelClassName        = $modelClassName;
             $this->relatedModelClassName = $relatedModelClassName;
+            $this->relatedAttributeName  = $relatedAttributeName;
             $this->owns                  = $owns;
             $this->linkType              = $linkType;
             $this->linkName              = $linkName;
@@ -188,7 +227,13 @@
                     ZurmoRedBean::trash($bean);
                 }
             }
-            $this->deferredUnrelateBeans = array();
+            $this->deferredUnrelatedBeans = array();
+            foreach($this->deferredUnrelatedModels as $model)
+            {
+                $event = new CModelEvent($model);
+                $model->onRedBeanOneToManyRelatedModelsChange($event);
+            }
+            $this->deferredUnrelatedModels = array();
             return true;
         }
 
@@ -214,6 +259,57 @@
                 }
             }
             return $data;
+        }
+
+        /**
+         * Adds a related model. Override to support finding opposing relation and making adjustment
+         * so when accessing the opposing model, it will reflect properly the changes to the relation.
+         * Ignoring when the relations are for the same model, because there is currently an issue with this being supported
+         * with group/groups. Eventually todo: fix that and we can open it up.
+         */
+        public function add(RedBeanModel $model)
+        {
+            parent::add($model);
+            if((null != $opposingRelationName = $this->getOpposingRelationName($model)) &&
+               get_class($model) != get_class($this->relatedModel))
+            {
+                    $model->$opposingRelationName = $this->relatedModel;
+            }
+        }
+
+        /**
+         * Unrelates a model by index. Override to support finding opposing relation and making adjustment
+         * so when accessing the opposing model, it will reflect properly the changes to the relation.
+         * Ignoring when the relations are for the same model, because there is currently an issue with this being supported
+         * with group/groups. Eventually todo: fix that and we can open it up.
+         */
+        public function removeByIndex($i)
+        {
+            $model = $this->getByIndex($i);
+            parent::removeByIndex($i);
+            if((null != $opposingRelationName = $this->getOpposingRelationName($model)) &&
+                    get_class($model) != get_class($this->relatedModel))
+            {
+                $model->$opposingRelationName    = null;
+                $this->deferredUnrelatedModels[] = $model;
+            }
+        }
+
+        protected function getOpposingRelationName($model)
+        {
+            if(!$this->opposingRelationNameRetrieved)
+            {
+                if(null !== $opposingRelationName = RedBeanModel::
+                                                    getHasManyOpposingRelationName($model, $this->relatedModelClassName,
+                                                                                   $this->relatedAttributeName))
+                {
+
+                    $this->opposingRelationName = $opposingRelationName;
+                }
+                $this->opposingRelationNameRetrieved = true;
+            }
+            return $this->opposingRelationName;
+
         }
     }
 ?>

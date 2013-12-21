@@ -1345,9 +1345,11 @@
 
                             case self::HAS_MANY:
                                 $this->relationNameToRelatedModel[$attributeName] =
-                                    new RedBeanOneToManyRelatedModels($bean,
+                                    new RedBeanOneToManyRelatedModels($this,
+                                                                      $bean,
                                                                       $relatedModelClassName,
                                                                       $attributeModelClassName,
+                                                                      $attributeName,
                                                                       $owns,
                                                                       $linkType,
                                                                       $relationLinkName);
@@ -2043,6 +2045,16 @@
         {
             $this->raiseEvent('onAfterSave', $event);
         }
+
+        /**
+         * This event is raised on a RedBeanOneToManyRelatedModels change
+         * @param $event
+         */
+        public function onRedBeanOneToManyRelatedModelsChange($event)
+        {
+            $this->raiseEvent('onRedBeanOneToManyRelatedModelsChange', $event);
+        }
+
 
         /**
          * This event is raised before the record is deleted.
@@ -3137,24 +3149,42 @@
             }
         }
 
+        public static function getHasManyOpposingRelationName(RedBeanModel $model, $precedingModelClassName, $precedingRelation)
+        {
+            assert('is_string($precedingModelClassName)');
+            assert('is_string($precedingRelation)');
+            foreach($model->getAttributes() as $attributeName => $notUsed)
+            {
+                if($model->isRelation($attributeName, get_called_class()) &&
+                    ($model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
+                        $model->getRelationType($attributeName) ==  RedBeanModel::HAS_MANY_BELONGS_TO) &&
+                    RedBeanModel::relationLinksToPrecedingRelation(get_class($model), $attributeName,
+                        $precedingModelClassName, $precedingRelation))
+                {
+                    return $attributeName;
+                }
+            }
+        }
+
         /**
+         * @param string $modelClassName
          * @param string $relation
-         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingModelClassName
          * @param null|string $precedingRelation
          * @return bool
          */
-        public static function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
+        public static function relationLinksToPrecedingRelation($modelClassName, $relation,
+                                                                $precedingModelClassName = null,
                                                                 $precedingRelation = null)
         {
+            assert('is_string($modelClassName)');
             assert('is_string($relation)');
-            assert('$precedingModel instanceof RedBeanModel || $precedingModel === null');
+            assert('is_string($precedingModelClassName) || $precedingModelClassName == null');
             assert('is_string($precedingRelation) || $precedingRelation == null');
-            if ($precedingModel == null || $precedingRelation == null)
+            if ($precedingModelClassName == null || $precedingRelation == null)
             {
                 return false;
             }
-            $modelClassName          = get_called_class();
-            $precedingModelClassName = get_class($precedingModel);
             //Check if the relation is a derived relation in which case return false because it is handled by
             //@see self::inferredRelationLinksToPrecedingRelation
             if (!$precedingModelClassName::isAnAttribute($precedingRelation))

@@ -52,38 +52,32 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $account = AccountTestHelper::createAccountByNameForOwner('firstAccount', $super);
-            $contact = ContactTestHelper::createContactWithAccountByNameForOwner('firstContact', $super, $account);
+            $contact  = ContactTestHelper::createContactWithAccountByNameForOwner('firstContact', $super, $account);
+            $contact2 = ContactTestHelper::createContactByNameForOwner('secondContact', $super);
 
             //Now make a second account and add the first contact to it. This would switch the contact->account to account2
             $account2 = AccountTestHelper::createAccountByNameForOwner('secondAccount', $super);
             $account2->contacts->add($contact);
-
-            echo "<pre>";
-           // print_r($account2->originalAttributeValues['contacts']);
-            echo "</pre>";
+            $this->assertTrue($account2->contacts->contains($contact));
 
             echo 'bam -- after this it should show 2 as the new account id and 1 as the old'. "\n";
-            $this->assertTrue($account2->save());
-            exit;
-            echo 'bamZ'. "\n";
-            $contactId = $contact->id;
-            $contact->forget();
-            $contact = Contact::getById($contactId);
+            $this->assertTrue ($account2->save()); //todo: should trigger observer change
+            $this->assertTrue ($account2->contacts->contains($contact));
+            $this->assertFalse($account->contacts->contains($contact));
             echo 'the contact related account after switching is: ' . $contact->account->id . "\n";
-
-
             echo 'bamX'. "\n";
             //Now test removing the contact from the second account
             $account2->contacts->remove($contact);
             echo 'bamZam'. "\n";
-            $this->assertTrue($account2->save());
-            //todo: nothing happens because the contact is still hooked up to the first account?
-            //Now test removing the contact from the first account
-            $this->assertFalse($account->contacts->contains($contact)); //this makes sense... ( it is no longer there
+            $this->assertTrue($account2->save()); //todo: should trigger observer change
+            $this->assertTrue($contact->account->id < 0);
+            echo 'after we removed from account2 con->acc id: ' . $contact->account->id . "\n";
 
+            //Contact is no longer connected to either account at this point.
+            $this->assertFalse($account->contacts->contains($contact));
+            $this->assertFalse($account2->contacts->contains($contact));
 
             //todo: we could test that the AccountContactAffiliation models get created etc.... changed.
-            //todo: more test dependent on above? that changes occur? or do as one big teest.
         }
 
 

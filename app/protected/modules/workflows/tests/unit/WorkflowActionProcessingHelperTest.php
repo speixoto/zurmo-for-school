@@ -218,6 +218,8 @@
                                                   'value'  => 'some new better name'));
             $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
             $model = new WorkflowModelTestItem();
+            $model->lastName = 'something';
+            $model->string   = 'somethingElse';
             $relatedModel = new WorkflowModelTestItem3();
             $relatedModel->name = 'some old name';
             $relatedModel2 = new WorkflowModelTestItem3();
@@ -228,7 +230,7 @@
             $helper->processNonUpdateSelfAction();
             $this->assertEquals('some new better name', $model->hasMany[0]->name);
             $this->assertEquals('some new better name', $model->hasMany[1]->name);
-            $this->assertTrue($model->id < 0);
+            $this->assertTrue($model->id > 0); //get saved by related model because of new RedBeanOneToManyRelatedModels override 'add' method
             $this->assertTrue($model->hasMany[0]->id > 0);
             $this->assertTrue($model->hasMany[1]->id > 0);
         }
@@ -389,7 +391,7 @@
             $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
             $helper->processNonUpdateSelfAction();
             $this->assertEquals('some new model', $model->hasMany2[0]->hasMany[0]->name);
-            $this->assertTrue($model->id < 0);
+            $this->assertTrue($model->id > 0); //get saved by related model because of new RedBeanOneToManyRelatedModels override 'add' method
             $this->assertTrue($model->hasMany2->count() == 1);
             $this->assertTrue($model->hasMany2[0]->id > 0);
             $this->assertTrue($model->hasMany2[0]->hasMany->count() == 1);

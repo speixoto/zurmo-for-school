@@ -43,11 +43,11 @@
         public function init()
         {
             Contact::model()->attachEventHandler('onBeforeSave', array($this, 'processFromContactSide'));
-            Contact::model()->attachEventHandler('onAfterSave', array($this, 'processFromContactSideAfter'));
+            Contact::model()->attachEventHandler('onRedBeanOneToManyRelatedModelsChange',
+                                                 array($this, 'processFromContactSide'));
         }
 
         /**
-         * Given a event, perform the deletion of conversationItems related to the event sender.
          * @param CEvent $event
          */
         public function processFromContactSide(CEvent $event)
@@ -61,12 +61,6 @@
                 echo "</pre>";
             }
             echo 'BEFORE the account id  is ' . $model->account->id . "\n";
-        }
-
-        public function processFromContactSideAfter(CEvent $event)
-        {
-            $model                   = $event->sender;
-            echo 'AFTER the account id  is ' . $model->account->id . "\n";
         }
     }
 ?>
