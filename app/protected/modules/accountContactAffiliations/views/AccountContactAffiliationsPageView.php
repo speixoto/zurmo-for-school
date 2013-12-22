@@ -34,55 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountContactAffiliationsModule extends SecurableModule
+    class AccountContactAffiliationsPageView extends ZurmoDefaultPageView
     {
-        const RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS = 'Access AccountContactAffiliations Tab';
-
-        public function getDependencies()
+        protected function getSubtitle()
         {
-            return array(
-                'zurmo',
-            );
-        }
-
-        public static function getTranslatedRightsLabels()
-        {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $labels                                                  = array();
-            $labels[self::RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS] = Zurmo::t('MarketingModule',
-                            'Access AccountsModuleSingularLabel to ContactsModuleSingularLabel  Affiliations Tab', $params);
-            return $labels;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            return $metadata;
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('AccountContactAffiliationsModule', 'Account to Contact Affiliation', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('AccountContactAffiliationsModule', 'Account to Contact Affiliations', array(), null, $language);
-        }
-
-        public static function getDefaultDataMakerClassName()
-        {
-            return 'AccountContactAffiliationsDefaultDataMaker';
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'AccountContactAffiliation';
+            return Zurmo::t('AccountContactAffiliationsModule',
+                            'AccountsModuleSingularLabel to ContactsModuleSingularLabel Affiliations',
+                            LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

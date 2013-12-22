@@ -42,15 +42,11 @@
         public function make()
         {
             $values = array(
-                Zurmo::t('CustomField', 'Automotive'),
-                Zurmo::t('CustomField', 'Banking'),
-                Zurmo::t('CustomField', 'Business Services'),
-                Zurmo::t('CustomField', 'Energy'),
-                Zurmo::t('CustomField', 'Financial Services'),
-                Zurmo::t('CustomField', 'Insurance'),
-                Zurmo::t('CustomField', 'Manufacturing'),
-                Zurmo::t('CustomField', 'Retail'),
-                Zurmo::t('CustomField', 'Technology'),
+                Zurmo::t('CustomField', 'Billing'),
+                Zurmo::t('CustomField', 'Shipping'),
+                Zurmo::t('CustomField', 'Technical'),
+                Zurmo::t('CustomField', 'Administrative'),
+                Zurmo::t('CustomField', 'Project Manager'),
             );
             static::makeCustomFieldDataByValuesAndDefault('AccountContactAffiliationRoles', $values);
         }

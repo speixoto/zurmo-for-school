@@ -133,6 +133,7 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountContactAffiliationObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
@@ -494,6 +495,13 @@
         {
             Yii::app()->workflowsObserver;
         }
+
+        public function handleLoadAccountContactAffiliationObserver($event)
+        {
+            $accountContactAffiliationObserver = new AccountContactAffiliationObserver();
+            $accountContactAffiliationObserver->init();
+        }
+
 
         public function handleLoadGamification($event)
         {

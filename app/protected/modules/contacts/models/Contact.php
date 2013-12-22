@@ -88,7 +88,7 @@
                 'relations' => array(
                     'account'             => array(static::HAS_ONE,   'Account'),
                     'accountAffiliations' => array(static::HAS_MANY, 'AccountContactAffiliation',
-                                                   static::NOT_OWNED, static::LINK_TYPE_SPECIFIC,
+                                                   static::OWNED, static::LINK_TYPE_SPECIFIC,
                                                    'contactAffiliation'),
                     'industry'         => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'industry'),

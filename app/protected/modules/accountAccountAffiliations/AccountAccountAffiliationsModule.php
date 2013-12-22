@@ -67,14 +67,17 @@
 
         protected static function getSingularModuleLabel($language)
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            return Zurmo::t('AccountAccountAffiliationsModule',
-                            'AccountsModuleSingularLabel to AccountsModuleSingularLabel Affiliations', $params, null, $language);
+            return Zurmo::t('AccountAccountAffiliationsModule', 'Account to Account Affiliation', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)
         {
-            return static::getSingularModuleLabel($language);
+            return Zurmo::t('AccountAccountAffiliationsModule', 'Account to Account Affiliations', array(), null, $language);
+        }
+
+        public static function getPrimaryModelName()
+        {
+            return 'AccountAccountAffiliation';
         }
     }
 ?>

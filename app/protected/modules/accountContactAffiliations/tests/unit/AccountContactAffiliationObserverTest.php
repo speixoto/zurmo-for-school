@@ -36,15 +36,11 @@
 
     class AccountContactAffiliationObserverTest extends ZurmoBaseTest
     {
-        protected static $accountContactAffiliationObserver;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             ContactsModule::loadStartingData();
-            self::$accountContactAffiliationObserver = new AccountContactAffiliationObserver();
-            self::$accountContactAffiliationObserver->init(); //runs init();
         }
 
         public function testChangingContactOnAccountFromContactSideThatObservationTakesPlace()
@@ -118,6 +114,38 @@
             $this->assertEquals(1, $accountContactAffiliations[1]->primary);
             $this->assertTrue($accountContactAffiliations[1]->account->isSame($account2));
             $this->assertTrue($accountContactAffiliations[1]->contact->isSame($contact));
+
+            //Now set the account as the primary but from the contact side
+            $contact->account = $account;
+            $this->assertTrue ($contact->save());
+            //Now account is primary again
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(2, count($accountContactAffiliations));
+            $this->assertEquals(1, $accountContactAffiliations[0]->primary);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
+            $this->assertEquals(0, $accountContactAffiliations[1]->primary);
+            $this->assertTrue($accountContactAffiliations[1]->account->isSame($account2));
+            $this->assertTrue($accountContactAffiliations[1]->contact->isSame($contact));
+
+            //Delete account, it should remove one of the affiliations
+            //Refresh account to properly grab related affiliations in order to delete 'owned' relations
+            $accountId = $account->id;
+            $account->forget();
+            $account = Account::getById($accountId);
+            $this->assertEquals(1, $account->contactAffiliations->count());
+            $this->assertTrue($account->delete());
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(1, count($accountContactAffiliations));
+
+            //Now delete from the contact side
+            $contactId = $contact->id;
+            $contact->forget();
+            $contact = Contact::getById($contactId);
+            $this->assertEquals(1, $contact->accountAffiliations->count());
+            $this->assertTrue($contact->delete());
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(0, count($accountContactAffiliations));
         }
     }
 ?>
