@@ -57,9 +57,8 @@
          */
         protected static function getLabel($language = null)
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
             return Zurmo::t('AccountAccountAffiliationsModule',
-                            'AccountsModuleSingularLabel to AccountsModuleSingularLabel Affiliation', $params, null, $language);
+                            'Account to Account Affiliation', array(), null, $language);
         }
 
         /**
@@ -69,9 +68,8 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
             return Zurmo::t('AccountAccountAffiliationsModule',
-                            'AccountsModuleSingularLabel to AccountsModuleSingularLabel Affiliations', $params, null, $language);
+                            'Account to Account Affiliations', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
