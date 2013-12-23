@@ -193,21 +193,23 @@
                     'id' => $id,
                 )
             );
-            $content .= static::resolveNewCollectionItemAndNotification($url);
+            $content .= static::renderGetNewCollectionItemNotification();
             return ZurmoHtml::tag('div', array('id' => static::USER_GAME_DASHBOARD_WRAPPER_ID,
                 'class' => 'user-menu-item'), $content);
         }
 
-        protected static function resolveNewCollectionItemAndNotification($gameBoardUrl)
+        protected static function renderGetNewCollectionItemNotification()
         {
-            assert('is_string($gameBoardUrl)');
             $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
             if (null != $collectionAndItemKey)
             {
+                $claimCollectionItemUrl = Yii::app()->createUrl('gamification/default/claimCollectionItem',
+                                                                array('key'     => $collectionAndItemKey[1],
+                                                                      'typeKey' => $collectionAndItemKey[2]));
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
-                $claimRewardLink = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $gameBoardUrl,
-                                   static::resolveAjaxOptionsForGameDashboardModel(static::CLAIM_ITEM_LINK_ID),
+                $claimRewardLink = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $claimCollectionItemUrl,
+                                   array(),
                                    array('id' => static::CLAIM_ITEM_LINK_ID, 'class' => 'mini-button'));
                 $closeLink       = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => 'close-game-notification-link'));
                 $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($collectionAndItemKey[1]);
@@ -282,7 +284,6 @@
                                        $('#game-notification').remove();
                                    });
                                }, 5000);
-                               return false;
                            });";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('claimItemScript', $script);
