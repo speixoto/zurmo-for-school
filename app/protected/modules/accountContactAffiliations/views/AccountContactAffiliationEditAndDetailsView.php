@@ -44,7 +44,11 @@
                         'elements' => array(
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                             array('type' => 'CancelLink', 'renderType' => 'Edit'),
-                           // array('type' => 'AuditEventsModalListLink', 'iconClass' => 'icon-audit',),
+                        ),
+                    ),
+                    'secondToolbar' => array(
+                        'elements' => array(
+                             array('type' => 'AuditEventsModalListLink', 'iconClass' => 'icon-audit',),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -111,6 +115,11 @@
             {
                 $elementInformation['disabled'] = true;
             }
+        }
+
+        protected function resolveAndRenderActionElementMenuForEdit()
+        {
+            return $this->renderWrapperAndActionElementMenu(null, 'secondToolbar');
         }
     }
 ?>
