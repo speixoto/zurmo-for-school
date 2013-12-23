@@ -6255,6 +6255,9 @@ i[class^="icon"] {
 .icon-workflows:after {
   content: '\20AC';
 }
+.icon-gamification:after {
+  content: '\2202';
+}
 .icon-by-time-workflow-in-queues:after {
   content: '\0071';
   font-size: 28px;
@@ -6326,6 +6329,15 @@ i[class^="icon"] {
 }
 .icon-policies:after {
   content: '\007D';
+}
+.icon-opportunity:after {
+  content: "9";
+}
+.icon-contact:after {
+  content: "y";
+}
+.icon-account:after {
+  content: "P";
 }
 .pillbox .icon-projects-list {
   font-size: 22px;
@@ -8342,7 +8354,9 @@ table.configuration-list tr:last-child td {
   border-bottom: 1px solid #DFDFDF;
 }
 #ImportWizardMappingView .column-import-data {
+  padding-right: 5px;
   margin-top: 5px;
+  word-break: break-all;
 }
 #ImportWizardMappingView tr td:last-child {
   padding-right: 0;
@@ -8769,12 +8783,10 @@ table.configuration-list tr:last-child td {
   margin-right: 10px;
 }
 #customThemeColorPicker {
-  display: none;
   position: relative;
-  z-index: 10;
+  z-index: 12;
   width: 45%;
   clear: left;
-  padding-left: 25px;
 }
 #customThemeColorPicker > div {
   min-width: 65px;
@@ -8790,6 +8802,7 @@ table.configuration-list tr:last-child td {
   position: absolute;
   left: 0;
   top: 100%;
+  display: none;
 }
 .user-menu-preferences td {
   padding-left: 0 !important;
@@ -11612,6 +11625,14 @@ div.wide.form .errorMessage {
 }
 .game-badge-SearchProjects .badge-icon:before,
 .SearchProjects .badge-icon:before {
+  content: '\02C7';
+}
+.game-badge-CreateProject .badge-icon:before,
+.CreateProject .badge-icon:before,
+.game-badge-MassEditProjects .badge-icon:before,
+.MassEditProjects .badge-icon:before,
+.game-badge-SearchProject .badge-icon:before,
+.SearchProject .badge-icon:before {
   content: '\02C7';
 }
 .game-level-change .badge-icon:before {

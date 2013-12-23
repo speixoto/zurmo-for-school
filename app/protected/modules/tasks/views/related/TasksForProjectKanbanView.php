@@ -58,7 +58,7 @@
                                 'iconClass'         => 'icon-edit',
                                 'relationModuleId'  => 'eval:$this->params["relationModuleId"]'
                             ),
-                            array('type'                => 'CreateTaskFromRelatedKanbanModalLink',
+                            array('type'                => 'CreateTaskMenu',
                                 'routeModuleId'         => 'eval:$this->moduleId',
                                 'routeParameters'       => 'eval:$this->getCreateLinkRouteParameters()',
                                 'ajaxOptions'           => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
