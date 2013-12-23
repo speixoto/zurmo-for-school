@@ -47,6 +47,16 @@
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => $viewClassName,
                    ),
+                   array(
+                        static::getRightsFilterPath(),
+                        'moduleClassName' => 'AccountsModule',
+                        'rightName'       => AccountsModule::getAccessRight(),
+                   ),
+                   array(
+                        static::getRightsFilterPath(),
+                        'moduleClassName' => 'ContactsModule',
+                        'rightName'       => ContactsModule::getAccessRight(),
+                   )
                )
             );
         }

@@ -35,46 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Helper class to resolve portlets against access
-     * rights to determine if the current user can view the portlet.
+     * Class defines rules for any AccountContactAffiliations Related list
+     * portlets.
      */
-    class PortletsSecurityUtil
+    class AccountContactAffiliationsRelatedListPortletRules extends RelatedListPortletRules
     {
         /**
-         * @param array $portlets
-         * @return array
-         */
-        public static function resolvePortletsForCurrentUser(array $portlets)
-        {
-            $resolvedPortlets = array();
-            $user             = Yii::app()->user->userModel;
-            foreach ($portlets as $column => $positionInfo)
-            {
-                foreach ($positionInfo as $position => $portlet)
-                {
-                    $viewClassName   = $portlet->viewType . 'View';
-                    $moduleClassName = $viewClassName::getModuleClassName();
-                    $portletRules    = $portletRules = PortletRulesFactory::createPortletRulesByView($viewClassName);
-                    if ($portletRules->canUserAccessPortlet($user) &&  RightsUtil::canUserAccessModule($moduleClassName, $user))
-                    {
-                        $resolvedPortlets[$column][] = $portlet;
-                    }
-                }
-            }
-            return $resolvedPortlets;
-        }
-
-        /**
-         * Checks if the user has permission to add portlet from modal
-         * @param Object $portletRules
+         * In order for a user to have access to an accountContactAffiliation portlet, the user must have access rights
+         * to the Accounts and Contacts module as well as rights to the AccountContactAffiliations module.
+         * @param User $user
          * @return bool
          */
-        public static function doesCurrentUserHavePermissionToAddPortlet($portletRules)
+        public function canUserAccessPortlet(User $user)
         {
-            $user             = Yii::app()->user->userModel;
-            $viewClassName    = $portletRules->getType() . 'View';
-            $moduleClassName  = $viewClassName::getModuleClassName();
-            if ($portletRules->canUserAccessPortlet($user) && RightsUtil::canUserAccessModule($moduleClassName, $user))
+            if(RightsUtil::canUserAccessModule('AccountsModule', $user) &&
+               RightsUtil::canUserAccessModule('ContactsModule', $user))
             {
                 return true;
             }

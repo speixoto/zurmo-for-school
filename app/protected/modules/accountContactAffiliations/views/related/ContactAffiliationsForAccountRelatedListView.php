@@ -48,7 +48,8 @@
                         'elements' => array(
                             array(  'type'            => 'CreateFromRelatedListLink',
                                     'routeModuleId'   => 'eval:$this->moduleId',
-                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+                                    'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()',
+                            ),
                         ),
                     ),
                     'rowMenu' => array(
@@ -113,6 +114,24 @@
             return Zurmo::t('AccountContactAffiliationsModule',
                             'No AccountsModuleSingularLowerCaseLabel to ContactsModuleSingularLowerCaseLabel affiliations found',
                             LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        public static function canRenderRowMenuColumnByElementAndData($element, $data)
+        {
+            if(get_class($element) == 'RelatedDeleteLinkActionElement' && (bool)$data->primary)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * What kind of PortletRules this view follows.
+         * @return PortletRulesType as string.
+         */
+        public static function getPortletRulesType()
+        {
+            return 'AccountContactAffiliationsRelatedList';
         }
     }
 ?>

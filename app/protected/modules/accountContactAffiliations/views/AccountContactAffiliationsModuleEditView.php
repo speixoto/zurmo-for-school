@@ -34,51 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class to resolve portlets against access
-     * rights to determine if the current user can view the portlet.
-     */
-    class PortletsSecurityUtil
+    class AccountContactAffiliationsModuleEditView extends ModuleEditView
     {
-        /**
-         * @param array $portlets
-         * @return array
-         */
-        public static function resolvePortletsForCurrentUser(array $portlets)
-        {
-            $resolvedPortlets = array();
-            $user             = Yii::app()->user->userModel;
-            foreach ($portlets as $column => $positionInfo)
-            {
-                foreach ($positionInfo as $position => $portlet)
-                {
-                    $viewClassName   = $portlet->viewType . 'View';
-                    $moduleClassName = $viewClassName::getModuleClassName();
-                    $portletRules    = $portletRules = PortletRulesFactory::createPortletRulesByView($viewClassName);
-                    if ($portletRules->canUserAccessPortlet($user) &&  RightsUtil::canUserAccessModule($moduleClassName, $user))
-                    {
-                        $resolvedPortlets[$column][] = $portlet;
-                    }
-                }
-            }
-            return $resolvedPortlets;
-        }
-
-        /**
-         * Checks if the user has permission to add portlet from modal
-         * @param Object $portletRules
-         * @return bool
-         */
-        public static function doesCurrentUserHavePermissionToAddPortlet($portletRules)
-        {
-            $user             = Yii::app()->user->userModel;
-            $viewClassName    = $portletRules->getType() . 'View';
-            $moduleClassName  = $viewClassName::getModuleClassName();
-            if ($portletRules->canUserAccessPortlet($user) && RightsUtil::canUserAccessModule($moduleClassName, $user))
-            {
-                return true;
-            }
-            return false;
-        }
     }
 ?>

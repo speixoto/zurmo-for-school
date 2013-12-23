@@ -57,6 +57,15 @@
         public static function getDefaultMetadata()
         {
             $metadata = array();
+            $metadata['global'] = array(
+                'designerMenuItems' => array(
+                    'showFieldsLink' => true,
+                    'showGeneralLink' => true,
+                    'showLayoutsLink' => true,
+                    'showMenusLink' => true,
+                ),
+
+            );
             return $metadata;
         }
 
@@ -83,6 +92,11 @@
         public static function getPrimaryModelName()
         {
             return 'AccountContactAffiliation';
+        }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
     }
 ?>

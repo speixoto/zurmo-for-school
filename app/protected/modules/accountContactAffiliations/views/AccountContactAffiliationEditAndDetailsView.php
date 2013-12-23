@@ -57,7 +57,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'role', 'type' => 'DropDown'),
+                                                array('attributeName' => 'role', 'type' => 'DropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
@@ -109,7 +109,7 @@
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
             if ($elementInformation['attributeName'] == 'primary')
             {
-                $elementInformation['htmlOptions']['readonly'] = 'readonly';
+                $elementInformation['disabled'] = true;
             }
         }
     }
