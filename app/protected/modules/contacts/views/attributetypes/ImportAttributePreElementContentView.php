@@ -45,15 +45,19 @@
         public function run()
         {
             $attributes = $this->attributes;
-            $content = '<tr>';
-            foreach($this->selectedModels as $model)
+            $content = '<th>&nbsp;</th><td>';
+            foreach($attributes as $attribute)
             {
-                foreach($attributes as $attribute)
+                $attributeContent = '<div style="float:left;">';
+                foreach($this->selectedModels as $model)
                 {
                     $nonFormattedContent = $model->$attribute;
-                    $content .= $this->decorateItem($nonFormattedContent);
+                    $attributeContent .= $this->decorateItem($nonFormattedContent);
                 }
+                $attributeContent .= '</div>';
+                $content .= $attributeContent;
             }
+            $content .= "</td>";
             $content = ZurmoHtml::tag('tr', array(), $content);
             echo $content;
         }
@@ -62,7 +66,11 @@
         {
             //Apply the template here. This should be a link here with class as attribute-someclassname
             //register the script here to populate the model here on click of it.
-            return '<td>' . $content . '</td>';
+            if($content != null)
+            {
+                return ZurmoHtml::tag('span', array('style' => 'border: 2px dotted #66367b;margin-left:2px;'), $content);
+            }
+            return null;
         }
     }
 ?>

@@ -49,12 +49,168 @@
 
         public static function getDefaultMetadata()
         {
-            $metadata = parent::getDefaultMetadata();
-            unset($metadata['global']['toolbar']['elements']);
-            $metadata['global']['toolbar']['elements'] = array(
-                                            array('type' => 'SaveButton', 'renderType' => 'Edit'),
-                                            array('type' => 'CancelLink', 'renderType' => 'Edit'),
-                                        );
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type' => 'CancelLink', 'renderType' => 'Edit')
+                        ),
+                    ),
+                    'derivedAttributeTypes' => array(
+                        'ContactStateDropDown',
+                        'TitleFullName',
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'owner',
+                        'state',
+                        'googleWebTrackingId',
+                        'latestActivityDateTime'
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'TitleFullName'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+//                                array('cells' =>
+//                                    array(
+//                                        array(
+//                                            'elements' => array(
+//                                                array('attributeName' => 'lastName', 'type' => 'Text'),
+//                                            ),
+//                                        ),
+//                                    )
+//                                ),
+//                                array('cells' =>
+//                                    array(
+//                                        array(
+//                                            'elements' => array(
+//                                                array('attributeName' => 'null', 'type' => 'ContactStateDropDown'),
+//                                            ),
+//                                        ),
+//                                    )
+//                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'jobTitle', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'account', 'type' => 'Account'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'department', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'source', 'type' => 'DropDown', 'addBlank' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'mobilePhone', 'type' => 'Phone'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'officeFax', 'type' => 'Phone'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'primaryEmail', 'type' => 'EmailAddressInformation'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'secondaryEmail', 'type' => 'EmailAddressInformation'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'primaryAddress', 'type' => 'Address'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'secondaryAddress', 'type' => 'Address'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'description', 'type' => 'TextArea'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
             return $metadata;
         }
 

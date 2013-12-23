@@ -156,7 +156,7 @@
          */
         public static function getRealModelAttributeNames()
         {
-            return array('firstName', 'lastName');
+            return array('title', 'firstName', 'lastName');
         }
     }
 ?>

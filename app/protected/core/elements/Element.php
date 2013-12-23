@@ -84,8 +84,7 @@
             {
                 return $this->renderNonEditable();
             }
-            $content = $this->renderPreContent();
-            return $content . $this->renderEditable();
+            return $this->renderPreContent() . $this->renderEditable();
         }
 
         /**
