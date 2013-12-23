@@ -148,6 +148,36 @@
             echo $view->render();
         }
 
+        public function actionUserInterfaceConfigurationEdit()
+        {
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'User Interface Configuration'),
+            );
+            $configurationForm = ZurmoUserInterfaceConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $postVariableName   = get_class($configurationForm);
+            if (isset($_POST[$postVariableName]))
+            {
+                $configurationForm->setAttributes($_POST[$postVariableName]);
+                if ($configurationForm->validate())
+                {
+                    ZurmoUserInterfaceConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'User interface configuration saved successfully.')
+                    );
+                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
+                }
+            }
+            $editView = new ZurmoUserInterfaceConfigurationEditAndDetailsView(
+                'Edit',
+                $this->getId(),
+                $this->getModule()->getId(),
+                $configurationForm);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
+            echo $view->render();
+        }
+
         public function actionGlobalSearchAutoComplete($term)
         {
             $scopeData = GlobalSearchUtil::resolveGlobalSearchScopeFromGetData($_GET);
@@ -409,11 +439,11 @@
 
                 $logoFilePath   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $uploadedFile->getName();
                 $thumbFilePath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
-                                                      ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $uploadedFile->getName();
+                                                      ZurmoUserInterfaceConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $uploadedFile->getName();
                 $uploadedFile->saveAs($logoFilePath);
-                ZurmoConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $thumbFilePath,
-                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_WIDTH,
-                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_HEIGHT);
+                ZurmoUserInterfaceConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $thumbFilePath,
+                                                                   ZurmoUserInterfaceConfigurationForm::DEFAULT_LOGO_THUMBNAIL_WIDTH,
+                                                                   ZurmoUserInterfaceConfigurationForm::DEFAULT_LOGO_THUMBNAIL_HEIGHT);
                 Yii::app()->user->setState('logoFileName', $uploadedFile->getName());
                 $logoFileData = array('name'            => $uploadedFile->getName(),
                                       'type'            => $uploadedFile->getType(),

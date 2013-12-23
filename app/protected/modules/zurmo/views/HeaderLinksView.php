@@ -92,8 +92,8 @@
             {
                 $logoFileSrc   = Yii::app()->themeManager->baseUrl . '/default/images/Zurmo_logo.png';
             }
-            $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
-            $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
+            $logoHeight = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoHeight();
+            $logoWidth  = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoWidth();
             if (Yii::app()->userInterface->isMobile())
             {
                 $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" /></a>'; //make sure width and height are NEVER defined
