@@ -41,6 +41,18 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             ContactsModule::loadStartingData();
+
+            $values = array(
+                'AAA',
+                'BBB',
+                'CCC',
+            );
+            $typeFieldData = CustomFieldData::getByName('AccountContactAffiliationRoles');
+            $typeFieldData->serializedData = serialize($values);
+            if(!$typeFieldData->save())
+            {
+                throw new FailedToSaveModelException();
+            }
         }
 
         public function testChangingContactOnAccountFromContactSideThatObservationTakesPlace()
@@ -67,6 +79,7 @@
             $accountContactAffiliations = AccountContactAffiliation::getAll();
             $this->assertEquals(1, count($accountContactAffiliations));
             $this->assertEquals(1, $accountContactAffiliations[0]->primary);
+            $this->assertEmpty($accountContactAffiliations[0]->role->value);
             $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
             $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
 
@@ -78,9 +91,11 @@
             $accountContactAffiliations = AccountContactAffiliation::getAll();
             $this->assertEquals(2, count($accountContactAffiliations));
             $this->assertEquals(0, $accountContactAffiliations[0]->primary);
+            $this->assertEmpty($accountContactAffiliations[0]->role->value);
             $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
             $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
             $this->assertEquals(1, $accountContactAffiliations[1]->primary);
+            $this->assertEmpty($accountContactAffiliations[1]->role->value);
             $this->assertTrue($accountContactAffiliations[1]->account->isSame($account2));
             $this->assertTrue($accountContactAffiliations[1]->contact->isSame($contact));
 
@@ -143,6 +158,70 @@
             $contact->forget();
             $contact = Contact::getById($contactId);
             $this->assertEquals(1, $contact->accountAffiliations->count());
+            $this->assertTrue($contact->delete());
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(0, count($accountContactAffiliations));
+        }
+
+        public function testWhenRoleIsRequired()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            //Set role as required but without a default value.
+            $attributeForm = AttributesFormFactory::
+                             createAttributeFormByAttributeName(new AccountContactAffiliation(), 'role');
+            $attributeForm->isRequired = true;
+            $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new AccountContactAffiliation());
+            try
+            {
+                $adapter->setAttributeMetadataFromForm($attributeForm);
+            }
+            catch (FailedDatabaseSchemaChangeException $e)
+            {
+                echo $e->getMessage();
+                $this->fail();
+            }
+            //Now create an affiliation, the role should be the first value.
+            $this->assertEquals(0, count(AccountContactAffiliation::getAll()));
+            $account  = AccountTestHelper::createAccountByNameForOwner('thirdAccount', $super);
+            $contact  = ContactTestHelper::createContactWithAccountByNameForOwner('thirdContact', $super, $account);
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(1, count($accountContactAffiliations));
+            $this->assertEquals(1, $accountContactAffiliations[0]->primary);
+            $this->assertEquals('AAA', $accountContactAffiliations[0]->role->value);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
+            $this->assertTrue($contact->delete());
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(0, count($accountContactAffiliations));
+
+            //Now add a default value, so the role should be the default value.
+            $attributeForm = AttributesFormFactory::
+                             createAttributeFormByAttributeName(new AccountContactAffiliation(), 'role');
+            $attributeForm->defaultValueOrder = 1;
+            $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new AccountContactAffiliation());
+            try
+            {
+                $adapter->setAttributeMetadataFromForm($attributeForm);
+            }
+            catch (FailedDatabaseSchemaChangeException $e)
+            {
+                echo $e->getMessage();
+                $this->fail();
+            }
+            //Now create an account/contact and an affiliation. The role should be BBB
+            $this->assertEquals(0, count(AccountContactAffiliation::getAll()));
+            $account  = AccountTestHelper::createAccountByNameForOwner('fourthAccount', $super);
+            $contact  = ContactTestHelper::createContactWithAccountByNameForOwner('fourthContact', $super, $account);
+            $accountContactAffiliations = AccountContactAffiliation::getAll();
+            $this->assertEquals(1, count($accountContactAffiliations));
+            $this->assertEquals(1, $accountContactAffiliations[0]->primary);
+            $this->assertEquals('BBB', $accountContactAffiliations[0]->role->value);
+            $this->assertTrue($accountContactAffiliations[0]->account->isSame($account));
+            $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
             $this->assertTrue($contact->delete());
             $accountContactAffiliations = AccountContactAffiliation::getAll();
             $this->assertEquals(0, count($accountContactAffiliations));

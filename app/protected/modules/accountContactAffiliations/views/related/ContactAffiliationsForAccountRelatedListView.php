@@ -75,7 +75,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'role', 'type' => 'DropDown'),
+                                                array('attributeName' => 'role', 'type' => 'DropDownWithNoEmptyDisplay'),
                                             ),
                                         ),
                                     )
@@ -132,6 +132,20 @@
         public static function getPortletRulesType()
         {
             return 'AccountContactAffiliationsRelatedList';
+        }
+
+        /**
+         * Ensures role has the correct element type when displayed
+         * @param $columnInformation
+         * @return mixed
+         */
+        protected function processColumnInfoToFetchColumnData($columnInformation)
+        {
+            if($columnInformation['attributeName'] == 'role')
+            {
+                $columnInformation['type'] = 'DropDownWithNoEmptyDisplay';
+            }
+            return parent::processColumnInfoToFetchColumnData($columnInformation);
         }
     }
 ?>

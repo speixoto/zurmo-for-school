@@ -35,21 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Class to make default data that needs to be created upon an installation.
+     * Display a drop down. Used for listview column display. If you don't want a (none) to display if there is no
+     * dropdown value, then you should use this Element.
      */
-    class AccountContactAffiliationsDefaultDataMaker extends DefaultDataMaker
+    class DropDownWithNoEmptyDisplayElement extends DropDownElement
     {
-        public function make()
-        {
-            $values = array(
-                Zurmo::t('CustomField', 'Billing'),
-                Zurmo::t('CustomField', 'Shipping'),
-                Zurmo::t('CustomField', 'Support'),
-                Zurmo::t('CustomField', 'Technical'),
-                Zurmo::t('CustomField', 'Administrative'),
-                Zurmo::t('CustomField', 'Project Manager'),
-            );
-            static::makeCustomFieldDataByValuesAndDefault('AccountContactAffiliationRoles', $values);
-        }
     }
 ?>

@@ -119,7 +119,10 @@
 
         protected function resolveAndRenderActionElementMenuForEdit()
         {
-            return $this->renderWrapperAndActionElementMenu(null, 'secondToolbar');
+            if($this->model->id > 0)
+            {
+                return $this->renderWrapperAndActionElementMenu(null, 'secondToolbar');
+            }
         }
     }
 ?>

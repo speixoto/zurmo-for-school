@@ -34,22 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to make default data that needs to be created upon an installation.
-     */
-    class AccountContactAffiliationsDefaultDataMaker extends DefaultDataMaker
+    class DropDownWithNoEmptyDisplayListViewColumnAdapter extends DropDownListViewColumnAdapter
     {
-        public function make()
+        public function renderGridViewData()
         {
-            $values = array(
-                Zurmo::t('CustomField', 'Billing'),
-                Zurmo::t('CustomField', 'Shipping'),
-                Zurmo::t('CustomField', 'Support'),
-                Zurmo::t('CustomField', 'Technical'),
-                Zurmo::t('CustomField', 'Administrative'),
-                Zurmo::t('CustomField', 'Project Manager'),
+            return array(
+                'name'   => $this->attribute,
+                'value'  => 'DropDownWithNoEmptyDisplayListViewColumnAdapter::resolveValue(
+                             $data, "' . $this->attribute . '", $data->' . $this->attribute . '->data)',
+                'type'   => 'raw',
             );
-            static::makeCustomFieldDataByValuesAndDefault('AccountContactAffiliationRoles', $values);
+        }
+
+        public static function resolveValue(RedBeanModel $data, $attribute, CustomFieldData $customFieldData)
+        {
+            if($data->{$attribute}->value == null)
+            {
+                return null;
+            }
+            return CustomFieldDataUtil::getTranslatedLabelByValue($customFieldData,
+                                                                  (string)($data->{$attribute}), Yii::app()->language);
         }
     }
 ?>

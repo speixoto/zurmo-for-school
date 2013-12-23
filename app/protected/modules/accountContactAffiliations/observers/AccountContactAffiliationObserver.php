@@ -86,11 +86,28 @@
                         $accountContactAffiliation->primary = true;
                         $accountContactAffiliation->contact = $model;
                         $accountContactAffiliation->account = $model->account;
+                        if($accountContactAffiliation->isAttributeRequired('role') &&
+                           $accountContactAffiliation->role->value == null)
+                        {
+
+                            $accountContactAffiliation->role->value = $this->resolveRoleValue($accountContactAffiliation);
+                        }
                         $accountContactAffiliation->save();
                     }
                 }
             }
+        }
 
+        /**
+         * If role is required, and there is no default value selected, grab the first value available for the role.
+         * @param AccountContactAffiliation $accountContactAffiliation
+         * @return mixed
+         */
+        protected function resolveRoleValue(AccountContactAffiliation $accountContactAffiliation)
+        {
+            $dataAndLabels = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage(
+                             $accountContactAffiliation->role->data, Yii::app()->language);
+            return key($dataAndLabels);
         }
     }
 ?>
