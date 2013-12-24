@@ -75,7 +75,7 @@
          */
         protected function checkIfRowToBeSkippedAndSetAnalysisMessages($value)
         {
-            assert('is_string($value)');
+            assert('$value === null || is_string($value)');
             $matchedModels  = $this->getMatchedModels($value);
             if(count($matchedModels) > 0 && isset($this->mappingRuleData["dedupeRule"]))
             {

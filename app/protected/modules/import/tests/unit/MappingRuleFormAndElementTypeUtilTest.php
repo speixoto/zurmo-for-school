@@ -148,9 +148,11 @@
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,
                                                                          'fullName', 'importColumn');
-            $this->assertEquals(1, count($collection));
-            $this->assertEquals('Text', $collection[0]['elementType']);
+            $this->assertEquals(2, count($collection));
+            $this->assertEquals('Text',                           $collection[0]['elementType']);
+            $this->assertEquals('ImportDedupeRulesRadioDropDown', $collection[1]['elementType']);
             $this->assertEquals('FullNameDefaultValueModelAttributeMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
+            $this->assertEquals('FullNameModelAttributeDedupeMappingRuleForm',       get_class($collection[1]['mappingRuleForm']));
 
             //Id
             $attributeImportRules = new IdAttributeImportRules(new ImportModelTestItem(), 'id');
