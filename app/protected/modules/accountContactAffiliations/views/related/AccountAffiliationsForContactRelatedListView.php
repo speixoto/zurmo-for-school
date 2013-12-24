@@ -34,14 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactAffiliationsForAccountRelatedListView extends AccountContactAffiliationsRelatedListView
+    class AccountAffiliationsForContactRelatedListView extends AccountContactAffiliationsRelatedListView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'perUser' => array(
                     'title' => "eval:Zurmo::t('AccountContactAffiliationsModule',
-                                'ContactsModuleSingularLabel Affiliations', LabelUtil::getTranslationParamsForAllModules())",
+                                'AccountsModuleSingularLabel Affiliations', LabelUtil::getTranslationParamsForAllModules())",
                 ),
                 'global' => array(
                     'toolbar' => array(
@@ -66,7 +66,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'contact', 'type' => 'Contact', 'isLink' => true),
+                                                array('attributeName' => 'account', 'type' => 'Account', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -90,18 +90,18 @@
 
         protected function getRelationAttributeName()
         {
-            return 'account';
+            return 'contact';
         }
 
         public static function getDisplayDescription()
         {
-            return Zurmo::t('AccountContactAffiliationsModule', 'ContactsModulePluralLabel Affiliations For AccountsModuleSingularLabel',
+            return Zurmo::t('AccountContactAffiliationsModule', 'AccountsModulePluralLabel Affiliations For ContactsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules());
         }
 
         public static function getAllowedOnPortletViewClassNames()
         {
-            return array('AccountDetailsAndRelationsView');
+            return array('ContactDetailsAndRelationsView');
         }
     }
 ?>

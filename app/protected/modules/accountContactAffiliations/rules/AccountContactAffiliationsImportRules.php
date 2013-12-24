@@ -35,23 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Import rules for an attribute that is a contact model.
+     * Defines the import rules for importing into the accountContactAffiliations module.
      */
-    class ContactAttributeImportRules extends ModelAttributeImportRules
+    class AccountContactAffiliationsImportRules extends ImportRules
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        public static function getModelClassName()
         {
-            return array('DefaultModelNameId' => 'ImportMappingRuleDefaultModelNameId');
-        }
-
-        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
-        {
-            return array('RelatedModelValueType' => 'ImportMappingRelatedModelValueTypeDropDown');
-        }
-
-        public static function getSanitizerUtilTypesInProcessingOrder()
-        {
-            return array('RelatedModelNameOrIdValueType', 'ModelIdRequired');
+            return 'AccountContactAffiliation';
         }
     }
 ?>

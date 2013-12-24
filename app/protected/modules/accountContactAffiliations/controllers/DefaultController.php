@@ -120,5 +120,14 @@
         {
             throw new NotImplementedException();
         }
+
+        /**
+         * Override since we do not want to automatically copy the account over
+         * @param RedBeanModel $model
+         * @param RedBeanModel $relatedModel
+         */
+        protected function addRelatedModelAccountToModel(RedBeanModel $model, RedBeanModel $relatedModel)
+        {
+        }
     }
 ?>

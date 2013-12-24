@@ -34,24 +34,50 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Import rules for an attribute that is a contact model.
-     */
-    class ContactAttributeImportRules extends ModelAttributeImportRules
+    abstract class AccountContactAffiliationsRelatedListView extends SecuredRelatedListView
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        public static function getModuleClassName()
         {
-            return array('DefaultModelNameId' => 'ImportMappingRuleDefaultModelNameId');
+            return 'AccountContactAffiliationsModule';
         }
 
-        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
+        protected function getEmptyText()
         {
-            return array('RelatedModelValueType' => 'ImportMappingRelatedModelValueTypeDropDown');
+            return Zurmo::t('AccountContactAffiliationsModule',
+                            'No AccountsModuleSingularLowerCaseLabel to ContactsModuleSingularLowerCaseLabel affiliations found',
+                            LabelUtil::getTranslationParamsForAllModules());
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        public static function canRenderRowMenuColumnByElementAndData($element, $data)
         {
-            return array('RelatedModelNameOrIdValueType', 'ModelIdRequired');
+            if(get_class($element) == 'RelatedDeleteLinkActionElement' && (bool)$data->primary)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * What kind of PortletRules this view follows.
+         * @return PortletRulesType as string.
+         */
+        public static function getPortletRulesType()
+        {
+            return 'AccountContactAffiliationsRelatedList';
+        }
+
+        /**
+         * Ensures role has the correct element type when displayed
+         * @param $columnInformation
+         * @return mixed
+         */
+        protected function processColumnInfoToFetchColumnData($columnInformation)
+        {
+            if($columnInformation['attributeName'] == 'role')
+            {
+                $columnInformation['type'] = 'DropDownWithNoEmptyDisplay';
+            }
+            return parent::processColumnInfoToFetchColumnData($columnInformation);
         }
     }
 ?>
