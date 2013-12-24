@@ -104,6 +104,7 @@
             {
                 $class = '';
             }
+            $content .= $this->beforeRenderingFormLayout();
             $content .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
             $content .= $this->renderRightSideContent($form);
             $content .= '</div>';
@@ -223,6 +224,11 @@
         protected function getNewModelTitleLabel()
         {
             throw new NotImplementedException();
+        }
+
+        protected function beforeRenderingFormLayout()
+        {
+            return null;
         }
     }
 ?>

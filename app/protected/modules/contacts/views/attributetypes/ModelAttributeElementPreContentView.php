@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImportAttributePreElementContentView extends ZurmoWidget
+    class ModelAttributeElementPreContentView extends ZurmoWidget
     {
         public $selectedModels;
 
@@ -45,10 +45,10 @@
         public function run()
         {
             $attributes = $this->attributes;
-            $content = '<th>&nbsp;</th><td>';
+            $content = null;
             foreach($attributes as $attribute)
             {
-                $attributeContent = '<div style="float:left;">';
+                $attributeContent = '<div>';
                 foreach($this->selectedModels as $model)
                 {
                     $nonFormattedContent = $model->$attribute;
@@ -57,8 +57,6 @@
                 $attributeContent .= '</div>';
                 $content .= $attributeContent;
             }
-            $content .= "</td>";
-            $content = ZurmoHtml::tag('tr', array(), $content);
             echo $content;
         }
 
@@ -68,7 +66,7 @@
             //register the script here to populate the model here on click of it.
             if($content != null)
             {
-                return ZurmoHtml::tag('span', array('style' => 'border: 2px dotted #66367b;margin-left:2px;'), $content);
+                return ZurmoHtml::tag('span', array('style' => 'border: 2px dotted #66367b;margin-left:4px;'), $content);
             }
             return null;
         }

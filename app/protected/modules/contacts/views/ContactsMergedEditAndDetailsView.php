@@ -49,168 +49,11 @@
 
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
+            $metadata = parent::getDefaultMetadata();
+            $metadata['global']['toolbar']['elements'] = array(
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                             array('type' => 'CancelLink', 'renderType' => 'Edit')
-                        ),
-                    ),
-                    'derivedAttributeTypes' => array(
-                        'ContactStateDropDown',
-                        'TitleFullName',
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'owner',
-                        'state',
-                        'googleWebTrackingId',
-                        'latestActivityDateTime'
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'TitleFullName'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'lastName', 'type' => 'Text'),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'null', 'type' => 'ContactStateDropDown'),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'jobTitle', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'account', 'type' => 'Account'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'department', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'source', 'type' => 'DropDown', 'addBlank' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'mobilePhone', 'type' => 'Phone'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'officeFax', 'type' => 'Phone'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'primaryEmail', 'type' => 'EmailAddressInformation'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'secondaryEmail', 'type' => 'EmailAddressInformation'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'primaryAddress', 'type' => 'Address'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'secondaryAddress', 'type' => 'Address'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
+                        );
             return $metadata;
         }
 
@@ -219,30 +62,33 @@
             return null;
         }
 
-        protected function renderBeforeFormLayoutForDetailsContent()
+        protected function renderRightSideFormLayoutForEdit($form)
         {
-            return "Display Summary Here";
+            return null;
         }
 
-        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        /**
+         * Override sub-class if you need to set anything into the element object.
+         */
+        protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            if($elementInformation['attributeName'] != 'null')
+            if($element->getAttribute() != 'null')
             {
-                $elementInformation['preElementContent'] = Yii::app()->getController()->widget(
-                                                                'ImportAttributePreElementContentView',
+                $preContent = Yii::app()->getController()->widget(
+                                                                'ModelAttributeElementPreContentView',
                                                                 array(
                                                                     'selectedModels' => $this->selectedContacts,
-                                                                    'attributes'     => array($elementInformation['attributeName'])
+                                                                    'attributes'     => array($element->getAttribute())
                                                                 ),
                                                             true);
             }
             else
             {
-                $elementClassName = $elementInformation['type'] . 'Element';
+                $elementClassName = get_class($element);
                 if(method_exists($elementClassName, 'getRealModelAttributeNames'))
                 {
-                    $elementInformation['preElementContent'] = Yii::app()->getController()->widget(
-                                                                    'ImportAttributePreElementContentView',
+                    $preContent = Yii::app()->getController()->widget(
+                                                                    'ModelAttributeElementPreContentView',
                                                                     array(
                                                                         'selectedModels' => $this->selectedContacts,
                                                                         'attributes'     => $elementClassName::getRealModelAttributeNames()
@@ -251,14 +97,19 @@
                 }
                 else
                 {
-                    $elementInformation['preElementContent'] = null;
+                    $preContent = null;
                 }
             }
+            $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' . $preContent . '{content}{error}</td>';
         }
 
-        protected function renderRightSideFormLayoutForEdit($form)
+        protected function beforeRenderingFormLayout()
         {
-            return null;
+            $summaryView = new ContactListViewMergeSummaryView($this->controllerId,
+                                                               $this->moduleId,
+                                                               $this->model,
+                                                               $this->selectedContacts);
+            return $summaryView->render();
         }
     }
 ?>

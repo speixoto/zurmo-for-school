@@ -84,7 +84,7 @@
             {
                 return $this->renderNonEditable();
             }
-            return $this->renderPreContent() . $this->renderEditable();
+            return $this->renderEditable();
         }
 
         /**
@@ -442,11 +442,6 @@
         protected function getListViewGridId()
         {
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'listViewGridId');
-        }
-
-        protected function renderPreContent()
-        {
-            return ArrayUtil::getArrayValue($this->params, 'preElementContent');
         }
     }
 ?>
