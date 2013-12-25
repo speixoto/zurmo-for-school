@@ -75,20 +75,20 @@
             $form->customThemeColor1     = '#999999';
             $form->customThemeColor2     = '#888888';
             $form->customThemeColor3     = '#777777';
+            $form->forceAllUsersTheme    = false;
             $logoFileName2               = 'testLogo2.png';
             $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
             copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName2);
             copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . ZurmoUserInterfaceConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $logoFileName2);
             Yii::app()->user->setState('logoFileName', $logoFileName2);
-            ZurmoConfigurationFormAdapter::setConfigurationFromForm($form);
-            $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
-            $this->assertEquals('America/Chicago',  $form->timeZone);
-            $this->assertEquals(60,                 $form->listPageSize);
-            $this->assertEquals(61,                 $form->subListPageSize);
-            $this->assertEquals(62,                 $form->modalListPageSize);
-            $this->assertEquals(63,                 $form->dashboardListPageSize);
-            $this->assertEquals('demoCompany2',     $form->applicationName);
-            $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
+            ZurmoUserInterfaceConfigurationFormAdapter::setConfigurationFromForm($form);
+            $form = ZurmoUserInterfaceConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $this->assertEquals('lime',         $form->themeColor);
+            $this->assertEquals('#999999',      $form->customThemeColor1);
+            $this->assertEquals('#888888',      $form->customThemeColor2);
+            $this->assertEquals('#777777',      $form->customThemeColor3);
+            $this->assertEquals(false,          $form->forceAllUsersTheme);
+            $this->assertEquals($logoFileName2, $form->logoFileData['name']);
         }
     }
 ?>
