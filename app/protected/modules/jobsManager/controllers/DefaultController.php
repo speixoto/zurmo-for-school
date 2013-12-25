@@ -166,7 +166,7 @@
             $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
             $isJobInProgress = false;
             JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName,
-                                                               $isJobInProgress, $template);
+                                                               $isJobInProgress, true, $template);
             echo ZurmoHtml::script('$("#progress-table").hide(); $("#complete-table").show();');
         }
 
