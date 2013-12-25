@@ -48,7 +48,6 @@
          * @param $messageLoggerClassName
          * @param $isJobInProgress
 		 * @param bool $useMessageStreamer
-         * @param bool $useMessageStreamer
          * @param string $template
          * @param string $lineBreak
          */
@@ -78,21 +77,19 @@
             $jobManagerFileMessageStreamer = new JobManagerFileLogRouteMessageStreamer("{message}\n", $jobManagerFileLogger);
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
-			echo $lineBreak;
             $streamers = array($messageStreamer, $jobManagerFileMessageStreamer);
-
-
             foreach ($streamers as $streamer)
             {
+
                 $streamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
-                                                array('{seconds}' => $timeLimit)));
-                echo $lineBreak;
-                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
-                                               array('{type}' => $type,
-                                                     '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+                                        array('{seconds}' => $timeLimit)));
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Sending output to runtime/jobLogs/{type}.log',
+                                        array('{type}' => $type)));
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Starting job type: {type}', array('{type}' => $type)));
             }
             if ($useMessageStreamer)
             {
+
                 $messageLogger = new $messageLoggerClassName(array($messageStreamer, $jobManagerFileMessageStreamer));
             }
             else
@@ -114,9 +111,7 @@
             }
             foreach ($streamers as $streamer)
             {
-                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
-                                               array('{type}' => $type,
-                                                     '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Ending job type: {type}', array('{type}' => $type)));
             }
         }
 
