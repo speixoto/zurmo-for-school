@@ -101,7 +101,8 @@
             $jobClassName           = $this->type . "Job";
             $messageLoggerClassName = $jobClassName::getDefaultMessageLogger();
             $runAgainUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runJob/',
-                                                   array('type' => $this->type, 'timeLimit' => $this->timeLimit, 'messageLoggerClassName' => $messageLoggerClassName));
+                                                   array('type' => $this->type, 'timeLimit' => $this->timeLimit,
+                                                         'messageLoggerClassName' => $messageLoggerClassName));
             $jobManagerUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
             $content  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
                                         $runAgainUrl, array('class' => 'z-button'));
