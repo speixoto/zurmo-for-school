@@ -598,24 +598,33 @@
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
             {
-                $autoCompleteResults[] = array(
-                    'id'   => strval($user->primaryEmail),
-                    'name' => strval($user) . ' (' . $user->primaryEmail . ')',
-                );
+                if (isset($user->primaryEmail->emailAddress))
+                {
+                    $autoCompleteResults[] = array(
+                        'id'   => strval($user->primaryEmail),
+                        'name' => strval($user) . ' (' . $user->primaryEmail . ')',
+                    );
+                }
             }
             foreach ($usersByFullName as $user)
             {
-                $autoCompleteResults[] = array(
-                    'id'   => strval($user->primaryEmail),
-                    'name' => strval($user) . ' (' . $user->primaryEmail . ')',
-                );
+                if (isset($user->primaryEmail->emailAddress))
+                {
+                    $autoCompleteResults[] = array(
+                        'id'   => strval($user->primaryEmail),
+                        'name' => strval($user) . ' (' . $user->primaryEmail . ')',
+                    );
+                }
             }
             foreach ($contacts as $contact)
             {
-                $autoCompleteResults[] = array(
-                    'id'   => strval($contact->primaryEmail),
-                    'name' => strval($contact) . ' (' . $contact->primaryEmail . ')',
-                );
+                if (isset($contact->primaryEmail->emailAddress))
+                {
+                    $autoCompleteResults[] = array(
+                        'id'   => strval($contact->primaryEmail),
+                        'name' => strval($contact) . ' (' . $contact->primaryEmail . ')',
+                    );
+                }
             }
             $emailValidator = new CEmailValidator();
             if (count($autoCompleteResults) == 0 && $emailValidator->validateValue($term))
