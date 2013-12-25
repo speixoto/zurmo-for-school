@@ -140,7 +140,7 @@
                 'class' => 'application.core.components.ZurmoExtMinScript',
                 'groupMap' => array(
                     'css' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/' . Yii::app()->theme->name,
+                       // INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/' . Yii::app()->theme->name,
                         //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
                     'css-color' => array(
