@@ -826,6 +826,14 @@
                 $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(
                                     $attributeTableName, self::resolveForeignKey($attributeTableName), $onTableAliasName);
             }
+            else
+            {
+                $existingTableAliasName   = $this->joinTablesAdapter->getAlreadyFromJoinedTableAliasName($attributeTableName);
+                if ($existingTableAliasName != null)
+                {
+                    $tableAliasName = $existingTableAliasName;
+                }
+            }
             return $tableAliasName;
         }
 

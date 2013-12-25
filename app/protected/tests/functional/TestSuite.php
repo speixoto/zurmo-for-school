@@ -188,7 +188,7 @@
                         }
                         echo "Clear cache on remote server" . PHP_EOL;
                         self::remoteAction(self::resolveHostFromParameterAndConstant(), array('clearCache'         => '1',
-                                                                'ignoreBrowserCheck' => '1'));
+                                                                'ignoreBrowserCheck' => '1')); //Eventually remove this since in code for 2.5.9 this is removed
                     }
                     else
                     {
@@ -678,6 +678,7 @@
                     isset($params['ignoreBrowserCheck']) && $params['ignoreBrowserCheck'] == '1')
             {
                 $url = $url . "index.php/zurmo/default/login?clearCache=1&ignoreBrowserCheck=1"; // Not Coding Standard
+                //Eventually remove this since in code for 2.5.9 this is removed (ignoreBrowserCheck)
             }
             else
             {

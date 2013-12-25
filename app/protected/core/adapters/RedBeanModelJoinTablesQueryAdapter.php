@@ -96,6 +96,24 @@
         }
 
         /**
+         * Since the from tables have to be unique tables (at least we think so) we can just pass the tableName
+         * to get the alias.
+         * @param $tableName
+         * @return null
+         */
+        public function getAlreadyFromJoinedTableAliasName($tableName)
+        {
+            foreach ($this->fromTablesAndAliases as $information)
+            {
+                if ( $information['tableName'] == $tableName)
+                {
+                    return $information['tableAliasName'];
+                }
+            }
+            return null;
+        }
+
+        /**
          * Add a joining table by using a left join clause. If the table is already joined using the same
          * onTableAliasName and onTableJoinIdName, then this join will be skipped.
          * @param $tableName - table to add as a left join clause

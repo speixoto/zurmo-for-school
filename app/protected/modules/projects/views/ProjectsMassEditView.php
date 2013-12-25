@@ -34,30 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactListViewColumnAdapter extends TextListViewColumnAdapter
+    class ProjectsMassEditView extends MassEditView
     {
-        /**
-         * @return array
-         */
-        public function renderGridViewData()
+        public static function getDefaultMetadata()
         {
-            if ($this->getIsLink())
-            {
-                return array(
-                    'name' => $this->attribute,
-                    'type' => 'raw',
-                    'value' => $this->view->getRelatedLinkString(
-                               '$data->' . $this->attribute, $this->attribute, 'contact'),
-                );
-            }
-            else
-            {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'strval($data->' . $this->attribute . ')',
-                    'type'  => 'raw',
-                );
-            }
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'SaveButton'),
+                            array('type' => 'CancelLink'),
+                        ),
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'name',
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'status', 'type' => 'ProjectStatusDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>
