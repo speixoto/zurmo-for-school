@@ -67,6 +67,12 @@
                 }
                 $content .= $contactsContent . '<br/>';
             }
+            if ($meeting->location != null)
+            {
+                $content .= '<br/>';
+                $content .= Zurmo::t('ZurmoModule', 'Location') . ':<br/>';
+                $content .= $meeting->location;
+            }
             if ($meeting->description != null)
             {
                 $content .= '<br/>';

@@ -54,9 +54,25 @@
          */
         const DEBUG = 3;
 
+        /**
+         * @var bool
+         */
+        public $logDateTimeStamp = true;
+
+        /**
+         * @var bool
+         */
         protected $errorMessagePresent = false;
 
+        /**
+         * @var array
+         */
         protected $messages = array();
+
+        /**
+         * @var null|object
+         */
+        protected $messageStreamer;
 
         protected $messageStreamers = array();
 
@@ -91,7 +107,7 @@
          */
         public function addInfoMessage($message)
         {
-            $this->add(array(MessageLogger::INFO, $message));
+            $this->add(array(MessageLogger::INFO, $message, static::getFormattedDateTimeStampForNow()));
         }
 
         /**
@@ -101,7 +117,7 @@
         public function addErrorMessage($message)
         {
             $this->errorMessagePresent = true;
-            $this->add(array(MessageLogger::ERROR, $message));
+            $this->add(array(MessageLogger::ERROR, $message, static::getFormattedDateTimeStampForNow()));
         }
 
         /**
@@ -110,7 +126,7 @@
          */
         public function addDebugMessage($message)
         {
-            $this->add(array(MessageLogger::DEBUG, $message));
+            $this->add(array(MessageLogger::DEBUG, $message, static::getFormattedDateTimeStampForNow()));
         }
 
         protected function add($message)
@@ -122,10 +138,18 @@
                 if ($message[0] != MessageLogger::DEBUG ||
                     ($this->shouldPrintDebugMessages() && $message[0] == MessageLogger::DEBUG))
                 {
-                    foreach ($this->messageStreamers as $messageStreamer)
-                    {
-                        $messageStreamer->add(static::getTypeLabel($message[0]) . ' - ' . $message[1]);
-                    }
+					foreach ($this->messageStreamers as $messageStreamer)
+					{
+                    	if($this->logDateTimeStamp)
+                    	{
+                        	$prefixContent = $message[2] . ' ';
+                    	}
+                    	else
+                    	{
+                        	$prefixContent = null;
+                    	}
+                    	$messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+					}
                 }
             }
         }
@@ -200,6 +224,15 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Blocking error on date because that is how Yii::log does it. Not sure why this is the case.
+         * @return bool|string
+         */
+        protected static function getFormattedDateTimeStampForNow()
+        {
+            return @date('Y/m/d H:i:s', microtime(true));
         }
     }
 ?>

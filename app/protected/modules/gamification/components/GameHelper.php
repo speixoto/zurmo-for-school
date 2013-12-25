@@ -274,7 +274,7 @@
         {
             if (GameCollection::shouldReceiveCollectionItem())
             {
-                return GameCollection::processRandomReceivingCollectionItemByUser(Yii::app()->user->userModel);
+                return GameCollection::getARandomCollectionItemForUser(Yii::app()->user->userModel);
             }
         }
 

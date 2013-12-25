@@ -53,7 +53,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $billy                      = User::getByUsername('billy');
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = BaseControlUserConfigUtil::getUserToRunAs();
@@ -87,7 +87,7 @@
             $this->assertTrue($saved);
             $this->assertTrue($emailMessage->folder->id > 0);
 
-            $this->assertEquals(0, count(EmailMessageSendError::getAll()));
+            $this->assertEquals(0, EmailMessageSendError::getCount());
             $emailMessageSendError = new EmailMessageSendError();
             $data                  = array();
             $data['message']       = 'error message';
@@ -97,7 +97,7 @@
             $emailMessage->error                   = $emailMessageSendError;
             $saved = $emailMessage->save();
             $this->assertTrue($saved);
-            $this->assertEquals(1, count(EmailMessageSendError::getAll()));
+            $this->assertEquals(1, EmailMessageSendError::getCount());
 
             //Now swap the error with a new one
             $emailMessageId = $emailMessage->id;
@@ -110,7 +110,7 @@
             $emailMessage->error                   = $emailMessageSendError;
             $saved = $emailMessage->save();
             $this->assertTrue($saved);
-            $this->assertEquals(1, count(EmailMessageSendError::getAll()));
+            $this->assertEquals(1, EmailMessageSendError::getCount());
         }
     }
 ?>

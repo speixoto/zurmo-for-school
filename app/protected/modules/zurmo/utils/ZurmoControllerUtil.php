@@ -48,18 +48,13 @@
         {
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
             {
-                $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
-                                                                                        $user);
-                $nonEveryoneGroup   = UserConfigurationFormAdapter::resolveAndGetValue($user,
-                                                                                        'defaultPermissionGroupSetting',
-                                                                                        false);
-                $type               = static::resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType(
-                                                                                                    $defaultPermission);
-                $postData           =  array('explicitReadWriteModelPermissions' =>
-                                                    compact('type', 'nonEveryoneGroup'),
-                                        );
-                $explicitReadWritePermissions   = self::resolveAndMakeExplicitReadWriteModelPermissions($postData,
-                                                                                                        $model);
+                // we use a dummy SecurableItem here because we don't care about 'owner' in permission array;
+                // using SecurableItem here even when the actual model is OwnedSecurableItem would not cause
+                // any unintended behavior.
+                // If we use $model here and $model is SecurableItem but not OwnedSecurableItem we might
+                // would have to unset($postData['owner']);
+                $postData           = static::resolveUserDefaultPermissionsForCurrentUser(new SecurableItem());
+                $explicitReadWritePermissions = self::resolveAndMakeExplicitReadWriteModelPermissions($postData, $model);
                 $updated    = ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
                                                                                         $explicitReadWritePermissions);
                 if (!$updated)
@@ -69,28 +64,34 @@
             }
         }
 
+        public static function resolveUserDefaultPermissionsForCurrentUser(RedBeanModel $model = null)
+        {
+            return static::resolveUserDefaultPermissionsByUser(Yii::app()->user->userModel, $model);
+        }
+
+        public static function resolveUserDefaultPermissionsByUser(User $user, RedBeanModel $model = null)
+        {
+            $defaultPermissionSettings  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($user);
+            $nonEveryoneGroup           = UserConfigurationFormAdapter::resolveAndGetValue($user,
+                                                                                'defaultPermissionGroupSetting', false);
+            $type                       = DerivedExplicitReadWriteModelPermissionsElement::resolveUserPermissionConfigurationToPermissionType(
+                                                                                            $defaultPermissionSettings);
+            $explicitReadWriteModelPermissions  = compact('type', 'nonEveryoneGroup');
+            $permissions                        = compact('explicitReadWriteModelPermissions');
+            if ($model === null || $model instanceof OwnedSecurableItem)
+            {
+                $owner                              = array('id' => $user->id);
+                $permissions                        = compact('owner', 'explicitReadWriteModelPermissions');
+            }
+            return $permissions;
+        }
+
         /**
          * @param SecurableItem $model
          */
         public static function updatePermissionsWithDefaultForModelByCurrentUser(SecurableItem $model)
         {
             static::updatePermissionsWithDefaultForModelByUser($model, Yii::app()->user->userModel);
-        }
-
-        protected static function resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType($defaultPermission)
-        {
-            if ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE)
-            {
-                return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
-            }
-            elseif ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
-            {
-                return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         /*

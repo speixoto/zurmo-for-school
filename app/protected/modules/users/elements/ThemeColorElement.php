@@ -39,12 +39,20 @@
      */
     class ThemeColorElement extends Element
     {
+        protected $shouldDisableLocked = true;
+
+        protected $showLocked = true;
+
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
          */
         protected function renderControlEditable()
         {
+            if (!$this->shouldRenderControlEditable())
+            {
+                return null;
+            }
             $gameLevel = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $content = null;
             $content .= $this->form->radioButtonList(
@@ -59,13 +67,22 @@
             return $content;
         }
 
+        protected function shouldRenderControlEditable()
+        {
+            if (Yii::app()->themeManager->forceAllUsersTheme)
+            {
+                return false;
+            }
+            return true;
+        }
+
         protected function renderControlNonEditable()
         {
             throw new NotImplementedException();
         }
 
         /**
-         * Clear out html options for 'empty' since it is not applicable for a rado dropdown.
+         * Clear out html options for 'empty' since it is not applicable for a radio dropdown.
          * @see DropDownElement::getEditableHtmlOptions()
          */
         protected function getEditableHtmlOptions()
@@ -99,10 +116,13 @@
             $data = array();
             foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
             {
-                $label = '<span class="theme-color-1"></span><span class="theme-color-2">' .
-                         '</span><span class="theme-color-3"></span>' . $label;
+                $colorArray = Yii::app()->themeManager->themeColorNamesAndColors[$name];
+                $spans  = '<span class="theme-color-1" style="background-color:' . $colorArray[1] . '"></span>';
+                $spans .= '<span class="theme-color-2" style="background-color:' . $colorArray[2] . '"></span>';
+                $spans .= '<span class="theme-color-3" style="background-color:' . $colorArray[4] . '"></span>';
+                $label  = $spans . $label;
                 $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
-                if ($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value && $this->shouldDisableLocked)
                 {
                     $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
                     $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label; // Not Coding Standard
@@ -113,7 +133,10 @@
                 {
                     $content = $label;
                 }
-                $data[$name] = $content;
+                if (($unlockedAtLevel <= 1) || $this->showLocked)
+                {
+                    $data[$name] = $content;
+                }
             }
             return $data;
         }
@@ -124,7 +147,7 @@
             foreach (Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
             {
                 $dataHtmlOptions[$name] = array();
-                if ($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value && $this->shouldDisableLocked)
                 {
                     $dataHtmlOptions[$name]['class']    = 'locked';
                     $dataHtmlOptions[$name]['disabled'] = 'disabled';

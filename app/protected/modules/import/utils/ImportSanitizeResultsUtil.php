@@ -60,6 +60,13 @@
         private $saveModel = true;
 
         /**
+         * In case where update related model dedupe rule is applied, the matched model to be
+         * updated should be stored.
+         * @var array
+         */
+        private $matchedModel = null;
+
+        /**
          * @see $saveModel
          */
         public function setModelShouldNotBeSaved()
@@ -106,6 +113,22 @@
         public function getRelatedModelMessages()
         {
             return $this->relatedModelMessages;
+        }
+
+        public function setMessages($messages = array())
+        {
+            assert('is_array($messages)');
+            $this->messages = $messages;
+        }
+
+        public function getMatchedModel()
+        {
+            return $this->matchedModel;
+        }
+
+        public function setMatchedModel($matchedModel)
+        {
+            $this->matchedModel = $matchedModel;
         }
     }
 ?>

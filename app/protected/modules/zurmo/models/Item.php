@@ -338,5 +338,15 @@
             }
             return array();
         }
+
+        /**
+         * Gets by name
+         * @param string $name
+         * @return string
+         */
+        public static function getByName($name)
+        {
+            return self::getByNameOrEquivalent('name', $name);
+        }
     }
 ?>

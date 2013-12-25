@@ -43,7 +43,7 @@
          * @var string
          */
         protected $formModelClassName = 'MarketingOverallMetricsForm';
-
+        
         /**
          * The view's module class name.
          */
@@ -72,7 +72,7 @@
             $content .= $this->renderMetricsWrapperContent();
             return $content;
         }
-
+        
         /**
          * @return string
          */
@@ -91,7 +91,7 @@
         {
             return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
         }
-
+        
         /**
          * Override to supply a campaign
          * @param string $type
@@ -104,7 +104,7 @@
             $chartDataProvider->setCampaign($this->params['relationModel']);
             return $chartDataProvider;
         }
-
+        
         /**
          * @return string
          */
@@ -128,5 +128,70 @@
         {
             return Zurmo::t('MarketingModule', 'Emails in this Campaign');
         }
+        
+        /**
+         * Call to save the portlet configuration
+         */
+        protected function getPortletSaveConfigurationUrl()
+        {
+            $getData = GetUtil::getData();
+            $getData['portletId'] = $this->params['portletId'];
+            if (!isset($getData['uniqueLayoutId']))
+            {
+                $getData['uniqueLayoutId'] = $this->params['layoutId'];
+            }
+            $getData['portletParams'] = $this->getPortletParams();
+            return Yii::app()->createUrl('/campaigns/defaultPortlet/modalConfigSave', $getData);
+        }
+        
+        /**
+         * @return CFormModel
+         * @throws NotSupportedException
+         */
+        protected function resolveForm()
+        {
+            if ($this->formModel !== null)
+            {
+                return $this->formModel;
+            }
+            if ($this->formModelClassName == null)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                $formModelClassName = $this->formModelClassName;
+            }
+            $formModel = new $formModelClassName();
+            
+            $user = Yii::app()->user->userModel;
+            $metadata = MetadataUtil::getMetadata('CampaignOverallMetricsView', $user);
+            $campaignId = 0;
+            if (isset($this->params['relationModel']))
+            {
+                $campaignId = $this->params['relationModel']->id;
+            }
+            elseif (isset($this->params['relationModelId']))
+            {
+                $campaignId = $this->params['relationModelId'];
+            }
+            if(isset($metadata['perUser'][$campaignId]))
+            {
+                $formModel->beginDate = $metadata['perUser'][$campaignId]['beginDate'];
+                $formModel->endDate   = $metadata['perUser'][$campaignId]['endDate'];
+                $formModel->groupBy   = $metadata['perUser'][$campaignId]['groupBy'];
+            }
+            else
+            {
+                $metadata        = self::getMetadata();
+                $perUserMetadata = $metadata['perUser'];
+                $this->resolveEvaluateSubString($perUserMetadata, null);
+                $formModel->setAttributes($perUserMetadata);
+            }
+            
+            $this->formModel = $formModel;
+            return $formModel;
+        }
+        
     }
 ?>

@@ -76,7 +76,11 @@
             $campaign->fromAddress      = 'from@zurmo.com';
             $campaign->sendOnDateTime   = '0000-00-00 00:00:00';
             $campaign->marketingList    = self::$marketingList;
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue($campaign->save());
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]);
             $id                         = $campaign->id;
             unset($campaign);
             $campaign                   = Campaign::getById($id);

@@ -46,5 +46,11 @@
         {
             return Zurmo::t('Core', 'Create');
         }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return array('class' => 'portlet-create-button');
+        }
+
     }
 ?>

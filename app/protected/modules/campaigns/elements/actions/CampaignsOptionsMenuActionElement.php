@@ -60,8 +60,10 @@
             $deleteElementContent   = $deleteElement->renderMenuItem();
             $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
             $editElementContent     = $editElement->renderMenuItem();
+            $copyElement            = new CopyLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
+            $copyElementContent     = $copyElement->renderMenuItem();
             // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
-            $menuItems              = array( $editElementContent, $deleteElementContent);
+            $menuItems              = array( $editElementContent, $deleteElementContent, $copyElementContent);
             return $menuItems;
         }
     }

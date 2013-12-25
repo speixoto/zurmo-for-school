@@ -96,9 +96,21 @@
             $this->assertEquals('[]', $content);
 
             //Now save successfully.
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertTrue($value);
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertTrue($value);
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertTrue($value);
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertTrue($value);
+            $postDataForForm = $this->createModuleEditGoodValidationPostData('con new name');
+            $postDataForForm['updateLatestActivityDateTimeWhenATaskIsCompleted']        = '';
+            $postDataForForm['updateLatestActivityDateTimeWhenANoteIsCreated']          = '';
+            $postDataForForm['updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived'] = '';
+            $postDataForForm['updateLatestActivityDateTimeWhenAMeetingIsInThePast']     = '';
             $this->setGetArray(array('moduleClassName' => 'ContactsModule'));
-            $this->setPostArray(array('save' => 'Save',
-                'ContactsModuleForm' => $this->createModuleEditGoodValidationPostData('con new name')));
+            $this->setPostArray(array('save' => 'Save', 'ContactsModuleForm' => $postDataForForm));
             $this->runControllerWithRedirectExceptionAndGetContent('designer/default/moduleEdit');
 
             //Now confirm everything did in fact save correctly.
@@ -106,6 +118,14 @@
             $this->assertEquals('Con New Names', ContactsModule::getModuleLabelByTypeAndLanguage('Plural'));
             $this->assertEquals('con new name',  ContactsModule::getModuleLabelByTypeAndLanguage('SingularLowerCase'));
             $this->assertEquals('con new names', ContactsModule::getModuleLabelByTypeAndLanguage('PluralLowerCase'));
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertFalse($value);
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertFalse($value);
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertFalse($value);
+            $value = ContactsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertFalse($value);
 
             //Load LayoutEdit for each applicable module and applicable layout
             $this->resetPostArray();

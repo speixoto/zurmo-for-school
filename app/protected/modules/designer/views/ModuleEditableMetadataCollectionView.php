@@ -73,7 +73,7 @@
                                        array('viewClassName'   => $item['viewClassName'],
                                              'moduleClassName' => $this->moduleClassName,
                                        )
-                                       ));
+                                       ), array('class' => 'white-button'));
                 $content .= '<li>';
                 $content .= '<h4>'. $item['titleLabel'] . '</h4>';
                 $content .= $link;

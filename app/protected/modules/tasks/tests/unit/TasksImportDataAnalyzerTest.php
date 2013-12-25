@@ -42,9 +42,9 @@
             $super = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $super;
 
-            $accountTableName     = Account::getTableName('Account');
-            $contactTableName     = Contact::getTableName('Contact');
-            $opportunityTableName = Opportunity::getTableName('Opportunity');
+            $accountTableName     = Account::getTableName();
+            $contactTableName     = Contact::getTableName();
+            $opportunityTableName = Opportunity::getTableName();
             ExternalSystemIdUtil::addExternalIdColumnIfMissing($accountTableName);
             ExternalSystemIdUtil::addExternalIdColumnIfMissing($contactTableName);
             ExternalSystemIdUtil::addExternalIdColumnIfMissing($opportunityTableName);

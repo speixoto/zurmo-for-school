@@ -50,7 +50,7 @@
                                            $moduleClassName::getGlobalSearchFormClassName(),
                                            $moduleClassName::getPrimaryModelName());
             $attributeCollection     = $modelAttributesAdapter->getAttributes();
-            $this->assertEquals(33, count($attributeCollection));
+            $this->assertEquals(34, count($attributeCollection));
             $adapter                 = new ModelAttributeCollectionToGlobalSearchAttributesAdapter(
                                                 $attributeCollection);
             $this->assertEquals(12, count($adapter->getValuesAndLabelsData()));

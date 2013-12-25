@@ -48,6 +48,11 @@
             }
         }
 
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return array('class' => 'cancel-button');
+        }
+
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Cancel');

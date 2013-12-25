@@ -63,7 +63,7 @@
         {
             assert('$id != null && is_string($id)');
             assert('is_string($modelClassName)');
-            $tableName = $modelClassName::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             $beans = ZurmoRedBean::find($tableName, ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME . " = '$id'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
@@ -94,7 +94,7 @@
                 $sqlReadyString = '\'' . $value . '\'';
             }
             $modelClassName = $this->attributeModelClassName;
-            $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
+            $sql = 'select id from ' . $modelClassName::getTableName() .
                    ' where id = ' . $sqlReadyString . ' limit 1';
             $ids =  ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');
@@ -141,7 +141,7 @@
             }
             $modelClassName = $this->attributeModelClassName;
             $columnName     = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
+            $sql = 'select id from ' . $modelClassName::getTableName() .
                 ' where ' . $columnName . ' = \'' . $value . '\' limit 1';
             $ids =  ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');

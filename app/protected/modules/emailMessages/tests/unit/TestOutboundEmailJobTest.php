@@ -49,7 +49,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $job = new TestOutboundEmailJob();
             $this->assertTrue($job->run());
             $emailMessages = EmailMessage::getAll();

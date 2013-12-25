@@ -133,6 +133,13 @@
                         'route'            => '/zurmo/plugins/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'User Interface')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage User Interface Configuration')",
+                        'route'            => '/zurmo/default/userInterfaceConfigurationEdit',
+                        'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
+                    ),
                 ),
                 'headerMenuItems' => array(
                     array(

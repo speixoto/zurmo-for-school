@@ -40,6 +40,12 @@
     class CampaignQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
         /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
+
+        /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
@@ -61,30 +67,54 @@
         protected function processRun()
         {
             $batchSize = $this->resolveBatchSize();
+            if($batchSize != null)
+            {
+                $resolvedBatchSize = $batchSize + 1;
+            }
+            else
+            {
+                $resolvedBatchSize = null;
+            }
             $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendOnDateTime(
                                                                                         0,
                                                                                         Campaign::STATUS_PROCESSING,
                                                                                         time(),
-                                                                                        $batchSize);
-            $startingMemoryUsage = memory_get_usage();
-            $modelsProcessedCount = 0;
+                                                                                        $resolvedBatchSize);
+            $startingMemoryUsage    = memory_get_usage();
+            $modelsProcessedCount   = 0;
+            $signalMarkCompletedJob = true;
             foreach ($campaignItemsToProcess as $campaignItem)
             {
-                try
+                if($modelsProcessedCount < $batchSize || $batchSize == null)
                 {
-                    $this->processCampaignItemInQueue($campaignItem);
+                    try
+                    {
+                        $this->processCampaignItemInQueue($campaignItem);
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        //todo: handle if delete returns false.
+                        $campaignItem->delete();
+                    }
+                    catch (NotSupportedException $e)
+                    {
+                        $this->errorMessage = $e->getMessage();
+                        //todo: returning false if using job queueing will cause job to not run again. maybe do something different?
+                        return false;
+                    }
+                    $this->runGarbageCollection($campaignItem);
+                    $modelsProcessedCount++;
                 }
-                catch (NotFoundException $e)
+                else
                 {
-                    return $campaignItem->delete();
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+                    $signalMarkCompletedJob = false;
+                    break;
                 }
-                catch (NotSupportedException $e)
-                {
-                    $this->errorMessage = $e->getMessage();
-                    return false;
-                }
-                $this->runGarbageCollection($campaignItem);
-                $modelsProcessedCount++;
+            }
+            if($signalMarkCompletedJob)
+            {
+                Yii::app()->jobQueue->add('CampaignMarkCompleted', 5);
             }
             $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;

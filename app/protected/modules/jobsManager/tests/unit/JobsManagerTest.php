@@ -64,7 +64,7 @@
             $this->assertEquals(1, count($jobInProcess));
             $this->assertEquals($id, $jobInProcess->id);
             $jobInProcess->delete();
-            $this->assertEquals(0, count(JobInProcess::getAll()));
+            $this->assertEquals(0, JobInProcess::getCount());
         }
 
         public function testJobLog()
@@ -83,7 +83,7 @@
             $id = $jobLog->id;
             $jobLog = JobLog::getById($id);
             $jobLog->delete();
-            $this->assertEquals(0, count(JobInProcess::getAll()));
+            $this->assertEquals(0, JobInProcess::getCount());
         }
     }
 ?>

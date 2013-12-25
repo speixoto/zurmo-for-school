@@ -55,7 +55,7 @@
         {
             $super                      = User::getByUsername('super');
             $billy                      = User::getByUsername('billy');
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = BaseControlUserConfigUtil::getUserToRunAs();

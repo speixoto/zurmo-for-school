@@ -60,7 +60,7 @@
             $content = null;
             $content .= '<div class="add-custom-field">';
             $content .= '<h1>' . Zurmo::t('DesignerModule', 'Create Field') . '</h1>';
-            $content .= '<div class="panel-buffer"><div>' . $dropDownContent . '</div>' . $linkContent . '</div>';
+            $content .= '<div class="left-column full-width"><div>' . $dropDownContent . '</div>' . $linkContent . '</div>';
             $content .= '</div>';
             return $content;
         }

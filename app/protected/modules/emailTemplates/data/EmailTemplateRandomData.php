@@ -410,7 +410,7 @@
                                                 <table width="100%" cellpadding="10" cellspacing="0" border="0">
                                                     <tr>
                                                         <td valign="top" style="font-size:11px;">
-                                                            &copy;[[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[COMPANY^NAME]]</a>. All rights reserved. This email was sent to [[PRIMARY^EMAIL]].
+                                                            &copy;[[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved. This email was sent to [[PRIMARY^EMAIL]].
                                                         </td>
                                                     </tr>
                                                 </table>

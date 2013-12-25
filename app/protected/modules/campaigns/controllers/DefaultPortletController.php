@@ -35,6 +35,33 @@
      ********************************************************************************/
 
     class CampaignsDefaultPortletController extends ZurmoPortletController
-    {
+    {   
+        /**
+         * Called using Ajax.
+         */
+        public function actionModalConfigSave($portletId, $uniqueLayoutId, array $portletParams = array())
+        {
+            $portlet           = Portlet::getById(intval($portletId));
+            $this->resolveAddingRelationModelIdToPortletParams($portlet);
+            $configurableView  = $portlet->getView()->getConfigurationView();
+            $portlet->forget();
+            $configurableView->setMetadataFromPost($_POST[$configurableView->getPostArrayName()]);
+            $this->saveModalConfigPerUserAndRelationModelId($configurableView->getViewMetadata());
+            $this->actionModalRefresh($portletId, $uniqueLayoutId, null, $portletParams);
+        }
+        
+        protected function resolveAddingRelationModelIdToPortletParams($portlet)
+        {
+            $portlet->params['relationModelId'] = intval($_GET['portletParams']['relationModelId']);
+        }
+        
+        protected function saveModalConfigPerUserAndRelationModelId($modalConfigMetadata)
+        {
+            $user = Yii::app()->user->userModel;
+            $metadata = MetadataUtil::getMetadata('CampaignOverallMetricsView', $user);
+            $metadata['perUser'][intval($_GET['portletParams']['relationModelId'])] = $modalConfigMetadata;
+            MetadataUtil::setMetadata('CampaignOverallMetricsView', $metadata, $user);
+        }
+
     }
 ?>

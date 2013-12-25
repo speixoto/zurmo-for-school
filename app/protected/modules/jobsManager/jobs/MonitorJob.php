@@ -41,6 +41,8 @@
     {
         protected static $pageSize = 50;
 
+        protected static $stuckNotificationThreshold = 4;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -70,22 +72,44 @@
             return Zurmo::t('JobsManagerModule', 'The monitor job is stuck.');
         }
 
+        public static function getRunTimeThresholdInSeconds()
+        {
+            return 60;
+        }
+
         public function run()
         {
             $jobsInProcess = static::getNonMonitorJobsInProcessModels();
             $jobsAreStuck  = false;
             $jobTitleLabels = array();
+            $jobsInProcessToReset = array();
             foreach ($jobsInProcess as $jobInProcess)
             {
                 if (JobsManagerUtil::isJobInProcessOverThreshold($jobInProcess, $jobInProcess->type))
                 {
-                    $jobTitleLabels[] = strval($jobInProcess);
-                    $jobsAreStuck     = true;
+                    $stuckJob               = StuckJob::getByType($jobInProcess->type);
+                    $stuckJob->quantity     = $stuckJob->quantity + 1;
+                    if(!$stuckJob->save())
+                    {
+                        throw new FailedToSaveModelException();
+                    }
+                    $jobsInProcessToReset[] = $jobInProcess;
+                    //Only processes once the threshold is reach, not each time after that
+                    if($stuckJob->quantity == static::$stuckNotificationThreshold)
+                    {
+                        $jobTitleLabels[]       = strval($jobInProcess);
+                        $jobsAreStuck           = true;
+
+                    }
                 }
             }
             if ($jobsAreStuck)
             {
                 self::makeJobStuckNotification($jobTitleLabels);
+            }
+            foreach($jobsInProcessToReset as $jobInProcessToReset)
+            {
+                $jobInProcessToReset->delete();
             }
             $jobLogs = static::getNonMonitorJobLogsUnprocessedWithErrors();
             foreach ($jobLogs as $jobLog)

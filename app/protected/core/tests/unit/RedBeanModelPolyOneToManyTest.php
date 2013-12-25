@@ -138,7 +138,7 @@
          */
         public function testPolyOneToManyOwned()
         {
-            $this->assertEquals(0, count(TestPolyOneToManyPolySide::getAll()));
+            $this->assertEquals(0, TestPolyOneToManyPolySide::getCount());
 
             $polySide = new TestPolyOneToManyPolySideOwned();
             $polySide->name = 'polySideTest';
@@ -170,8 +170,8 @@
             $oneSide2->forget();
             unset($oneSide2);
 
-            $this->assertEquals(0, count(TestPolyOneToManyPolySide::getAll()));
-            $this->assertEquals(2, count(TestPolyOneToManyPolySideOwned::getAll()));
+            $this->assertEquals(0, TestPolyOneToManyPolySide::getCount());
+            $this->assertEquals(2, TestPolyOneToManyPolySideOwned::getCount());
 
             //Get oneSide and make sure it has one polySide that matches the appropriate id
             $oneSide = TestPolyOneToManyOneSide::getById($oneSideId);
@@ -184,9 +184,9 @@
             $this->assertEquals($polySide2Id, $oneSide2->ownedPolysTwo[0]->id);
 
             $this->assertTrue($oneSide->delete());
-            $this->assertEquals(1, count(TestPolyOneToManyPolySideOwned::getAll()));
+            $this->assertEquals(1, TestPolyOneToManyPolySideOwned::getCount());
             $this->assertTrue($oneSide2->delete());
-            $this->assertEquals(0, count(TestPolyOneToManyPolySideOwned::getAll()));
+            $this->assertEquals(0, TestPolyOneToManyPolySideOwned::getCount());
         }
     }
 ?>

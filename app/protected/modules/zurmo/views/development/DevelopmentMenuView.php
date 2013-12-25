@@ -45,18 +45,22 @@
         {
             $categories = array();
             $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Clear Cache'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'In the case where you have reloaded the database, some cached items ' .
-                                                                         'might still exist. This is a way to clear that cache.'),
-                                                'route'               => 'zurmo/development?clearCache=1' // Not Coding Standard
-                                            );
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'In the case where you have reloaded the database, some cached items ' .
+                                                                        'might still exist. This is a way to clear that cache.'),
+                                          'route'               => 'zurmo/development?clearCache=1' // Not Coding Standard
+            );
             $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Update Custom Data'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'If there is new metadata to load using CustomManagement, use this option.'),
-                                                'route'               => 'zurmo/development?resolveCustomData=1' // Not Coding Standard
-                                            );
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'If there is new metadata to load using CustomManagement, use this option.'),
+                                          'route'               => 'zurmo/development?resolveCustomData=1' // Not Coding Standard
+            );
             $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'System Check'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Make sure the application is properly configured.'),
-                                                'route'               => 'configuration/default/runDiagnostic' // Not Coding Standard
-                                            );
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Make sure the application is properly configured.'),
+                                          'route'               => 'configuration/default/runDiagnostic' // Not Coding Standard
+            );
+            $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Compile CSS'),
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Complile de less CSS files.'),
+                                          'route'               => 'zurmo/development/compileCss' // Not Coding Standard
+            );
             $this->setLinkText(Zurmo::t('ZurmoModule', 'Run'));
             return $categories;
         }

@@ -127,8 +127,8 @@
             }
             else
             {
-                $content .= '<col style="width:85%" />';
-                $content .= '<col style="width:15%" />';
+                $content .= '<col style="width:80%" />';
+                $content .= '<col style="width:20%" />';
             }
             $content .= '</colgroup>';
             $content .= '<tbody>';
