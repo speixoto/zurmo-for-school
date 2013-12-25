@@ -34,68 +34,20 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountContactAffiliationsModule extends SecurableModule
+    /**
+     * Used to ascertain the opposite account relation and show this information.
+     * @see AccountAccountAffiliationsRelatedListView
+     * Class AccountAccountAffiliationOppositeModelListViewColumnAdapter
+     */
+    class AccountAccountAffiliationOppositeModelListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        const RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS = 'Access AccountContactAffiliations Tab';
-
-        public function getDependencies()
+        public function renderGridViewData()
         {
             return array(
-                'zurmo',
+                'name'  => 'summary',
+                'value' => $this->view->getOppositeModelListViewString(),
+                'type'  => 'raw',
             );
-        }
-
-        public static function getTranslatedRightsLabels()
-        {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $labels                                                  = array();
-            $labels[self::RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS] = Zurmo::t('MarketingModule',
-                            'Access AccountsModuleSingularLabel to ContactsModuleSingularLabel  Affiliations Tab', $params);
-            return $labels;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'designerMenuItems' => array(
-                    'showFieldsLink' => true,
-                    'showGeneralLink' => true,
-                    'showLayoutsLink' => true,
-                    'showMenusLink' => false,
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('AccountContactAffiliationsModule', 'Account to Contact Affiliation', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('AccountContactAffiliationsModule', 'Account to Contact Affiliations', array(), null, $language);
-        }
-
-        public static function getDefaultDataMakerClassName()
-        {
-            return 'AccountContactAffiliationsDefaultDataMaker';
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'AccountContactAffiliation';
-        }
-
-        public static function modelsAreNeverGloballySearched()
-        {
-            return true;
         }
     }
 ?>

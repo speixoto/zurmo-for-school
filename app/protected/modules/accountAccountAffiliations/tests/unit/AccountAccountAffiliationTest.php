@@ -34,68 +34,39 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class AccountContactAffiliationsModule extends SecurableModule
+    class AccountAccountAffiliationTest extends ZurmoBaseTest
     {
-        const RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS = 'Access AccountContactAffiliations Tab';
-
-        public function getDependencies()
+        public static function setUpBeforeClass()
         {
-            return array(
-                'zurmo',
-            );
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createUsers();
         }
 
-        public static function getTranslatedRightsLabels()
+        public function setUp()
         {
-            $params = LabelUtil::getTranslationParamsForAllModules();
-            $labels                                                  = array();
-            $labels[self::RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS] = Zurmo::t('MarketingModule',
-                            'Access AccountsModuleSingularLabel to ContactsModuleSingularLabel  Affiliations Tab', $params);
-            return $labels;
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public static function getDefaultMetadata()
+        public function testGetSetAndDelete()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'designerMenuItems' => array(
-                    'showFieldsLink' => true,
-                    'showGeneralLink' => true,
-                    'showLayoutsLink' => true,
-                    'showMenusLink' => false,
-                ),
-            );
-            return $metadata;
-        }
+            $account = AccountTestHelper::createAccountByNameForOwner('firstAccount', Yii::app()->user->userModel);
+            $account2 = AccountTestHelper::createAccountByNameForOwner('secondAccount', Yii::app()->user->userModel);
+            $this->assertEquals(0, count(AccountAccountAffiliation::getAll()));
+            $accountAccountAffiliation = new AccountAccountAffiliation();
+            $accountAccountAffiliation->primaryAccount   = $account;
+            $accountAccountAffiliation->secondaryAccount = $account2;
+            $this->assertTrue($accountAccountAffiliation->save());
 
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_ACCOUNT_CONTACT_AFFILIATIONS;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('AccountContactAffiliationsModule', 'Account to Contact Affiliation', array(), null, $language);
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return Zurmo::t('AccountContactAffiliationsModule', 'Account to Contact Affiliations', array(), null, $language);
-        }
-
-        public static function getDefaultDataMakerClassName()
-        {
-            return 'AccountContactAffiliationsDefaultDataMaker';
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'AccountContactAffiliation';
-        }
-
-        public static function modelsAreNeverGloballySearched()
-        {
-            return true;
+            $accountAccountAffiliationId = $accountAccountAffiliation->id;
+            $accountAccountAffiliation->forget();
+            $accountAccountAffiliation   = AccountAccountAffiliation::getById($accountAccountAffiliationId);
+            $this->assertTrue($accountAccountAffiliation->primaryAccount->isSame($account));
+            $this->assertTrue($accountAccountAffiliation->secondaryAccount->isSame($account2));
+            $this->assertEquals(1, count(AccountAccountAffiliation::getAll()));
+            $accountAccountAffiliation->delete();
+            $this->assertEquals(0, count(AccountAccountAffiliation::getAll()));
         }
     }
 ?>

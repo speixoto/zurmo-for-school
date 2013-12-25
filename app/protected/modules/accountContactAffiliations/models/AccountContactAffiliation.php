@@ -155,7 +155,9 @@
                     'role' => 'AccountContactAffiliationRoles',
                 ),
                 'noAudit' => array(
-                    'primary'
+                    'primary',
+                    'account',
+                    'contact'
                 ),
             );
             return $metadata;
@@ -188,7 +190,7 @@
         {
             try
             {
-                return strval($this->account) . ' ' . strval($this->contact);
+                return strval($this->account) . ' - ' . strval($this->contact);
             }
             catch (AccessDeniedSecurityException $e)
             {

@@ -78,7 +78,10 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                 ),
-                'rules' => array(),
+                'rules' => array(
+                    array('primaryAccount', 'required'),
+                    array('secondaryAccount', 'required'),
+                ),
                 'relations' => array(
                     'primaryAccount'   => array(static::HAS_ONE, 'Account', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'primaryAccountAffiliation'),
@@ -88,6 +91,10 @@
                 'elements' => array(
                     'primaryAccount'   => 'Account',
                     'secondaryAccount' => 'Account',
+                ),
+                'noAudit' => array(
+                    'primaryAccount',
+                    'secondaryAccount'
                 ),
             );
             return $metadata;
@@ -117,7 +124,7 @@
         {
             try
             {
-                return strval($this->primaryAccount) . ' ' . strval($this->secondaryAccount);
+                return strval($this->primaryAccount) . ' - ' . strval($this->secondaryAccount);
             }
             catch (AccessDeniedSecurityException $e)
             {

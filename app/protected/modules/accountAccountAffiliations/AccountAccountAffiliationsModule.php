@@ -57,6 +57,14 @@
         public static function getDefaultMetadata()
         {
             $metadata = array();
+            $metadata['global'] = array(
+                'designerMenuItems' => array(
+                    'showFieldsLink' => true,
+                    'showGeneralLink' => true,
+                    'showLayoutsLink' => true,
+                    'showMenusLink' => false,
+                ),
+            );
             return $metadata;
         }
 
@@ -78,6 +86,31 @@
         public static function getPrimaryModelName()
         {
             return 'AccountAccountAffiliation';
+        }
+
+        public static function resolveAccountRelationLabel($type, $relationIdentifier)
+        {
+            assert('in_array($type, array("Singular", "SingularLowerCase"))');
+            assert('in_array($relationIdentifier, array("primary", "secondary"))');
+            switch ($type)
+            {
+                case 'Singular':
+                    return static::getSingularAccountRelationLabel($relationIdentifier);
+                case 'SingularLowerCase':
+                    $string  = static::getSingularAccountRelationLabel($relationIdentifier);
+                    return TextUtil::strToLowerWithDefaultEncoding($string);
+            }
+        }
+
+        protected static function getSingularAccountRelationLabel($relationIdentifier)
+        {
+            switch ($relationIdentifier)
+            {
+                case 'primary':
+                    return AccountAccountAffiliation::getAnAttributeLabel('primaryAccount');
+                case 'secondary':
+                    return AccountAccountAffiliation::getAnAttributeLabel('secondaryAccount');
+            }
         }
     }
 ?>

@@ -128,9 +128,9 @@
             $this->assertEquals (5, count($portlets[2]));
 
             //Load Details View again to make sure everything is ok after the layout change.
-            $this->setGetArray(array('id' => self::$account->id));
+            $this->setGetArray(array('id' => self::$contact->id));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');
+            $this->runControllerWithNoExceptionsAndGetContent('contacts/default/details');
             $this->setGetArray(array('id' => self::$account->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/details');

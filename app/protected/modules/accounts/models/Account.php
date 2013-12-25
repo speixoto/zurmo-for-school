@@ -185,6 +185,9 @@
         protected static function translatedAttributeLabels($language)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
+            $paramsForAffiliations = $params;
+            $paramsForAffiliations['{primaryAccount}'] = AccountAccountAffiliationsModule::resolveAccountRelationLabel('Singular', 'primary');
+            $paramsForAffiliations['{secondaryAccount}'] = AccountAccountAffiliationsModule::resolveAccountRelationLabel('Singular', 'secondary');
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'account'                => Zurmo::t('AccountsModule',      'Parent AccountsModuleSingularLabel',  $params, null, $language),
@@ -202,7 +205,11 @@
                     'officePhone'            => Zurmo::t('AccountsModule',      'Office Phone',                        array(), null, $language),
                     'officeFax'              => Zurmo::t('AccountsModule',      'Office Fax',                          array(), null, $language),
                     'opportunities'          => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel',      $params, null, $language),
+                    'primaryAccountAffiliations' =>
+                        Zurmo::t('AccountAccountAffiliationsModule', '{primaryAccount} Affiliations', $paramsForAffiliations, null, $language),
                     'primaryEmail'           => Zurmo::t('ZurmoModule',         'Primary Email',                       array(), null, $language),
+                    'secondaryAccountAffiliations' =>
+                        Zurmo::t('AccountAccountAffiliationsModule', '{secondaryAccount} Affiliations', $paramsForAffiliations, null, $language),
                     'secondaryEmail'         => Zurmo::t('ZurmoModule',         'Secondary Email',                     array(), null, $language),
                     'shippingAddress'        => Zurmo::t('AccountsModule',      'Shipping Address',                    array(), null, $language),
                     'tasks'                  => Zurmo::t('TasksModule',         'TasksModulePluralLabel',              $params, null, $language),
