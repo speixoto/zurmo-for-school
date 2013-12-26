@@ -139,6 +139,7 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadContactLatestActivityDateTimeObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountLatestActivityDateTimeObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountContactAffiliationObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
@@ -513,6 +514,12 @@
         public function handleLoadAccountLatestActivityDateTimeObserver($event)
         {
             Yii::app()->accountLatestActivityDateTimeObserver;
+        }
+
+        public function handleLoadAccountContactAffiliationObserver($event)
+        {
+            $accountContactAffiliationObserver = new AccountContactAffiliationObserver();
+            $accountContactAffiliationObserver->init();
         }
 
         public function handleLoadGamification($event)

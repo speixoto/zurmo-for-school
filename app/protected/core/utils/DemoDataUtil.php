@@ -98,13 +98,21 @@
                 {
                     $dataMaker->setLoadMagnitude($loadMagnitude);
                 }
+                $messageLogger->addInfoMessage(Zurmo::t('Core', 'Loading demo data for {module}',
+                        array(
+                            '{module}' => $module::getModuleLabelByTypeAndLanguage('Plural') .
+                                          ' - ' . $demoDataMakerClassName
+                        )
+                    )
+                );
                 $dataMaker->makeAll($demoDataHelper);
                 if (($index + 1) === count($demoDataMakerClassNames))
                 {
                     static::$loadedModules[] = $module->getName();
                     $messageLogger->addInfoMessage(Zurmo::t('Core', 'Demo data loaded for {module}',
                                                         array(
-                                                            '{module}' => $module::getModuleLabelByTypeAndLanguage('Plural')
+                                                            '{module}' => $module::getModuleLabelByTypeAndLanguage('Plural') .
+                                                                          ' - ' . $demoDataMakerClassName
                                                             )
                                                         )
                                                );

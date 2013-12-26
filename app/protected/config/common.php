@@ -377,6 +377,8 @@
             'application.extensions.phaActiveColumn.*',
         ),
         'modules' => array(
+            'accountAccountAffiliations',
+            'accountContactAffiliations',
             'accounts',
             'activities',
             'api',

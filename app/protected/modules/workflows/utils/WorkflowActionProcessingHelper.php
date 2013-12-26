@@ -470,7 +470,8 @@
                 {
                     if ($model->isRelation($attributeName))
                     {
-                        if ($model::relationLinksToPrecedingRelation($attributeName, $precedingModel, $precedingRelation))
+                        if (RedBeanModel::relationLinksToPrecedingRelation(get_class($model), $attributeName,
+                                                                           get_class($precedingModel), $precedingRelation))
                         {
                             $relationToUse = $attributeName;
                             break;

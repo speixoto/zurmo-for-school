@@ -106,6 +106,10 @@
                     {
                         continue;
                     }
+                    if(!$this->listView->canRenderRowMenuColumnByElementAndData($element, $data))
+                    {
+                        continue;
+                    }
                     if ($element->isFormRequiredToUse())
                     {
                         throw new NotSupportedException();
