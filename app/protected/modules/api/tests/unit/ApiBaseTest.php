@@ -66,7 +66,7 @@
         protected final function getBaseApiUrl()
         {
             $moduleBaseApiUrl   = $this->getModuleBaseApiUrl();
-            $entryScript        = 'test.php/';
+            $entryScript        = '/test.php/';
             $baseApiUrl         = $this->serverUrl . $entryScript . $moduleBaseApiUrl;
             return $baseApiUrl;
         }
