@@ -169,11 +169,15 @@
                 $content .= '<td>' . $jobData['lastCompletedRunEncodedContent'] . '</td>';
                 $content .= '<td>' . ZurmoHtml::encode($jobData['statusContent']) . '</td>';
                 $content .= '<td class="button-column-right">' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
+
+                $jobClassName           = $type . "Job";
+                $messageLoggerClassName = $jobClassName::getDefaultMessageLogger();
+
                 if ($this->showRunJobLink)
                 {
                     $runJobLink = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ZurmoModule', 'Run')),
                                     Yii::app()->createUrl(
-                                        $this->moduleId . '/' . $this->controllerId . '/runJob', array('type' => $type)),
+                                        $this->moduleId . '/' . $this->controllerId . '/runJob', array('type' => $type, 'messageLoggerClassName' => $messageLoggerClassName)),
                                     array('class' => 'z-button run-button'));
                     $content .= '<td class="button-column-right">' . $runJobLink . '</td>';
                 }
