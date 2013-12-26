@@ -150,13 +150,5 @@
                                 getDataIndexedByDataAndTranslatedLabelsByLanguage($dropDownModel->data, Yii::app()->language);
             return $dataAndLabels;
         }
-
-        /**
-         * @return array
-         */
-        public static function getRealModelAttributeNames()
-        {
-            return array('title', 'firstName', 'lastName');
-        }
     }
 ?>

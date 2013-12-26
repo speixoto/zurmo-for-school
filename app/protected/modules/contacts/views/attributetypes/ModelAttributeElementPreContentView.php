@@ -40,7 +40,9 @@
 
         public $attributes;
 
-        public $itemTemplate;
+        public $primaryModel;
+
+        public $element;
 
         public function run()
         {
@@ -52,7 +54,7 @@
                 foreach($this->selectedModels as $model)
                 {
                     $nonFormattedContent = $model->$attribute;
-                    $attributeContent .= $this->decorateItem($nonFormattedContent);
+                    $attributeContent .= $this->decorateItem($model, $nonFormattedContent);
                 }
                 $attributeContent .= '</div>';
                 $content .= $attributeContent;
@@ -60,13 +62,22 @@
             echo $content;
         }
 
-        protected function decorateItem($content)
+        protected function decorateItem($model, $content)
         {
             //Apply the template here. This should be a link here with class as attribute-someclassname
             //register the script here to populate the model here on click of it.
             if($content != null)
             {
-                return ZurmoHtml::tag('span', array('style' => 'border: 2px dotted #66367b;margin-left:4px;'), $content);
+                if($model->id == $this->primaryModel->id)
+                {
+                    $style = 'border: 2px dotted #FF0000;margin-left:4px;';
+                }
+                else
+                {
+                    $style = 'border: 2px dotted #66367b;margin-left:4px;';
+                }
+                //TODO:@Mayank need a input id of the target field
+                return ZurmoHtml::tag('span', array('style' => $style), $content);
             }
             return null;
         }

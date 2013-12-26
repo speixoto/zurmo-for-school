@@ -78,20 +78,24 @@
                                                                 'ModelAttributeElementPreContentView',
                                                                 array(
                                                                     'selectedModels' => $this->selectedContacts,
-                                                                    'attributes'     => array($element->getAttribute())
+                                                                    'attributes'     => array($element->getAttribute()),
+                                                                    'primaryModel'   => $this->model,
+                                                                    'element'        => $element
                                                                 ),
                                                             true);
             }
             else
             {
                 $elementClassName = get_class($element);
-                if(method_exists($elementClassName, 'getRealModelAttributeNames'))
+                if(method_exists($elementClassName, 'getModelAttributeNames'))
                 {
                     $preContent = Yii::app()->getController()->widget(
                                                                     'ModelAttributeElementPreContentView',
                                                                     array(
                                                                         'selectedModels' => $this->selectedContacts,
-                                                                        'attributes'     => $elementClassName::getRealModelAttributeNames()
+                                                                        'attributes'     => $elementClassName::getModelAttributeNames(),
+                                                                        'primaryModel'   => $this->model,
+                                                                        'element'        => $element
                                                                     ),
                                                                 true);
                 }
@@ -110,6 +114,12 @@
                                                                $this->model,
                                                                $this->selectedContacts);
             return $summaryView->render();
+        }
+
+        public function getTitle()
+        {
+            $translationParams = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('ContactsModule', 'Merged ContactsModulePluralLabel', $translationParams);
         }
     }
 ?>

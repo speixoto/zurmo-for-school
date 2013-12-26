@@ -453,18 +453,35 @@
                 foreach($selectedIds as $id)
                 {
                     $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
-                    $contactsList[] = $contact;
+                    $contactsList[$id] = $contact;
                 }
             }
             $model = new ContactsListDuplicateMergedModelForm('listViewMerge');
             $model->selectedContacts = $contactsList;
+            if(isset($getData['primaryModelId']))
+            {
+                $model->primaryContact = $contactsList[$getData['primaryModelId']];
+            }
+            else
+            {
+                $contacts = array_values($contactsList);
+                if(!empty($contacts))
+                {
+                    $model->primaryContact = $contacts[0];
+                }
+            }
             if($model->validate())
             {
                 $titleBarAndEditView = $this->makeListMergeView(
-                                            $this->attemptToSaveModelFromPost($contactsList[0], null), 'ContactsMerged', $contactsList);
+                                            $this->attemptToSaveModelFromPost($model->primaryContact, null),
+                                            'ContactsMerged', array_values($contactsList));
                 $view = new ContactsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+                                                    makeStandardViewForCurrentUser($this, $titleBarAndEditView));
                 echo $view->render();
+            }
+            else
+            {
+                $this->redirect(Yii::app()->createUrl('/contacts/default/list'));
             }
         }
     }

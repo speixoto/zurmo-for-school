@@ -43,13 +43,13 @@
 
         public $selectedContacts = array();
 
-        public $defaultContact;
+        public $primaryContact;
 
         public function rules()
         {
             return array(
                 array('selectedContacts', 'validateContacts'),
-                //array('defaultContact', 'required'),
+                //array('primaryContact', 'required'),
             );
         }
 

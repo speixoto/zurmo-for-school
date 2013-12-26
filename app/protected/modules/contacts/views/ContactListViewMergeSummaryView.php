@@ -82,9 +82,15 @@
                                                         'id'   => 'businessCardView-' . $contact->id,
                                                         'style' => 'display:none'),
                                                 $content);
+                $checked      = !strcmp($contact->id, $this->model->id);
+                $radioElement = ZurmoHtml::radioButton('primaryModelId', $checked,
+                                                        array('id'     => 'primaryModelId-' . $contact->id,
+                                                              'class'  => 'mergeContactsPrimaryModel',
+                                                              'value'  => $contact->id
+                                                             )) . strval($contact);
                 $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedContact',
                                                                  'id' => 'selectedContact-' . $contact->id),
-                                                                strval($contact)) . $content;
+                                                                $radioElement) . $content;
                 $preparedContent .= $contactNameElement;
             }
             $preparedContent .= '</ul>';
@@ -100,6 +106,7 @@
 
         protected function registerScripts()
         {
+            $url = Yii::app()->request->getUrl();
             $script = "$('.selectedContact').mouseover(
                         function()
                         {
@@ -128,6 +135,13 @@
                                 $('.spidergraph').show();
                                 $('.graphDisplay').html('Hide');
                             }
+                        });
+                        $('.mergeContactsPrimaryModel').change(
+                        function()
+                        {
+                            var id = $(this).attr('id');
+                            var idArray = id.split('-');
+                            window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
                         });
                       ";
             Yii::app()->clientScript->registerScript('selectedContactMouseOverEvents', $script);
