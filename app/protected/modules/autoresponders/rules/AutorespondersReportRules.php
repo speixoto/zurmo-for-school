@@ -37,7 +37,7 @@
     /**
      * Report rules to be used with the MarketingList Model.
      */
-    class AutorespondersReportRules extends SecuredReportRules
+    class AutorespondersReportRules extends ReportRules
     {
         /**
          * @return array

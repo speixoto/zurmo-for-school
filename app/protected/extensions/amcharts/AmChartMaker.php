@@ -337,6 +337,7 @@
                 $this->addChartProperties('marginRight',          "200");
                 $this->addChartProperties('marginLeft',           "15");
                 $this->addChartProperties('labelPosition',        "'right'");
+                $this->addChartProperties('labelText',            "'[[title]]: " . $this->yAxisUnitContent . "[[value]]'");
                 $this->addChartProperties('numberFormatter',
                                           "{precision: 0,
                                             decimalSeparator:'" . Yii::app()->locale->getNumberSymbol('decimal') . "',
@@ -349,6 +350,7 @@
                 $this->addChartProperties('marginRight',          "200");
                 $this->addChartProperties('marginLeft',           "15");
                 $this->addChartProperties('labelPosition',        "'right'");
+                $this->addChartProperties('labelText',            "'[[title]]: " . $this->yAxisUnitContent . "[[value]]'");
                 $this->addChartProperties('numberFormatter',
                                           "{precision: 0,
                                             decimalSeparator:'" . Yii::app()->locale->getNumberSymbol('decimal') . "',

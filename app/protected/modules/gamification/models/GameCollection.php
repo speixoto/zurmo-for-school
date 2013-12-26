@@ -251,11 +251,8 @@
          */
         public static function processRandomReceivingCollectionItemByUser(User $user)
         {
-            $availableTypes = GameCollection::getAvailableTypes();
-            $randomKey      = array_rand($availableTypes, 1);
-            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomKey], $user);
-            $itemsData      = $collection->getItemsData();
-            $randomKey      = array_rand($itemsData, 1);
+            list($collection, $randomKey, $randomTypeKey) = static::getARandomCollectionItemForUser($user);
+            $itemsData             = $collection->getItemsData();
             $itemsData[$randomKey] = $itemsData[$randomKey] + 1;
             $collection->setItemsData($itemsData);
             $saved = $collection->save();
@@ -264,6 +261,21 @@
                 throw new FailedToSaveModelException();
             }
             return array($collection, $randomKey);
+        }
+
+        /**
+         * Get a random collection item that can be collected by user
+         * @param User $user
+         * @return array
+         */
+        public static function getARandomCollectionItemForUser(User $user)
+        {
+            $availableTypes = GameCollection::getAvailableTypes();
+            $randomTypeKey  = array_rand($availableTypes, 1);
+            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomTypeKey], $user);
+            $itemsData      = $collection->getItemsData();
+            $randomKey      = array_rand($itemsData, 1);
+            return array($collection, $randomKey, $randomTypeKey);
         }
 
         /**

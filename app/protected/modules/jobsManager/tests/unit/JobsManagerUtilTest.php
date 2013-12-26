@@ -50,7 +50,9 @@
             $this->assertEquals(0, JobInProcess::getCount());
             $this->assertEquals(0, JobLog::getCount());
 
-            JobsManagerUtil::runNonMonitorJob('Test', new MessageLogger());
+            $isJobInProgress = false;
+            JobsManagerUtil::runNonMonitorJob('Test', new MessageLogger(), $isJobInProgress);
+            $this->assertFalse($isJobInProgress);
             $this->assertEquals(0, JobInProcess::getCount());
             $jobLogs = JobLog::getAll();
             $this->assertEquals(1, count($jobLogs));
@@ -59,7 +61,9 @@
             $this->assertEquals(0, $jobLogs[0]->isProcessed);
 
             //Now test a job that always fails
-            JobsManagerUtil::runNonMonitorJob('TestAlwaysFails', new MessageLogger());
+            $isJobInProgress = false;
+            JobsManagerUtil::runNonMonitorJob('TestAlwaysFails', new MessageLogger(), $isJobInProgress);
+            $this->assertFalse($isJobInProgress);
             $this->assertEquals(0, JobInProcess::getCount());
             $jobLogs = JobLog::getAll();
             $this->assertEquals(2, count($jobLogs));
@@ -100,13 +104,17 @@
             {
                 $jobLog->delete();
             }
-            JobsManagerUtil::runNonMonitorJob('Test', new MessageLogger());
+            $isJobInProgress = false;
+            JobsManagerUtil::runNonMonitorJob('Test', new MessageLogger(), $isJobInProgress);
+            $this->assertFalse($isJobInProgress);
             $jobLogs = JobLog::getAll();
             $this->assertEquals(1, count($jobLogs));
             $this->assertEquals(0, $jobLogs[0]->isProcessed);
             $jobLogId = $jobLogs[0]->id;
             $jobLogs[0]->forget(); //to ensure cache is cleared before running monitor job
-            JobsManagerUtil::runMonitorJob(new MessageLogger());
+            $isJobInProgress = false;
+            JobsManagerUtil::runMonitorJob(new MessageLogger(), $isJobInProgress);
+            $this->assertFalse($isJobInProgress);
             $jobLogs = JobLog::getAll();
             $this->assertEquals(2, count($jobLogs));
             $this->assertEquals($jobLogId, $jobLogs[0]->id);

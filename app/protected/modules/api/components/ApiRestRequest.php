@@ -81,6 +81,18 @@
          */
         public function getSessionId()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_SESSION_ID']))
+                {
+                    return $httpHeaders['ZURMO_SESSION_ID'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_SESSION_ID']))
             {
                 return $_SERVER['HTTP_ZURMO_SESSION_ID'];
@@ -96,6 +108,18 @@
          */
         public function getSessionToken()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_TOKEN']))
+                {
+                    return $httpHeaders['ZURMO_TOKEN'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_TOKEN']))
             {
                 return $_SERVER['HTTP_ZURMO_TOKEN'];
@@ -111,6 +135,18 @@
          */
         public function getUsername()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_AUTH_USERNAME']))
+                {
+                    return $httpHeaders['ZURMO_AUTH_USERNAME'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_AUTH_USERNAME']))
             {
                 return $_SERVER['HTTP_ZURMO_AUTH_USERNAME'];
@@ -126,6 +162,18 @@
          */
         public function getPassword()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_AUTH_PASSWORD']))
+                {
+                    return $httpHeaders['ZURMO_AUTH_PASSWORD'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_AUTH_PASSWORD']))
             {
                 return $_SERVER['HTTP_ZURMO_AUTH_PASSWORD'];
@@ -141,6 +189,18 @@
          */
         public function getLanguage()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_LANG']))
+                {
+                    return $httpHeaders['ZURMO_LANG'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_LANG']))
             {
                 return $_SERVER['HTTP_ZURMO_LANG'];
@@ -197,6 +257,18 @@
          */
         public function getRequestType()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_API_REQUEST_TYPE']))
+                {
+                    return $httpHeaders['ZURMO_API_REQUEST_TYPE'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']))
             {
                 if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest')

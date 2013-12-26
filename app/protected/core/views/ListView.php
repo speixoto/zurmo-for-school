@@ -436,6 +436,18 @@
             return array();
         }
 
+        /**
+         * As you are rendering row columns, you can override this method to make it dependent on values within the
+         * data which is most likely a model.
+         * @param $element
+         * @param $data
+         * @return bool
+         */
+        public static function canRenderRowMenuColumnByElementAndData($element, $data)
+        {
+            return true;
+        }
+
         protected function getCGridViewSelectableRowsCount()
         {
             if ($this->getRowsAreSelectable())

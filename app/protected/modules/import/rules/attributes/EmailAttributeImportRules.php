@@ -42,7 +42,7 @@
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
             return array('DefaultValueModelAttribute' => 'Text',
-                         'EmailModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+                         'EmailModelAttributeDedupe'  => 'ImportDedupeRulesRadioDropDown');
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()

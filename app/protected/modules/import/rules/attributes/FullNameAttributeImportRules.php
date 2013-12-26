@@ -42,7 +42,7 @@
         protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
             return array('FullNameDefaultValueModelAttribute' => 'Text',
-                         'FullNameModelAttributeDedupe' => 'ImportDedupeRulesRadioDropDown');
+                         'FullNameModelAttributeDedupe'       => 'ImportDedupeRulesRadioDropDown');
         }
 
         public function getDisplayLabel()

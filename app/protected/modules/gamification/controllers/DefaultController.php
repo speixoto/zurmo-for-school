@@ -133,5 +133,21 @@
             $gameCoin = GameCoin::resolveByPerson($user);
             echo UserGameDashboardView::renderCoinsContent($gameCoin->value, $user);
         }
+
+        public function actionClaimCollectionItem($key, $typeKey)
+        {
+            if (Yii::app()->request->isAjaxRequest)
+            {
+                $availableTypes = GameCollection::getAvailableTypes();
+                $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$typeKey], Yii::app()->user->userModel);
+                $itemsData      = $collection->getItemsData();
+                $itemsData[$key] = $itemsData[$key] + 1;
+                $collection->setItemsData($itemsData);
+                if (!$collection->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
+        }
     }
 ?>

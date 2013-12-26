@@ -117,7 +117,7 @@ EOD;
         }
         echo "\n";
         $isJobInProgress = false;
-        JobsManagerUtil::runFromJobManagerCommandOrBrowser($args[1], $timeLimit, $messageLoggerClassName, $isJobInProgress);
+        JobsManagerUtil::runFromJobManagerCommandOrBrowser($args[1], $timeLimit, $messageLoggerClassName, $isJobInProgress, false);
     }
 }
 ?>
