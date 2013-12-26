@@ -40,6 +40,19 @@
     class JobManagerFileLogger extends ZurmoFileLogger
     {
         /**
+         * Create logPath if it does not already exist
+         * @param string $value
+         */
+        public function setLogPath($value)
+        {
+            if (!file_exists($value))
+            {
+                mkdir($value, 0777);
+            }
+            parent::setLogPath($value);
+        }
+
+        /**
          * Add log at the end of current logs
          * @param $data
          */
