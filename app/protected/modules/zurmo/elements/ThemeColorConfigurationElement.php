@@ -40,9 +40,78 @@
 
         protected $showLocked = false;
 
+        protected $attribute2 = 'themeColor';
+
+        /**
+         * Override to assure model and attribute for this element
+         */
+        public function __construct($model, $attribute, $form = null, array $params = array())
+        {
+            assert('$attribute == "forceAllUsersTheme"');
+            assert('get_class($model) == "ZurmoUserInterfaceConfigurationForm"');
+            $this->model     = $model;
+            $this->attribute = $attribute;
+            $this->form      = $form;
+            $this->params    = $params;
+
+        }
+
+        protected function getAttributeForRadioButtonList()
+        {
+            return $this->attribute2;
+        }
+
+        protected function renderControlEditable()
+        {
+            $content  = $this->renderForAllCheckBox();
+            $content .= ZurmoHtml::tag('div',
+                                       array('id'    => 'theme-color-configuration',
+                                             'style' => $this->getStyleForThemeColorDiv(),
+                                       ),
+                                       parent::renderControlEditable());
+            return $content;
+        }
+
         protected function shouldRenderControlEditable()
         {
             return true;
+        }
+
+        protected function renderForAllCheckBox()
+        {
+            $id          = $this->getEditableInputId();
+            $checkBox    = $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
+            $error       = $this->form->error   ($this->model, $this->attribute, array('inputID' => $id));
+            $content     = $checkBox . $error;
+            return $content;
+        }
+
+        public function registerScript()
+        {
+            $checkBoxId = $this->getEditableInputId();
+            // Begin Not Coding Standard
+            Yii::app()->clientScript->registerScript('forceAllUsersThemeCheckBox', "
+                    $('#{$checkBoxId}').change(function(){
+                        $('#theme-color-configuration').toggle();
+                    });
+                ");
+            // End Not Coding Standard
+            parent::registerScript();
+        }
+
+        protected function getStyleForThemeColorDiv()
+        {
+            $attribute     = $this->attribute;
+            $isHidden      = !$this->model->$attribute;
+            if ($isHidden)
+            {
+                $style = 'display: none;';
+            }
+            else
+            {
+                $style = null;
+            }
+            return $style;
         }
     }
 ?>

@@ -63,16 +63,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'themeColor', 'type' => 'ThemeColorConfiguration'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'forceAllUsersTheme', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'forceAllUsersTheme', 'type' => 'ThemeColorConfiguration'),
                                             ),
                                         ),
                                     )

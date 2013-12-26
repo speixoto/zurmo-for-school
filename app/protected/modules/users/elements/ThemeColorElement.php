@@ -57,7 +57,7 @@
             $content = null;
             $content .= $this->form->radioButtonList(
                 $this->model,
-                $this->attribute,
+                $this->getAttributeForRadioButtonList(),
                 $this->resolveThemeColorNamesAndLabelsForLocking($gameLevel),
                 $this->getEditableHtmlOptions(),
                 array(),
@@ -65,6 +65,11 @@
             );
             $this->registerScript();
             return $content;
+        }
+
+        protected function getAttributeForRadioButtonList()
+        {
+            return $this->attribute;
         }
 
         protected function shouldRenderControlEditable()

@@ -263,14 +263,21 @@
                           'sweden'      => array('#545454', '#034C8C', '#024873', '#97c43d', '#f2ec5c'),
                           'pink'        => array('#545454', '#323232', '#565656', '#97c43d', '#ff4f84')
             );
+            $data = array_merge($data, $this->getCustomThemeColorNameAndColors());
+            return $data;
+        }
+
+        public function getCustomThemeColorNameAndColors()
+        {
+            $data = array();
             if ($this->useCustomTheme)
             {
                 $customThemeColorsArray = $this->getCustomThemeColorsArray();
                 $data['custom'] = array('#545454',
-                                        $customThemeColorsArray[0],
-                                        $customThemeColorsArray[1],
-                                        '#97c43d',
-                                        $customThemeColorsArray[2]);
+                    $customThemeColorsArray[0],
+                    $customThemeColorsArray[1],
+                    '#97c43d',
+                    $customThemeColorsArray[2]);
             }
             return $data;
         }

@@ -140,8 +140,7 @@
             Yii::app()->themeManager->forceAllUsersTheme     = $form->forceAllUsersTheme;
             if ($shouldCompile)
             {
-                //TODO: @sergio: We should only compile the customThemeColors
-                Yii::app()->lessCompiler->compile();
+                Yii::app()->lessCompiler->compileCustom();
             }
         }
 
