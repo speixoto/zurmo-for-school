@@ -146,7 +146,14 @@
 
         public function getGlobalThemeColor()
         {
-            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'globalThemeColor');
+            if (null != $globalThemeColor = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'globalThemeColor'))
+            {
+                return $globalThemeColor;
+            }
+            else
+            {
+                return $this->getDefaultThemeColor();;
+            }
         }
 
         public function getDefaultThemeColor()
