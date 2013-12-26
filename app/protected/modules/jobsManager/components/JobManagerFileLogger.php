@@ -34,30 +34,61 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactListViewColumnAdapter extends TextListViewColumnAdapter
+    /**
+     * Log jobManager logs queries into file.
+     */
+    class JobManagerFileLogger extends ZurmoFileLogger
     {
         /**
-         * @return array
+         * Add log at the end of current logs
+         * @param $data
          */
-        public function renderGridViewData()
+        protected function addLog($data)
         {
-            if ($this->getIsLink())
+            $logs  = $this->getLogs();
+            $logs .= $data;
+            $this->setLogs($logs);
+        }
+
+        /**
+         * Save log into file.
+         */
+        public function log()
+        {
+            if (func_num_args() > 0)
             {
-                return array(
-                    'name' => $this->attribute,
-                    'type' => 'raw',
-                    'value' => $this->view->getRelatedLinkString(
-                               '$data->' . $this->attribute, $this->attribute, 'contact'),
-                );
+                foreach (func_get_args() as $argument)
+                {
+                    if (is_array($argument))
+                    {
+                        $data = print_r($argument, true);
+                    }
+                    else
+                    {
+                        $data = $argument;
+                    }
+                    $this->addLog($data);
+                }
             }
-            else
+            $this->processLogs();
+            $this->setLogs();
+        }
+
+        /**
+         * Save sql query logs into file
+         */
+        public function processLogs()
+        {
+            $logFile = $this->getLogPath() . DIRECTORY_SEPARATOR . $this->getLogFile();
+            if (@filesize($logFile) > $this->getMaxFileSize()*1024)
             {
-                return array(
-                    'name'  => $this->attribute,
-                    'value' => 'strval($data->' . $this->attribute . ')',
-                    'type'  => 'raw',
-                );
+                $this->rotateFiles();
             }
+            $fp = @fopen($logFile, 'a');
+            @flock($fp, LOCK_EX);
+            @fwrite($fp, $this->getLogs());
+            @flock($fp, LOCK_UN);
+            @fclose($fp);
         }
     }
 ?>

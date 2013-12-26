@@ -74,16 +74,31 @@
          */
         protected $messageStreamer;
 
+        protected $messageStreamers = array();
+
         /**
          * Specify a MessageStreamer if desired.  A message streamer can allow messages to be streamed to the user
          * interface or command line as they are generated instead of waiting for the entire output to be finished.
-         * @param object $messageStreamer MessageStreamer or null
+         * @param object $messageStreamer MessageStreamer or array of MessageStreamers or null
          * @see MessageStreamer class
          */
         public function __construct($messageStreamer = null)
         {
-            assert('$messageStreamer == null || $messageStreamer instanceof MessageStreamer');
-            $this->messageStreamer = $messageStreamer;
+            assert('$messageStreamer == null || $messageStreamer instanceof MessageStreamer || $messageStreamer instanceof JobManagerFileLogRouteMessageStreamer || is_array($messageStreamer)');
+            $messageStreamers = array();
+            if ($messageStreamer instanceof MessageStreamer || $messageStreamer instanceof JobManagerFileLogRouteMessageStreamer)
+            {
+                $messageStreamers[] = $messageStreamer;
+            }
+            elseif (is_array($messageStreamer) && !empty($messageStreamer))
+            {
+                foreach ($messageStreamer as $messageStreamerItem)
+                {
+                    assert('$messageStreamerItem instanceof MessageStreamer || $messageStreamerItem instanceof JobManagerFileLogRouteMessageStreamer');
+                    $messageStreamers[] = $messageStreamerItem;
+                }
+            }
+            $this->messageStreamers = $messageStreamers;
         }
 
         /**
@@ -118,20 +133,23 @@
         {
             assert('is_array($message)');
             $this->messages[] = $message;
-            if ($this->messageStreamer != null)
+            if (!empty($this->messageStreamers))
             {
                 if ($message[0] != MessageLogger::DEBUG ||
                     ($this->shouldPrintDebugMessages() && $message[0] == MessageLogger::DEBUG))
                 {
-                    if($this->logDateTimeStamp)
-                    {
-                        $prefixContent = $message[2] . ' ';
-                    }
-                    else
-                    {
-                        $prefixContent = null;
-                    }
-                    $this->messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+					foreach ($this->messageStreamers as $messageStreamer)
+					{
+                    	if($this->logDateTimeStamp)
+                    	{
+                        	$prefixContent = $message[2] . ' ';
+                    	}
+                    	else
+                    	{
+                        	$prefixContent = null;
+                    	}
+                    	$messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+					}
                 }
             }
         }

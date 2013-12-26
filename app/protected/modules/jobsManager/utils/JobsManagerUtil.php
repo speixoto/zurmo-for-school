@@ -47,11 +47,12 @@
          * @param $timeLimit
          * @param $messageLoggerClassName
          * @param $isJobInProgress
+		 * @param bool $useMessageStreamer
          * @param string $template
          * @param string $lineBreak
          */
         public static function runFromJobManagerCommandOrBrowser($type, $timeLimit, $messageLoggerClassName,
-                                                                 & $isJobInProgress, $template = "{message}\n",
+                                                                 & $isJobInProgress, $useMessageStreamer = true, $template = "{message}\n",
                                                                  $lineBreak = "\n")
         {
             assert('is_string($type)');
@@ -63,10 +64,38 @@
             assert('is_string($template)');
             assert('is_string($lineBreak)');
             set_time_limit($timeLimit);
+
+            $jobManagerFileLogger = Yii::createComponent(
+                array(
+                    'class'       => 'application.modules.jobsManager.components.JobManagerFileLogger',
+                    'maxFileSize' => '2048',
+                    'logFile'     => $type . '.log',
+                    'logPath'     => Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'jobLogs'
+                )
+            );
+
+            $jobManagerFileMessageStreamer = new JobManagerFileLogRouteMessageStreamer("{message}\n", $jobManagerFileLogger);
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
-            echo $lineBreak;
-            $messageLogger = new $messageLoggerClassName($messageStreamer);
+            $streamers = array($messageStreamer, $jobManagerFileMessageStreamer);
+            foreach ($streamers as $streamer)
+            {
+
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
+                                        array('{seconds}' => $timeLimit)));
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Sending output to runtime/jobLogs/{type}.log',
+                                        array('{type}' => $type)));
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Starting job type: {type}', array('{type}' => $type)));
+            }
+            if ($useMessageStreamer)
+            {
+
+                $messageLogger = new $messageLoggerClassName(array($messageStreamer, $jobManagerFileMessageStreamer));
+            }
+            else
+            {
+                $messageLogger = new $messageLoggerClassName(array($jobManagerFileMessageStreamer));
+            }
             $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
                             array('{seconds}' => $timeLimit)));
             $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Starting job type: {type}',
@@ -80,8 +109,10 @@
             {
                 static::runNonMonitorJob($type, $messageLogger, $isJobInProgress);
             }
-            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Ending job type: {type}',
-                            array('{type}' => $type)));
+            foreach ($streamers as $streamer)
+            {
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Ending job type: {type}', array('{type}' => $type)));
+            }
         }
 
         /**
@@ -148,6 +179,7 @@
          * @param $type
          * @param MessageLogger $messageLogger
          * @param $isJobInProgress
+         * @param MessageLogger $messageLogger
          */
         public static function runNonMonitorJob($type, MessageLogger $messageLogger, & $isJobInProgress)
         {

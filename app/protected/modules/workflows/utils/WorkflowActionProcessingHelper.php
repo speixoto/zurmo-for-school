@@ -330,6 +330,7 @@
                 }
                 self::processActionAttributesForActionAfterSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel);
                 $model->{$relation}->add($newModel);
+                $this->resolveOneToManyPostCreateActionSaveModelCache($model, $relation, $newModel);
                 $modelToForgetCache = $newModel;
                 return true;
             }
@@ -449,6 +450,38 @@
             $marketingListId = $actionAttributes['marketingList']->value;
             $marketingList   = MarketingList::getById((int)$marketingListId);
             $marketingList->addNewMember((int)$this->triggeredModel->id, false);
+        }
+
+        /**
+         * @see https://www.pivotaltracker.com/story/show/58372836
+         * This method is called to resolve the issue of the cache having incorrect information and requiring a clearCache
+         * Now after saving, it will resolve the related model correctly.
+         * @param RedBeanModel $precedingModel
+         * @param string $precedingRelation
+         * @param RedBeanModel $model
+         */
+        protected function resolveOneToManyPostCreateActionSaveModelCache(RedBeanModel $precedingModel,
+                                                                          $precedingRelation, RedBeanModel $model)
+        {
+            if ($precedingModel->$precedingRelation instanceof RedBeanOneToManyRelatedModels)
+            {
+                $relationToUse = null;
+                foreach ($model->getAttributes() as $attributeName => $notUsed)
+                {
+                    if ($model->isRelation($attributeName))
+                    {
+                        if ($model::relationLinksToPrecedingRelation($attributeName, $precedingModel, $precedingRelation))
+                        {
+                            $relationToUse = $attributeName;
+                            break;
+                        }
+                    }
+                }
+                if ($relationToUse != null)
+                {
+                    $model->{$relationToUse} = $precedingModel;
+                }
+            }
         }
         
         protected function processUnsubscribeFromListAction()
