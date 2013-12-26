@@ -47,7 +47,7 @@
          * @param $timeLimit
          * @param $messageLoggerClassName
          * @param $isJobInProgress
-		 * @param bool $useMessageStreamer
+         * @param bool $useMessageStreamer
          * @param string $template
          * @param string $lineBreak
          */
@@ -85,7 +85,9 @@
                                         array('{seconds}' => $timeLimit)));
                 $streamer->add(Zurmo::t('JobsManagerModule', 'Sending output to runtime/jobLogs/{type}.log',
                                         array('{type}' => $type)));
-                $streamer->add(Zurmo::t('JobsManagerModule', 'Starting job type: {type}', array('{type}' => $type)));
+                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
+                                        array('{type}' => $type,
+                                              '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
             }
             if ($useMessageStreamer)
             {
@@ -111,7 +113,9 @@
             }
             foreach ($streamers as $streamer)
             {
-                $streamer->add(Zurmo::t('JobsManagerModule', 'Ending job type: {type}', array('{type}' => $type)));
+                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
+                                        array('{type}' => $type,
+                                              '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
             }
         }
 
@@ -179,7 +183,7 @@
          * @param $type
          * @param MessageLogger $messageLogger
          * @param $isJobInProgress
-         * @param MessageLogger $messageLogger
+         * @throws FailedToSaveModelException
          */
         public static function runNonMonitorJob($type, MessageLogger $messageLogger, & $isJobInProgress)
         {
@@ -252,6 +256,14 @@
                 return true;
             }
             return false;
+        }
+
+        protected static function getLocalizedDateTimeTimeZoneString()
+        {
+            $content = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            $content .= ' ' . Yii::app()->user->userModel->timeZone;
+            return $content;
         }
     }
 ?>

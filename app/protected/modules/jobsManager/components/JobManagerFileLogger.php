@@ -47,9 +47,10 @@
         {
             if (!file_exists($value))
             {
-                mkdir($value, 0777);
+                mkdir($value);
+                chmod($value, 0777);
             }
-            parent::setLogPath($value);
+            ZurmoFileLogger::setLogPath($value);
         }
 
         /**
