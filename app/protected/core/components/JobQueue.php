@@ -1,0 +1,132 @@
+<?php
+    /*********************************************************************************
+     * Zurmo is a customer relationship management program developed by
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     *
+     * Zurmo is free software; you can redistribute it and/or modify it under
+     * the terms of the GNU Affero General Public License version 3 as published by the
+     * Free Software Foundation with the addition of the following permission added
+     * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+     * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+     * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+     *
+     * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+     * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+     * details.
+     *
+     * You should have received a copy of the GNU Affero General Public License along with
+     * this program; if not, see http://www.gnu.org/licenses or write to the Free
+     * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+     * 02110-1301 USA.
+     *
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU Affero General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     ********************************************************************************/
+
+    /**
+     * Helper class for managing job queues. Override as needed.
+     */
+    class JobQueue extends CApplicationComponent
+    {
+        protected $queuedJobs = array();
+
+        /**
+         * @param string $jobType
+         * @param int $delay - seconds to delay job
+         */
+        public function add($jobType, $delay = 0)
+        {
+            assert('is_string($jobType)');
+            assert('is_int($delay)');
+            if(!isset($this->queuedJobs[$delay]) || !in_array($jobType, $this->queuedJobs[$delay]))
+            {
+                $this->queuedJobs[$delay][] = $jobType;
+            }
+        }
+
+        public function getAll()
+        {
+            return $this->queuedJobs;
+        }
+
+        public function deleteAll()
+        {
+            $this->queuedJobs = array();
+        }
+
+        /**
+         * Override if there is processing to complete. see @EndRequestBehavior
+         */
+        public function processAll()
+        {
+        }
+
+        /**
+         * Override and toggle as needed.
+         * @return bool
+         */
+        public function isEnabled()
+        {
+            return false;
+        }
+
+        public function getQueueJobLabel()
+        {
+            return Zurmo::t('JobsManagerModule', 'Queue Job');
+        }
+
+        public function getQueueJobAgainLabel()
+        {
+            return Zurmo::t('JobsManagerModule', 'Queue Job Again');
+        }
+
+        public function processByJobTypeAndDelay($jobType, $delay, MessageLogger $messageLogger)
+        {
+        }
+
+        /**
+         * For a given model, and dateTime attribute, resolve to add a job by the job type. The delay is calculated
+         * based on the value of the dateTime attribute
+         * @param RedBeanModel $model
+         * @param $attributeName
+         * @param $jobType
+         */
+        public function resolveToAddJobTypeByModelByDateTimeAttribute(RedBeanModel $model, $attributeName, $jobType)
+        {
+            assert('is_string($attributeName)');
+            assert('is_string($jobType)');
+            if ($model->getIsNewModel() || isset($model->originalAttributeValues[$attributeName]))
+            {
+                if(DateTimeUtil::isDateTimeStringNull($model->{$attributeName}))
+                {
+                    $secondsFromNow       = 0;
+                }
+                else
+                {
+                    $processDateTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->{$attributeName});
+                    $secondsFromNow       = $processDateTimeStamp - time();
+                }
+                if($secondsFromNow <= 0)
+                {
+                    $delay = 0;
+                }
+                else
+                {
+                    $delay = $secondsFromNow;
+                }
+                Yii::app()->jobQueue->add($jobType, $delay + 5);
+            }
+        }
+    }
+?>

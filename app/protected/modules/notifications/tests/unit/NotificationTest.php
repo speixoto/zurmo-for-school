@@ -113,7 +113,7 @@
             $super = User::getByUsername('super');
             $billy = User::getByUsername('billy');
             Yii::app()->user->userModel = $super;
-            $this->assertEquals(0, count(Notification::getAll()));
+            $this->assertEquals(0, Notification::getCount());
 
             $notification         = new Notification();
             $notification->type   = 'Simple';
@@ -125,7 +125,7 @@
             $this->assertTrue($notification->save());
 
             //There are 2 notifications
-            $this->assertEquals(2, count(Notification::getAll()));
+            $this->assertEquals(2, Notification::getCount());
             //And 0 notifications unread for billy
             $this->assertEquals(0, Notification::getCountByTypeAndUser('Simple', $billy));
 
@@ -218,9 +218,9 @@
              * to return 0.
             //When removing a notificationMessage with notifications, the notifications should be
             //removed too.
-            $this->assertEquals(8, count(Notification::getAll()));
+            $this->assertEquals(8, Notification::getCount());
             $message->delete();
-            $this->assertEquals(3, count(Notification::getAll()));
+            $this->assertEquals(3, Notification::getCount());
              **/
             $notifications = Notification::getByNotificationMessageId($messageId);
             $this->assertEquals(2, count($notifications));

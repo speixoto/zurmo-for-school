@@ -141,7 +141,7 @@
             assert('is_string($url) || $url == null');
             assert('is_string($id)');
             return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure')),
-                                $url, array('id' => $id, 'class' => 'z-button'));
+                                $url, array('id' => $id, 'class' => 'white-button'));
         }
     }
 ?>

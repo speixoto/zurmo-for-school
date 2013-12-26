@@ -230,6 +230,9 @@ var juiPortlets = {
                         notSortable += '#' + this.id + ',';
                     }
                 });
+                if(notSortable != null){
+                    notSortable = notSortable.substring(0, notSortable.length - 1);
+                }
                 return $('> li:not(' + notSortable + ')', juiPortlets.columnsClass);
             })();
 

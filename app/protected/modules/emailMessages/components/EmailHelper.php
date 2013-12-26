@@ -236,6 +236,7 @@
             {
                 throw new FailedToSaveModelException();
             }
+            Yii::app()->jobQueue->add('ProcessOutboundEmail');
             return true;
         }
 

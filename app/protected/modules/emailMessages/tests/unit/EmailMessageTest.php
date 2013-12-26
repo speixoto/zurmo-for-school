@@ -57,7 +57,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $billy                      = User::getByUsername('billy');
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = BaseControlUserConfigUtil::getUserToRunAs();
@@ -156,7 +156,7 @@
             $billy                      = User::getByUsername('billy');
             $jane                       = User::getByUsername('jane');
 
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $jane;
@@ -277,7 +277,7 @@
             $sally                      = User::getByUsername('sally');
             $jason                      = User::getByUsername('jason');
 
-            $this->assertEquals(3, count(EmailMessage::getAll()));
+            $this->assertEquals(3, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $jane;

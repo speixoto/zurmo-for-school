@@ -61,5 +61,14 @@
         {
             return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
         }
+
+        /**
+         * Get fields for which dedupe ruled would be executed
+         * @return array
+         */
+        public static function getDedupeAttributes()
+        {
+            return array('primaryEmail__emailAddress', 'secondaryEmail__emailAddress', 'FullName');
+        }
     }
 ?>

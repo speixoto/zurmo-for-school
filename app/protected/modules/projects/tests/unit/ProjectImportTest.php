@@ -98,7 +98,7 @@
             $this->assertEquals(1,                         count($projects[0]));
             $this->assertEquals('super',                   $projects[0]->owner->username);
             $this->assertEquals('My first project',        $projects[0]->name);
-            $this->assertEquals(0,                         $projects[0]->status);
+            $this->assertEquals(2,                         $projects[0]->status);
             //todo ask Jason for it
             //$this->assertEquals('My first project Desc',   $projects[0]->description);
             $projects[0]->delete();

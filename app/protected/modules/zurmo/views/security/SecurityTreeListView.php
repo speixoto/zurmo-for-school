@@ -129,7 +129,7 @@
                 if (isset($node['route']) && $node['route'] != null && static::shouldRenderConfigureLink())
                 {
                     $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Configure') ),
-                                            $node['route']);
+                                            $node['route'], array('class' => 'white-button'));
                 }
                 $content .= '</td>';
                 $content .= '</tr>';

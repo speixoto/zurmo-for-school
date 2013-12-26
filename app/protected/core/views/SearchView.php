@@ -472,8 +472,8 @@
             $searchElement         = new SaveButtonActionElement(null, null, null, $params);
             $content               = $searchElement->render();
             $closeButton           = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
-                                     '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
-            return $closeButton . $content;
+                                     '#', array('id' => 'cancel-advanced-search', 'class' => 'cancel-button'));
+            return $content . $closeButton;
         }
 
         protected function renderSaveInputAndSaveButtonContentForAdvancedSearch($form)

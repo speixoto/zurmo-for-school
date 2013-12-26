@@ -347,5 +347,14 @@
             }
             return $labelsData;
         }
+
+        /**
+         * Get fields for which dedupe ruled would be executed
+         * @return array
+         */
+        public static function getDedupeAttributes()
+        {
+            return array();
+        }
     }
 ?>

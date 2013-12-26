@@ -105,6 +105,9 @@
             $contactStates = ContactState::getByName('Qualified');
 
             $contact = new Contact();
+            $this->assertNull($contact->latestActivityDateTime);
+            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $contact->setLatestActivityDateTime($dateTime);
             $contact->owner         = $user;
             $contact->title->value  = 'Mr.';
             $contact->firstName     = 'Super';
@@ -136,6 +139,7 @@
             $this->assertEquals('0987654321',       $contact->mobilePhone);
             $this->assertEquals('1222222222',       $contact->officeFax);
             $this->assertEquals('Qualified',        $contact->state->name);
+            $this->assertEquals($dateTime,          $contact->latestActivityDateTime);
         }
 
         /**

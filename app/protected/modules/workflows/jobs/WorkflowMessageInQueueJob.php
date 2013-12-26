@@ -37,13 +37,8 @@
     /**
      * A job for processing workflow messages that are not sent immediately when triggered
      */
-    class WorkflowMessageInQueueJob extends BaseJob
+    class WorkflowMessageInQueueJob extends InQueueJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -74,18 +69,37 @@
             {
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
-                foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize) as $workflowMessageInQueue)
+                $processedModelsCount       = 0;
+                $batchSize                  = $this->resolveBatchSize();
+                if($batchSize != null)
                 {
-                    try
+                    $resolvedBatchSize = $batchSize + 1;
+                }
+                else
+                {
+                    $resolvedBatchSize = null;
+                }
+                foreach (WorkflowMessageInQueue::getModelsToProcess($resolvedBatchSize) as $workflowMessageInQueue)
+                {
+                    if($processedModelsCount < $batchSize || $batchSize == null)
                     {
-                        $model = $this->resolveModel($workflowMessageInQueue);
-                        $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
-                        $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                        try
+                        {
+                            $model = $this->resolveModel($workflowMessageInQueue);
+                            $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
+                            $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                        }
+                        catch (NotFoundException $e)
+                        {
+                        }
+                        $workflowMessageInQueue->delete();
+                        $processedModelsCount++;
                     }
-                    catch (NotFoundException $e)
+                    else
                     {
+                        Yii::app()->jobQueue->add('WorkflowMessageInQueue', 5);
+                        break;
                     }
-                    $workflowMessageInQueue->delete();
                 }
                 Yii::app()->user->userModel = $originalUser;
                 return true;

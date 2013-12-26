@@ -135,7 +135,7 @@
         private function constructRelatedBeansAndModels($modelClassName, $sqlOrBean = '')
         {
             assert('is_string($sqlOrBean) || $sqlOrBean instanceof RedBean_OODBBean');
-            $tableName = RedBeanModel::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             if (is_string($sqlOrBean))
             {
                 $this->relatedBeansAndModels = array_values($beans = ZurmoRedBean::find($tableName, $sqlOrBean));
@@ -210,7 +210,8 @@
                 ZurmoRedBean::store($bean);
             }
             $this->deferredRelateBeans = array();
-            $tableName = RedBeanModel::getTableName($this->relatedModelClassName);
+            $relatedModelClassName = $this->relatedModelClassName;
+            $tableName = $relatedModelClassName::getTableName();
             foreach ($this->deferredUnrelateBeans as $bean)
             {
                 if (!$this->owns)

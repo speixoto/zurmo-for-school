@@ -52,35 +52,19 @@
 
         public static function sanitizePostForSavingMassEdit($postVariableName)
         {
-            foreach ($_POST[$postVariableName] as $attributeName => $values)
-            {
-                if (empty($_POST['MassEdit'][$attributeName]))
-                {
-                    unset($_POST[$postVariableName][$attributeName]);
-                }
-                else
-                {
-                    if (is_array($values) && isset($values['values']) && is_string($values['values']))
-                    {
-                        if ($_POST[$postVariableName][$attributeName]['values'] == '')
-                        {
-                            $_POST[$postVariableName][$attributeName]['values'] = array();
-                        }
-                        else
-                        {
-                            $_POST[$postVariableName][$attributeName]['values'] =
-                                explode(',', $_POST[$postVariableName][$attributeName]['values']); // Not Coding Standard
-                        }
-                    }
-                }
-            }
+            static::sanitizePostForMassAction($postVariableName, 'MassEdit');
         }
 
         public static function sanitizePostForMassDelete($postVariableName)
         {
+            static::sanitizePostForMassAction($postVariableName, 'MassDelete');
+        }
+
+        protected static function sanitizePostForMassAction($postVariableName, $massActionName)
+        {
             foreach ($_POST[$postVariableName] as $attributeName => $values)
             {
-                if (empty($_POST['MassDelete'][$attributeName]))
+                if (empty($_POST[$massActionName][$attributeName]))
                 {
                     unset($_POST[$postVariableName][$attributeName]);
                 }

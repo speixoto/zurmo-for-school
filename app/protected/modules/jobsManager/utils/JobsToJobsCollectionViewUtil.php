@@ -56,6 +56,8 @@
          */
         const STATUS_IN_PROCESS          = 3;
 
+        const NON_MONITOR_JOBS_CACHE_ID   = 'NonMonitorJobsModelClassNames';
+
         /**
          * @return array of data for the Monitor job.  Includes information such as the display label,
          * whether it is running or not, and the last completion time.
@@ -71,22 +73,41 @@
          */
         public static function getNonMonitorJobsData()
         {
-            $jobsData       = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
+            $jobClassNames = static::getNonMonitorJobClassNames();
+            $jobsData      = array();
+            foreach($jobClassNames as $jobClassName)
             {
-                $jobsClassNames = $module::getAllClassNamesByPathFolder('jobs');
-                foreach ($jobsClassNames as $jobClassName)
-                {
-                    $classToEvaluate     = new ReflectionClass($jobClassName);
-                    if (is_subclass_of($jobClassName, 'BaseJob') && !$classToEvaluate->isAbstract() &&
-                        $jobClassName != 'MonitorJob')
-                    {
-                        $jobsData[$jobClassName::getType()] = self::getJobDataByType($jobClassName::getType());
-                    }
-                }
+                $jobsData[$jobClassName::getType()] = self::getJobDataByType($jobClassName::getType());
             }
             return $jobsData;
+        }
+
+        public static function getNonMonitorJobClassNames()
+        {
+            try
+            {
+                $jobClassNames = GeneralCache::getEntry(self::NON_MONITOR_JOBS_CACHE_ID);
+            }
+            catch (NotFoundException $e)
+            {
+                $jobClassNames = array();
+                $modules       = Module::getModuleObjects();
+                foreach ($modules as $module)
+                {
+                    $jobsClassNames = $module::getAllClassNamesByPathFolder('jobs');
+                    foreach ($jobsClassNames as $jobClassName)
+                    {
+                        $classToEvaluate     = new ReflectionClass($jobClassName);
+                        if (is_subclass_of($jobClassName, 'BaseJob') && !$classToEvaluate->isAbstract() &&
+                            $jobClassName != 'MonitorJob')
+                        {
+                            $jobClassNames[] = $jobClassName;
+                        }
+                    }
+                }
+                GeneralCache::cacheEntry(self::NON_MONITOR_JOBS_CACHE_ID, $jobClassNames);
+            }
+            return $jobClassNames;
         }
 
         protected static function getJobDataByType($type)

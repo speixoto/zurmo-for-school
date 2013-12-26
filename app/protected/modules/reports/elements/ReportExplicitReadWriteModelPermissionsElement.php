@@ -47,7 +47,7 @@
             {
                 $selectedType = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
                                                                     Yii::app()->user->userModel);
-                return $this->resolveUserPermissionConfigurationToPermissionType($selectedType);
+                return static::resolveUserPermissionConfigurationToPermissionType($selectedType);
             }
             return $resolveSelectedType;
         }
@@ -56,14 +56,9 @@
          * @param int $selectedType
          * @return mixed
          */
-        protected function resolveUserPermissionConfigurationToPermissionType($selectedType)
+        public static function resolveUserPermissionConfigurationToPermissionType($selectedType)
         {
-            assert('is_int($selectedType)');
-            assert('$selectedType >= UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER');
-            assert('$selectedType <= UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE');
-            $userConfigPermissionTypes          = UserConfigurationForm::getAllDefaultPermissionTypes();
-            $explicitReadWritePermissionTypes   = parent::getPermissionTypes();
-            return array_search($userConfigPermissionTypes[$selectedType], $explicitReadWritePermissionTypes);
+            return DerivedExplicitReadWriteModelPermissionsElement::resolveUserPermissionConfigurationToPermissionType($selectedType);
         }
 
         protected function resolveSelectedGroup()

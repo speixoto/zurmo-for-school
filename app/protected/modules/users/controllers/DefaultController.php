@@ -280,7 +280,10 @@
          * Override to handle UserStatus processing.
          * @see ZurmoBaseController::attemptToSaveModelFromPost()
          */
-        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
+        protected function attemptToSaveModelFromPost($model,
+                                                      $redirectUrlParams = null,
+                                                      $redirect = true,
+                                                      $returnOnValidate = false )
         {
             assert('$model instanceof User || $model instanceof UserPasswordForm || $model instanceof UserAvatarForm');
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
@@ -583,7 +586,6 @@
             $user = User::getById(intval($id));
             UserAccessUtil::resolveAccessingASystemUser($user);
             $title               = Zurmo::t('ZurmoModule', 'Dashboard');
-            $breadCrumbLinks     = array(strval($user) => array('default/gameDashboard',  'id' => $id), $title);
             $badgeData           = GameBadge::getAllByPersonIndexedByType($user);
             $generalLevelData    = GameLevelUtil::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);
             $rankingData         = GamePointUtil::getUserRankingData($user);

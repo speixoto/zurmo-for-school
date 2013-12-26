@@ -49,6 +49,17 @@
         'class' => 'application.modules.zurmo.components.CommandBeginRequestBehavior'
     );
 
+    $common_config['components']['lessCompiler'] = array(
+        'class'        => 'application.extensions.lessphp.LessCompiler',
+        'formatterName'    => 'lessjs',
+        'lessFilesToCompile'    => array(
+            'ie.less',
+            'mobile.less',
+            'webforms-external.less',
+            'zurmo.less'
+        ),
+    );
+
     //Turn off gamification
     $common_config['components']['gamificationObserver']['enabled'] = false;
     //Not applicable for console applications.

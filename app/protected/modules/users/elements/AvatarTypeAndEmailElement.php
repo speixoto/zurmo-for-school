@@ -77,7 +77,9 @@
             $id          = $this->getEditableInputId($attribute);
             $htmlOptions = array(
                 'name' => $this->getEditableInputName($attribute),
-                'id'   => $id);
+                'id'   => $id,
+                'separator' => '');
+
             $label       = $form->labelEx        ($model, $attribute, array('for'   => $id));
             $radioInput  = $form->radioButtonList($model, $attribute, $this->resolveRadioOptions(), $this->getEditableHtmlOptions());
             $error       = $form->error          ($model, $attribute, array('inputID' => $id));
@@ -91,10 +93,11 @@
 
         private function resolveRadioOptions()
         {
+            $link         = $this->renderGravatarLink();
             $primaryEmail = $this->model->primaryEmail;
             $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Zurmo::t('UsersModule', 'No Profile Picture'),
-                                  User::AVATAR_TYPE_PRIMARY_EMAIL => Zurmo::t('UsersModule', 'Use Gravatar with primary email ({primaryEmail})',
-                                                                            array('{primaryEmail}' => $primaryEmail)),
+                                  User::AVATAR_TYPE_PRIMARY_EMAIL => Zurmo::t('UsersModule','Use Gravatar with primary email ({primaryEmail})'
+                                                                              . ', ' . $link, array('{primaryEmail}' => $primaryEmail)),
                                   User::AVATAR_TYPE_CUSTOM_EMAIL  => Zurmo::t('UsersModule', 'Use Gravatar with custom email'));
             return $radioOptions;
         }
@@ -120,13 +123,19 @@
                                       $label . $textField . $error . $tooltip);
             return $content;
         }
+        
+        protected function renderGravatarLink()
+        {
+            $content  = Zurmo::t('UsersModule', 'Don\'t Have A Gravatar?');
+            $content .= ZurmoHtml::link('Click Here', 'http://gravatar.com/', array('target'=>'_blank', 'class'=>'simple-link'));
+            return $content;
+        }
 
         protected static function renderTooltipContent()
         {
             $title       = Zurmo::t('UsersModule', 'Your Gravatar is an image that follows you from site to site appearing beside your ' .
                                              'name when you do things like comment or post on a blog.');
-            $content     = '<span id="user-gravatar-tooltip" class="tooltip"  title="' . $title . '">';
-            $content    .= '?</span>';
+            $content     = '<span id="user-gravatar-tooltip" class="tooltip"  title="' . $title . '">?</span>';
             $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
             $qtip->addQTip("#user-gravatar-tooltip");
             return $content;

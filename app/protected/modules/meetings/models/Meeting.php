@@ -78,6 +78,7 @@
                 'members' => array(
                     'description',
                     'endDateTime',
+                    'processedForLatestActivity',
                     'location',
                     'logged',
                     'name',
@@ -88,6 +89,7 @@
                     array('endDateTime',      'type', 'type' => 'datetime'),
                     array('endDateTime',      'RedBeanModelCompareDateTimeValidator', 'type' => 'after',
                                               'compareAttribute' => 'startDateTime'),
+                    array('processedForLatestActivity', 'boolean'),
                     array('location',         'type',    'type' => 'string'),
                     array('location',         'length',  'min'  => 1, 'max' => 64),
                     array('logged',           'boolean'),
@@ -112,7 +114,8 @@
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
-                    'description'
+                    'description',
+                    'processedForLatestActivity'
                 ),
             );
             return $metadata;
