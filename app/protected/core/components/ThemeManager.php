@@ -117,7 +117,14 @@
 
         public function getCustomThemeColorsArray()
         {
-            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'customThemeColorsArray');
+            if ( null != $customThemeColorsArray = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'customThemeColorsArray'))
+            {
+                return $customThemeColorsArray;
+            }
+            else
+            {
+                return array('#282A76', '#7CB830', '#464646');
+            }
         }
 
         public function setForceAllUsersTheme($value)
