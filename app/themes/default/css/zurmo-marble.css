@@ -8354,9 +8354,7 @@ table.configuration-list tr:last-child td {
   border-bottom: 1px solid #DFDFDF;
 }
 #ImportWizardMappingView .column-import-data {
-  padding-right: 5px;
   margin-top: 5px;
-  word-break: break-all;
 }
 #ImportWizardMappingView tr td:last-child {
   padding-right: 0;
@@ -8802,7 +8800,6 @@ table.configuration-list tr:last-child td {
   position: absolute;
   left: 0;
   top: 100%;
-  display: none;
 }
 .user-menu-preferences td {
   padding-left: 0 !important;
@@ -17968,7 +17965,7 @@ body .overlay-view .after-form-details-content a:hover {
 }
 #game-notification {
   position: absolute;
-  min-width: 250px;
+  min-width: 280px;
   padding: 15px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
