@@ -44,15 +44,19 @@
         /**
          * Get the search attributes array by resolving the GET array
          * for the information.  Remove any attributes from the array that are not searchable form attributes
+         * @param string $getArrayName
+         * @param string $formModelClassName
+         * @param Array $sourceData
+         * @return array
          */
-        public static function resolveSearchAttributesFromGetArray($getArrayName, $formModelClassName)
+        public static function resolveSearchAttributesFromArray($getArrayName, $formModelClassName, $sourceData)
         {
             assert('is_string($getArrayName)');
             assert('is_string($formModelClassName) && is_subclass_of($formModelClassName, "SearchForm")');
             $searchAttributes = array();
-            if (!empty($_GET[$getArrayName]))
+            if (!empty($sourceData[$getArrayName]))
             {
-                $searchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName]);
+                $searchAttributes = SearchUtil::getSearchAttributesFromSearchArray($sourceData[$getArrayName]);
                 foreach ($formModelClassName::getNonSearchableAttributes() as $attribute)
                 {
                     if (isset($searchAttributes[$attribute]) ||
@@ -71,26 +75,27 @@
          * means there is no scoping.
          * @param object $searchModel
          * @param string $getArrayName
+         * @param $sourceData
          */
-        public static function resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, $getArrayName)
+        public static function resolveAnyMixedAttributesScopeForSearchModelFromArray($searchModel, $getArrayName, $sourceData)
         {
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('is_string($getArrayName)');
-            if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
+            if (!empty($sourceData[$getArrayName]) && isset($sourceData[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
             {
                 assert('$searchModel instanceof SearchForm');
-                if (!is_array($_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
+                if (!is_array($sourceData[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $sanitizedAnyMixedAttributesScope = null;
                 }
-                elseif (count($_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]) == 1 &&
-                       $_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME][0] == 'All')
+                elseif (count($sourceData[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]) == 1 &&
+                        $sourceData[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME][0] == 'All')
                 {
                     $sanitizedAnyMixedAttributesScope = null;
                 }
                 else
                 {
-                    $sanitizedAnyMixedAttributesScope = $_GET[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME];
+                    $sanitizedAnyMixedAttributesScope = $sourceData[$getArrayName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME];
                 }
                 $searchModel->setAnyMixedAttributesScope($sanitizedAnyMixedAttributesScope);
             }
@@ -101,23 +106,24 @@
          * $searchModel.
          * @param object $searchModel
          * @param string $getArrayName
+         * @param $sourceData
          */
-        public static function resolveSelectedListAttributesForSearchModelFromGetArray($searchModel, $getArrayName)
+        public static function resolveSelectedListAttributesForSearchModelFromArray($searchModel, $getArrayName, $sourceData)
         {
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('is_string($getArrayName)');
             if ($searchModel->getListAttributesSelector() != null &&
-                !empty($_GET[$getArrayName]) &&
-                isset($_GET[$getArrayName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
+                !empty($sourceData[$getArrayName]) &&
+                isset($sourceData[$getArrayName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
             {
                 assert('$searchModel instanceof SearchForm');
-                if (!is_array($_GET[$getArrayName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
+                if (!is_array($sourceData[$getArrayName][SearchForm::SELECTED_LIST_ATTRIBUTES]))
                 {
                     $sanitizedListAttributes = null;
                 }
                 else
                 {
-                    $sanitizedListAttributes = $_GET[$getArrayName][SearchForm::SELECTED_LIST_ATTRIBUTES];
+                    $sanitizedListAttributes = $sourceData[$getArrayName][SearchForm::SELECTED_LIST_ATTRIBUTES];
                 }
                 $searchModel->getListAttributesSelector()->setSelected($sanitizedListAttributes);
             }
@@ -126,8 +132,8 @@
         public static function resolveSortFromStickyData($getArrayPrefixName, $uniqueLayoutId)
         {
             $key            = $uniqueLayoutId;
-            $sortAttribute  = static::resolveSortAttributeFromGetArray($getArrayPrefixName);
-            $sortDescending = static::resolveSortDescendingFromGetArray($getArrayPrefixName);
+            $sortAttribute  = static::resolveSortAttributeFromArray($getArrayPrefixName, $_GET);
+            $sortDescending = static::resolveSortDescendingFromArray($getArrayPrefixName, $_GET);
             if (!$sortAttribute)
             {
                 $stickyData     = StickyUtil::getDataByKey($key);
@@ -149,13 +155,16 @@
         }
 
         /**
-         * Get the sort attribute array by resolving the GET array
+         * Get the sort attribute array by resolving the array
          * for the information.
+         * @param $getArrayPrefixName
+         * @param Array $sourceData
+         * @return null
          */
-        public static function resolveSortAttributeFromGetArray($getArrayPrefixName)
+        public static function resolveSortAttributeFromArray($getArrayPrefixName, $sourceData)
         {
             $sortAttribute = null;
-            if (!empty($_GET[$getArrayPrefixName . '_sort']))
+            if (!empty($sourceData[$getArrayPrefixName . '_sort']))
             {
                 $sortAttribute = SearchUtil::getSortAttributeFromSortString($_GET[$getArrayPrefixName . '_sort']);
             }
@@ -163,15 +172,18 @@
         }
 
         /**
-         * Get the sort descending array by resolving the GET array
+         * Get the sort descending array by resolving the array
          * for the information.
+         * @param $getArrayPrefixName
+         * @param Array $sourceData
+         * @return bool|null
          */
-        public static function resolveSortDescendingFromGetArray($getArrayPrefixName)
+        public static function resolveSortDescendingFromArray($getArrayPrefixName, $sourceData)
         {
             $sortDescending = false;
-            if (!empty($_GET[$getArrayPrefixName . '_sort']))
+            if (!empty($sourceData[$getArrayPrefixName . '_sort']))
             {
-                $sortDescending = SearchUtil::isSortDescending($_GET[$getArrayPrefixName . '_sort']);
+                $sortDescending = SearchUtil::isSortDescending($sourceData[$getArrayPrefixName . '_sort']);
             }
             else
             {
@@ -180,9 +192,14 @@
             return $sortDescending;
         }
 
-        public static function resolveFilterByStarredFromGetArray($searchModel, $getArrayName)
+        /**
+         * @param $searchModel
+         * @param Array $getArrayName
+         * @param $sourceData
+         */
+        public static function resolveFilterByStarredFromArray($searchModel, $getArrayName, $sourceData)
         {
-            $filterByStarred = static::getFilterByStarredFromGetArray($getArrayName);
+            $filterByStarred = static::getFilterByStarredFromArray($getArrayName, $sourceData);
             if (isset($filterByStarred))
             {
                 $searchModel->filterByStarred = $filterByStarred;
@@ -363,14 +380,16 @@
 
         /**
          * @param string $getArrayName
+         * @param Array $sourceData
+         * @return mixed
          */
-        public static function getDynamicSearchAttributesFromGetArray($getArrayName)
+        public static function getDynamicSearchAttributesFromArray($getArrayName, $sourceData)
         {
             assert('is_string($getArrayName)');
-            if (!empty($_GET[$getArrayName]) &&
-                isset($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]))
+            if (!empty($sourceData[$getArrayName]) &&
+                isset($sourceData[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]))
             {
-                $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]);
+                $dynamicSearchAttributes = SearchUtil::getSearchAttributesFromSearchArray($sourceData[$getArrayName][DynamicSearchForm::DYNAMIC_NAME]);
                 if (isset($dynamicSearchAttributes[DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
                 {
                     unset($dynamicSearchAttributes[DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]);
@@ -460,23 +479,30 @@
 
         /**
          * @param string $getArrayName
+         * @param Array $sourceData
+         * @return
          */
-        public static function getDynamicSearchStructureFromGetArray($getArrayName)
+        public static function getDynamicSearchStructureFromArray($getArrayName, $sourceData)
         {
             assert('is_string($getArrayName)');
-            if (!empty($_GET[$getArrayName]) &&
-                isset($_GET[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
+            if (!empty($sourceData[$getArrayName]) &&
+                isset($sourceData[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME]))
             {
-                return $_GET[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME];
+                return $sourceData[$getArrayName][DynamicSearchForm::DYNAMIC_STRUCTURE_NAME];
             }
         }
 
-        public static function getFilterByStarredFromGetArray($getArrayName)
+        /**
+         * @param string $getArrayName
+         * @param Array $sourceData
+         * @return mixed
+         */
+        public static function getFilterByStarredFromArray($getArrayName, $sourceData)
         {
             assert('is_string($getArrayName)');
-            if (!empty($_GET[$getArrayName]) && isset($_GET[$getArrayName]['filterByStarred']))
+            if (!empty($sourceData[$getArrayName]) && isset($sourceData[$getArrayName]['filterByStarred']))
             {
-                $filterByStarred = $_GET[$getArrayName]['filterByStarred'];
+                $filterByStarred = $sourceData[$getArrayName]['filterByStarred'];
                 return $filterByStarred;
             }
         }

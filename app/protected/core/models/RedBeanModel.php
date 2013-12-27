@@ -1347,9 +1347,11 @@
 
                             case self::HAS_MANY:
                                 $this->relationNameToRelatedModel[$attributeName] =
-                                    new RedBeanOneToManyRelatedModels($bean,
+                                    new RedBeanOneToManyRelatedModels($this,
+                                                                      $bean,
                                                                       $relatedModelClassName,
                                                                       $attributeModelClassName,
+                                                                      $attributeName,
                                                                       $owns,
                                                                       $linkType,
                                                                       $relationLinkName);
@@ -2045,6 +2047,16 @@
         {
             $this->raiseEvent('onAfterSave', $event);
         }
+
+        /**
+         * This event is raised on a RedBeanOneToManyRelatedModels change
+         * @param $event
+         */
+        public function onRedBeanOneToManyRelatedModelsChange($event)
+        {
+            $this->raiseEvent('onRedBeanOneToManyRelatedModelsChange', $event);
+        }
+
 
         /**
          * This event is raised before the record is deleted.
@@ -3137,6 +3149,67 @@
             {
                 $this->validators[] = CValidator::createValidator($validator, $this, $attribute, $params);
             }
+        }
+
+        public static function getHasManyOpposingRelationName(RedBeanModel $model, $precedingModelClassName, $precedingRelation)
+        {
+            assert('is_string($precedingModelClassName)');
+            assert('is_string($precedingRelation)');
+            foreach($model->getAttributes() as $attributeName => $notUsed)
+            {
+                if($model->isRelation($attributeName) &&
+                    ($model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
+                        $model->getRelationType($attributeName) ==  RedBeanModel::HAS_MANY_BELONGS_TO) &&
+                    static::relationLinksToPrecedingRelation(get_class($model), $attributeName,
+                        $precedingModelClassName, $precedingRelation))
+                {
+                    return $attributeName;
+                }
+            }
+        }
+
+        /**
+         * @param string $modelClassName
+         * @param string $relation
+         * @param null|string $precedingModelClassName
+         * @param null|string $precedingRelation
+         * @return bool
+         */
+        public static function relationLinksToPrecedingRelation($modelClassName, $relation,
+                                                                $precedingModelClassName = null,
+                                                                $precedingRelation = null)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($relation)');
+            assert('is_string($precedingModelClassName) || $precedingModelClassName == null');
+            assert('is_string($precedingRelation) || $precedingRelation == null');
+            if ($precedingModelClassName == null || $precedingRelation == null)
+            {
+                return false;
+            }
+            //Check if the relation is a derived relation in which case return false because it is handled by
+            //@see self::inferredRelationLinksToPrecedingRelation
+            if (!$precedingModelClassName::isAnAttribute($precedingRelation))
+            {
+                return false;
+            }
+            if ($precedingModelClassName != $modelClassName::getRelationModelClassName($relation))
+            {
+                return false;
+            }
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
+            {
+                return true;
+            }
+            //Check for LINK_TYPE_SPECIFIC
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $precedingModelClassName::getRelationLinkName($precedingRelation) == $modelClassName::getRelationLinkName($relation))
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

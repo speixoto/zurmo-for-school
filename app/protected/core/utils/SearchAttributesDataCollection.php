@@ -40,6 +40,8 @@
      */
     class SearchAttributesDataCollection
     {
+        protected $sourceData;
+
         protected $model;
 
         public function __construct($model)
@@ -53,9 +55,25 @@
             return $this->model;
         }
 
+        public function setSourceData($sourceData)
+        {
+            assert('is_array($sourceData)');
+            $this->sourceData = $sourceData;
+        }
+
+        public function getSourceData()
+        {
+            if (isset($this->sourceData))
+            {
+                return $this->sourceData;
+            }
+            return $_GET;
+        }
+
         public function getDynamicSearchAttributes()
         {
-            $dynamicSearchAttributes = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
+            $dynamicSearchAttributes = SearchUtil::
+                                        getDynamicSearchAttributesFromArray(get_class($this->model), $this->getSourceData());
             if ($dynamicSearchAttributes == null)
             {
                 return array();
@@ -65,7 +83,8 @@
 
         public function getSanitizedDynamicSearchAttributes()
         {
-            $dynamicSearchAttributes = SearchUtil::getDynamicSearchAttributesFromGetArray(get_class($this->model));
+            $dynamicSearchAttributes = SearchUtil::
+                                        getDynamicSearchAttributesFromArray(get_class($this->model), $this->getSourceData());
             if ($dynamicSearchAttributes == null)
             {
                 return array();
@@ -76,7 +95,7 @@
 
         public function getDynamicStructure()
         {
-            return SearchUtil::getDynamicSearchStructureFromGetArray(get_class($this->model));
+            return SearchUtil::getDynamicSearchStructureFromArray(get_class($this->model), $this->getSourceData());
         }
 
         public function getAnyMixedAttributesScopeFromModel()
@@ -94,7 +113,7 @@
 
         public function getFilterByStarred()
         {
-            return SearchUtil::getFilterByStarredFromGetArray(get_class($this->model));
+            return SearchUtil::getFilterByStarredFromArray(get_class($this->model), $this->getSourceData());
         }
 
         public function hasKanbanBoard()
@@ -142,28 +161,36 @@
 
         public function resolveSearchAttributesFromSourceData()
         {
-            return SearchUtil::resolveSearchAttributesFromGetArray(get_class($this->model), get_class($this->model));
+            return SearchUtil::resolveSearchAttributesFromArray(get_class($this->model),
+                                                                get_class($this->model),
+                                                                $this->getSourceData());
         }
 
         public function resolveAnyMixedAttributesScopeForSearchModelFromSourceData()
         {
-            return SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($this->model, get_class($this->model));
+            return SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromArray($this->model,
+                                                                                     get_class($this->model),
+                                                                                     $this->getSourceData());
         }
 
         public function resolveSelectedListAttributesForSearchModelFromSourceData()
         {
-            return SearchUtil::resolveSelectedListAttributesForSearchModelFromGetArray($this->model, get_class($this->model));
+            return SearchUtil::resolveSelectedListAttributesForSearchModelFromArray($this->model,
+                                                                                    get_class($this->model),
+                                                                                    $this->getSourceData());
         }
 
         public function resolveKanbanBoardOptionsForSearchModelFromSourceData()
         {
-            return KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromGetArray($this->model, get_class($this->model));
+            return KanbanBoard::resolveKanbanBoardOptionsForSearchModelFromArray($this->model,
+                                                                                 get_class($this->model),
+                                                                                 $this->getSourceData());
         }
 
         public function resolveSortAttributeFromSourceData($name)
         {
             assert('is_string($name)');
-            $sortAttribute = SearchUtil::resolveSortAttributeFromGetArray($name);
+            $sortAttribute = SearchUtil::resolveSortAttributeFromArray($name, $this->getSourceData());
             if ($sortAttribute == null)
             {
                 if (!empty($this->model->sortAttribute))
@@ -182,7 +209,7 @@
         public function resolveSortDescendingFromSourceData($name)
         {
             assert('is_string($name)');
-            $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($name);
+            $sortDescending =  SearchUtil::resolveSortDescendingFromArray($name, $this->getSourceData());
             if (!isset($sortDescending))
             {
                 if (!empty($this->model->sortDescending))
@@ -199,7 +226,9 @@
 
         public function resolveFilterByStarredFromSourceData()
         {
-            SearchUtil::resolveFilterByStarredFromGetArray($this->model, get_class($this->model));
+            SearchUtil::resolveFilterByStarredFromArray($this->model,
+                                                        get_class($this->model),
+                                                        $this->getSourceData());
         }
     }
 ?>

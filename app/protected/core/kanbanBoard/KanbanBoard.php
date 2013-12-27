@@ -69,36 +69,37 @@
          * $searchModel.  Also resolves for the selectedTheme variable.
          * @param object $searchModel
          * @param string $getArrayName
+         * @param $sourceData
          */
-        public static function resolveKanbanBoardOptionsForSearchModelFromGetArray($searchModel, $getArrayName)
+        public static function resolveKanbanBoardOptionsForSearchModelFromArray($searchModel, $getArrayName, $sourceData)
         {
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('is_string($getArrayName)');
-            if ($searchModel->getKanbanBoard() != null && !empty($_GET[$getArrayName]))
+            if ($searchModel->getKanbanBoard() != null && !empty($sourceData[$getArrayName]))
             {
                 assert('$searchModel instanceof SearchForm');
-                if (isset($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                if (isset($sourceData[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                 {
-                    if (!is_array($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                    if (!is_array($sourceData[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                     {
                         $groupByAttributeVisibleValues = null;
                     }
                     else
                     {
-                        $groupByAttributeVisibleValues = $_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES];
+                        $groupByAttributeVisibleValues = $sourceData[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES];
                         $searchModel->getKanbanBoard()->setIsActive();
                     }
                     $searchModel->getKanbanBoard()->setGroupByAttributeVisibleValues($groupByAttributeVisibleValues);
                 }
-                if (isset($_GET[$getArrayName][self::SELECTED_THEME]))
+                if (isset($sourceData[$getArrayName][self::SELECTED_THEME]))
                 {
-                    if (empty($_GET[$getArrayName][self::SELECTED_THEME]))
+                    if (empty($sourceData[$getArrayName][self::SELECTED_THEME]))
                     {
                         $selectedTheme = null;
                     }
                     else
                     {
-                        $selectedTheme = $_GET[$getArrayName][self::SELECTED_THEME];
+                        $selectedTheme = $sourceData[$getArrayName][self::SELECTED_THEME];
                     }
                     $searchModel->getKanbanBoard()->setSelectedTheme($selectedTheme);
                 }

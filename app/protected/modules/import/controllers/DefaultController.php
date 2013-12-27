@@ -272,7 +272,7 @@
                 $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
             $config               = array('pagination' => array('pageSize' => $pageSize));
-            $filteredByStatus       = $this->resolveFilteredByStatus();
+            $filteredByStatus     = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
                                                            $config, null, $filteredByStatus);

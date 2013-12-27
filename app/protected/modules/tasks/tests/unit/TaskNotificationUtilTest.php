@@ -206,6 +206,33 @@
                               'steve@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
         }
 
+        public function testTaskStatusBecomesAcceptedWhenOwnerIsCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'My Acceptance Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = self::$katie;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $taskId = $task->id;
+            $task->forget();
+            $task = Task::getById($taskId);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change the logged in user
+            Yii::app()->user->userModel = self::$sally;
+            //Now change status
+            $task->status               = Task::STATUS_COMPLETED;
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(1, $emailMessages);
+            $this->assertTrue('katie@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+        }
+
         public function testTaskAddCommentWithExtraSubscribers()
         {
             $task                       = new Task();

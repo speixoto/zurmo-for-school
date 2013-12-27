@@ -41,9 +41,15 @@
     {
         const DEFAULT_THEME_COLOR = 'blue';
 
+        protected $useCustomTheme = true;
+
         public function resolveAndGetThemeColorValue(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
+            if ($this->forceAllUsersTheme)
+            {
+                return $this->globalThemeColor;
+            }
             if ( null != $themeColor = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'themeColor'))
             {
                 return $themeColor;
@@ -103,6 +109,53 @@
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'backgroundTexture', $value);
         }
 
+        public function setCustomThemeColorsArray($colorsArray)
+        {
+            assert('is_array($colorsArray)');
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'customThemeColorsArray', $colorsArray);
+        }
+
+        public function getCustomThemeColorsArray()
+        {
+            if ( null != $customThemeColorsArray = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'customThemeColorsArray'))
+            {
+                return $customThemeColorsArray;
+            }
+            else
+            {
+                return array('#282A76', '#7CB830', '#464646');
+            }
+        }
+
+        public function setForceAllUsersTheme($value)
+        {
+            $value = (bool) $value;
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'forceAllUsersTheme', $value);
+        }
+
+        public function getForceAllUsersTheme()
+        {
+            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'forceAllUsersTheme');
+        }
+
+        public function setGlobalThemeColor($value)
+        {
+            assert('is_string($value)');
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'globalThemeColor', $value);
+        }
+
+        public function getGlobalThemeColor()
+        {
+            if (null != $globalThemeColor = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'globalThemeColor'))
+            {
+                return $globalThemeColor;
+            }
+            else
+            {
+                return $this->getDefaultThemeColor();;
+            }
+        }
+
         public function getDefaultThemeColor()
         {
             return self::DEFAULT_THEME_COLOR;
@@ -124,6 +177,11 @@
                           'amazon'      => Zurmo::t('Core', 'Amazon'),
                           'sweden'      => Zurmo::t('Core', 'Sweden'),
                           'pink'        => Zurmo::t('Core', 'Pink'));
+            if ($this->useCustomTheme)
+            {
+                $customArray = array('custom' => Zurmo::t('Core', 'Custom'));
+                $data        = array_merge($customArray, $data);
+            }
             return $data;
         }
 
@@ -165,6 +223,10 @@
                           'amazon'      => 6,
                           'sweden'      => 7,
                           'pink'        => 8);
+            if ($this->useCustomTheme)
+            {
+                $data['custom'] = 1;
+            }
             return $data;
         }
 
@@ -208,6 +270,22 @@
                           'sweden'      => array('#545454', '#034C8C', '#024873', '#97c43d', '#f2ec5c'),
                           'pink'        => array('#545454', '#323232', '#565656', '#97c43d', '#ff4f84')
             );
+            $data = array_merge($data, $this->getCustomThemeColorNameAndColors());
+            return $data;
+        }
+
+        public function getCustomThemeColorNameAndColors()
+        {
+            $data = array();
+            if ($this->useCustomTheme)
+            {
+                $customThemeColorsArray = $this->getCustomThemeColorsArray();
+                $data['custom'] = array('#545454',
+                    $customThemeColorsArray[0],
+                    $customThemeColorsArray[1],
+                    '#97c43d',
+                    $customThemeColorsArray[2]);
+            }
             return $data;
         }
     }

@@ -113,6 +113,14 @@
         }
 
         /**
+         * @return string content specifying the Message Logger Class Name.
+         */
+        public static function getDefaultMessageLogger()
+        {
+            return 'MessageLogger';
+        }
+
+        /**
          * @returns error message string otherwise returns null if not populated.
          */
         public function getErrorMessage()

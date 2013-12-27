@@ -61,13 +61,14 @@
         private function renderCreateAccountModalLink()
         {
             $id      = $this->getIdForCreateLink();
-            $label   = $this->getCreateAccountLabel();
-            $content = ZurmoHtml::ajaxLink('<br/>' . $label,
+            $label   = Zurmo::t('AccountsModule', 'or ');
+            $label  .= $this->getCreateAccountLabel();
+            $content = ZurmoHtml::ajaxLink($label,
                 Yii::app()->createUrl('accounts/default/modalCreate', $this->getSelectLinkUrlParams()),
                 $this->resolveAjaxOptionsForModalView($id),
-                array(
-                'id'        => $id,
-                'style'     => $this->getSelectLinkStartingStyle(),
+                array('id'    => $id,
+                      'style' => $this->getSelectLinkStartingStyle(),
+                      'class' => 'simple-link'
                 )
             );
             return $content;
@@ -102,7 +103,7 @@
         private function getCreateAccountLabel()
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
-            return Zurmo::t('AccountsModule', 'Create AccountsModuleSingularLabel', $params);
+            return Zurmo::t('AccountsModule', 'Create a new AccountsModuleSingularLabel', $params);
         }
     }
 ?>

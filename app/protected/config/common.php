@@ -140,11 +140,11 @@
                 'class' => 'application.core.components.ZurmoExtMinScript',
                 'groupMap' => array(
                     'css' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/zurmo.css',
+                       // INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/' . Yii::app()->theme->name,
                         //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
                     'css-color' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
+                        //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/keyframes.css'
                     ),
                     'js' => array(
@@ -166,6 +166,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/dropDownInteractions.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/jquery.truncateText.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/rssReader/jquery.zrssfeed.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/amChart/amcharts.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/juiportlets/JuiPortlets.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/jnotify/jquery.jnotify.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/juiMultiSelect/jquery.multiselect.js',
@@ -198,6 +199,7 @@
                     array('application.core.views.assets',              '/interactions.js'),
                     array('application.core.views.assets',              '/jquery.truncateText.js'),
                     array('application.core.widgets.assets',            '/rssReader/jquery.zrssfeed.min.js'),
+                    array('application.core.widgets.assets',            '/amChart/amcharts.js'),
                     array('application.core.widgets.assets',            '/juiportlets/JuiPortlets.js'),
                     array('application.core.widgets.assets',            '/jnotify/jquery.jnotify.js'),
                     array('application.core.widgets.assets',            '/juiMultiSelect/jquery.multiselect.js'),
@@ -376,6 +378,8 @@
             'application.extensions.phaActiveColumn.*',
         ),
         'modules' => array(
+            'accountAccountAffiliations',
+            'accountContactAffiliations',
             'accounts',
             'activities',
             'api',

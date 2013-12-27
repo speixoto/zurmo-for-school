@@ -42,7 +42,7 @@
 
         public static function getDependentTestModelClassNames()
         {
-            return array('WorkflowModelTestItem');
+            return array('WorkflowModelTestItem', 'ByTimeWorkflowInQueueForTest');
         }
 
         public static function setUpBeforeClass()
@@ -90,12 +90,12 @@
         public function testResolveToAddJobToQueueAfterSaveOfModelWithNewModel()
         {
             //First test with a null processDaetTime
-            $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueue();
+            $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueueForTest();
             $byTimeWorkflowInQueue->modelClassName  = get_class(self::$testModel);
             $byTimeWorkflowInQueue->modelItem       = self::$testModel;
             $byTimeWorkflowInQueue->processDateTime = '0000-00-00 00:00:00';
             $byTimeWorkflowInQueue->savedWorkflow   = self::$savedWorkflow;
-            $byTimeWorkflowInQueue->isNewModel      = true; //simulates beforeSave behavior
+            $byTimeWorkflowInQueue->setIsNewModel(true); //simulates beforeSave behavior
 
             $this->assertCount(0, Yii::app()->jobQueue->getAll());
             InQueueUtil::resolveToAddJobToQueueAfterSaveOfModel($byTimeWorkflowInQueue, 'abc');
@@ -106,12 +106,12 @@
             //now test with processDateTime set
             Yii::app()->jobQueue->deleteAll();
             $this->assertCount(0, Yii::app()->jobQueue->getAll());
-            $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueue();
+            $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueueForTest();
             $byTimeWorkflowInQueue->modelClassName  = get_class(self::$testModel);
             $byTimeWorkflowInQueue->modelItem       = self::$testModel;
             $byTimeWorkflowInQueue->processDateTime = '2037-02-02 00:00:00';
             $byTimeWorkflowInQueue->savedWorkflow   = self::$savedWorkflow;
-            $byTimeWorkflowInQueue->isNewModel      = true; //simulates beforeSave behavior
+            $byTimeWorkflowInQueue->setIsNewModel(true); //simulates beforeSave behavior
 
             $this->assertCount(0, Yii::app()->jobQueue->getAll());
             InQueueUtil::resolveToAddJobToQueueAfterSaveOfModel($byTimeWorkflowInQueue, 'abc');

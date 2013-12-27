@@ -54,7 +54,8 @@
                 {
                     $viewClassName   = $portlet->viewType . 'View';
                     $moduleClassName = $viewClassName::getModuleClassName();
-                    if (RightsUtil::canUserAccessModule($moduleClassName, $user))
+                    $portletRules    = $portletRules = PortletRulesFactory::createPortletRulesByView($viewClassName);
+                    if ($portletRules->canUserAccessPortlet($user) &&  RightsUtil::canUserAccessModule($moduleClassName, $user))
                     {
                         $resolvedPortlets[$column][] = $portlet;
                     }
@@ -73,7 +74,7 @@
             $user             = Yii::app()->user->userModel;
             $viewClassName    = $portletRules->getType() . 'View';
             $moduleClassName  = $viewClassName::getModuleClassName();
-            if (RightsUtil::canUserAccessModule($moduleClassName, $user))
+            if ($portletRules->canUserAccessPortlet($user) && RightsUtil::canUserAccessModule($moduleClassName, $user))
             {
                 return true;
             }

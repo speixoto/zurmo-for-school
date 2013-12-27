@@ -92,8 +92,8 @@
             {
                 $logoFileSrc   = Yii::app()->themeManager->baseUrl . '/default/images/Zurmo_logo.png';
             }
-            $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
-            $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
+            $logoHeight = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoHeight();
+            $logoWidth  = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoWidth();
             if (Yii::app()->userInterface->isMobile())
             {
                 $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" /></a>'; //make sure width and height are NEVER defined
@@ -193,21 +193,23 @@
                     'id' => $id,
                 )
             );
-            $content .= static::resolveNewCollectionItemAndNotification($url);
+            $content .= static::renderGetNewCollectionItemNotification();
             return ZurmoHtml::tag('div', array('id' => static::USER_GAME_DASHBOARD_WRAPPER_ID,
                 'class' => 'user-menu-item'), $content);
         }
 
-        protected static function resolveNewCollectionItemAndNotification($gameBoardUrl)
+        protected static function renderGetNewCollectionItemNotification()
         {
-            assert('is_string($gameBoardUrl)');
             $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
             if (null != $collectionAndItemKey)
             {
+                $claimCollectionItemUrl = Yii::app()->createUrl('gamification/default/claimCollectionItem',
+                                                                array('key'     => $collectionAndItemKey[1],
+                                                                      'typeKey' => $collectionAndItemKey[2]));
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
-                $claimRewardLink = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $gameBoardUrl,
-                                   static::resolveAjaxOptionsForGameDashboardModel(static::CLAIM_ITEM_LINK_ID),
+                $claimRewardLink = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $claimCollectionItemUrl,
+                                   array(),
                                    array('id' => static::CLAIM_ITEM_LINK_ID, 'class' => 'mini-button'));
                 $closeLink       = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => 'close-game-notification-link'));
                 $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($collectionAndItemKey[1]);
@@ -274,15 +276,9 @@
             $script = "$('#".static::CLAIM_ITEM_LINK_ID."').on('click', function(event){
                                event.preventDefault();
                                $(this).off('click');
-                               $('#game-notification img').addClass('animate-spin');
                                var magicAudio = document.getElementById('collection-item-claimed');
                                magicAudio.play();
-                               setTimeout(function(){
-                                   $('#game-notification').fadeOut(300, function(){
-                                       $('#game-notification').remove();
-                                   });
-                               }, 5000);
-                               return false;
+                               $('#game-notification').fadeOut(300);
                            });";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('claimItemScript', $script);
@@ -290,9 +286,7 @@
             // Begin Not Coding Standard
             $script = "$('#close-game-notification-link').click(function(event){
                                event.preventDefault();
-                               $('#game-notification').fadeOut(300, function(){
-                                   $('#game-notification').remove();
-                               });
+                               $('#game-notification').fadeOut(300);
                            });
                            $('.gd-dashboard-active').on('click', function(){
                                if($('#UserGameDashboardView').length){

@@ -83,10 +83,19 @@
                 ),
                 'relations' => array(
                     'account'          => array(static::HAS_MANY_BELONGS_TO,  'Account'),
+                    'primaryAccountAffiliations'   => array(static::HAS_MANY, 'AccountAccountAffiliation',
+                                                            static::OWNED, static::LINK_TYPE_SPECIFIC,
+                                                            'primaryAccountAffiliation'),
+                    'secondaryAccountAffiliations' => array(static::HAS_MANY, 'AccountAccountAffiliation',
+                                                            static::OWNED, static::LINK_TYPE_SPECIFIC,
+                                                            'secondaryAccountAffiliation'),
                     'accounts'         => array(static::HAS_MANY,             'Account'),
                     'billingAddress'   => array(static::HAS_ONE,              'Address',          static::OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'billingAddress'),
                     'products'         => array(static::HAS_MANY,             'Product'),
+                    'contactAffiliations' => array(static::HAS_MANY, 'AccountContactAffiliation',
+                                                   static::OWNED, static::LINK_TYPE_SPECIFIC,
+                                                   'accountAffiliation'),
                     'contacts'         => array(static::HAS_MANY,             'Contact'),
                     'industry'         => array(static::HAS_ONE,              'OwnedCustomField', static::OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'industry'),
@@ -176,6 +185,9 @@
         protected static function translatedAttributeLabels($language)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
+            $paramsForAffiliations = $params;
+            $paramsForAffiliations['{primaryAccount}'] = AccountAccountAffiliationsModule::resolveAccountRelationLabel('Singular', 'primary');
+            $paramsForAffiliations['{secondaryAccount}'] = AccountAccountAffiliationsModule::resolveAccountRelationLabel('Singular', 'secondary');
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'account'                => Zurmo::t('AccountsModule',      'Parent AccountsModuleSingularLabel',  $params, null, $language),
@@ -193,7 +205,11 @@
                     'officePhone'            => Zurmo::t('AccountsModule',      'Office Phone',                        array(), null, $language),
                     'officeFax'              => Zurmo::t('AccountsModule',      'Office Fax',                          array(), null, $language),
                     'opportunities'          => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel',      $params, null, $language),
+                    'primaryAccountAffiliations' =>
+                        Zurmo::t('AccountAccountAffiliationsModule', '{primaryAccount} Affiliations', $paramsForAffiliations, null, $language),
                     'primaryEmail'           => Zurmo::t('ZurmoModule',         'Primary Email',                       array(), null, $language),
+                    'secondaryAccountAffiliations' =>
+                        Zurmo::t('AccountAccountAffiliationsModule', '{secondaryAccount} Affiliations', $paramsForAffiliations, null, $language),
                     'secondaryEmail'         => Zurmo::t('ZurmoModule',         'Secondary Email',                     array(), null, $language),
                     'shippingAddress'        => Zurmo::t('AccountsModule',      'Shipping Address',                    array(), null, $language),
                     'tasks'                  => Zurmo::t('TasksModule',         'TasksModulePluralLabel',              $params, null, $language),

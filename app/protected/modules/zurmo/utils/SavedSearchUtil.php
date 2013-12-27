@@ -100,14 +100,14 @@
         }
 
         /**
-         * @param array $getData
+         * @param array $data
          * @param DynamicSearchForm $searchForm
          */
-        public static function resolveSearchFormByGetData(array $getData, DynamicSearchForm $searchForm)
+        public static function resolveSearchFormByData(array $data, DynamicSearchForm $searchForm)
         {
-            if (isset($getData['savedSearchId']) && $getData['savedSearchId'] != '')
+            if (isset($data['savedSearchId']) && $data['savedSearchId'] != '')
             {
-                $savedSearch                 = SavedSearch::getById((int)$getData['savedSearchId']);
+                $savedSearch                 = SavedSearch::getById((int)$data['savedSearchId']);
                 $searchForm->savedSearchName = $savedSearch->name;
                 $searchForm->savedSearchId   = $savedSearch->id;
                 $unserializedData            = unserialize($savedSearch->serializedData);
@@ -223,6 +223,7 @@
         /**
          * @param array $stickyData
          * @param SavedDynamicSearchForm $model
+         * @internal param $sourceData
          */
         public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)
         {
