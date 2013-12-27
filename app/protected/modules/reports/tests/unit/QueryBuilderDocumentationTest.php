@@ -161,8 +161,8 @@
                 "left join {$q}securableitem{$q} on {$q}securableitem{$q}.{$q}item_id{$q} = {$q}item{$q}.{$q}id{$q} " .
                 "left join {$q}ownedsecurableitem{$q} on {$q}ownedsecurableitem{$q}.{$q}securableitem_id{$q} = {$q}securableitem{$q}.{$q}id{$q} " .
                 "left join {$q}account{$q} on {$q}account{$q}.{$q}ownedsecurableitem_id{$q} = {$q}ownedsecurableitem{$q}.{$q}id{$q} " .
-                "where ((({$q}item1{$q}.{$q}createddatetime{$q} >= {$q}1991-05-05 00:00:00{$q}) " .
-                "and ({$q}item1{$q}.{$q}createddatetime{$q} <= {$q}1991-06-05 23:59:59{$q}))) " .
+                "where ((({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-05-05 00:00:00') " .
+                "and ({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-06-05 23:59:59'))) " .
                 "and {$q}activity{$q}.{$q}id{$q} = {$q}note{$q}.{$q}activity_id{$q} " .
                 "and {$q}ownedsecurableitem1{$q}.{$q}id{$q} = {$q}activity{$q}.{$q}ownedsecurableitem_id{$q} " .
                 "and {$q}securableitem1{$q}.{$q}id{$q} = {$q}ownedsecurableitem1{$q}.{$q}securableitem_id{$q} " .

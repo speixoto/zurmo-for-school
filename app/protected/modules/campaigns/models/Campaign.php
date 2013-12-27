@@ -127,10 +127,10 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByStatusAndSendingTime($status, $sendingTimestamp = null, $pageSize = null, $offset = 0, $inPast = true)
+        public static function getByStatusAndSendingTime($status, $sendingTimestamp = null, $pageSize = null, $offset = null, $inPast = true)
         {
             assert('is_int($status)');
-            assert('is_int($offset)');
+            assert('$offset  === null || is_int($offset)');
             assert('is_bool($inPast)');
             if (empty($sendingTimestamp))
             {

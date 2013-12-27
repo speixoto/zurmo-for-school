@@ -6255,6 +6255,9 @@ i[class^="icon"] {
 .icon-workflows:after {
   content: '\20AC';
 }
+.icon-gamification:after {
+  content: '\2202';
+}
 .icon-by-time-workflow-in-queues:after {
   content: '\0071';
   font-size: 28px;
@@ -6326,6 +6329,15 @@ i[class^="icon"] {
 }
 .icon-policies:after {
   content: '\007D';
+}
+.icon-opportunity:after {
+  content: "9";
+}
+.icon-contact:after {
+  content: "y";
+}
+.icon-account:after {
+  content: "P";
 }
 .pillbox .icon-projects-list {
   font-size: 22px;
@@ -8768,6 +8780,27 @@ table.configuration-list tr:last-child td {
 .color-swatch .theme-color-3 {
   margin-right: 10px;
 }
+#customThemeColorPicker {
+  position: relative;
+  z-index: 12;
+  width: 45%;
+  clear: left;
+}
+#customThemeColorPicker > div {
+  min-width: 65px;
+  width: 30%;
+  margin-left: 5%;
+  float: left;
+  position: relative;
+}
+#customThemeColorPicker > div:first-child {
+  margin-left: 0;
+}
+#customThemeColorPicker .iris-picker {
+  position: absolute;
+  left: 0;
+  top: 100%;
+}
 .user-menu-preferences td {
   padding-left: 0 !important;
 }
@@ -9464,15 +9497,11 @@ div.wide.form .errorMessage {
   top: 0;
   right: 0;
   margin: 0;
-  border: solid red;
-  border-width: 0 0 100px 200px;
   opacity: 0;
   filter: alpha(opacity=0);
-  -moz-transform: translate(-300px,0) scale(4);
+  font-size: 200px;
   direction: ltr;
   cursor: pointer;
-  height: 30px;
-  width: auto;
 }
 .addfileinput-button:hover span {
   color: #44BBCC;
@@ -11593,6 +11622,14 @@ div.wide.form .errorMessage {
 }
 .game-badge-SearchProjects .badge-icon:before,
 .SearchProjects .badge-icon:before {
+  content: '\02C7';
+}
+.game-badge-CreateProject .badge-icon:before,
+.CreateProject .badge-icon:before,
+.game-badge-MassEditProjects .badge-icon:before,
+.MassEditProjects .badge-icon:before,
+.game-badge-SearchProject .badge-icon:before,
+.SearchProject .badge-icon:before {
   content: '\02C7';
 }
 .game-level-change .badge-icon:before {
@@ -17928,7 +17965,7 @@ body .overlay-view .after-form-details-content a:hover {
 }
 #game-notification {
   position: absolute;
-  min-width: 250px;
+  min-width: 280px;
   padding: 15px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
