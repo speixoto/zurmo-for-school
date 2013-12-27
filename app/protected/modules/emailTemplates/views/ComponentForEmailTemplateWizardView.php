@@ -34,64 +34,56 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Base class for working with the report wizard
-     */
-    abstract class ReportWizardView extends WizardView
+    abstract class ComponentForEmailTemplateWizardView extends ComponentForWizardModelView
     {
-        public static function getModuleId()
-        {
-            return 'reports';
-        }
-
         /**
          * @return string
          */
         public function getTitle()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
+            return static::getWizardStepTitle();
         }
 
         /**
-         * @return string
+         * Override if the view should show a previous link.
          */
-        protected static function getStartingValidationScenario()
+        protected function renderPreviousPageLinkContent()
         {
-            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
+            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
+                  $this->renderPreviousPageLinkLabel() ), '#', array('id' => static::getPreviousPageLinkId()));
         }
 
-        protected function registerScripts()
+        protected function renderPreviousPageLinkLabel()
         {
-            parent::registerScripts();
-            Yii::app()->getClientScript()->registerCoreScript('treeview');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
-            $this->registerClickFlowScript();
-            $this->registerModuleClassNameChangeScript();
+            return Zurmo::t('Core', 'Previous');
         }
 
-        protected function registerModuleClassNameChangeScript()
+        /**
+         * Override if the view should show a next link.
+         */
+        protected function renderNextPageLinkContent()
         {
-            $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
-            Yii::app()->clientScript->registerScript('moduleForReportChangeScript', "
-                $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
-                    {
-                        $('#FiltersForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
-                        $('#FiltersTreeArea').html('');
-                        $('." . FiltersForReportWizardView::getZeroComponentsClassName() . "').show();
-                        rebuildReportFiltersAttributeRowNumbersAndStructureInput('FiltersForReportWizardView');
-                        $('#DisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
-                        $('#DisplayAttributesTreeArea').html('');
-                        $('." . DisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
-                        " . $this->registerModuleClassNameChangeScriptExtraPart() . "
-                    }
-                );
-            ");
+            $params                = array();
+            $params['label']       = $this->renderNextPageLinkLabel();
+            $params['htmlOptions'] = array('id' => static::getNextPageLinkId(),
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
         }
 
-        protected function registerModuleClassNameChangeScriptExtraPart()
+        protected function renderNextPageLinkLabel()
         {
+            return Zurmo::t('Core', 'Next');
+        }
+
+        protected function getControllerId()
+        {
+            return 'default';
+        }
+
+        protected function getModuleId()
+        {
+            return 'emailTemplates';
         }
     }
 ?>

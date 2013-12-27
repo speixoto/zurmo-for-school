@@ -250,7 +250,12 @@
 
         protected function findFirstGroupPermitable()
         {
-            $permitablesCount = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitablesCount();
+            $modelPermissions   = $this->getExplicitReadWriteModelPermissions();
+            if ($modelPermissions === null)
+            {
+                return null;
+            }
+            $permitablesCount = $modelPermissions->getReadWritePermitablesCount();
             if ($permitablesCount)
             {
                 $permitables = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitables();

@@ -34,64 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Base class for working with the report wizard
-     */
-    abstract class ReportWizardView extends WizardView
+    class ClassicEmailTemplateWizardView extends EmailTemplateWizardView
     {
-        public static function getModuleId()
-        {
-            return 'reports';
-        }
-
         /**
          * @return string
          */
         public function getTitle()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
+            return parent::getTitle() . ' - ' . Zurmo::t('EmailTemplatesModule', 'Classic');
         }
 
-        /**
-         * @return string
-         */
-        protected static function getStartingValidationScenario()
+        protected function resolveContainingViews(WizardActiveForm $form)
         {
-            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
+            $views              = array();
+            $views[]            = new GeneralDataForEmailTemplateWizardView($this->model, $form);
+            return $views;
         }
 
-        protected function registerScripts()
+        protected function registerGeneralDataNextPageLinkScript($formName)
         {
-            parent::registerScripts();
-            Yii::app()->getClientScript()->registerCoreScript('treeview');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
-            $this->registerClickFlowScript();
-            $this->registerModuleClassNameChangeScript();
-        }
-
-        protected function registerModuleClassNameChangeScript()
-        {
-            $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
-            Yii::app()->clientScript->registerScript('moduleForReportChangeScript', "
-                $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
+            return "
+                    if (linkId == '" . GeneralDataForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
-                        $('#FiltersForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
-                        $('#FiltersTreeArea').html('');
-                        $('." . FiltersForReportWizardView::getZeroComponentsClassName() . "').show();
-                        rebuildReportFiltersAttributeRowNumbersAndStructureInput('FiltersForReportWizardView');
-                        $('#DisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
-                        $('#DisplayAttributesTreeArea').html('');
-                        $('." . DisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
-                        " . $this->registerModuleClassNameChangeScriptExtraPart() . "
+                        " . $this->getSaveAjaxString($formName) . "
                     }
-                );
-            ");
-        }
-
-        protected function registerModuleClassNameChangeScriptExtraPart()
-        {
+                    else
+                    {
+                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading');
+                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
+                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('attachLoadingTarget');
+                    }
+                    ";
         }
     }
 ?>

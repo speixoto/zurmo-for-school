@@ -76,12 +76,21 @@
         }
 
         /**
+         * Override in children with correct moduleId
+         * @throws NotImplementedException
+         */
+        public static function getModuleId()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
          * Override in children with correct controllerId
          * @throws NotImplementedException
          */
         public static function getControllerId()
         {
-            throw new NotImplementedException();
+            return 'default';
         }
 
         /**
@@ -207,7 +216,7 @@
          */
         protected function getFormActionUrl()
         {
-            return Yii::app()->createUrl(static::getControllerId() . '/default/save',
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/save',
                 array('type' => $this->model->type, 'id' => $this->model->id, 'isBeingCopied' => $this->isBeingCopied));
         }
 
@@ -218,8 +227,6 @@
         protected function getSaveAjaxString($formName)
         {
             assert('is_string($formName)');
-            $saveRedirectToDetailsUrl = Yii::app()->createUrl(static::getControllerId() . '/default/details');
-            $saveRedirectToListUrl    = Yii::app()->createUrl(static::getControllerId() . '/default/list');
             return ZurmoHtml::ajax(array(
                                             'type'     => 'POST',
                                             'data'     => 'js:$("#' . $formName . '").serialize()',
@@ -229,15 +236,31 @@
                                             {
                                                 if (data.redirectToList)
                                                 {
-                                                    url = "' . $saveRedirectToListUrl . '";
+                                                    url = "' . $this->resolveSaveRedirectToListUrl() . '";
                                                 }
                                                 else
                                                 {
-                                                    url = "' . $saveRedirectToDetailsUrl . '" + "?id=" + data.id
+                                                    url = "' . $this->resolveSaveRedirectToDetailsUrl() . '" + "?id=" + data.id
                                                 }
                                                 window.location.href = url;
                                             }'
                                           ));
+        }
+
+        /**
+         * @return string
+         */
+        protected function resolveSaveRedirectToDetailsUrl()
+        {
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/details');
+        }
+
+        /**
+         * @return string
+         */
+        protected function resolveSaveRedirectToListUrl()
+        {
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/list');
         }
 
         /**
@@ -249,7 +272,7 @@
         {
             assert('is_string($formName)');
             assert('is_string($componentViewClassName)');
-            $url    =  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTree',
+            $url    =  Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/relationsAndAttributesTree',
                        array_merge($_GET, array('type' => $this->model->type,
                                                 'treeType' => $componentViewClassName::getTreeType())));
             // Begin Not Coding Standard

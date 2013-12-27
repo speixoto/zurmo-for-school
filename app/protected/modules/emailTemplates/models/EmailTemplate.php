@@ -40,6 +40,12 @@
 
         const TYPE_CONTACT  = 2;
 
+        const BUILT_TYPE_PLAIN_TEXT_ONLY    = 1;
+
+        const BUILT_TYPE_PASTED_HTML        = 2;
+
+        const BUILT_TYPE_BUILDER_TEMPLATE   = 3;
+
         /**
          * Php caching for a single request
          * @var array
@@ -74,8 +80,17 @@
         public static function getTypeDropDownArray()
         {
             return array(
-                self::TYPE_WORKFLOW     => Zurmo::t('WorkflowsModule', 'Workflow'),
-                self::TYPE_CONTACT      => Zurmo::t('ContactsModule',  'Contact'),
+                static::TYPE_WORKFLOW     => Zurmo::t('WorkflowsModule', 'Workflow'),
+                static::TYPE_CONTACT      => Zurmo::t('ContactsModule',  'Contact'),
+            );
+        }
+
+        public static function getBuiltTypeDropDownArray()
+        {
+            return array(
+                static::BUILT_TYPE_PLAIN_TEXT_ONLY  => Zurmo::t('EmailTemplatesModule', 'Plain text only'),
+                static::BUILT_TYPE_PASTED_HTML      => Zurmo::t('EmailTemplatesModule', 'Paste already built html template'),
+                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Use Builder'),
             );
         }
 
@@ -121,21 +136,29 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'type',
+                    'builtType',
+                    'isDraft',
                     'modelClassName',
                     'name',
                     'subject',
                     'language',
                     'htmlContent',
                     'textContent',
+                    'serializedData',
                 ),
                 'rules' => array(
                     array('type',                       'required'),
                     array('type',                       'type',    'type' => 'integer'),
                     array('type',                       'numerical'),
+                    array('isDraft',                    'required'),
+                    array('isDraft',                    'type',     'type' => 'boolean'),
+                    array('builtType',                  'required'),
+                    array('builtType',                  'type',     'type' => 'integer'),
+                    array('builtType',                  'numerical'),
                     array('modelClassName',             'required'),
                     array('modelClassName',             'type',   'type' => 'string'),
                     array('modelClassName',             'length', 'max' => 64),
-                    array('modelClassName',             'validateModelExists'),
+                    array('modelClassName',             'ModelExistsAndIsReadableValidator'),
                     array('name',                       'required'),
                     array('name',                       'type',    'type' => 'string'),
                     array('name',                       'length',  'min'  => 1, 'max' => 64),
@@ -144,14 +167,15 @@
                     array('subject',                    'length',  'min'  => 1, 'max' => 64),
                     array('language',                   'type',    'type' => 'string'),
                     array('language',                   'length',  'min' => 2, 'max' => 2),
-                    array('language',                   'setToUserDefaultLanguage'),
+                    array('language',                   'SetToUserDefaultLanguageValidator'),
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
                     array('htmlContent',                'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',                'AtLeastOneContentAreaRequiredValidator'),
-                    array('textContent',                'AtLeastOneContentAreaRequiredValidator'),
+                    array('htmlContent',                'EmailTemplateAtLeastOneContentAreaRequiredValidator'),
+                    array('textContent',                'EmailTemplateAtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',                'EmailTemplateMergeTagsValidator'),
                     array('textContent',                'EmailTemplateMergeTagsValidator'),
+                    array('serializedData',             'type', 'type' => 'string'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
@@ -163,43 +187,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        public function validateModelExists($attribute, $params)
-        {
-            $passedValidation = true;
-            $modelClassName = $this->$attribute;
-            if (!empty($modelClassName))
-            {
-                if (@class_exists($modelClassName))
-                {
-                    if (!is_subclass_of($modelClassName, 'RedBeanModel'))
-                    {
-                        $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
-                        $passedValidation = false;
-                    }
-                    elseif (!RightsUtil::canUserAccessModule($modelClassName::getModuleClassName(), Yii::app()->user->userModel))
-                    {
-                        $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name access is prohibited.'));
-                        $passedValidation = false;
-                    }
-                }
-                else
-                {
-                    $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name does not exist.'));
-                    $passedValidation = false;
-                }
-            }
-            return $passedValidation;
-        }
-
-        public function setToUserDefaultLanguage($attribute, $params)
-        {
-            if (empty($this->$attribute))
-            {
-                $this->$attribute = Yii::app()->user->userModel->language;
-            }
-            return true;
         }
 
         /**

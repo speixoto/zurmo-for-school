@@ -35,63 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Base class for working with the report wizard
+     * View for selecting a type of emailTemplate to create
      */
-    abstract class ReportWizardView extends WizardView
+    class EmailTemplateTypeView extends WizardTypeView
     {
-        public static function getModuleId()
-        {
-            return 'reports';
-        }
-
         /**
          * @return string
          */
         public function getTitle()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
+            return Zurmo::t('EmailTemplatesModule', 'Email Template Wizard');
         }
 
         /**
-         * @return string
+         * @return array
          */
-        protected static function getStartingValidationScenario()
+        protected function getTypeData()
         {
-            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
+            $sourceModuleType   = $this->getSourceModuleType();
+            $baseRoute          = "emailTemplates/default/create?type=${sourceModuleType}&builtType=";
+            $builtTypes         = EmailTemplate::getBuiltTypeDropDownArray();
+            $types = array();
+            foreach ($builtTypes as $builtType => $titleLabel)
+            {
+                $types['clearCache'][]    = array('titleLabel' => $titleLabel, 'route' => $baseRoute . $builtType);
+            }
+            return $types;
         }
 
-        protected function registerScripts()
+        protected function getSourceModuleType()
         {
-            parent::registerScripts();
-            Yii::app()->getClientScript()->registerCoreScript('treeview');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
-            $this->registerClickFlowScript();
-            $this->registerModuleClassNameChangeScript();
-        }
-
-        protected function registerModuleClassNameChangeScript()
-        {
-            $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
-            Yii::app()->clientScript->registerScript('moduleForReportChangeScript', "
-                $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
-                    {
-                        $('#FiltersForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
-                        $('#FiltersTreeArea').html('');
-                        $('." . FiltersForReportWizardView::getZeroComponentsClassName() . "').show();
-                        rebuildReportFiltersAttributeRowNumbersAndStructureInput('FiltersForReportWizardView');
-                        $('#DisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
-                        $('#DisplayAttributesTreeArea').html('');
-                        $('." . DisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
-                        " . $this->registerModuleClassNameChangeScriptExtraPart() . "
-                    }
-                );
-            ");
-        }
-
-        protected function registerModuleClassNameChangeScriptExtraPart()
-        {
+            return Yii::app()->request->getQuery('type');
         }
     }
 ?>

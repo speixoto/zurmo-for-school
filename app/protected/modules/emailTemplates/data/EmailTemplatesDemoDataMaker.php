@@ -100,6 +100,8 @@
             }
             $model->textContent         = str_replace('Zurmo', Yii::app()->label, $this->seedData['textContent'][$this->index % 2]);
             $model->htmlContent         = str_replace('Zurmo', Yii::app()->label, $this->seedData['htmlContent'][$this->index % 2]);
+            $model->builtType           = EmailTemplate::BUILT_TYPE_PASTED_HTML;
+            $model->isDraft             = false;
             $this->populateMarketingModelWithFiles($model);
         }
     }

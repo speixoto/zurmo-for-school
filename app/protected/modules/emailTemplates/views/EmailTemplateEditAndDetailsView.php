@@ -36,6 +36,7 @@
 
     class EmailTemplateEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        // TODO: @Shoaibi: Critical; We don't need edit part of this at least.
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -111,6 +112,7 @@
 
         protected function renderAfterFormLayout($form)
         {
+            // TODO: @Shoaibi/@Jason: Critical: Do we even need this js?
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
                         $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
@@ -169,7 +171,8 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            $content = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            return $content;
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)
