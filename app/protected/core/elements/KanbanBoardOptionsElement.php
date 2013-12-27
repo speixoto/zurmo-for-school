@@ -50,7 +50,6 @@
             $content     = ZurmoHtml::tag('div', array('class' => 'attributesContainer clearfix'), $content);
             $linkContent = $this->renderApplyResetContent() . $this->renderApplyLinkContent();
             $linkContent = ZurmoHtml::tag('div', array('class' => 'form-toolbar clearfix'), $linkContent);
-            $this->registerEditableValuesScripts();
             $this->registerThemeScript();
             return $content . ZurmoHtml::tag('div', array('class' => 'view-toolbar-container'), $linkContent);
         }
@@ -124,40 +123,6 @@
             return $htmlOptions;
         }
 
-        /**
-         * On keyUp, the search should be conducted.
-         */
-        protected function registerEditableValuesScripts()
-        {
-            $defaultSelectedAttributes = $this->model->getListAttributesSelector()->getMetadataDefinedListAttributeNames();
-            // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript('kanbanBoardOptionsScripts', "
-                $('#kanban-board-options-reset').unbind('click.reset');
-                $('#kanban-board-options-reset').bind('click.reset', function()
-                    {
-                        $('.kanban-board-options-view').hide();
-                        var inputName = '" .$this->getEditableInputName(KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES) . "[]';
-                        $('input[name=\"' + inputName + '\"]').each(function()
-                        {
-                            $(this).attr('checked', true);
-                            $(this).parent().addClass('c_on');
-                        });
-                        $('input[name=\"" . $this->getEditableInputName(KanbanBoard::SELECTED_THEME) . "\"]').each(function()
-                        {
-                            if ($(this).val() == '')
-                            {
-                                $(this).attr('checked', true);
-                            }
-                            else
-                            {
-                                $(this).attr('checked', false);
-                            }
-                        });
-                    }
-                );");
-            // End Not Coding Standard
-        }
-
         public function registerThemeScript()
         {
             //todo: implement
@@ -193,9 +158,33 @@
             $params['label']       = Zurmo::t('Core', 'Reset');
             $params['htmlOptions'] = array('id'  => 'kanban-board-options-reset',
                                            'class' => 'default-btn',
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");' . $this->renderResetScript());
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
+        }
+
+        protected function renderResetScript()
+        {
+            return "
+                        $('.kanban-board-options-view').hide();
+                        var inputName = '" .$this->getEditableInputName(KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES) . "[]';
+                        $('input[name=\"' + inputName + '\"]').each(function()
+                        {
+                            $(this).attr('checked', true);
+                            $(this).parent().addClass('c_on');
+                        });
+                        $('input[name=\"" . $this->getEditableInputName(KanbanBoard::SELECTED_THEME) . "\"]').each(function()
+                        {
+                            if ($(this).val() == '')
+                            {
+                                $(this).attr('checked', true);
+                            }
+                            else
+                            {
+                                $(this).attr('checked', false);
+                            }
+                        });
+            ";
         }
 
         protected function resolveThemeColorNamesAndLabelsForLocking(GameLevel $gameLevel)
