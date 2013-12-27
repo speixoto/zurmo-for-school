@@ -55,18 +55,10 @@
                     if ($people->primaryEmail->emailAddress !== null &&
                     !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
                     {
-                        $emailRecipients[] = $people;
+                        $subject = self::getEmailSubject($relatedModel);
+                        $content = self::getEmailContent($relatedModel, $comment, $people);
+                        EmailNotificationUtil::resolveAndSendEmail($senderPerson, array($people), $subject, $content);
                     }
-                }
-                $subject = self::getEmailSubject($relatedModel);
-                $content = self::getEmailContent($relatedModel, $comment, $senderPerson);
-                if ($emailRecipients > 0)
-                {
-                    EmailNotificationUtil::resolveAndSendEmail($senderPerson, $emailRecipients, $subject, $content);
-                }
-                else
-                {
-                    return;
                 }
             }
             else
@@ -85,17 +77,18 @@
         {
             $emailContent  = new EmailMessageContent();
             $url           = static::getUrlToEmail($model);
+            $shortUrl      = ShortUrlUtil::createShortUrl($url);
             $textContent   = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} ",
                                     array('{lineBreak}'           => "\n",
                                           '{strongStartTag}'      => null,
                                           '{strongEndTag}'        => null,
-                                          '{updaterName}'         => strval($user),
+                                          '{updaterName}'         => strval($comment->createdByUser),
                                           '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
                                                                      'SingularLowerCase'),
                                           '{commentDescription}'  => strval($comment),
-                                          '{url}'                 => ZurmoHtml::link($url, $url)
+                                          '{url}'                 => $shortUrl
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate($textContent);
@@ -105,7 +98,7 @@
                                array('{lineBreak}'           => "<br/>",
                                      '{strongStartTag}'      => '<strong>',
                                      '{strongEndTag}'        => '</strong>',
-                                     '{updaterName}'         => strval($user),
+                                     '{updaterName}'         => strval($comment->createdByUser),
                                      '{commentDescription}'  => strval($comment),
                                      '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
                                                                 'SingularLowerCase'), $url)
