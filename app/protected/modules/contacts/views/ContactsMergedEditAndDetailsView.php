@@ -54,6 +54,40 @@
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                             array('type' => 'CancelLink', 'renderType' => 'Edit')
                         );
+            $modifiedElementsData = array();
+            foreach($metadata['global']['panels'] as $panel)
+            {
+                foreach($panel['rows'] as $row)
+                {
+                    foreach($row['cells'] as $cell)
+                    {
+                        foreach($cell['elements'] as $elementData)
+                        {
+                            if($elementData['attributeName'] == 'null' && !class_exists($elementData['type'] . 'Element'))
+                            {
+                                continue;
+                            }
+                            elseif($elementData['type'] == 'TitleFullName')
+                            {
+                                $modifiedElementsData[] = array('attributeName' => 'title', 'type' => 'DropDown');
+                                $modifiedElementsData[] = array('attributeName' => 'firstName', 'type' => 'Text');
+                                $modifiedElementsData[] = array('attributeName' => 'lastName', 'type' => 'Text');
+                            }
+                            else
+                            {
+                                $modifiedElementsData[] = $elementData;
+                            }
+                        }
+                    }
+                }
+            }
+            //Prepare panels data
+            $panelsData = array();
+            foreach($modifiedElementsData as $row => $elementData)
+            {
+                $panelsData[0]['rows'][$row]['cells'][0]['elements'][0] = $elementData;
+            }
+            $metadata['global']['panels'] = $panelsData;
             return $metadata;
         }
 
@@ -74,36 +108,22 @@
         {
             if($element->getAttribute() != 'null')
             {
-                $preContent = Yii::app()->getController()->widget(
-                                                                'ModelAttributeElementPreContentView',
-                                                                array(
-                                                                    'selectedModels' => $this->selectedContacts,
-                                                                    'attributes'     => array($element->getAttribute()),
-                                                                    'primaryModel'   => $this->model,
-                                                                    'element'        => $element
-                                                                ),
-                                                            true);
+                $attributes       = array($element->getAttribute());
             }
             else
             {
                 $elementClassName = get_class($element);
-                if(method_exists($elementClassName, 'getModelAttributeNames'))
-                {
-                    $preContent = Yii::app()->getController()->widget(
-                                                                    'ModelAttributeElementPreContentView',
-                                                                    array(
-                                                                        'selectedModels' => $this->selectedContacts,
-                                                                        'attributes'     => $elementClassName::getModelAttributeNames(),
-                                                                        'primaryModel'   => $this->model,
-                                                                        'element'        => $element
-                                                                    ),
-                                                                true);
-                }
-                else
-                {
-                    $preContent = null;
-                }
+                $attributes       = $elementClassName::getModelAttributeNames();
             }
+            $preContent = Yii::app()->getController()->widget(
+                                                                'ModelAttributeElementPreContentView',
+                                                                array(
+                                                                    'selectedModels' => $this->selectedContacts,
+                                                                    'attributes'     => $attributes,
+                                                                    'primaryModel'   => $this->model,
+                                                                    'element'        => $element
+                                                                ),
+                                                            true);
             $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' . $preContent . '{content}{error}</td>';
         }
 

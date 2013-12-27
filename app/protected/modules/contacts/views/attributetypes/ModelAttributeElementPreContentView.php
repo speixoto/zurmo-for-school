@@ -50,36 +50,28 @@
             $content = null;
             foreach($attributes as $attribute)
             {
-                $attributeContent = '<div>';
+                $attributeContent = null;
                 foreach($this->selectedModels as $model)
                 {
-                    $nonFormattedContent = $model->$attribute;
-                    $attributeContent .= $this->decorateItem($model, $nonFormattedContent);
+                    $modelAttributeAndElementDataToMergeItem = new ModelAttributeAndElementDataToMergeItem(
+                                                                $model, $attribute, $this->element, $this->primaryModel);
+
+                    $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
                 }
-                $attributeContent .= '</div>';
+                $attributeContent = ZurmoHtml::tag('div', array(), $attributeContent);
                 $content .= $attributeContent;
             }
+            Yii::app()->clientScript->registerScript('preContentSelectScript', $this->registerScriptForAttributeReplacement());
             echo $content;
         }
 
-        protected function decorateItem($model, $content)
+        protected function registerScriptForAttributeReplacement()
         {
-            //Apply the template here. This should be a link here with class as attribute-someclassname
-            //register the script here to populate the model here on click of it.
-            if($content != null)
-            {
-                if($model->id == $this->primaryModel->id)
-                {
-                    $style = 'border: 2px dotted #FF0000;margin-left:4px;';
-                }
-                else
-                {
-                    $style = 'border: 2px dotted #66367b;margin-left:4px;';
-                }
-                //TODO:@Mayank need a input id of the target field
-                return ZurmoHtml::tag('span', array('style' => $style), $content);
-            }
-            return null;
+            return "$('.attributePreElementContent').click(function(){
+                                                                var id = $(this).attr('id');
+                                                                idArray = id.split('-');
+                                                                $('#' + idArray[0]).val(idArray[1]);
+                                                            });";
         }
     }
 ?>
