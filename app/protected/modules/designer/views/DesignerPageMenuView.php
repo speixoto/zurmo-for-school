@@ -76,7 +76,7 @@
                         array(
                             'moduleClassName' => $moduleClassName,
                         )
-                    ));
+                    ), array('class' => 'white-button'));
                 $content .= '</li>';
             }
             $content .= '</ul>';

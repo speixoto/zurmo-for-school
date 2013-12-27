@@ -37,7 +37,7 @@
     /**
     * Leads API Controller
     */
-    class LeadsContactApiController extends ZurmoModuleApiController
+    class LeadsContactApiController extends ZurmoSecurableItemApiController
     {
         protected static function getSearchFormClassName()
         {

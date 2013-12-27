@@ -81,21 +81,23 @@
             $this->assertTrue($steven->save());
             $this->assertTrue($jack->save());
 
-            //One email message was sent because to Steven and Jack
+            //Two email message were sent one to Steven and one to Jack
             CommentsUtil::sendNotificationOnNewComment($conversation, $comment, $super, array($steven, $jack));
-            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAll();
-            $emailMessage  = $emailMessages[0];
-            $this->assertEquals(2, count($emailMessage->recipients));
+            $emailMessage1  = $emailMessages[0];
+            $emailMessage2  = $emailMessages[1];
+            $this->assertCount(1, $emailMessage1->recipients);
+            $this->assertCount(1, $emailMessage2->recipients);
 
             //One email message was sent to Super but not to Steven
             UserConfigurationFormAdapter::setValue($steven, true, 'turnOffEmailNotifications');
             CommentsUtil::sendNotificationOnNewComment($conversation, $comment, $jack, array($steven, $super));
-            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAll();
-            $emailMessage  = $emailMessages[1];
+            $emailMessage  = $emailMessages[2];
             $this->assertEquals(1, count($emailMessage->recipients));
         }
     }

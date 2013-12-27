@@ -347,7 +347,7 @@
         protected function isLanguageADefaultLanguageForAnyUsers($language)
         {
             assert('is_string($language)');
-            $tableName = User::getTableName('User');
+            $tableName = User::getTableName();
             $beans = ZurmoRedBean::find($tableName, "language = '$language'");
             if (count($beans) > 0)
             {

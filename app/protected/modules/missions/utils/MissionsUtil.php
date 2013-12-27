@@ -244,12 +244,13 @@
         {
             $emailContent  = new EmailMessageContent();
             $url           = CommentsUtil::getUrlToEmail($mission);
+            $shortUrl      = ShortUrlUtil::createShortUrl($url);
             $textContent   = Zurmo::t('MissionsModule', "Hello, {lineBreak}There is a new mission. " .
                                     "Be the first one to start it and get this great reward: {reward}." .
                                     "{lineBreak}{lineBreak} {url}",
                                     array('{lineBreak}' => "\n",
                                           '{reward}'    => $mission->reward,
-                                          '{url}'       => ZurmoHtml::link($url, $url)
+                                          '{url}'       => $shortUrl
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::resolveNotificationTextTemplate($textContent, $user);
             $htmlContent = Zurmo::t('MissionsModule', "Hello, {lineBreak}There is a new {url}. " .

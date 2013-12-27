@@ -53,7 +53,8 @@
         protected function renderPreviousPageLinkContent()
         {
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                   Zurmo::t('Core', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
+                   Zurmo::t('Core', 'Previous')), '#',
+                   array('id' => static::getPreviousPageLinkId(), 'class' => 'cancel-button' ));
         }
 
         /**

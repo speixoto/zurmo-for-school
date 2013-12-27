@@ -39,7 +39,7 @@
      */
     class AmChart extends ZurmoWidget
     {
-        public $scriptFile = 'amcharts.js';
+        public $scriptFile = array('amcharts.js');
 
         public $assetFolderName = 'amChart';
 

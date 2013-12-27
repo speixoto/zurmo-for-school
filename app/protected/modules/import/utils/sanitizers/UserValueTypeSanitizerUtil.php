@@ -46,21 +46,22 @@
 
         public static function getUsernames()
         {
-            $sql = 'select username from ' . User::getTableName('User');
+            $sql = 'select username from ' . User::getTableName();
             return ZurmoRedBean::getCol($sql);
         }
 
         public static function getUserIds()
         {
-            $sql = 'select id from ' . User::getTableName('User');
+            $sql = 'select id from ' . User::getTableName();
             return ZurmoRedBean::getCol($sql);
         }
 
         public static function getUserExternalSystemIds()
         {
             $columnName = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            ExternalSystemIdUtil::addExternalIdColumnIfMissing(RedBeanModel::getTableName('User'));
-            $sql = 'select ' . $columnName . ' from ' . User::getTableName('User');
+            $userTableName = User::getTableName();
+            ExternalSystemIdUtil::addExternalIdColumnIfMissing($userTableName);
+            $sql = 'select ' . $columnName . ' from ' . $userTableName;
             return ZurmoRedBean::getCol($sql);
         }
 

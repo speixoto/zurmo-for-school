@@ -42,9 +42,9 @@
             $event    = new CEvent($model);
             $observer = new WorkflowsObserver();
             $observer->setDepth(25);
-            $this->assertEquals(0, count(Notification::getAll()));
+            $this->assertEquals(0, Notification::getCount());
             $observer->processWorkflowAfterSave($event);
-            $this->assertEquals(1, count(Notification::getAll()));
+            $this->assertEquals(1, Notification::getCount());
         }
     }
 ?>

@@ -74,8 +74,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelToListLink', 'renderType' => 'Edit'),
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type' => 'CancelToListLink', 'renderType' => 'Edit'),
                         ),
                     ),
                     'panels' => array(
@@ -138,8 +138,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelToListLink', 'renderType' => 'Edit'),
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type' => 'CancelToListLink', 'renderType' => 'Edit'),
                         ),
                     ),
                     'panels' => array(

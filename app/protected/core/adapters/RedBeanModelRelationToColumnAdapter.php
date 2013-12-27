@@ -121,7 +121,7 @@
             $columns[]      = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata(
                                                 RedBeanModelMemberToColumnUtil::resolve($linkName). '_id');
             $columns[]      = static::resolvePolymorphicTypeColumnByLinkName($linkName);
-            $tableName      = RedBeanModel::getTableName($relatedModelClassName);
+            $tableName      = $relatedModelClassName::getTableName();
             $polymorphicLinkColumns             = GeneralCache::getEntry(static::CACHE_KEY, array());
             $polymorphicLinkColumns[$tableName] = $columns;
             GeneralCache::cacheEntry(static::CACHE_KEY, $polymorphicLinkColumns);

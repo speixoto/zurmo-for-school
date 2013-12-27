@@ -100,7 +100,6 @@
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
                 {
                     assert('isset($elementInformation["type"])');
-                    assert('!in_array($elementInformation["type"], $elementTypes)');
                     $elementTypes[] = $elementInformation['type'];
                     $elementclassname = $elementInformation['type'] . 'ActionElement';
                     assert('class_exists($elementclassname)');

@@ -169,6 +169,24 @@
         {
             $campaign           = Campaign::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($campaign);
+            $this->processEdit($campaign);
+        }
+
+        public function actionCopy($id)
+        {
+            $copyToCampaign  = new Campaign();
+            $postVariableName   = get_class($copyToCampaign);
+            if (!isset($_POST[$postVariableName]))
+            {
+                $campaign = Campaign::getById((int)$id);
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($campaign);
+                CampaignCopyModelUtil::copy($campaign, $copyToCampaign);
+            }
+            $this->processEdit($copyToCampaign);
+        }
+        
+        protected function processEdit(Campaign $campaign)
+        {
             if ($campaign->status != Campaign::STATUS_ACTIVE)
             {
                 Yii::app()->user->setFlash('notification',
@@ -186,7 +204,7 @@
                                   $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
-
+        
         public function actionDelete($id)
         {
             $campaign = static::getModelAndCatchNotFoundAndDisplayError('Campaign', intval($id));

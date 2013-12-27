@@ -49,7 +49,6 @@
             $content      = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
             $linkContent  = $this->renderApplyResetContent() . $this->renderApplyLinkContent();
             $linkContent  = ZurmoHtml::tag('div', array('class' => 'form-toolbar clearfix'), $linkContent);
-            $this->renderEditableScripts();
             return $content . ZurmoHtml::tag('div', array('class' => 'view-toolbar-container'), $linkContent);
         }
 
@@ -102,23 +101,15 @@
             return $content;
         }
 
-        /**
-         * On keyUp, the search should be conducted.
-         */
-        protected function renderEditableScripts()
+        protected function renderResetScript()
         {
             $defaultSelectedAttributes = $this->model->getListAttributesSelector()->getMetadataDefinedListAttributeNames();
-            Yii::app()->clientScript->registerScript('selectedListAttributesScripts', "
-                $('#list-attributes-reset').unbind('click.reset');
-                $('#list-attributes-reset').bind('click.reset', function()
-                    {
-                        $('.select-list-attributes-view').hide();
-                        resetSelectedListAttributes('" .
+            return "$('.select-list-attributes-view').hide();
+                    resetSelectedListAttributes('" .
                             $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "', '" .
                             $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "_hidden', " .
                             CJSON::encode($defaultSelectedAttributes) . ");
-                    }
-                );");
+                   ";
         }
 
         protected function renderApplyLinkContent()
@@ -137,7 +128,7 @@
             $params['label']       = Zurmo::t('Core', 'Reset');
             $params['htmlOptions'] = array('id'  => 'list-attributes-reset',
                                            'class' => 'default-btn',
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");' . $this->renderResetScript());
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
         }

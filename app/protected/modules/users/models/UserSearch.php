@@ -48,7 +48,7 @@
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
-            $personTableName   = RedBeanModel::getTableName('Person');
+            $personTableName   = Person::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $joinTablesAdapter->addFromTableAndGetAliasName($personTableName, "{$personTableName}_id");
             $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',

@@ -39,18 +39,6 @@
     */
     class ApiRestRoleTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetRole()
         {
             $super = User::getByUsername('super');
@@ -70,10 +58,9 @@
             $this->assertTrue($saved);
 
             $roles                 = Role::getAll();
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($roles[0]);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  = $this->getModelToApiDataUtilData($roles[0]);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/role/api/read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -99,12 +86,11 @@
             $compareData = array();
             foreach ($roles as $role)
             {
-                $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($role);
-                $compareData[] = $redBeanModelToApiDataUtil->getData();
+                $compareData[] = $this->getModelToApiDataUtilData($role);
             }
 
             //Test List
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/role/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(count($roles), count($response['data']['items']));
@@ -128,10 +114,21 @@
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new Role());
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/role/api/listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.zurmo.controllers.RoleApiController', true);
+            return 'ZurmoRoleApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'zurmo/role/api/';
         }
     }
 ?>

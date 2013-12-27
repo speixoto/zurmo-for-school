@@ -319,11 +319,12 @@
             return true;
         }
 
-        protected function renderWrapperAndActionElementMenu($title = null)
+        protected function renderWrapperAndActionElementMenu($title = null, $toolbar = 'toolbar')
         {
             assert('is_string($title) || $title === null');
+            assert('is_string($toolbar)');
             $content              = null;
-            $actionElementContent = $this->renderActionElementMenu($title);
+            $actionElementContent = $this->renderActionElementMenu($title, $toolbar);
             if ($actionElementContent != null)
             {
                 $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
@@ -337,20 +338,22 @@
          * Render a menu above the form layout. This includes buttons and/or
          * links to go to different views or process actions such as save or delete
          * @param null $title
+         * @param string $toolbar
          * @return mixed  A string containing the element's content.
          * @throws NotSupportedException
          */
-        protected function renderActionElementMenu($title = null)
+        protected function renderActionElementMenu($title = null, $toolbar = 'toolbar')
         {
+            assert('is_string($toolbar)');
             if ($title == null)
             {
                 $title = Zurmo::t('Core', 'Options');
             }
             $metadata  = $this::getMetadata();
             $menuItems = array('label' => $title, 'items' => array());
-            if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
+            if (isset($metadata['global'][$toolbar]) && is_array($metadata['global'][$toolbar]['elements']))
             {
-                foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
+                foreach ($metadata['global'][$toolbar]['elements'] as $elementInformation)
                 {
                     $elementClassName  = $elementInformation['type'] . 'ActionElement';
                     $params            = array_slice($elementInformation, 1);

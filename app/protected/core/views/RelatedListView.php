@@ -133,8 +133,8 @@
         protected function makeDataProviderBySearchAttributeData($searchAttributeData)
         {
             assert('is_array($searchAttributeData)');
-            $sortAttribute  = SearchUtil::resolveSortAttributeFromGetArray($this->modelClassName);
-            $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
+            $sortAttribute  = SearchUtil::resolveSortAttributeFromArray($this->modelClassName, $_GET);
+            $sortDescending =  SearchUtil::resolveSortDescendingFromArray($this->modelClassName, $_GET);
             return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, (bool)$sortDescending,
                                                                 $searchAttributeData, $this->resolveConfigForDataProvider());
         }

@@ -112,7 +112,7 @@
             $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $searchForm->setKanbanBoard(new KanbanBoard(new AAA(), 'industry'));
-            SavedSearchUtil::resolveSearchFormByGetData($getData, $searchForm);
+            SavedSearchUtil::resolveSearchFormByData($getData, $searchForm);
             $this->assertEquals('myTest',                                   $searchForm->savedSearchName);
             $this->assertEquals('abcdef',                                   $searchForm->anyMixedAttributes);
             $this->assertEquals('xyz',                                      $searchForm->getAnyMixedAttributesScope());

@@ -79,9 +79,9 @@
         public static function updateValueByDataIdAndOldValueAndNewValue($customFieldDataId, $oldValue, $newValue)
         {
             $quote                         = DatabaseCompatibilityUtil::getQuote();
-            $customFieldTableName          = static::getTableName('MultipleValuesCustomField');
-            $baseCustomFieldTableName      = static::getTableName('BaseCustomField');
-            $customFieldValueTableName     = static::getTableName('CustomFieldValue');
+            $customFieldTableName          = MultipleValuesCustomField::getTableName();
+            $baseCustomFieldTableName      = BaseCustomField::getTableName();
+            $customFieldValueTableName     = CustomFieldValue::getTableName();
             $baseCustomFieldJoinColumnName = $baseCustomFieldTableName . '_id';
             $valueAttributeColumnName      = 'value';
             $dataAttributeColumnName       = static::getForeignKeyName('BaseCustomField', 'data');

@@ -50,8 +50,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'ConfigurationLink'),
                             array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'ConfigurationLink'),
                             array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
                     ),

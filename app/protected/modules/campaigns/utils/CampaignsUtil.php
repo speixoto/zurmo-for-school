@@ -45,16 +45,34 @@
          */
         public static function markProcessedCampaignsAsCompleted($pageSize = null)
         {
-            $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $pageSize);
+            if($pageSize != null)
+            {
+                $resolvedPageSize = $pageSize + 1;
+            }
+            else
+            {
+                $resolvedPageSize = $pageSize;
+            }
+            $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $resolvedPageSize);
+            $campaignsProcessed  = 0;
             foreach ($processingCampaigns as $processingCampaign)
             {
-                if (static::areAllCampaignItemsProcessed($processingCampaign->id))
+                if($campaignsProcessed < $pageSize || $pageSize == null)
                 {
-                    $processingCampaign->status = Campaign::STATUS_COMPLETED;
-                    if (!$processingCampaign->save())
+                    if (static::areAllCampaignItemsProcessed($processingCampaign->id))
                     {
-                        return false;
+                        $processingCampaign->status = Campaign::STATUS_COMPLETED;
+                        if (!$processingCampaign->save())
+                        {
+                            return false;
+                        }
                     }
+                    $campaignsProcessed ++;
+                }
+                else
+                {
+                    Yii::app()->jobQueue->add('CampaignMarkCompleted', 5);
+                    break;
                 }
             }
             return true;

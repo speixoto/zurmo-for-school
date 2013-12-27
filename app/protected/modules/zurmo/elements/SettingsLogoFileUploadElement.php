@@ -46,7 +46,7 @@
 
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof ZurmoConfigurationForm');
+//            assert('$this->model instanceof ZurmoUserInterfaceConfigurationForm');
             $existingFilesInformation = array();
 
             if (!empty($this->model->logoFileData))

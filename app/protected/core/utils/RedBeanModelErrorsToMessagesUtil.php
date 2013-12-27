@@ -38,7 +38,8 @@
     {
         /**
          * Make an array of message strings by RedBeanModel errors
-         * @param array $errors RedBeanModel errors
+         * @param RedBeanModel $model
+         * @return array
          */
         public static function makeMessagesByModel(RedBeanModel $model)
         {
@@ -52,7 +53,7 @@
                         $relationModelClassName = $model->getRelationModelClassName($attributeName);
                         foreach ($errorOrRelatedError as $relatedError)
                         {
-                            if ($relatedError != '')
+                            if ($relatedError != '' && !is_array($relatedError))
                             {
                                 $messages[] = LabelUtil::
                                               makeModelAndAttributeNameCombinationLabel(get_class($model), $attributeName)

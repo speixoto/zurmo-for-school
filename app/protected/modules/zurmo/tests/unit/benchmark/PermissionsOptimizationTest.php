@@ -55,7 +55,7 @@
             $saved = $everyone->save();
             assert('$saved'); // Not Coding Standard
 
-            Permission::removeAll();
+            Permission::deleteAll();
             PermissionsCache::forgetAll();
         }
 
@@ -258,7 +258,7 @@
             // because it will get it from the db cached permissions.
             $this->assertWithinTolerance($firstTime, $fourthTime, 0.005);
 
-            Permission::removeAll();
+            Permission::deleteAll();
         }
 
         protected function setSomePermissions()

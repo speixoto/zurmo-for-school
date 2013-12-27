@@ -67,7 +67,6 @@
 		cursor:pointer;
 		&:foucs{
 			outline: none;
-
 		}
 	}
 	div{
@@ -79,14 +78,12 @@
 		margin-left: 0;
 		top: -10px;
 		span{
-			//color:#545454;
+			//color:@textColor;
 			display: block;
 			padding: 0 6px 0 6px;
 			background: none;
-
 		}
 	}
-
 	.icon-contacts:before{
 		content: "y";
 	}
@@ -194,7 +191,7 @@
 .panelTitle{
 	font-size:13px;
 	font-weight:bold;
-	++.themeColor;
+    color: @themeColor;
 	margin:10px 0;
 }
 
@@ -249,6 +246,7 @@
 	top: 50%;
 	margin-top: -34px;
 	font-size: 12px;
+	color: @themeColor;
 	&:before{
 		content:"j";
 		.symbly(24px);

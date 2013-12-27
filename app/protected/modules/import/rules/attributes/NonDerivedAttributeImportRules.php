@@ -41,6 +41,10 @@
     {
         protected $attributeName;
 
+        protected $penultimateModelClassName;
+
+        protected $penultimateAttributeName;
+
         public function __construct($model, $attributeName)
         {
             parent::__construct($model);
@@ -90,8 +94,30 @@
                                                     $value,
                                                     $columnName,
                                                     $columnMappingData,
-                                                    $importSanitizeResultsUtil);
+                                                    $importSanitizeResultsUtil,
+                                                    $this->penultimateModelClassName,
+                                                    $this->penultimateAttributeName);
             return array($this->getModelAttributeName() => $value);
+        }
+
+        public function getPenultimateModelClassName()
+        {
+            return $this->penultimateModelClassName;
+        }
+
+        public function setPenultimateModelClassName($penultimateModelClassName)
+        {
+            $this->penultimateModelClassName = $penultimateModelClassName;
+        }
+
+        public function getPenultimateAttributeName()
+        {
+            return $this->penultimateAttributeName;
+        }
+
+        public function setPenultimateAttributeName($penultimateAttributeName)
+        {
+            $this->penultimateAttributeName = $penultimateAttributeName;
         }
     }
 ?>

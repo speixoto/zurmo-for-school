@@ -49,15 +49,8 @@
         public $defaultTestToEmailAddress;
         public $gamificationModalNotificationsEnabled;
         public $realtimeUpdatesEnabled;
-        public $logoFileData;
         public $reCaptchaPrivateKey;
         public $reCaptchaPublicKey;
-
-        const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
-        const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
-        const DEFAULT_LOGO_HEIGHT           = 32;
-        const DEFAULT_LOGO_WIDTH            = 107;
-        const LOGO_THUMB_FILE_NAME_PREFIX   = 'logoThumb-';
 
         public function rules()
         {
@@ -84,7 +77,6 @@
                 array('gamificationModalNotificationsEnabled',  'boolean'),
                 array('realtimeUpdatesEnabled',                 'boolean'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
-                array('logoFileData',                           'type',      'type' => 'array'),
                 array('reCaptchaPrivateKey',                    'type',      'type' => 'string'),
                 array('reCaptchaPublicKey',                     'type',      'type' => 'string'),
             );

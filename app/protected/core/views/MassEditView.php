@@ -85,7 +85,7 @@
         {
             $metadata = self::getMetadata();
             $massEditScript = '';
-            $content = '<table>';
+            $content = '<table class="form-fields">';
             $content .= '<colgroup>';
             $content .= '<col class="col-checkbox" style="width:36px"/><col style="width:20%" /><col/>';
             $content .= '</colgroup>';

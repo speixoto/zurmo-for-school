@@ -1003,8 +1003,8 @@
         protected function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
                                                             $precedingRelation = null)
         {
-            $modelClassName = get_class($this->model);
-            return $modelClassName::relationLinksToPrecedingRelation($relation, $precedingModel, $precedingRelation);
+            return RedBeanModel::relationLinksToPrecedingRelation(get_class($this->model), $relation,
+                                                                  get_class($precedingModel), $precedingRelation);
         }
 
         /**

@@ -67,6 +67,13 @@
                     {
                         throw new FailedToSaveModelException("Unable to save campaign");
                     }
+                    //Run queue job since the campaign items are all generated
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+                }
+                else
+                {
+                    //Run job again, since it has more items to generate
+                    Yii::app()->jobQueue->add('CampaignGenerateDueCampaignItems', 5);
                 }
             }
             return true;
@@ -80,8 +87,8 @@
             }
             $contacts = array();
             $quote    = DatabaseCompatibilityUtil::getQuote();
-            $marketingListMemberTableName  = RedBeanModel::getTableName('MarketingListMember');
-            $campaignItemTableName = RedBeanModel::getTableName('CampaignItem');
+            $marketingListMemberTableName  = MarketingListMember::getTableName();
+            $campaignItemTableName = CampaignItem::getTableName();
             $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql  .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
             $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";
@@ -110,12 +117,15 @@
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return true;
             }
-            return false;
         }
 
         /**

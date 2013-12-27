@@ -55,6 +55,7 @@
                         'MultipleContactsForMeeting',
                     ),
                     'nonPlaceableAttributeNames' => array(
+                        'processedForLatestActivity',
                         'latestDateTime',
                         'owner'
                     ),
