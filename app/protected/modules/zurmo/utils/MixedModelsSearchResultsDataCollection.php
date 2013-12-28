@@ -82,8 +82,8 @@
                     $sanitizedSearchAttributes
                  );
             $listViewClassName = $module::getPluralCamelCasedName() . 'ForMixedModelsSearchListView';
-            $sortAttribute     = SearchUtil::resolveSortAttributeFromArray($modelClassName,);
-            $sortDescending    = SearchUtil::resolveSortDescendingFromArray($modelClassName,);
+            $sortAttribute     = SearchUtil::resolveSortAttributeFromArray($modelClassName, $_GET);
+            $sortDescending    = SearchUtil::resolveSortDescendingFromArray($modelClassName, $_GET);
             if ($forceEmptyResults)
             {
                 $dataProviderClass = 'EmptyRedBeanModelDataProvider';
