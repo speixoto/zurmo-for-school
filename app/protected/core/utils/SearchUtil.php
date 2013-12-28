@@ -166,7 +166,7 @@
             $sortAttribute = null;
             if (!empty($sourceData[$getArrayPrefixName . '_sort']))
             {
-                $sortAttribute = SearchUtil::getSortAttributeFromSortString($_GET[$getArrayPrefixName . '_sort']);
+                $sortAttribute = SearchUtil::getSortAttributeFromSortString($sourceData[$getArrayPrefixName . '_sort']);
             }
             return $sortAttribute;
         }

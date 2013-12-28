@@ -68,22 +68,23 @@
         public function getListView($moduleName, $forceEmptyResults = false)
         {
             assert('is_string($moduleName)');
-            $pageSize = $this->pageSize;
-            $module = Yii::app()->findModule($moduleName);
-            $searchFormClassName = $module::getGlobalSearchFormClassName();
-            $modelClassName = $module::getPrimaryModelName();
-            $model = new $modelClassName(false);
-            $searchForm = new $searchFormClassName($model);
+            $sourceData                = GetUtil::getData();
+            $pageSize                  = $this->pageSize;
+            $module                    = Yii::app()->findModule($moduleName);
+            $searchFormClassName       = $module::getGlobalSearchFormClassName();
+            $modelClassName            = $module::getPrimaryModelName();
+            $model                     = new $modelClassName(false);
+            $searchForm                = new $searchFormClassName($model);
             $sanitizedSearchAttributes = MixedTermSearchUtil::
                     getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+            $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                     $searchForm,
                     $this->user->id,
                     $sanitizedSearchAttributes
                  );
-            $listViewClassName = $module::getPluralCamelCasedName() . 'ForMixedModelsSearchListView';
-            $sortAttribute     = SearchUtil::resolveSortAttributeFromArray($modelClassName, $_GET);
-            $sortDescending    = SearchUtil::resolveSortDescendingFromArray($modelClassName, $_GET);
+            $listViewClassName         = $module::getPluralCamelCasedName() . 'ForMixedModelsSearchListView';
+            $sortAttribute             = SearchUtil::resolveSortAttributeFromArray($modelClassName, $sourceData);
+            $sortDescending            = SearchUtil::resolveSortDescendingFromArray($modelClassName, $sourceData);
             if ($forceEmptyResults)
             {
                 $dataProviderClass = 'EmptyRedBeanModelDataProvider';
