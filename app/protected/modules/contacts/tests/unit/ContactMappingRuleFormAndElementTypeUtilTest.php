@@ -52,8 +52,8 @@
             $this->assertEquals(2, count($collection));
             $this->assertEquals('ImportMappingRuleDefaultModelNameId', $collection[0]['elementType']);
             $this->assertEquals('DefaultModelNameIdMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
-            $this->assertEquals('ImportMappingModelIdValueTypeDropDown', $collection[1]['elementType']);
-            $this->assertEquals('IdValueTypeMappingRuleForm', get_class($collection[1]['mappingRuleForm']));
+            $this->assertEquals('ImportMappingRelatedModelValueTypeDropDown', $collection[1]['elementType']);
+            $this->assertEquals('RelatedModelValueTypeMappingRuleForm', get_class($collection[1]['mappingRuleForm']));
 
             //Contact Derived
             $attributeImportRules = new ContactDerivedAttributeImportRules(new ImportModelTestItem(), 'contactDerived');
