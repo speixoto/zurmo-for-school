@@ -202,7 +202,7 @@
         public function renderPortletHeadContent()
         {
             $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('TasksModule', 'All Tasks'));
-            $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'));
+            $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'), array('class' => 'default-btn'));
             return ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $link);
         }
     }

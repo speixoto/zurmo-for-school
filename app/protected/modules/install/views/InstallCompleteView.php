@@ -71,7 +71,7 @@
             $content .= Zurmo::t('InstallModule', 'The next step is to install the demo data.');
             $content .= '<br/><br/>';
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Click Here to install the demo data')),
-                                        $demoDataUrl, array('class' => 'z-button'));
+                                        $demoDataUrl, array('class' => 'default-btn'));
             $content .= '</td></tr></table>';
             $content .= '</div>';
             $content .= '<div id="complete-table" style="display:none;">';
