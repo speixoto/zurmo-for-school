@@ -150,5 +150,10 @@
                                 getDataIndexedByDataAndTranslatedLabelsByLanguage($dropDownModel->data, Yii::app()->language);
             return $dataAndLabels;
         }
+
+        protected function getAttributeForDedupe()
+        {
+            return 'lastName';
+        }
     }
 ?>

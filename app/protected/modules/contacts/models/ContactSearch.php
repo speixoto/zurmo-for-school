@@ -40,15 +40,15 @@
          * For a give Contact name, run a partial search by
          * full name and retrieve contact models.
          * @param string $partialName
-         * @param int $pageSize
+         * @param null|int $pageSize
          * @param null|string $stateMetadataAdapterClassName
          * @param $autoCompleteOptions
          */
-        public static function getContactsByPartialFullName($partialName, $pageSize,
+        public static function getContactsByPartialFullName($partialName, $pageSize = null,
                                                     $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
         {
             assert('is_string($partialName)');
-            assert('is_int($pageSize)');
+            assert('is_int($pageSize) || $pageSize == null');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             $personTableName   = Person::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Contact');

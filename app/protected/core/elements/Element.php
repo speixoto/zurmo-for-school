@@ -150,6 +150,7 @@
             $data['content'] = $this->renderControlEditable();
             $data['error']   = $this->renderError();
             $data['colspan'] = $this->getColumnSpan();
+            $this->registerScriptForDedupe();
             return $this->resolveContentTemplate($this->editableTemplate, $data);
         }
 
@@ -447,6 +448,63 @@
         public function renderAsNonEditable()
         {
             return $this->renderNonEditable();
+        }
+
+        /**
+         * If this element is marked to dedupe it renders the dedupe script that will search for dedupes
+         */
+        protected function registerScriptForDedupe()
+        {
+            if (isset($this->params['shouldDedupe']) && $this->params['shouldDedupe'])
+            {
+                $id         = $this->getInputIdForDedupe();
+                $ajaxScript = ZurmoHtml::ajax(array(
+                    'type'       => 'GET',
+                    'data'       => array('attribute' => $this->getAttributeForDedupe(),
+                                          'value'     => "js:$('#{$id}').val()",
+                                    ),
+                    'url'        => 'searchForDedupes',
+                    'success'    => "js:function(data, textStatus, jqXHR){
+                                            var returnObj = jQuery.parseJSON(data);
+                                            if (returnObj != null)
+                                            {
+                                                $('#" . EditAndDetailsView::DEDUPE_ELEMENT_FOR_EDIT_DIV . "').html(returnObj.content);
+                                                $('#FlashMessageBar').jnotifyAddMessage({
+                                                    text: '<a href=\"#\" onclick=\"$(\'#" . EditAndDetailsView::DEDUPE_ELEMENT_FOR_EDIT_DIV . "\').show(); return false;\">' + returnObj.message + '</a>',
+                                                    permanent: true,
+                                                    showIcon: false,
+                                                    disappearTime: 10000,
+                                                    removeExisting: true
+                                                })
+                                            }
+                                     }"
+                ));
+                $js = "$('#{$id}' ).blur(function() {
+                            if ($('#{$id}').val() != ''){ {$ajaxScript} }
+                       });
+
+                       $('#notify-message-for-dedupe').on('click', function(){console.log('test')});
+                ";
+                Yii::app()->getClientScript()->registerScript($id . '#dedupe-for-edit', $js);
+            }
+        }
+
+        /**
+         * The input id that will trigger the dedupe ajax action
+         * @return string
+         */
+        protected function getInputIdForDedupe()
+        {
+            return $this->getEditableInputId($this->getAttributeForDedupe());
+        }
+
+        /**
+         * Returns the attribute used for deduping
+         * @return string
+         */
+        protected function getAttributeForDedupe()
+        {
+            return $this->attribute;
         }
     }
 ?>

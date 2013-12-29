@@ -71,7 +71,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'TitleFullName'),
+                                                array('attributeName' => 'null',
+                                                      'type'          => 'TitleFullName',
+                                                      'shouldDedupe'  => true),
                                             ),
                                         ),
                                     )
@@ -116,7 +118,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
+                                                array('attributeName' => 'officePhone',
+                                                      'type'          => 'Phone',
+                                                      'shouldDedupe'  => true),
                                             ),
                                         ),
                                     )
@@ -134,7 +138,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'mobilePhone', 'type' => 'Phone'),
+                                                array('attributeName' => 'mobilePhone',
+                                                      'type'          => 'Phone',
+                                                      'shouldDedupe'  => true),
                                             ),
                                         ),
                                     )
@@ -152,7 +158,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'primaryEmail', 'type' => 'EmailAddressInformation'),
+                                                array('attributeName' => 'primaryEmail',
+                                                      'type'          => 'EmailAddressInformation',
+                                                      'shouldDedupe'  => true),
                                             ),
                                         ),
                                     )
@@ -161,7 +169,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'secondaryEmail', 'type' => 'EmailAddressInformation'),
+                                                array('attributeName' => 'secondaryEmail',
+                                                      'type'          => 'EmailAddressInformation',
+                                                      'shouldDedupe'  => true),
                                             ),
                                         ),
                                     )

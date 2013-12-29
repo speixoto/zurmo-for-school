@@ -91,7 +91,7 @@
         public function actionDetails($id)
         {
             $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
+                                    ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($contact), 'ContactsModule'), $contact);
             if (KanbanUtil::isKanbanRequest() === false)
             {
@@ -482,6 +482,36 @@
             else
             {
                 $this->redirect(Yii::app()->createUrl('/contacts/default/list'));
+            }
+        }
+
+        /**
+         * Overriding to implement the dedupe action for new contacts
+         */
+        public function actionSearchForDedupes($attribute, $value)
+        {
+            //TODO: @sergio: Add walkthrought test
+            assert('is_string($attribute)');
+            assert('is_string($value)');
+            $matchedModels = array();
+            if ($attribute == 'primaryEmail' || $attribute == 'secondaryEmail')
+            {
+                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
+            }
+            elseif ($attribute == 'lastName')
+            {
+                //TODO: @sergio: Should we seach by PartialFullName?
+                $matchedModels  = ContactSearch::getContactsByPartialFullName($value);
+            }
+            //TODO: @sergio: Add the getContactsByAnyPhone
+            if (count($matchedModels) > 0)
+            {
+                $message =  Zurmo::t('ZurmoModule',
+                              'There is {n} possible match.|There are {n} possible matches.',
+                              count($matchedModels)
+                );
+                $content = 'Render the view'; //TODO: @sergio: Render the view here
+                echo json_encode(array('message' => $message, 'content' => $content));
             }
         }
     }

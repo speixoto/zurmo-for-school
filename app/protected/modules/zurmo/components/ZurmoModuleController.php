@@ -459,5 +459,16 @@
                 throw new FailedToSaveModelException();
             }
         }
+
+        /**
+         * Override to implement
+         * @param string $attribute The attribute used to trigger the dedupe action
+         * @param string $value The value of the attribute for the new model
+         * @throws NotImplementedException
+         */
+        public function actionSearchForDedupes($attribute, $value)
+        {
+            throw new NotImplementedException();
+        }
     }
 ?>
