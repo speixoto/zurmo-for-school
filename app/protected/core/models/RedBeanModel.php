@@ -3155,7 +3155,7 @@
         {
             assert('is_string($precedingModelClassName)');
             assert('is_string($precedingRelation)');
-            foreach($model->getAttributes() as $attributeName => $notUsed)
+            foreach($model->attributeNames() as $attributeName)
             {
                 if($model->isRelation($attributeName) &&
                     ($model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||

@@ -112,7 +112,9 @@
             Yii::app()->user->userModel = User::getByUsername('super');
             $data = ImportRulesUtil::getImportRulesTypesForCurrentUser();
             $compareData = array(
+                'AccountAccountAffiliations'      => 'Account to Account Affiliations',
                 'Accounts'      => 'Accounts',
+                'AccountContactAffiliations'      => 'Account to Contact Affiliations',
                 'Contacts'      => 'Contacts',
                 'Leads'         => 'Leads',
                 'Meetings'      => 'Meetings',
