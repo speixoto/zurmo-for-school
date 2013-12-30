@@ -255,9 +255,9 @@
                 $title = "$title - $subtitle";
             }
             $defaultThemeName       = 'default';
-            $defaultThemeBaseUrl    =  Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
+            $defaultThemeBaseUrl    = Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
             $themeName              = Yii::app()->theme->name;
-            $themeBaseUrl           =  Yii::app()->themeManager->baseUrl . '/' . $themeName;
+            $themeBaseUrl           = Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
             $cs->registerCssFile($themeBaseUrl . '/css/keyframes.css');
@@ -293,7 +293,7 @@
             }
             else
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . Yii::app()->themeManager->getActiveThemeColor() . '.css');
+                Yii::app()->themeManager->registerThemeColorCss();
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');

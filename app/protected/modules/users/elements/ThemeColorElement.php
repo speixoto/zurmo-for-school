@@ -109,7 +109,6 @@
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName($this->getAttributeForRadioButtonList()) . "\"]').live('change', function(){
                           $removeScript
-                          console.log(this);
                           $(document.body).addClass(this.value);
                           $('head').append('<link rel=\"stylesheet\" href=\"$themeBaseUrl/zurmo-'+this.value+'.css\" type=\"text/css\" />');
                           });
