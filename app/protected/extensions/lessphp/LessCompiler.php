@@ -96,11 +96,11 @@
          */
         protected function setCompiledCustomCssPath()
         {
-            if (!is_dir(Yii::getPathOfAlias('application.runtime.uploads')))
+            if (!is_dir(Yii::getPathOfAlias('application.runtime.themes')))
             {
-                mkdir(Yii::getPathOfAlias('application.runtime.uploads'), 0755, true); // set recursive flag and permissions 0755
+                mkdir(Yii::getPathOfAlias('application.runtime.themes'), 0755, true); // set recursive flag and permissions 0755
             }
-            $this->compiledCustomCssPath = Yii::getPathOfAlias('application.runtime.uploads');
+            $this->compiledCustomCssPath = Yii::getPathOfAlias('application.runtime.themes');
         }
 
         /**
