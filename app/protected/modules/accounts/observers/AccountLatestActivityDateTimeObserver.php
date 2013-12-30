@@ -40,25 +40,32 @@
      */
     class AccountLatestActivityDateTimeObserver extends LatestActivityDateTimeObserver
     {
+
         public function init()
         {
             if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
             {
-                Task::model()->attachEventHandler('onAfterSave', array($this, 'updateAccountLatestActivityDateTimeByTask'));
+                $eventHandler = array($this, 'updateAccountLatestActivityDateTimeByTask');
+                Task::model()->attachEventHandler('onAfterSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['Task'] = array('onAfterSave', $eventHandler);
             }
             if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
             {
-                Note::model()->attachEventHandler('onAfterSave', array($this, 'updateAccountLatestActivityDateTimeByNote'));
+                $eventHandler = array($this, 'updateAccountLatestActivityDateTimeByNote');
+                Note::model()->attachEventHandler('onAfterSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['Note'] = array('onAfterSave', $eventHandler);
             }
             if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
             {
-                EmailMessage::model()->attachEventHandler('onAfterSave',
-                    array($this, 'updateAccountLatestActivityDateTimeByEmailMessage'));
+                $eventHandler = array($this, 'updateAccountLatestActivityDateTimeByEmailMessage');
+                EmailMessage::model()->attachEventHandler('onAfterSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['EmailMessage'] = array('onAfterSave', $eventHandler);
             }
             if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
             {
-                Meeting::model()->attachEventHandler('onBeforeSave',
-                    array($this, 'resolveModelLatestActivityDateTimeProcessFlagByMeeting'));
+                $eventHandler = array($this, 'resolveModelLatestActivityDateTimeProcessFlagByMeeting');
+                Meeting::model()->attachEventHandler('onBeforeSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['Meeting'] = array('onBeforeSave', $eventHandler);
             }
         }
 

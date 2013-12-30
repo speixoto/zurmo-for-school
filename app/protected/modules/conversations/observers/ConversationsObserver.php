@@ -39,6 +39,8 @@
      */
     class ConversationsObserver extends CComponent
     {
+        protected $attachedEventHandlersIndexedByModelClassName = array();
+
         public function init()
         {
             $metadata                = Conversation::getMetadata();
@@ -49,7 +51,20 @@
             }
             foreach ($observedModelClassNames as $modelClassName)
             {
-                $modelClassName::model()->attachEventHandler('onAfterDelete', array($this, 'deleteConversationItems'));
+                $eventHandler = array($this, 'deleteConversationItems');
+                $modelClassName::model()->attachEventHandler('onAfterDelete', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName[$modelClassName] = array('onAfterDelete', $eventHandler);
+            }
+        }
+
+        /**
+         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
+         */
+        public function destroy()
+        {
+            foreach($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
+            {
+                $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
             }
         }
 

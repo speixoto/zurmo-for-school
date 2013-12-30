@@ -48,6 +48,16 @@
         }
 
         /**
+         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
+         */
+        public function destroy()
+        {
+            Contact::model()->detachEventHandler('onAfterSave', array($this, 'processFromContactSide'));
+            Contact::model()->detachEventHandler('onRedBeanOneToManyRelatedModelsChange',
+                                                 array($this, 'processFromContactSide'));
+        }
+
+        /**
          * @param CEvent $event
          */
         public function processFromContactSide(CEvent $event)

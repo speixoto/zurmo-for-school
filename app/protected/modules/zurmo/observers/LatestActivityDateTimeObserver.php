@@ -40,6 +40,19 @@
      */
     abstract class LatestActivityDateTimeObserver extends CComponent
     {
+        protected $attachedEventHandlersIndexedByModelClassName = array();
+
+        /**
+         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
+         */
+        public function destroy()
+        {
+            foreach($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
+            {
+                $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
+            }
+        }
+
         /**
          * Given a event, check that the event's sender is a meeting.  this is a beforeSave event
          * that should reset the latestActivityDateTimeProcessFlag if the startDateTime has changed.
