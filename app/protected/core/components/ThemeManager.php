@@ -302,8 +302,12 @@
             }
             else
             {
-                $cs->registerCssFile(Yii::app()->assetManager->publish(Yii::app()->lessCompiler->compiledCustomCssPath .
-                                        '/zurmo-custom.css' ));
+                $filePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+                if (!is_file($filePath))
+                {
+                    Yii::app()->lessCompiler->compileCustom();
+                }
+                $cs->registerCssFile(Yii::app()->assetManager->publish($filePath));
             }
 
         }
