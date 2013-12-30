@@ -276,7 +276,7 @@
 
             //Test Create
             $data['name'] = 'new name with owner only';
-            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. null doesn't send it.
             $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
 
             $response = $this->createApiCallWithRelativeUrl('customPost/', 'POST', $headers, array('data' => $data));

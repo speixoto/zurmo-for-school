@@ -501,11 +501,13 @@
         {
             Yii::app()->workflowsObserver; //runs init();
         }
+
         public function handleLoadReadPermissionSubscriptionObserver($event)
         {
             $readPermissionSubscriptionObserver = new ReadPermissionSubscriptionObserver();
             $readPermissionSubscriptionObserver->init();
         }
+
         public function handleLoadContactLatestActivityDateTimeObserver($event)
         {
             Yii::app()->contactLatestActivityDateTimeObserver;

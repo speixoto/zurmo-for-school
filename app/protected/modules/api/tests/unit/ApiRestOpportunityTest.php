@@ -55,7 +55,7 @@
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('First Opportunity', $super);
             $compareData  = $this->getModelToApiDataUtilData($opportunity);
 
-            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunity->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $opportunity->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
@@ -85,12 +85,12 @@
             $opportunities = Opportunity::getByName('First Opportunity');
             $this->assertEquals(1, count($opportunities));
 
-            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('The ID specified was invalid.', $response['message']);
@@ -154,7 +154,7 @@
             );
             $data['stage']['value']     = $stageValues[1];
 
-            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertArrayHasKey('id', $response['data']);
@@ -276,7 +276,7 @@
             $data['stage']['value']     = $stageValues[1];
             $data['owner']['id']        = $billy->id;
 
-            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertArrayHasKey('id', $response['data']);
@@ -396,10 +396,10 @@
                 )
             );
             $data['stage']['value']     = $stageValues[1];
-            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. null doesn't send it.
             $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
 
-            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertArrayHasKey('id', $response['data']);
@@ -486,7 +486,7 @@
             $data['explicitReadWriteModelPermissions']          = $explicitReadWriteModelPermissions;
             $compareData['description']                         = "changed description";
             $compareData['explicitReadWriteModelPermissions']   = $explicitReadWriteModelPermissions;
-            $response =$this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers,
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers,
                                                                                                 array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -498,7 +498,7 @@
             ksort($response['data']);
             $this->assertEquals($compareData, $response['data']);
 
-            $response =$this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $compareData['id'], 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             unset($response['data']['modifiedDateTime']);
@@ -526,7 +526,7 @@
             $this->assertEquals(1, count($opportunities));
             $compareData  = $this->getModelToApiDataUtilData($opportunities[0]);
 
-            $response =$this->createApiCallWithRelativeUrl('list/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -549,7 +549,7 @@
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new Opportunity());
 
-            $response =$this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
@@ -581,17 +581,17 @@
             $this->assertEquals(1, count($opportunities));
             $data['description']                = "description 20";
 
-            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
@@ -603,17 +603,17 @@
             $saved = $notAllowedUser->save();
             $this->assertTrue($saved);
 
-            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
-            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
 
-            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
@@ -631,7 +631,7 @@
             $data['explicitReadWriteModelPermissions'] = array(
                 'type' => ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP
             );
-            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
@@ -642,18 +642,18 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
             unset($data);
             $data['description']                = "description 21";
-            $response =$this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $opportunities[0]->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals('description 21', $response['data']['description']);
 
-            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have permissions for this action.', $response['message']);
@@ -668,11 +668,11 @@
             );
 
             //Test Delete
-            $response =$this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $opportunities[0]->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response =$this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $opportunities[0]->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
@@ -715,7 +715,7 @@
                 'sort' => 'name',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -728,7 +728,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, count($response['data']['items']));
@@ -741,7 +741,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['name'] = 'First Opportunity';
             $searchParamsQuery = http_build_query($searchParams);
-            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
@@ -753,7 +753,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['name'] = 'First Opportunity 2';
             $searchParamsQuery = http_build_query($searchParams);
-            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(0, $response['data']['totalCount']);
@@ -771,7 +771,7 @@
                 'sort' => 'name.desc',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -784,7 +784,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, count($response['data']['items']));
@@ -805,7 +805,7 @@
                 'sort' => 'name.desc',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response =$this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
@@ -860,7 +860,7 @@
                 'sort' => 'name.asc',
            );
 
-            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -872,7 +872,7 @@
 
             // Get second page
             $data['pagination']['page'] = 2;
-            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -939,7 +939,7 @@
                 'sort' => 'name.desc',
            );
 
-            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
 
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -951,7 +951,7 @@
 
             // Get second page
             $data['pagination']['page'] = 2;
-            $response =$this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -978,7 +978,7 @@
             // Provide data without required fields.
             $data['companyName']         = "Test 123";
 
-            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(4, count($response['errors']));
@@ -986,7 +986,7 @@
             $id = $opportunity->id;
             $data = array();
             $data['name']                = '';
-            $response =$this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
@@ -1009,7 +1009,7 @@
             // Provide data with wrong type.
             $data['probability']         = str_repeat('a', 128);
 
-            $response =$this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(5, count($response['errors']));
@@ -1017,7 +1017,7 @@
             $id = $opportunity->id;
             $data = array();
             $data['name']         = str_repeat('a', 128);
-            $response =$this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));

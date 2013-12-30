@@ -96,7 +96,7 @@
             $link         = $this->renderGravatarLink();
             $primaryEmail = $this->model->primaryEmail;
             $radioOptions = array(User::AVATAR_TYPE_DEFAULT       => Zurmo::t('UsersModule', 'No Profile Picture'),
-                                  User::AVATAR_TYPE_PRIMARY_EMAIL => Zurmo::t('UsersModule','Use Gravatar with primary email ({primaryEmail})'
+                                  User::AVATAR_TYPE_PRIMARY_EMAIL => Zurmo::t('UsersModule', 'Use Gravatar with primary email ({primaryEmail})'
                                                                               . ', ' . $link, array('{primaryEmail}' => $primaryEmail)),
                                   User::AVATAR_TYPE_CUSTOM_EMAIL  => Zurmo::t('UsersModule', 'Use Gravatar with custom email'));
             return $radioOptions;
@@ -123,11 +123,11 @@
                                       $label . $textField . $error . $tooltip);
             return $content;
         }
-        
+
         protected function renderGravatarLink()
         {
             $content  = Zurmo::t('UsersModule', 'Don\'t Have A Gravatar?');
-            $content .= ZurmoHtml::link('Click Here', 'http://gravatar.com/', array('target'=>'_blank', 'class'=>'simple-link'));
+            $content .= ZurmoHtml::link('Click Here', 'http://gravatar.com/', array('target' => '_blank', 'class' => 'simple-link'));
             return $content;
         }
 

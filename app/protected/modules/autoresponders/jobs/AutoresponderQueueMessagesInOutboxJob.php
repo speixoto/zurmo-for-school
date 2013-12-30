@@ -94,7 +94,7 @@
         protected function processRun()
         {
             $batchSize                   = $this->resolveBatchSize();
-            if($batchSize != null)
+            if ($batchSize != null)
             {
                 $resolvedBatchSize = $batchSize + 1;
             }
@@ -108,7 +108,7 @@
             $modelsProcessedCount = 0;
             foreach ($autoresponderItemsToProcess as $autoresponderItem)
             {
-                if($modelsProcessedCount < $batchSize || $batchSize == null)
+                if ($modelsProcessedCount < $batchSize || $batchSize == null)
                 {
                     try
                     {

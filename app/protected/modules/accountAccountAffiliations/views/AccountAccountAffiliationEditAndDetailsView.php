@@ -48,7 +48,7 @@
                     ),
                     'secondToolbar' => array(
                         'elements' => array(
-                             array('type' => 'AuditEventsModalListLink', 'iconClass' => 'icon-audit',),
+                             array('type' => 'AuditEventsModalListLink', 'iconClass' => 'icon-audit'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -92,7 +92,7 @@
 
         protected function resolveAndRenderActionElementMenuForEdit()
         {
-            if($this->model->id > 0)
+            if ($this->model->id > 0)
             {
                 return $this->renderWrapperAndActionElementMenu(null, 'secondToolbar');
             }

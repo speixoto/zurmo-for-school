@@ -48,7 +48,7 @@
          */
         public function canUserAccessPortlet(User $user)
         {
-            if(RightsUtil::canUserAccessModule('AccountsModule', $user) &&
+            if (RightsUtil::canUserAccessModule('AccountsModule', $user) &&
                RightsUtil::canUserAccessModule('ContactsModule', $user))
             {
                 return true;

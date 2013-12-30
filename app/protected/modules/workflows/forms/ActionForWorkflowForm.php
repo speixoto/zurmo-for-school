@@ -63,7 +63,7 @@
          * This action is if you trigger a contact model and then want to subscribe the contact to a marketing list
          */
         const TYPE_SUBSCRIBE_TO_LIST = 'SubscribeToList';
-        
+
         /**
          * This action is if you trigger a contact model and then want to unsubscribe the contact from a marketing list
          */
@@ -147,7 +147,7 @@
         {
             return Zurmo::t('Core', 'Subscribe To List');
         }
-        
+
         public static function getLabelForUnsubscribeFromList()
         {
             return Zurmo::t('Core', 'Unsubscribe From List');
@@ -574,8 +574,8 @@
         public function getDisplayLabel()
         {
             $typeDataAndLabels = ActionForWorkflowForm::getTypeDataAndLabels();
-            if ($this->type == self::TYPE_UPDATE_SELF || 
-                    $this->type == self::TYPE_SUBSCRIBE_TO_LIST || 
+            if ($this->type == self::TYPE_UPDATE_SELF ||
+                    $this->type == self::TYPE_SUBSCRIBE_TO_LIST ||
                     $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return $typeDataAndLabels[$this->type];
@@ -692,8 +692,8 @@
          */
         protected function getModelClassNameAndResolveForRelations()
         {
-            if ($this->type == self::TYPE_UPDATE_SELF || 
-                    $this->type == self::TYPE_SUBSCRIBE_TO_LIST || 
+            if ($this->type == self::TYPE_UPDATE_SELF ||
+                    $this->type == self::TYPE_SUBSCRIBE_TO_LIST ||
                     $this->type == self::TYPE_UNSUBSCRIBE_FROM_LIST)
             {
                 return $this->_modelClassName;

@@ -52,7 +52,7 @@
             curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($handle, CURLOPT_FRESH_CONNECT, TRUE);
+            curl_setopt($handle, CURLOPT_FRESH_CONNECT, true);
 
             switch($method)
             {

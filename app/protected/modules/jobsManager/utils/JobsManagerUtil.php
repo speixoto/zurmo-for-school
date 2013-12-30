@@ -80,7 +80,6 @@
             $streamers = array($messageStreamer, $jobManagerFileMessageStreamer);
             foreach ($streamers as $streamer)
             {
-
                 $streamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
                                         array('{seconds}' => $timeLimit)));
                 $streamer->add(Zurmo::t('JobsManagerModule', 'Sending output to runtime/jobLogs/{type}.log',
@@ -91,7 +90,6 @@
             }
             if ($useMessageStreamer)
             {
-
                 $messageLogger = new $messageLoggerClassName(array($messageStreamer, $jobManagerFileMessageStreamer));
             }
             else
@@ -223,13 +221,13 @@
                     $jobLog->message       = $errorMessage;
                 }
                 $jobLog->isProcessed = false;
-                if(!$jobLog->save())
+                if (!$jobLog->save())
                 {
                     throw new FailedToSaveModelException();
                 }
                 $stuckJob               = StuckJob::getByType($type);
                 $stuckJob->quantity     = 0;
-                if(!$stuckJob->save())
+                if (!$stuckJob->save())
                 {
                     throw new FailedToSaveModelException();
                 }

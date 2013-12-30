@@ -901,7 +901,7 @@
 
             return false;
         }
-        
+
         public static function isMinScriptCacheRuntimeDirectoryWritable($instanceRoot)
         {
             $minScriptCacheRuntimeDirectory   = "$instanceRoot/protected/runtime/minScript/cache";
@@ -913,7 +913,7 @@
 
             return false;
         }
-        
+
         /**
          * Writes into perInstance.php that the installation is complete.
          */

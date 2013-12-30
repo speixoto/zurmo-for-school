@@ -53,7 +53,7 @@
             $matchedModels = array();
             $penultimateModelClassName = $this->penultimateModelClassName;
             $classToEvaluate        = new ReflectionClass($penultimateModelClassName);
-            if($penultimateModelClassName != null && $classToEvaluate->isSubclassOf('Item'))
+            if ($penultimateModelClassName != null && $classToEvaluate->isSubclassOf('Item'))
             {
                 $matchedModels = $penultimateModelClassName::getByName($value);
             }

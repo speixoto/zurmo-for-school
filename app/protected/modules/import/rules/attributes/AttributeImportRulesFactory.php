@@ -60,7 +60,7 @@
         {
             assert('is_string($importRulesType)');
             assert('is_string($attributeIndexOrDerivedType)');
-            assert('is_null($penultimateModelClassName) || is_string($penultimateModelClassName)');
+            assert('($penultimateModelClassName === null) || is_string($penultimateModelClassName)');
             $importRulesTypeClassName = ImportRulesUtil::getImportRulesClassNameByType($importRulesType);
             $attributeImportRulesType = $importRulesTypeClassName::getAttributeImportRulesType(
                                         $attributeIndexOrDerivedType);

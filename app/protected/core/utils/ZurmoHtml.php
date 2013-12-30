@@ -84,7 +84,7 @@
                                 {
                                     $content .= "<li>$relatedError</li>\n";
                                 }
-                                elseif($relatedError != '' && is_array($relatedError))
+                                elseif ($relatedError != '' && is_array($relatedError))
                                 {
                                     //For now do nothing, as this is too nested to matter.
                                     //This can be refactored if needed

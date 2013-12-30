@@ -126,7 +126,7 @@
                 $skippedColumns[] = $idColumnName;
             }
             //Dedupe fields processing
-            if(static::processDedupeAttributesToCheckForSkipIfRequired($importRules,
+            if (static::processDedupeAttributesToCheckForSkipIfRequired($importRules,
                                                                                $model,
                                                                                $mappingData,
                                                                                $rowBean,
@@ -134,16 +134,16 @@
                                                                                $importSanitizeResultsUtil,
                                                                                $skippedColumns) !== true)
             {
-                if(null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
+                if (null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
                 {
                     $model = $matchedModel;
                     $makeNewModel = false;
                 }
                 //Process the dedupe fields
-                foreach($importRules->getDedupeAttributes() as $dedupeField)
+                foreach ($importRules->getDedupeAttributes() as $dedupeField)
                 {
                     $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
-                    if(false !== $sourceColumnName)
+                    if (false !== $sourceColumnName)
                     {
                         $columnMappingData = $mappingData[$sourceColumnName];
                         static::processImportInformationForAttributeDataAndPopulateModel($importRules,
@@ -473,7 +473,6 @@
             }
         }
 
-
         protected static function resolveModelForModelDerivedAttribute(
                                   RedBeanModel $model,
                                   $importRulesType,
@@ -679,7 +678,6 @@
                                                   $afterSaveActionsData);
         }
 
-
         /**
          * Process mapped columns to check for matched record by column
          * @param ImportRules $importRules
@@ -700,10 +698,10 @@
             assert('$rowBean instanceof RedBean_OODBBean');
             $isSkipped = false;
             //Process the dedupe fields
-            foreach($importRules->getDedupeAttributes() as $dedupeField)
+            foreach ($importRules->getDedupeAttributes() as $dedupeField)
             {
                 $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
-                if(false !== $sourceColumnName)
+                if (false !== $sourceColumnName)
                 {
                     $columnMappingData      = $mappingData[$sourceColumnName];
                     $attributeValueData     = static::getAttributeValueData($importRules,

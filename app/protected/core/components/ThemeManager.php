@@ -309,7 +309,6 @@
                 }
                 $cs->registerCssFile(Yii::app()->assetManager->publish($filePath));
             }
-
         }
     }
 ?>

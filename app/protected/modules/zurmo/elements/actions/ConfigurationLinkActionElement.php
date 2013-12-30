@@ -55,6 +55,5 @@
         {
             return array('class' => 'cancel-button');
         }
-
     }
 ?>

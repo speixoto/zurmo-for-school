@@ -50,7 +50,7 @@
         public function resolveModelLatestActivityDateTimeProcessFlagByMeeting(Cevent $event)
         {
             assert('$event->sender instanceof Meeting');
-            if(array_key_exists('startDateTime', $event->sender->originalAttributeValues))
+            if (array_key_exists('startDateTime', $event->sender->originalAttributeValues))
             {
                 $event->sender->processedForLatestActivity = false;
             }
@@ -85,12 +85,12 @@
             try
             {
                 $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
-                if(DateTimeUtil::isDateTimeStringNull($castedDownModel->latestActivityDateTime) ||
+                if (DateTimeUtil::isDateTimeStringNull($castedDownModel->latestActivityDateTime) ||
                     $dateTime > $castedDownModel->latestActivityDateTime)
                 {
                     $castedDownModel->setLatestActivityDateTime($dateTime);
                     $saved = $castedDownModel->save();
-                    if(!$saved)
+                    if (!$saved)
                     {
                         throw new FailedToSaveModelException();
                     }
@@ -100,7 +100,7 @@
             {
                 //do nothing
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 //do nothing, since the current user cannot update the related model. Fail silently.
             }

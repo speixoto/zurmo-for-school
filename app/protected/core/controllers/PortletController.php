@@ -148,7 +148,7 @@
                                                             (bool)$portletsAreRemovable));
             echo $view->render();
         }
-        
+
         /**
          * Override in children classes if you want to add relationModelId to portlet params
          */

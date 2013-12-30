@@ -50,7 +50,7 @@
 
         public static function canRenderRowMenuColumnByElementAndData($element, $data)
         {
-            if(get_class($element) == 'RelatedDeleteLinkActionElement' && (bool)$data->primary)
+            if (get_class($element) == 'RelatedDeleteLinkActionElement' && (bool)$data->primary)
             {
                 return false;
             }
@@ -73,7 +73,7 @@
          */
         protected function processColumnInfoToFetchColumnData($columnInformation)
         {
-            if($columnInformation['attributeName'] == 'role')
+            if ($columnInformation['attributeName'] == 'role')
             {
                 $columnInformation['type'] = 'DropDownWithNoEmptyDisplay';
             }

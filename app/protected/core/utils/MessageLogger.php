@@ -138,18 +138,18 @@
                 if ($message[0] != MessageLogger::DEBUG ||
                     ($this->shouldPrintDebugMessages() && $message[0] == MessageLogger::DEBUG))
                 {
-					foreach ($this->messageStreamers as $messageStreamer)
-					{
-                    	if($this->logDateTimeStamp)
-                    	{
-                        	$prefixContent = $message[2] . ' ';
-                    	}
-                    	else
-                    	{
-                        	$prefixContent = null;
-                    	}
-                    	$messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
-					}
+                    foreach ($this->messageStreamers as $messageStreamer)
+                    {
+                        if ($this->logDateTimeStamp)
+                        {
+                            $prefixContent = $message[2] . ' ';
+                        }
+                        else
+                        {
+                            $prefixContent = null;
+                        }
+                        $messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+                    }
                 }
             }
         }

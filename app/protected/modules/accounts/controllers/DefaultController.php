@@ -340,7 +340,7 @@
             if (isset($_POST['Account']) && Yii::app()->request->isAjaxRequest)
             {
                 $account = $this->attemptToSaveModelFromPost($account, null, false);
-                if($account->id > 0)
+                if ($account->id > 0)
                 {
                     echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
                     Yii::app()->end(0, false);
@@ -349,7 +349,6 @@
                 {
                     throw new FailedToSaveModelException();
                 }
-
             }
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
                                                                                       'AccountModalCreateView',

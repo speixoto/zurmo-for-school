@@ -296,7 +296,7 @@
             $data['completedDateTime']  = $completedStamp;
             $data['completed']          = 0;
             $data['description']        = "Task description";
-            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. null doesn't send it.
             $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
 
             $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
