@@ -244,7 +244,7 @@
             }
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
-        
+
         public static function registerCampaignItemsByCampaign($campaign, $contacts)
         {
             foreach ($contacts as $contact)

@@ -48,32 +48,42 @@
         }
 
         /**
+         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
+         */
+        public function destroy()
+        {
+            Contact::model()->detachEventHandler('onAfterSave', array($this, 'processFromContactSide'));
+            Contact::model()->detachEventHandler('onRedBeanOneToManyRelatedModelsChange',
+                                                 array($this, 'processFromContactSide'));
+        }
+
+        /**
          * @param CEvent $event
          */
         public function processFromContactSide(CEvent $event)
         {
             $model = $event->sender;
-            if(isset($model->originalAttributeValues['account']))
+            if (isset($model->originalAttributeValues['account']))
             {
-                if($model->originalAttributeValues['account'][1] > 0)
+                if ($model->originalAttributeValues['account'][1] > 0)
                 {
                     //lookup to see if there is a 'primary' affiliation for old acc/con pairing and unmark as primary
                     $accountContactAffiliations = AccountContactAffiliation::
                                                     getPrimaryByAccountIdAndContactId(
                                                     (int)$model->originalAttributeValues['account'][1], (int)$model->id);
                     //shouldn't be more than one, but if there is unset all of them
-                    foreach($accountContactAffiliations as $accountContactAffiliation)
+                    foreach ($accountContactAffiliations as $accountContactAffiliation)
                     {
                         $accountContactAffiliation->primary = false;
                         $accountContactAffiliation->save();
                     }
                 }
                 //lookup and see if there is an affiliation for the new acc/con pairing
-                if($model->account->id > 0)
+                if ($model->account->id > 0)
                 {
                     $accountContactAffiliations = AccountContactAffiliation::getByAccountAndContact($model->account, $model);
                     //Shouldn't be more than one, but if there is, just mark the first primary.
-                    if(count($accountContactAffiliations) > 0)
+                    if (count($accountContactAffiliations) > 0)
                     {
                         //If so - mark primary.
                         $accountContactAffiliations[0]->primary = true;
@@ -86,10 +96,9 @@
                         $accountContactAffiliation->primary = true;
                         $accountContactAffiliation->contact = $model;
                         $accountContactAffiliation->account = $model->account;
-                        if($accountContactAffiliation->isAttributeRequired('role') &&
+                        if ($accountContactAffiliation->isAttributeRequired('role') &&
                            $accountContactAffiliation->role->value == null)
                         {
-
                             $accountContactAffiliation->role->value = $this->resolveRoleValue($accountContactAffiliation);
                         }
                         $accountContactAffiliation->save();

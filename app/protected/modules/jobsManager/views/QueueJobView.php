@@ -87,7 +87,7 @@
             $content .= '</div>';
             $content .= '<div id="logging-table">';
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'Queue Output:'));
-            foreach($this->messageLogger->getMessages() as $messageInfo)
+            foreach ($this->messageLogger->getMessages() as $messageInfo)
             {
                 $content .= ZurmoHtml::tag('ol', array(),
                                            $this->messageLogger->getTypeLabel($messageInfo[0]) .

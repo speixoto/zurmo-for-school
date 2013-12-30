@@ -195,7 +195,7 @@
             return Yii::app()->createUrl('home/defaultPortlet/myListDetails', $params);
         }
 
-		/**
+        /**
          * Renders portlet head content
          * @return string
          */

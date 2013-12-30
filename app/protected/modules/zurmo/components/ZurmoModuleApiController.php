@@ -754,7 +754,6 @@
          */
         protected function preAttemptToSaveModelFromDataHook(RedBeanModel $model, array & $data)
         {
-
         }
 
         /**

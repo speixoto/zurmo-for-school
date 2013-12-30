@@ -45,7 +45,7 @@
          */
         public static function markProcessedCampaignsAsCompleted($pageSize = null)
         {
-            if($pageSize != null)
+            if ($pageSize != null)
             {
                 $resolvedPageSize = $pageSize + 1;
             }
@@ -57,7 +57,7 @@
             $campaignsProcessed  = 0;
             foreach ($processingCampaigns as $processingCampaign)
             {
-                if($campaignsProcessed < $pageSize || $pageSize == null)
+                if ($campaignsProcessed < $pageSize || $pageSize == null)
                 {
                     if (static::areAllCampaignItemsProcessed($processingCampaign->id))
                     {
@@ -67,7 +67,7 @@
                             return false;
                         }
                     }
-                    $campaignsProcessed ++;
+                    $campaignsProcessed++;
                 }
                 else
                 {

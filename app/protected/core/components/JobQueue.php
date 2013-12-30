@@ -49,7 +49,7 @@
         {
             assert('is_string($jobType)');
             assert('is_int($delay)');
-            if(!isset($this->queuedJobs[$delay]) || !in_array($jobType, $this->queuedJobs[$delay]))
+            if (!isset($this->queuedJobs[$delay]) || !in_array($jobType, $this->queuedJobs[$delay]))
             {
                 $this->queuedJobs[$delay][] = $jobType;
             }
@@ -108,7 +108,7 @@
             assert('is_string($jobType)');
             if ($model->getIsNewModel() || isset($model->originalAttributeValues[$attributeName]))
             {
-                if(DateTimeUtil::isDateTimeStringNull($model->{$attributeName}))
+                if (DateTimeUtil::isDateTimeStringNull($model->{$attributeName}))
                 {
                     $secondsFromNow       = 0;
                 }
@@ -117,7 +117,7 @@
                     $processDateTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($model->{$attributeName});
                     $secondsFromNow       = $processDateTimeStamp - time();
                 }
-                if($secondsFromNow <= 0)
+                if ($secondsFromNow <= 0)
                 {
                     $delay = 0;
                 }

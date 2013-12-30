@@ -75,7 +75,7 @@
         {
             $jobClassNames = static::getNonMonitorJobClassNames();
             $jobsData      = array();
-            foreach($jobClassNames as $jobClassName)
+            foreach ($jobClassNames as $jobClassName)
             {
                 $jobsData[$jobClassName::getType()] = self::getJobDataByType($jobClassName::getType());
             }

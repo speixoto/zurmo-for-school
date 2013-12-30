@@ -55,7 +55,7 @@
                     static::setBatchSize($size);
                 }
             }
-            elseif(empty($size))
+            elseif (empty($size))
             {
                 return null;
             }

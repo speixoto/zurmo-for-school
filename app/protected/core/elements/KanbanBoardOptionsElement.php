@@ -165,6 +165,7 @@
 
         protected function renderResetScript()
         {
+            // Begin Not Coding Standard
             return "
                         $('.kanban-board-options-view').hide();
                         var inputName = '" .$this->getEditableInputName(KanbanBoard::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES) . "[]';
@@ -185,6 +186,7 @@
                             }
                         });
             ";
+            // End Not Coding Standard
         }
 
         protected function resolveThemeColorNamesAndLabelsForLocking(GameLevel $gameLevel)

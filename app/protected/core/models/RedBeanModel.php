@@ -2057,7 +2057,6 @@
             $this->raiseEvent('onRedBeanOneToManyRelatedModelsChange', $event);
         }
 
-
         /**
          * This event is raised before the record is deleted.
          * By setting {@link CModelEvent::isValid} to be false, the normal {@link delete()} process will be stopped.
@@ -3155,9 +3154,9 @@
         {
             assert('is_string($precedingModelClassName)');
             assert('is_string($precedingRelation)');
-            foreach($model->attributeNames() as $attributeName)
+            foreach ($model->attributeNames() as $attributeName)
             {
-                if($model->isRelation($attributeName) &&
+                if ($model->isRelation($attributeName) &&
                     ($model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
                         $model->getRelationType($attributeName) ==  RedBeanModel::HAS_MANY_BELONGS_TO) &&
                     static::relationLinksToPrecedingRelation(get_class($model), $attributeName,

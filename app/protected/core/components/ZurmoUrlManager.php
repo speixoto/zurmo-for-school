@@ -36,5 +36,11 @@
 
     class ZurmoUrlManager extends CUrlManager
     {
+        public static function getPositionOfPathInUrl($keyword)
+        {
+            $requestedUrl = Yii::app()->getRequest()->getUrl();
+            $position = strpos(trim($requestedUrl, '/'), trim($keyword, '/'));
+            return $position;
+        }
     }
 ?>

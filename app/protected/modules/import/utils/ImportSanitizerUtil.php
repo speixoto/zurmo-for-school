@@ -76,7 +76,7 @@
                     {
                         $value = $sanitizer->sanitizeValue($value);
                     }
-                    if($sanitizer->getShouldSkipRow())
+                    if ($sanitizer->getShouldSkipRow())
                     {
                         $importSanitizeResultsUtil->setModelShouldNotBeSaved();
                         $importSanitizeResultsUtil->setMessages($sanitizer->getAnalysisMessages());

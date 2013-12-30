@@ -39,6 +39,5 @@
      */
     class EmailModelAttributeDedupeMappingRuleForm extends ModelAttributeDedupeMappingRuleForm
     {
-        
     }
 ?>

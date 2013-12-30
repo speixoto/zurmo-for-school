@@ -106,7 +106,7 @@
             $jobManagerUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
             $content  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
                                         $runAgainUrl, array('class' => 'z-button'));
-            if(Yii::app()->jobQueue->isEnabled())
+            if (Yii::app()->jobQueue->isEnabled())
             {
                 $queueJobUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/queueJob/',
                                  array('type' => $this->type));

@@ -177,7 +177,7 @@
                 echo Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
                 Yii::app()->end(0, false);
             }
-            if(!Yii::app()->jobQueue->isEnabled())
+            if (!Yii::app()->jobQueue->isEnabled())
             {
                 echo Zurmo::t('JobsManagerModule', 'Job queuing must be enabled in order to queue a job');
                 Yii::app()->end(0, false);

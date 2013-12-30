@@ -93,7 +93,7 @@
             assert('is_string($linkId)');
             $title  = $this->getCreateAccountLabel();
             return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId(), 'auto', 600,
-                     'center top+25', $class = "'task-dialog'");
+                     'center top+25', $class = "'task-dialog'"); // Not Coding Standard
         }
 
         /**

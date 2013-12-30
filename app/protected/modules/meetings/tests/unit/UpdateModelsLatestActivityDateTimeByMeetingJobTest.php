@@ -54,7 +54,7 @@
             $this->assertNull($contact->latestActivityDateTime);
             $meeting    = MeetingTestHelper::createMeetingByNameForOwner($meetingName, Yii::app()->user->userModel);
             $meeting->activityItems->add($contact);
-            if($usePastStartDateTime)
+            if ($usePastStartDateTime)
             {
                 $meeting->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
             }
@@ -129,7 +129,7 @@
             $this->assertNull($account->latestActivityDateTime);
             $meeting    = MeetingTestHelper::createMeetingByNameForOwner($meetingName, Yii::app()->user->userModel);
             $meeting->activityItems->add($account);
-            if($usePastStartDateTime)
+            if ($usePastStartDateTime)
             {
                 $meeting->startDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
             }

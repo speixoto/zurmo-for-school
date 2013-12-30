@@ -89,17 +89,16 @@
                 {
                     $stuckJob               = StuckJob::getByType($jobInProcess->type);
                     $stuckJob->quantity     = $stuckJob->quantity + 1;
-                    if(!$stuckJob->save())
+                    if (!$stuckJob->save())
                     {
                         throw new FailedToSaveModelException();
                     }
                     $jobsInProcessToReset[] = $jobInProcess;
                     //Only processes once the threshold is reach, not each time after that
-                    if($stuckJob->quantity == static::$stuckNotificationThreshold)
+                    if ($stuckJob->quantity == static::$stuckNotificationThreshold)
                     {
                         $jobTitleLabels[]       = strval($jobInProcess);
                         $jobsAreStuck           = true;
-
                     }
                 }
             }
@@ -107,7 +106,7 @@
             {
                 self::makeJobStuckNotification($jobTitleLabels);
             }
-            foreach($jobsInProcessToReset as $jobInProcessToReset)
+            foreach ($jobsInProcessToReset as $jobInProcessToReset)
             {
                 $jobInProcessToReset->delete();
             }

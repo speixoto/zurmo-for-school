@@ -63,7 +63,7 @@
 
         protected function assertMappingRuleDataIsValid()
         {
-            if(isset($this->mappingRuleData["dedupeRule"]))
+            if (isset($this->mappingRuleData["dedupeRule"]))
             {
                 assert('is_array($this->mappingRuleData["dedupeRule"])');
             }
@@ -77,23 +77,23 @@
         {
             assert('$value === null || is_string($value)');
             $matchedModels  = $this->getMatchedModels($value);
-            if(count($matchedModels) > 0 && isset($this->mappingRuleData["dedupeRule"]))
+            if (count($matchedModels) > 0 && isset($this->mappingRuleData["dedupeRule"]))
             {
-                if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
+                if ($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
                 {
                     $this->shouldSkipRow = true;
                     $label = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
                     $this->analysisMessages[] = $label;
-                    if($this->importSanitizeResultsUtil != null)
+                    if ($this->importSanitizeResultsUtil != null)
                     {
                         $this->importSanitizeResultsUtil->setModelShouldNotBeSaved();
                     }
                 }
-                elseif($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND)
+                elseif ($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND)
                 {
                     $label = Zurmo::t('ImportModule', 'A record with this value already exists and will be updated with the values of the imported record.');
                     $this->analysisMessages[] = $label;
-                    if($this->importSanitizeResultsUtil != null)
+                    if ($this->importSanitizeResultsUtil != null)
                     {
                         $this->importSanitizeResultsUtil->setMatchedModel($matchedModels[0]);
                     }
