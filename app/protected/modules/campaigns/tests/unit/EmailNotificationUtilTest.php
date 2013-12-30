@@ -58,7 +58,6 @@
             $this->assertContains($bodyContent, $resolvedContent);
             $this->assertContains('Manage your email preferences:', $resolvedContent);
             $this->assertContains('Powered By Zurmo' . PHP_EOL . 'http://www.zurmo.com', $resolvedContent);
-            print_r($resolvedContent);
         }
     }
 ?>
