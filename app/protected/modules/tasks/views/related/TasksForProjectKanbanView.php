@@ -47,23 +47,25 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'      => 'RelatedKanbanViewDetailsMenu',
-                                'iconClass'   => 'icon-details',
-                                'id'          => 'RelatedKanbanViewActionMenu',
-                                'itemOptions' => array('class' => 'hasDetailsFlyout'),
-                                'model'       => 'eval:$this->params["relationModel"]',
+                            array('type'        => 'RelatedKanbanViewDetailsMenu',
+                                  'iconClass'   => 'icon-details',
+                                  'id'          => 'RelatedKanbanViewActionMenu',
+                                  'itemOptions' => array('class' => 'hasDetailsFlyout'),
+                                  'model'       => 'eval:$this->params["relationModel"]',
                             ),
-                            array('type'            => 'ProjectsOptionsMenu',
-                                'id'                => 'ListViewOptionsActionMenu',
-                                'iconClass'         => 'icon-edit',
-                                'relationModuleId'  => 'eval:$this->params["relationModuleId"]'
+                            array('type'             => 'ProjectsOptionsMenu',
+                                  'id'               => 'ListViewOptionsActionMenu',
+                                  'iconClass'        => 'icon-edit',
+                                  'relationModuleId' => 'eval:$this->params["relationModuleId"]'
                             ),
                             array('type'                => 'CreateTaskMenu',
-                                'routeModuleId'         => 'eval:$this->moduleId',
-                                'routeParameters'       => 'eval:$this->getCreateLinkRouteParameters()',
-                                'ajaxOptions'           => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
-                                'sourceKanbanBoardId'   => 'eval:$this->getGridViewId()',
-                                'modalContainerId'      => 'eval:TasksUtil::getModalContainerId()'
+                                  'routeModuleId'       => 'eval:$this->moduleId',
+                                  'routeParameters'     => 'eval:$this->getCreateLinkRouteParameters()',
+                                  'ajaxOptions'         => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
+                                  'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
+                                  'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()',
+                                  'label'               => Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
+                                                                    LabelUtil::getTranslationParamsForAllModules())
                             ),
                         ),
                     ),

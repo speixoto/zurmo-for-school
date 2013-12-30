@@ -38,6 +38,7 @@
      */
     class CreateTaskFromRelatedKanbanModalLinkActionElement extends CreateFromRelatedModalLinkActionElement
     {
+        //TODO: @sergio: Check if this element is being used if not remove it
         /**
          * Gets default label
          * @return string
