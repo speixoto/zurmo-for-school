@@ -41,6 +41,8 @@
     {
         const DEFAULT_THEME_COLOR = 'blue';
 
+        const CUSTOM_NAME = 'custom';
+
         protected $useCustomTheme = true;
 
         public function resolveAndGetThemeColorValue(User $user)
@@ -179,7 +181,7 @@
                           'pink'        => Zurmo::t('Core', 'Pink'));
             if ($this->useCustomTheme)
             {
-                $customArray = array('custom' => Zurmo::t('Core', 'Custom'));
+                $customArray = array(static::CUSTOM_NAME => Zurmo::t('Core', 'Custom'));
                 $data        = array_merge($customArray, $data);
             }
             return $data;
@@ -225,7 +227,7 @@
                           'pink'        => 8);
             if ($this->useCustomTheme)
             {
-                $data['custom'] = 1;
+                $data[static::CUSTOM_NAME] = 1;
             }
             return $data;
         }
@@ -280,13 +282,34 @@
             if ($this->useCustomTheme)
             {
                 $customThemeColorsArray = $this->getCustomThemeColorsArray();
-                $data['custom'] = array('#545454',
+                $data[static::CUSTOM_NAME] = array('#545454',
                     $customThemeColorsArray[0],
                     $customThemeColorsArray[1],
                     '#97c43d',
                     $customThemeColorsArray[2]);
             }
             return $data;
+        }
+
+        public function registerThemeColorCss()
+        {
+            $cs             = Yii::app()->getClientScript();
+            $themeName      = Yii::app()->theme->name;
+            $themeBaseUrl   = $this->baseUrl . '/' . $themeName;
+            if ($this->activeThemeColor != static::CUSTOM_NAME)
+            {
+                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $this->activeThemeColor . '.css');
+            }
+            else
+            {
+                $filePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+                if (!is_file($filePath))
+                {
+                    Yii::app()->lessCompiler->compileCustom();
+                }
+                $cs->registerCssFile(Yii::app()->assetManager->publish($filePath));
+            }
+
         }
     }
 ?>
