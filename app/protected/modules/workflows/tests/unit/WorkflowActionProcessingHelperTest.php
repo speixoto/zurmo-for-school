@@ -153,7 +153,7 @@
                                                   'type'          => WorkflowActionAttributeForm::TYPE_STATIC,
                                                   'value'         => self::$marketingListId));
             $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
-            
+
             $helper = new WorkflowActionProcessingHelper($action, $contact, Yii::app()->user->userModel);
             $helper->processNonUpdateSelfAction();
             $marketingList->forget();
@@ -179,7 +179,7 @@
             $this->assertEquals(1, $marketingList->marketingListMembers->count());
             $this->assertEquals(1, $marketingList->marketingListMembers[0]->unsubscribed);
         }
-        
+
         /**
          * @expectedException NotSupportedException
          */
@@ -195,7 +195,7 @@
             $helper = new WorkflowActionProcessingHelper($action, $account, Yii::app()->user->userModel);
             $helper->processNonUpdateSelfAction();
         }
-        
+
         /**
          * Confirms that values for boolean, date, and dateTime get set on creating new records.
          */

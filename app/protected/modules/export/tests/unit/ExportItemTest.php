@@ -47,7 +47,7 @@
 
         public function testCreateAndEditExportItem()
         {
-            $idsToExport = array(1,2,3);
+            $idsToExport = array(1, 2, 3);
             $exportItem = new ExportItem();
             $exportItem->isCompleted = 0;
             $exportItem->exportFileType = 'csv';
@@ -69,7 +69,7 @@
             $this->assertEquals('Export', $queuedJobs[0][0]);
 
             //Now create a new export item that is already complete, should not create a queue job.
-            $idsToExport = array(1,2,3);
+            $idsToExport = array(1, 2, 3);
             $exportItem = new ExportItem();
             $exportItem->isCompleted = 1;
             $exportItem->exportFileType = 'csv';

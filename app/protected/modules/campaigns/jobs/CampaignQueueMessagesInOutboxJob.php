@@ -67,7 +67,7 @@
         protected function processRun()
         {
             $batchSize = $this->resolveBatchSize();
-            if($batchSize != null)
+            if ($batchSize != null)
             {
                 $resolvedBatchSize = $batchSize + 1;
             }
@@ -85,7 +85,7 @@
             $signalMarkCompletedJob = true;
             foreach ($campaignItemsToProcess as $campaignItem)
             {
-                if($modelsProcessedCount < $batchSize || $batchSize == null)
+                if ($modelsProcessedCount < $batchSize || $batchSize == null)
                 {
                     try
                     {
@@ -112,7 +112,7 @@
                     break;
                 }
             }
-            if($signalMarkCompletedJob)
+            if ($signalMarkCompletedJob)
             {
                 Yii::app()->jobQueue->add('CampaignMarkCompleted', 5);
             }

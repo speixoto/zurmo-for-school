@@ -97,7 +97,7 @@
         protected function getStageDropDownArray()
         {
             $filterStages = CampaignItemsConfigurationForm::getFilterStages();
-            foreach($filterStages as $key=>$stageString)
+            foreach ($filterStages as $key => $stageString)
             {
                 switch($key)
                 {

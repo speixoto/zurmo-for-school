@@ -56,7 +56,7 @@
                                                 'customThemeColor1'                         => '#999999',
                                                 'customThemeColor2'                         => '#111111',
                                                 'customThemeColor3'                         => '#222222',
-                                                'forceAllUsersTheme'                        => '0',),
+                                                'forceAllUsersTheme'                        => '0'),
                                       )
                                );
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/userInterfaceConfigurationEdit');

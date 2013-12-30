@@ -51,6 +51,5 @@
         {
             return array('class' => 'portlet-create-button');
         }
-
     }
 ?>

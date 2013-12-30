@@ -206,7 +206,7 @@
         public static function resolveOpposingAccountLinkContent(AccountAccountAffiliation $accountAccountAffiliation, $accountId)
         {
             assert('is_int($accountId)');
-            if($accountAccountAffiliation->primaryAccount->id == $accountId)
+            if ($accountAccountAffiliation->primaryAccount->id == $accountId)
             {
                 $content  = static::resolveAccountWithLinkContent($accountAccountAffiliation->secondaryAccount);
                 $content .= ' ' . $accountAccountAffiliation->getAttributeLabel('secondaryAccount');
@@ -225,7 +225,6 @@
          */
         public static function resolveAccountWithLinkContent(Account $account)
         {
-
             if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $account))
             {
                 $moduleClassName = $account->getModuleClassName();

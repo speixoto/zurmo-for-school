@@ -98,7 +98,6 @@
             static::loadJobQueue();
         }
 
-
         public static function loadJobQueue()
         {
             Yii::app()->jobQueue->add(static::getType(), 5);

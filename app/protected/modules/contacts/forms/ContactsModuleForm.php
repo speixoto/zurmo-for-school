@@ -72,9 +72,9 @@
         /**
          * Override to cast booleans properly
          */
-        public function setAttributes($values,$safeOnly = true)
+        public function setAttributes($values, $safeOnly = true)
         {
-            parent::setAttributes($values,$safeOnly);
+            parent::setAttributes($values, $safeOnly);
             $this->updateLatestActivityDateTimeWhenATaskIsCompleted =
                 (bool) $this->updateLatestActivityDateTimeWhenATaskIsCompleted;
             $this->updateLatestActivityDateTimeWhenANoteIsCreated =

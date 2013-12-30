@@ -56,7 +56,7 @@
             $savedWorkflow->type            = 'some type';
             $savedWorkflow->serializedData  = serialize(array('something'));
             $saved                          = $savedWorkflow->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -65,12 +65,13 @@
             $model->lastName = 'Green';
             $model->string   = 'string';
             $saved           = $model->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
             self::$testModel = $model;
         }
+
         public function testResolveToAddJobToQueueAfterSaveOfModelIsNotANewModelAndProcessDateTimeHasNotChanged()
         {
             $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueue();

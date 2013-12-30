@@ -318,7 +318,7 @@
             $data['location']       = "Office";
             $data['description']    = "Description";
             $data['category']['value'] = $categories[1];
-            // TODO: @Shoaibi/@Ivica: null does not work, empty works. Null doesn't send it.
+            // TODO: @Shoaibi/@Ivica: null does not work, empty works. null doesn't send it.
             $data['explicitReadWriteModelPermissions'] = array('nonEveryoneGroup' => '', 'type' => '');
 
             $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));

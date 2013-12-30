@@ -49,7 +49,7 @@
             );
             $typeFieldData = CustomFieldData::getByName('AccountContactAffiliationRoles');
             $typeFieldData->serializedData = serialize($values);
-            if(!$typeFieldData->save())
+            if (!$typeFieldData->save())
             {
                 throw new FailedToSaveModelException();
             }

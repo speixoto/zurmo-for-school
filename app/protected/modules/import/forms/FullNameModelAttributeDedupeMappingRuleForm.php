@@ -39,6 +39,5 @@
      */
     class FullNameModelAttributeDedupeMappingRuleForm extends ModelAttributeDedupeMappingRuleForm
     {
-
     }
 ?>

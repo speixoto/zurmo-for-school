@@ -137,7 +137,7 @@
                 $sendingTimestamp = time();
             }
             $sendOnDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
-            if($inPast)
+            if ($inPast)
             {
                 $sendOnDateTimeOperator = 'lessThan';
             }

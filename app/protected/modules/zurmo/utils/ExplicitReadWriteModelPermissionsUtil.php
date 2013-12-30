@@ -266,8 +266,8 @@
                 $saveSecurableItem = true;
                 foreach ($explicitReadWriteModelPermissions->getReadWritePermitables() as $permitable)
                 {
-                    if ($securableItem->addPermissions($permitable, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER)
-                                                                                            && $optimizeReadPermissions)
+                    if ($securableItem->addPermissions($permitable, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER) &&
+                                                                                                $optimizeReadPermissions)
                     {
                         if ($permitable instanceof Group)
                         {

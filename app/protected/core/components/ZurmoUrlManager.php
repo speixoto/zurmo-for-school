@@ -43,13 +43,13 @@
          * @param string $ampersand
          * @return string
          */
-        protected function createUrlDefault($route,$params,$ampersand)
+        protected function createUrlDefault($route, $params, $ampersand)
         {
            if (!$this->showScriptName and !$this->isOsLinux())
            {
                $this->showScriptName = true;
            }
-           return parent::createUrlDefault($route,$params,$ampersand);
+           return parent::createUrlDefault($route, $params, $ampersand);
         }
 
         /**

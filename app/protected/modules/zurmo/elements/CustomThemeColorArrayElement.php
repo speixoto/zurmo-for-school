@@ -59,6 +59,7 @@
             $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
@@ -69,12 +70,14 @@
                                                     $('div.custom .theme-color-1').css('background-color', ui.color.toString());
                                           }",
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content = ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor2';
             $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $inputId,
@@ -85,12 +88,14 @@
                                                     $('div.custom .theme-color-2').css('background-color', ui.color.toString());
                                           }",
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor3';
             $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
@@ -101,6 +106,7 @@
                                                     $('div.custom .theme-color-3').css('background-color', ui.color.toString());
                                           }",
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             return ZurmoHtml::tag('div',
@@ -113,6 +119,7 @@
 
         public function registerScript()
         {
+            // Begin Not Coding Standard
             $script = "
                             $('.color-picker').focus(function(){
                                 $('.color-picker').iris('hide');
@@ -124,6 +131,7 @@
                                 }
                             });
                       ";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('changeThemeColorArray', $script);
         }
     }

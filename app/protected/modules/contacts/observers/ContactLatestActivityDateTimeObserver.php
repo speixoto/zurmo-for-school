@@ -42,20 +42,20 @@
     {
         public function init()
         {
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
+            if (ContactsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
             {
                 Task::model()->attachEventHandler('onAfterSave', array($this, 'updateContactLatestActivityDateTimeByTask'));
             }
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
+            if (ContactsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
             {
                 Note::model()->attachEventHandler('onAfterSave', array($this, 'updateContactLatestActivityDateTimeByNote'));
             }
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
+            if (ContactsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
             {
                 EmailMessage::model()->attachEventHandler('onAfterSave',
                     array($this, 'updateContactLatestActivityDateTimeByEmailMessage'));
             }
-            if(ContactsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
+            if (ContactsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
             {
                 Meeting::model()->attachEventHandler('onBeforeSave',
                     array($this, 'resolveModelLatestActivityDateTimeProcessFlagByMeeting'));
@@ -70,7 +70,7 @@
         public function updateContactLatestActivityDateTimeByTask(CEvent $event)
         {
             assert('$event->sender instanceof Task');
-            if(array_key_exists('status', $event->sender->originalAttributeValues) &&
+            if (array_key_exists('status', $event->sender->originalAttributeValues) &&
                 $event->sender->status == Task::STATUS_COMPLETED)
             {
                 $this->resolveRelatedModelsAndSetLatestActivityDateTime($event->sender->activityItems,
@@ -86,7 +86,7 @@
         public function updateContactLatestActivityDateTimeByNote(CEvent $event)
         {
             assert('$event->sender instanceof Note');
-            if($event->sender->getIsNewModel())
+            if ($event->sender->getIsNewModel())
             {
                 $this->resolveRelatedModelsAndSetLatestActivityDateTime($event->sender->activityItems,
                     DateTimeUtil::convertTimestampToDbFormatDateTime(time()), 'Contact');
@@ -103,17 +103,17 @@
         {
             assert('$event->sender instanceof EmailMessage');
             //Check for a just sent message
-            if(array_key_exists('sentDateTime', $event->sender->originalAttributeValues) &&
+            if (array_key_exists('sentDateTime', $event->sender->originalAttributeValues) &&
                 !DateTimeUtil::isDateTimeStringNull($event->sender->sentDateTime))
             {
-                foreach($event->sender->sender->personsOrAccounts as $senderPersonsOrAccount)
+                foreach ($event->sender->sender->personsOrAccounts as $senderPersonsOrAccount)
                 {
                     $this->resolveItemToModelAndPopulateLatestActivityDateTime($senderPersonsOrAccount,
                         $event->sender->sentDateTime, 'Contact');
                 }
-                foreach($event->sender->recipients as $emailMessageRecipient)
+                foreach ($event->sender->recipients as $emailMessageRecipient)
                 {
-                    foreach($emailMessageRecipient->personsOrAccounts as $recipientPersonsOrAccount)
+                    foreach ($emailMessageRecipient->personsOrAccounts as $recipientPersonsOrAccount)
                     {
                         $this->resolveItemToModelAndPopulateLatestActivityDateTime($recipientPersonsOrAccount,
                             $event->sender->sentDateTime, 'Contact');

@@ -84,7 +84,7 @@
 
         protected function assertMappingRuleDataIsValid()
         {
-            if(isset($this->mappingRuleData['defaultStateId']))
+            if (isset($this->mappingRuleData['defaultStateId']))
             {
                 assert('$this->mappingRuleData["defaultStateId"] == null || is_string($this->mappingRuleData["defaultStateId"]) ||
                         is_int($this->mappingRuleData["defaultStateId"])');

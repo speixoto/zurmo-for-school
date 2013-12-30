@@ -52,11 +52,11 @@
         {
             $matchedModels = array();
             $penultimateModelClassName = $this->penultimateModelClassName;
-            if($penultimateModelClassName == 'Account')
+            if ($penultimateModelClassName == 'Account')
             {
                 $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
             }
-            elseif($penultimateModelClassName == 'Contact')
+            elseif ($penultimateModelClassName == 'Contact')
             {
                 $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
             }
