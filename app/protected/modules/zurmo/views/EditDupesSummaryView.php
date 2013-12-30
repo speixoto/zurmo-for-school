@@ -34,18 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactListViewMergeSummaryView extends DupesSummaryView
+    class EditDupesSummaryView extends DupesSummaryView
     {
+        const MAX_NUMBER_OF_MODELS_TO_SHOW = 10;
+
         protected function onChangeScript()
         {
-            $url = Yii::app()->request->getUrl();
+            $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');
             $js  = "function()
                     {
                         var id = $(this).attr('id');
                         var idArray = id.split('-');
-                        window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
+                        window.location.href = '{$url}' + '?id=' + idArray[1];
                     }";
             return $js;
+        }
+
+        protected function getViewStyle()
+        {
+            return 'style="display:none"';
+        }
+
+        protected function getLabelForDupes()
+        {
+            $label = Zurmo::t('ZurmoModule', 'Possible Matches');
+            $link  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#EditDupesSummaryView").hide()'));
+            return $label . $link;
         }
     }
 ?>

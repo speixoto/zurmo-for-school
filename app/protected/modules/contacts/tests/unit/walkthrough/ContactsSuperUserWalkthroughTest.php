@@ -782,5 +782,45 @@
             $this->assertEquals($expectedSubscribedCountAfterSecondRequest, $actualSubscribedCountAfterSecondRequest);
             $this->assertEquals(0, MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList2->id, 0));
         }
+
+        public function testSuperUserSearchForDedupesAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('attribute' => 'dumbAttribute',
+                'value'     => 'dumbValue',
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDedupes', true);
+
+            $contact = LeadTestHelper::createLeadbyNameForOwner('test', $super);
+
+            //Test search by lastName
+            $this->setGetArray(array('attribute' => 'lastName',
+                'value'     => 'testson',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDedupes');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertContains('EditDupesSummaryView',       $object->content);
+            //Test search by phone
+            $contact->mobilePhone = '123456789';
+            $this->assertTrue($contact->save());
+            $this->setGetArray(array('attribute' => 'officePhone',
+                'value'     => '123456789',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDedupes');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertContains('EditDupesSummaryView',       $object->content);
+            //Test search by email
+            $contact->secondaryEmail->emailAddress = 'a@a.a';
+            $this->assertTrue($contact->save());
+            $this->setGetArray(array('attribute' => 'primaryEmail',
+                'value'     => 'a@a.a',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDedupes');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertContains('EditDupesSummaryView',       $object->content);
+        }
     }
 ?>

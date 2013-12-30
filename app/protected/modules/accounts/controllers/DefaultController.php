@@ -369,5 +369,41 @@
                 Yii::app()->end(0, false);
             }
         }
+
+        /**
+         * Overriding to implement the dedupe action for new leads
+         */
+        public function actionSearchForDedupes($attribute, $value)
+        {
+            assert('is_string($attribute)');
+            assert('is_string($value)');
+            $matchedModels = array();
+            if ($attribute == 'primaryEmail')
+            {
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
+            }
+            elseif ($attribute == 'name')
+            {
+                $matchedModels  = Account::getByName($value);
+            }
+            elseif ($attribute == 'officePhone')
+            {
+                $matchedModels  = AccountSearch::getAccountsByAnyPhone($value);
+            }
+            if (count($matchedModels) > 0)
+            {
+                $message =  Zurmo::t('ZurmoModule',
+                    'There is {n} possible match.|There are {n} possible matches.',
+                    count($matchedModels)
+                );
+
+                $summaryView = new EditDupesSummaryView($this->id,
+                    $this->module->id,
+                    new Account(),
+                    $matchedModels);
+                $content = $summaryView->render();
+                echo json_encode(array('message' => $message, 'content' => $content));
+            }
+        }
     }
 ?>

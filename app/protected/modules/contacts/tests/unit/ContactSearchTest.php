@@ -155,5 +155,31 @@
             $data = ContactSearch::getContactsByAnyEmailAddress('zurmo@test.com');
             $this->assertEquals(1, count($data));
         }
+
+        public function testGetContactsByAnyPhone()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $contactStates = ContactState::getAll();
+            $this->assertTrue(count($contactStates) > 1);
+            $firstContactState = $contactStates[0];
+            $contact = new Contact();
+            $contact->title->value = 'Mr.';
+            $contact->firstName    = 'test contact';
+            $contact->lastName     = 'for search by any phone';
+            $contact->owner        = $super;
+            $contact->state        = $firstContactState;
+            $contact->primaryEmail = new Email();
+            $contact->primaryEmail->emailAddress = 'testing@zurmo.com';
+            $contact->mobilePhone  = '123-456-789';
+            $contact->officePhone  = '987-654-321';
+            $this->assertTrue($contact->save());
+            $data = ContactSearch::getContactsByAnyPhone('123-456-789');
+            $this->assertEquals(1, count($data));
+            $data = ContactSearch::getContactsByAnyPhone('987-654-321');
+            $this->assertEquals(1, count($data));
+            $data = ContactSearch::getContactsByAnyPhone('987-987-987');
+            $this->assertEquals(0, count($data));
+        }
     }
 ?>

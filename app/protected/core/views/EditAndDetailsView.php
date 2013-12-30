@@ -39,8 +39,6 @@
      */
     abstract class EditAndDetailsView extends DetailsView
     {
-        const DEDUPE_ELEMENT_FOR_EDIT_DIV = 'dedupe-element-for-edit';
-
         /**
          * Set as either Edit or Details
          */
@@ -77,7 +75,6 @@
             }
             $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
-            $content .= $this->resolveAndRenderDedupeElementForEdit();
             $content .= $this->resolveAndRenderActionElementMenuForEdit();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
             if ($maxCellsPresentInAnyRow > 1)
@@ -238,15 +235,6 @@
         protected function resolveAndRenderActionElementMenuForEdit()
         {
 
-        }
-
-        protected function resolveAndRenderDedupeElementForEdit()
-        {
-            return ZurmoHtml::tag('div',
-                                  array('id'    => static::DEDUPE_ELEMENT_FOR_EDIT_DIV,
-                                        'style' => 'display:none'
-                                  ),
-                                  '');
         }
     }
 ?>

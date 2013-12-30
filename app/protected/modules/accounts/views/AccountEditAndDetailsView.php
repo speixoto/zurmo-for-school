@@ -63,7 +63,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'name',
+                                                      'type'          => 'Text',
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -72,7 +74,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
+                                                array('attributeName' => 'officePhone',
+                                                      'type'          => 'Phone',
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -180,6 +184,21 @@
         protected function renderAfterFormLayoutForDetailsContent()
         {
             return AccountDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel());
+        }
+
+        protected function beforeRenderingFormLayout()
+        {
+            $dedupeViewClassName = static::getDedupeViewClassName();
+            $summaryView = new $dedupeViewClassName($this->controllerId,
+                $this->moduleId,
+                $this->model,
+                array());
+            return $summaryView->render();
+        }
+
+        protected static function getDedupeViewClassName()
+        {
+            return 'EditDupesSummaryView';
         }
     }
 ?>

@@ -34,18 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactListViewMergeSummaryView extends DupesSummaryView
+
+    /**
+     * Abstract Layout for the business card view.
+     */
+    abstract class CardViewLayout
     {
-        protected function onChangeScript()
+        protected $model;
+
+        public function __construct($model)
         {
-            $url = Yii::app()->request->getUrl();
-            $js  = "function()
-                    {
-                        var id = $(this).attr('id');
-                        var idArray = id.split('-');
-                        window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
-                    }";
-            return $js;
+            assert('$model instanceof Item');
+            $this->model = $model;
+        }
+
+        public function renderContent()
+        {
+            $content  = $this->renderFrontOfCardContent();
+            $content .= $this->renderBackOfCardContent();
+            return $content;
+        }
+
+        protected function renderFrontOfCardContent()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderBackOfCardContent()
+        {
+            throw new NotImplementedException();
         }
     }
 ?>

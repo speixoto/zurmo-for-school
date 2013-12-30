@@ -34,18 +34,63 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ContactListViewMergeSummaryView extends DupesSummaryView
+
+    /**
+     * Layout for the business card view for an account.
+     */
+    class AccountCardViewLayout extends CardViewLayout
     {
-        protected function onChangeScript()
+        //TODO: @sergio: Add tests
+        public function __construct($model)
         {
-            $url = Yii::app()->request->getUrl();
-            $js  = "function()
-                    {
-                        var id = $(this).attr('id');
-                        var idArray = id.split('-');
-                        window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
-                    }";
-            return $js;
+            assert('$model instanceof Account');
+            $this->model = $model;
+        }
+
+        protected function renderFrontOfCardContent()
+        {
+            $content  = $this->resolveNameContent();
+            $content .= $this->resolvePhoneContent();
+            $content .= $this->resolveAddressContent();
+            return $content;
+        }
+
+        protected function resolveNameContent()
+        {
+            $starLink = null;
+            $spanContent = null;
+            if (StarredUtil::modelHasStarredInterface($this->model))
+            {
+                $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            }
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
+        }
+
+        protected function resolvePhoneContent()
+        {
+            $content = null;
+            if ($this->model->officePhone != null)
+            {
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewOfficePhoneNumberContent($this->model->officePhone,
+                                                                                                    $this->model);
+            }
+            if ($content != null)
+            {
+                return ZurmoHtml::tag('div', array('class' => 'contact-details'), $content);
+            }
+        }
+
+        protected function resolveAddressContent()
+        {
+            $element                       = new AddressElement($this->model, 'billingAddress', null);
+            $element->breakLines           = false;
+            $element->nonEditableTemplate  = '{content}';
+            return ZurmoHtml::tag('div', array('class' => 'address'), $element->render());
+        }
+
+        protected function renderBackOfCardContent()
+        {
+            return null;
         }
     }
 ?>

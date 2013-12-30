@@ -500,17 +500,24 @@
             }
             elseif ($attribute == 'lastName')
             {
-                //TODO: @sergio: Should we seach by PartialFullName?
                 $matchedModels  = ContactSearch::getContactsByPartialFullName($value);
             }
-            //TODO: @sergio: Add the getContactsByAnyPhone
+            elseif ($attribute == 'mobilePhone' || $attribute == 'officePhone')
+            {
+                $matchedModels  = ContactSearch::getContactsByAnyPhone($value);
+            }
             if (count($matchedModels) > 0)
             {
                 $message =  Zurmo::t('ZurmoModule',
                               'There is {n} possible match.|There are {n} possible matches.',
                               count($matchedModels)
                 );
-                $content = 'Render the view'; //TODO: @sergio: Render the view here
+
+                $summaryView = new EditDupesSummaryView($this->id,
+                                            $this->module->id,
+                                            new Contact(),
+                                            $matchedModels);
+                $content = $summaryView->render();
                 echo json_encode(array('message' => $message, 'content' => $content));
             }
         }

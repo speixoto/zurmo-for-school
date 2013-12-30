@@ -73,7 +73,7 @@
                                             'elements' => array(
                                                 array('attributeName' => 'null',
                                                       'type'          => 'TitleFullName',
-                                                      'shouldDedupe'  => true),
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -120,7 +120,7 @@
                                             'elements' => array(
                                                 array('attributeName' => 'officePhone',
                                                       'type'          => 'Phone',
-                                                      'shouldDedupe'  => true),
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -140,7 +140,7 @@
                                             'elements' => array(
                                                 array('attributeName' => 'mobilePhone',
                                                       'type'          => 'Phone',
-                                                      'shouldDedupe'  => true),
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -160,7 +160,7 @@
                                             'elements' => array(
                                                 array('attributeName' => 'primaryEmail',
                                                       'type'          => 'EmailAddressInformation',
-                                                      'shouldDedupe'  => true),
+                                                      'dedupeViewId'  => 'ContactListViewMergeSummaryView'),
                                             ),
                                         ),
                                     )
@@ -171,7 +171,7 @@
                                             'elements' => array(
                                                 array('attributeName' => 'secondaryEmail',
                                                       'type'          => 'EmailAddressInformation',
-                                                      'shouldDedupe'  => true),
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -275,6 +275,21 @@
                 );
             ");
             // End Not Coding Standard
+        }
+
+        protected function beforeRenderingFormLayout()
+        {
+            $dedupeViewClassName = static::getDedupeViewClassName();
+            $summaryView = new $dedupeViewClassName($this->controllerId,
+                $this->moduleId,
+                $this->model,
+                array());
+            return $summaryView->render();
+        }
+
+        protected static function getDedupeViewClassName()
+        {
+            return 'EditDupesSummaryView';
         }
     }
 ?>

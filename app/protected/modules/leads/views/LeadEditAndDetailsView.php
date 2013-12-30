@@ -72,7 +72,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'TitleFullName'),
+                                                array('attributeName' => 'null',
+                                                      'type'          => 'TitleFullName',
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -117,7 +119,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
+                                                array('attributeName' => 'officePhone',
+                                                      'type'          => 'Phone',
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -135,7 +139,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'mobilePhone', 'type' => 'Phone'),
+                                                array('attributeName' => 'mobilePhone',
+                                                      'type'          => 'Phone',
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -153,7 +159,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'primaryEmail', 'type' => 'EmailAddressInformation'),
+                                                array('attributeName' => 'primaryEmail',
+                                                      'type'          => 'EmailAddressInformation',
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -162,7 +170,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'secondaryEmail', 'type' => 'EmailAddressInformation'),
+                                                array('attributeName' => 'secondaryEmail',
+                                                      'type'          => 'EmailAddressInformation',
+                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
                                             ),
                                         ),
                                     )
@@ -229,6 +239,21 @@
         protected function renderAfterFormLayoutForDetailsContent()
         {
             return ContactDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel(), null);
+        }
+
+        protected function beforeRenderingFormLayout()
+        {
+            $dedupeViewClassName = static::getDedupeViewClassName();
+            $summaryView = new $dedupeViewClassName($this->controllerId,
+                $this->moduleId,
+                $this->model,
+                array());
+            return $summaryView->render();
+        }
+
+        protected static function getDedupeViewClassName()
+        {
+            return 'EditDupesSummaryView';
         }
     }
 ?>

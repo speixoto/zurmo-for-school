@@ -476,5 +476,42 @@
         {
             $this->export('LeadsSearchView');
         }
+
+        /**
+         * Overriding to implement the dedupe action for new leads
+         */
+        public function actionSearchForDedupes($attribute, $value)
+        {
+            //TODO: @sergio: Add walkthrought test
+            assert('is_string($attribute)');
+            assert('is_string($value)');
+            $matchedModels = array();
+            if ($attribute == 'primaryEmail' || $attribute == 'secondaryEmail')
+            {
+                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
+            }
+            elseif ($attribute == 'lastName')
+            {
+                $matchedModels  = ContactSearch::getContactsByPartialFullName($value);
+            }
+            elseif ($attribute == 'mobilePhone' || $attribute == 'officePhone')
+            {
+                $matchedModels  = ContactSearch::getContactsByAnyPhone($value);
+            }
+            if (count($matchedModels) > 0)
+            {
+                $message =  Zurmo::t('ZurmoModule',
+                    'There is {n} possible match.|There are {n} possible matches.',
+                    count($matchedModels)
+                );
+
+                $summaryView = new EditDupesSummaryView($this->id,
+                    $this->module->id,
+                    new Contact(),
+                    $matchedModels);
+                $content = $summaryView->render();
+                echo json_encode(array('message' => $message, 'content' => $content));
+            }
+        }
     }
 ?>

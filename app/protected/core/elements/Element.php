@@ -455,9 +455,10 @@
          */
         protected function registerScriptForDedupe()
         {
-            if (isset($this->params['shouldDedupe']) && $this->params['shouldDedupe'])
+            if (isset($this->params['dedupeViewId']) && $this->params['dedupeViewId'])
             {
-                $id         = $this->getInputIdForDedupe();
+                $id           = $this->getInputIdForDedupe();
+                $dedupeViewId = $this->params['dedupeViewId'];
                 $ajaxScript = ZurmoHtml::ajax(array(
                     'type'       => 'GET',
                     'data'       => array('attribute' => $this->getAttributeForDedupe(),
@@ -468,10 +469,10 @@
                                             var returnObj = jQuery.parseJSON(data);
                                             if (returnObj != null)
                                             {
-                                                $('#" . EditAndDetailsView::DEDUPE_ELEMENT_FOR_EDIT_DIV . "').html(returnObj.content);
+                                                $('#" . $dedupeViewId . "').replaceWith(returnObj.content);
                                                 $('#FlashMessageBar').jnotifyAddMessage({
-                                                    text: '<a href=\"#\" onclick=\"$(\'#" . EditAndDetailsView::DEDUPE_ELEMENT_FOR_EDIT_DIV . "\').show(); return false;\">' + returnObj.message + '</a>',
-                                                    permanent: true,
+                                                    text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show(); return false;\">' + returnObj.message + '</a>',
+                                                    permanent: false,
                                                     showIcon: false,
                                                     disappearTime: 10000,
                                                     removeExisting: true
