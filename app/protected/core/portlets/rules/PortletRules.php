@@ -99,6 +99,16 @@
             return $viewClassName::getPortletDescription();
         }
 
+        /**
+         * Override if additional rules are needed to determine access rights to a portlet
+         * @param User $user
+         * @return bool
+         */
+        public function canUserAccessPortlet(User $user)
+        {
+            return true;
+        }
+
         protected function getIconType()
         {
             $viewClassName   = $this->viewClassName;

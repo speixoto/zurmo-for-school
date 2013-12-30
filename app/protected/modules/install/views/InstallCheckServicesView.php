@@ -59,7 +59,7 @@
             $nextPageUrl     = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/settings/');
             $content = '<br/><br/>';
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Recheck System')),
-                $currentPageUrl, array('class' => 'z-button'));
+                $currentPageUrl, array('class' => 'default-btn'));
             if (count($this->checkResultsDisplayData[$failedIndexId][$requiredIndexId]) == 0)
             {
                 $content .= ' <span class="install-or">' . Zurmo::t('Core', 'or') . '</span> ';

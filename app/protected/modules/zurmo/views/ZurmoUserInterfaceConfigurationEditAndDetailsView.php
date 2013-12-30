@@ -63,24 +63,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'themeColor', 'type' => 'ThemeColorConfiguration'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'forceAllUsersTheme', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'CustomThemeColorArray'),
                                             ),
                                         ),
@@ -91,6 +73,15 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'SettingsLogoFileUpload'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'forceAllUsersTheme', 'type' => 'ThemeColorConfiguration'),
                                             ),
                                         ),
                                     )

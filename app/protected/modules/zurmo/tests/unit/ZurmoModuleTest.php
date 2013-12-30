@@ -51,7 +51,7 @@
         public function testGetModelClassNames()
         {
             $modelClassNames = ZurmoModule::getModelClassNames();
-            $this->assertEquals(24, count($modelClassNames));
+            $this->assertEquals(25, count($modelClassNames));
             $this->assertEquals('Address', $modelClassNames[0]);
             $this->assertEquals('AuditEvent', $modelClassNames[1]);
             $this->assertEquals('BaseStarredModel', $modelClassNames[2]);
@@ -75,7 +75,8 @@
             $this->assertEquals('Role', $modelClassNames[20]);
             $this->assertEquals('SavedSearch', $modelClassNames[21]);
             $this->assertEquals('SecurableItem', $modelClassNames[22]);
-            $this->assertEquals('ZurmoModelSearch', $modelClassNames[23]);
+            $this->assertEquals('ShortUrl', $modelClassNames[23]);
+            $this->assertEquals('ZurmoModelSearch', $modelClassNames[24]);
         }
     }
 ?>

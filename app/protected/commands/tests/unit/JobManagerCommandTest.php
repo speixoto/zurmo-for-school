@@ -58,7 +58,8 @@
             }
 
             exec($command, $output);
-            $this->assertTrue(array_search('Info - Job completed successfully', $output) !== false);
+            $this->assertTrue(strpos($output[2], 'Sending output to') !== false);
+            $this->assertTrue(strpos($output[2], 'ExportCleanup.log') !== false);
         }
     }
 ?>

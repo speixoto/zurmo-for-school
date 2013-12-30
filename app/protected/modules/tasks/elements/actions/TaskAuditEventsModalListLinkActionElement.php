@@ -43,5 +43,16 @@
         {
             return 'AuditEventsModalContainer';
         }
+
+        /**
+         * Get modified html options to handle the modal display
+         * @return string
+         */
+        protected function getHtmlOptions()
+        {
+            $htmlOptions = parent::getHtmlOptions();
+            $htmlOptions['namespace'] = 'taskauditmodal';
+            return $htmlOptions;
+        }
     }
 ?>

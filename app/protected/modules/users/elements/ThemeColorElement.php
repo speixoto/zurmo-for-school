@@ -57,7 +57,7 @@
             $content = null;
             $content .= $this->form->radioButtonList(
                 $this->model,
-                $this->attribute,
+                $this->getAttributeForRadioButtonList(),
                 $this->resolveThemeColorNamesAndLabelsForLocking($gameLevel),
                 $this->getEditableHtmlOptions(),
                 array(),
@@ -65,6 +65,11 @@
             );
             $this->registerScript();
             return $content;
+        }
+
+        protected function getAttributeForRadioButtonList()
+        {
+            return $this->attribute;
         }
 
         protected function shouldRenderControlEditable()
@@ -100,10 +105,12 @@
             {
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
+            $themeBaseUrl           =  Yii::app()->themeManager->baseUrl . '/default/css';
             // Begin Not Coding Standard
-            $script = "$('input[name=\"" . $this->getEditableInputName() . "\"]').live('change', function(){
+            $script = "$('input[name=\"" . $this->getEditableInputName($this->getAttributeForRadioButtonList()) . "\"]').live('change', function(){
                           $removeScript
                           $(document.body).addClass(this.value);
+                          $('head').append('<link rel=\"stylesheet\" href=\"$themeBaseUrl/zurmo-'+this.value+'.css\" type=\"text/css\" />');
                           });
                       ";
             // End Not Coding Standard

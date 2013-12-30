@@ -250,19 +250,15 @@
 
         protected static function renderAudioContent()
         {
-            $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
-            if (null != $collectionAndItemKey)
-            {
-                $publishedAssetsPath = Yii::app()->assetManager->publish(
-                    Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
-                $MP3AudioFilePath = $publishedAssetsPath . '/magic.mp3';
-                $OGGAudioFilePath = $publishedAssetsPath . '/magic.ogg';
-                $WAVAudioFilePath = $publishedAssetsPath . '/magic.wav';
-                $content  = ZurmoHtml::tag('source', array('src' => $MP3AudioFilePath, 'type' => 'audio/mpeg'), '');
-                $content .= ZurmoHtml::tag('source', array('src' => $OGGAudioFilePath, 'type' => 'audio/ogg'), '');
-                $content .= ZurmoHtml::tag('source', array('src' => $WAVAudioFilePath, 'type' => 'audio/wav'), '');
-                return ZurmoHtml::tag('audio', array('id' => 'collection-item-claimed'), $content);
-            }
+            $publishedAssetsPath = Yii::app()->assetManager->publish(
+                Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
+            $MP3AudioFilePath = $publishedAssetsPath . '/magic.mp3';
+            $OGGAudioFilePath = $publishedAssetsPath . '/magic.ogg';
+            $WAVAudioFilePath = $publishedAssetsPath . '/magic.wav';
+            $content  = ZurmoHtml::tag('source', array('src' => $MP3AudioFilePath, 'type' => 'audio/mpeg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $OGGAudioFilePath, 'type' => 'audio/ogg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $WAVAudioFilePath, 'type' => 'audio/wav'), '');
+            return ZurmoHtml::tag('audio', array('id' => 'collection-item-claimed'), $content);
         }
 
         protected static function getModalContainerId($id)
@@ -276,14 +272,9 @@
             $script = "$('#".static::CLAIM_ITEM_LINK_ID."').on('click', function(event){
                                event.preventDefault();
                                $(this).off('click');
-                               $('#game-notification img').addClass('animate-spin');
                                var magicAudio = document.getElementById('collection-item-claimed');
                                magicAudio.play();
-                               setTimeout(function(){
-                                   $('#game-notification').fadeOut(300, function(){
-                                       $('#game-notification').remove();
-                                   });
-                               }, 5000);
+                               $('#game-notification').fadeOut(300);
                            });";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('claimItemScript', $script);
@@ -291,9 +282,7 @@
             // Begin Not Coding Standard
             $script = "$('#close-game-notification-link').click(function(event){
                                event.preventDefault();
-                               $('#game-notification').fadeOut(300, function(){
-                                   $('#game-notification').remove();
-                               });
+                               $('#game-notification').fadeOut(300);
                            });
                            $('.gd-dashboard-active').on('click', function(){
                                if($('#UserGameDashboardView').length){

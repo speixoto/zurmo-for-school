@@ -73,8 +73,8 @@
         margin:40px 40px 0 40px;
         .radius( 5px );
         a{
-            margin:auto 10px; 
-            .z-button();  
+            //margin:auto 10px;
+            //.z-button();
         }
     }
 	div.wide.form{
@@ -129,7 +129,8 @@
         }
     }
     #install-form{
-        padding:15px !important;
+        .unstyle-panel;
+        //padding:0 !important;
         input[type="submit"]{
             .z-button();
         }
@@ -158,6 +159,9 @@
         	padding-top:0;
         	margin-left:0;
         }
+	    .view-toolbar-container{
+		    border-top:1px solid #ccc;
+	    }
     }
 }
 

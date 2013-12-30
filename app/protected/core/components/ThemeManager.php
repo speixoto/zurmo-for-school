@@ -41,6 +41,8 @@
     {
         const DEFAULT_THEME_COLOR = 'blue';
 
+        const CUSTOM_NAME = 'custom';
+
         protected $useCustomTheme = true;
 
         public function resolveAndGetThemeColorValue(User $user)
@@ -146,7 +148,14 @@
 
         public function getGlobalThemeColor()
         {
-            return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'globalThemeColor');
+            if (null != $globalThemeColor = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'globalThemeColor'))
+            {
+                return $globalThemeColor;
+            }
+            else
+            {
+                return $this->getDefaultThemeColor();;
+            }
         }
 
         public function getDefaultThemeColor()
@@ -172,7 +181,7 @@
                           'pink'        => Zurmo::t('Core', 'Pink'));
             if ($this->useCustomTheme)
             {
-                $customArray = array('custom' => Zurmo::t('Core', 'Custom'));
+                $customArray = array(static::CUSTOM_NAME => Zurmo::t('Core', 'Custom'));
                 $data        = array_merge($customArray, $data);
             }
             return $data;
@@ -218,7 +227,7 @@
                           'pink'        => 8);
             if ($this->useCustomTheme)
             {
-                $data['custom'] = 1;
+                $data[static::CUSTOM_NAME] = 1;
             }
             return $data;
         }
@@ -263,16 +272,44 @@
                           'sweden'      => array('#545454', '#034C8C', '#024873', '#97c43d', '#f2ec5c'),
                           'pink'        => array('#545454', '#323232', '#565656', '#97c43d', '#ff4f84')
             );
+            $data = array_merge($data, $this->getCustomThemeColorNameAndColors());
+            return $data;
+        }
+
+        public function getCustomThemeColorNameAndColors()
+        {
+            $data = array();
             if ($this->useCustomTheme)
             {
                 $customThemeColorsArray = $this->getCustomThemeColorsArray();
-                $data['custom'] = array('#545454',
-                                        $customThemeColorsArray[0],
-                                        $customThemeColorsArray[1],
-                                        '#97c43d',
-                                        $customThemeColorsArray[2]);
+                $data[static::CUSTOM_NAME] = array('#545454',
+                    $customThemeColorsArray[0],
+                    $customThemeColorsArray[1],
+                    '#97c43d',
+                    $customThemeColorsArray[2]);
             }
             return $data;
+        }
+
+        public function registerThemeColorCss()
+        {
+            $cs             = Yii::app()->getClientScript();
+            $themeName      = Yii::app()->theme->name;
+            $themeBaseUrl   = $this->baseUrl . '/' . $themeName;
+            if ($this->activeThemeColor != static::CUSTOM_NAME)
+            {
+                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $this->activeThemeColor . '.css');
+            }
+            else
+            {
+                $filePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+                if (!is_file($filePath))
+                {
+                    Yii::app()->lessCompiler->compileCustom();
+                }
+                $cs->registerCssFile(Yii::app()->assetManager->publish($filePath));
+            }
+
         }
     }
 ?>

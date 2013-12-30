@@ -3438,6 +3438,7 @@ div.wide.form a {
 }
 .dynamic-search-row > div .has-model-select {
   float: left;
+  width: 100%;
 }
 .dynamic-search-row label.hasCheckBox {
   margin-left: 0 !important;
@@ -4949,8 +4950,8 @@ div.radio-input .hasDropDown {
 .edit-row-menu ul li > a:hover {
   color: #fff !important;
 }
-.edit-portlet-menu a:hover,
-.edit-row-menu a:hover {
+.edit-portlet-menu ul a:hover,
+.edit-row-menu ul a:hover {
   background-color: #024873 !important;
   color: #fff !important;
 }
@@ -7209,50 +7210,6 @@ input[type="button"].portlet-create-button:focus {
   -o-border-radius: 5px;
   border-radius: 5px;
 }
-#InstallPageView .AppContainer a {
-  margin: auto 10px;
-  cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  *zoom: 1;
-  overflow: hidden;
-  position: relative;
-  display: inline-block;
-  text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(172,208,100,0.8);
-  border-left: 1px solid rgba(151,196,61,0.8);
-  border-right: 1px solid rgba(151,196,61,0.8);
-  border-bottom: 1px solid rgba(121,158,48,0.8);
-}
-#InstallPageView .AppContainer a:before,
-#InstallPageView .AppContainer a:after {
-  content: " ";
-  display: table;
-}
-#InstallPageView .AppContainer a:after {
-  clear: both;
-}
-#InstallPageView .AppContainer a.disabled {
-  pointer-events: none;
-  filter: alpha(opacity=50);
-  -khtml-opacity: 0.5;
-  -moz-opacity: 0.5;
-  opacity: 0.5;
-  -webkit-filter: grayscale(85%);
-  -moz-filter: grayscale(85%);
-  -ms-filter: grayscale(85%);
-  -o-filter: grayscale(85%);
-  filter: grayscale(85%);
-  filter: gray;
-}
 #InstallPageView div.wide.form {
   float: none;
 }
@@ -7308,7 +7265,16 @@ input[type="button"].portlet-create-button:focus {
   padding: 8px 2px;
 }
 #InstallPageView #install-form {
-  padding: 15px !important;
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #InstallPageView #install-form input[type="submit"] {
   cursor: pointer;
@@ -7377,6 +7343,9 @@ input[type="button"].portlet-create-button:focus {
 #InstallPageView #install-form .hasCheckBox {
   padding-top: 0;
   margin-left: 0;
+}
+#InstallPageView #install-form .view-toolbar-container {
+  border-top: 1px solid #ccc;
 }
 #logging-table,
 #progress-table {
@@ -8354,9 +8323,7 @@ table.configuration-list tr:last-child td {
   border-bottom: 1px solid #DFDFDF;
 }
 #ImportWizardMappingView .column-import-data {
-  padding-right: 5px;
   margin-top: 5px;
-  word-break: break-all;
 }
 #ImportWizardMappingView tr td:last-child {
   padding-right: 0;
@@ -8802,7 +8769,10 @@ table.configuration-list tr:last-child td {
   position: absolute;
   left: 0;
   top: 100%;
-  display: none;
+}
+#theme-color-configuration {
+  clear: left;
+  padding-top: 15px;
 }
 .user-menu-preferences td {
   padding-left: 0 !important;
@@ -17968,7 +17938,7 @@ body .overlay-view .after-form-details-content a:hover {
 }
 #game-notification {
   position: absolute;
-  min-width: 250px;
+  min-width: 280px;
   padding: 15px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;

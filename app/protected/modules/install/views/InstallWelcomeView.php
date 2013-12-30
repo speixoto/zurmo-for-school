@@ -79,7 +79,7 @@
                                            'them before you can continue. If you\'re all ready...');
             $content .= '<br/><br/>';
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Click to start')),
-                                        $nextPageUrl, array('class' => 'z-button'));
+                                        $nextPageUrl, array('class' => 'default-btn'));
             $content .= '</td></tr></table>';
             $content .= '</div>';
             return $content;

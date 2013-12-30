@@ -46,6 +46,8 @@
 
         protected $compiledCssPath;
 
+        protected $compiledCustomCssPath;
+
         protected $lessFilesPath;
 
         protected $lessCompiler;
@@ -59,6 +61,7 @@
         {
             parent::init();
             $this->setCompiledCssPath();
+            $this->setCompiledCustomCssPath();
             $this->setLessFilesPath();
             $this->setThemeColors();
         }
@@ -81,6 +84,34 @@
             if (isset($this->compiledCssPath) && !empty($this->compiledCssPath))
             {
                 return $this->compiledCssPath;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /**
+         * Set path where compiled custom css file will be saved
+         */
+        protected function setCompiledCustomCssPath()
+        {
+            if (!is_dir(Yii::getPathOfAlias('application.runtime.themes')))
+            {
+                mkdir(Yii::getPathOfAlias('application.runtime.themes'), 0755, true); // set recursive flag and permissions 0755
+            }
+            $this->compiledCustomCssPath = Yii::getPathOfAlias('application.runtime.themes');
+        }
+
+        /**
+         * Get path where custom css files will be saved
+         * @return null || string
+         */
+        public function getCompiledCustomCssPath()
+        {
+            if (isset($this->compiledCustomCssPath) && !empty($this->compiledCustomCssPath))
+            {
+                return $this->compiledCustomCssPath;
             }
             else
             {
@@ -169,7 +200,7 @@
             {
                 foreach ($this->getThemeColors() as $colorName => $themeColors)
                 {
-                    if (is_string($colorName) && count($themeColors) == 5)
+                    if (is_string($colorName) && count($themeColors) == 5 && $colorName != ThemeManager::CUSTOM_NAME)
                     {
                         $lessCompiler = $this->initializeLessCompiler($this->formatterName,
                                                                       $themeColors[0],
@@ -189,12 +220,39 @@
             {
                 foreach ($this->lessFilesToCompile as $lessFile)
                 {
-                     // We need to construct new less compiler for each file, otherwise compliler doesn't work as expected
+                     // We need to construct new less compiler for each file, otherwise compiler doesn't work as expected
                     $lessCompiler = $this->initializeLessCompiler($this->formatterName, '#545454', '#282A76', '#7CB830', '#97c43d', '#464646');
                     $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $lessFile;
                     $cssFileName = str_replace('less', 'css', $lessFile);
                     $cssFilePath = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
                     $lessCompiler->compileFile($lessFilePath, $cssFilePath);
+                }
+            }
+        }
+
+        /**
+         * Compile the custom css file
+         */
+        public function compileCustom()
+        {
+            $customThemeColorNameAndColors = Yii::app()->themeManager->getCustomThemeColorNameAndColors();
+            if (isset($this->mainLessFileToCompile) && !empty($customThemeColorNameAndColors))
+            {
+                foreach ($customThemeColorNameAndColors as $colorName => $themeColors)
+                {
+                    if (is_string($colorName) && count($themeColors) == 5)
+                    {
+                        $lessCompiler = $this->initializeLessCompiler($this->formatterName,
+                            $themeColors[0],
+                            $themeColors[1],
+                            $themeColors[2],
+                            $themeColors[3],
+                            $themeColors[4]);
+                        $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $this->mainLessFileToCompile;
+                        $cssFileName  = str_replace('.less', '', $this->mainLessFileToCompile) . '-' . $colorName . '.css';
+                        $cssFilePath  = $this->getCompiledCustomCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
+                        $lessCompiler->compileFile($lessFilePath, $cssFilePath);
+                    }
                 }
             }
         }

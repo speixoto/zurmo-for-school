@@ -61,13 +61,17 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $relations = $adapter->getSelectableRelationsDataResolvedForUserAccess(Yii::app()->user->userModel, $relations);
-            $this->assertEquals(14, count($relations));
+            $this->assertEquals(17, count($relations));
             $compareData        = array('label' => 'Billing Address');
             $this->assertEquals($compareData, $relations['billingAddress']);
+            $compareData        = array('label' => 'Contact Affiliations');
+            $this->assertEquals($compareData, $relations['contactAffiliations']);
             $compareData        = array('label' => 'Contacts');
             $this->assertEquals($compareData, $relations['contacts']);
             $compareData        = array('label' => 'Created By User');
             $this->assertEquals($compareData, $relations['createdByUser']);
+            $compareData        = array('label' => 'Customer Affiliations');
+            $this->assertEquals($compareData, $relations['secondaryAccountAffiliations']);
             $compareData        = array('label' => 'Meetings');
             $this->assertEquals($compareData, $relations['meetings']);
             $compareData        = array('label' => 'Modified By User');
@@ -82,6 +86,8 @@
             $this->assertEquals($compareData, $relations['projects']);
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
+            $compareData        = array('label' => 'Partner Affiliations');
+            $this->assertEquals($compareData, $relations['primaryAccountAffiliations']);
             $compareData        = array('label' => 'Primary Email');
             $this->assertEquals($compareData, $relations['primaryEmail']);
             $compareData        = array('label' => 'Shipping Address');
