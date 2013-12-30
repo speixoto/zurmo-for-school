@@ -278,7 +278,7 @@
                 'class' => 'application.core.components.ZurmoUrlManager',
                 'urlFormat' => 'path',
                 'caseSensitive' => true,
-                'showScriptName' => false,
+                'showScriptName' => true,
                 'rules' => array(
                     // API REST patterns
                     array('zurmo/api/logout',                   'pattern' => 'zurmo/api/logout',                              'verb' => 'GET'),    // Not Coding Standard
