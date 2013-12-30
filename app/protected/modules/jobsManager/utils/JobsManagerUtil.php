@@ -68,7 +68,7 @@
             $jobManagerFileLogger = Yii::createComponent(
                 array(
                     'class'       => 'application.modules.jobsManager.components.JobManagerFileLogger',
-                    'maxFileSize' => '2048',
+                    'maxFileSize' => '5120',
                     'logFile'     => $type . '.log',
                     'logPath'     => Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'jobLogs'
                 )

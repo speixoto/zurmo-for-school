@@ -36,42 +36,11 @@
 
     class ZurmoUrlManager extends CUrlManager
     {
-        /**
-         * Override to showScriptName if OS is not linux
-         * @param string $route
-         * @param array $params
-         * @param string $ampersand
-         * @return string
-         */
-        protected function createUrlDefault($route, $params, $ampersand)
+        public static function getPositionOfPathInUrl($keyword)
         {
-           if (!$this->showScriptName and !$this->isOsLinux())
-           {
-               $this->showScriptName = true;
-           }
-           return parent::createUrlDefault($route, $params, $ampersand);
-        }
-
-        /**
-         * Override to showScriptName if OS is not linux
-         * @return string
-         */
-        public function getBaseUrl()
-        {
-            if (!$this->showScriptName and !$this->isOsLinux())
-            {
-                $this->showScriptName = true;
-            }
-            return parent::getBaseUrl();
-        }
-
-        private function isOsLinux()
-        {
-            if (PHP_OS == 'Linux')
-            {
-                return true;
-            }
-            return false;
+            $requestedUrl = Yii::app()->getRequest()->getUrl();
+            $position = strpos(trim($requestedUrl, '/'), trim($keyword, '/'));
+            return $position;
         }
     }
 ?>

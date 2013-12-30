@@ -278,7 +278,7 @@
                 'class' => 'application.core.components.ZurmoUrlManager',
                 'urlFormat' => 'path',
                 'caseSensitive' => true,
-                'showScriptName' => false,
+                'showScriptName' => true,
                 'rules' => array(
                     // Begin Not Coding Standard
                     // API REST patterns
