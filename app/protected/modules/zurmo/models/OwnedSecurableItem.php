@@ -43,6 +43,11 @@
          * @var bool
          */
         private $treatCurrentUserAsOwnerForPermissions = false;
+        
+        /**
+         * @var bool
+         */
+        private $onAfterOwnerChangeEventRaised = false;
 
         /**
          * Set when the current user needs to operate like the owner. This can be when a user is creating a new model
@@ -198,6 +203,12 @@
         public function onAfterOwnerChange(CEvent $event)
         {
             $this->raiseEvent('onAfterOwnerChange', $event);
+            $this->onAfterOwnerChangeEventRaised = true;
+        }
+        
+        public function onAfterOwnerChangeAfterSave(CEvent $event)
+        {
+            $this->raiseEvent('onAfterOwnerChangeAfterSave', $event);
         }
 
         protected function afterSave()
@@ -214,6 +225,11 @@
                     ReadPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
                                                             User::getById($this->originalAttributeValues['owner'][1]));
                 }
+            }
+            if($this->onAfterOwnerChangeEventRaised)
+            {
+                $this->onAfterOwnerChangeAfterSave(new CEvent($this));
+                $this->onAfterOwnerChangeEventRaised = false;
             }
             parent::afterSave();
         }

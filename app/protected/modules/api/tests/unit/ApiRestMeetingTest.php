@@ -166,6 +166,7 @@
             unset($response['data']['category']['id']);
             unset($response['data']['id']);
             unset($response['data']['logged']);
+            unset($response['data']['processedForLatestActivity']);
             $data['latestDateTime'] = $startStamp;
 
             ksort($data);
@@ -263,6 +264,7 @@
             unset($response['data']['category']['id']);
             unset($response['data']['id']);
             unset($response['data']['logged']);
+            unset($response['data']['processedForLatestActivity']);
             $data['latestDateTime'] = $startStamp;
 
             ksort($data);
@@ -358,6 +360,7 @@
             unset($response['data']['category']['id']);
             unset($response['data']['id']);
             unset($response['data']['logged']);
+            unset($response['data']['processedForLatestActivity']);
             $data['latestDateTime'] = $startStamp;
 
             ksort($data);
