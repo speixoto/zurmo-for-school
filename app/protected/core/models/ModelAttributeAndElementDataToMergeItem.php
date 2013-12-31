@@ -39,34 +39,63 @@
      */
     class ModelAttributeAndElementDataToMergeItem
     {
+        /**
+         * Model associated to the merged item.
+         * @var RedBeanModel
+         */
         protected $model;
-
+        /**
+         * Attribute associated to the merged item.
+         * @var string
+         */
         protected $attribute;
-
+        /**
+         * Element associated to the merged item.
+         * @var string
+         */
         protected $element;
-
+        /**
+         * Primary model associated to the merged item.
+         * @var RedBeanModel
+         */
         protected $primaryModel;
 
-        public function __construct($model, $attribute, $element, $primaryModel)
+        /**
+         * Constructor for the class.
+         * @param type $model
+         * @param type $attribute
+         * @param type $element
+         * @param type $primaryModel
+         */
+        public function __construct(RedBeanModel $model, $attribute, $element, RedBeanModel $primaryModel)
         {
-            $this->model     = $model;
-            $this->attribute = $attribute;
-            $this->element   = $element;
-            $this->primaryModel = $primaryModel;
+            assert('is_string($attribute)');
+            assert('$element instanceof Element');
+            $this->model             = $model;
+            $this->attribute         = $attribute;
+            $this->element           = $element;
+            $this->primaryModel      = $primaryModel;
         }
 
+        /**
+         * Gets attribute rendered content
+         * @return string
+         */
         public function getAttributeRenderedContent()
         {
             return $this->decorateContent($this->model->{$this->attribute});
         }
 
+        /**
+         * Get attribute values and input ids for on click event
+         * @return array
+         */
         public function getAttributeValuesAndInputIdsForOnClick()
         {
             $interfaces = class_implements($this->element);
-            //Do we really need this if we are modifying the metadata?
+            $elementClassName = get_class($this->element);
             if(in_array('DerivedElementInterface', $interfaces))
             {
-                $elementClassName = get_class($this->element);
                 if($this->element instanceof DropDownElement)
                 {
                     $attributeInputIdMap[] = $this->element->getIdForSelectInput();
@@ -80,29 +109,60 @@
                     }
                 }
             }
+            elseif(in_array('MultipleAttributesElementInterface', $interfaces))
+            {
+                $relatedAttributes = $elementClassName::getModelAttributeNames();
+                foreach($relatedAttributes as $relatedAttribute)
+                {
+                    $attributeInputIdMap[] = $this->getDerivedInputId($this->attribute, $relatedAttribute);
+                }
+            }
             else
             {
-                //return $this->getNonDerivedInputId();
                 $attributeInputIdMap[] = $this->getNonDerivedInputId();
             }
             return $attributeInputIdMap;
         }
 
+        /**
+         * Get input id for non derived attribute
+         * @return string
+         */
         protected function getNonDerivedInputId()
         {
             return $this->resolveInputId($this->attribute);
         }
 
-        protected function getDerivedInputId($attribute)
+        /**
+         * Gets input id for the derived attribute
+         * @param string $attribute
+         * @param string $relatedAttribute
+         * @return string
+         */
+        protected function getDerivedInputId($attribute, $relatedAttribute)
         {
-            return $this->resolveInputId($attribute);
+            assert('is_string($attribute)');
+            assert('is_string($relatedAttribute)');
+            return $this->resolveInputId($attribute, $relatedAttribute);
         }
 
-        private function resolveInputId($attribute)
+        /**
+         * Resolves input id for the attribute
+         * @param string $attribute
+         * @param string $relatedAttribute
+         * @return string
+         */
+        private function resolveInputId($attribute, $relatedAttribute = null)
         {
+            assert('is_string($attribute)');
+            assert('is_string($relatedAttribute) || is_null($relatedAttribute)');
             if($this->model->$attribute instanceof CustomField)
             {
                 $inputId = Element::resolveInputIdPrefixIntoString(array(get_class($this->model), $attribute, 'value'));
+            }
+            elseif($relatedAttribute != null)
+            {
+                $inputId = Element::resolveInputIdPrefixIntoString(array(get_class($this->model), $attribute, $relatedAttribute));
             }
             else
             {
@@ -111,8 +171,14 @@
             return $inputId;
         }
 
+        /**
+         * Decorates the content
+         * @param string $content
+         * @return string
+         */
         protected function decorateContent($content)
         {
+            $decoratedContent = null;
             if($content != null)
             {
                 $inputIds = $this->getAttributeValuesAndInputIdsForOnClick();
@@ -124,15 +190,38 @@
                 {
                     $style = 'border: 2px dotted #66367b;margin-left:4px;';
                 }
-                $value = $this->model->{$this->attribute};
-                return ZurmoHtml::link($value, '#', array('style' => $style,
-                                                    'id'    => $inputIds[0] . '-' . $value,
-                                                    'class' => 'attributePreElementContent'));
-//                return ZurmoHtml::tag('span', array('style' => $style,
-//                                                    'id'    => $this->getAttributeValuesAndInputIdsForOnClick() . '-' . $value,
-//                                                    'class' => 'attributePreElementContent'), $content);
+                foreach($inputIds as $inputId)
+                {
+                    $inputIdArray = explode('_', $inputId);
+                    $attribute    = $inputIdArray[1];
+                    $relatedAttribute = null;
+                    //If related attribute is there
+                    if(count($inputIdArray) > 2)
+                    {
+                        $relatedAttribute = $inputIdArray[2];
+                    }
+                    if($relatedAttribute == null)
+                    {
+                        $value = $this->model->$attribute;
+                    }
+                    else
+                    {
+                        $value = $this->model->$attribute->$relatedAttribute;
+                    }
+                    if($value != null)
+                    {
+                        $decoratedContent .= ZurmoHtml::link($value, '#', array('style' => $style,
+                                                            'data-id'     => $inputId,
+                                                            'data-value'  => $value,
+                                                            'class'       => 'attributePreElementContent'));
+                    }
+                }
             }
-            return null;
+            if($decoratedContent == null)
+            {
+                $decoratedContent = Zurmo::t('Core', '(None)');
+            }
+            return $decoratedContent;
         }
     }
 ?>

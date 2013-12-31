@@ -33,9 +33,15 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+    /**
+     * Displays summary for the merge
+     */
     class ContactListViewMergeSummaryView extends SecuredDetailsView
     {
+        /**
+         * Selected contacts for merge
+         * @var array
+         */
         protected $selectedContacts;
 
         /**
@@ -71,6 +77,10 @@
             return $content;
         }
 
+        /**
+         * Renders selected contacts list as business card view
+         * @return string
+         */
         protected function renderSelectedContactsListWithCardView()
         {
             $preparedContent = '<ul>';
@@ -98,12 +108,20 @@
             return $preparedContent;
         }
 
+        /**
+         * Renders right side content
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
         protected function renderRightSideContent($form = null)
         {
             return '<span class="graphDisplay">Show</span><div class="spidergraph" style="display:none">
                         Spider graph displayed here</div>';
         }
 
+        /**
+         * Registers scripts for mouse over events
+         */
         protected function registerScripts()
         {
             $url = Yii::app()->request->getUrl();

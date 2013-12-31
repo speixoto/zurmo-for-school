@@ -458,6 +458,31 @@
             }
             $model = new ContactsListDuplicateMergedModelForm('listViewMerge');
             $model->selectedContacts = $contactsList;
+            $this->setPrimaryModel($model);
+            if($model->validate())
+            {
+                $redirectUrl         = Yii::app()->createUrl('/contacts/default/list');
+                $titleBarAndEditView = $this->makeListMergeView(
+                                            $this->attemptToSaveModelFromPost($model->primaryContact, null, $redirectUrl),
+                                            'ContactsMerged', array_values($contactsList));
+                $view = new ContactsPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+                echo $view->render();
+            }
+            else
+            {
+                $this->redirect(Yii::app()->createUrl('/contacts/default/list'));
+            }
+        }
+
+        /**
+         * Sets primary model for the merge
+         * @param ContactsListDuplicateMergedModelForm $model
+         */
+        private function setPrimaryModel(ContactsListDuplicateMergedModelForm $model)
+        {
+            $getData      = GetUtil::getData();
+            $contactsList = $model->selectedContacts;
             if(isset($getData['primaryModelId']))
             {
                 $model->primaryContact = $contactsList[$getData['primaryModelId']];
@@ -469,19 +494,6 @@
                 {
                     $model->primaryContact = $contacts[0];
                 }
-            }
-            if($model->validate())
-            {
-                $titleBarAndEditView = $this->makeListMergeView(
-                                            $this->attemptToSaveModelFromPost($model->primaryContact, null),
-                                            'ContactsMerged', array_values($contactsList));
-                $view = new ContactsPageView(ZurmoDefaultViewUtil::
-                                                    makeStandardViewForCurrentUser($this, $titleBarAndEditView));
-                echo $view->render();
-            }
-            else
-            {
-                $this->redirect(Yii::app()->createUrl('/contacts/default/list'));
             }
         }
     }

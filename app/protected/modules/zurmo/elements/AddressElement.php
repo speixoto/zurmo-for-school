@@ -39,7 +39,7 @@
      * Collection includes street1, street2,
      * city, state, postal code, and country.
      */
-    class AddressElement extends Element
+    class AddressElement extends Element implements MultipleAttributesElementInterface
     {
         public $breakLines = true;
 
@@ -209,6 +209,22 @@
                 return "\n";
             }
             return ' ';
+        }
+
+        /**
+         * Gets related model attribute names
+         * @return array
+         */
+        public static function getModelAttributeNames()
+        {
+            return array('street1',
+                         'street2',
+                         'city',
+                         'state',
+                         'postalCode',
+                         'country',
+                         'latitude',
+                         'longitude');
         }
     }
 ?>

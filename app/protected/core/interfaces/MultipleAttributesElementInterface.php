@@ -34,63 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ModelAttributeElementPreContentView extends ZurmoWidget
+    interface MultipleAttributesElementInterface
     {
         /**
-         * Models selected for merge.
-         * @var array
+         * Get the attributeNames of attributes used in
+         * the multiple attributes element for example address.
+         * @return array of model attributeNames used.
          */
-        public $selectedModels;
-        /**
-         * Attributes associated to the element. This would include multiple attributes in case
-         * of derived ones.
-         * @var array
-         */
-        public $attributes;
-        /**
-         * Primary model associated to the merged item.
-         * @var RedBeanModel
-         */
-        public $primaryModel;
-        /**
-         * Element associated to the merged item.
-         * @var string
-         */
-        public $element;
-
-        /**
-         * Runs the widget
-         */
-        public function run()
-        {
-            $attributes = $this->attributes;
-            $content = null;
-            foreach($attributes as $attribute)
-            {
-                $attributeContent = null;
-                foreach($this->selectedModels as $model)
-                {
-                    $modelAttributeAndElementDataToMergeItem = new ModelAttributeAndElementDataToMergeItem(
-                                                                $model, $attribute, $this->element, $this->primaryModel);
-
-                    $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
-                }
-                $attributeContent = ZurmoHtml::tag('div', array(), $attributeContent);
-                $content .= $attributeContent;
-            }
-            Yii::app()->clientScript->registerScript('preContentSelectScript', $this->registerScriptForAttributeReplacement());
-            echo $content;
-        }
-
-        /**
-         * Registers script for attribute replacement
-         * @return string
-         */
-        protected function registerScriptForAttributeReplacement()
-        {
-            return "$('.attributePreElementContent').click(function(){
-                                                                $('#' + $(this).data('id')).val($(this).data('value'));
-                                                            });";
-        }
+        public static function getModelAttributeNames();
     }
 ?>
