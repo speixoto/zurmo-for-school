@@ -131,8 +131,34 @@
 
         protected function renderRightSideContent($form = null)
         {
-            return '<span class="graphDisplay">Show</span><div class="spidergraph" style="display:none">
-                        Spider graph displayed here</div>';
+            $chartContent = $this->renderChart();
+            $divContent   = ZurmoHtml::tag('div', array('class' => 'spidergraph', 'style' => 'display:none'), $chartContent);
+            $spanContent  = ZurmoHtml::tag('span', array('class' => 'graphDisplay'), Zurmo::t('ZurmoModule', 'Show'));
+            return $spanContent . $divContent;
+        }
+
+        protected function renderChart()
+        {
+            Yii::import('ext.amcharts.AmChartMaker');
+            $chartId = 'dedupeChart';
+            $amChart = new AmChartMaker();
+            $amChart->categoryField    = 'category';
+            $amChart->data             = array(array('category' => 'Notes',    'model1' => 1,  'model2' => 8),
+                                               array('category' => 'Taks',     'model1' => 10, 'model2' => 5),
+                                               array('category' => 'Emails',   'model1' => 2,  'model2' => 8),
+                                               array('category' => 'Meetings', 'model1' => 5,  'model2' => 4)
+            );
+            $amChart->id               = $chartId;
+            $amChart->type             = ChartRules::TYPE_RADAR;
+            $amChart->addSerialGraph('model1', 'radar', array('bullet' => "'round'", 'balloonText' => "'Quantity: [[value]]'", 'lineColor' => "'#98cdff'"));
+            $amChart->addSerialGraph('model2', 'radar', array('bullet' => "'round'", 'balloonText' => "'Quantity: [[value]]'", 'lineColor' => "'#12cd11'"));
+            $scriptContent      = $amChart->javascriptChart();
+            Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
+            $cClipWidget        = new CClipWidget();
+            $cClipWidget->beginClip("Chart" . $chartId);
+            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['Chart' . $chartId];
         }
 
         protected function registerScripts()
@@ -170,7 +196,7 @@
                             {$this->onChangeScript()}
                         );
                       ";
-            Yii::app()->clientScript->registerScript('selectedContactMouseOverEvents', $script);
+            Yii::app()->clientScript->registerScript(__CLASS__ . '#selectedContactMouseOverEvents', $script);
         }
 
         /**

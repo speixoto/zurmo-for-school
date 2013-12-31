@@ -279,6 +279,7 @@
 
         protected function beforeRenderingFormLayout()
         {
+            //TODO: @sergio: Fix the dedupe for edit a contact
             $dedupeViewClassName = static::getDedupeViewClassName();
             $summaryView = new $dedupeViewClassName($this->controllerId,
                 $this->moduleId,
