@@ -36,24 +36,53 @@
 
     class ModelAttributeElementPreContentView extends ZurmoWidget
     {
+        /**
+         * Models selected for merge.
+         * @var array
+         */
         public $selectedModels;
-
+        /**
+         * Attributes associated to the element. This would include multiple attributes in case
+         * of derived ones.
+         * @var array
+         */
         public $attributes;
-
+        /**
+         * Primary model associated to the merged item.
+         * @var RedBeanModel
+         */
         public $primaryModel;
-
+        /**
+         * Element associated to the merged item.
+         * @var string
+         */
         public $element;
+        /**
+         * @var ModelAttributeAndElementDataToMergeItem
+         */
+        public $modelAttributeAndElementDataToMergeItemClass;
 
+        /**
+         * Runs the widget
+         */
         public function run()
         {
             $attributes = $this->attributes;
             $content = null;
+            if($this->modelAttributeAndElementDataToMergeItemClass == null)
+            {
+                $modelAttributeAndElementDataToMergeItemClass = 'ModelAttributeAndElementDataToMergeItem';
+            }
+            else
+            {
+                $modelAttributeAndElementDataToMergeItemClass = $this->modelAttributeAndElementDataToMergeItemClass;
+            }
             foreach($attributes as $attribute)
             {
                 $attributeContent = null;
                 foreach($this->selectedModels as $model)
                 {
-                    $modelAttributeAndElementDataToMergeItem = new ModelAttributeAndElementDataToMergeItem(
+                    $modelAttributeAndElementDataToMergeItem = new $modelAttributeAndElementDataToMergeItemClass(
                                                                 $model, $attribute, $this->element, $this->primaryModel);
 
                     $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
@@ -65,13 +94,21 @@
             echo $content;
         }
 
+        /**
+         * Registers script for attribute replacement
+         * @return string
+         */
         protected function registerScriptForAttributeReplacement()
         {
-            return "$('.attributePreElementContent').click(function(){
-                                                                var id = $(this).attr('id');
-                                                                idArray = id.split('-');
-                                                                $('#' + idArray[0]).val(idArray[1]);
+            $script = "$('.attributePreElementContent').click(function(){
+                                                                $('#' + $(this).data('id')).val($(this).data('value'));
                                                             });";
+
+            $script .= "$('.attributePreElementContentModelElement').click(function(){
+                                                                $('#' + $(this).data('id')).val($(this).data('value'));
+                                                                $('#' + $(this).data('hiddenid')).val($(this).data('hiddenvalue'));
+                                                            });";
+            return $script;
         }
     }
 ?>

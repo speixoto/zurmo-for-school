@@ -36,10 +36,19 @@
 
     class ContactsMergedEditAndDetailsView extends ContactEditAndDetailsView
     {
+        /**
+         * Selected contacts for merge
+         * @var array
+         */
         public $selectedContacts;
 
         /**
-         * Accepts $renderType as Edit or Details
+         * Constructor for the class
+         * @param string $renderType
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param RedBeanModel $model
+         * @param Array $selectedContacts contacts selected for merge
          */
         public function __construct($renderType, $controllerId, $moduleId, $model, $selectedContacts)
         {
@@ -47,6 +56,9 @@
             parent::__construct($renderType, $controllerId, $moduleId, $model);
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -91,11 +103,19 @@
             return $metadata;
         }
 
+        /**
+         * @return null
+         */
         protected function getNewModelTitleLabel()
         {
             return null;
         }
 
+        /**
+         * Renders right side form layout
+         * @param ZurmoActiveForm $form
+         * @return null
+         */
         protected function renderRightSideFormLayoutForEdit($form)
         {
             return null;
@@ -121,12 +141,18 @@
                                                                     'selectedModels' => $this->selectedContacts,
                                                                     'attributes'     => $attributes,
                                                                     'primaryModel'   => $this->model,
-                                                                    'element'        => $element
+                                                                    'element'        => $element,
+                                                                    'modelAttributeAndElementDataToMergeItemClass'
+                                                                            => 'ContactModelAttributeAndElementDataToMergeItem'
                                                                 ),
                                                             true);
             $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' . $preContent . '{content}{error}</td>';
         }
 
+        /**
+         * Before rendering form layout.
+         * @return string
+         */
         protected function beforeRenderingFormLayout()
         {
             $summaryView = new ContactListViewMergeSummaryView($this->controllerId,
@@ -136,6 +162,10 @@
             return $summaryView->render();
         }
 
+        /**
+         * Gets title.
+         * @return string
+         */
         public function getTitle()
         {
             $translationParams = LabelUtil::getTranslationParamsForAllModules();

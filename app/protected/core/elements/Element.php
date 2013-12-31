@@ -445,9 +445,9 @@
             return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'listViewGridId');
         }
 
-        public function renderAsNonEditable()
+        public function renderAsControlNonEditable()
         {
-            return $this->renderNonEditable();
+            return $this->renderControlNonEditable();
         }
 
         /**

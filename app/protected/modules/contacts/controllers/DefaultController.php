@@ -443,21 +443,39 @@
             }
         }
 
+        /**
+         * List view merge for contacts
+         */
         public function actionListViewMerge()
         {
-            $getData = GetUtil::getData();
-            $contactsList = array();
-            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
-            {
-                $selectedIds = explode(',', $getData['selectedIds']);
-                foreach($selectedIds as $id)
-                {
-                    $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
-                    $contactsList[$id] = $contact;
-                }
-            }
-            $model = new ContactsListDuplicateMergedModelForm('listViewMerge');
+            $contactsList            = $this->getSelectedContactsListForMerge();
+            $model                   = new ContactsListDuplicateMergedModelForm('listViewMerge');
             $model->selectedContacts = $contactsList;
+            $this->setPrimaryModel($model);
+            if($model->validate())
+            {
+                $redirectUrl         = Yii::app()->createUrl('/contacts/default/list');
+                $titleBarAndEditView = $this->makeListMergeView(
+                                            $this->attemptToSaveModelFromPost($model->primaryContact, null, $redirectUrl),
+                                            'ContactsMerged', array_values($contactsList));
+                $view = new ContactsPageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+                echo $view->render();
+            }
+            else
+            {
+                $this->redirect(Yii::app()->createUrl('/contacts/default/list'));
+            }
+        }
+
+        /**
+         * Sets primary model for the merge
+         * @param ContactsListDuplicateMergedModelForm $model
+         */
+        private function setPrimaryModel(ContactsListDuplicateMergedModelForm $model)
+        {
+            $getData      = GetUtil::getData();
+            $contactsList = $model->selectedContacts;
             if(isset($getData['primaryModelId']))
             {
                 $model->primaryContact = $contactsList[$getData['primaryModelId']];
@@ -470,19 +488,47 @@
                     $model->primaryContact = $contacts[0];
                 }
             }
-            if($model->validate())
+        }
+
+        /**
+         * Processing before redirecting
+         * @param Contact $model
+         */
+        protected function beforeRedirect($model)
+        {
+            assert('$model instanceof Contact');
+            if($this->getAction()->id == 'listViewMerge')
             {
-                $titleBarAndEditView = $this->makeListMergeView(
-                                            $this->attemptToSaveModelFromPost($model->primaryContact, null),
-                                            'ContactsMerged', array_values($contactsList));
-                $view = new ContactsPageView(ZurmoDefaultViewUtil::
-                                                    makeStandardViewForCurrentUser($this, $titleBarAndEditView));
-                echo $view->render();
+                $contactsList            = $this->getSelectedContactsListForMerge();
+                foreach($contactsList as $contact)
+                {
+                    if($contact->id != $model->id)
+                    {
+                        ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($contact);
+                        $contact->delete();
+                    }
+                }
             }
-            else
+        }
+
+        /**
+         * Gets selected contacts for merge
+         * @return array
+         */
+        private function getSelectedContactsListForMerge()
+        {
+            $getData      = GetUtil::getData();
+            $contactsList = array();
+            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
             {
-                $this->redirect(Yii::app()->createUrl('/contacts/default/list'));
+                $selectedIds = explode(',', $getData['selectedIds']);
+                foreach($selectedIds as $id)
+                {
+                    $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
+                    $contactsList[$id] = $contact;
+                }
             }
+            return $contactsList;
         }
 
         /**
