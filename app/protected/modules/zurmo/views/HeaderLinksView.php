@@ -58,7 +58,7 @@
 
         const MERGE_USER_AND_SETTINGS_MENU_IF_MOBILE    = true;
 
-        const GO_TO_GAME_DASHBOARD_LINK                 = 'go-to-dashboard-link';
+        const CLAIM_ITEM_LINK_ID                        = 'claim-item-link';
 
         /**
          * @param array $settingsMenuItems
@@ -86,14 +86,14 @@
             {
                 $logoFileModel = FileModel::getById($logoFileModelId);
                 $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
-                                                                                DIRECTORY_SEPARATOR . $logoFileModel->name);
+                    DIRECTORY_SEPARATOR . $logoFileModel->name);
             }
             else
             {
                 $logoFileSrc   = Yii::app()->themeManager->baseUrl . '/default/images/Zurmo_logo.png';
             }
-            $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
-            $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
+            $logoHeight = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoHeight();
+            $logoWidth  = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoWidth();
             if (Yii::app()->userInterface->isMobile())
             {
                 $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" /></a>'; //make sure width and height are NEVER defined
@@ -101,7 +101,7 @@
             else
             {
                 $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" height="'
-                                . $logoHeight .'" width="' . $logoWidth .'" /></a>';
+                    . $logoHeight .'" width="' . $logoWidth .'" /></a>';
             }
             if ($this->applicationName != null)
             {
@@ -177,7 +177,7 @@
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
                 'items'                   => $menuItems,
                 'htmlOptions' => array('id'     => $menuId,
-                                       'class'  => 'user-menu-item'),
+                    'class'  => 'user-menu-item'),
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
@@ -187,59 +187,78 @@
         {
             $id      = static::USER_GAME_DASHBOARD_LINK_ID;
             $url     = Yii::app()->createUrl('users/default/gameDashboard/',
-                       array('id' => Yii::app()->user->userModel->id));
+                array('id' => Yii::app()->user->userModel->id));
             $content = ZurmoHtml::ajaxLink('∂', $url, static::resolveAjaxOptionsForGameDashboardModel($id),
                 array(
                     'id' => $id,
                 )
             );
-            $content .= static::resolveNewCollectionItemAndNotification($url);
+            $content .= static::renderGetNewCollectionItemNotification();
             return ZurmoHtml::tag('div', array('id' => static::USER_GAME_DASHBOARD_WRAPPER_ID,
-                   'class' => 'user-menu-item'), $content);
+                'class' => 'user-menu-item'), $content);
         }
 
-        protected static function resolveNewCollectionItemAndNotification($gameBoardUrl)
+        protected static function renderGetNewCollectionItemNotification()
         {
-            assert('is_string($gameBoardUrl)');
             $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
             if (null != $collectionAndItemKey)
             {
+                $claimCollectionItemUrl = Yii::app()->createUrl('gamification/default/claimCollectionItem',
+                                                                array('key'     => $collectionAndItemKey[1],
+                                                                      'typeKey' => $collectionAndItemKey[2]));
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($collectionAndItemKey[0]->type);
                 $collectionItemTypesAndLabels = $gameCollectionRules::getItemTypesAndLabels();
-                $dashboardLink   = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Go to game dashboard'), $gameBoardUrl,
-                                   static::resolveAjaxOptionsForGameDashboardModel(static::GO_TO_GAME_DASHBOARD_LINK),
-                                   array('id' => static::GO_TO_GAME_DASHBOARD_LINK));
+                $claimRewardLink = ZurmoHtml::ajaxLink(Zurmo::t('GamificationModule', 'Get this item'), $claimCollectionItemUrl,
+                                   array(),
+                                   array('id' => static::CLAIM_ITEM_LINK_ID, 'class' => 'mini-button'));
                 $closeLink       = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => 'close-game-notification-link'));
                 $collectionItemImagePath = $gameCollectionRules::makeMediumCOllectionItemImagePath($collectionAndItemKey[1]);
                 $outerContent  = ZurmoHtml::tag('h5', array(), Zurmo::t('Core', 'Congratulations!'));
-                $content  = ZurmoHtml::image($collectionItemImagePath);
+                $content  = ZurmoHtml::tag('span', array('class' => 'collection-item-image'), ZurmoHtml::image($collectionItemImagePath));
                 $content .= Zurmo::t('GamificationModule', 'You discovered the {name}',
-                                     array('{name}' => $collectionItemTypesAndLabels[$collectionAndItemKey[1]]));
+                            array('{name}' => $collectionItemTypesAndLabels[$collectionAndItemKey[1]]));
                 $content .= '<br/>';
-                $content .= Zurmo::t('GamificationModule', '{dashboardLink} or {closeLink}',
-                                     array('{dashboardLink}' => $dashboardLink,
-                                           '{closeLink}' => $closeLink));
-                $content = $outerContent . ZurmoHtml::tag('p', array(), $content);
-                $content =  ZurmoHtml::tag('div', array('id' => 'game-notification'), $content);
+                $content .= Zurmo::t('GamificationModule', '{claimLink} or {closeLink}',
+                            array('{claimLink}' => $claimRewardLink, '{closeLink}' => $closeLink));
+                $content  = $outerContent . ZurmoHtml::tag('p', array(), $content);
+                $content  = ZurmoHtml::tag('div', array('id' => 'game-notification'), $content);
+                $content .= static::renderAudioContent();
                 return $content;
             }
         }
 
-        protected static function resolveAjaxOptionsForGameDashboardModel($id)
+        /**
+         * @param $id
+         * @return array
+         */
+        public static function resolveAjaxOptionsForGameDashboardModel($id)
         {
             $id      = static::USER_GAME_DASHBOARD_LINK_ID;
             // Begin Not Coding Standard
             return array(
                 'beforeSend' => 'js:function(){
-                    if($("#UserGameDashboardView").length){
-                        closeGamificationDashboard();
-                        return false;
-                    }
-                    $("body").addClass("gd-dashboard-active");
-                    $("#' . $id . '").html("‰").toggleClass("highlighted");
-                }',
+                        if($("#UserGameDashboardView").length){
+                            closeGamificationDashboard();
+                            return false;
+                        }
+                        $("body").addClass("gd-dashboard-active");
+                        $("#' . $id . '").html("‰").toggleClass("highlighted");
+                    }',
                 'success'    => 'js:function(data){$("#FooterView").after(data);}');
             // End Not Coding Standard
+        }
+
+        protected static function renderAudioContent()
+        {
+            $publishedAssetsPath = Yii::app()->assetManager->publish(
+                Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
+            $MP3AudioFilePath = $publishedAssetsPath . '/magic.mp3';
+            $OGGAudioFilePath = $publishedAssetsPath . '/magic.ogg';
+            $WAVAudioFilePath = $publishedAssetsPath . '/magic.wav';
+            $content  = ZurmoHtml::tag('source', array('src' => $MP3AudioFilePath, 'type' => 'audio/mpeg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $OGGAudioFilePath, 'type' => 'audio/ogg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $WAVAudioFilePath, 'type' => 'audio/wav'), '');
+            return ZurmoHtml::tag('audio', array('id' => 'collection-item-claimed'), $content);
         }
 
         protected static function getModalContainerId($id)
@@ -250,34 +269,38 @@
         protected function registerScripts()
         {
             $id     = static::USER_GAME_DASHBOARD_LINK_ID;
+            $script = "$('#".static::CLAIM_ITEM_LINK_ID."').on('click', function(event){
+                               event.preventDefault();
+                               $(this).off('click');
+                               var magicAudio = document.getElementById('collection-item-claimed');
+                               magicAudio.play();
+                               $('#game-notification').fadeOut(300);
+                           });";
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('claimItemScript', $script);
+
             // Begin Not Coding Standard
-            $script = "$('#go-to-dashboard-link, #close-game-notification-link').click(function(event){
-                           event.preventDefault();
-                           $('#game-notification').fadeOut(300, function(){
-                               $('#game-notification').remove();
+            $script = "$('#close-game-notification-link').click(function(event){
+                               event.preventDefault();
+                               $('#game-notification').fadeOut(300);
                            });
-                       });
-                       $('.gd-dashboard-active').on('click', function(){
-                           if($('#UserGameDashboardView').length){
-                               closeGamificationDashboard();
-                           }
-                           return false;
-                       });";
+                           $('.gd-dashboard-active').on('click', function(){
+                               if($('#UserGameDashboardView').length){
+                                   closeGamificationDashboard();
+                               }
+                               return false;
+                           });";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('gameficationScripts', $script);
 
             // Begin Not Coding Standard
             $script = "function closeGamificationDashboard(){
-                           $('#UserGameDashboardView').remove();
-                           $('body').removeClass('gd-dashboard-active');
-                           $('#" . $id . "').html('∂').toggleClass('highlighted');
-                       }";
+                               $('#UserGameDashboardView').remove();
+                               $('body').removeClass('gd-dashboard-active');
+                               $('#" . $id . "').html('∂').toggleClass('highlighted');
+                           }";
             // End Not Coding Standard
-            Yii::app()->clientScript->registerScript(
-                'closeGamificationScript',
-                $script,
-                CClientScript::POS_END
-            );
+            Yii::app()->clientScript->registerScript('closeGamificationScript', $script, CClientScript::POS_END);
         }
     }
 ?>

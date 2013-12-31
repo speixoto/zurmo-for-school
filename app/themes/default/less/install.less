@@ -38,7 +38,8 @@
     margin-bottom:20px;
 }
 
-#InstallAccessFailurePageView, #ErrorPageView{
+#InstallAccessFailurePageView,
+#ErrorPageView{
     #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #f6f6f6 );
     .b-shadow( ~"0 0 12px 5px rgba(153, 153, 153, 0.3)" );
     .radius( 5px );
@@ -49,8 +50,8 @@
     padding:20px;
     margin:40px auto;
     a{
-        //++.themeBackgroundColor;
-        padding:1px 4px;
+	    background-color: @themeColor;
+	    padding:1px 4px;
         .radius(2px);
         color:#fff;
         &:hover{
@@ -72,8 +73,8 @@
         margin:40px 40px 0 40px;
         .radius( 5px );
         a{
-            margin:auto 10px; 
-            ++.z-button;  
+            //margin:auto 10px;
+            //.z-button();
         }
     }
 	div.wide.form{
@@ -121,16 +122,17 @@
         /*inside another table to prevent hover effect on the main table*/
         table tr:hover{
             background-color:none;
-            color:#545454;
+            color:@textColor;
         }
         td{
             padding:8px 2px;
         }
     }
     #install-form{
-        padding:15px !important;
+        .unstyle-panel;
+        //padding:0 !important;
         input[type="submit"]{
-            ++.z-button;
+            .z-button();
         }
         table{
             padding-bottom:15px;
@@ -157,6 +159,9 @@
         	padding-top:0;
         	margin-left:0;
         }
+	    .view-toolbar-container{
+		    border-top:1px solid #ccc;
+	    }
     }
 }
 

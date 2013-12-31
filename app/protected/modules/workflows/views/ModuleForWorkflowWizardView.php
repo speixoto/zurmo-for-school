@@ -90,7 +90,8 @@
             {
                 $label = Zurmo::t('Core', 'Cancel Changes');
             }
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
+            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#',
+                   array('id' => static::getPreviousPageLinkId(), 'class' => 'cancel-button'));
         }
     }
 ?>

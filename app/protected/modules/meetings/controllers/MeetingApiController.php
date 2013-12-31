@@ -37,7 +37,7 @@
     /**
     * Meetings API Controller
     */
-    class MeetingsMeetingApiController extends ZurmoModuleApiController
+    class MeetingsMeetingApiController extends ZurmoSecurableItemApiController
     {
         protected static function getSearchFormClassName()
         {

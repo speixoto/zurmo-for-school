@@ -905,10 +905,10 @@
          */
         public function testSavingExistingUserDoesntCreateRelatedBlankUsers()
         {
-            $userCount = count(User::getAll());
+            $userCount = User::getCount();
             $dick = User::getByUsername('dick');
             $this->assertTrue($dick->save());
-            $this->assertEquals($userCount, count(User::getAll()));
+            $this->assertEquals($userCount, User::getCount());
         }
 
         public function testMixedInPersonInUser()

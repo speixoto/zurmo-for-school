@@ -113,7 +113,7 @@
             }
             $mixinColumns       = RedBeanModelMixinsToColumnsAdapter::resolve($modelClassName, $messageLogger);
             $columns            = CMap::mergeArray($memberColumns, $mixinColumns, $relationColumns);
-            $tableName          = RedBeanModel::getTableName($modelClassName);
+            $tableName          = $modelClassName::getTableName();
             $schemaDefinition   = array($tableName => array('columns' => $columns, 'indexes' => $indexes));
             return $schemaDefinition;
       }

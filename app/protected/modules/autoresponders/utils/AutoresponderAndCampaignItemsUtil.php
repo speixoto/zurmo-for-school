@@ -104,7 +104,7 @@
                                                                                 $modelType, $contact, $marketingListId);
         }
 
-        protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
+        public static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
         {
             // TODO: @Shoaibi/@Jason: Low: we might add support for language
             $language               = null;

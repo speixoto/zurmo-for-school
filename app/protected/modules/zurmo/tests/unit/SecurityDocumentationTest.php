@@ -303,7 +303,7 @@
             // Then we'll just nuke eveyone's permissions. If you use this it is for
             // the kind of scenario where an admin wants to re-setup permissions from scratch
             // so you'd put a Do You Really Want To Do This???? kind of message.
-            Permission::removeAll();
+            Permission::deleteAll();
 
             // Removing all permissions is done directly on the database,
             // so we need to forget our account and get it back again.

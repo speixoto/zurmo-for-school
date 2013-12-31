@@ -207,7 +207,7 @@
             $this->assertEquals(null, $nerd      ->getActualPolicy   ('UsersModule', UsersModule::POLICY_PASSWORD_EXPIRY_DAYS));
             $this->assertEquals(10,   $salesStaff->getActualPolicy   ('UsersModule', UsersModule::POLICY_PASSWORD_EXPIRY_DAYS));
 
-            Policy::removeAll($nerd);
+            Policy::deleteAll();
             PoliciesCache::forgetAll();
 
             unset($nerd);

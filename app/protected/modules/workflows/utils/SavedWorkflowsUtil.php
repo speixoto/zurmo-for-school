@@ -104,7 +104,7 @@
                 throw new NotSupportedException();
             }
             $q   = DatabaseCompatibilityUtil::getQuote();
-            $sql = "select max({$q}order{$q}) maxorder from " . SavedWorkflow::getTableName('SavedWorkflow');
+            $sql = "select max({$q}order{$q}) maxorder from " . SavedWorkflow::getTableName();
             $sql .= " where moduleclassname = '" . $savedWorkflow->moduleClassName . "'";
             if ($isBeingCopied || $savedWorkflow->id < 0 ||
                 array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))

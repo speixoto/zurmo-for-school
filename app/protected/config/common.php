@@ -51,6 +51,9 @@
         ),
 
         'components' => array(
+            'accountLatestActivityDateTimeObserver' => array(
+                'class' => 'application.modules.accounts.observers.AccountLatestActivityDateTimeObserver',
+            ),
             'additionalModelsConfig' => array(
                 'class'         => 'application.core.components.AdditionalModelsConfig',
                 'zurmoModels'   => array('application.core.models', 'application.core.portlets', 'application.core.kanbanBoard.models'),
@@ -82,6 +85,9 @@
                             'jquery.treeview.edit.js'),
                         'depends'  => array('jquery', 'cookie')),
                 ),
+            ),
+            'contactLatestActivityDateTimeObserver' => array(
+                'class' => 'application.modules.contacts.observers.ContactLatestActivityDateTimeObserver',
             ),
             'currencyHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoCurrencyHelper',
@@ -121,6 +127,9 @@
             'gamificationObserver' => array(
                 'class' => 'application.modules.gamification.observers.GamificationObserver',
             ),
+            'jobQueue' => array(
+                'class' => 'application.core.components.JobQueue',
+            ),
             'licenseManager' => array(
                 'class' => 'application.core.components.LicenseManager',
             ),
@@ -131,10 +140,11 @@
                 'class' => 'application.core.components.ZurmoExtMinScript',
                 'groupMap' => array(
                     'css' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/zurmo.css',
+                       // INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/' . Yii::app()->theme->name,
+                        //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
                     'css-color' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
+                        //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/keyframes.css'
                     ),
                     'js' => array(
@@ -156,6 +166,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/dropDownInteractions.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/views/assets/jquery.truncateText.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/rssReader/jquery.zrssfeed.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/amChart/amcharts.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/juiportlets/JuiPortlets.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/jnotify/jquery.jnotify.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/juiMultiSelect/jquery.multiselect.js',
@@ -188,6 +199,7 @@
                     array('application.core.views.assets',              '/interactions.js'),
                     array('application.core.views.assets',              '/jquery.truncateText.js'),
                     array('application.core.widgets.assets',            '/rssReader/jquery.zrssfeed.min.js'),
+                    array('application.core.widgets.assets',            '/amChart/amcharts.js'),
                     array('application.core.widgets.assets',            '/juiportlets/JuiPortlets.js'),
                     array('application.core.widgets.assets',            '/jnotify/jquery.jnotify.js'),
                     array('application.core.widgets.assets',            '/juiMultiSelect/jquery.multiselect.js'),
@@ -235,6 +247,12 @@
             'phoneHelper' => array(
                 'class'          => 'application.core.components.PhoneHelper',
             ),
+            'request' => array(
+                'class' => 'application.core.components.ZurmoHttpRequest',
+                'enableCsrfValidation' => true,
+                'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
+                'tokenEnabledRoutes' => array('contacts/external/'),
+            ),
             'sanitizer' => array(
                 'class'          => 'application.extensions.esanitizer.ESanitizer',
                 'sanitizeGet'    => false, //off for now
@@ -253,34 +271,31 @@
                 'class' => 'application.modules.zurmo.components.ZurmoTimeZoneHelper',
                 'timeZone'             => 'America/Chicago',
             ),
-            'request' => array(
-                'class' => 'application.core.components.ZurmoHttpRequest',
-                'enableCsrfValidation' => true,
-                'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
-                'tokenEnabledRoutes' => array('contacts/external/'),
-            ),
             'statePersister' => array(
                 'class'     => 'application.modules.zurmo.components.ZurmoDbStatePersister',
             ),
             'urlManager' => array (
+                'class' => 'application.core.components.ZurmoUrlManager',
                 'urlFormat' => 'path',
                 'caseSensitive' => true,
                 'showScriptName' => true,
                 'rules' => array(
+                    // Begin Not Coding Standard
                     // API REST patterns
-                    array('zurmo/api/logout',                   'pattern' => 'zurmo/api/logout',                              'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\d+>',    'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\w+>',    'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/*',           'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/',            'verb' => 'POST'),   // Not Coding Standard
-                    array('<module>/<model>Api/listAttributes', 'pattern' => '<module:\w+>/<model:\w+>/api/listAttributes',   'verb' => 'GET'),    // Not Coding Standard
-                    array('<module>/<model>Api/update',         'pattern' => '<module:\w+>/<model:\w+>/api/update/<id:\d+>',  'verb' => 'PUT'),    // Not Coding Standard
-                    array('<module>/<model>Api/delete',         'pattern' => '<module:\w+>/<model:\w+>/api/delete/<id:\d+>',  'verb' => 'DELETE'), // Not Coding Standard
-                    array('<module>/<model>Api/create',         'pattern' => '<module:\w+>/<model:\w+>/api/create/',          'verb' => 'POST'),   // Not Coding Standard
-                    array('zurmo/CustomFieldApi/addValues',     'pattern' => 'zurmo/customField/api/addValues/<id:\w+>',      'verb' => 'PUT'),    // Not Coding Standard
-                    array('<module>/<model>Api/<action>',       'pattern' => '<module:\w+>/<model:\w+>/api/<action>/*'),                           // Not Coding Standard
-
-                    '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',                       // Not Coding Standard
+                    array('zurmo/api/logout',                   'pattern' => 'zurmo/api/logout',                              'verb' => 'GET'),
+                    array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\d+>',    'verb' => 'GET'),
+                    array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\w+>',    'verb' => 'GET'),
+                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/*',           'verb' => 'GET'),
+                    array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/',            'verb' => 'POST'),
+                    array('<module>/<model>Api/listAttributes', 'pattern' => '<module:\w+>/<model:\w+>/api/listAttributes',   'verb' => 'GET'),
+                    array('<module>/<model>Api/update',         'pattern' => '<module:\w+>/<model:\w+>/api/update/<id:\d+>',  'verb' => 'PUT'),
+                    array('<module>/<model>Api/delete',         'pattern' => '<module:\w+>/<model:\w+>/api/delete/<id:\d+>',  'verb' => 'DELETE'),
+                    array('<module>/<model>Api/create',         'pattern' => '<module:\w+>/<model:\w+>/api/create/',          'verb' => 'POST'),
+                    array('zurmo/CustomFieldApi/addValues',     'pattern' => 'zurmo/customField/api/addValues/<id:\w+>',      'verb' => 'PUT'),
+                    array('<module>/<model>Api/<action>',       'pattern' => '<module:\w+>/<model:\w+>/api/<action>/*'),
+                    't/<hash:\w+>'                               => 'zurmo/shortUrl/redirect',
+                    '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+                    // End Not Coding Standard
                 )
             ),
             'user' => array(
@@ -331,6 +346,16 @@
             'loginHelper' => array(
                 'class'       => 'application.modules.zurmo.components.ZurmoLoginHelper',
             ),
+            'lessCompiler' => array(
+                'class'                 => 'application.extensions.lessphp.LessCompiler',
+                'formatterName'         => 'lessjs',
+                'mainLessFileToCompile' => 'zurmo.less',
+                'lessFilesToCompile'    => array(
+                    'ie.less',
+                    'mobile.less',
+                    'webforms-external.less'
+                ),
+            ),
         ),
         'controllerMap' => array(
             'min' => 'application.extensions.minscript.controllers.ExtMinScriptController',
@@ -355,6 +380,8 @@
             'application.extensions.phaActiveColumn.*',
         ),
         'modules' => array(
+            'accountAccountAffiliations',
+            'accountContactAffiliations',
             'accounts',
             'activities',
             'api',

@@ -41,7 +41,7 @@
          */
         const STATUS_ACTIVE     = 1;
 
-        const STATUS_ARCHIVED   = 0;
+        const STATUS_ARCHIVED   = 2;
 
         /**
          * @param string $name
@@ -128,6 +128,7 @@
                     array('description',    'type',    'type' => 'string'),
                     array('status',         'type',    'type' => 'integer'),
                     array('status',         'default', 'value' => Project::STATUS_ACTIVE),
+                    array('status',           'required'),
                 ),
                 'elements' => array(
                     'status' => 'ProjectStatusDropDown',

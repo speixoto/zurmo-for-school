@@ -75,6 +75,7 @@
             }
             $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
+            $content .= $this->resolveAndRenderActionElementMenuForEdit();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
             if ($maxCellsPresentInAnyRow > 1)
             {
@@ -223,6 +224,10 @@
         protected function getNewModelTitleLabel()
         {
             throw new NotImplementedException();
+        }
+
+        protected function resolveAndRenderActionElementMenuForEdit()
+        {
         }
     }
 ?>

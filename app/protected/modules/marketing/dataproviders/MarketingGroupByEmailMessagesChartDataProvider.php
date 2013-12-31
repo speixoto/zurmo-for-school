@@ -47,7 +47,7 @@
         {
             assert('is_string($columnName)');
             $quote       = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $emailMessageTableName = EmailMessage::getTableName();
             $selectQueryAdapter->addDayDateClause($emailMessageTableName, $columnName, static::DAY_DATE);
         }
 
@@ -59,7 +59,7 @@
         {
             assert('is_string($columnName)');
             $quote                 = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $emailMessageTableName = EmailMessage::getTableName();
             $selectQueryAdapter->addFirstDayOfWeekDateClause($emailMessageTableName, $columnName, static::FIRST_DAY_OF_WEEK_DATE);
         }
 
@@ -71,7 +71,7 @@
         {
             assert('is_string($columnName)');
             $quote                 = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $emailMessageTableName = EmailMessage::getTableName();
             $selectQueryAdapter->addFirstDayOfMonthDateClause($emailMessageTableName, $columnName, static::FIRST_DAY_OF_MONTH_DATE);
         }
 
@@ -85,9 +85,9 @@
             $quote                         = DatabaseCompatibilityUtil::getQuote();
             $where                         = null;
             $selectDistinct                = true;
-            $campaignItemTableName         = CampaignItem::getTableName('CampaignItem');
-            $campaignItemActivityTableName = CampaignItemActivity::getTableName('CampaignItemActivity');
-            $emailMessageActivityTableName = EmailMessageActivity::getTableName('EmailMessageActivity');
+            $campaignItemTableName         = CampaignItem::getTableName();
+            $campaignItemActivityTableName = CampaignItemActivity::getTableName();
+            $emailMessageActivityTableName = EmailMessageActivity::getTableName();
             $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('CampaignItemActivity');
             $selectQueryAdapter->addClauseByQueryString("campaign_id");
@@ -110,8 +110,8 @@
             $quote                         = DatabaseCompatibilityUtil::getQuote();
             $where                         = null;
             $selectDistinct                = true;
-            $autoresponderItemActivityTableName = AutoresponderItemActivity::getTableName('AutoresponderItemActivity');
-            $emailMessageActivityTableName = EmailMessageActivity::getTableName('EmailMessageActivity');
+            $autoresponderItemActivityTableName = AutoresponderItemActivity::getTableName();
+            $emailMessageActivityTableName = EmailMessageActivity::getTableName();
             $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
             $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('AutoresponderItemActivity');
             $selectQueryAdapter->addClauseByQueryString("autoresponder_id");

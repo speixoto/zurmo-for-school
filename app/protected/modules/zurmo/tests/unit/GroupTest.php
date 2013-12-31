@@ -459,7 +459,7 @@
 
         public function testEveryoneOnlyCanExistOnce()
         {
-            $groupCountBefore = count(Group::getAll());
+            $groupCountBefore = Group::getCount();
             $group1 = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $this->assertTrue($group1->save());
             $groups = Group::getAll();
@@ -471,7 +471,7 @@
 
         public function testSuperAdministratorsOnlyCanExistOnce()
         {
-            $groupCountBefore = count(Group::getAll());
+            $groupCountBefore = Group::getCount();
             $group1 = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
             $this->assertTrue($group1->save());
             $this->assertEquals($groupCountBefore, Group::getCount());

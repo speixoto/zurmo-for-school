@@ -207,6 +207,11 @@
             return parent::renderContent();
         }
 
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            return ContactDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel(), null);
+        }
+
         protected function getNewModelTitleLabel()
         {
             return Zurmo::t('ContactsModule', 'Create ContactsModuleSingularLabel',

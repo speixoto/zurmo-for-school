@@ -358,9 +358,9 @@
             $this->assertTrue($saved);
 
             $model->addWorkflowToProcessAfterSave($workflow);
-            $this->assertEquals(0, count(WorkflowModelTestItem2::getAll()));
+            $this->assertEquals(0, WorkflowModelTestItem2::getCount());
             SavedWorkflowsUtil::resolveAfterSaveByModel($model, Yii::app()->user->userModel);
-            $this->assertEquals(1, count(WorkflowModelTestItem2::getAll()));
+            $this->assertEquals(1, WorkflowModelTestItem2::getCount());
         }
 
         /**
@@ -402,9 +402,9 @@
             $this->assertTrue($saved);
 
             $model->addWorkflowToProcessAfterSave($workflow);
-            $this->assertEquals(0, count(ByTimeWorkflowInQueue::getAll()));
+            $this->assertEquals(0, ByTimeWorkflowInQueue::getCount());
             SavedWorkflowsUtil::resolveAfterSaveByModel($model, Yii::app()->user->userModel);
-            $this->assertEquals(1, count(ByTimeWorkflowInQueue::getAll()));
+            $this->assertEquals(1, ByTimeWorkflowInQueue::getCount());
         }
     }
 ?>

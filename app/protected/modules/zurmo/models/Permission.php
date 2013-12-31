@@ -76,10 +76,10 @@
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
-        public static function removeAll()
+        public static function deleteAll()
         {
             PermissionsCache::forgetAll();
-            ZurmoRedBean::exec("delete from permission;");
+            parent::deleteAll();
         }
 
         public static function permissionsToString($permissions)

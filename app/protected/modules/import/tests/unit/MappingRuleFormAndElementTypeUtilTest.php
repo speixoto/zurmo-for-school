@@ -139,7 +139,7 @@
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,
                                                                          'email', 'importColumn');
-            $this->assertEquals(1, count($collection));
+            $this->assertEquals(2, count($collection));
             $this->assertEquals('Text', $collection[0]['elementType']);
             $this->assertEquals('DefaultValueModelAttributeMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
 
@@ -148,9 +148,11 @@
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,
                                                                          'fullName', 'importColumn');
-            $this->assertEquals(1, count($collection));
-            $this->assertEquals('Text', $collection[0]['elementType']);
+            $this->assertEquals(2, count($collection));
+            $this->assertEquals('Text',                           $collection[0]['elementType']);
+            $this->assertEquals('ImportDedupeRulesRadioDropDown', $collection[1]['elementType']);
             $this->assertEquals('FullNameDefaultValueModelAttributeMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
+            $this->assertEquals('FullNameModelAttributeDedupeMappingRuleForm',       get_class($collection[1]['mappingRuleForm']));
 
             //Id
             $attributeImportRules = new IdAttributeImportRules(new ImportModelTestItem(), 'id');
@@ -472,12 +474,18 @@
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,
                                     'primaryEmail__emailAddress', 'importColumn');
-            $this->assertEquals(1, count($collection));
+            $this->assertEquals(2, count($collection));
             $this->assertEquals('Text', $collection[0]['elementType']);
+            $this->assertEquals('ImportDedupeRulesRadioDropDown', $collection[1]['elementType']);
+            $this->assertEquals('EmailModelAttributeDedupeMappingRuleForm', get_class($collection[1]['mappingRuleForm']));
             $this->assertEquals('DefaultValueModelAttributeMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
             $this->assertEquals('Email',        static::getReflectedPropertyValue($collection[0]['mappingRuleForm'],
                                                 'modelClassName'));
             $this->assertEquals('emailAddress', static::getReflectedPropertyValue($collection[0]['mappingRuleForm'],
+                                                'modelAttributeName'));
+            $this->assertEquals('Email',        static::getReflectedPropertyValue($collection[1]['mappingRuleForm'],
+                                                'modelClassName'));
+            $this->assertEquals('emailAddress', static::getReflectedPropertyValue($collection[1]['mappingRuleForm'],
                                                 'modelAttributeName'));
         }
     }

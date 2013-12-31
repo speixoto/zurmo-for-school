@@ -43,6 +43,7 @@
 
         public function __construct(Opportunity $model)
         {
+            $this->setKanbanBoard(new KanbanBoard($model, 'stage'));
             parent::__construct($model);
         }
     }

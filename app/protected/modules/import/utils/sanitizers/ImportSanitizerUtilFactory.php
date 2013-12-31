@@ -40,16 +40,17 @@
     class ImportSanitizerUtilFactory
     {
         public static function make($attributeValueSanitizerUtilType, $modelClassName, $attributeName, $columnName,
-                                    $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil = null)
+                                    $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil = null,
+                                    $penultimateModelClassName = null, $penultimateAttributeName = null)
         {
             assert('is_string($attributeValueSanitizerUtilType)');
             assert('is_string($modelClassName)');
             assert('is_string($attributeName) || $attributeName == null');
             assert('is_string($columnName)');
             assert('$columnMappingData == null || is_array($columnMappingData)');
-            $sanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';
+            $sanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';;
             return new $sanitizerUtilClassName($modelClassName, $attributeName, $columnName, $columnMappingData,
-                                               $importSanitizeResultsUtil);
+                                               $importSanitizeResultsUtil, $penultimateModelClassName, $penultimateAttributeName);
         }
     }
 ?>

@@ -103,7 +103,7 @@
         public function testDeleteDashboardAndRelatedPortlets()
         {
             Yii::app()->user->userModel = User::getByUsername('billy');
-            $dashboardCount = count(Dashboard::getAll());
+            $dashboardCount = Dashboard::getCount();
             $this->assertTrue($dashboardCount > 0);
             $user = User::getByUserName('billy');
             Yii::app()->user->userModel = $user;
@@ -114,8 +114,8 @@
             $dashboard->layoutType = '100';
             $dashboard->isDefault  = false;
             $this->assertTrue($dashboard->save());
-            $this->assertEquals(count(Portlet::getAll()), 0);
-            $this->assertEquals(count(Dashboard::getAll()), ($dashboardCount + 1));
+            $this->assertEquals(Portlet::getCount(), 0);
+            $this->assertEquals(Dashboard::getCount(), ($dashboardCount + 1));
             for ($i = 1; $i <= 3; $i++)
             {
                 $portlet = new Portlet();
@@ -127,15 +127,15 @@
                 $portlet->user      = $user;
                 $this->assertTrue($portlet->save());
             }
-            $this->assertEquals(count(Portlet::getAll()), 3);
+            $this->assertEquals(Portlet::getCount(), 3);
             $portlets = Portlet::getByLayoutIdAndUserSortedById('TEST' . $dashboard->layoutId, $user->id);
             foreach ($portlets as $portlet)
             {
                 $portlet->delete();
             }
             $dashboard->delete();
-            $this->assertEquals(count(Portlet::getAll()), 0);
-            $this->assertEquals(count(Dashboard::getAll()), ($dashboardCount));
+            $this->assertEquals(Portlet::getCount(), 0);
+            $this->assertEquals(Dashboard::getCount(), ($dashboardCount));
         }
 
         /**

@@ -37,7 +37,7 @@
     /**
     * Contacts API Controller
     */
-    class ContactsContactApiController extends ZurmoModuleApiController
+    class ContactsContactApiController extends ZurmoSecurableItemApiController
     {
         protected static function getSearchFormClassName()
         {

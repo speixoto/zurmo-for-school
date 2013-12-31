@@ -255,9 +255,9 @@
                 $title = "$title - $subtitle";
             }
             $defaultThemeName       = 'default';
-            $defaultThemeBaseUrl    =  Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
+            $defaultThemeBaseUrl    = Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
             $themeName              = Yii::app()->theme->name;
-            $themeBaseUrl           =  Yii::app()->themeManager->baseUrl . '/' . $themeName;
+            $themeBaseUrl           = Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
             $cs->registerCssFile($themeBaseUrl . '/css/keyframes.css');
@@ -281,10 +281,8 @@
                                   "</style>";
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="zurmo" href="' .
-                                                                                $themeBaseUrl . '/less/zurmo.less?version='.rand() .'"/>';
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="color-scheme" href="' .
-                                                                                $themeBaseUrl . '/less/color-scheme.less?version='.rand() .'"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' .
+                                                                                $themeBaseUrl . '/less/default-theme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
@@ -295,8 +293,7 @@
             }
             else
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/zurmo.css');
-                $cs->registerCssFile($themeBaseUrl . '/css/color-scheme.css');
+                Yii::app()->themeManager->registerThemeColorCss();
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');

@@ -37,11 +37,22 @@
     /**
     * Opportunities API Controller
     */
-    class OpportunitiesOpportunityApiController extends ZurmoModuleApiController
+    class OpportunitiesOpportunityApiController extends ZurmoSecurableItemApiController
     {
         protected static function getSearchFormClassName()
         {
             return 'OpportunitiesSearchForm';
+        }
+
+        protected function processUpdate($id, $data)
+        {
+            $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
+            if ($automaticMappingDisabled === false)
+            {
+                // discard probability from $data
+                unset($data['probability']);
+            }
+            return parent::processUpdate($id, $data);
         }
     }
 ?>

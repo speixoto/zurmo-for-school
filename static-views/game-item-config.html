@@ -1,0 +1,1067 @@
+<!DOCTYPE html><!--[if IE 8]>
+<html class="zurmo ie8" lang="en"><![endif]--><!--[if gt IE 8]><!-->
+<html class="zurmo" lang="en"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="shortcut icon" href="../app/themes/default/ico/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="../app/themes/default/css/keyframes.css"/>
+    <link rel="stylesheet" type="text/css" href="../app/themes/default/css/zurmo-blue.css"/>
+    <title>ZurmoCRM - Designer</title>
+
+<style>
+    .treeview, .treeview ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .treeview ul {
+        margin-top: 4px;
+    }
+
+    .treeview .hitarea {
+        background: url(treeview-default.gif) -64px -25px no-repeat;
+        height: 16px;
+        width: 16px;
+        margin-left: -16px;
+        float: left;
+        cursor: pointer;
+    }
+    /* fix for IE6 */
+    * html .hitarea {
+        display: inline;
+        float:none;
+    }
+
+    .treeview li {
+        margin: 0;
+        padding: 3px 0pt 3px 16px;
+    }
+
+    .treeview a.selected {
+        background-color: #eee;
+    }
+
+    #treecontrol { margin: 1em 0; display: none; }
+
+    .treeview .hover { color: red; cursor: pointer; }
+
+    .treeview li { background: url(treeview-default-line.gif) 0 0 no-repeat; }
+    .treeview li.collapsable, .treeview li.expandable { background-position: 0 -176px; }
+
+    .treeview .expandable-hitarea { background-position: -80px -3px; }
+
+    .treeview li.last { background-position: 0 -1766px }
+    .treeview li.lastCollapsable, .treeview li.lastExpandable { background-image: url(treeview-default.gif); }
+    .treeview li.lastCollapsable { background-position: 0 -111px }
+    .treeview li.lastExpandable { background-position: -32px -67px }
+
+    .treeview div.lastCollapsable-hitarea, .treeview div.lastExpandable-hitarea { background-position: 0; }
+
+    .treeview-red li { background-image: url(treeview-red-line.gif); }
+    .treeview-red .hitarea, .treeview-red li.lastCollapsable, .treeview-red li.lastExpandable { background-image: url(treeview-red.gif); }
+
+    .treeview-black li { background-image: url(treeview-black-line.gif); }
+    .treeview-black .hitarea, .treeview-black li.lastCollapsable, .treeview-black li.lastExpandable { background-image: url(treeview-black.gif); }
+
+    .treeview-gray li { background-image: url(treeview-gray-line.gif); }
+    .treeview-gray .hitarea, .treeview-gray li.lastCollapsable, .treeview-gray li.lastExpandable { background-image: url(treeview-gray.gif); }
+
+    .treeview-famfamfam li { background-image: url(treeview-famfamfam-line.gif); }
+    .treeview-famfamfam .hitarea, .treeview-famfamfam li.lastCollapsable, .treeview-famfamfam li.lastExpandable { background-image: url(treeview-famfamfam.gif); }
+
+    .treeview .placeholder {
+        background: url(images/ajax-loader.gif) 0 0 no-repeat;
+        height: 16px;
+        width: 16px;
+        display: block;
+    }
+
+    .filetree li { padding: 3px 0 2px 16px; }
+    .filetree span.folder, .filetree span.file { padding: 1px 0 1px 16px; display: block; }
+    .filetree span.folder { background: url(images/folder.gif) 0 0 no-repeat; }
+    .filetree li.expandable span.folder { background: url(images/folder-closed.gif) 0 0 no-repeat; }
+    .filetree span.file { background: url(images/file.gif) 0 0 no-repeat; }
+
+    #OnSaveWorkflowWizardForm_Triggers_0_value{
+        margin-bottom: 15px;
+    }
+</style>
+</head>
+<body class="blue">
+<div id="DesignerPageView" class="ZurmoDefaultPageView ZurmoPageView PageView">
+    <div id="ZurmoDefaultView">
+        <div class="GridView">
+            <div id="HeaderView"><!-- Start of themes/default/templates/HeaderView.xhtml -->
+                <div id="MainLogo" class="zurmo-logo"></div>
+                <div class="GridView">
+                    <div id="HeaderLinksView">
+                        <div class="clearfix"><a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>
+
+                            <div id="corp-logo"><a href="/Zurmo/app/index.php/home/default"><img
+                                    src="/Zurmo/app/themes/default/images/Zurmo_logo.png" alt="Zurmo Logo" height="32"
+                                    width="107"/></a><span>Demo Company Inc.</span></div>
+                            <div id="user-toolbar" class="clearfix">
+                                <div id="header-game-dashboard-link-wrapper" class="user-menu-item"><a
+                                        id="header-game-dashboard-link" href="#">∂</a></div>
+                                <ul id="user-header-menu" class="user-menu-item nav">
+                                    <li class="parent last"><a href="javascript:void(0);"><span>super</span></a>
+                                        <ul>
+                                            <li>
+                                                <a href="/Zurmo/app/index.php/users/default/profile"><span>My Profile</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/gamification/default/leaderboard"><span>Leaderboard</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/emailMessages/default/matchingList"><span>Data Cleanup</span></a>
+                                            </li>
+                                            <li class="last"><a href="/Zurmo/app/index.php/zurmo/default/logout"><span>Sign out</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul id="settings-header-menu" class="user-menu-item nav">
+                                    <li class="parent last"><a
+                                            href="javascript:void(0);"><span>Administration</span></a>
+                                        <ul>
+                                            <li><a href="/Zurmo/app/index.php/configuration"><span>Administration</span></a>
+                                            </li>
+                                            <li>
+                                                <a href="/Zurmo/app/index.php/designer/default"><span>Designer</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/import/default"><span>Import</span></a>
+                                            </li>
+                                            <li><a href="/Zurmo/app/index.php/users/default"><span>Users</span></a></li>
+                                            <li>
+                                                <a href="http://www.zurmo.com/needSupport.php"><span>Need Support?</span></a>
+                                            </li>
+                                            <li class="last"><a href="/Zurmo/app/index.php/zurmo/default/about"><span>About Zurmo</span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="GridView">
+                        <div id="GlobalSearchAndShortcutsCreateMenuView">
+                            <div id="app-search" class="clearfix"><select class="ignore-style" id="globalSearchScope"
+                                                                          multiple="multiple" style="display:none;"
+                                                                          size="4" name="globalSearchScope[]">
+                                <option value="All" selected="selected">All</option>
+                                <option value="accounts">Accounts</option>
+                                <option value="contacts">Contacts</option>
+                                <option value="leads">Leads</option>
+                                <option value="opportunities">Opportunities</option>
+                            </select><input class="global-search global-search-hint"
+                                            onfocus="$(this).removeClass(&quot;global-search-hint&quot;); $(this).val(&quot;&quot;);"
+                                            onblur="$(this).val(&quot;&quot;)" id="globalSearchInput" type="text"
+                                            value="Search by name, phone, or e-mail" name="globalSearchInput"/><span
+                                    class="z-spinner"></span></div>
+                            <ul id="ShortcutsMenu" class="nav">
+                                <li class="parent last"><a href="javascript:void(0);"><span>Create</span></a>
+                                    <ul>
+                                        <li><a href="/Zurmo/app/index.php/accounts/default/create"><span>Account</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/contacts/default/create"><span>Contact</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/conversations/default/create"><span>Conversation</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/leads/default/create"><span>Lead</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/missions/default/create"><span>Mission</span></a>
+                                        </li>
+                                        <li><a href="/Zurmo/app/index.php/opportunities/default/create"><span>Opportunity</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="/Zurmo/app/index.php/reports/default/selectType"><span>Report</span></a>
+                                        </li>
+                                        <li class="last"><a href="#" id="yt0"><span>Task</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- End of themes/default/templates/HeaderView.xhtml --></div>
+            <div class="AppContainer clearfix GridView">
+                <div class="AppNavigation clearfix GridView">
+                    <div id="MenuView" class="hasNoHiddenItems">
+                        <ul class="nav">
+                            <li class="back-to-app-menu-item"><a
+                                    href="/Zurmo/app/index.php/home/default"><span></span><em></em><span>Back to Application</span></a>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/configuration/default"><span></span><em></em><span>Administration</span></a>
+                            </li>
+                            <li class="parent active"><a
+                                    href="/Zurmo/app/index.php/designer/default"><span></span><em></em><span>Designer</span></a>
+                                <ul>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=AccountsModule"><span></span><em></em><span>Accounts</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=ContactsModule"><span></span><em></em><span>Contacts</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=LeadsModule"><span></span><em></em><span>Leads</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=MeetingsModule"><span></span><em></em><span>Meetings</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=NotesModule"><span></span><em></em><span>Notes</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=OpportunitiesModule"><span></span><em></em><span>Opportunities</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=ProductsModule"><span></span><em></em><span>Products</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=ProductTemplatesModule"><span></span><em></em><span>Catalog Items</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=TasksModule"><span></span><em></em><span>Tasks</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=UsersModule"><span></span><em></em><span>Users</span></a>
+                                    </li>
+                                    <li class="last"><a
+                                            href="/Zurmo/app/index.php/designer/default/modulesMenu?moduleClassName=ProjectsModule"><span></span><em></em><span>Projects</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/Zurmo/app/index.php/import/default"><span></span><em></em><span>Import</span></a>
+                            </li>
+                            <li class="parent"><a href="/Zurmo/app/index.php/zurmo/group"><span></span><em></em><span>Groups</span></a>
+                                <ul>
+                                    <li><a href="/Zurmo/app/index.php/zurmo/group/create"><span></span><em></em><span>Create Group</span></a>
+                                    </li>
+                                    <li class="last"><a
+                                            href="/Zurmo/app/index.php/zurmo/group"><span></span><em></em><span>Groups</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="parent"><a href="/Zurmo/app/index.php/users/default"><span></span><em></em><span>Users</span></a>
+                                <ul>
+                                    <li><a href="/Zurmo/app/index.php/users/default/create"><span></span><em></em><span>Create User</span></a>
+                                    </li>
+                                    <li class="last"><a href="/Zurmo/app/index.php/users/default"><span></span><em></em><span>Users</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="parent"><a href="/Zurmo/app/index.php/zurmo/role"><span></span><em></em><span>Roles</span></a>
+                                <ul>
+                                    <li><a href="/Zurmo/app/index.php/zurmo/role/create"><span></span><em></em><span>Create Role</span></a>
+                                    </li>
+                                    <li class="last"><a
+                                            href="/Zurmo/app/index.php/zurmo/role"><span></span><em></em><span>Roles</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/Zurmo/app/index.php/workflows/default"><span></span><em></em><span>Workflows</span></a>
+                            </li>
+                            <li class="last"><a
+                                    href="/Zurmo/app/index.php/contactWebForms/default"><span></span><em></em><span>Web Forms</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="AdministrativeArea AppContent GridView">
+                    <div id="DesignerBreadCrumbView" class="SettingsBreadCrumbView BreadCrumbView">
+                        <div class="breadcrumbs">
+                            <a href="/Zurmo/app/index.php/configuration/default/index">Administration Home</a> &#47; <a
+                                href="/Zurmo/app/index.php/designer/default/index">Gamification</a> &#47; <a
+                                href="/Zurmo/app/index.php/designer/default/attributesList?moduleClassName=AccountsModule">Game Item Creation</a> &#47; <span>Badge Configuration</span></div>
+                    </div>
+                    <div id="ActionBarAndAttributeEditView" class="AdministrativeArea GridView">
+                        <div id="ActionBarForDesignerModuleView" class="ConfigurableMetadataView MetadataView">
+                            <div class="view-toolbar-container clearfix">
+                                <nav class="pillbox clearfix">
+                                    <div id="DesignerGeneralMenuActionElement--yt1" class="default-button">
+                                        <a class="button-action"
+                                           href="/Zurmo/app/index.php/designer/default/moduleEdit?moduleClassName=AccountsModule"><i
+                                                class="icon-general"></i><span class="button-label">General</span></a>
+                                    </div>
+                                    <div class="active default-button" id="DesignerFieldsMenuActionElement--yt2">
+                                        <a class="button-action"
+                                           href="/Zurmo/app/index.php/designer/default/attributesList?moduleClassName=AccountsModule"><i
+                                                class="icon-fields"></i><span class="button-label">Fields</span></a>
+                                    </div>
+                                    <div id="DesignerLayoutsMenuActionElement--yt3" class="default-button">
+                                        <a class="button-action"
+                                           href="/Zurmo/app/index.php/designer/default/moduleLayoutsList?moduleClassName=AccountsModule"><i
+                                                class="icon-layout"></i><span class="button-label">Layouts</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+
+
+                        <div class="TableOfContentsView CustomAttributesCollectionView AttributesCollectionView MetadataView">
+                            <div class="add-custom-field"><h1>Create Game Item</h1><div class="left-column full-width"><div>
+                                <div class="hasDropDown"><span class="select-arrow"></span><select name="attributeTypeName" id="attributeTypeName">
+                            <option value="" selected="selected">Badge</option>
+                            <option value="CalculatedNumber">Calculated Number</option>
+                            <option value="CheckBox">Check Box</option>
+                            <option value="CurrencyValue">Currency</option>
+                            <option value="Date">Date</option>
+                            <option value="DateTime">Date Time</option>
+                            <option value="Decimal">Decimal</option>
+                            <option value="DropDownDependency">Dependent Pick Lists</option>
+                            <option value="DropDown">Pick List</option>
+                            <option value="Integer">Integer</option>
+                            <option value="MultiSelectDropDown">Multi-Select Pick List</option>
+                            <option value="Phone">Phone</option>
+                            <option value="RadioDropDown">Radio Pick List</option>
+                            <option value="TagCloud">Tag Cloud</option>
+                            <option value="Text">Text</option>
+                            <option value="TextArea">Text Area</option>
+                            <option value="Url">URL</option>
+                        </select></div></div><a id="attributeTypeNameButton" class="white-button"><span class="z-label">Configure</span></a></div></div></div>
+
+
+                        <div id="TextAttributeEditView"
+                             class="MaxLengthAttributeEditView AttributeEditView EditView DetailsView ModelView ConfigurableMetadataView MetadataView">
+                            <div class="wrapper"><h1><span class="truncated-title"><span class="ellipsis-content">Game Item Configuration</span></span>
+                            </h1>
+
+                                <div class="wide form">
+                                    <form onSubmit="js:return $(this).attachLoadingOnSubmit(&quot;edit-form&quot;)"
+                                          id="edit-form"
+                                          action="/Zurmo/app/index.php/designer/default/AttributeEdit?moduleClassName=AccountsModule&amp;attributeTypeName=Text&amp;attributeName=name"
+                                          method="post">
+                                        <div style="display:none"><input type="hidden"
+                                                                         value="ea52636015d31f1b76cbb9ad6de0d3820e6a302b"
+                                                                         name="YII_CSRF_TOKEN"/></div>
+                                        <div class="attributesContainer">
+                                            <div class="left-column full-width">
+                                                <div class="panel">
+                                                    <table class="form-fields">
+                                                        <colgroup>
+                                                            <col class="col-0"/>
+                                                            <col class="col-1"/>
+                                                        </colgroup>
+                                                        <tbody>
+
+                                                        <tr>
+                                                            <th><label>Name</label></th>
+                                                            <td colspan="1"><input value="Grizzly Bear Badge" id="TextAttributeForm_defaultValue" name="TextAttributeForm[defaultValue]" type="text" maxlength="64"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label>Module</label></th>
+                                                            <td colspan="1"><input value="Opportunities" id="TextAttributeForm_defaultValue" name="TextAttributeForm[defaultValue]" type="text" maxlength="64"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label>Description</label></th>
+                                                            <td colspan="1"><input value="Badge for closing big deals" id="TextAttributeForm_defaultValue" name="TextAttributeForm[defaultValue]" type="text" maxlength="64"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label>Pop-up Text</label></th>
+                                                            <td colspan="1"><input value="Killer Deal" id="TextAttributeForm_defaultValue" name="TextAttributeForm[defaultValue]" type="text" maxlength="64"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label>Number of Points</label></th>
+                                                            <td colspan="1"><input value="50" id="TextAttributeForm_defaultValue" name="TextAttributeForm[defaultValue]" type="text" maxlength="64"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><label>Upload Badge Picture</label></th>
+                                                            <td colspan="1">
+                                                                <div class="file-upload-box">
+                                                                    <div id="fileUploadyw1" class="ui-widget">
+                                                                        <div class="fileupload-buttonbar clearfix">
+                                                                            <div class="addfileinput-button">
+                                                                                <span>Y</span><strong class="add-label">Add
+                                                                                File</strong><input
+                                                                                    id="ZurmoConfigurationForm_logo"
+                                                                                    type="file"
+                                                                                    name="ZurmoConfigurationForm_logo">
+                                                                            </div>
+                                                                            <span class="max-upload-size">Max upload size: 20MB</span>
+                                                                        </div>
+                                                                        <div class="fileupload-content">
+                                                                            <table class="files">
+                                                                                <tbody>
+                                                                                <tr class="template-download uploaded-logo-template"
+                                                                                    style="">
+                                                                                    <td class="name">
+                                                                                        <span class="uploaded-logo"><img src="grizzly_badge.png"></span>grizzly_badge<span
+                                                                                                class="file-size">(14.26 KB)</span>
+                                                                                        <span class="upload-actions delete">                     <button
+                                                                                                class="icon-delete ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                                                                                                title="Remove"
+                                                                                                data-url="/Zurmo/app/index.php/zurmo/default/deleteLogo"
+                                                                                                role="button"
+                                                                                                aria-disabled="false">
+                                                                                            <span class="ui-button-icon-primary ui-icon ui-icon-trash"></span><span
+                                                                                                class="ui-button-text"><span><!--Delete--><span></span></span></span>
+                                                                                        </button>                 </span>
+                                                                                        <input name="logoFileName[]"
+                                                                                               type="hidden" value="">
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                    <script id="template-upload"
+                                                                            type="text/x-jquery-tmpl">
+    <tr class="template-upload{{if error}} ui-state-error{{/if}}">
+        <td class="name">
+            <span class="z-spinner"></span>
+            ${name} <span class="file-size">(${sizef})</span>
+            {{if error}}
+                <span class="upload-error">${error}</span>
+            {{else}}
+                <span class="upload-actions cancel">
+                    <button class="cancel" title="Cancel"><span>Cancel</span></button>
+                </span>
+            {{/if}}
+        </td>
+    </tr>
+
+                                                                    </script>
+                                                                    <script id="template-download"
+                                                                            type="text/x-jquery-tmpl">
+    <tr class="template-download uploaded-logo-template{{if error}} ui-state-error{{/if}}">
+        {{if error}}
+            <td class="error" colspan="4">${error}</td>
+        {{else}}
+            <td class="name">
+                <span class="uploaded-logo"><img src="${thumbnail_url}"/></span>
+                ${name} <span class="file-size">(${sizef})</span>
+                <span class="upload-actions delete">
+                    <button class="icon-delete" title="Remove" data-url="/Zurmo/app/index.php/zurmo/default/deleteLogo"><span><!--Delete--><span></button>
+                </span>
+                <input name="logoFileName[]" type="hidden" value="${id}"/>
+            </td>
+        {{/if}}
+    </tr>
+
+                                                                    </script>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="left-column full-width clearfix"><h3>Select Triggers</h3>
+
+                                                <div id="TriggersTreeArea" class="hasTree loading">
+                                                    <div class="WorkflowRelationsAndAttributesTreeView WizardModelRelationsAndAttributesTreeView">
+                                                        <ul class="treeview-red treeview" id="TriggersTreeView">
+                                                            <li class="open collapsable lastCollapsable">
+                                                                <div class="hitarea open-hitarea collapsable-hitarea lastCollapsable-hitarea"></div>
+                                                                <span class="">Account</span>
+                                                                <ul style="display: block;">
+                                                                    <li id="Triggers_annualRevenue"
+                                                                        class="item-to-place ui-draggable"><span>Annual Revenue</span>
+                                                                    </li>
+                                                                    <li id="Triggers_createdByUser__User"
+                                                                        class="item-to-place ui-draggable"><span>Created By User</span>
+                                                                    </li>
+                                                                    <li id="Triggers_createdDateTime"
+                                                                        class="item-to-place ui-draggable"><span>Created Date Time</span>
+                                                                    </li>
+                                                                    <li id="Triggers_description"
+                                                                        class="item-to-place ui-draggable"><span>Description</span>
+                                                                    </li>
+                                                                    <li id="Triggers_employees"
+                                                                        class="item-to-place ui-draggable"><span>Employees</span>
+                                                                    </li>
+                                                                    <li id="Triggers_industry"
+                                                                        class="item-to-place ui-draggable"><span>Industry</span>
+                                                                    </li>
+                                                                    <li id="Triggers_latestActivityDateTime"
+                                                                        class="item-to-place ui-draggable"><span>Latest Activity Date Time</span>
+                                                                    </li>
+                                                                    <li id="Triggers_modifiedByUser__User"
+                                                                        class="item-to-place ui-draggable"><span>Modified By User</span>
+                                                                    </li>
+                                                                    <li id="Triggers_modifiedDateTime"
+                                                                        class="item-to-place ui-draggable"><span>Modified Date Time</span>
+                                                                    </li>
+                                                                    <li id="Triggers_name"
+                                                                        class="item-to-place ui-draggable">
+                                                                        <span>Name</span></li>
+                                                                    <li id="Triggers_officeFax"
+                                                                        class="item-to-place ui-draggable"><span>Office Fax</span>
+                                                                    </li>
+                                                                    <li id="Triggers_officePhone"
+                                                                        class="item-to-place ui-draggable"><span>Office Phone</span>
+                                                                    </li>
+                                                                    <li id="Triggers_owner__User"
+                                                                        class="item-to-place ui-draggable">
+                                                                        <span>Owner</span></li>
+                                                                    <li id="Triggers_type"
+                                                                        class="item-to-place ui-draggable">
+                                                                        <span>Type</span></li>
+                                                                    <li id="Triggers_website"
+                                                                        class="item-to-place ui-draggable">
+                                                                        <span>Website</span></li>
+                                                                    <li id="Triggers_accounts"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span class="">Accounts</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_billingAddress"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span class="">Billing Address</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_contacts"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Contacts</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_createdByUser"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Created By User</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_meetings"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span class="">Meetings</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_modifiedByUser"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span class="">Modified By User</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_notes"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span class="">Notes</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_opportunities" class="collapsable">
+                                                                        <div class="hitarea hasChildren-hitarea collapsable-hitarea"></div>
+                                                                        <span class="">Opportunities</span>
+                                                                        <ul style="display: block;">
+                                                                            <li id="Triggers_opportunities___amount"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Amount</span></li>
+                                                                            <li id="Triggers_opportunities___closeDate"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Close Date</span></li>
+                                                                            <li id="Triggers_opportunities___createdByUser__User"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Created By User</span></li>
+                                                                            <li id="Triggers_opportunities___createdDateTime"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Created Date Time</span></li>
+                                                                            <li id="Triggers_opportunities___description"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Description</span></li>
+                                                                            <li id="Triggers_opportunities___modifiedByUser__User"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Modified By User</span></li>
+                                                                            <li id="Triggers_opportunities___modifiedDateTime"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Modified Date Time</span></li>
+                                                                            <li id="Triggers_opportunities___name"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Name</span></li>
+                                                                            <li id="Triggers_opportunities___owner__User"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Owner</span></li>
+                                                                            <li id="Triggers_opportunities___probability"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Probability</span></li>
+                                                                            <li id="Triggers_opportunities___source"
+                                                                                class="item-to-place ui-draggable">
+                                                                                <span>Source</span></li>
+                                                                            <li id="Triggers_opportunities___stage"
+                                                                                class="item-to-place last ui-draggable">
+                                                                                <span>Stage</span></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_owner"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Owner</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_account"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Parent Account</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_primaryEmail"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Primary Email</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_projects"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Projects</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_secondaryEmail"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Secondary Email</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_shippingAddress"
+                                                                        class="hasChildren expandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+                                                                        <span>Shipping Address</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li id="Triggers_tasks"
+                                                                        class="hasChildren expandable lastExpandable">
+                                                                        <div class="hitarea hasChildren-hitarea expandable-hitarea lastExpandable-hitarea"></div>
+                                                                        <span>Tasks</span>
+                                                                        <ul style="display: none;">
+                                                                            <li class="last"><span class="placeholder">&nbsp;</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="dynamic-droppable-area"><input id="TriggersRowCounter"
+                                                                                           type="hidden" value="2"
+                                                                                           name="TriggersRowCounter">
+
+                                                    <div class="droppable-dynamic-rows-container Triggers ui-droppable">
+                                                        <div class="dynamic-rows">
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="dynamic-row hasFilter">
+                                                                        <div><span
+                                                                                class="dynamic-row-number-label">1.</span><input
+                                                                                id="OnSaveWorkflowWizardForm_Triggers_0_structurePosition"
+                                                                                class="structure-position" type="hidden"
+                                                                                value="1"
+                                                                                name="OnSaveWorkflowWizardForm[Triggers][0][structurePosition]"><input
+                                                                                id="OnSaveWorkflowWizardForm_Triggers_0_attributeIndexOrDerivedType"
+                                                                                type="hidden"
+                                                                                value="opportunities___amount"
+                                                                                name="OnSaveWorkflowWizardForm[Triggers][0][attributeIndexOrDerivedType]">
+
+                                                                            <div class="dynamic-row-label">Opportunities
+                                                                                &gt;&gt; Amount
+                                                                            </div>
+                                                                            <div class="dynamic-row-operator">
+                                                                                <div class="hasDropDown"><span
+                                                                                        class="select-arrow"></span><select
+                                                                                        name="OnSaveWorkflowWizardForm[Triggers][0][operator]"
+                                                                                        id="OnSaveWorkflowWizardForm_Triggers_0_operator"
+                                                                                        class="operatorType">
+                                                                                    <option value="equals">Equals
+                                                                                    </option>
+                                                                                    <option value="doesNotEqual">Does
+                                                                                        Not Equal
+                                                                                    </option>
+                                                                                    <option value="greaterThanOrEqualTo">
+                                                                                        Greater Than Or Equal To
+                                                                                    </option>
+                                                                                    <option value="lessThanOrEqualTo">
+                                                                                        Less Than Or Equal To
+                                                                                    </option>
+                                                                                    <option value="greaterThan"
+                                                                                            selected>Greater Than
+                                                                                    </option>
+                                                                                    <option value="lessThan">Less Than
+                                                                                    </option>
+                                                                                    <option value="between">Between
+                                                                                    </option>
+                                                                                </select></div>
+                                                                                <div class="errorMessage"
+                                                                                     id="OnSaveWorkflowWizardForm_Triggers_0_operator_em_"
+                                                                                     style="display:none"></div>
+                                                                            </div>
+                                                                            <div class="value-data">
+                                                                                <div id="OnSaveWorkflowWizardForm_Triggers_0_value-first-value-area"
+                                                                                     class="first-value-area"><input
+                                                                                        value="10000"
+                                                                                        id="OnSaveWorkflowWizardForm_Triggers_0_value"
+                                                                                        name="OnSaveWorkflowWizardForm[Triggers][0][value]"
+                                                                                        type="text">
+
+                                                                                    <div class="errorMessage"
+                                                                                         id="OnSaveWorkflowWizardForm_Triggers_0_value_em_"
+                                                                                         style="display:none"></div>
+                                                                                    <div class="hasDropDown"><span
+                                                                                            class="select-arrow"></span><select
+                                                                                            id="OnSaveWorkflowWizardForm_Triggers_0_currencyIdForValue"
+                                                                                            name="OnSaveWorkflowWizardForm[Triggers][0][currencyIdForValue]">
+                                                                                        <option value="">(None)</option>
+                                                                                        <option value="3">CAD</option>
+                                                                                        <option value="2">EUR</option>
+                                                                                        <option value="4">JPY</option>
+                                                                                        <option value="1" selected>USD
+                                                                                        </option>
+                                                                                    </select></div>
+                                                                                    <div class="errorMessage"
+                                                                                         id="OnSaveWorkflowWizardForm_Triggers_0_currencyIdForValue_em_"
+                                                                                         style="display:none"></div>
+                                                                                </div>
+                                                                                <div id="OnSaveWorkflowWizardForm_Triggers_0_secondValue-second-value-area"
+                                                                                     class="second-value-area"
+                                                                                     style="display: none;"><span
+                                                                                        class="dynamic-and-for-mixed">and</span><input
+                                                                                        id="OnSaveWorkflowWizardForm_Triggers_0_secondValue"
+                                                                                        name="OnSaveWorkflowWizardForm[Triggers][0][secondValue]"
+                                                                                        type="text" disabled="">
+
+                                                                                    <div class="errorMessage"
+                                                                                         id="OnSaveWorkflowWizardForm_Triggers_0_secondValue_em_"
+                                                                                         style="display:none"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <a class="remove-dynamic-row-link Triggers"
+                                                                           href="#">—</a></div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="dynamic-row hasFilter">
+                                                                        <div><span
+                                                                                class="dynamic-row-number-label">2.</span><input
+                                                                                id="OnSaveWorkflowWizardForm_Triggers_1_structurePosition"
+                                                                                class="structure-position" type="hidden"
+                                                                                value="2"
+                                                                                name="OnSaveWorkflowWizardForm[Triggers][1][structurePosition]"><input
+                                                                                id="OnSaveWorkflowWizardForm_Triggers_1_attributeIndexOrDerivedType"
+                                                                                type="hidden"
+                                                                                value="opportunities___stage"
+                                                                                name="OnSaveWorkflowWizardForm[Triggers][1][attributeIndexOrDerivedType]">
+
+                                                                            <div class="dynamic-row-label">Opportunities
+                                                                                &gt;&gt; Stage
+                                                                            </div>
+                                                                            <div class="dynamic-row-operator">
+                                                                                <div class="hasDropDown"><span
+                                                                                        class="select-arrow"></span><select
+                                                                                        name="OnSaveWorkflowWizardForm[Triggers][1][operator]"
+                                                                                        id="OnSaveWorkflowWizardForm_Triggers_1_operator"
+                                                                                        class="operatorType">
+                                                                                    <option value="equals" selected>
+                                                                                        Equals
+                                                                                    </option>
+                                                                                    <option value="doesNotEqual">Does
+                                                                                        Not Equal
+                                                                                    </option>
+                                                                                    <option value="oneOf">One Of
+                                                                                    </option>
+                                                                                    <option value="isEmpty">Is Empty
+                                                                                    </option>
+                                                                                    <option value="isNotEmpty">Is Not
+                                                                                        Empty
+                                                                                    </option>
+                                                                                </select></div>
+                                                                                <div class="errorMessage"
+                                                                                     id="OnSaveWorkflowWizardForm_Triggers_1_operator_em_"
+                                                                                     style="display:none"></div>
+                                                                            </div>
+                                                                            <div class="value-data">
+                                                                                <div class="first-value-area" style="">
+                                                                                    <div class="hasDropDown"><span
+                                                                                            class="select-arrow"></span><select
+                                                                                            name="OnSaveWorkflowWizardForm[Triggers][1][value]"
+                                                                                            id="OnSaveWorkflowWizardForm_Triggers_1_value"
+                                                                                            class="flexible-drop-down">
+                                                                                        <option value="Prospecting">
+                                                                                            Prospecting
+                                                                                        </option>
+                                                                                        <option value="Qualification">
+                                                                                            Qualification
+                                                                                        </option>
+                                                                                        <option value="Negotiating">
+                                                                                            Negotiating
+                                                                                        </option>
+                                                                                        <option value="Verbal">Verbal
+                                                                                        </option>
+                                                                                        <option value="Closed Won"
+                                                                                                selected>Closed Won
+                                                                                        </option>
+                                                                                        <option value="Closed Lost">
+                                                                                            Closed Lost
+                                                                                        </option>
+                                                                                    </select></div>
+                                                                                    <div class="errorMessage"
+                                                                                         id="OnSaveWorkflowWizardForm_Triggers_1_value_em_"
+                                                                                         style="display:none"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <a class="remove-dynamic-row-link Triggers"
+                                                                           href="#">—</a></div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div class="drop-zone">
+                                                            <div>Drop Here</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="zero-components-view Triggers">
+                                                        <div class="ZeroTriggers" style="display: none;">
+                                                            <div class="large-icon"></div>
+                                                            <h2>Drag or double click your triggers here</h2></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="_float-bar">
+                                            <div class="view-toolbar-container clearfix dock">
+                                                <div class="form-toolbar"><a class="cancel-button"
+                                                                             href="/Zurmo/app/index.php/designer/default"><span
+                                                        class="z-label">Cancel</span></a><a id="saveyt5" name="save"
+                                                                                            class="attachLoading z-button"
+                                                                                            onclick="jQuery.yii.submitForm(this, &#039;&#039;, {&#039;save&#039;:&#039;save&#039;}); return false;"
+                                                                                            href="#"><span
+                                                        class="z-spinner"></span><span class="z-icon"></span><span
+                                                        class="z-label">Save</span></a></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div id="modalContainer-edit-form"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="FlashMessageView">
+                    <div id="FlashMessageBar"></div>
+                </div>
+            </div>
+            <div id="ModalContainerView">
+                <div id="modalContainer"></div>
+            </div>
+            <div id="ModalGameNotificationContainerView"></div>
+            <div id="GameCoinContainerView"></div>
+            <div id="FooterView"><a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>
+
+                <div class="ui-chooser"><a class="icon-mobile"
+                                           href="/Zurmo/app/index.php/zurmo/default/userInterface?userInterface=Mobile"><span>Show Mobile</span></a><a
+                        class="icon-desktop active"
+                        href="/Zurmo/app/index.php/zurmo/default/userInterface?userInterface=Desktop"><span>Show Full</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/Zurmo/app/assets/e483c58c/FormUtils.js"></script>
+<script type="text/javascript" src="/Zurmo/app/assets/dbaff9a5/jquery.yiiactiveform.js"></script>
+<script type="text/javascript">
+    /*<![CDATA[*/
+    function closeGamificationDashboard() {
+        $('#UserGameDashboardView').remove();
+        $('body').removeClass('gd-dashboard-active');
+        $('#header-game-dashboard-link').html('∂').toggleClass('highlighted');
+    }
+    jQuery(function ($) {
+
+        jQuery("body").ajaxComplete(
+                function (event, request, options) {
+                    if (request.responseText == "sessionTimeout") {
+                        $.cookie("sessionTimeoutCookie", 1,
+                                {
+                                    expires: 1,
+                                    path: "/"
+                                });
+                        window.location.reload(true);
+                    }
+                }
+        );
+
+        $('#claim-item-link').on('click', function (event) {
+            event.preventDefault();
+            $(this).off('click');
+            $('#game-notification img').addClass('animate-spin');
+            var magicAudio = document.getElementById('collection-item-claimed');
+            magicAudio.play();
+            setTimeout(function () {
+                $('#game-notification').fadeOut(300, function () {
+                    $('#game-notification').remove();
+                });
+            }, 5000);
+            return false;
+        });
+        $('#close-game-notification-link').click(function (event) {
+            event.preventDefault();
+            $('#game-notification').fadeOut(300, function () {
+                $('#game-notification').remove();
+            });
+        });
+        $('.gd-dashboard-active').on('click', function () {
+            if ($('#UserGameDashboardView').length) {
+                closeGamificationDashboard();
+            }
+            return false;
+        });
+        $('body').on('click', '#header-game-dashboard-link', function () {
+            jQuery.ajax({'beforeSend': function () {
+                if ($("#UserGameDashboardView").length) {
+                    closeGamificationDashboard();
+                    return false;
+                }
+                $("body").addClass("gd-dashboard-active");
+                $("#header-game-dashboard-link").html("‰").toggleClass("highlighted");
+            }, 'success': function (data) {
+                $("#FooterView").after(data);
+            }, 'url': '/Zurmo/app/index.php/users/default/gameDashboard?id=1', 'cache': false});
+            return false;
+        });
+        $(".nav li").hover(
+                function () {
+                    if ($(this).hasClass("parent")) {
+                        $(this).addClass("over");
+                    }
+                },
+                function () {
+                    $(this).removeClass("over");
+                }
+        );
+
+        $("#globalSearchScope").bind("multiselectclick", function (event, ui) {
+            if ($("#globalSearchScope").multiselect("widget").find(":checkbox:checked").length == 0) {
+                $("#globalSearchScope").multiselect("widget").find(":checkbox").each(function () {
+                    if (this.value == "All" && !this.checked) {
+                        this.click();
+                    }
+                });
+            }
+            if (ui.value == "All" && ui.checked) {
+                $("#globalSearchScope").multiselect("widget").find(":checkbox").each(function () {
+                    if (this.value != "All" && this.checked) {
+                        this.click();
+                    }
+                });
+            }
+            else if (ui.value != "All" && ui.checked) {
+                $("#globalSearchScope").multiselect("widget").find(":checkbox").each(function () {
+                    if (this.value == "All" && this.checked) {
+                        this.click();
+                    }
+                });
+            }
+        });
+
+        $('#globalSearchScope').multiselect({'selectedText': '', 'noneSelectedText': '', 'header': false, 'position': {'my': 'right top', 'at': 'right bottom'}});
+        $(this).setupCheckboxStyling($('#globalSearchScope').parent())
+        $("#globalSearchInput").bind("focus", function (event, ui) {
+            $("#globalSearchInput").autocomplete("option", "source", "/Zurmo/app/index.php/zurmo/default/globalSearchAutoComplete?" + $.param($("#globalSearchScope").serializeArray()));
+        });
+
+        jQuery('#globalSearchInput').autocomplete({'select': function (event, ui) {
+            if (ui.item.href.length > 0) {
+                window.location = ui.item.href;
+            }
+            return false;
+        }, 'search': function (event, ui) {
+            $(this).makeOrRemoveTogglableSpinner(true, "#app-search")
+        }, 'open': function (event, ui) {
+            $(this).makeOrRemoveTogglableSpinner(false, "#app-search")
+        }, 'position': {'my': 'right top', 'at': 'right bottom'}, 'source': '/Zurmo/app/index.php/zurmo/default/globalSearchAutoComplete'});
+        $("#globalSearchInput").data("autocomplete")._renderItem = function (ul, item) {
+            return $("<li></li>").data("item.autocomplete", item)
+                    .append("<a><span class=" + item.iconClass + "></span><span>" + item.label + "</span></a>")
+                    .appendTo(ul);
+        };
+        $('body').on('click', '#yt0', function () {
+            jQuery.ajax({'beforeSend': function () {
+                jQuery('#modalContainer').html('');
+                $(this).makeLargeLoadingSpinner(true, '#modalContainer');
+                //window.scrollTo(0, 0);
+                jQuery('#modalContainer').dialog({
+                    'title': 'Create Task',
+                    'autoOpen': true,
+                    'modal': true,
+                    'position': 'center top+25',
+                    'dialogClass': 'task-dialog',
+                    'height': 'auto',
+                    'open': function (event, ui) {
+                        jQuery('#modalContainer').parent().addClass('openingModal');
+                    },
+                    'close': function (event, ui) {
+                        jQuery('#modalContainer').parent().removeClass('openingModal');
+                        $('#modalContainer').dialog('destroy');
+
+                    }
+                });
+                return true;
+            }, 'url': '/Zurmo/app/index.php/tasks/default/modalCreate?modalId=modalContainer', 'cache': false, 'success': function (html) {
+                jQuery("#modalContainer").html(html)
+            }});
+            return false;
+        });
+
+        $(function () {
+            $('.truncated-title').ThreeDots({ max_rows: 1 });
+        });
+        $('#edit-form').yiiactiveform({'beforeValidate': $(this).beforeValidateAction, 'afterValidate': $(this).afterValidateAction, 'validateOnSubmit': true, 'validateOnChange': false, 'inputContainer': 'td', 'attributes': [
+            {'id': 'TextAttributeForm_attributeName', 'inputID': 'TextAttributeForm_attributeName', 'errorID': 'TextAttributeForm_attributeName_em_', 'model': 'TextAttributeForm', 'name': 'attributeName', 'enableAjaxValidation': true},
+            {'id': 'TextAttributeForm_attributeLabels_en', 'inputID': 'TextAttributeForm_attributeLabels_en', 'errorID': 'TextAttributeForm_attributeLabels_en_em_', 'model': 'TextAttributeForm', 'name': 'attributeLabels[en]', 'enableAjaxValidation': true},
+            {'id': 'TextAttributeForm_defaultValue', 'inputID': 'TextAttributeForm_defaultValue', 'errorID': 'TextAttributeForm_defaultValue_em_', 'model': 'TextAttributeForm', 'name': 'defaultValue', 'enableAjaxValidation': true},
+            {'id': 'TextAttributeForm_maxLength', 'inputID': 'TextAttributeForm_maxLength', 'errorID': 'TextAttributeForm_maxLength_em_', 'model': 'TextAttributeForm', 'name': 'maxLength', 'enableAjaxValidation': true},
+            {'id': 'TextAttributeForm_isRequired', 'inputID': 'TextAttributeForm_isRequired', 'errorID': 'TextAttributeForm_isRequired_em_', 'model': 'TextAttributeForm', 'name': 'isRequired', 'enableAjaxValidation': true},
+            {'id': 'TextAttributeForm_isAudited', 'inputID': 'TextAttributeForm_isAudited', 'errorID': 'TextAttributeForm_isAudited_em_', 'model': 'TextAttributeForm', 'name': 'isAudited', 'enableAjaxValidation': true}
+        ], 'summaryID': 'edit-form_es_'});
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

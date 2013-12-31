@@ -246,7 +246,10 @@
             {
                 throw new NotSupportedException();
             }
-            $this->maxNameLength = StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, 'name');
+            if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
+            {
+                $this->maxNameLength = StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, 'name');
+            }
         }
 
         protected function resolveForFoundModel()

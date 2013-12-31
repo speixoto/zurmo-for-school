@@ -86,7 +86,10 @@
                     'googleWebTrackingId',
                 ),
                 'relations' => array(
-                    'account'          => array(static::HAS_ONE,   'Account'),
+                    'account'             => array(static::HAS_ONE,   'Account'),
+                    'accountAffiliations' => array(static::HAS_MANY, 'AccountContactAffiliation',
+                                                   static::OWNED, static::LINK_TYPE_SPECIFIC,
+                                                   'contactAffiliation'),
                     'industry'         => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'industry'),
                     'products'         => array(static::HAS_MANY, 'Product'),
@@ -199,6 +202,12 @@
         public static function supportsQueueing()
         {
             return true;
+        }
+
+        public function setLatestActivityDateTime($dateTime)
+        {
+            assert('is_string($dateTime)');
+            $this->unrestrictedSet('latestActivityDateTime', $dateTime);
         }
     }
 ?>

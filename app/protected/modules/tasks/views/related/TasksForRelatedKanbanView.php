@@ -61,12 +61,14 @@
                                   'itemOptions' => array('class' => 'hasDetailsFlyout'),
                                   'model'       => 'eval:$this->params["relationModel"]',
                             ),
-                            array('type'                => 'CreateTaskFromRelatedKanbanModalLink',
+                            array('type'                => 'CreateTaskMenu',
                                   'routeModuleId'       => 'eval:$this->moduleId',
                                   'routeParameters'     => 'eval:$this->getCreateLinkRouteParameters()',
                                   'ajaxOptions'         => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
                                   'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
-                                  'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()'
+                                  'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()',
+                                  'label'               => Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
+                                                                  LabelUtil::getTranslationParamsForAllModules())
                             ),
 
                         ),
@@ -127,7 +129,7 @@
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
             $this->registerKanbanGridScript();
-            $this->resolveShouldOpenToTask();
+            TasksUtil::resolveShouldOpenToTask($this->getGridId());
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             $content .= $this->renderScripts();
             $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
@@ -388,15 +390,6 @@
                 $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
             }
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
-        }
-
-        protected function resolveShouldOpenToTask()
-        {
-            $getData = GetUtil::getData();
-            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
-            {
-                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
-            }
         }
 
         /**

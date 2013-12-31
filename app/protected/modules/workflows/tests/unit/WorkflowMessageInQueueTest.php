@@ -66,8 +66,11 @@
             $workflowMessageInQueue->savedWorkflow   = $savedWorkflow;
             $workflowMessageInQueue->triggeredByUser = Yii::app()->user->userModel;
             $workflowMessageInQueue->serializedData  = serialize(array('something'));
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $saved = $workflowMessageInQueue->save();
             $this->assertTrue($saved);
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
             $id = $workflowMessageInQueue->id;
             $workflowMessageInQueue->forget();
 
@@ -86,7 +89,7 @@
          */
         public function testGetModelsToProcess($pageSize)
         {
-            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(1, WorkflowMessageInQueue::getCount());
             $models = WorkflowMessageInQueue::getModelsToProcess(10);
             $this->assertEquals(1, count($models));
 

@@ -50,5 +50,10 @@
         {
             return Yii::app()->createUrl('configuration/');
         }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            return array('class' => 'cancel-button');
+        }
     }
 ?>

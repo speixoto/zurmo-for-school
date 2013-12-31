@@ -68,7 +68,7 @@
             $emailMessage2->folder      = $folder;
             $saved                      = $emailMessage2->save();
             $this->assertTrue($saved);
-            $this->assertEquals(2, count(EmailMessage::getAll()));
+            $this->assertEquals(2, EmailMessage::getCount());
 
             $job = new ClearSentNotificationsEmailJob();
             $this->assertTrue($job->run());

@@ -38,6 +38,16 @@
     {
         public static $activateDefaultLanguages = false;
 
+        protected static $activitiesObserver;
+
+        protected static $conversationsObserver;
+
+        protected static $contactLatestActivityDateTimeObserver;
+
+        protected static $accountLatestActivityDateTimeObserver;
+
+        protected static $accountContactAffiliationObserver;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -47,20 +57,37 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             Currency::resetCaches();  //php only cache
-            $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
-            $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
+            self::$activitiesObserver = new ActivitiesObserver();
+            self::$activitiesObserver->init(); //runs init();
+            self::$conversationsObserver = new ConversationsObserver();
+            self::$conversationsObserver->init(); //runs init();
+            self::$contactLatestActivityDateTimeObserver = new ContactLatestActivityDateTimeObserver();
+            self::$contactLatestActivityDateTimeObserver->init(); //runs init();
+            self::$accountLatestActivityDateTimeObserver = new AccountLatestActivityDateTimeObserver();
+            self::$accountLatestActivityDateTimeObserver->init(); //runs init();
+            self::$accountContactAffiliationObserver = new AccountContactAffiliationObserver();
+            self::$accountContactAffiliationObserver->init(); //runs init();
             Yii::app()->gameHelper;
             Yii::app()->gamificationObserver; //runs init();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
             Yii::app()->emailHelper->sendEmailThroughTransport = false;
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public function setUp()
         {
             parent::setUp();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
+        }
+
+        public static function tearDownAfterClass()
+        {
+            self::$activitiesObserver->destroy();
+            self::$conversationsObserver->destroy();
+            self::$contactLatestActivityDateTimeObserver->destroy();
+            self::$accountLatestActivityDateTimeObserver->destroy();
+            self::$accountContactAffiliationObserver->destroy();
+            parent::tearDownAfterClass();
         }
 
         protected static function startOutputBuffer()
