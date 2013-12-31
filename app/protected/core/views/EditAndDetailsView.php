@@ -105,6 +105,7 @@
             {
                 $class = '';
             }
+            $content .= $this->beforeRenderingFormLayout();
             $content .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
             $content .= $this->renderRightSideContent($form);
             $content .= '</div>';
@@ -226,6 +227,11 @@
             throw new NotImplementedException();
         }
 
+        protected function beforeRenderingFormLayout()
+        {
+            return null;
+        }
+        
         protected function resolveAndRenderActionElementMenuForEdit()
         {
         }

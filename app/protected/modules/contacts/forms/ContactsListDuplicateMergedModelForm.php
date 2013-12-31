@@ -35,37 +35,30 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
+     * Form used for handling the selected contacts with list view merge tool
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class ContactsListDuplicateMergedModelForm extends CFormModel
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        const SELECTED_CONTACTS_COUNT = 5;
+
+        public $selectedContacts = array();
+
+        public $primaryContact;
+
+        public function rules()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
+            return array(
+                array('selectedContacts', 'validateContacts'),
+                //array('primaryContact', 'required'),
             );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+        }
+
+        public function validateContacts($attribute, $params)
+        {
+            if(count($this->selectedContacts) > self::SELECTED_CONTACTS_COUNT || count($this->selectedContacts) == 0)
+            {
+                $this->addError('selectedContacts', Zurmo::t('ZurmoModule', 'The selected contacts should be greater than 0 and less than 5'));
+            }
         }
     }
 ?>

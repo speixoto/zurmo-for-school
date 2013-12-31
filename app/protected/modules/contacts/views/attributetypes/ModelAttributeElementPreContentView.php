@@ -34,38 +34,44 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
-     */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class ModelAttributeElementPreContentView extends ZurmoWidget
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public $selectedModels;
+
+        public $attributes;
+
+        public $primaryModel;
+
+        public $element;
+
+        public function run()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            $attributes = $this->attributes;
+            $content = null;
+            foreach($attributes as $attribute)
+            {
+                $attributeContent = null;
+                foreach($this->selectedModels as $model)
+                {
+                    $modelAttributeAndElementDataToMergeItem = new ModelAttributeAndElementDataToMergeItem(
+                                                                $model, $attribute, $this->element, $this->primaryModel);
+
+                    $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
+                }
+                $attributeContent = ZurmoHtml::tag('div', array(), $attributeContent);
+                $content .= $attributeContent;
+            }
+            Yii::app()->clientScript->registerScript('preContentSelectScript', $this->registerScriptForAttributeReplacement());
+            echo $content;
+        }
+
+        protected function registerScriptForAttributeReplacement()
+        {
+            return "$('.attributePreElementContent').click(function(){
+                                                                var id = $(this).attr('id');
+                                                                idArray = id.split('-');
+                                                                $('#' + idArray[0]).val(idArray[1]);
+                                                            });";
         }
     }
 ?>

@@ -35,37 +35,43 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
+     * Class to render link to mass list merge from a listview.
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class ListViewMergeMenuActionElement extends MassActionMenuActionElement
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            return 'ListViewMerge';
+        }
+
+        protected function getSelectedMenuNameSuffix()
+        {
+            return '-listViewMergeSelected';
+        }
+
+        protected function getAllMenuNameSuffix()
+        {
+            return '-listViewMergeAll';
+        }
+
+        protected function getActionId()
+        {
+            return 'listViewMerge';
+        }
+
+        protected function getScriptNameSuffixForSelectedMenu()
+        {
+            return '-listViewMergeActionUpdateSelected';
+        }
+
+        protected function getScriptNameSuffixForAllMenu()
+        {
+            return '-listViewMergeActionUpdateAll';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('Core', 'List View Merge');
         }
     }
 ?>
