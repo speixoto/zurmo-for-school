@@ -250,19 +250,15 @@
 
         protected static function renderAudioContent()
         {
-            $collectionAndItemKey = Yii::app()->gameHelper->resolveNewCollectionItems();
-            if (null != $collectionAndItemKey)
-            {
-                $publishedAssetsPath = Yii::app()->assetManager->publish(
-                    Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
-                $MP3AudioFilePath = $publishedAssetsPath . '/magic.mp3';
-                $OGGAudioFilePath = $publishedAssetsPath . '/magic.ogg';
-                $WAVAudioFilePath = $publishedAssetsPath . '/magic.wav';
-                $content  = ZurmoHtml::tag('source', array('src' => $MP3AudioFilePath, 'type' => 'audio/mpeg'), '');
-                $content .= ZurmoHtml::tag('source', array('src' => $OGGAudioFilePath, 'type' => 'audio/ogg'), '');
-                $content .= ZurmoHtml::tag('source', array('src' => $WAVAudioFilePath, 'type' => 'audio/wav'), '');
-                return ZurmoHtml::tag('audio', array('id' => 'collection-item-claimed'), $content);
-            }
+            $publishedAssetsPath = Yii::app()->assetManager->publish(
+                Yii::getPathOfAlias("application.modules.gamification.views.assets.audio"));
+            $MP3AudioFilePath = $publishedAssetsPath . '/magic.mp3';
+            $OGGAudioFilePath = $publishedAssetsPath . '/magic.ogg';
+            $WAVAudioFilePath = $publishedAssetsPath . '/magic.wav';
+            $content  = ZurmoHtml::tag('source', array('src' => $MP3AudioFilePath, 'type' => 'audio/mpeg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $OGGAudioFilePath, 'type' => 'audio/ogg'), '');
+            $content .= ZurmoHtml::tag('source', array('src' => $WAVAudioFilePath, 'type' => 'audio/wav'), '');
+            return ZurmoHtml::tag('audio', array('id' => 'collection-item-claimed'), $content);
         }
 
         protected static function getModalContainerId($id)

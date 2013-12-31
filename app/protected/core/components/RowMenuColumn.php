@@ -106,7 +106,7 @@
                     {
                         continue;
                     }
-                    if(!$this->listView->canRenderRowMenuColumnByElementAndData($element, $data))
+                    if (!$this->listView->canRenderRowMenuColumnByElementAndData($element, $data))
                     {
                         continue;
                     }

@@ -34,16 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * ZurmoUrlManager.
-     */
-    class ZurmoUrlManager
+    class ShortUrlUtil
     {
-        public static function getPositionOfPathInUrl($keyword)
+        public static function createShortUrl($url)
         {
-            $requestedUrl = Yii::app()->getRequest()->getUrl();
-            $position = strpos(trim($requestedUrl, '/'), trim($keyword, '/'));
-            return $position;
+            assert('is_string($url)');
+            $hash = ShortUrl::resolveHashByUrl($url);
+            return Yii::app()->createAbsoluteUrl('zurmo/shortUrl/redirect/', array('hash' => $hash));
         }
     }
 ?>

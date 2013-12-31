@@ -66,7 +66,7 @@
                 array('filteredByStage', 'type', 'type' => 'string')
             );
         }
-        
+
         public static function getFilterStages()
         {
             return array(

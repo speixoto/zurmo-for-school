@@ -64,8 +64,8 @@
                         $modelClassName = $module->getPrimaryModelName();
                         if ($modelClassName != null &&
                             is_subclass_of($modelClassName, 'OwnedSecurableItem') &&
-                            $modelClassName::hasReadPermissionsSubscriptionOptimization() === true
-                            && !in_array($modelClassName, $observedModels))
+                            $modelClassName::hasReadPermissionsSubscriptionOptimization() === true &&
+                                !in_array($modelClassName, $observedModels))
                         {
                             $observedModels[]           = $modelClassName;
                             $this->attachEventsByModelClassName($modelClassName);
@@ -111,7 +111,7 @@
          */
         public function readPermissionSubscriptionOnAfterSave(CEvent $event)
         {
-            if($event->sender->getIsNewModel())
+            if ($event->sender->getIsNewModel())
             {
                 Yii::app()->jobQueue->add('ReadPermissionSubscriptionQuickUpdate', 5);
             }

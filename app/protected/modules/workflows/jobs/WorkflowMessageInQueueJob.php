@@ -71,7 +71,7 @@
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
                 $processedModelsCount       = 0;
                 $batchSize                  = $this->resolveBatchSize();
-                if($batchSize != null)
+                if ($batchSize != null)
                 {
                     $resolvedBatchSize = $batchSize + 1;
                 }
@@ -81,7 +81,7 @@
                 }
                 foreach (WorkflowMessageInQueue::getModelsToProcess($resolvedBatchSize) as $workflowMessageInQueue)
                 {
-                    if($processedModelsCount < $batchSize || $batchSize == null)
+                    if ($processedModelsCount < $batchSize || $batchSize == null)
                     {
                         try
                         {

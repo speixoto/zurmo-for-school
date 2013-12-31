@@ -48,7 +48,7 @@
 
         public static function resolveValue(RedBeanModel $data, $attribute, CustomFieldData $customFieldData)
         {
-            if($data->{$attribute}->value == null)
+            if ($data->{$attribute}->value == null)
             {
                 return null;
             }

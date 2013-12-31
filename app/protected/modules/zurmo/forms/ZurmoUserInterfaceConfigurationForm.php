@@ -68,5 +68,12 @@
                 array('logoFileData',        'type', 'type' => 'array'),
             );
         }
+
+        public function attributeLabels()
+        {
+            return array(
+                'forceAllUsersTheme' => Zurmo::t('ZurmoModule', 'Force users to use specific theme'),
+            );
+        }
     }
 ?>

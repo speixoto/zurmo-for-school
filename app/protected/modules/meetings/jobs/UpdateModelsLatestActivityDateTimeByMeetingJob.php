@@ -87,13 +87,13 @@
                         $meeting->activityItems, $meeting->startDateTime, 'Account');
                 $meeting->processedForLatestActivity = true;
                 $saved = $meeting->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
                 else
                 {
-                    $processed ++;
+                    $processed++;
                 }
             }
 
@@ -111,7 +111,7 @@
         {
             $params          = LabelUtil::getTranslationParamsForAllModules();
             $params['{count}'] = $processed;
-            if($processed > 0 && $processed < 2)
+            if ($processed > 0 && $processed < 2)
             {
                 return Zurmo::t('MeetingsModule', 'Processed {count} MeetingsModuleSingularLabel',
                                 $params);

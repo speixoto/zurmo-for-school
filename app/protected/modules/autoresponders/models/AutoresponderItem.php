@@ -121,11 +121,10 @@
             assert('is_bool($inPast)');
             if (empty($timestamp))
             {
-
                 $timestamp = time();
             }
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
-            if($inPast)
+            if ($inPast)
             {
                 $processDateTimeOperator = 'lessThan';
             }
@@ -269,7 +268,5 @@
             $this->originalAttributeValues = array();
             $this->isNewModel = false; //reset.
         }
-
-
     }
 ?>

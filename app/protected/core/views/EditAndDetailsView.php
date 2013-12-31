@@ -234,7 +234,6 @@
         
         protected function resolveAndRenderActionElementMenuForEdit()
         {
-
         }
     }
 ?>

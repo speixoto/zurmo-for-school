@@ -295,15 +295,15 @@
             $contact->state->name = 'Warped';
             $contact->state->order = 1;
             $this->assertTrue($contact->save());
-            $this->assertEquals($beforeCount + 3, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 4, AuditEvent::getCount());
 
             $contact->account = $account1; // Change to same thing, no audit Event.
             $this->assertTrue($contact->save());
-            $this->assertEquals($beforeCount + 3, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 4, AuditEvent::getCount());
 
             $contact->account = $account2;
             $this->assertTrue($contact->save());
-            $this->assertEquals($beforeCount + 4, AuditEvent::getCount());
+            $this->assertEquals($beforeCount + 6, AuditEvent::getCount());
 
             $AuditEventsList = AuditEvent::getTailEvents(1);
             $this->assertRegExp('/[0-9]+\/[0-9]+\/[0-9]+ [0-9]+:[0-9]+ [AP]M, ' . // Not Coding Standard

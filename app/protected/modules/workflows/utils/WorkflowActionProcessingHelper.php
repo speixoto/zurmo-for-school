@@ -484,7 +484,7 @@
                 }
             }
         }
-        
+
         protected function processUnsubscribeFromListAction()
         {
             $actionAttributes = $this->action->getActionAttributes();
@@ -495,10 +495,10 @@
                 throw new NotSupportedException();
             }
             $marketingListId = $actionAttributes['marketingList']->value;
-            $members = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingListId, 
-                                                                                    (int)$this->triggeredModel->id, 
+            $members = MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed($marketingListId,
+                                                                                    (int)$this->triggeredModel->id,
                                                                                     false);
-            if($members !== false)
+            if ($members !== false)
             {
                 $member = $members[0];
                 $member->unsubscribed = true;

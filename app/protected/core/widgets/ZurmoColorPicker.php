@@ -58,10 +58,11 @@
         /**
          * @var array HTML attributes for the input color container
          */
-        public $htmlOptions=array();
+        public $htmlOptions = array();
 
         public function run()
         {
+            // Begin Not Coding Standard
             $javaScript = "
                 $(document).ready(function()
                 {
@@ -71,6 +72,7 @@
                 }
                 );
             ";
+            // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $javaScript, CClientScript::POS_END);
             $this->htmlOptions['id'] = $this->inputId;
             echo ZurmoHtml::textField($this->inputName, $this->inputValue, $this->htmlOptions);

@@ -125,6 +125,7 @@
             $modalId           = $getData['modalTransferInformation']['modalId'];
             $formId            = static::getFormId();
             $url               = Yii::app()->createUrl('accounts/default/modalCreate', GetUtil::getData());
+            // Begin Not Coding Standard
             $options = array(
                                 'type'     => 'post',
                                 'dataType' => 'json',
@@ -137,6 +138,7 @@
                                                 $('#{$modalId}').dialog('close');
                                               }"
                             );
+            // End Not Coding Standard
             return ZurmoHtml::ajax($options);
         }
 

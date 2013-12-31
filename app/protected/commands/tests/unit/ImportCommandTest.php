@@ -54,9 +54,8 @@
             }
 
             exec($command, $output);
-
-            $this->assertTrue(array_search('Error - No import processes found.', $output) !== false);
-            $this->assertTrue(array_search('Error - CustomManagement class needs to be extended.', $output) !== false);
+            $this->assertTrue(strpos($output[3], 'Error - No import processes found.') !== false);
+            $this->assertTrue(strpos($output[4], 'Error - CustomManagement class needs to be extended.') !== false);
         }
     }
 ?>

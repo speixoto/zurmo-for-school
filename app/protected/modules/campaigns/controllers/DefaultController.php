@@ -184,7 +184,7 @@
             }
             $this->processEdit($copyToCampaign);
         }
-        
+
         protected function processEdit(Campaign $campaign)
         {
             if ($campaign->status != Campaign::STATUS_ACTIVE)
@@ -204,7 +204,7 @@
                                   $breadCrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
-        
+
         public function actionDelete($id)
         {
             $campaign = static::getModelAndCatchNotFoundAndDisplayError('Campaign', intval($id));
