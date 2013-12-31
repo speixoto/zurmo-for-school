@@ -40,7 +40,6 @@
      */
     class AccountLatestActivityDateTimeObserver extends LatestActivityDateTimeObserver
     {
-
         public function init()
         {
             if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
