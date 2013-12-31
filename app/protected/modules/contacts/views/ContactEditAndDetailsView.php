@@ -71,9 +71,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                      'type'          => 'TitleFullName',
-                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
+                                                array('attributeName' => 'null', 'type' => 'TitleFullName'),
                                             ),
                                         ),
                                     )
@@ -118,9 +116,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'officePhone',
-                                                      'type'          => 'Phone',
-                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
+                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
                                             ),
                                         ),
                                     )
@@ -138,9 +134,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'mobilePhone',
-                                                      'type'          => 'Phone',
-                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
+                                                array('attributeName' => 'mobilePhone', 'type' => 'Phone'),
                                             ),
                                         ),
                                     )
@@ -158,9 +152,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'primaryEmail',
-                                                      'type'          => 'EmailAddressInformation',
-                                                      'dedupeViewId'  => 'ContactListViewMergeSummaryView'),
+                                                array('attributeName' => 'primaryEmail', 'type' => 'EmailAddressInformation'),
                                             ),
                                         ),
                                     )
@@ -169,9 +161,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'secondaryEmail',
-                                                      'type'          => 'EmailAddressInformation',
-                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
+                                                array('attributeName' => 'secondaryEmail', 'type' => 'EmailAddressInformation'),
                                             ),
                                         ),
                                     )
@@ -279,7 +269,6 @@
 
         protected function beforeRenderingFormLayout()
         {
-            //TODO: @sergio: Fix the dedupe for edit a contact
             $dedupeViewClassName = static::getDedupeViewClassName();
             $summaryView = new $dedupeViewClassName($this->controllerId,
                 $this->moduleId,
@@ -291,6 +280,18 @@
         protected static function getDedupeViewClassName()
         {
             return 'EditDupesSummaryView';
+        }
+
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
+            if ($this->model->id < 0 && ($elementInformation['type'] == 'TitleFullName'
+                  || $elementInformation['attributeName'] == 'officePhone'
+                  || $elementInformation['attributeName'] == 'mobilePhone'
+                  || $elementInformation['type'] == 'EmailAddressInformation'))
+            {
+                $elementInformation['dedupeViewId'] = static::getDedupeViewClassName();
+            }
         }
     }
 ?>

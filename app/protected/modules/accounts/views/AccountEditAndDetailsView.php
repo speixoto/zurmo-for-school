@@ -63,9 +63,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name',
-                                                      'type'          => 'Text',
-                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
+                                                array('attributeName' => 'name', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -74,9 +72,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'officePhone',
-                                                      'type'          => 'Phone',
-                                                      'dedupeViewId'  => static::getDedupeViewClassName()),
+                                                array('attributeName' => 'officePhone', 'type' => 'Phone'),
                                             ),
                                         ),
                                     )
@@ -199,6 +195,16 @@
         protected static function getDedupeViewClassName()
         {
             return 'EditDupesSummaryView';
+        }
+
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
+            if ($this->model->id < 0 && ($elementInformation['attributeName'] == 'officePhone'
+                    || $elementInformation['attributeName'] == 'name'))
+            {
+                $elementInformation['dedupeViewId'] = static::getDedupeViewClassName();
+            }
         }
     }
 ?>
