@@ -141,7 +141,9 @@
                                                                     'selectedModels' => $this->selectedContacts,
                                                                     'attributes'     => $attributes,
                                                                     'primaryModel'   => $this->model,
-                                                                    'element'        => $element
+                                                                    'element'        => $element,
+                                                                    'modelAttributeAndElementDataToMergeItemClass'
+                                                                            => 'ContactModelAttributeAndElementDataToMergeItem'
                                                                 ),
                                                             true);
             $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' . $preContent . '{content}{error}</td>';

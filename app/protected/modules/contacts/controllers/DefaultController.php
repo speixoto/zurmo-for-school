@@ -443,20 +443,13 @@
             }
         }
 
+        /**
+         * List view merge for contacts
+         */
         public function actionListViewMerge()
         {
-            $getData = GetUtil::getData();
-            $contactsList = array();
-            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
-            {
-                $selectedIds = explode(',', $getData['selectedIds']);
-                foreach($selectedIds as $id)
-                {
-                    $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
-                    $contactsList[$id] = $contact;
-                }
-            }
-            $model = new ContactsListDuplicateMergedModelForm('listViewMerge');
+            $contactsList            = $this->getSelectedContactsListForMerge();
+            $model                   = new ContactsListDuplicateMergedModelForm('listViewMerge');
             $model->selectedContacts = $contactsList;
             $this->setPrimaryModel($model);
             if($model->validate())
@@ -495,6 +488,47 @@
                     $model->primaryContact = $contacts[0];
                 }
             }
+        }
+
+        /**
+         * Processing before redirecting
+         * @param Contact $model
+         */
+        protected function beforeRedirect($model)
+        {
+            assert('$model instanceof Contact');
+            if($this->getAction()->id == 'listViewMerge')
+            {
+                $contactsList            = $this->getSelectedContactsListForMerge();
+                foreach($contactsList as $contact)
+                {
+                    if($contact->id != $model->id)
+                    {
+                        ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($contact);
+                        $contact->delete();
+                    }
+                }
+            }
+        }
+
+        /**
+         * Gets selected contacts for merge
+         * @return array
+         */
+        private function getSelectedContactsListForMerge()
+        {
+            $getData      = GetUtil::getData();
+            $contactsList = array();
+            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
+            {
+                $selectedIds = explode(',', $getData['selectedIds']);
+                foreach($selectedIds as $id)
+                {
+                    $contact = static::getModelAndCatchNotFoundAndDisplayError('Contact', intval($id));
+                    $contactsList[$id] = $contact;
+                }
+            }
+            return $contactsList;
         }
     }
 ?>

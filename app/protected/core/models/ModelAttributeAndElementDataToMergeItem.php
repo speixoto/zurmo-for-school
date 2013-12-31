@@ -90,7 +90,7 @@
          * Get attribute values and input ids for on click event
          * @return array
          */
-        public function getAttributeValuesAndInputIdsForOnClick()
+        public function getAttributeInputIdsForOnClick()
         {
             $interfaces = class_implements($this->element);
             $elementClassName = get_class($this->element);
@@ -119,7 +119,14 @@
             }
             else
             {
-                $attributeInputIdMap[] = $this->getNonDerivedInputId();
+                if($this->element instanceof ModelElement)
+                {
+                    $attributeInputIdMap[] = $this->getDerivedInputId($this->attribute, 'name');
+                }
+                else
+                {
+                    $attributeInputIdMap[] = $this->getNonDerivedInputId();
+                }
             }
             return $attributeInputIdMap;
         }
@@ -181,7 +188,7 @@
             $decoratedContent = null;
             if($content != null)
             {
-                $inputIds = $this->getAttributeValuesAndInputIdsForOnClick();
+                $inputIds = $this->getAttributeInputIdsForOnClick();
                 if($this->model->id == $this->primaryModel->id)
                 {
                     $style = 'border: 2px dotted #FF0000;margin-left:4px;';
@@ -202,18 +209,39 @@
                     }
                     if($relatedAttribute == null)
                     {
-                        $value = $this->model->$attribute;
+                        $inputValue = $this->model->$attribute;
+                        $displayValue = $inputValue;
+                    }
+                    elseif($this->element instanceof ModelElement)
+                    {
+                        $inputValue       = $this->model->$attribute->$relatedAttribute;
+                        $displayValue     = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
+                        $hiddenInputValue = $this->model->$attribute->id;
+                        $hiddenInputId    = $this->getDerivedInputId($attribute, 'id');
                     }
                     else
                     {
-                        $value = $this->model->$attribute->$relatedAttribute;
+                        $inputValue   = $this->model->$attribute->$relatedAttribute;
+                        $displayValue = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
                     }
-                    if($value != null)
+                    if($inputValue != null)
                     {
-                        $decoratedContent .= ZurmoHtml::link($value, '#', array('style' => $style,
-                                                            'data-id'     => $inputId,
-                                                            'data-value'  => $value,
-                                                            'class'       => 'attributePreElementContent'));
+                        if($this->element instanceof ModelElement)
+                        {
+                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('style' => $style,
+                                                                'data-id'           => $inputId,
+                                                                'data-value'        => $inputValue,
+                                                                'data-hiddenid'     => $hiddenInputId,
+                                                                'data-hiddenvalue'  => $hiddenInputValue,
+                                                                'class'             => 'attributePreElementContentModelElement'));
+                        }
+                        else
+                        {
+                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('style' => $style,
+                                                                'data-id'     => $inputId,
+                                                                'data-value'  => $inputValue,
+                                                                'class'       => 'attributePreElementContent'));
+                        }
                     }
                 }
             }
@@ -222,6 +250,17 @@
                 $decoratedContent = Zurmo::t('Core', '(None)');
             }
             return $decoratedContent;
+        }
+
+        /**
+         * Resolves value for related attribute
+         * @param string $attribute
+         * @param string $relatedAttribute
+         * @return string
+         */
+        protected function resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute)
+        {
+            return $this->model->$attribute->$relatedAttribute;
         }
     }
 ?>
