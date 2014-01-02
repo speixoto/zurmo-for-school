@@ -482,7 +482,6 @@
          */
         public function actionSearchForDedupes($attribute, $value)
         {
-            //TODO: @sergio: Add walkthrought test
             assert('is_string($attribute)');
             assert('is_string($value)');
             $matchedModels = array();

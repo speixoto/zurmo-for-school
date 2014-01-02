@@ -362,7 +362,6 @@
                 $this->chartType = 'radar';
                 $this->addValueAxisProperties('color',           "'#000000'");
                 $this->addValueAxisProperties('axisAlpha',       "'0.15'");
-                $this->addValueAxisProperties('minimum',         "'0'");
                 $this->addValueAxisProperties('dashLength',      "'3'");
                 $this->addValueAxisProperties('gridCount',       "'5'");
             }

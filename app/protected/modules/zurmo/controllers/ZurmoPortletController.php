@@ -92,7 +92,7 @@
         public function actionMyListDetails()
         {
             $portlet         = Portlet::getById(intval($_GET['portletId']));
-            $portletView = $portlet->getView();
+            $portletView     = $portlet->getView();
             if (!RightsUtil::canUserAccessModule($portletView::getModuleClassName(), Yii::app()->user->userModel))
             {
                 $messageView = new AccessFailureView();

@@ -151,5 +151,32 @@
                                                                 $mashableModelClassNames, 'Task');
             $this->assertEquals(array('Task'), $filteredModelClassNames);
         }
+
+        public function testGetCountByModelClassName()
+        {
+            $super = User::getByUsername('super');
+            $user = UserTestHelper::createBasicUserWithEmailAddress('newUser');
+            Yii::app()->user->userModel = $super;
+            $this->assertEquals(0, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $this->assertEquals(0, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER));
+            $this->assertEquals(0, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $super->id));
+            $this->assertEquals(0, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $user->id));
+            NoteTestHelper::createNoteByNameForOwner('test1', $super);
+            $this->assertEquals(1, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $this->assertEquals(1, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER));
+            $this->assertEquals(1, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $super->id));
+            $this->assertEquals(0, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $user->id));
+            NoteTestHelper::createNoteByNameForOwner('test1', $user);
+            $this->assertEquals(2, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $this->assertEquals(1, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER));
+            $this->assertEquals(1, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $user->id));
+
+        }
     }
 ?>

@@ -40,7 +40,6 @@
      */
     class AccountCardViewLayout extends CardViewLayout
     {
-        //TODO: @sergio: Add tests
         public function __construct($model)
         {
             assert('$model instanceof Account');

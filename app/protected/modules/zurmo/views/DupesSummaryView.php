@@ -43,6 +43,8 @@
 
         protected $dupeModels;
 
+        protected $colorsArray = array('#98cdff', '#12cd11');
+
         public function __construct($controllerId, $moduleId, $model, $dupeModels)
         {
             $this->assertModelIsValid($model);
@@ -137,21 +139,20 @@
             return $spanContent . $divContent;
         }
 
-        protected function renderChart()
+        protected   function renderChart()
         {
+            if (empty($this->dupeModels))
+            {
+                return null;
+            }
             Yii::import('ext.amcharts.AmChartMaker');
             $chartId = 'dedupeChart';
             $amChart = new AmChartMaker();
             $amChart->categoryField    = 'category';
-            $amChart->data             = array(array('category' => 'Notes',    'model1' => 1,  'model2' => 8),
-                                               array('category' => 'Taks',     'model1' => 10, 'model2' => 5),
-                                               array('category' => 'Emails',   'model1' => 2,  'model2' => 8),
-                                               array('category' => 'Meetings', 'model1' => 5,  'model2' => 4)
-            );
+            $this->resolveDataForChart($amChart);
             $amChart->id               = $chartId;
             $amChart->type             = ChartRules::TYPE_RADAR;
-            $amChart->addSerialGraph('model1', 'radar', array('bullet' => "'round'", 'balloonText' => "'Quantity: [[value]]'", 'lineColor' => "'#98cdff'"));
-            $amChart->addSerialGraph('model2', 'radar', array('bullet' => "'round'", 'balloonText' => "'Quantity: [[value]]'", 'lineColor' => "'#12cd11'"));
+            $this->resolveGraphsForChart($amChart);
             $scriptContent      = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
             $cClipWidget        = new CClipWidget();
@@ -223,6 +224,55 @@
             {
                 return Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', static::MAX_NUMBER_OF_MODELS_TO_SHOW);
             }
+        }
+
+        protected function getColorForDupe()
+        {
+            $color = array_shift($this->colorsArray);
+            $this->colorsArray[] = $color;
+            return $color;
+        }
+
+        /**
+         * For each dupeModel adds a graph into the chart
+         * @param $chart
+         */
+        protected function resolveGraphsForChart(& $chart)
+        {
+            foreach ($this->dupeModels as $dupeModel)
+            {
+                $chart->addSerialGraph('model-' . $dupeModel->id,
+                                       'radar',
+                                       array('bullet'      => "'round'",
+                                             'balloonText' => "'Quantity: [[value]]'",
+                                             'lineColor'   => "'" . $this->getColorForDupe() . "'"
+                                       ));
+            }
+        }
+
+        /**
+         * For each dupeModel add total ammount of Notes, Tasks, Emails and Meetings
+         * @param $chart
+         */
+        protected function resolveDataForChart(& $chart)
+        {
+            $notes    = array('category' => NotesModule::getModuleLabelByTypeAndLanguage('Plural'));
+            $tasks    = array('category' => TasksModule::getModuleLabelByTypeAndLanguage('Plural'));
+            $emails   = array('category' => EmailMessagesModule::getModuleLabelByTypeAndLanguage('Plural'));
+            $meetings = array('category' => MeetingsModule::getModuleLabelByTypeAndLanguage('Plural'));
+            foreach ($this->dupeModels as $dupeModel)
+            {
+                $itemId = $dupeModel->getClassId('Item');
+                $notes   ['model-' . $dupeModel->id] = LatestActivitiesUtil::
+                    getCountByModelClassName('Note', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+                $tasks   ['model-' . $dupeModel->id] = LatestActivitiesUtil::
+                    getCountByModelClassName('Task', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+                $emails  ['model-' . $dupeModel->id] = LatestActivitiesUtil::
+                    getCountByModelClassName('EmailMessage', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+                $meetings['model-' . $dupeModel->id] = LatestActivitiesUtil::
+                    getCountByModelClassName('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+            }
+            $chart->data = array($notes, $tasks, $emails, $meetings);
         }
     }
 ?>
