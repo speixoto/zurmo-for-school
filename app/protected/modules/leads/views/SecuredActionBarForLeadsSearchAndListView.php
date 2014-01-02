@@ -35,49 +35,30 @@
      ********************************************************************************/
 
     /**
-     * Form used for handling the selected models with list view merge tool
+     * Action bar view for the leads search and list user interface.
      */
-    class ModelsListDuplicateMergedModelForm extends CFormModel
+    class SecuredActionBarForLeadsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
         /**
-         * Selected contacts count for merge.
+         * @return array
          */
-        const SELECTED_MODELS_COUNT = 5;
-        /**
-         * Selected contacts
-         *
-         * @var array
-         */
-        public $selectedModels = array();
-        /**
-         * Primary contact for the merge
-         * @var Contact
-         */
-        public $primaryModel;
-
-        public function rules()
+        public static function getDefaultMetadata()
         {
-            return array(
-                array('selectedModels', 'validateModelsCount'),
-                array('primaryModel', 'required'),
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array(
+                                'type'            => 'ListViewMergeMenu',
+                                'iconClass'       => 'icon-subscribe',
+                                'listViewGridId'  => 'eval:$this->listViewGridId',
+                                'pageVarName'     => 'eval:$this->pageVarName'
+                            )
+                        ),
+                    ),
+                ),
             );
-        }
-
-        /**
-         * Validate the contacts which are selected.
-         *
-         * @param string $attribute
-         * @param array $params
-         */
-        public function validateModelsCount($attribute, $params)
-        {
-            if(count($this->selectedModels) > self::SELECTED_MODELS_COUNT || count($this->selectedModels) == 0)
-            {
-                $message = Zurmo::t('ZurmoModule', 'The selected records should not be greater than {count}.',
-                                     array('{count}' => self::SELECTED_MODELS_COUNT + 1));
-                Yii::app()->user->setFlash('notification', $message);
-                $this->addError('selectedModels', $message);
-            }
+            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

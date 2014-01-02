@@ -84,7 +84,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                    'SecuredActionBarForAccountsSearchAndListView');
                 $view = new AccountsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -404,5 +405,17 @@
                 echo json_encode(array('message' => $message, 'content' => $content));
             }
         }
+
+        /**
+         * List view merge for accounts
+         */
+        public function actionListViewMerge()
+        {
+            $this->processListViewMerge('Account',
+                                        'AccountsListDuplicateMergedModelForm',
+                                        'AccountsMerged', 'AccountsPageView',
+                                        '/accounts/default/list');
+        }
+
     }
 ?>

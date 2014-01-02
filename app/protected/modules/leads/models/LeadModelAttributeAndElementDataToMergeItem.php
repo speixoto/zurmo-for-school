@@ -35,49 +35,24 @@
      ********************************************************************************/
 
     /**
-     * Form used for handling the selected models with list view merge tool
+     * Acts as a helper model to retrieve contact model attribute and element related information
      */
-    class ModelsListDuplicateMergedModelForm extends CFormModel
+    class LeadModelAttributeAndElementDataToMergeItem extends ModelAttributeAndElementDataToMergeItem
     {
         /**
-         * Selected contacts count for merge.
-         */
-        const SELECTED_MODELS_COUNT = 5;
-        /**
-         * Selected contacts
-         *
-         * @var array
-         */
-        public $selectedModels = array();
-        /**
-         * Primary contact for the merge
-         * @var Contact
-         */
-        public $primaryModel;
-
-        public function rules()
-        {
-            return array(
-                array('selectedModels', 'validateModelsCount'),
-                array('primaryModel', 'required'),
-            );
-        }
-
-        /**
-         * Validate the contacts which are selected.
-         *
+         * Resolves value for related attribute
          * @param string $attribute
-         * @param array $params
+         * @param string $relatedAttribute
+         * @return string
          */
-        public function validateModelsCount($attribute, $params)
+        protected function resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute)
         {
-            if(count($this->selectedModels) > self::SELECTED_MODELS_COUNT || count($this->selectedModels) == 0)
+            if($this->element instanceof LeadStateDropDownElement)
             {
-                $message = Zurmo::t('ZurmoModule', 'The selected records should not be greater than {count}.',
-                                     array('{count}' => self::SELECTED_MODELS_COUNT + 1));
-                Yii::app()->user->setFlash('notification', $message);
-                $this->addError('selectedModels', $message);
+                $label = ContactsUtil::resolveStateLabelByLanguage($this->model->$attribute, Yii::app()->language);
+                return Yii::app()->format->text($label);
             }
+            return $this->model->$attribute->$relatedAttribute;
         }
     }
 ?>

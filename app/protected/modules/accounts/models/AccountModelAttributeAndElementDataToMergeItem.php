@@ -35,49 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Form used for handling the selected models with list view merge tool
+     * Acts as a helper model to retrieve account model attribute and element related information
      */
-    class ModelsListDuplicateMergedModelForm extends CFormModel
+    class AccountModelAttributeAndElementDataToMergeItem extends ModelAttributeAndElementDataToMergeItem
     {
-        /**
-         * Selected contacts count for merge.
-         */
-        const SELECTED_MODELS_COUNT = 5;
-        /**
-         * Selected contacts
-         *
-         * @var array
-         */
-        public $selectedModels = array();
-        /**
-         * Primary contact for the merge
-         * @var Contact
-         */
-        public $primaryModel;
 
-        public function rules()
-        {
-            return array(
-                array('selectedModels', 'validateModelsCount'),
-                array('primaryModel', 'required'),
-            );
-        }
-
-        /**
-         * Validate the contacts which are selected.
-         *
-         * @param string $attribute
-         * @param array $params
-         */
-        public function validateModelsCount($attribute, $params)
-        {
-            if(count($this->selectedModels) > self::SELECTED_MODELS_COUNT || count($this->selectedModels) == 0)
-            {
-                $message = Zurmo::t('ZurmoModule', 'The selected records should not be greater than {count}.',
-                                     array('{count}' => self::SELECTED_MODELS_COUNT + 1));
-                Yii::app()->user->setFlash('notification', $message);
-                $this->addError('selectedModels', $message);
-            }
-        }
     }
 ?>

@@ -88,7 +88,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                    'SecuredActionBarForLeadsSearchAndListView');
                 $view = new LeadsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -511,6 +512,17 @@
                 $content = $summaryView->render();
                 echo json_encode(array('message' => $message, 'content' => $content));
             }
+        }
+
+        /**
+         * List view merge for leads
+         */
+        public function actionListViewMerge()
+        {
+            $this->processListViewMerge('Contact',
+                                        'LeadsListDuplicateMergedModelForm',
+                                        'LeadsMerged', 'LeadsPageView',
+                                        '/leads/default/list');
         }
     }
 ?>
