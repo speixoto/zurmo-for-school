@@ -226,7 +226,7 @@
                                                             User::getById($this->originalAttributeValues['owner'][1]));
                 }
             }
-            if($this->onAfterOwnerChangeEventRaised)
+            if ($this->onAfterOwnerChangeEventRaised)
             {
                 $this->onAfterOwnerChangeAfterSave(new CEvent($this));
                 $this->onAfterOwnerChangeEventRaised = false;
