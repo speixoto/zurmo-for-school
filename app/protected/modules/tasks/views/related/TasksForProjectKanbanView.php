@@ -58,14 +58,12 @@
                                   'iconClass'        => 'icon-edit',
                                   'relationModuleId' => 'eval:$this->params["relationModuleId"]'
                             ),
-                            array('type'                => 'CreateTaskMenu',
+                            array('type'                => 'CreateTaskFromRelatedKanbanModalMenu',
                                   'routeModuleId'       => 'eval:$this->moduleId',
                                   'routeParameters'     => 'eval:$this->getCreateLinkRouteParameters()',
                                   'ajaxOptions'         => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
                                   'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
                                   'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()',
-                                  'label'               => Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
-                                                                    LabelUtil::getTranslationParamsForAllModules())
                             ),
                         ),
                     ),
