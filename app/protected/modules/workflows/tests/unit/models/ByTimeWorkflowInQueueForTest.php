@@ -49,7 +49,7 @@
 
         public function setIsNewModel($value)
         {
-            $this->assertTrue('is_bool($value)');
+            assert('is_bool($value)');
             $this->isNewModel = $value;
         }
     }
