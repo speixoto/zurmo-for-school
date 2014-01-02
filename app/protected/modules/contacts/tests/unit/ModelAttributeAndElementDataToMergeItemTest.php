@@ -254,6 +254,36 @@
             $this->assertTag($matcherPrimaryAddressStreet2, $content);
             $this->assertTag($matcherPrimaryAddressStreet22, $content);
             /*----------------Primary address ends here---------------*/
+
+            /*----------------Secondary address starts here---------------*/
+            //street1
+            $matcherSecondaryAddressStreet1 = array(
+                'tag' => 'a',
+                'attributes' => array('data-id' => 'Contact_secondaryAddress_street1',
+                                      'data-value' => '25 de Agosto 2543')
+            );
+            $matcherSecondaryAddressStreet12 = array(
+                'tag' => 'a',
+                'attributes' => array('data-id' => 'Contact_secondaryAddress_street1',
+                                      'data-value' => 'A-8')
+            );
+            $this->assertTag($matcherSecondaryAddressStreet1, $content);
+            $this->assertTag($matcherSecondaryAddressStreet12, $content);
+
+            //street2
+            $matcherSecondaryAddressStreet2 = array(
+                'tag' => 'a',
+                'attributes' => array('data-id' => 'Contact_secondaryAddress_street2',
+                                      'data-value' => 'Local 3')
+            );
+            $matcherSecondaryAddressStreet22 = array(
+                'tag' => 'a',
+                'attributes' => array('data-id' => 'Contact_secondaryAddress_street2',
+                                      'data-value' => 'Sector 56')
+            );
+            $this->assertTag($matcherSecondaryAddressStreet2, $content);
+            $this->assertTag($matcherSecondaryAddressStreet22, $content);
+            /*----------------Secondary address ends here---------------*/
         }
     }
 ?>

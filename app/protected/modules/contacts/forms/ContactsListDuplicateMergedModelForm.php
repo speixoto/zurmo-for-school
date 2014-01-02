@@ -37,28 +37,8 @@
     /**
      * Form used for handling the selected contacts with list view merge tool
      */
-    class ContactsListDuplicateMergedModelForm extends CFormModel
+    class ContactsListDuplicateMergedModelForm extends ModelsListDuplicateMergedModelForm
     {
-        const SELECTED_CONTACTS_COUNT = 5;
-
-        public $selectedContacts = array();
-
-        public $primaryContact;
-
-        public function rules()
-        {
-            return array(
-                array('selectedContacts', 'validateContacts'),
-                //array('primaryContact', 'required'),
-            );
-        }
-
-        public function validateContacts($attribute, $params)
-        {
-            if(count($this->selectedContacts) > self::SELECTED_CONTACTS_COUNT || count($this->selectedContacts) == 0)
-            {
-                $this->addError('selectedContacts', Zurmo::t('ZurmoModule', 'The selected contacts should be greater than 0 and less than 5'));
-            }
-        }
+       
     }
 ?>

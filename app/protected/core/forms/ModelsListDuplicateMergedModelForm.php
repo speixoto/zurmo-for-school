@@ -35,52 +35,48 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to mass list merge from a listview.
+     * Form used for handling the selected models with list view merge tool
      */
-    class ListViewMergeMenuActionElement extends MassActionMenuActionElement
+    class ModelsListDuplicateMergedModelForm extends CFormModel
     {
-        public function getActionType()
-        {
-            return 'ListViewMerge';
-        }
+        /**
+         * Selected contacts count for merge.
+         */
+        const SELECTED_MODELS_COUNT = 5;
+        /**
+         * Selected contacts
+         *
+         * @var array
+         */
+        public $selectedModels = array();
+        /**
+         * Primary contact for the merge
+         * @var Contact
+         */
+        public $primaryModel;
 
-        protected function getSelectedMenuNameSuffix()
-        {
-            return '-listViewMergeSelected';
-        }
-
-        protected function getAllMenuNameSuffix()
-        {
-            return '-listViewMergeAll';
-        }
-
-        protected function getActionId()
-        {
-            return 'listViewMerge';
-        }
-
-        protected function getScriptNameSuffixForSelectedMenu()
-        {
-            return '-listViewMergeActionUpdateSelected';
-        }
-
-        protected function getScriptNameSuffixForAllMenu()
-        {
-            return '-listViewMergeActionUpdateAll';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('Core', 'List View Merge');
-        }
-
-        protected function getMenuItems()
+        public function rules()
         {
             return array(
-                array('label'   => Zurmo::t('Core', 'Selected'),
-                        'url'     => '#',
-                        'itemOptions' => array( 'id'   => $this->selectedMenuItemName)),
-                        );
+                array('selectedModels', 'validateModelsCount'),
+                array('primaryModel', 'required'),
+            );
+        }
+
+        /**
+         * Validate the contacts which are selected.
+         *
+         * @param string $attribute
+         * @param array $params
+         */
+        public function validateModelsCount($attribute, $params)
+        {
+            if(count($this->selectedModels) > self::SELECTED_MODELS_COUNT || count($this->selectedModels) == 0)
+            {
+                $this->addError('selectedModels',
+                            Zurmo::t('ZurmoModule', 'The selected records should be greater than 0 and less than {count}',
+                                     array('{count}' => self::SELECTED_MODELS_COUNT)));
+            }
         }
     }
 ?>
