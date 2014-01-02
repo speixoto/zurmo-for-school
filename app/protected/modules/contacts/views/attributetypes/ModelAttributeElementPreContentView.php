@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Renders content before the element.
+      */
     class ModelAttributeElementPreContentView extends ZurmoWidget
     {
         /**
@@ -87,8 +89,7 @@
 
                     $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
                 }
-                $attributeContent = ZurmoHtml::tag('div', array(), $attributeContent);
-                $content .= $attributeContent;
+                $content .= ZurmoHtml::tag('div', array(), $attributeContent);
             }
             Yii::app()->clientScript->registerScript('preContentSelectScript', $this->registerScriptForAttributeReplacement());
             echo $content;

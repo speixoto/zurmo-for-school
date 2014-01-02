@@ -33,9 +33,16 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Summary view for the contacts selected for the merge
+      */
     class ContactListViewMergeSummaryView extends DupesSummaryView
     {
+        /**
+         * Calls on change of primary model.
+         * @see DupedSummaryView::registerScripts
+         * @return string
+         */
         protected function onChangeScript()
         {
             $url = Yii::app()->request->getUrl();
