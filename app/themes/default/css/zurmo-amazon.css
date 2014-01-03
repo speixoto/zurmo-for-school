@@ -4853,23 +4853,8 @@ div.radio-input .hasDropDown {
 .hasHalfs > div:first-child + div {
   padding-left: 7.5px;
 }
-.has1,
-.has2,
-.has3,
-.hasThirds {
-  border: 1px solid gold;
-}
-.has1 > div:first-child,
-.has2 > div:first-child,
-.has3 > div:first-child,
-.hasThirds > div:first-child {
-  padding-right: 7.5px;
-}
-.has1 > div:first-child + div,
-.has2 > div:first-child + div,
-.has3 > div:first-child + div,
-.hasThirds > div:first-child + div {
-  padding-left: 7.5px;
+.has3 > div {
+  width: 33.3%;
 }
 .seventh {
   width: 14.2%;
@@ -6575,6 +6560,7 @@ a:active .z-label {
   filter: grayscale(85%);
   filter: gray;
 }
+.secondary-button,
 .default-btn,
 .white-button,
 .cancel-button,
@@ -6600,6 +6586,8 @@ a:active .z-label {
   border-right: 1px solid rgba(185,185,185,0.4);
   border-bottom: 1px solid rgba(170,170,170,0.4);
 }
+.secondary-button:before,
+.secondary-button:after,
 .default-btn:before,
 .default-btn:after,
 .white-button:before,
@@ -6611,12 +6599,14 @@ a:active .z-label {
   content: " ";
   display: table;
 }
+.secondary-button:after,
 .default-btn:after,
 .white-button:after,
 .cancel-button:after,
 .portlet-create-button:after {
   clear: both;
 }
+.secondary-button.disabled,
 .default-btn.disabled,
 .white-button.disabled,
 .cancel-button.disabled,
@@ -6633,6 +6623,7 @@ a:active .z-label {
   filter: grayscale(85%);
   filter: gray;
 }
+.secondary-button .z-label,
 .default-btn .z-label,
 .white-button .z-label,
 .cancel-button .z-label,
@@ -6645,6 +6636,7 @@ a:active .z-label {
   text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   background: transparent url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
+.secondary-button:hover .z-label,
 .default-btn:hover .z-label,
 .white-button:hover .z-label,
 .cancel-button:hover .z-label,
@@ -8501,6 +8493,15 @@ table.configuration-list tr:last-child td {
 .mapping-rules > div + div:last-child {
   width: 49%;
   margin-left: 2%;
+}
+.mapping-rules.has3 > div {
+  width: 32% !important;
+  margin-right: 2%;
+  margin-left: 0;
+}
+.mapping-rules.has3 > div:last-child {
+  margin-left: 0;
+  margin-right: 0;
 }
 .mapping-rules.multiple table {
   width: 49.5% !important;

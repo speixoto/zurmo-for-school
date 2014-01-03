@@ -38,7 +38,7 @@
 
     class LessCompiler extends CApplicationComponent
     {
-        public $formatterName = 'lessjs';
+        public $formatterName = 'compressed';
 
         public $mainLessFileToCompile;
 
