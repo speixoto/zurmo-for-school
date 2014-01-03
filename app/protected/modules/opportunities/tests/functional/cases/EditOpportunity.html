@@ -19,7 +19,7 @@
 <!--Go to opportunities list-->
 <tr>
 	<td>open</td>
-	<td>index.php/opportunities/default?clearingSearch=1</td>
+	<td>index.php/opportunities/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -140,6 +140,37 @@
 	<td>assertText</td>
 	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[8]/td</td>
 	<td>test description edited</td>
+</tr>
+<!--clear search result-->
+<tr>
+	<td>open</td>
+	<td>index.php/opportunities/default</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>

@@ -213,8 +213,10 @@
                     {
                         if ($model instanceof SecurableItem)
                         {
+                            $model->setScenario('doNotSetModifiedDateTimeOrUser');
                             try
                             {
+
                                 $resolved = ExplicitReadWriteModelPermissionsUtil::
                                             resolveExplicitReadWriteModelPermissions(
                                                 $model,
@@ -233,6 +235,7 @@
                                 'to set the security the way you did. The record will only be viewable by the owner.');
                                 $importRowDataResultsUtil->setStatusToError();
                             }
+                            $model->setScenario('importModel');
                         }
                         else
                         {

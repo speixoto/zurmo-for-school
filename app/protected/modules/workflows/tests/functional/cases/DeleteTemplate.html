@@ -20,7 +20,7 @@
 <!--Go to templates list-->
 <tr>
 	<td>open</td>
-	<td>index.php/workflows/default?clearingSearch=1</td>
+	<td>index.php/workflows/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -159,7 +159,7 @@
 <!--clear search result-->
 <tr>
 	<td>open</td>
-	<td>index.php/productTemplates/default/list?clearingSearch=1</td>
+	<td>index.php/emailTemplates/default/listForWorkflow</td>
 	<td></td>
 </tr>
 <tr>
@@ -171,6 +171,21 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

@@ -539,7 +539,7 @@
             {
                 $emailMessage->delete();
             }
-            $initalQueued                           = 0;
+            $initialQueued                           = 0;
             $conversation                           = $conversations[0];
             $conversationParticipant                = new ConversationParticipant();
             $conversationParticipant->person        = $steven;
@@ -557,13 +557,15 @@
                                      'relatedModelRelationName'   => 'comments',
                                      'redirectUrl'                => 'someRedirect'));
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
-            $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+            $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
             $this->assertEquals(1, $conversation->comments->count());
-            $this->assertEquals($initalQueued + 1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals($initialQueued + 2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages                          = EmailMessage::getAll();
-            $emailMessage                           = $emailMessages[$initalQueued];
-            $this->assertEquals(2, count($emailMessage->recipients));
+            $emailMessage                           = $emailMessages[$initialQueued];
+            $this->assertEquals(1, count($emailMessage->recipients));
+            $emailMessage                           = $emailMessages[$initialQueued + 1];
+            $this->assertEquals(1, count($emailMessage->recipients));
             $this->assertContains('conversation', $emailMessage->subject);
             $this->assertContains(strval($conversation), $emailMessage->subject);
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->htmlContent);

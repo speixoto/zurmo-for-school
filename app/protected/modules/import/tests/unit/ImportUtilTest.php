@@ -608,6 +608,99 @@
             {
                 $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
             }
+            ImportModelTestItem::deleteAll();
+        }
+
+        public function testSettingExplicitReadWriteModelPermissionsDuringImportDontAffectTheModifiedByUserAttribute()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(0, count($testModels));
+
+            //Add a read only user for import. Then all models should be readable by jim in addition to super.
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            $explicitReadWriteModelPermissions->addReadOnlyPermitable(User::getByUsername('jim'));
+
+            $testModels                        = ImportModelTestItem::getAll();
+            $this->assertEquals(0, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'ImportModelTestItem';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest3.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $mappingData = array(
+                'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'DefaultValueModelAttributeMappingRuleForm' =>
+                            array('defaultValue' => null))),
+                'column_7' => array('attributeIndexOrDerivedType' => 'modifiedByUser', 'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'UserValueTypeModelAttributeMappingRuleForm' =>
+                            array('type' => UserValueTypeModelAttributeMappingRuleForm::ZURMO_USERNAME))),
+                'column_23' => array('attributeIndexOrDerivedType' => 'FullName',     'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'FullNameDefaultValueModelAttributeMappingRuleForm' =>
+                            array('defaultValue' => null))),
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 3)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                $importRules,
+                $mappingData,
+                $importResultsUtil,
+                $explicitReadWriteModelPermissions,
+                $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 1 models where created.
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(1, count($testModels));
+            $jim = User::getByUsername('jim');
+            foreach ($testModels as $model)
+            {
+                $this->assertEquals(array(Permission::READ, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+                $this->assertEquals('jim', $model->modifiedByUser->username);
+            }
+
+            //Clear out data in table
+            ImportModelTestItem::deleteAll();
+
+            //Now test with read/write permissions being set.
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            $explicitReadWriteModelPermissions->addReadWritePermitable(User::getByUsername('jim'));
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                $importRules,
+                $mappingData,
+                $importResultsUtil,
+                $explicitReadWriteModelPermissions,
+                $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 1 models where created.
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(1, count($testModels));
+            $jim = User::getByUsername('jim');
+            foreach ($testModels as $model)
+            {
+                $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+                $this->assertEquals('jim', $model->modifiedByUser->username);
+            }
         }
 
         public function testCreateImportDataForEmailDedupe()
