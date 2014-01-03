@@ -101,7 +101,6 @@
         protected function getCustomCompiledImagesUrl()
         {
             return "'../../themes/" . Yii::app()->theme->name . "/images/'";
-            //return Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name . '/images/';
         }
 
         /**

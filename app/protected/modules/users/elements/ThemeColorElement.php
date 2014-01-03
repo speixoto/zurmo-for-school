@@ -105,12 +105,16 @@
             {
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
-            $themeBaseUrl           =  Yii::app()->themeManager->baseUrl . '/default/css';
+            $themeBaseUrl =  Yii::app()->themeManager->baseUrl . '/default/css';
+            $customThemeBaseUrl = Yii::app()->themeManager->baseUrl . '/protected/runtime/themes'; //@TODO Sergio: Please fix this path here
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName($this->getAttributeForRadioButtonList()) . "\"]').live('change', function(){
                           $removeScript
                           $(document.body).addClass(this.value);
-                          $('head').append('<link rel=\"stylesheet\" href=\"$themeBaseUrl/zurmo-'+this.value+'.css\" type=\"text/css\" />');
+                          var themeBaseUrl = '$themeBaseUrl';
+                          if(this.value === 'custom'){ themeBaseUrl = '$customThemeBaseUrl'; }
+                          alert(themeBaseUrl);
+                          $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css\" type=\"text/css\" />');
                           });
                       ";
             // End Not Coding Standard
