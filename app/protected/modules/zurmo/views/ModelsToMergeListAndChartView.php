@@ -39,8 +39,6 @@
      */
     abstract class ModelsToMergeListAndChartView extends SecuredDetailsView
     {
-        const MAX_NUMBER_OF_MODELS_TO_SHOW = 0;
-
         protected $dupeModels;
 
         protected $colorsArray = array('#98cdff', '#12cd11');
@@ -106,9 +104,9 @@
 
         protected function resolveMaxModelsToShow(& $models)
         {
-            if (static::MAX_NUMBER_OF_MODELS_TO_SHOW > 0 && count($this->dupeModels) > static::MAX_NUMBER_OF_MODELS_TO_SHOW)
+            if (ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT > 0 && count($this->dupeModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
             {
-                $models = array_slice($models, 0, static::MAX_NUMBER_OF_MODELS_TO_SHOW);
+                $models = array_slice($models, 0, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT);
             }
         }
 
@@ -221,9 +219,9 @@
 
         protected function getMaxWarning()
         {
-            if (static::MAX_NUMBER_OF_MODELS_TO_SHOW > 0 && count($this->dupeModels) > static::MAX_NUMBER_OF_MODELS_TO_SHOW)
+            if (ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT > 0 && count($this->dupeModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
             {
-                return Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', static::MAX_NUMBER_OF_MODELS_TO_SHOW);
+                return Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT);
             }
         }
 

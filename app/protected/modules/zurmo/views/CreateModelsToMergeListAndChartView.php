@@ -36,8 +36,6 @@
 
     class CreateModelsToMergeListAndChartView extends ModelsToMergeListAndChartView
     {
-        const MAX_NUMBER_OF_MODELS_TO_SHOW = 10;
-
         protected function onChangeScript()
         {
             $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');

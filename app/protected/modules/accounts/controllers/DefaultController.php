@@ -380,23 +380,23 @@
             $matchedModels = array();
             if ($attribute == 'primaryEmail')
             {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
             }
             elseif ($attribute == 'name')
             {
-                $matchedModels  = Account::getByName($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
+                $matchedModels  = Account::getByName($value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
             }
             elseif ($attribute == 'officePhone')
             {
-                $matchedModels  = AccountSearch::getAccountsByAnyPhone($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
+                $matchedModels  = AccountSearch::getAccountsByAnyPhone($value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
             }
             if (count($matchedModels) > 0)
             {
-                if (count($matchedModels) > CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW)
+                if (count($matchedModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
                 {
                     $message =  Zurmo::t('ZurmoModule',
                         'There are at least {n} possible matches.',
-                        CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW
+                        ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT
                     );
                 }
                 else
