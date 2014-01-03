@@ -49,7 +49,6 @@
         {
             if (count($peopleToSendNotification) > 0)
             {
-                $emailRecipients = array();
                 foreach ($peopleToSendNotification as $people)
                 {
                     if ($people->primaryEmail->emailAddress !== null &&

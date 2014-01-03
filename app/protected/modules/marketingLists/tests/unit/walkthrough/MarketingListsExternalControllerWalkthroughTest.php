@@ -360,7 +360,7 @@
             $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
-            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2013. ' .
+            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2014. ' .
                                                     'All rights reserved.</span></a>') !== false);
         }
 
@@ -497,7 +497,7 @@
             $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
-            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2013. ' .
+            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2014. ' .
                                                     'All rights reserved.</span></a>') !== false);
             $this->assertTrue(strpos($content, '<td>marketingList 02</td>') !== false);
             $this->assertTrue(strpos($content, '<td><div class="switch">') !== false);

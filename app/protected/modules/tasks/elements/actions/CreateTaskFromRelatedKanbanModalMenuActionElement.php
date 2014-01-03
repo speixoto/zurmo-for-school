@@ -36,9 +36,8 @@
     /**
      * Action element which renders create link on clicking of which opens a modal window
      */
-    class CreateTaskFromRelatedKanbanModalLinkActionElement extends CreateFromRelatedModalLinkActionElement
+    class CreateTaskFromRelatedKanbanModalMenuActionElement extends CreateTaskMenuActionElement
     {
-        //TODO: @sergio: Check if this element is being used if not remove it
         /**
          * Gets default label
          * @return string
@@ -47,29 +46,6 @@
         {
             return Zurmo::t('TasksModule', 'Create TasksModuleSingularLabel',
                                             LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        public function render()
-        {
-            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
-            $content .= parent::render();
-            $content .= ZurmoHtml::closeTag('div');
-            return $content;
-        }
-
-        protected function getHtmlOptions()
-        {
-            return array('class' => 'button-action');
-        }
-
-        protected function resolveLabelAndWrap()
-        {
-            if ($this->wrapLabel())
-            {
-                $content = ZurmoHtml::tag('i', array('class' => 'icon-create'), '');
-                return $content . ZurmoHtml::wrapLabel($this->getLabel(), 'button-label');
-            }
-            return $this->getLabel();
         }
 
         /**
@@ -91,6 +67,41 @@
                 return array();
             }
             return $this->params['sourceKanbanBoardId'];
+        }
+
+        /**
+         * Gets default route
+         * @return string
+         */
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
+                $this->controllerId . '/modalCreateFromRelation/', $this->getCreateLinkUrlParams());
+        }
+
+        /**
+         * Gets route module id
+         * @return string
+         */
+        protected function getRouteModuleId()
+        {
+            if (!isset($this->params['routeModuleId']))
+            {
+                return null;
+            }
+            return $this->params['routeModuleId'];
+        }
+
+        /**
+         * @return string
+         */
+        protected function getModalContainerId()
+        {
+            if (!isset($this->params['modalContainerId']))
+            {
+                return array();
+            }
+            return $this->params['modalContainerId'];
         }
     }
 ?>

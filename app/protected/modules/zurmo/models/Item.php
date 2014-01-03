@@ -69,7 +69,8 @@
                 $this->insideOnModified = true;
                 if (!($this->unrestrictedGet('id') < 0 &&
                      $this->getScenario() == 'importModel' &&
-                     array_key_exists('modifiedDateTime', $this->originalAttributeValues)))
+                     array_key_exists('modifiedDateTime', $this->originalAttributeValues)) &&
+                     $this->getScenario() != 'doNotSetModifiedDateTimeOrUser')
                 {
                     $this->unrestrictedSet('modifiedDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                 }
@@ -77,7 +78,8 @@
                 {
                     if (!($this->unrestrictedGet('id') < 0 &&
                          $this->getScenario() == 'importModel' &&
-                         array_key_exists('modifiedByUser', $this->originalAttributeValues)))
+                         array_key_exists('modifiedByUser', $this->originalAttributeValues)) &&
+                         $this->getScenario() != 'doNotSetModifiedDateTimeOrUser')
                     {
                         $this->unrestrictedSet('modifiedByUser', Yii::app()->user->userModel);
                     }

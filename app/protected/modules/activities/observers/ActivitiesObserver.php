@@ -62,7 +62,7 @@
          */
         public function destroy()
         {
-            foreach($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
+            foreach ($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
             {
                 $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
             }
