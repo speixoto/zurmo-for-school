@@ -66,41 +66,18 @@
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                             array('type' => 'CancelLink', 'renderType' => 'Edit')
                         );
-            $modifiedElementsData = array();
-            foreach($metadata['global']['panels'] as $panel)
-            {
-                foreach($panel['rows'] as $row)
-                {
-                    foreach($row['cells'] as $cell)
-                    {
-                        foreach($cell['elements'] as $elementData)
-                        {
-                            if($elementData['attributeName'] == 'null' && !class_exists($elementData['type'] . 'Element'))
-                            {
-                                continue;
-                            }
-                            elseif($elementData['type'] == 'TitleFullName')
-                            {
-                                $modifiedElementsData[] = array('attributeName' => 'title', 'type' => 'DropDown');
-                                $modifiedElementsData[] = array('attributeName' => 'firstName', 'type' => 'Text');
-                                $modifiedElementsData[] = array('attributeName' => 'lastName', 'type' => 'Text');
-                            }
-                            else
-                            {
-                                $modifiedElementsData[] = $elementData;
-                            }
-                        }
-                    }
-                }
-            }
-            //Prepare panels data
-            $panelsData = array();
-            foreach($modifiedElementsData as $row => $elementData)
-            {
-                $panelsData[0]['rows'][$row]['cells'][0]['elements'][0] = $elementData;
-            }
-            $metadata['global']['panels'] = $panelsData;
             return $metadata;
+        }
+
+        /**
+         * Gets the metadata for this view.
+         * Override so that form layout would be one column only
+         * @return array view metadata
+         */
+        protected function getFormLayoutMetadata()
+        {
+            $metadata = self::getMetadata();
+            return ContactsUtil::resolveFormLayoutMetadataForOneColumnDisplay($metadata);
         }
 
         /**
@@ -126,27 +103,11 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            if($element->getAttribute() != 'null')
-            {
-                $attributes       = array($element->getAttribute());
-            }
-            else
-            {
-                $elementClassName = get_class($element);
-                $attributes       = $elementClassName::getModelAttributeNames();
-            }
-            $preContent = Yii::app()->getController()->widget(
-                                                                'ModelAttributeElementPreContentView',
-                                                                array(
-                                                                    'selectedModels' => $this->selectedLeads,
-                                                                    'attributes'     => $attributes,
-                                                                    'primaryModel'   => $this->model,
-                                                                    'element'        => $element,
-                                                                    'modelAttributeAndElementDataToMergeItemClass'
-                                                                            => 'LeadModelAttributeAndElementDataToMergeItem'
-                                                                ),
-                                                            true);
-            $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' . $preContent . '{content}{error}</td>';
+            ListViewMergeUtil::resolveElementDuringFormLayoutRenderForListViewMerge($element,
+                                                                                    'ModelAttributeElementPreContentView',
+                                                                                    $this->selectedLeads,
+                                                                                    $this->model,
+                                                                                    'LeadModelAttributeAndElementDataToMergeItem');
         }
 
         /**

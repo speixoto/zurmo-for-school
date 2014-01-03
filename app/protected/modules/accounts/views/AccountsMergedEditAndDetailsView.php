@@ -66,6 +66,17 @@
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
                             array('type' => 'CancelLink', 'renderType' => 'Edit')
                         );
+            return $metadata;
+        }
+
+        /**
+         * Gets the metadata for this view.
+         * Override so that form layout would be one column only
+         * @return array view metadata
+         */
+        protected function getFormLayoutMetadata()
+        {
+            $metadata = self::getMetadata();
             $modifiedElementsData = array();
             foreach($metadata['global']['panels'] as $panel)
             {
@@ -120,27 +131,11 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            if($element->getAttribute() != 'null')
-            {
-                $attributes       = array($element->getAttribute());
-            }
-            else
-            {
-                $elementClassName = get_class($element);
-                $attributes       = $elementClassName::getModelAttributeNames();
-            }
-            $preContent = Yii::app()->getController()->widget(
-                                                                'ModelAttributeElementPreContentView',
-                                                                array(
-                                                                    'selectedModels' => $this->selectedAccounts,
-                                                                    'attributes'     => $attributes,
-                                                                    'primaryModel'   => $this->model,
-                                                                    'element'        => $element,
-                                                                    'modelAttributeAndElementDataToMergeItemClass'
-                                                                            => 'AccountModelAttributeAndElementDataToMergeItem'
-                                                                ),
-                                                            true);
-            $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' . $preContent . '{content}{error}</td>';
+            ListViewMergeUtil::resolveElementDuringFormLayoutRenderForListViewMerge($element,
+                                                                                    'ModelAttributeElementPreContentView',
+                                                                                    $this->selectedAccounts,
+                                                                                    $this->model,
+                                                                                    'AccountModelAttributeAndElementDataToMergeItem');
         }
 
         /**
