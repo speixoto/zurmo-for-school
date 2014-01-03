@@ -19,7 +19,7 @@
 <!--Go to opportunities list-->
 <tr>
 	<td>open</td>
-	<td>index.php/opportunities/default?clearingSearch=1</td>
+	<td>index.php/opportunities/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -84,8 +84,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertTextNotPresent</td>
-	<td>Delete</td>
+	<td>assertElementNotPresent</td>
+	<td>link=delete</td>
 	<td></td>
 </tr>
 <!--change visible column and theme-->
@@ -185,6 +185,42 @@
   <td>verifyValue</td>
   <td>OpportunitiesSearchForm_anyMixedAttributes</td>
   <td></td>
+</tr>
+<!--Go to opportunities list view-->
+<tr>
+  <td>clickAndWait</td>
+  <td>link=Grid</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Update</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Export</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Delete</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>
