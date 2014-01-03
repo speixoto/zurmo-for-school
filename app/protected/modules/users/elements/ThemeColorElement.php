@@ -113,7 +113,6 @@
                           $(document.body).addClass(this.value);
                           var themeBaseUrl = '$themeBaseUrl';
                           if(this.value === 'custom'){ themeBaseUrl = '$customThemeBaseUrl'; }
-                          alert(themeBaseUrl);
                           $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css\" type=\"text/css\" />');
                           });
                       ";
