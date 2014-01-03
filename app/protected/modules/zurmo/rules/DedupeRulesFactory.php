@@ -40,7 +40,7 @@
      */
     class DedupeRulesFactory
     {
-        public static function createRulesByModel(RedBeanModel $model)
+        public static function createRulesByModel($model)
         {
             if (in_array(get_class($model), array('Contact', 'Lead', 'Account')))
             {
