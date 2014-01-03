@@ -40,7 +40,7 @@
     class ModelsListDuplicateMergedModelForm extends CFormModel
     {
         /**
-         * Selected contacts count for merge.
+         * Selected models count for merge.
          */
         const SELECTED_MODELS_COUNT = 5;
         /**

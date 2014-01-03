@@ -475,16 +475,16 @@
         /**
          * Process list view merge for models
          */
-        public function processListViewMerge($modelClassname,
+        public function processListViewMerge($modelClassName,
                                              $mergedModelFormClassName,
                                              $viewPrefix,
                                              $pageView,
                                              $redirectUrl)
         {
-            $modelsList              = $this->getSelectedModelsListForMerge($modelClassname);
+            $modelsList              = ListViewMergeUtil::getSelectedModelsListForMerge($modelClassName);
             $model                   = new $mergedModelFormClassName('listViewMerge');
             $model->selectedModels   = $modelsList;
-            $this->setPrimaryModel($model);
+            ListViewMergeUtil::setPrimaryModelForListViewMerge($model);
             $redirectUrl             = Yii::app()->createUrl($redirectUrl);
             if($model->validate())
             {
@@ -502,29 +502,6 @@
         }
 
         /**
-         * Sets primary model for the merge
-         * @param ModelsListDuplicateMergedModelForm $model
-         */
-        protected function setPrimaryModel($model)
-        {
-            assert('$model instanceof ModelsListDuplicateMergedModelForm');
-            $getData      = GetUtil::getData();
-            $modelsList   = $model->selectedModels;
-            if(isset($getData['primaryModelId']))
-            {
-                $model->primaryModel = $modelsList[$getData['primaryModelId']];
-            }
-            else
-            {
-                $models = array_values($modelsList);
-                if(!empty($models))
-                {
-                    $model->primaryModel = $models[0];
-                }
-            }
-        }
-
-        /**
          * Processing before redirecting
          * @param RedBeanModel $model
          */
@@ -534,38 +511,8 @@
             $modelClassName = get_class($model);
             if($this->getAction()->id == 'listViewMerge')
             {
-                $selectedModelsList = $this->getSelectedModelsListForMerge($modelClassName);
-                foreach($selectedModelsList as $selectedModel)
-                {
-                    if($selectedModel->id != $model->id)
-                    {
-                        ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($selectedModel);
-                        $selectedModel->delete();
-                    }
-                }
+                ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model);
             }
-        }
-
-        /**
-         * Gets selected models for merge
-         * @param string $modelClassName
-         * @return array
-         */
-        protected function getSelectedModelsListForMerge($modelClassName)
-        {
-            assert('is_string($modelClassName)');
-            $getData      = GetUtil::getData();
-            $modelsList = array();
-            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
-            {
-                $selectedIds = explode(',', $getData['selectedIds']);
-                foreach($selectedIds as $id)
-                {
-                    $model = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
-                    $modelsList[$id] = $model;
-                }
-            }
-            return $modelsList;
         }
     }
 ?>
