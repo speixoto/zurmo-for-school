@@ -481,7 +481,7 @@
         /**
          * Overriding to implement the dedupe action for new leads
          */
-        public function actionSearchForDedupes($attribute, $value)
+        public function actionSearchForDuplicateModels($attribute, $value)
         {
             assert('is_string($attribute)');
             assert('is_string($value)');

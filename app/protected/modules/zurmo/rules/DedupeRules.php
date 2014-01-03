@@ -80,7 +80,7 @@
         /**
          * Register the script that will make the ajax call to search for a dedupe and update the DedupeViewClassName
          * with the content returned. It also display a clickable flash message with the number of results found
-         * @see ZurmoModuleController::actionSearchForDedupes
+         * @see ZurmoModuleController::actionSearchForDuplicateModels
          * @param Element $element
          * @return null
          */
@@ -97,7 +97,7 @@
                 'data'       => array('attribute' => $this->getAttributeForDedupe($element),
                     'value'     => "js:$('#{$id}').val()",
                 ),
-                'url'        => 'searchForDedupes',
+                'url'        => 'searchForDuplicateModels',
                 'success'    => "js:function(data, textStatus, jqXHR){
                                         var returnObj = jQuery.parseJSON(data);
                                         if (returnObj != null)

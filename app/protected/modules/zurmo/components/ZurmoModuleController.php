@@ -467,7 +467,7 @@
          * @param string $value The value of the attribute for the new model
          * @throws NotImplementedException
          */
-        public function actionSearchForDedupes($attribute, $value)
+        public function actionSearchForDuplicateModels($attribute, $value)
         {
             throw new NotImplementedException();
         }
