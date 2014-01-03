@@ -42,7 +42,7 @@
          * @param string $partialName
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
-         * @param $autoCompleteOptions
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByPartialFullName($partialName, $pageSize,
                                                             $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
@@ -50,6 +50,7 @@
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             $personTableName   = Person::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Contact');
             if (!$joinTablesAdapter->isTableInFromTables('person'))
@@ -80,7 +81,7 @@
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
          * @param null|string $operatorType
-         * @param $autoCompleteOptions
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByPartialFullNameOrAnyEmailAddress($partialNameOrEmailAddress, $pageSize,
                                                                              $stateMetadataAdapterClassName = null,
@@ -91,6 +92,7 @@
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$operatorType == null || is_string($operatorType)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             if ($operatorType == null)
             {
               $operatorType = 'startsWith';
@@ -139,13 +141,16 @@
          * For a given email address, run search by email address and retrieve contact models.
          * @param string $emailAddress
          * @param null|int $pageSize
-         * @param null|sting $stateMetadataAdapterClassName
-         * @param $autoCompleteOptions
+         * @param null|string $stateMetadataAdapterClassName
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByAnyEmailAddress($emailAddress, $pageSize = null,
                                                 $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
         {
             assert('is_string($emailAddress)');
+            assert('$pageSize == null || is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             $metadata = array();
             $metadata['clauses'] = array(
                 1 => array(
@@ -177,13 +182,16 @@
          * For a given phone number, run search by phone numbers and retrieve contact models.
          * @param string $phoneNumber
          * @param null|int $pageSize
-         * @param null|sting $stateMetadataAdapterClassName
-         * @param $autoCompleteOptions
+         * @param null|string $stateMetadataAdapterClassName
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByAnyPhone($phoneNumber, $pageSize = null,
                                                      $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
         {
             assert('is_string($phoneNumber)');
+            assert('$pageSize == null || is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             $metadata = array();
             $metadata['clauses'] = array(
                 1 => array(
@@ -216,7 +224,7 @@
          * @param string $fullName
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
-         * @param $autoCompleteOptions
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByFullName($fullName, $pageSize,
                                                     $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
@@ -224,6 +232,7 @@
             assert('is_string($fullName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             $personTableName   = Person::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Contact');
             if (!$joinTablesAdapter->isTableInFromTables('person'))
