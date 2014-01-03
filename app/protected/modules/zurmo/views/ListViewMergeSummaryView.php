@@ -34,9 +34,9 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
      /**
-      * Summary view for the contacts selected for the merge
+      * Summary view for the list merge of the models
       */
-    class ContactListViewMergeSummaryView extends ModelsToMergeListAndChartView
+    class ListViewMergeSummaryView extends ModelsToMergeListAndChartView
     {
         /**
          * Calls on change of primary model.

@@ -171,7 +171,8 @@
          */
         protected function getRelatedAttributeForDedupe(Element $element)
         {
-            return $this->getDedupeAttributesAndRelatedAttributesMappedArray()[$element->getAttribute()];
+            $dedupeMappingArray = $this->getDedupeAttributesAndRelatedAttributesMappedArray();
+            return $dedupeMappingArray[$element->getAttribute()];
         }
 
         /**

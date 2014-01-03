@@ -155,10 +155,10 @@
          */
         protected function beforeRenderingFormLayout()
         {
-            $summaryView = new ContactListViewMergeSummaryView($this->controllerId,
-                                                               $this->moduleId,
-                                                               $this->model,
-                                                               $this->selectedContacts);
+            $summaryView = new ListViewMergeSummaryView($this->controllerId,
+                                                        $this->moduleId,
+                                                        $this->model,
+                                                        $this->selectedContacts);
             return $summaryView->render();
         }
 
