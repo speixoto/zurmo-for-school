@@ -76,7 +76,7 @@
         {
             $label           = $this->getLabelForDupes();
             $maxWarning      = $this->getMaxWarning();
-            $preparedContent = $label . $maxWarning . '<ul>';
+            $preparedContent = null;
             $modelsToShow    = $this->dupeModels;
             $this->resolveMaxModelsToShow($modelsToShow);
             foreach($modelsToShow as $dupeModel)
@@ -97,9 +97,8 @@
                                                                 $radioElement) . $content;
                 $preparedContent .= $contactNameElement;
             }
-            $preparedContent .= '</ul>';
             $this->registerScripts();
-            return $preparedContent;
+            return ZurmoHtml::tag('ul', array(), $label . $maxWarning . $preparedContent);
         }
 
         protected function resolveMaxModelsToShow(& $models)
