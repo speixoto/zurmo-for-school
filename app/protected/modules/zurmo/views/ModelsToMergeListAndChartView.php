@@ -127,7 +127,8 @@
             {
                 throw new NotSupportedException();
             }
-            $content = $layout->renderContent();
+            $content  = $layout->renderContent();
+            $content .= $this->renderActivitiesTotals($model);
             return $content;
         }
 
@@ -273,6 +274,28 @@
                     getCountByModelClassName('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
             }
             $chart->data = array($notes, $tasks, $emails, $meetings);
+        }
+
+        protected function renderActivitiesTotals($model)
+        {
+            $itemId = $model->getClassId('Item');
+            $notesTotalContent    = ZurmoHtml::tag('span',
+                                                  array('class' => 'total-notes'),
+                                                  LatestActivitiesUtil::getCountByModelClassName
+                                                      ('Note', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $tasksTotalContent    = ZurmoHtml::tag('span',
+                                                   array('class' => 'total-tasks'),
+                                                   LatestActivitiesUtil::getCountByModelClassName
+                                                       ('Task', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $emailsTotalContent   = ZurmoHtml::tag('span',
+                                                   array('class' => 'total-emails'),
+                                                   LatestActivitiesUtil::getCountByModelClassName
+                                                       ('EmailMessage', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $meetingsTotalContent = ZurmoHtml::tag('span',
+                                                   array('class' => 'total-meetings'),
+                                                   LatestActivitiesUtil::getCountByModelClassName
+                                                       ('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            return $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
         }
     }
 ?>

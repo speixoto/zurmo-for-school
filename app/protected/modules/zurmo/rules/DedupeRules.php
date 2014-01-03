@@ -41,6 +41,8 @@
      */
     abstract class DedupeRules
     {
+        //TODO: @sergio: Add tests
+
         protected $model;
 
         public function __construct(RedBeanModel $model)
