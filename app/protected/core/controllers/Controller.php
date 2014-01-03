@@ -435,5 +435,12 @@
                 return Zurmo::t('Core', 'You must select at least one field to modify.');
             }
         }
+
+        protected function makeListMergeView($model, $viewPrefix, $selectedList = array())
+        {
+            assert('$viewPrefix != null');
+            $editViewClassName = $viewPrefix . 'EditAndDetailsView';
+            return new $editViewClassName('Edit', $this->getId(), $this->getModule()->getId(), $model, $selectedList);
+        }
     }
 ?>

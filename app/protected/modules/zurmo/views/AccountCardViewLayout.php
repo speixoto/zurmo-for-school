@@ -34,38 +34,62 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
+
     /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
+     * Layout for the business card view for an account.
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class AccountCardViewLayout extends CardViewLayout
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function __construct($model)
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            assert('$model instanceof Account');
+            $this->model = $model;
+        }
+
+        protected function renderFrontOfCardContent()
+        {
+            $content  = $this->resolveNameContent();
+            $content .= $this->resolvePhoneContent();
+            $content .= $this->resolveAddressContent();
+            return $content;
+        }
+
+        protected function resolveNameContent()
+        {
+            $starLink = null;
+            $spanContent = null;
+            if (StarredUtil::modelHasStarredInterface($this->model))
+            {
+                $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
+            }
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
+        }
+
+        protected function resolvePhoneContent()
+        {
+            $content = null;
+            if ($this->model->officePhone != null)
+            {
+                $content .= Yii::app()->phoneHelper->resolvePersonCardViewOfficePhoneNumberContent($this->model->officePhone,
+                                                                                                    $this->model);
+            }
+            if ($content != null)
+            {
+                return ZurmoHtml::tag('div', array('class' => 'contact-details'), $content);
+            }
+        }
+
+        protected function resolveAddressContent()
+        {
+            $element                       = new AddressElement($this->model, 'billingAddress', null);
+            $element->breakLines           = false;
+            $element->nonEditableTemplate  = '{content}';
+            return ZurmoHtml::tag('div', array('class' => 'address'), $element->render());
+        }
+
+        protected function renderBackOfCardContent()
+        {
+            return null;
         }
     }
 ?>

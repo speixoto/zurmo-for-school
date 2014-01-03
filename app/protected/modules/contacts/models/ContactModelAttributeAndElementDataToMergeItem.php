@@ -35,37 +35,24 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
+     * Acts as a helper model to retrieve contact model attribute and element related information
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class ContactModelAttributeAndElementDataToMergeItem extends ModelAttributeAndElementDataToMergeItem
     {
         /**
-         * @return array
+         * Resolves value for related attribute
+         * @param string $attribute
+         * @param string $relatedAttribute
+         * @return string
          */
-        public static function getDefaultMetadata()
+        protected function resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute)
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            if($this->element instanceof ContactStateDropDownElement)
+            {
+                $label = ContactsUtil::resolveStateLabelByLanguage($this->model->$attribute, Yii::app()->language);
+                return Yii::app()->format->text($label);
+            }
+            return $this->model->$attribute->$relatedAttribute;
         }
     }
 ?>

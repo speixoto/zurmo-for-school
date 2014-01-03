@@ -39,7 +39,7 @@
      * which includes an email address, opt out boolean
      * and invalid boolean.
      */
-    class EmailAddressInformationElement extends Element
+    class EmailAddressInformationElement extends Element implements MultipleAttributesElementInterface
     {
         /**
          * Renders the editable email address content.
@@ -144,6 +144,15 @@
             }
             $id = $this->getEditableInputId($this->attribute, 'emailAddress');
             return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
+        }
+
+        /**
+         * Gets related model attribute names
+         * @return array
+         */
+        public static function getModelAttributeNames()
+        {
+            return array('emailAddress');
         }
     }
 ?>

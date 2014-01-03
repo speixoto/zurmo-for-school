@@ -35,10 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
+     * Action bar view for the leads search and list user interface.
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class SecuredActionBarForLeadsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
         /**
          * @return array
@@ -49,12 +48,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
                             array(
                                 'type'            => 'ListViewMergeMenu',
                                 'iconClass'       => 'icon-subscribe',

@@ -73,6 +73,8 @@
 
         const TYPE_PYRAMID               = 'Pyramid';
 
+        const TYPE_RADAR                 = 'Radar';
+
         /**
          * @return array of chart types that require a second series and range to render.
          */
@@ -125,6 +127,7 @@
                          ChartRules::TYPE_DONUT_PROGRESSION  => Zurmo::t('Core', 'Donut Progression'),
                          ChartRules::TYPE_FUNNEL             => Zurmo::t('Core', 'Funnel'),
                          ChartRules::TYPE_PYRAMID            => Zurmo::t('Core', 'Pyramid'),
+                         ChartRules::TYPE_RADAR              => Zurmo::t('Core', 'Radar')
             );
         }
 

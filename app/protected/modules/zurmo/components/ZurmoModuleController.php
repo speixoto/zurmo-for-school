@@ -459,5 +459,113 @@
                 throw new FailedToSaveModelException();
             }
         }
+
+        /**
+         * Override to implement, it should return a json object with content and message to be used by
+         * @see DedupeRules::registerScriptForEditAndDetailsView
+         * @param string $attribute The attribute used to trigger the dedupe action
+         * @param string $value The value of the attribute for the new model
+         * @throws NotImplementedException
+         */
+        public function actionSearchForDedupes($attribute, $value)
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Process list view merge for models
+         */
+        public function processListViewMerge($modelClassname,
+                                             $mergedModelFormClassName,
+                                             $viewPrefix,
+                                             $pageView,
+                                             $redirectUrl)
+        {
+            $modelsList              = $this->getSelectedModelsListForMerge($modelClassname);
+            $model                   = new $mergedModelFormClassName('listViewMerge');
+            $model->selectedModels   = $modelsList;
+            $this->setPrimaryModel($model);
+            $redirectUrl             = Yii::app()->createUrl($redirectUrl);
+            if($model->validate())
+            {
+                $titleBarAndEditView = $this->makeListMergeView(
+                                            $this->attemptToSaveModelFromPost($model->primaryModel, null, $redirectUrl),
+                                            $viewPrefix, array_values($modelsList));
+                $view                = new $pageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+                echo $view->render();
+            }
+            else
+            {
+                $this->redirect($redirectUrl);
+            }
+        }
+
+        /**
+         * Sets primary model for the merge
+         * @param ModelsListDuplicateMergedModelForm $model
+         */
+        protected function setPrimaryModel($model)
+        {
+            assert('$model instanceof ModelsListDuplicateMergedModelForm');
+            $getData      = GetUtil::getData();
+            $modelsList   = $model->selectedModels;
+            if(isset($getData['primaryModelId']))
+            {
+                $model->primaryModel = $modelsList[$getData['primaryModelId']];
+            }
+            else
+            {
+                $models = array_values($modelsList);
+                if(!empty($models))
+                {
+                    $model->primaryModel = $models[0];
+                }
+            }
+        }
+
+        /**
+         * Processing before redirecting
+         * @param RedBeanModel $model
+         */
+        protected function beforeRedirect($model)
+        {
+            assert('$model instanceof RedBeanModel');
+            $modelClassName = get_class($model);
+            if($this->getAction()->id == 'listViewMerge')
+            {
+                $selectedModelsList = $this->getSelectedModelsListForMerge($modelClassName);
+                foreach($selectedModelsList as $selectedModel)
+                {
+                    if($selectedModel->id != $model->id)
+                    {
+                        ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($selectedModel);
+                        $selectedModel->delete();
+                    }
+                }
+            }
+        }
+
+        /**
+         * Gets selected models for merge
+         * @param string $modelClassName
+         * @return array
+         */
+        protected function getSelectedModelsListForMerge($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            $getData      = GetUtil::getData();
+            $modelsList = array();
+            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
+            {
+                $selectedIds = explode(',', $getData['selectedIds']);
+                foreach($selectedIds as $id)
+                {
+                    $model = static::getModelAndCatchNotFoundAndDisplayError($modelClassName, intval($id));
+                    $modelsList[$id] = $model;
+                }
+            }
+            return $modelsList;
+        }
     }
 ?>

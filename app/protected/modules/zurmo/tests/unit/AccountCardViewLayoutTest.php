@@ -34,38 +34,49 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
-     */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class AccountCardViewLayoutTest extends ZurmoBaseTest
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public static function setUpBeforeClass()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testRenderContent()
+        {
+            $account               = AccountTestHelper::createAccountByNameForOwner('testAccount', Yii::app()->user->userModel);
+            $accountCardViewLayout = new AccountCardViewLayout($account);
+            $this->assertContains(
+                    'testAccount',
+                    $accountCardViewLayout->renderContent());
+            $this->assertNotContains(
+                    '123-345-789',
+                    $accountCardViewLayout->renderContent());
+            $this->assertNotContains(
+                    'rua que sobe e que desce',
+                    $accountCardViewLayout->renderContent());
+
+            //Creating phone and address
+            $address                    = new Address();
+            $address->street1           = 'rua que sobe e que desce';
+            $account->officePhone       = '123-345-789';
+            $account->billingAddress    = $address;
+            $this->assertTrue($account->save());
+            $this->assertContains(
+                    'testAccount',
+                    $accountCardViewLayout->renderContent());
+            $this->assertContains(
+                    '123-345-789',
+                    $accountCardViewLayout->renderContent());
+            $this->assertContains(
+                    'rua que sobe e que desce',
+                    $accountCardViewLayout->renderContent());
         }
     }
 ?>

@@ -34,38 +34,35 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
+
     /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
+     * Abstract Layout for the business card view.
      */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    abstract class CardViewLayout
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        protected $model;
+
+        public function __construct($model)
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            assert('$model instanceof Item');
+            $this->model = $model;
+        }
+
+        public function renderContent()
+        {
+            $content  = $this->renderFrontOfCardContent();
+            $content .= $this->renderBackOfCardContent();
+            return $content;
+        }
+
+        protected function renderFrontOfCardContent()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderBackOfCardContent()
+        {
+            throw new NotImplementedException();
         }
     }
 ?>

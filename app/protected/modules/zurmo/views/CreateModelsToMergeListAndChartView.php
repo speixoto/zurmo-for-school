@@ -34,38 +34,32 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
-     */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class CreateModelsToMergeListAndChartView extends ModelsToMergeListAndChartView
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        const MAX_NUMBER_OF_MODELS_TO_SHOW = 10;
+
+        protected function onChangeScript()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');
+            $js  = "function()
+                    {
+                        var id = $(this).attr('id');
+                        var idArray = id.split('-');
+                        window.location.href = '{$url}' + '?id=' + idArray[1];
+                    }";
+            return $js;
+        }
+
+        protected function getViewStyle()
+        {
+            return 'style="display:none"';
+        }
+
+        protected function getLabelForDupes()
+        {
+            $label = Zurmo::t('ZurmoModule', 'Possible Matches');
+            $link  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#CreateModelsToMergeListAndChartView").hide()'));
+            return $label . $link;
         }
     }
 ?>

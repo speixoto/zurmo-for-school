@@ -42,22 +42,23 @@
             $user = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $user;
             $accountData = array(
-                'Samsonite',
-                'Zurmo',
-                'Auto',
-                'Build',
-                'Roger'
+                'Samsonite' => '123-456-789',
+                'Zurmo'     => '123-456-789',
+                'Auto'      => '123-456-789',
+                'Build'     => '123-456-789',
+                'Roger'     => '123-123-123',
             );
 
-            foreach ($accountData as $key => $name)
+            foreach ($accountData as $name => $phone)
             {
-                $account = new Account();
-                $account->name    = $name;
+                $account               = new Account();
+                $account->name         = $name;
                 $account->owner        = $user;
                 $account->primaryEmail = new Email();
                 $account->primaryEmail->emailAddress = strtolower($name) . '@zurmoland.com';
                 $account->secondaryEmail = new Email();
                 $account->secondaryEmail->emailAddress = 'a' . strtolower($name) . '@zurmoworld.com';
+                $account->officePhone = $phone;
                 assert($account->save()); // Not Coding Standard
             }
         }
@@ -74,6 +75,17 @@
 
             //search by secondaryEmail
             $data = AccountSearch::getAccountsByAnyEmailAddress('aroger@zurmoworld.com', 5);
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Roger', $data[0]->name);
+        }
+
+        public function testGetAccountsByAnyPhone()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $data = AccountSearch::getAccountsByAnyPhone('123-456-789');
+            $this->assertEquals(4, count($data));
+
+            $data = AccountSearch::getAccountsByAnyPhone('123-123-123');
             $this->assertEquals(1, count($data));
             $this->assertEquals('Roger', $data[0]->name);
         }

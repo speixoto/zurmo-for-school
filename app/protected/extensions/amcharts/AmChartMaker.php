@@ -357,6 +357,14 @@
                                             thousandsSeparator:'" . Yii::app()->locale->getNumberSymbol('group') . "'}");
                 $this->chartType = 'funnel';
             }
+            elseif ($this->type == ChartRules::TYPE_RADAR)
+            {
+                $this->chartType = 'radar';
+                $this->addValueAxisProperties('color',           "'#000000'");
+                $this->addValueAxisProperties('axisAlpha',       "'0.15'");
+                $this->addValueAxisProperties('dashLength',      "'3'");
+                $this->addValueAxisProperties('gridCount',       "'5'");
+            }
             else
             {
                 //Default graph
@@ -483,6 +491,15 @@
                    chart.titleField   = '{$this->categoryField}';
                    chart.valueField   = '". $this->valueField . "';";
             }
+            elseif ($this->chartType == 'radar')
+            {
+                $this->valueField = $this->serial[0]['valueField'];
+                $javascript      .="
+                   var chart           = new AmCharts.AmRadarChart();
+                   chart.dataProvider  = chartData_{$this->id};
+                   chart.categoryField = '{$this->categoryField}';
+                ";
+            }
             else
             {
                 //Init the AmSerialGraph
@@ -498,7 +515,7 @@
                 $javascript .= "chart." . $tag . " = " . $chartProperty . ";";
             }
 
-            if ($this->chartType == null)
+            if ($this->chartType == null || $this->chartType == 'radar')
             {
                 //Add serial as graph
                 foreach ($this->serial as $key => $serial)

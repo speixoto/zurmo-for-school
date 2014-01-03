@@ -33,39 +33,26 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Action bar view for the contacts search and list user interface. Adds button to subscribe contacts to marketingList
-     * queues.
-     */
-    class SecuredActionBarForContactsSearchAndListView extends SecuredActionBarForSearchAndListView
+     /**
+      * Summary view for the list merge of the models
+      */
+    class ListViewMergeSummaryView extends ModelsToMergeListAndChartView
     {
         /**
-         * @return array
+         * Calls on change of primary model.
+         * @see DupedSummaryView::registerScripts
+         * @return string
          */
-        public static function getDefaultMetadata()
+        protected function onChangeScript()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array(
-                                'type'            => 'MassSubscribeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            ),
-                            array(
-                                'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
-                                'listViewGridId'  => 'eval:$this->listViewGridId',
-                                'pageVarName'     => 'eval:$this->pageVarName'
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            $url = Yii::app()->request->getUrl();
+            $js  = "function()
+                    {
+                        var id = $(this).attr('id');
+                        var idArray = id.split('-');
+                        window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
+                    }";
+            return $js;
         }
     }
 ?>

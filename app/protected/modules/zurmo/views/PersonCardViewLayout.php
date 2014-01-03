@@ -38,21 +38,12 @@
     /**
      * Layout for the business card view for a person.
      */
-    class PersonCardViewLayout
+    class PersonCardViewLayout extends CardViewLayout
     {
-        protected $model;
-
         public function __construct($model)
         {
             assert('$model instanceof User || $model instanceof Person');
             $this->model = $model;
-        }
-
-        public function renderContent()
-        {
-            $content  = $this->renderFrontOfCardContent();
-            $content .= $this->renderBackOfCardContent();
-            return $content;
         }
 
         protected function renderFrontOfCardContent()

@@ -84,7 +84,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                    'SecuredActionBarForAccountsSearchAndListView');
                 $view = new AccountsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -368,5 +369,62 @@
                 Yii::app()->end(0, false);
             }
         }
+
+        /**
+         * Overriding to implement the dedupe action for new leads
+         */
+        public function actionSearchForDedupes($attribute, $value)
+        {
+            assert('is_string($attribute)');
+            assert('is_string($value)');
+            $matchedModels = array();
+            if ($attribute == 'primaryEmail')
+            {
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
+            }
+            elseif ($attribute == 'name')
+            {
+                $matchedModels  = Account::getByName($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
+            }
+            elseif ($attribute == 'officePhone')
+            {
+                $matchedModels  = AccountSearch::getAccountsByAnyPhone($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
+            }
+            if (count($matchedModels) > 0)
+            {
+                if (count($matchedModels) > CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW)
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                        'There are at least {n} possible matches.',
+                        CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW
+                    );
+                }
+                else
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                        'There is {n} possible match.|There are {n} possible matches.',
+                        count($matchedModels)
+                    );
+                }
+                $summaryView = new CreateModelsToMergeListAndChartView($this->id,
+                    $this->module->id,
+                    new Account(),
+                    $matchedModels);
+                $content = $summaryView->render();
+                echo json_encode(array('message' => $message, 'content' => $content));
+            }
+        }
+
+        /**
+         * List view merge for accounts
+         */
+        public function actionListViewMerge()
+        {
+            $this->processListViewMerge('Account',
+                                        'AccountsListDuplicateMergedModelForm',
+                                        'AccountsMerged', 'AccountsPageView',
+                                        '/accounts/default/list');
+        }
+
     }
 ?>

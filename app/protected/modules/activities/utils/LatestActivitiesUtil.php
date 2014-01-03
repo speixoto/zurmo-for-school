@@ -61,8 +61,8 @@
          * @return array $modelClassNamesAndSearchAttributeData
          */
         public static function getSearchAttributesDataByModelClassNamesAndRelatedItemIds($modelClassNames,
-                                                                                        $relationItemIds,
-                                                                                        $ownedByFilter)
+                                                                                         $relationItemIds,
+                                                                                         $ownedByFilter)
         {
             assert('is_array($modelClassNames)');
             assert('is_array($relationItemIds)');
@@ -141,6 +141,20 @@
                 }
             }
             return array_values($mashableModelClassNames);
+        }
+
+        public static function getCountByModelClassName($modelClassName, $relationItemIds, $ownedByFilter)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_array($relationItemIds)');
+            assert('$ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL ||
+                    $ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER ||
+                    is_int($ownedByFilter)');
+            $searchAttributeDataArray = static::getSearchAttributesDataByModelClassNamesAndRelatedItemIds(
+                                            array($modelClassName), $relationItemIds, $ownedByFilter);
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $where = ModelDataProviderUtil::makeWhere($modelClassName, $searchAttributeDataArray[0][$modelClassName], $joinTablesAdapter);
+            return RedBeanModel::getCount($joinTablesAdapter, $where, $modelClassName, true);
         }
     }
 ?>

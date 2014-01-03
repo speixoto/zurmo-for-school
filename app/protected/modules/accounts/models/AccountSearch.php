@@ -64,5 +64,27 @@
             $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
             return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
         }
+
+        /**
+         * For a given phone number, run search by phone numbers and retrieve account models.
+         * @param string $phoneNumber
+         * @param null|int $pageSize
+         */
+        public static function getAccountsByAnyPhone($phoneNumber, $pageSize = null)
+        {
+            assert('is_string($phoneNumber)');
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'officePhone',
+                    'operatorType'         => 'equals',
+                    'value'                => $phoneNumber,
+                ),
+            );
+            $metadata['structure'] = '1';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
+            return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
+        }
     }
 ?>

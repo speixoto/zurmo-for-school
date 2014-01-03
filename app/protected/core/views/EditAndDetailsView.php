@@ -105,6 +105,7 @@
             {
                 $class = '';
             }
+            $content .= $this->beforeRenderingFormLayout();
             $content .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
             $content .= $this->renderRightSideContent($form);
             $content .= '</div>';
@@ -226,8 +227,34 @@
             throw new NotImplementedException();
         }
 
+        protected function beforeRenderingFormLayout()
+        {
+            if ($dedupeRules = DedupeRulesFactory::createRulesByModel($this->model))
+            {
+                $dedupeViewClassName = $dedupeRules->getDedupeViewClassName();
+                $summaryView = new $dedupeViewClassName($this->controllerId,
+                    $this->moduleId,
+                    $this->model,
+                    array());
+                return $summaryView->render();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        
         protected function resolveAndRenderActionElementMenuForEdit()
         {
+        }
+
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+            if ($dedupeRules = DedupeRulesFactory::createRulesByModel($this->model))
+            {
+                $dedupeRules->registerScriptForEditAndDetailsView($element);
+            }
+            parent::resolveElementDuringFormLayoutRender($element);
         }
     }
 ?>
