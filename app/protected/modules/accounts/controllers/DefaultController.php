@@ -380,24 +380,33 @@
             $matchedModels = array();
             if ($attribute == 'primaryEmail')
             {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
             }
             elseif ($attribute == 'name')
             {
-                $matchedModels  = Account::getByName($value);
+                $matchedModels  = Account::getByName($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
             }
             elseif ($attribute == 'officePhone')
             {
-                $matchedModels  = AccountSearch::getAccountsByAnyPhone($value);
+                $matchedModels  = AccountSearch::getAccountsByAnyPhone($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
             }
             if (count($matchedModels) > 0)
             {
-                $message =  Zurmo::t('ZurmoModule',
-                    'There is {n} possible match.|There are {n} possible matches.',
-                    count($matchedModels)
-                );
-
-                $summaryView = new EditDupesSummaryView($this->id,
+                if (count($matchedModels) > CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW)
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                        'There are at least {n} possible matches.',
+                        CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW
+                    );
+                }
+                else
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                        'There is {n} possible match.|There are {n} possible matches.',
+                        count($matchedModels)
+                    );
+                }
+                $summaryView = new CreateModelsToMergeListAndChartView($this->id,
                     $this->module->id,
                     new Account(),
                     $matchedModels);

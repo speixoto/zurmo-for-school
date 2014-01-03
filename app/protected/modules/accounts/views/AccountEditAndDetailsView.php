@@ -181,30 +181,5 @@
         {
             return AccountDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel());
         }
-
-        protected function beforeRenderingFormLayout()
-        {
-            $dedupeViewClassName = static::getDedupeViewClassName();
-            $summaryView = new $dedupeViewClassName($this->controllerId,
-                $this->moduleId,
-                $this->model,
-                array());
-            return $summaryView->render();
-        }
-
-        protected static function getDedupeViewClassName()
-        {
-            return 'EditDupesSummaryView';
-        }
-
-        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
-        {
-            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
-            if ($this->model->id < 0 && ($elementInformation['attributeName'] == 'officePhone'
-                    || $elementInformation['attributeName'] == 'name'))
-            {
-                $elementInformation['dedupeViewId'] = static::getDedupeViewClassName();
-            }
-        }
     }
 ?>

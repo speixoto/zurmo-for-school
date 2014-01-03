@@ -37,7 +37,7 @@
     /**
      * Class DupesSummaryView specific view to show the details view os all possible dupes for model
      */
-    abstract class DupesSummaryView extends SecuredDetailsView
+    abstract class ModelsToMergeListAndChartView extends SecuredDetailsView
     {
         const MAX_NUMBER_OF_MODELS_TO_SHOW = 0;
 

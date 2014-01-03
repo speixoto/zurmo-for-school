@@ -461,7 +461,8 @@
         }
 
         /**
-         * Override to implement
+         * Override to implement, it should return a json object with content and message to be used by
+         * @see DedupeRules::registerScriptForEditAndDetailsView
          * @param string $attribute The attribute used to trigger the dedupe action
          * @param string $value The value of the attribute for the new model
          * @throws NotImplementedException

@@ -33,26 +33,27 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-     /**
-      * Summary view for the contacts selected for the merge
-      */
-    class ContactListViewMergeSummaryView extends ModelsToMergeListAndChartView
+
+    /**
+     * Defines the dedupe rules when creating a new Account
+     */
+    class AccountDedupeRules extends DedupeRules
     {
         /**
-         * Calls on change of primary model.
-         * @see DupedSummaryView::registerScripts
-         * @return string
+         * @see DedupeRules
          */
-        protected function onChangeScript()
+        protected function getDedupeAttributesAndRelatedAttributesMappedArray()
         {
-            $url = Yii::app()->request->getUrl();
-            $js  = "function()
-                    {
-                        var id = $(this).attr('id');
-                        var idArray = id.split('-');
-                        window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
-                    }";
-            return $js;
+            return array('name' => null,
+                         'officePhone' => null);
+        }
+
+        /**
+         * @see DedupeRules
+         */
+        protected function getDedupeElements()
+        {
+            return array('Text', 'Phone');
         }
     }
 ?>

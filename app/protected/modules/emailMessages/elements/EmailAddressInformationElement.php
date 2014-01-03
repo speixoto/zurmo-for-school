@@ -146,11 +146,6 @@
             return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
         }
 
-        protected function getInputIdForDedupe()
-        {
-            return $this->getEditableInputId($this->attribute, 'emailAddress');
-        }
-
         /**
          * Gets related model attribute names
          * @return array

@@ -33,26 +33,33 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-     /**
-      * Summary view for the contacts selected for the merge
-      */
-    class ContactListViewMergeSummaryView extends ModelsToMergeListAndChartView
+
+    class CreateModelsToMergeListAndChartView extends ModelsToMergeListAndChartView
     {
-        /**
-         * Calls on change of primary model.
-         * @see DupedSummaryView::registerScripts
-         * @return string
-         */
+        const MAX_NUMBER_OF_MODELS_TO_SHOW = 10;
+
         protected function onChangeScript()
         {
-            $url = Yii::app()->request->getUrl();
+            $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');
             $js  = "function()
                     {
                         var id = $(this).attr('id');
                         var idArray = id.split('-');
-                        window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
+                        window.location.href = '{$url}' + '?id=' + idArray[1];
                     }";
             return $js;
+        }
+
+        protected function getViewStyle()
+        {
+            return 'style="display:none"';
+        }
+
+        protected function getLabelForDupes()
+        {
+            $label = Zurmo::t('ZurmoModule', 'Possible Matches');
+            $link  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#CreateModelsToMergeListAndChartView").hide()'));
+            return $label . $link;
         }
     }
 ?>

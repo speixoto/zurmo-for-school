@@ -488,24 +488,33 @@
             $matchedModels = array();
             if ($attribute == 'primaryEmail' || $attribute == 'secondaryEmail')
             {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
+                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
             }
             elseif ($attribute == 'lastName')
             {
-                $matchedModels  = ContactSearch::getContactsByPartialFullName($value);
+                $matchedModels  = ContactSearch::getContactsByPartialFullName($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
             }
             elseif ($attribute == 'mobilePhone' || $attribute == 'officePhone')
             {
-                $matchedModels  = ContactSearch::getContactsByAnyPhone($value);
+                $matchedModels  = ContactSearch::getContactsByAnyPhone($value, CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW + 1);
             }
             if (count($matchedModels) > 0)
             {
-                $message =  Zurmo::t('ZurmoModule',
-                    'There is {n} possible match.|There are {n} possible matches.',
-                    count($matchedModels)
-                );
-
-                $summaryView = new EditDupesSummaryView($this->id,
+                if (count($matchedModels) > CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW)
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                        'There are at least {n} possible matches.',
+                        CreateModelsToMergeListAndChartView::MAX_NUMBER_OF_MODELS_TO_SHOW
+                    );
+                }
+                else
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                        'There is {n} possible match.|There are {n} possible matches.',
+                        count($matchedModels)
+                    );
+                }
+                $summaryView = new CreateModelsToMergeListAndChartView($this->id,
                     $this->module->id,
                     new Contact(),
                     $matchedModels);

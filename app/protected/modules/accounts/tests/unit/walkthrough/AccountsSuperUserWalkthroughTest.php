@@ -678,7 +678,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDedupes');
             $object = json_decode($content);
             $this->assertEquals  ('There is 1 possible match.', $object->message);
-            $this->assertContains('EditDupesSummaryView',       $object->content);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
             //Test search by officePhone
             $account->officePhone = '123456789';
             $this->assertTrue($account->save());
@@ -688,7 +688,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDedupes');
             $object = json_decode($content);
             $this->assertEquals  ('There is 1 possible match.', $object->message);
-            $this->assertContains('EditDupesSummaryView',       $object->content);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
             //Test search by email
             $account->primaryEmail->emailAddress = 'a@a.a';
             $this->assertTrue($account->save());
@@ -698,7 +698,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDedupes');
             $object = json_decode($content);
             $this->assertEquals  ('There is 1 possible match.', $object->message);
-            $this->assertContains('EditDupesSummaryView',       $object->content);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
         }
     }
 ?>

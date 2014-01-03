@@ -34,32 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EditDupesSummaryView extends DupesSummaryView
+    /**
+     * Defines the dedupe rules when creating a new Contact
+     */
+    class ContactDedupeRules extends DedupeRules
     {
-        const MAX_NUMBER_OF_MODELS_TO_SHOW = 10;
-
-        protected function onChangeScript()
+        /**
+         * @see DedupeRules
+         */
+        protected function getDedupeAttributesAndRelatedAttributesMappedArray()
         {
-            $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');
-            $js  = "function()
-                    {
-                        var id = $(this).attr('id');
-                        var idArray = id.split('-');
-                        window.location.href = '{$url}' + '?id=' + idArray[1];
-                    }";
-            return $js;
+            return array('lastName' => null,
+                         'mobilePhone' => null,
+                         'officePhone' => null,
+                         'primaryEmail' => 'emailAddress',
+                         'secondaryEmail' => 'emailAddress');
         }
 
-        protected function getViewStyle()
+        /**
+         * @see DedupeRules
+         */
+        protected function getDedupeElements()
         {
-            return 'style="display:none"';
-        }
-
-        protected function getLabelForDupes()
-        {
-            $label = Zurmo::t('ZurmoModule', 'Possible Matches');
-            $link  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#EditDupesSummaryView").hide()'));
-            return $label . $link;
+            return array('TitleFullName', 'Phone', 'EmailAddressInformation');
         }
     }
 ?>

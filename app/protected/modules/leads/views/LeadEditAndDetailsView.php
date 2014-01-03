@@ -230,32 +230,5 @@
         {
             return ContactDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->getModel(), null);
         }
-
-        protected function beforeRenderingFormLayout()
-        {
-            $dedupeViewClassName = static::getDedupeViewClassName();
-            $summaryView = new $dedupeViewClassName($this->controllerId,
-                $this->moduleId,
-                $this->model,
-                array());
-            return $summaryView->render();
-        }
-
-        protected static function getDedupeViewClassName()
-        {
-            return 'EditDupesSummaryView';
-        }
-
-        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
-        {
-            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
-            if ($this->model->id < 0 && ($elementInformation['type'] == 'TitleFullName'
-                    || $elementInformation['attributeName'] == 'officePhone'
-                    || $elementInformation['attributeName'] == 'mobilePhone'
-                    || $elementInformation['type'] == 'EmailAddressInformation'))
-            {
-                $elementInformation['dedupeViewId'] = static::getDedupeViewClassName();
-            }
-        }
     }
 ?>

@@ -33,26 +33,21 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
-     /**
-      * Summary view for the contacts selected for the merge
-      */
-    class ContactListViewMergeSummaryView extends ModelsToMergeListAndChartView
+
+    /**
+     * Class DedupeRulesFactory
+     * Helper class to make DesignerRules objects
+     */
+    class DedupeRulesFactory
     {
-        /**
-         * Calls on change of primary model.
-         * @see DupedSummaryView::registerScripts
-         * @return string
-         */
-        protected function onChangeScript()
+        public static function createRulesByModel(RedBeanModel $model)
         {
-            $url = Yii::app()->request->getUrl();
-            $js  = "function()
-                    {
-                        var id = $(this).attr('id');
-                        var idArray = id.split('-');
-                        window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
-                    }";
-            return $js;
+            if (in_array(get_class($model), array('Contact', 'Lead', 'Account')))
+            {
+                $dedupeRulesClassName = get_class($model) . 'DedupeRules';
+                return new $dedupeRulesClassName($model);
+            }
+            return false;
         }
     }
 ?>
