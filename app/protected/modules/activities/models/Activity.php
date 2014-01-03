@@ -103,5 +103,35 @@
         {
             return false;
         }
+
+        /**
+         * Get by activity items casted down
+         * @param int $relationItemId
+         * @return integer
+         */
+        public static function getByActivityItemsCastedDown($relationItemId)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'activityItems',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => intval($relationItemId),
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            if (count($models) == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return $models;
+            }
+        }
     }
 ?>

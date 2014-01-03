@@ -709,5 +709,19 @@
                 $relationLinkName  = null;
             }
         }
+
+        /**
+         * @param string $relationName
+         * @return bool
+         */
+        public static function isRelationTypeAManyManyVariant($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            if (static::getRelationType($relationName) == RedBeanModel::MANY_MANY)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 ?>
