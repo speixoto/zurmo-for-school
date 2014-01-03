@@ -71,7 +71,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Core', 'List View Merge');
+            return Zurmo::t('Core', 'Merge');
         }
 
         protected function getMenuItems()
@@ -81,6 +81,11 @@
                         'url'     => '#',
                         'itemOptions' => array( 'id'   => $this->selectedMenuItemName)),
                         );
+        }
+
+        protected function getMinimumNumberOfSelectedElements()
+        {
+            return 2;
         }
     }
 ?>
