@@ -95,19 +95,12 @@
         }
 
         /**
-         * Get path where css files will be saved
-         * @return null || string
+         * Get url where images files are stored
+         * @return string
          */
-        protected function getCompiledImagesPath()
+        protected function getCompiledImagesUrl()
         {
-            if (isset($this->compiledImagesPath) && !empty($this->compiledImagesPath))
-            {
-                return $this->compiledImagesPath;
-            }
-            else
-            {
-                return null;
-            }
+            return Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name . '/images';
         }
 
         /**
@@ -211,7 +204,7 @@
                 "z_themeColor2"       => $z_themeColor2, //secondary color used for hovers and emphasizing (green in the original theme)
                 "z_themeColorBtn"     => $z_themeColorBtn, //<-- this is suggested so buttons would always be green and not maybe red/purple etc.
                 "z_themeColorHeader"  => $z_themeColorHeader,  //used to create the top dark bar gradient (top)
-                "z_path"              => $this->getCompiledImagesPath()
+                "z_path"              => $this->getCompiledImagesUrl()
                 //"z_themeColorHeader2" => "#333535", //used to create the top dark bar gradient (bottom)
             ));
             return $lessCompiler;
@@ -258,6 +251,8 @@
          */
         public function compileCustom()
         {
+            echo $this->getCompiledImagesUrl();
+            exit();
             $customThemeColorNameAndColors = Yii::app()->themeManager->getCustomThemeColorNameAndColors();
             if (isset($this->mainLessFileToCompile) && !empty($customThemeColorNameAndColors))
             {

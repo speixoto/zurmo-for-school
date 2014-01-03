@@ -485,42 +485,9 @@
         {
             assert('is_string($attribute)');
             assert('is_string($value)');
-            $matchedModels = array();
-            if ($attribute == 'primaryEmail' || $attribute == 'secondaryEmail')
-            {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
-            }
-            elseif ($attribute == 'lastName')
-            {
-                $matchedModels  = ContactSearch::getContactsByPartialFullName($value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
-            }
-            elseif ($attribute == 'mobilePhone' || $attribute == 'officePhone')
-            {
-                $matchedModels  = ContactSearch::getContactsByAnyPhone($value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
-            }
-            if (count($matchedModels) > 0)
-            {
-                if (count($matchedModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
-                {
-                    $message =  Zurmo::t('ZurmoModule',
-                        'There are at least {n} possible matches.',
-                        ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT
-                    );
-                }
-                else
-                {
-                    $message =  Zurmo::t('ZurmoModule',
-                        'There is {n} possible match.|There are {n} possible matches.',
-                        count($matchedModels)
-                    );
-                }
-                $summaryView = new CreateModelsToMergeListAndChartView($this->id,
-                    $this->module->id,
-                    new Contact(),
-                    $matchedModels);
-                $content = $summaryView->render();
-                echo json_encode(array('message' => $message, 'content' => $content));
-            }
+            $model = new Contact();
+            $depudeRules = DedupeRulesFactory::createRulesByModel($model);
+            echo $depudeRules->searchForDuplicateModelsAndRenderResultsObject($attribute, $value, $this->id, $this->module->id);
         }
 
         /**

@@ -58,5 +58,19 @@
         {
             return array('TitleFullName', 'Phone', 'EmailAddressInformation');
         }
+
+        /**
+         * @see DedupeRules
+         */
+        protected function getDedupeAttributesAndSearchForDuplicateModelsCallbackMappedArray()
+        {
+            return array(
+                'lastName'          => 'ContactSearch::getContactsByPartialFullName',
+                'mobilePhone'       => 'ContactSearch::getContactsByAnyPhone',
+                'officePhone'       => 'ContactSearch::getContactsByAnyPhone',
+                'primaryEmail'      => 'ContactSearch::getContactsByAnyEmailAddress',
+                'secondaryEmail'    => 'ContactSearch::getContactsByAnyEmailAddress'
+            );
+        }
     }
 ?>
