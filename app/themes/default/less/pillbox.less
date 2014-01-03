@@ -61,7 +61,7 @@
 	.radius(4px);
 	margin:0 0 30px 0;
 	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
-	background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+	background:url(@{path}view-toolbar-gradient.png) left bottom repeat-x;
 	display: inline-block;
 	+ .pillbox{
 		float: right;
@@ -116,7 +116,7 @@
 	.button-actions{
 		&:before{
 			right:4px;
-			background:url(../images/tip.png) right bottom no-repeat; //another option is an img with 4px trasnparent padding on the right just for this class
+			background:url(@{path}tip.png) right bottom no-repeat; //another option is an img with 4px trasnparent padding on the right just for this class
 		}
 	}
 }
@@ -190,7 +190,7 @@
 			right:-2px;
 			width:13px;
 			height:8px;
-			background: url(../images/tip.png) right bottom no-repeat;
+			background: url(@{path}tip.png) right bottom no-repeat;
 		}
 	}
 }
@@ -295,7 +295,7 @@
 			.radius(inherit);
 		}
 		a:hover{
-			background: url(../images/dropdown-general.png) left top no-repeat !important;
+			background: url(@{path}dropdown-general.png) left top no-repeat !important;
 		}
 	}
 }
