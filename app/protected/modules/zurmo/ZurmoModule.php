@@ -47,6 +47,7 @@
         const RIGHT_ACCESS_GLOBAL_CONFIGURATION   = 'Access Global Configuration';
         const RIGHT_ACCESS_CURRENCY_CONFIGURATION = 'Access Currency Configuration';
         const RIGHT_BULK_DELETE                   = 'Mass Delete';
+        const RIGHT_BULK_MERGE                    = 'Mass Merge';
 
         const AUDIT_EVENT_ITEM_CREATED            = 'Item Created';
         const AUDIT_EVENT_ITEM_MODIFIED           = 'Item Modified';
