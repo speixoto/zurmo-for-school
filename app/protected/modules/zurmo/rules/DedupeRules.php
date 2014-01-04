@@ -237,7 +237,7 @@
                 $viewClassName = $this->getDedupeViewClassName();
                 $summaryView = new $viewClassName($controllerId, $moduleId, $this->model, $matchedModels);
                 $content = $summaryView->render();
-                return json_encode(array('message' => $message, 'content' => $content));
+                return CJSON::encode(array('message' => $message, 'content' => $content));
             }
         }
 
