@@ -41,8 +41,6 @@
      */
     abstract class DedupeRules
     {
-        //TODO: @sergio: Add tests
-
         protected $model;
 
         public function __construct(RedBeanModel $model)
@@ -212,11 +210,15 @@
             return true;
         }
 
-        public function searchForDuplicateModelsAndRenderResultsObject($attribute, $value, $controllerId, $moduleId)
+        public function searchForDuplicateModels($attribute, $value)
         {
             assert('is_string($attribute) && $attribute != null');
             assert('is_string($value)');
             $callback      = $this->getCallbackToSearchForDuplicateModelsByAttribute($attribute);
+            if ($callback == null)
+            {
+                throw new NotImplementedException('There is no search callback defined for attribute: ' . $attribute);
+            }
             $matchedModels = call_user_func($callback, $value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
             if (count($matchedModels) > 0)
             {
@@ -234,17 +236,17 @@
                                          count($matchedModels)
                     );
                 }
-                $viewClassName = $this->getDedupeViewClassName();
-                $summaryView = new $viewClassName($controllerId, $moduleId, $this->model, $matchedModels);
-                $content = $summaryView->render();
-                return CJSON::encode(array('message' => $message, 'content' => $content));
+                return array('message' => $message, 'matchedModels' => $matchedModels);
             }
         }
 
         protected function getCallbackToSearchForDuplicateModelsByAttribute($attribute)
         {
             $callbackMappedArray = $this->getDedupeAttributesAndSearchForDuplicateModelsCallbackMappedArray();
-            return $callbackMappedArray[$attribute];
+            if (array_key_exists($attribute, $callbackMappedArray))
+            {
+                return $callbackMappedArray[$attribute];
+            }
         }
     }
 ?>

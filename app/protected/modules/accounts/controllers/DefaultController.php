@@ -377,9 +377,17 @@
         {
             assert('is_string($attribute)');
             assert('is_string($value)');
-            $model = new Account();
-            $depudeRules = DedupeRulesFactory::createRulesByModel($model);
-            echo $depudeRules->searchForDuplicateModelsAndRenderResultsObject($attribute, $value, $this->id, $this->module->id);
+            $model          = new Account();
+            $depudeRules    = DedupeRulesFactory::createRulesByModel($model);
+            $viewClassName  = $depudeRules->getDedupeViewClassName();
+            $searchResult   = $depudeRules->searchForDuplicateModels($attribute, $value);
+            if ($searchResult != null)
+            {
+                $summaryView    = new $viewClassName($this->id, $this->module->id, $model, $searchResult['matchedModels']);
+                $content        = $summaryView->render();
+                $message        = $searchResult['message'];
+                echo CJSON::encode(array('content' => $content, 'message' => $message));
+            }
         }
 
         /**

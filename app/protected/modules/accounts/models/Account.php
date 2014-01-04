@@ -34,8 +34,8 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class Account extends OwnedSecurableItem implements StarredInterface
-    {
+class Account extends OwnedSecurableItem implements StarredInterface
+{
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
