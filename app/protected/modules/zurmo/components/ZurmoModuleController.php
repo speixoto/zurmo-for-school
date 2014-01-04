@@ -507,8 +507,6 @@
          */
         protected function beforeRedirect($model)
         {
-            assert('$model instanceof RedBeanModel');
-            $modelClassName = get_class($model);
             if($this->getAction()->id == 'listViewMerge')
             {
                 ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model);

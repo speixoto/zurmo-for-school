@@ -664,8 +664,8 @@
         public function testSuperUserSearchForDuplicateModelsAction()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->setGetArray(array('attribute' => 'dumbAttribute',
-                                     'value'     => 'dumbValue',
+            $this->setGetArray(array('attribute' => 'name',
+                                     'value'     => 'fakeValue',
             ));
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels', true);
 
