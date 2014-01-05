@@ -34,22 +34,34 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ContactModelAttributeAndElementDataToMergeItemTest extends ModelAttributeAndElementDataToMergeItemTest
+    class LeadModelAttributeAndElementDataToMergeItemTest extends ModelAttributeAndElementDataToMergeItemTest
     {
         public $attributesToBeTested    = array('title'           => 'DropDown',
                                                 'firstName'       => 'Text',
                                                 'lastName'        => 'Text',
-                                                'null'            => 'ContactStateDropDown',
+                                                'null'            => 'LeadStateDropDown',
+                                                'jobTitle'        => 'Text',
+                                                'companyName'     => 'Text',
+                                                'department'      => 'Text',
+                                                'officePhone'     => 'Phone',
+                                                'source'          => 'DropDown',
+                                                'mobilePhone'     => 'Phone',
+                                                'officeFax'       => 'Phone',
+                                                'industry'        => 'DropDown',
+                                                'website'         => 'Url',
                                                 'primaryEmail'    => 'EmailAddressInformation',
                                                 'secondaryEmail'  => 'EmailAddressInformation',
                                                 'primaryAddress'  => 'Address',
-                                                'secondaryAddress'=> 'Address',
-                                                'account'         => 'Account'
+                                                'secondaryAddress'=> 'Address'
                                           );
 
-        public $nonDerivedAttributes    = array('firstName', 'lastName');
+        public $nonDerivedAttributes    = array('firstName', 'lastName',
+                                                'jobTitle', 'companyName',
+                                                'department', 'website',
+                                                'officePhone', 'mobilePhone',
+                                                'officeFax');
 
-        public $dropdownAttributes      = array('title');
+        public $dropdownAttributes      = array('title', 'industry', 'source');
 
         public $multiAttributeElements  = array('primaryEmail'      => 'EmailAddressInformation',
                                                 'secondaryEmail'    => 'EmailAddressInformation',
@@ -60,15 +72,21 @@
 
         public $modelClass = 'Contact';
 
-        public $derivedElementInterfaceDropdownAttributesElements = array('ContactStateDropDown');
-
-        public $modelElements = array('account');
+        public $derivedElementInterfaceDropdownAttributesElements = array('LeadStateDropDown');
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             ContactsModule::loadStartingData();
             UserTestHelper::createBasicUser('Steven');
+            $sourceValues = array(
+                'Word of Mouth',
+                'Outbound',
+                'Trade Show',
+            );
+            $sourceFieldData = CustomFieldData::getByName('LeadSources');
+            $sourceFieldData->serializedData = serialize($sourceValues);
+            $sourceFieldData->save();
         }
 
         protected function setFirstModel()
@@ -78,6 +96,7 @@
             $account->name          = 'Some Account';
             $account->owner         = $user;
             $this->assertTrue($account->save());
+            $industryValues         = $this->getIndustryValues();
             $contactStates          = ContactState::getByName('Qualified');
             $contact                = new Contact();
             $dateTime               = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -89,12 +108,15 @@
             $contact->jobTitle      = 'Superhero';
             $contact->source->value = 'Outbound';
             $contact->account       = $account;
+            $contact->companyName   = 'Test Company';
             $contact->description   = 'Some Description';
             $contact->department    = 'Red Tape';
             $contact->officePhone   = '1234567890';
             $contact->mobilePhone   = '0987654321';
             $contact->officeFax     = '1222222222';
             $contact->state         = $contactStates[0];
+            $contact->website       = 'http://yahoo.com';
+            $contact->industry->value = $industryValues[0];
             $contact->primaryEmail->emailAddress   = 'thejman@zurmoinc.com';
             $contact->primaryEmail->optOut         = 0;
             $contact->primaryEmail->isInvalid      = 0;
@@ -124,11 +146,22 @@
             $account->name          = 'New Account';
             $account->owner         = $user;
             $this->assertTrue($account->save());
+            $industryValues          = $this->getIndustryValues();
             $contactCustomerStates   = ContactState::getByName('Customer');
             $contact2                = ContactTestHelper::createContactByNameForOwner('shozin', Yii::app()->user->userModel);
             $contact2->title->value  = 'Mrs.';
             $contact2->state         = $contactCustomerStates[0];
-            $contact2->account       = $account;
+            $contact2->jobTitle       = 'Myhero';
+            $contact2->source->value  = 'Trade Show';
+            $contact2->companyName    = 'Test Company1';
+            $contact2->account        = $account;
+            $contact2->description    = 'Hey Description';
+            $contact2->industry->value= $industryValues[1];
+            $contact2->department     = 'Black Tape';
+            $contact2->officePhone    = '1234567899';
+            $contact2->mobilePhone    = '0987654123';
+            $contact2->officeFax      = '1222222444';
+            $contact2->website        = 'http://yahoo1.com';
             $contact2->primaryEmail->emailAddress   = 'test@yahoo.com';
             $contact2->primaryEmail->optOut         = 0;
             $contact2->primaryEmail->isInvalid      = 0;

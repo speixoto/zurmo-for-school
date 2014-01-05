@@ -52,6 +52,8 @@
 
         public $derivedElementInterfaceDropdownAttributesElements = array();
 
+        public $modelElements = array();
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -68,6 +70,7 @@
             $this->verifyDropdownAttributes($content);
             $this->verifyMultiAttributeElements($content);
             $this->verifyDerivedDropdownAttributeElements($content);
+            $this->verifyModelElements($content);
         }
 
         protected function getEscapedAttributes()
@@ -220,6 +223,47 @@
         protected function setSecondModel()
         {
 
+        }
+
+        protected function getIndustryValues()
+        {
+            $values = array(
+                'Automotive',
+                'Adult Entertainment',
+                'Financial Services',
+                'Mercenaries & Armaments',
+            );
+            $industryFieldData = CustomFieldData::getByName('Industries');
+            $industryFieldData->serializedData = serialize($values);
+            $this->assertTrue($industryFieldData->save());
+            return $values;
+        }
+
+        protected function verifyModelElements($content)
+        {
+            $model  = $this->selectedModels[0];
+            $model1 = $this->selectedModels[1];
+            $modelElements = $this->modelElements;
+            foreach($modelElements as $modelElement)
+            {
+                $matcherElement1 = array(
+                    'tag' => 'a',
+                    'attributes' => array('data-id'         => $this->modelClass . '_' . $modelElement . '_name',
+                                          'data-value'      => $model->$modelElement->name,
+                                          'data-hiddenid'   => $this->modelClass . '_' . $modelElement . '_id',
+                                          'data-hiddenvalue'=> $model->$modelElement->id)
+            );
+                $matcherElement2 = array(
+                    'tag' => 'a',
+                    'attributes' => array('data-id'         => $this->modelClass . '_' . $modelElement . '_name',
+                                          'data-value'      => $model1->$modelElement->name,
+                                          'data-hiddenid'   => $this->modelClass . '_' . $modelElement . '_id',
+                                          'data-hiddenvalue'=> $model1->$modelElement->id)
+                );
+
+                $this->assertTag($matcherElement1, $content);
+                $this->assertTag($matcherElement2, $content);
+            }
         }
     }
 ?>
