@@ -61,7 +61,6 @@
             $theme        = 'themes/' . Yii::app()->theme->name;
             $cs = Yii::app()->getClientScript();
             $absoluteBaseUrl    = Yii::app()->getBaseUrl(true);
-            $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/keyframes.css');
 
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
