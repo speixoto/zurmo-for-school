@@ -62,6 +62,7 @@
             $labels[self::RIGHT_ACCESS_GLOBAL_CONFIGURATION]    = Zurmo::t('ZurmoModule', 'Access Global Configuration');
             $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
             $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('Core', 'Mass Delete');
+            $labels[self::RIGHT_BULK_MERGE]                     = Zurmo::t('Core', 'Mass Merge');
             return $labels;
         }
 
