@@ -86,5 +86,27 @@
             $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
             return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
         }
+
+        /**
+         * For a given partialName, run search by partial name and retrieve account models.
+         * @param string $partialName
+         * @param null|int $pageSize
+         */
+        public static function getAccountsByPartialName($partialName, $pageSize = null)
+        {
+            assert('is_string($partialName)');
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'name',
+                    'operatorType'         => 'contains',
+                    'value'                => $partialName,
+                ),
+            );
+            $metadata['structure'] = '1';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
+            return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
+        }
     }
 ?>

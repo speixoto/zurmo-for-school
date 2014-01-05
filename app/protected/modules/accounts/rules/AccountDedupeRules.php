@@ -62,7 +62,7 @@
         protected function getDedupeAttributesAndSearchForDuplicateModelsCallbackMappedArray()
         {
             return array(
-                'name'          => 'Account::getByName',
+                'name'          => 'AccountSearch::getAccountsByPartialName',
                 'officePhone'   => 'AccountSearch::getAccountsByAnyPhone',
                 'primaryEmail'  => 'AccountSearch::getAccountsByAnyEmailAddress',
             );

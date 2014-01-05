@@ -89,5 +89,20 @@
             $this->assertEquals(1, count($data));
             $this->assertEquals('Roger', $data[0]->name);
         }
+
+        public function testGetAccountsByPartialName()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $data = AccountSearch::getAccountsByPartialName('zurmo');
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Zurmo', $data[0]->name);
+
+            $data = AccountSearch::getAccountsByPartialName('sonite');
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Samsonite', $data[0]->name);
+
+            $data = AccountSearch::getAccountsByPartialName('u');
+            $this->assertEquals(3, count($data));
+        }
     }
 ?>
