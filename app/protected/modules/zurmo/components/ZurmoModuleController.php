@@ -481,10 +481,11 @@
                                              $pageView,
                                              $redirectUrl)
         {
-            $modelsList              = ListViewMergeUtil::getSelectedModelsListForMerge($modelClassName);
+            $getData                 = GetUtil::getData();
+            $modelsList              = ListViewMergeUtil::getSelectedModelsListForMerge($modelClassName, $getData);
             $model                   = new $mergedModelFormClassName('listViewMerge');
             $model->selectedModels   = $modelsList;
-            ListViewMergeUtil::setPrimaryModelForListViewMerge($model);
+            ListViewMergeUtil::setPrimaryModelForListViewMerge($model, $getData);
             $redirectUrl             = Yii::app()->createUrl($redirectUrl);
             if($model->validate())
             {
@@ -508,10 +509,10 @@
         protected function beforeRedirect($model)
         {
             assert('$model instanceof RedBeanModel');
-            $modelClassName = get_class($model);
+            $getData = GetUtil::getData();
             if($this->getAction()->id == 'listViewMerge')
             {
-                ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model);
+                ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model, $getData);
             }
         }
     }
