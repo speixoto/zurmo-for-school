@@ -111,8 +111,9 @@
                                         {
                                             $('#" . $dedupeViewId . "').replaceWith(returnObj.content);
                                             $('#FlashMessageBar').jnotifyAddMessage({
-                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show(); return false;\">' + returnObj.message + '</a>',
+                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>',
                                                 permanent: true,
+                                                clickOverlay : true,
                                                 showIcon: false,
                                             })
                                         }
