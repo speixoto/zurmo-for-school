@@ -19,7 +19,7 @@
 <!--Go to contacts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td>index.php/contacts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -140,6 +140,21 @@
 	<td>assertVisible</td>
 	<td>//div[@id='zurmoView']/div/table/tbody/tr[2]/td</td>
 	<td>Qualified</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 </tbody></table>
 </body>
