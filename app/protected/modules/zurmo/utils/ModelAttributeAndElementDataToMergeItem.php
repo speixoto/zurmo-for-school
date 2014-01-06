@@ -191,11 +191,11 @@
                 $inputIds = $this->getAttributeInputIdsForOnClick();
                 if($this->model->id == $this->primaryModel->id)
                 {
-                    $style = 'border: 2px dotted #FF0000;margin-left:4px;';
+                    $style = '';// 'border: 2px dotted #FF0000;margin-left:4px;';
                 }
                 else
                 {
-                    $style = 'border: 2px dotted #66367b;margin-left:4px;';
+                    $style = '';// 'border: 2px dotted #66367b;margin-left:4px;';
                 }
                 foreach($inputIds as $inputId)
                 {
@@ -229,25 +229,27 @@
                         if($this->element instanceof ModelElement)
                         {
                             $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('style' => $style,
+                                                                'data-color' => '#ff0000',
                                                                 'data-id'           => $inputId,
                                                                 'data-value'        => $inputValue,
                                                                 'data-hiddenid'     => $hiddenInputId,
                                                                 'data-hiddenvalue'  => $hiddenInputValue,
-                                                                'class'             => 'attributePreElementContentModelElement'));
+                                                                'class'             => 'possible attributePreElementContentModelElement'));
                         }
                         else
                         {
                             $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('style' => $style,
+                                                                'data-color' => '#000fff',
                                                                 'data-id'     => $inputId,
                                                                 'data-value'  => $inputValue,
-                                                                'class'       => 'attributePreElementContent'));
+                                                                'class'       => 'possible attributePreElementContent'));
                         }
                     }
                 }
             }
             if($decoratedContent == null)
             {
-                $decoratedContent = Zurmo::t('Core', '(None)');
+                $decoratedContent = ZurmoHtml::tag('span', array(), Zurmo::t('Core', '(None)'));
             }
             return $decoratedContent;
         }

@@ -13,11 +13,12 @@
 .chosen-entries{
 	top: 0;
 	right: 0;
-	padding: 15px;
+	//padding: 15px;
 	position: relative;
 	margin-bottom: 30px;
 	border-bottom: 1px solid #dfdfdf;
 	height: 229px;
+	.unstyle-panel();
 }
 
 .chosen-entries label{
@@ -28,6 +29,27 @@
 	position: relative;
 	left: -15px;
 }
+
+.possible-matches{
+	width: 25%;
+	display: block;
+	float: left;
+	list-style: none;
+	li{
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+	input{
+		margin-right: 10px;
+	}
+}
+
+.cards{
+	width: 75%;
+	display: block;
+	float: left;
+}
+
 
 #card{
 	position: absolute;
@@ -87,17 +109,28 @@
 	text-indent: 1px;
 	line-height: 1;
 	width: 100%;
-	margin:-3px 0 5px 0 !important;
-}
-
-.hasPossibles > input{
-	display: none;
+	margin:-3px 0 0 0 !important;
+	span{
+		display: inline-block;
+		line-height: 14px;
+		padding:0 4px;
+		float: none !important;
+		font-weight: bold !important;
+		text-indent: 0;
+		font-size: 11px !important;
+		margin-right: 5px;
+		margin-bottom: 5px;
+		border-radius: 4px;
+		background: #545454;
+		border: 2px solid #545454;
+		color: #fff;
+	}
 }
 
 .possible{
 	display: inline-block;
 	line-height: 14px;
-	padding:0 6px 0 2px;
+	padding:0 4px;
 	border-radius: 4px;
 	float: none !important;
 	font-weight: bold !important;
@@ -105,14 +138,12 @@
 	font-size: 11px !important;
 	background: #fff;
 	cursor: pointer;
+	margin-right: 5px;
+	margin-bottom: 5px;
+
+	.color1;
 }
 
-.possible input{
-	margin-right: 3px;
-	visibility: hidden;
-	height: 0;
-	width: 0;
-}
 
 .details-item-editable div{
 	position: relative;

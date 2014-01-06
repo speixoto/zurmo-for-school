@@ -89,7 +89,7 @@
 
                     $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
                 }
-                $content .= ZurmoHtml::tag('div', array(), $attributeContent);
+                $content .= ZurmoHtml::tag('div', array('class' => 'hasPossibles'), $attributeContent);
             }
             Yii::app()->clientScript->registerScript('preContentSelectScript', $this->registerScriptForAttributeReplacement());
             echo $content;
