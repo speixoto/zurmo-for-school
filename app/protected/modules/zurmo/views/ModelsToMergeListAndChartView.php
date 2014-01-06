@@ -213,7 +213,7 @@
          */
         protected function getLabelForDupes()
         {
-            $instructions   = Zurmo::t('ZurmoModule', 'Select {label} to keep', array('{label}' => $this->getSingularLabel()));
+            $instructions   = Zurmo::t('ZurmoModule', 'Select primary {label}', array('{label}' => $this->getSingularLabel()));
             return ZurmoHtml::tag('span', array(), $instructions);
         }
 

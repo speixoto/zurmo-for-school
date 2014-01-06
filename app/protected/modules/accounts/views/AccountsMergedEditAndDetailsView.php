@@ -129,7 +129,7 @@
         public function getTitle()
         {
             $translationParams = LabelUtil::getTranslationParamsForAllModules();
-            return Zurmo::t('AccountsModule', 'Merged AccountsModulePluralLabel', $translationParams);
+            return Zurmo::t('AccountsModule', 'Merge AccountsModulePluralLabel', $translationParams);
         }
     }
 ?>
