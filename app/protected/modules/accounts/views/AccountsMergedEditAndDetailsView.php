@@ -76,36 +76,7 @@
          */
         protected function getFormLayoutMetadata()
         {
-            $metadata = self::getMetadata();
-            $modifiedElementsData = array();
-            foreach($metadata['global']['panels'] as $panel)
-            {
-                foreach($panel['rows'] as $row)
-                {
-                    foreach($row['cells'] as $cell)
-                    {
-                        foreach($cell['elements'] as $elementData)
-                        {
-                            if($elementData['attributeName'] == 'null' && !class_exists($elementData['type'] . 'Element'))
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                $modifiedElementsData[] = $elementData;
-                            }
-                        }
-                    }
-                }
-            }
-            //Prepare panels data
-            $panelsData = array();
-            foreach($modifiedElementsData as $row => $elementData)
-            {
-                $panelsData[0]['rows'][$row]['cells'][0]['elements'][0] = $elementData;
-            }
-            $metadata['global']['panels'] = $panelsData;
-            return $metadata;
+            return ListViewMergeUtil::resolveFormLayoutMetadataForOneColumnDisplay(self::getMetadata());
         }
 
         /**

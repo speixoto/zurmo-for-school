@@ -205,10 +205,10 @@
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'CampaignMergeTagsValidator'),
-                    array('textContent',            'CampaignMergeTagsValidator'),
+                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'searchModel'),
+                    array('textContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'searchModel'),
+                    array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),
+                    array('textContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),
                     array('enableTracking',         'boolean'),
                     array('enableTracking',         'default', 'value' => false),
                     array('marketingList',          'required'),
@@ -271,7 +271,10 @@
 
         public function beforeValidate()
         {
-            $this->validateHtmlOnly();
+            if($this->getScenario() != 'searchModel')
+            {
+                $this->validateHtmlOnly();
+            }
             return parent::beforeValidate();
         }
 
