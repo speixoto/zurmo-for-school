@@ -62,8 +62,29 @@
             $formModel  = new ModelsListDuplicateMergedModelForm();
             $formModel->selectedModels = $modelsList;
             ListViewMergeUtil::setPrimaryModelForListViewMerge($formModel,
-                                                               array('primaryModelId' => $this->selectedModels[1]->id));
-            $this->assertEquals($this->selectedModels[1]->id, $formModel->primaryModel->id);
+                                                               array('primaryModelId' => $this->selectedModels[0]->id));
+            $this->primaryModel = $formModel->primaryModel;
+            $this->assertEquals($this->selectedModels[0]->id, $formModel->primaryModel->id);
+        }
+
+        /**
+         * @depends testSetPrimaryModelForListViewMerge
+         */
+        public function testProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->setSelectedModels();
+            $this->setRelatedModels();
+            ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($this->getPrimaryModel(),
+                                                                                    array('selectedIds' => $this->selectedModels[0]->id .
+                                                                                            ',' .
+                                                                                            $this->selectedModels[1]->id));
+            $this->validatePrimaryModelData();
+        }
+
+        protected function validatePrimaryModelData()
+        {
+
         }
 
         protected function setFirstModel()
@@ -74,6 +95,21 @@
         protected function setSecondModel()
         {
 
+        }
+
+        protected function setRelatedModels()
+        {
+
+        }
+
+        protected function setSelectedModels()
+        {
+
+        }
+
+        protected function getPrimaryModel()
+        {
+            return $this->selectedModels[0];
         }
     }
 ?>

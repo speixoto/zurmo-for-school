@@ -58,53 +58,74 @@
             $this->selectedModels[]                 = $account;
         }
 
-        public function testProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge()
+        protected function setRelatedModels()
         {
+            $this->addProject();
+            $this->addProduct();
+            $this->addContact();
+            $this->addOpportunity();
+            $this->addTask();
+            $this->addNote();
+            $this->addMeeting();
+        }
 
+        protected function validatePrimaryModelData()
+        {
+            $this->assertEmpty(Account::getByName('Test Account2'));
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(1, count($primaryModel->projects));
         }
 
         private function addProject()
         {
-            $user    = User::getByUsername('steven');
-            $project = ProjectTestHelper::createProjectByNameForOwner('Account Project', $user);
-            $project->accounts->add($this->selectedModels[1]);
+            $project = ProjectTestHelper::createProjectByNameForOwner('Account Project', Yii::app()->user->userModel);
+            $project->accounts->add($this->getPrimaryModel());
             assert($project->save());
         }
 
         private function addProduct()
         {
-            $user    = User::getByUsername('steven');
-            $product = ProductTestHelper::createProductByNameForOwner('Account Product', $user);
-            $product->account = $this->selectedModels[1];
+            $product = ProductTestHelper::createProductByNameForOwner('Account Product', Yii::app()->user->userModel);
+            $product->account = $this->getPrimaryModel();
             $product->save();
         }
 
         private function addContact()
         {
-            $user    = User::getByUsername('steven');
-            $contact = ContactTestHelper::createContactByNameForOwner('Allan Turner', $user);
-            $contact->account = $this->selectedModels[1];
+            $contact = ContactTestHelper::createContactByNameForOwner('Allan Turner', Yii::app()->user->userModel);
+            $contact->account = $this->getPrimaryModel();
             $contact->save();
         }
 
         private function addOpportunity()
         {
-            $user    = User::getByUsername('steven');
-            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('UI Services', $user);
-            $opportunity->account = $this->selectedModels[1];
+            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('UI Services', Yii::app()->user->userModel);
+            $opportunity->account = $this->getPrimaryModel();
             $opportunity->save();
         }
 
         private function addMeeting()
         {
-            $user    = User::getByUsername('steven');
-            MeetingTestHelper::createMeetingWithOwnerAndRelatedAccount('First Meeting', $user, $this->selectedModels[1]);
+            MeetingTestHelper::createMeetingWithOwnerAndRelatedAccount('First Meeting', Yii::app()->user->userModel, $this->getPrimaryModel());
         }
 
         private function addNote()
         {
-            $user    = User::getByUsername('steven');
-            NoteTestHelper::createNoteWithOwnerAndRelatedAccount('First Meeting', $user, $this->selectedModels[1]);
+            NoteTestHelper::createNoteWithOwnerAndRelatedAccount('First Meeting', Yii::app()->user->userModel, $this->getPrimaryModel());
+        }
+
+        private function addTask()
+        {
+            TaskTestHelper::createTaskWithOwnerAndRelatedAccount('First Task', Yii::app()->user->userModel, $this->getPrimaryModel());
+        }
+
+        protected function setSelectedModels()
+        {
+            $accounts = Account::getByName('Test Account1');
+            $this->selectedModels[] = $accounts[0];
+
+            $accounts = Account::getByName('Test Account2');
+            $this->selectedModels[] = $accounts[0];
         }
     }
 ?>
