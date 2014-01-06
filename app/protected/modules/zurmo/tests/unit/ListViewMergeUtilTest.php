@@ -193,5 +193,29 @@
         {
             $this->validateActivityItem('Task', 'First Task', $this->modelClass, $fieldName, $fieldValue);
         }
+
+        public function testResolveFormLayoutMetadataForOneColumnDisplay()
+        {
+            $modelClass       = $this->modelClass;
+            $viewClassName    = $modelClass . 'sMergedEditAndDetailsView';
+            $layoutMetadata   = ListViewMergeUtil::resolveFormLayoutMetadataForOneColumnDisplay($viewClassName::getMetadata());
+            $rows             = $layoutMetadata['global']['panels'][0]['rows'];
+            $modifiedElementsData = array();
+            foreach($rows as $row)
+            {
+                $modifiedElementsData[] = $row['cells'][0]['elements'][0];
+            }
+            if($this->modelClass == 'Contact')
+            {
+                $this->assertEquals('title', $modifiedElementsData[0]['attributeName']);
+                $this->assertEquals('DropDown', $modifiedElementsData[0]['type']);
+
+                $this->assertEquals('firstName', $modifiedElementsData[1]['attributeName']);
+                $this->assertEquals('Text', $modifiedElementsData[1]['type']);
+
+                $this->assertEquals('lastName', $modifiedElementsData[2]['attributeName']);
+                $this->assertEquals('Text', $modifiedElementsData[2]['type']);
+            }
+        }
     }
 ?>
