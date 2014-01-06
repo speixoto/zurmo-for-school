@@ -132,7 +132,7 @@
         protected function renderRightSideContent($form = null)
         {
             $chartContent = $this->renderChart();
-            $divContent   = ZurmoHtml::tag('div', array('class' => 'spidergraph', 'style' => 'display:none'), $chartContent);
+            $divContent   = ZurmoHtml::tag('div', array('class' => 'spidergraph', 'style' => 'display:block'), $chartContent);
             $spanContent  = ZurmoHtml::tag('span', array('class' => 'graphDisplay'), Zurmo::t('ZurmoModule', 'Show'));
             return $spanContent . $divContent;
         }
