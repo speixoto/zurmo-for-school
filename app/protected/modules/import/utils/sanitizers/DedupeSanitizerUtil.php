@@ -79,18 +79,20 @@
             if (isset($this->mappingRuleData["dedupeRule"]) &&
                 $this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
             {
-                $matchedModels  = $this->getMatchedModels($value, 1);
-                if (count($matchedModels) > 0)
+                if($value != null)
                 {
-                    $this->shouldSkipRow = true;
-                    $label = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
-                    $this->analysisMessages[] = $label;
-                    if ($this->importSanitizeResultsUtil != null)
+                    $matchedModels  = $this->getMatchedModels($value, 1);
+                    if (count($matchedModels) > 0)
                     {
-                        $this->importSanitizeResultsUtil->setModelShouldNotBeSaved();
+                        $this->shouldSkipRow = true;
+                        $label = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
+                        $this->analysisMessages[] = $label;
+                        if ($this->importSanitizeResultsUtil != null)
+                        {
+                            $this->importSanitizeResultsUtil->setModelShouldNotBeSaved();
+                        }
                     }
                 }
-
             }
             elseif (isset($this->mappingRuleData["dedupeRule"]) &&
                     $this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND
