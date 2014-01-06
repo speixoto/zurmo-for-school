@@ -82,8 +82,8 @@
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
                 $display = ($key == 0) ? 'block' : 'none';
                 $cards .= ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
-                                                        'id'   => 'dupeDetailsView-' . $dupeModel->id,
-                                                        'style' => 'display:' . $display),
+                                                      'id'    => 'dupeDetailsView-' . $dupeModel->id,
+                                                      'style' => 'display:' . $display),
                                           $detailsViewContent);
                 $checked      = !strcmp($dupeModel->id, $this->model->id);
                 $radioElement = ZurmoHtml::radioButton('primaryModelId', $checked,
@@ -91,8 +91,16 @@
                                                               'class'  => 'dupeContactsPrimaryModel',
                                                               'value'  => $dupeModel->id
                                                              )) . strval($dupeModel);
-                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++,
-                                                                 'id' => 'selectedDupe-' . $dupeModel->id),
+                if ($checked)
+                {
+                    $extraClass = ' selected';
+                }
+                else
+                {
+                    $extraClass = '';
+                }
+                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++ . $extraClass,
+                                                                 'id'    => 'selectedDupe-' . $dupeModel->id),
                                                                  $radioElement);
                 $preparedContent .= $contactNameElement;
             }
@@ -149,6 +157,7 @@
             $this->resolveDataForChart($amChart);
             $amChart->id               = $chartId;
             $amChart->type             = ChartRules::TYPE_RADAR;
+            $amChart->addValueAxisProperties('integersOnly', 'true');
             $this->resolveGraphsForChart($amChart);
             $scriptContent      = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
@@ -168,28 +177,6 @@
                             var idArray = id.split('-');
                             $('.business-card:visible').hide();
                             $('#dupeDetailsView-' + idArray[1]).show();
-                        });
-//                        $('body').on('mouseout', 'li.selectedDupe',
-//                        function()
-//                        {
-//                            var id = $(this).attr('id');
-//                            var idArray = id.split('-');
-//                            $('#dupeDetailsView-' + idArray[1]).hide();
-//                        });
-
-                        $('body').on('click', '.graphDisplay',
-                        function()
-                        {
-                            if($('.spidergraph').is(':visible'))
-                            {
-                                $('.spidergraph').hide();
-                                $('.graphDisplay').html('Show');
-                            }
-                            else
-                            {
-                                $('.spidergraph').show();
-                                $('.graphDisplay').html('Hide');
-                            }
                         });
                         $('body').on('change', '.dupeContactsPrimaryModel',
                             {$this->onChangeScript()}

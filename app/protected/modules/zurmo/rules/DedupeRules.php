@@ -223,17 +223,19 @@
                 if (count($matchedModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
                 {
                     $message =  Zurmo::t('ZurmoModule',
-                                         'There are at least {n} possible matches. Click here to view.',
+                                         'There are at least {n} possible matches.',
                                          ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT
                     );
                 }
                 else
                 {
                     $message =  Zurmo::t('ZurmoModule',
-                                         'There is {n} possible match. Click here to view.|There are {n} possible matches. Click here to view.',
+                                         'There is {n} possible match.|There are {n} possible matches.',
                                          count($matchedModels)
                     );
                 }
+                $clickHere = ZurmoHtml::tag('span', array('class' => 'underline'), Zurmo::t('ZurmoModule', 'Click here'));
+                $message .= ' ' . $clickHere . ' ' . Zurmo::t('ZurmoModule', 'to view') . '.';
                 return array('message' => $message, 'matchedModels' => $matchedModels);
             }
         }

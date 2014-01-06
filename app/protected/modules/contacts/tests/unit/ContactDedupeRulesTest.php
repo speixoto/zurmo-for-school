@@ -129,22 +129,22 @@
             $contact      = new Contact();
             $dedupeRules  = new ContactDedupeRules($contact);
             $searchResult = $dedupeRules->searchForDuplicateModels('lastName', 'Sam');
-            $this->assertEquals('There is 1 possible match. Click here to view.', $searchResult['message']);
+            $this->assertEquals('There is 1 possible match. <span class="underline">Click here</span> to view.', $searchResult['message']);
             $this->assertCount (1, $searchResult['matchedModels']);
             $searchResult = $dedupeRules->searchForDuplicateModels('lastName', 'son');
-            $this->assertEquals('There are at least 5 possible matches. Click here to view.', $searchResult['message']);
+            $this->assertEquals('There are at least 5 possible matches. <span class="underline">Click here</span> to view.', $searchResult['message']);
             $this->assertCount (6, $searchResult['matchedModels']);
             $searchResult = $dedupeRules->searchForDuplicateModels('primaryEmail', 'sam@zurmoland.com');
-            $this->assertEquals('There is 1 possible match. Click here to view.', $searchResult['message']);
+            $this->assertEquals('There is 1 possible match. <span class="underline">Click here</span> to view.', $searchResult['message']);
             $this->assertCount (1, $searchResult['matchedModels']);
             $searchResult = $dedupeRules->searchForDuplicateModels('primaryEmail', 'sam@zurmoworld.com');
-            $this->assertEquals('There is 1 possible match. Click here to view.', $searchResult['message']);
+            $this->assertEquals('There is 1 possible match. <span class="underline">Click here</span> to view.', $searchResult['message']);
             $this->assertCount (1, $searchResult['matchedModels']);
             $searchResult = $dedupeRules->searchForDuplicateModels('mobilePhone', '123-456-789');
-            $this->assertEquals('There are 5 possible matches. Click here to view.', $searchResult['message']);
+            $this->assertEquals('There are 5 possible matches. <span class="underline">Click here</span> to view.', $searchResult['message']);
             $this->assertCount (5, $searchResult['matchedModels']);
             $searchResult = $dedupeRules->searchForDuplicateModels('mobilePhone', '987-654-321X');
-            $this->assertEquals('There is 1 possible match. Click here to view.', $searchResult['message']);
+            $this->assertEquals('There is 1 possible match. <span class="underline">Click here</span> to view.', $searchResult['message']);
             $this->assertCount (1, $searchResult['matchedModels']);
             try
             {
