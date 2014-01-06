@@ -62,84 +62,21 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-        }
-
-        private function getTypeValues()
-        {
-            $values = array(
-                'Prospect',
-                'Customer',
-                'Vendor',
-            );
-            $typeFieldData = CustomFieldData::getByName('AccountTypes');
-            $typeFieldData->serializedData = serialize($values);
-            $this->assertTrue($typeFieldData->save());
-            return $values;
+            UserTestHelper::createBasicUser('Steven');
         }
 
         protected function setFirstModel()
         {
-            $user                                   = UserTestHelper::createBasicUser('Steven');
-            $industryValues                         = $this->getIndustryValues();
-            $accountTypeValues                      = $this->getTypeValues();
-            $account                                = new Account();
-            $account->owner                         = $user;
-            $account->name                          = 'Test Account1';
-            $account->officePhone                   = '1234567890';
-            $account->industry->value               = $industryValues[1];
-            $account->officeFax                     = '12345876';
-            $account->employees                     = 50;
-            $account->annualRevenue                 = 1000000;
-            $account->type->value                   = $accountTypeValues[1];
-            $account->website                       = 'http://yahoo.com';
-            $account->billingAddress->street1       = '129 Noodle Boulevard';
-            $account->billingAddress->street2       = 'Apartment 6000A';
-            $account->billingAddress->city          = 'Noodleville';
-            $account->billingAddress->postalCode    = '23453';
-            $account->billingAddress->state         = 'Alaska';
-            $account->billingAddress->country       = 'The Good Old US of A';
-            $account->shippingAddress->street1      = '25 de Agosto 2543';
-            $account->shippingAddress->street2      = 'Local 3';
-            $account->shippingAddress->city         = 'Ciudad de Los Fideos';
-            $account->shippingAddress->postalCode   = '5123-4';
-            $account->shippingAddress->state        = 'Alaska';
-            $account->shippingAddress->country      = 'Latinoland';
-
-            $account->description                   = 'My First Account Description';
-            $this->assertTrue($account->save());
+            $user                                   = User::getByUsername('steven');
+            $account                                = AccountListViewMergeTestHelper::getFirstModel($user);
             $this->selectedModels[]                 = $account;
         }
 
         protected function setSecondModel()
         {
             $user                                   = User::getByUsername('steven');
-            $industryValues                         = $this->getIndustryValues();
-            $accountTypeValues                      = $this->getTypeValues();
-            $account2                               = new Account();
-            $account2->owner                        = $user;
-            $account2->name                         = 'Test Account2';
-            $account2->officePhone                  = '3454567890';
-            $account2->industry->value              = $industryValues[1];
-            $account2->officeFax                    = '234345876';
-            $account2->employees                    =  80;
-            $account2->annualRevenue                = 1000099;
-            $account2->type->value                  = $accountTypeValues[2];
-            $account2->website                      = 'http://google.com';
-            $account2->billingAddress->street1      = '302';
-            $account2->billingAddress->street2      = '9A/1';
-            $account2->billingAddress->city         = 'delhi';
-            $account2->billingAddress->state        = 'delhi';
-            $account2->billingAddress->postalCode   = '23453';
-            $account2->billingAddress->country      = 'The Good Old US of A';
-            $account2->shippingAddress->street1     = 'pusa road';
-            $account2->shippingAddress->street2     = 'near hotel crown';
-            $account2->shippingAddress->city        = 'delhi';
-            $account2->shippingAddress->state       = 'delhi';
-            $account2->shippingAddress->postalCode  = '110005';
-            $account2->shippingAddress->country     = 'India Test';
-            $account2->description = 'My Second Account Description';
-            $this->assertTrue($account2->save());
-            $this->selectedModels[]                 = $account2;
+            $account                                = AccountListViewMergeTestHelper::getSecondModel($user);
+            $this->selectedModels[]                 = $account;
         }
     }
 ?>

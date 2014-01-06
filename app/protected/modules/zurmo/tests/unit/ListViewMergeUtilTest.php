@@ -75,19 +75,5 @@
         {
 
         }
-
-        protected function getIndustryValues()
-        {
-            $values = array(
-                'Automotive',
-                'Adult Entertainment',
-                'Financial Services',
-                'Mercenaries & Armaments',
-            );
-            $industryFieldData = CustomFieldData::getByName('Industries');
-            $industryFieldData->serializedData = serialize($values);
-            $this->assertTrue($industryFieldData->save());
-            return $values;
-        }
     }
 ?>

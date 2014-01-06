@@ -45,7 +45,7 @@
                                                 'primaryAddress'  => 'Address',
                                                 'secondaryAddress'=> 'Address',
                                                 'account'         => 'Account'
-                                          );
+                                               );
 
         public $nonDerivedAttributes    = array('firstName', 'lastName');
 
@@ -69,86 +69,28 @@
             parent::setUpBeforeClass();
             ContactsModule::loadStartingData();
             UserTestHelper::createBasicUser('Steven');
+            $sourceValues = array(
+                'Word of Mouth',
+                'Outbound',
+                'Trade Show',
+            );
+            $sourceFieldData = CustomFieldData::getByName('LeadSources');
+            $sourceFieldData->serializedData = serialize($sourceValues);
+            $sourceFieldData->save();
         }
 
         protected function setFirstModel()
         {
-            $user                   = User::getByUsername('steven');
-            $account                = new Account();
-            $account->name          = 'Some Account';
-            $account->owner         = $user;
-            $this->assertTrue($account->save());
-            $contactStates          = ContactState::getByName('Qualified');
-            $contact                = new Contact();
-            $dateTime               = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $contact->setLatestActivityDateTime($dateTime);
-            $contact->owner         = $user;
-            $contact->title->value  = 'Mr.';
-            $contact->firstName     = 'Super';
-            $contact->lastName      = 'Man';
-            $contact->jobTitle      = 'Superhero';
-            $contact->source->value = 'Outbound';
-            $contact->account       = $account;
-            $contact->description   = 'Some Description';
-            $contact->department    = 'Red Tape';
-            $contact->officePhone   = '1234567890';
-            $contact->mobilePhone   = '0987654321';
-            $contact->officeFax     = '1222222222';
-            $contact->state         = $contactStates[0];
-            $contact->primaryEmail->emailAddress   = 'thejman@zurmoinc.com';
-            $contact->primaryEmail->optOut         = 0;
-            $contact->primaryEmail->isInvalid      = 0;
-            $contact->secondaryEmail->emailAddress = 'digi@magic.net';
-            $contact->secondaryEmail->optOut       = 1;
-            $contact->secondaryEmail->isInvalid    = 1;
-            $contact->primaryAddress->street1      = '129 Noodle Boulevard';
-            $contact->primaryAddress->street2      = 'Apartment 6000A';
-            $contact->primaryAddress->city         = 'Noodleville';
-            $contact->primaryAddress->state        = 'New Delhi';
-            $contact->primaryAddress->postalCode   = '23453';
-            $contact->primaryAddress->country      = 'The Good Old US of A';
-            $contact->secondaryAddress->street1    = '25 de Agosto 2543';
-            $contact->secondaryAddress->street2    = 'Local 3';
-            $contact->secondaryAddress->city       = 'Ciudad de Los Fideos';
-            $contact->secondaryAddress->state      = 'Haryana';
-            $contact->secondaryAddress->postalCode = '5123-4';
-            $contact->secondaryAddress->country    = 'Latinoland';
-            $this->assertTrue($contact->save());
+            $user                                   = User::getByUsername('steven');
+            $contact                                = ContactListViewMergeTestHelper::getFirstModel($user);
             $this->selectedModels[]                 = $contact;
         }
 
         protected function setSecondModel()
         {
-            $user                   = User::getByUsername('steven');
-            $account                = new Account();
-            $account->name          = 'New Account';
-            $account->owner         = $user;
-            $this->assertTrue($account->save());
-            $contactCustomerStates   = ContactState::getByName('Customer');
-            $contact2                = ContactTestHelper::createContactByNameForOwner('shozin', Yii::app()->user->userModel);
-            $contact2->title->value  = 'Mrs.';
-            $contact2->state         = $contactCustomerStates[0];
-            $contact2->account       = $account;
-            $contact2->primaryEmail->emailAddress   = 'test@yahoo.com';
-            $contact2->primaryEmail->optOut         = 0;
-            $contact2->primaryEmail->isInvalid      = 0;
-            $contact2->secondaryEmail->emailAddress = 'test@gmail.com';
-            $contact2->secondaryEmail->optOut       = 1;
-            $contact2->secondaryEmail->isInvalid    = 1;
-            $contact2->primaryAddress->street1      = '302';
-            $contact2->primaryAddress->street2      = '9A/1';
-            $contact2->primaryAddress->city         = 'New Delhi';
-            $contact2->primaryAddress->state        = 'New Delhi';
-            $contact2->primaryAddress->postalCode   = '110005';
-            $contact2->primaryAddress->country      = 'India';
-            $contact2->secondaryAddress->street1    = 'A-8';
-            $contact2->secondaryAddress->street2    = 'Sector 56';
-            $contact2->secondaryAddress->city       = 'Gurgaon';
-            $contact2->secondaryAddress->state      = 'Haryana';
-            $contact2->secondaryAddress->postalCode = '5123-4';
-            $contact2->secondaryAddress->country    = 'IndiaTest';
-            $this->assertTrue($contact2->save());
-            $this->selectedModels[]                 = $contact2;
+            $user                                   = User::getByUsername('steven');
+            $contact                                = ContactListViewMergeTestHelper::getSecondModel($user);
+            $this->selectedModels[]                 = $contact;
         }
     }
 ?>
