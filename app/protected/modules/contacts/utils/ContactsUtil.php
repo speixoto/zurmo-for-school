@@ -363,49 +363,5 @@
                 return strval($contact);
             }
         }
-
-        /**
-         * Resolves form layout metadata for one column display
-         * @param array $metadata
-         * @return array
-         */
-        public static function resolveFormLayoutMetadataForOneColumnDisplay($metadata)
-        {
-            $modifiedElementsData = array();
-            foreach($metadata['global']['panels'] as $panel)
-            {
-                foreach($panel['rows'] as $row)
-                {
-                    foreach($row['cells'] as $cell)
-                    {
-                        foreach($cell['elements'] as $elementData)
-                        {
-                            if($elementData['attributeName'] == 'null' && !class_exists($elementData['type'] . 'Element'))
-                            {
-                                continue;
-                            }
-                            elseif($elementData['type'] == 'TitleFullName')
-                            {
-                                $modifiedElementsData[] = array('attributeName' => 'title', 'type' => 'DropDown');
-                                $modifiedElementsData[] = array('attributeName' => 'firstName', 'type' => 'Text');
-                                $modifiedElementsData[] = array('attributeName' => 'lastName', 'type' => 'Text');
-                            }
-                            else
-                            {
-                                $modifiedElementsData[] = $elementData;
-                            }
-                        }
-                    }
-                }
-            }
-            //Prepare panels data
-            $panelsData = array();
-            foreach($modifiedElementsData as $row => $elementData)
-            {
-                $panelsData[0]['rows'][$row]['cells'][0]['elements'][0] = $elementData;
-            }
-            $metadata['global']['panels'] = $panelsData;
-            return $metadata;
-        }
     }
 ?>

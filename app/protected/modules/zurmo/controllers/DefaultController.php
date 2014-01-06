@@ -300,6 +300,7 @@
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'search-form' && isset($_POST[$formModelClassName]))
             {
                 $model      = new $modelClassName(false);
+                $model->setScenario('searchModel');
                 $searchForm = new $formModelClassName($model);
                 $sourceData = $_POST;
                 if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
