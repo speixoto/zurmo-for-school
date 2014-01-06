@@ -57,7 +57,7 @@
                             ),
                             array(
                                 'type'            => 'ListViewMergeMenu',
-                                'iconClass'       => 'icon-subscribe',
+                                'iconClass'       => 'icon-merge',
                                 'listViewGridId'  => 'eval:$this->listViewGridId',
                                 'pageVarName'     => 'eval:$this->pageVarName'
                             )
