@@ -78,6 +78,7 @@
 
             $cards = null;
 
+            $position = 1;
             foreach($modelsToShow as $dupeModel)
             {
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
@@ -91,7 +92,7 @@
                                                               'class'  => 'dupeContactsPrimaryModel',
                                                               'value'  => $dupeModel->id
                                                              )) . strval($dupeModel);
-                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe',
+                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++,
                                                                  'id' => 'selectedDupe-' . $dupeModel->id),
                                                                 $radioElement);
                 $preparedContent .= $contactNameElement;
@@ -150,7 +151,7 @@
             $amChart->id               = $chartId;
             $amChart->type             = ChartRules::TYPE_RADAR;
             $this->resolveGraphsForChart($amChart);
-            $scriptContent      = $amChart->javascriptChart();
+            $scriptContent             = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
             $cClipWidget        = new CClipWidget();
             $cClipWidget->beginClip("Chart" . $chartId);
