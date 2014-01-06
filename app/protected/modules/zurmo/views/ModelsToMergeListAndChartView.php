@@ -76,6 +76,7 @@
             $modelsToShow    = $this->dupeModels;
             $this->resolveMaxModelsToShow($modelsToShow);
             $cards = null;
+            $position = 1;
             foreach($modelsToShow as $key => $dupeModel)
             {
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
@@ -90,9 +91,9 @@
                                                               'class'  => 'dupeContactsPrimaryModel',
                                                               'value'  => $dupeModel->id
                                                              )) . strval($dupeModel);
-                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe',
+                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' $position,
                                                                  'id' => 'selectedDupe-' . $dupeModel->id),
-                                                                $radioElement);
+                                                                 $radioElement);
                 $preparedContent .= $contactNameElement;
             }
             $this->registerScripts();
