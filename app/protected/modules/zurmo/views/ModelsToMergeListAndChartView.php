@@ -166,15 +166,16 @@
                         {
                             var id = $(this).attr('id');
                             var idArray = id.split('-');
+                            $('.business-card:visible').hide();
                             $('#dupeDetailsView-' + idArray[1]).show();
                         });
-                        $('body').on('mouseout', 'li.selectedDupe',
-                        function()
-                        {
-                            var id = $(this).attr('id');
-                            var idArray = id.split('-');
-                            $('#dupeDetailsView-' + idArray[1]).hide();
-                        });
+//                        $('body').on('mouseout', 'li.selectedDupe',
+//                        function()
+//                        {
+//                            var id = $(this).attr('id');
+//                            var idArray = id.split('-');
+//                            $('#dupeDetailsView-' + idArray[1]).hide();
+//                        });
 
                         $('body').on('click', '.graphDisplay',
                         function()
