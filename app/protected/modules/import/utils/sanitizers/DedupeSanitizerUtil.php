@@ -98,15 +98,18 @@
                     $this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND
                     )
             {
-                $matchedModels  = $this->getMatchedModels($value, 1);
-                if (count($matchedModels) > 0)
+                if($value != null)
                 {
-                    $label = Zurmo::t('ImportModule',
-                                      'A record with this value already exists and will be updated with the values of the imported record.');
-                    $this->analysisMessages[] = $label;
-                    if ($this->importSanitizeResultsUtil != null)
+                    $matchedModels  = $this->getMatchedModels($value, 1);
+                    if (count($matchedModels) > 0)
                     {
-                        $this->importSanitizeResultsUtil->setMatchedModel($matchedModels[0]);
+                        $label = Zurmo::t('ImportModule',
+                                          'A record with this value already exists and will be updated with the values of the imported record.');
+                        $this->analysisMessages[] = $label;
+                        if ($this->importSanitizeResultsUtil != null)
+                        {
+                            $this->importSanitizeResultsUtil->setMatchedModel($matchedModels[0]);
+                        }
                     }
                 }
             }
