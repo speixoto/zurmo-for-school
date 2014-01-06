@@ -85,6 +85,7 @@
             foreach($attributesToBeTested as $attribute => $elementType)
             {
                 $attributeContent = null;
+                $position = 1;
                 foreach($this->selectedModels as $selectedModel)
                 {
                     $elementClass = $elementType . 'Element';
@@ -92,7 +93,7 @@
                     $modelAttributeAndElementDataToMergeItemClass = $this->modelAttributeAndElementDataToMergeItem;
                     $modelAttributeAndElementDataToMergeItem
                                   = new $modelAttributeAndElementDataToMergeItemClass($selectedModel,
-                                                                    $type->getAttribute(), $type, $primaryModel);
+                                                                    $type->getAttribute(), $type, $primaryModel, $position++);
                     $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
                     $content      .= ZurmoHtml::tag('div', array(), $attributeContent);
                 }

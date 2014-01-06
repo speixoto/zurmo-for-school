@@ -654,7 +654,7 @@
             ));
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels');
             $object = json_decode($content);
-            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
             //Test search by phone
             $lead->mobilePhone = '123456789';
@@ -664,7 +664,7 @@
             ));
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels');
             $object = json_decode($content);
-            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
             //Test search by email
             $lead->secondaryEmail->emailAddress = 'a@a.a';
@@ -674,7 +674,7 @@
             ));
             $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels');
             $object = json_decode($content);
-            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
         }
     }
