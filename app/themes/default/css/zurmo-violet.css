@@ -3234,11 +3234,11 @@ div.wide.form a {
 }
 .search-form-tools input[type="submit"] {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -6410,6 +6410,15 @@ i[class^="icon"] {
 #MarketingListMembersUnsubscribeLinkActionElement:after {
   content: "d";
 }
+.icon-note:after {
+  content: "3";
+}
+.icon-task:after {
+  content: "4";
+}
+.icon-meeting:after {
+  content: "U";
+}
 .icon-memberships:after {
   content: "y";
 }
@@ -6567,6 +6576,9 @@ i[class^="icon"] {
 .icon-account:after {
   content: "P";
 }
+.icon-merge:after {
+  content: '\00EE';
+}
 .pillbox .icon-projects-list {
   font-size: 22px;
   top: -2px !important;
@@ -6626,11 +6638,11 @@ a:active .z-label {
 }
 .button-layout {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -6666,11 +6678,11 @@ a:active .z-label {
 .zButton,
 .z-button {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -6717,11 +6729,11 @@ a:active .z-label {
 .cancel-button,
 .portlet-create-button {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -7389,6 +7401,26 @@ input[type="button"].portlet-create-button:focus {
   vertical-align: middle;
   position: relative;
 }
+.type-accountContactAffiliations .icon-empty:before {
+  content: '\00FB';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-accountAccountAffiliations .icon-empty:before {
+  content: '\00F4';
+  font-weight: normal !important;
+  font-size: 55px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
 #ZurmoLogo {
   background: url("../images/ZurmoLogo.png") left top no-repeat;
   width: 170px;
@@ -7522,11 +7554,11 @@ input[type="button"].portlet-create-button:focus {
 }
 #InstallPageView #install-form input[type="submit"] {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -8383,11 +8415,11 @@ table.configuration-list tr:last-child td {
 }
 .EmailTestingButton {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -8481,11 +8513,11 @@ table.configuration-list tr:last-child td {
 }
 .AppContent.ImportWizardView #addExtraColumnButton {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -9470,11 +9502,11 @@ div.wide.form .errorMessage {
 }
 .file-upload-box .ui-icon-plusthick {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -9930,11 +9962,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-current {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -9975,11 +10007,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-close {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -10352,11 +10384,11 @@ div.wide.form .errorMessage {
 }
 .designer-toolbar input[type="submit"] {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -10891,11 +10923,11 @@ div.wide.form .errorMessage {
 #contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton {
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   *zoom: 1;
   overflow: hidden;
   position: relative;
@@ -18759,23 +18791,55 @@ a + .project-stats {
   margin-bottom: 0px;
   padding: 15px;
 }
+#CreateModelsToMergeListAndChartView .chosen-entries .right-column {
+  display: none;
+}
+#CreateModelsToMergeListAndChartView .chosen-entries .left-column {
+  width: 100%;
+  float: none;
+}
+#CreateModelsToMergeListAndChartView .chosen-entries .possible-matches {
+  width: 25%;
+}
+#CreateModelsToMergeListAndChartView .chosen-entries .cards {
+  width: 75%;
+}
 .chosen-entries {
   top: 0;
   right: 0;
   position: relative;
   margin-bottom: 30px;
   border-bottom: 1px solid #dfdfdf;
-  height: 229px;
-  border: none;
-  background: none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -ms-box-shadow: none;
-  -o-box-shadow: none;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  height: 280px;
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff;
+  -moz-box-shadow: inset 0 0 0 2px #ffffff;
+  -ms-box-shadow: inset 0 0 0 2px #ffffff;
+  -o-box-shadow: inset 0 0 0 2px #ffffff;
+  box-shadow: inset 0 0 0 2px #ffffff;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+}
+.chosen-entries .left-column {
+  padding-left: 0;
+  padding-right: 0;
+}
+.chosen-entries .right-column {
+  border-left: 1px solid #dfdfdf;
+}
+.DetailsView .chosen-entries {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-bottom: 1px solid #dfdfdf !important;
 }
 .chosen-entries label {
   display: block;
@@ -18786,28 +18850,36 @@ a + .project-stats {
   left: -15px;
 }
 .possible-matches {
-  width: 25%;
+  width: 30%;
   display: block;
   float: left;
   list-style: none;
 }
 .possible-matches li {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 0;
+  padding: 5px 15px;
+  border: none;
 }
 .possible-matches input {
   margin-right: 10px;
 }
 .cards {
-  width: 75%;
+  padding: 15px;
+  width: 70%;
   display: block;
   float: left;
+  height: 279px;
+  margin-top: -15px;
+  border-left: 1px solid #dfdfdf;
 }
-#card {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-bottom: 1px solid #dfdfdf;
+.cards > div {
+  height: 100%;
+  position: relative;
+}
+.spidergraph {
+  width: 100%;
+  height: 100%;
 }
 .turquoise {
   background: #1abc9c;
@@ -18870,54 +18942,104 @@ a + .project-stats {
 .asbestos {
   background: #7f8c8d;
 }
-.color1 {
+.merge-color-1 {
   border: 2px dotted #315AB0;
   color: #315AB0 !important;
 }
-.color2 {
+.merge-color-2 {
   border: 2px dotted #66367b;
   color: #66367b !important;
 }
-.color3 {
+.merge-color-3 {
   border: 2px dotted #2c3e50;
   color: #2c3e50 !important;
 }
-.color4 {
+.merge-color-4 {
   border: 2px dotted #269a55;
   color: #269a55 !important;
 }
-.color5 {
+.merge-color-5 {
   border: 2px dotted #c0392b;
   color: #c0392b !important;
 }
-.chosen-entries .color1:hover,
-.color1.checked {
+.merge-color-6 {
+  border: 2px dotted #e67e22;
+  color: #e67e22 !important;
+}
+.merge-color-7 {
+  border: 2px dotted #3498db;
+  color: #3498db !important;
+}
+.merge-color-8 {
+  border: 2px dotted #501a27;
+  color: #501a27 !important;
+}
+.merge-color-9 {
+  border: 2px dotted #0c5b3f;
+  color: #0c5b3f !important;
+}
+.merge-color-10 {
+  border: 2px dotted #c05d91;
+  color: #c05d91 !important;
+}
+.chosen-entries .merge-color-1:hover,
+.merge-color-1.selected {
   border: 2px solid #315AB0;
   background: #315AB0;
   color: #fff !important;
 }
-.chosen-entries .color2:hover,
-.color2.checked {
+.chosen-entries .merge-color-2:hover,
+.merge-color-2.selected {
   border: 2px solid #66367b;
   background: #66367b;
   color: #fff !important;
 }
-.chosen-entries .color3:hover,
-.color3.checked {
+.chosen-entries .merge-color-3:hover,
+.merge-color-3.selected {
   border: 2px solid #2c3e50;
   background: #2c3e50;
   color: #fff !important;
 }
-.chosen-entries .color4:hover,
-.color4.checked {
+.chosen-entries .merge-color-4:hover,
+.merge-color-4.selected {
   border: 2px solid #269a55;
   background: #269a55;
   color: #fff !important;
 }
-.chosen-entries .color5:hover,
-.color5.checked {
+.chosen-entries .merge-color-5:hover,
+.merge-color-5.selected {
   border: 2px solid #c0392b;
   background: #c0392b;
+  color: #fff !important;
+}
+.chosen-entries .merge-color-6:hover,
+.merge-color-6.selected {
+  border: 2px solid #e67e22;
+  background: #e67e22;
+  color: #fff !important;
+}
+.chosen-entries .merge-color-7:hover,
+.merge-color-7.selected {
+  border: 2px solid #3498db;
+  background: #3498db;
+  color: #fff !important;
+}
+.chosen-entries .merge-color-8:hover,
+.merge-color-8.selected {
+  border: 2px solid #501a27;
+  background: #501a27;
+  color: #fff !important;
+}
+.chosen-entries .merge-color-9:hover,
+.merge-color-9.selected {
+  border: 2px solid #0c5b3f;
+  background: #0c5b3f;
+  color: #fff !important;
+}
+.chosen-entries .merge-color-10:hover,
+.merge-color-10.selected {
+  border: 2px solid #c05d91;
+  background: #c05d91;
   color: #fff !important;
 }
 .details-item-editable > label {
@@ -18930,21 +19052,6 @@ a + .project-stats {
   line-height: 1;
   width: 100%;
   margin: -3px 0 0 0 !important;
-}
-.hasPossibles span {
-  display: inline-block;
-  line-height: 14px;
-  padding: 0 4px;
-  float: none !important;
-  font-weight: bold !important;
-  text-indent: 0;
-  font-size: 11px !important;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  border-radius: 4px;
-  background: #545454;
-  border: 2px solid #545454;
-  color: #fff;
 }
 .possible {
   display: inline-block;
@@ -18959,8 +19066,6 @@ a + .project-stats {
   cursor: pointer;
   margin-right: 5px;
   margin-bottom: 5px;
-  border: 2px dotted #315AB0;
-  color: #315AB0 !important;
 }
 .details-item-editable div {
   position: relative;
@@ -18987,22 +19092,25 @@ a + .project-stats {
   padding-left: 15px;
   font-size: 12px;
 }
-.stats {
-  position: absolute;
-  bottom: 5px;
-  left: 230px;
+.entry-stats {
   font-weight: bold;
   border-top: 1px solid #dfdfdf;
   padding: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
-.stats li {
-  list-style: none;
-  float: left;
-  margin-right: 15px;
-  position: relative;
+.entry-stats span {
+  margin-right: 25px;
+  display: inline-block;
 }
-.stats li:last-child {
-  margin-right: 0;
+.entry-stats i {
+  margin-right: 3px;
+}
+.entry-stats .icon-email:before {
+  font-size: 24px !important;
+  color: #656565 !important;
 }
 #bubble {
   display: none;

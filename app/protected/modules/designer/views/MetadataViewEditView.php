@@ -105,8 +105,8 @@
             $content .= '</div>';
             $content .= $this->renderDesignerLayoutEditorWidget();
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
-            $content .= $this->renderCancelLink();
             $content .= $this->renderSaveLayoutButton('FlashMessageBar');
+            $content .= $this->renderCancelLink();
             $content .= '</div></div>';
 
             $formEnd  = $clipWidget->renderEndWidget();
@@ -149,7 +149,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/moduleLayoutsList/',
                                                  array('moduleClassName' => $this->moduleClassName));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $route, array('class' => 'cancel-button'));
         }
 
         /**
