@@ -91,7 +91,7 @@
                                                               'class'  => 'dupeContactsPrimaryModel',
                                                               'value'  => $dupeModel->id
                                                              )) . strval($dupeModel);
-                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' $position,
+                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++,
                                                                  'id' => 'selectedDupe-' . $dupeModel->id),
                                                                  $radioElement);
                 $preparedContent .= $contactNameElement;
