@@ -251,6 +251,10 @@
             {
                 $decoratedContent = ZurmoHtml::tag('span', array(), Zurmo::t('Core', '(None)'));
             }
+            if($this->element instanceof AddressElement)
+            {
+                $decoratedContent .= '</br>';
+            }
             return $decoratedContent;
         }
 
