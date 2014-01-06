@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ContactModelAttributeAndElementDataToMergeItemTest extends ModelAttributeAndElementDataToMergeItemTest
+    class ContactModelAttributeAndElementDataToMergeItemTest extends ModelAttributeAndElementDataToMergeItemBaseTest
     {
         public $attributesToBeTested    = array('title'           => 'DropDown',
                                                 'firstName'       => 'Text',
@@ -69,6 +69,19 @@
             parent::setUpBeforeClass();
             ContactsModule::loadStartingData();
             UserTestHelper::createBasicUser('Steven');
+        }
+
+        public function testPreElementContentForModels()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->setFirstModel();
+            $this->setSecondModel();
+            $content                    = $this->getRenderedContent();
+            $this->verifyNonDerivedAttributes($content);
+            $this->verifyDropdownAttributes($content);
+            $this->verifyMultiAttributeElements($content);
+            $this->verifyDerivedDropdownAttributeElements($content);
+            $this->verifyModelElements($content);
         }
 
         protected function setFirstModel()

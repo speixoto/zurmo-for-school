@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ModelAttributeAndElementDataToMergeItemTest extends ZurmoBaseTest
+    class ModelAttributeAndElementDataToMergeItemBaseTest extends ZurmoBaseTest
     {
         public $selectedModels          = array();
 
@@ -58,19 +58,6 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testPreElementContentForModels()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $this->setFirstModel();
-            $this->setSecondModel();
-            $content                    = $this->getRenderedContent();
-            $this->verifyNonDerivedAttributes($content);
-            $this->verifyDropdownAttributes($content);
-            $this->verifyMultiAttributeElements($content);
-            $this->verifyDerivedDropdownAttributeElements($content);
-            $this->verifyModelElements($content);
         }
 
         protected function getEscapedAttributes()
@@ -213,16 +200,6 @@
                     $this->assertTag($matcherElement2, $content);
                 }
             }
-        }
-
-        protected function setFirstModel()
-        {
-
-        }
-
-        protected function setSecondModel()
-        {
-
         }
 
         protected function getIndustryValues()

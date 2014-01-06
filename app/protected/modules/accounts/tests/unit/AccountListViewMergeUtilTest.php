@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AccountListViewMergeUtilTest extends ListViewMergeUtilTest
+    class AccountListViewMergeUtilTest extends ListViewMergeUtilBaseTest
     {
         public $modelClass = 'Account';
 
@@ -42,6 +42,21 @@
         {
             parent::setUpBeforeClass();
             UserTestHelper::createBasicUser('Steven');
+        }
+
+        public function testSetPrimaryModelForListViewMerge()
+        {
+            $this->processSetPrimaryModelForListViewMerge();
+        }
+
+        public function testProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge()
+        {
+            $this->runProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge();
+        }
+
+        public function testResolveFormLayoutMetadataForOneColumnDisplay()
+        {
+            $this->processResolveFormLayoutMetadataForOneColumnDisplay();
         }
 
         protected function setFirstModel()

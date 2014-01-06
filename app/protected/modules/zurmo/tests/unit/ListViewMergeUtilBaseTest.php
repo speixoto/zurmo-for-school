@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ListViewMergeUtilTest extends ZurmoBaseTest
+    class ListViewMergeUtilBaseTest extends ZurmoBaseTest
     {
         public $selectedModels          = array();
 
@@ -46,11 +46,7 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        /**
-         * @covers ListViewMergeUtil::getSelectedModelsListForMerge
-         * @covers ListViewMergeUtil::setPrimaryModelForListViewMerge
-         */
-        public function testSetPrimaryModelForListViewMerge()
+        protected function processSetPrimaryModelForListViewMerge()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $this->setFirstModel();
@@ -67,10 +63,7 @@
             $this->assertEquals($this->selectedModels[0]->id, $formModel->primaryModel->id);
         }
 
-        /**
-         * @depends testSetPrimaryModelForListViewMerge
-         */
-        public function testProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge()
+        protected function runProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $this->setSelectedModels();
@@ -80,31 +73,6 @@
                                                                                             ',' .
                                                                                             $this->selectedModels[1]->id));
             $this->validatePrimaryModelData();
-        }
-
-        protected function validatePrimaryModelData()
-        {
-
-        }
-
-        protected function setFirstModel()
-        {
-
-        }
-
-        protected function setSecondModel()
-        {
-
-        }
-
-        protected function setRelatedModels()
-        {
-
-        }
-
-        protected function setSelectedModels()
-        {
-
         }
 
         protected function getPrimaryModel()
@@ -194,7 +162,7 @@
             $this->validateActivityItem('Task', 'First Task', $this->modelClass, $fieldName, $fieldValue);
         }
 
-        public function testResolveFormLayoutMetadataForOneColumnDisplay()
+        protected function processResolveFormLayoutMetadataForOneColumnDisplay()
         {
             $modelClass       = $this->modelClass;
             $viewClassName    = $modelClass . 'sMergedEditAndDetailsView';
