@@ -40,10 +40,12 @@
      */
     class PersonCardViewLayout extends CardViewLayout
     {
-        public function __construct($model)
+        public function __construct($model, $haveGoToDetailsLink = false)
         {
-            assert('$model instanceof User || $model instanceof Person');
-            $this->model = $model;
+            assert('$model instanceof Item');
+            assert('is_bool($haveGoToDetailsLink)');
+            $this->model               = $model;
+            $this->haveGoToDetailsLink = $haveGoToDetailsLink;
         }
 
         protected function renderFrontOfCardContent()
@@ -87,7 +89,27 @@
             {
                 $spanContent = ZurmoHtml::tag('span', array('class' => 'salutation'), $element->render());
             }
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink . $this->renderGoToDetailsLink());
+        }
+
+        protected function renderGoToDetailsLink()
+        {
+            if ($this->haveGoToDetailsLink)
+            {
+                if (get_class($this->model) == 'User')
+                {
+                    $link = Yii::app()->createUrl('users/default/details/', array('id' => $this->model->id));
+                }
+                elseif (LeadsUtil::isStateALead($this->model->state))
+                {
+                    $link = Yii::app()->createUrl('leads/default/details/', array('id' => $this->model->id));
+                }
+                else
+                {
+                    $link = Yii::app()->createUrl('contacts/default/details/', array('id' => $this->model->id));
+                }
+                return ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Go To Details'), $link, array('target' => '_blank'));
+            }
         }
 
         protected function resolveBackOfCardLinkContent()

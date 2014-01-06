@@ -42,10 +42,14 @@
     {
         protected $model;
 
-        public function __construct($model)
+        protected $haveGoToDetailsLink;
+
+        public function __construct($model, $haveGoToDetailsLink = false)
         {
             assert('$model instanceof Item');
-            $this->model = $model;
+            assert('is_bool($haveGoToDetailsLink)');
+            $this->model               = $model;
+            $this->haveGoToDetailsLink = $haveGoToDetailsLink;
         }
 
         public function renderContent()
@@ -61,6 +65,11 @@
         }
 
         protected function renderBackOfCardContent()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function renderGoToDetailsLink()
         {
             throw new NotImplementedException();
         }
