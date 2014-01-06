@@ -82,10 +82,11 @@
             foreach($attributes as $attribute)
             {
                 $attributeContent = null;
+                $position = 1;
                 foreach($this->selectedModels as $model)
                 {
                     $modelAttributeAndElementDataToMergeItem = new $modelAttributeAndElementDataToMergeItemClass(
-                                                                $model, $attribute, $this->element, $this->primaryModel);
+                                                                $model, $attribute, $this->element, $this->primaryModel, $position++);
 
                     $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
                 }
@@ -103,6 +104,8 @@
         {
             $script = "$('.attributePreElementContent').click(function(){
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
+                                                                $(this).siblings('a').removeClass('selected');
+                                                                $(this).addClass('selected');
                                                             });";
 
             $script .= "$('.attributePreElementContentModelElement').click(function(){

@@ -59,6 +59,11 @@
          * @var RedBeanModel
          */
         protected $primaryModel;
+        /**
+         * @var int The position of the model in the list
+         * This is use only for the color class
+         */
+        protected $position;
 
         /**
          * Constructor for the class.
@@ -67,14 +72,16 @@
          * @param type $element
          * @param type $primaryModel
          */
-        public function __construct(RedBeanModel $model, $attribute, $element, RedBeanModel $primaryModel)
+        public function __construct(RedBeanModel $model, $attribute, $element, RedBeanModel $primaryModel, $position)
         {
             assert('is_string($attribute)');
+            assert('is_int($position)');
             assert('$element instanceof Element');
             $this->model             = $model;
             $this->attribute         = $attribute;
             $this->element           = $element;
             $this->primaryModel      = $primaryModel;
+            $this->position          = $position;
         }
 
         /**
@@ -191,11 +198,11 @@
                 $inputIds = $this->getAttributeInputIdsForOnClick();
                 if($this->model->id == $this->primaryModel->id)
                 {
-                    $style = '';// 'border: 2px dotted #FF0000;margin-left:4px;';
+                    $class = ' selected';
                 }
                 else
                 {
-                    $style = '';// 'border: 2px dotted #66367b;margin-left:4px;';
+                    $class = '';
                 }
                 foreach($inputIds as $inputId)
                 {
@@ -228,21 +235,17 @@
                     {
                         if($this->element instanceof ModelElement)
                         {
-                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('style' => $style,
-                                                                'data-color' => '#ff0000',
-                                                                'data-id'           => $inputId,
-                                                                'data-value'        => $inputValue,
-                                                                'data-hiddenid'     => $hiddenInputId,
-                                                                'data-hiddenvalue'  => $hiddenInputValue,
-                                                                'class'             => 'possible attributePreElementContentModelElement'));
+                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'           => $inputId,
+                                                                                           'data-value'        => $inputValue,
+                                                                                           'data-hiddenid'     => $hiddenInputId,
+                                                                                           'data-hiddenvalue'  => $hiddenInputValue,
+                                                                                           'class'             => 'possible attributePreElementContentModelElement merge-color-' . $this->position  . $class));
                         }
                         else
                         {
-                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('style' => $style,
-                                                                'data-color' => '#000fff',
-                                                                'data-id'     => $inputId,
-                                                                'data-value'  => $inputValue,
-                                                                'class'       => 'possible attributePreElementContent'));
+                            $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'     => $inputId,
+                                                                                           'data-value'  => $inputValue,
+                                                                                           'class'       => 'possible attributePreElementContent merge-color-' . $this->position . $class));
                         }
                     }
                 }
