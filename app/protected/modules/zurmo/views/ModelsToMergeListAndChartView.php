@@ -75,16 +75,14 @@
             $preparedContent = null;
             $modelsToShow    = $this->dupeModels;
             $this->resolveMaxModelsToShow($modelsToShow);
-
             $cards = null;
-
-            $position = 1;
-            foreach($modelsToShow as $dupeModel)
+            foreach($modelsToShow as $key => $dupeModel)
             {
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
+                $display = ($key == 0) ? 'block' : 'none';
                 $cards .= ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
                                                         'id'   => 'dupeDetailsView-' . $dupeModel->id,
-                                                        'style' => 'display:none'),
+                                                        'style' => 'display:' . $display),
                                           $detailsViewContent);
                 $checked      = !strcmp($dupeModel->id, $this->model->id);
                 $radioElement = ZurmoHtml::radioButton('primaryModelId', $checked,
@@ -92,7 +90,7 @@
                                                               'class'  => 'dupeContactsPrimaryModel',
                                                               'value'  => $dupeModel->id
                                                              )) . strval($dupeModel);
-                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++,
+                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe',
                                                                  'id' => 'selectedDupe-' . $dupeModel->id),
                                                                 $radioElement);
                 $preparedContent .= $contactNameElement;
@@ -151,11 +149,11 @@
             $amChart->id               = $chartId;
             $amChart->type             = ChartRules::TYPE_RADAR;
             $this->resolveGraphsForChart($amChart);
-            $scriptContent             = $amChart->javascriptChart();
+            $scriptContent      = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
             $cClipWidget        = new CClipWidget();
             $cClipWidget->beginClip("Chart" . $chartId);
-            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId));
+            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'height' => '250px'));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Chart' . $chartId];
         }
@@ -293,7 +291,8 @@
                                                    array('class' => 'total-meetings'),
                                                    LatestActivitiesUtil::getCountByModelClassName
                                                        ('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
-            return $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
+            $content = $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
+            return ZurmoHtml::tag('div', array('class' => 'entry-stats'), $content);
         }
 
         protected function getSingularLabel()
