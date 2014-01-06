@@ -69,14 +69,6 @@
             parent::setUpBeforeClass();
             ContactsModule::loadStartingData();
             UserTestHelper::createBasicUser('Steven');
-            $sourceValues = array(
-                'Word of Mouth',
-                'Outbound',
-                'Trade Show',
-            );
-            $sourceFieldData = CustomFieldData::getByName('LeadSources');
-            $sourceFieldData->serializedData = serialize($sourceValues);
-            $sourceFieldData->save();
         }
 
         protected function setFirstModel()

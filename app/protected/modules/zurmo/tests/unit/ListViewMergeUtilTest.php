@@ -111,5 +111,87 @@
         {
             return $this->selectedModels[0];
         }
+
+        protected function validateActivityItem($activityModelClass, $activityName, $relationClassName, $relationFieldName, $relationFieldValue)
+        {
+            $this->checkActivityItemRelationCount($activityModelClass, $activityName, 1);
+            $activities         = $activityModelClass::getByName($activityName);
+            $relationClass      = $activities[0]->activityItems->offsetGet(0);
+            $this->assertEquals(get_class($relationClass), $relationClassName);
+            $this->assertEquals($relationFieldValue, $relationClass->$relationFieldName);
+        }
+
+        protected function checkActivityItemRelationCount($activityModelClass, $activityName, $count)
+        {
+            $activities   = $activityModelClass::getByName($activityName);
+            $this->assertCount($count, $activities);
+        }
+
+        protected function addProject($relatedFieldName)
+        {
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(0, count($primaryModel->projects));
+            $project = ProjectTestHelper::createProjectByNameForOwner($this->modelClass . ' Project', Yii::app()->user->userModel);
+            $project->$relatedFieldName->add($this->selectedModels[1]);
+            assert($project->save());
+        }
+
+        protected function validateProject()
+        {
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(1, count($primaryModel->projects));
+            $project = $primaryModel->projects[0];
+            $this->assertEquals($this->modelClass . ' Project', $project->name);
+        }
+
+        protected function addProduct($relatedFieldName)
+        {
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(0, count($primaryModel->products));
+            $product = ProductTestHelper::createProductByNameForOwner($this->modelClass . ' Product', Yii::app()->user->userModel);
+            $product->$relatedFieldName = $this->selectedModels[1];
+            $product->save();
+        }
+
+        protected function validateProduct()
+        {
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(1, count($primaryModel->products));
+            $product = $primaryModel->products[0];
+            $this->assertEquals($this->modelClass . ' Product', $product->name);
+        }
+
+        protected function addMeeting()
+        {
+            $this->checkActivityItemRelationCount('Meeting', 'First Meeting', 0);
+            MeetingTestHelper::createMeetingWithOwnerAndRelatedAccount('First Meeting', Yii::app()->user->userModel, $this->selectedModels[1]);
+        }
+
+        protected function validateMeeting($fieldName, $fieldValue)
+        {
+            $this->validateActivityItem('Meeting', 'First Meeting', $this->modelClass, $fieldName, $fieldValue);
+        }
+
+        protected function addNote()
+        {
+            $this->checkActivityItemRelationCount('Note', 'First Note', 0);
+            NoteTestHelper::createNoteWithOwnerAndRelatedAccount('First Note', Yii::app()->user->userModel, $this->selectedModels[1]);
+        }
+
+        protected function validateNote($fieldName, $fieldValue)
+        {
+            $this->validateActivityItem('Note', 'First Note', $this->modelClass, $fieldName, $fieldValue);
+        }
+
+        protected function addTask()
+        {
+            $this->checkActivityItemRelationCount('Task', 'First Task', 0);
+            TaskTestHelper::createTaskWithOwnerAndRelatedAccount('First Task', Yii::app()->user->userModel, $this->selectedModels[1]);
+        }
+
+        protected function validateTask($fieldName, $fieldValue)
+        {
+            $this->validateActivityItem('Task', 'First Task', $this->modelClass, $fieldName, $fieldValue);
+        }
     }
 ?>

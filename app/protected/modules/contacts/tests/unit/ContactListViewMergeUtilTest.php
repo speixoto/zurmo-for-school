@@ -34,35 +34,35 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AccountListViewMergeUtilTest extends ListViewMergeUtilTest
+    class ContactListViewMergeUtilTest extends ListViewMergeUtilTest
     {
-        public $modelClass = 'Account';
+        public $modelClass = 'Contact';
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
+            ContactsModule::loadStartingData();
             UserTestHelper::createBasicUser('Steven');
         }
 
         protected function setFirstModel()
         {
             $user                                   = User::getByUsername('steven');
-            $account                                = AccountListViewMergeTestHelper::getFirstModel($user);
+            $account                                = ContactListViewMergeTestHelper::getFirstModel($user);
             $this->selectedModels[]                 = $account;
         }
 
         protected function setSecondModel()
         {
             $user                                   = User::getByUsername('steven');
-            $account                                = AccountListViewMergeTestHelper::getSecondModel($user);
+            $account                                = ContactListViewMergeTestHelper::getSecondModel($user);
             $this->selectedModels[]                 = $account;
         }
 
         protected function setRelatedModels()
         {
-            $this->addProject('accounts');
-            $this->addProduct('account');
-            $this->addContact();
+            $this->addProject('contacts');
+            $this->addProduct('contact');
             $this->addOpportunity();
             $this->addTask();
             $this->addNote();
@@ -71,32 +71,16 @@
 
         protected function validatePrimaryModelData()
         {
-            $this->assertEmpty(Account::getByName('Test Account2'));
+            $this->assertEmpty(Contact::getByName('shozin shozinson'));
             $this->validateProject();
             $this->validateProduct();
-            $this->validateContact();
             $this->validateOpportunity();
-            $this->validateTask('name', 'Test Account2');
-            $this->validateNote('name', 'Test Account2');
-            $this->validateMeeting('name', 'Test Account2');
-        }
-
-        private function addContact()
-        {
-            $primaryModel = $this->getPrimaryModel();
-            $this->assertEquals(0, count($primaryModel->contacts));
-            $contact = ContactTestHelper::createContactByNameForOwner('Allan', Yii::app()->user->userModel);
-            $contact->account = $this->selectedModels[1];
-            $contact->save();
-        }
-
-        private function validateContact()
-        {
-            $primaryModel = $this->getPrimaryModel();
-            $this->assertEquals(1, count($primaryModel->contacts));
-            $contact      = $primaryModel->contacts[0];
-            $this->assertEquals('Allan', $contact->firstName);
-            $this->assertEquals('Allanson', $contact->lastName);
+            $this->validateTask('firstName', 'shozin');
+            $this->validateTask('lastName', 'shozinson');
+            $this->validateNote('firstName', 'shozin');
+            $this->validateNote('lastName', 'shozinson');
+            $this->validateMeeting('firstName', 'shozin');
+            $this->validateMeeting('lastName', 'shozinson');
         }
 
         private function addOpportunity()
@@ -104,7 +88,7 @@
             $primaryModel = $this->getPrimaryModel();
             $this->assertEquals(0, count($primaryModel->opportunities));
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('UI Services', Yii::app()->user->userModel);
-            $opportunity->account = $this->selectedModels[1];
+            $opportunity->contacts->add($this->selectedModels[1]);
             $opportunity->save();
         }
 
@@ -118,11 +102,11 @@
 
         protected function setSelectedModels()
         {
-            $accounts = Account::getByName('Test Account1');
-            $this->selectedModels[] = $accounts[0];
+            $contacts = Contact::getByName('Super Man');
+            $this->selectedModels[] = $contacts[0];
 
-            $accounts = Account::getByName('Test Account2');
-            $this->selectedModels[] = $accounts[0];
+            $contacts = Contact::getByName('shozin shozinson');
+            $this->selectedModels[] = $contacts[0];
         }
     }
 ?>
