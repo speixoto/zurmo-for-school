@@ -110,15 +110,15 @@
             $account      = new Account();
             $dedupeRules  = new AccountDedupeRules($account);
             $searchResult = $dedupeRules->searchForDuplicateModels('name', 'Account1');
-            $this->assertEquals('There is 1 possible match.', $searchResult['message']);
+            $this->assertEquals('There is 1 possible match. Click here to view.', $searchResult['message']);
             $searchResult = $dedupeRules->searchForDuplicateModels('name', 'account');
-            $this->assertEquals('There are at least 5 possible matches.', $searchResult['message']);
+            $this->assertEquals('There are at least 5 possible matches. Click here to view.', $searchResult['message']);
             $this->assertCount (6, $searchResult['matchedModels']);
             $searchResult = $dedupeRules->searchForDuplicateModels('officePhone', '123-456-789');
-            $this->assertEquals('There are 5 possible matches.', $searchResult['message']);
+            $this->assertEquals('There are 5 possible matches. Click here to view.', $searchResult['message']);
             $this->assertCount (5, $searchResult['matchedModels']);
             $searchResult = $dedupeRules->searchForDuplicateModels('officePhone', '987-654-321');
-            $this->assertEquals('There is 1 possible match.', $searchResult['message']);
+            $this->assertEquals('There is 1 possible match. Click here to view.', $searchResult['message']);
             $this->assertCount (1, $searchResult['matchedModels']);
             try
             {

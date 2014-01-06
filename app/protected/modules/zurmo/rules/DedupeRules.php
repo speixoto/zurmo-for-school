@@ -112,10 +112,8 @@
                                             $('#" . $dedupeViewId . "').replaceWith(returnObj.content);
                                             $('#FlashMessageBar').jnotifyAddMessage({
                                                 text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show(); return false;\">' + returnObj.message + '</a>',
-                                                permanent: false,
+                                                permanent: true,
                                                 showIcon: false,
-                                                disappearTime: 10000,
-                                                removeExisting: true
                                             })
                                         }
                                  }"
@@ -225,14 +223,14 @@
                 if (count($matchedModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
                 {
                     $message =  Zurmo::t('ZurmoModule',
-                                         'There are at least {n} possible matches.',
+                                         'There are at least {n} possible matches. Click here to view.',
                                          ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT
                     );
                 }
                 else
                 {
                     $message =  Zurmo::t('ZurmoModule',
-                                         'There is {n} possible match.|There are {n} possible matches.',
+                                         'There is {n} possible match. Click here to view.|There are {n} possible matches. Click here to view.',
                                          count($matchedModels)
                     );
                 }

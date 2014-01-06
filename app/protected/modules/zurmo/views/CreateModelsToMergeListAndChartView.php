@@ -55,9 +55,11 @@
 
         protected function getLabelForDupes()
         {
-            $label = Zurmo::t('ZurmoModule', 'Possible Matches');
-            $link  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#CreateModelsToMergeListAndChartView").hide()'));
-            return $label . $link;
+            $label            = Zurmo::t('ZurmoModule', 'Possible Matches');
+            $link             = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#CreateModelsToMergeListAndChartView").hide()'));
+            $instructions     = Zurmo::t('ZurmoModule', 'Select {label} to use', array('{label}' => $this->getSingularLabel()));
+            $instructionsSpan = ZurmoHtml::tag('span', array(), $instructions);
+            return $label . $link . parent::getLabelForDupes();
         }
     }
 ?>

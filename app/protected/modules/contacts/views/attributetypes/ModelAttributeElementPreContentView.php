@@ -106,11 +106,13 @@
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
                                                                 $(this).siblings('a').removeClass('selected');
                                                                 $(this).addClass('selected');
+                                                                return false;
                                                             });";
 
             $script .= "$('.attributePreElementContentModelElement').click(function(){
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
                                                                 $('#' + $(this).data('hiddenid')).val($(this).data('hiddenvalue'));
+                                                                return false;
                                                             });";
             return $script;
         }

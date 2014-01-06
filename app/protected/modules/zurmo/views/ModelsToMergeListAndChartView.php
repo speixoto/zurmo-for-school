@@ -213,7 +213,8 @@
          */
         protected function getLabelForDupes()
         {
-            return null;
+            $instructions   = Zurmo::t('ZurmoModule', 'Select {label} to keep', array('{label}' => $this->getSingularLabel()));
+            return ZurmoHtml::tag('span', array(), $instructions);
         }
 
         protected function getMaxWarning()
@@ -293,6 +294,13 @@
                                                    LatestActivitiesUtil::getCountByModelClassName
                                                        ('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
             return $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
+        }
+
+        protected function getSingularLabel()
+        {
+            $modelClass  = get_class($this->model);
+            $moduleClass = $modelClass::getModuleClassName();
+            return $moduleClass::getModuleLabelByTypeAndLanguage('Singular');
         }
     }
 ?>
