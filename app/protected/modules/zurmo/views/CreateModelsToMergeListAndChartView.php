@@ -72,5 +72,10 @@
         {
             return null;
         }
+
+        protected function renderBeforeListContent()
+        {
+            return null;
+        }
     }
 ?>
