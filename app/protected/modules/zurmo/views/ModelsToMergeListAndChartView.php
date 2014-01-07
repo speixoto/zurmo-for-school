@@ -80,20 +80,25 @@
             foreach($modelsToShow as $key => $dupeModel)
             {
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
-                $display = ($key == 0) ? 'block' : 'none';
-                $cards  .= ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
-                                                      'id'    => 'dupeDetailsView-' . $dupeModel->id,
-                                                      'style' => 'display:' . $display),
-                                          $detailsViewContent);
                 if (!strcmp($dupeModel->id, $this->model->id))
                 {
                     $extraClass = ' selected';
+                    $display = 'block';
                 }
                 else
                 {
                     $extraClass = '';
+                    $display = 'none';
                 }
-                //$contactNameElement  = $this->renderRadioButtonContent($dupeModel);
+                if ($this->model->id <0)
+                {
+                    $display = ($key == 0) ? 'block' : 'none';
+                    $extraClass = ($key == 0) ? ' selected' : '';
+                }
+                $cards  .= ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
+                                                      'id'    => 'dupeDetailsView-' . $dupeModel->id,
+                                                      'style' => 'display:' . $display),
+                                          $detailsViewContent);
                 $radio = ZurmoHtml::tag('span', array(), $this->renderRadioButtonContent($dupeModel));
                 $entryName = ZurmoHtml::tag('a', array('href' => '#'), strval($dupeModel));
                 $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++ . $extraClass,
