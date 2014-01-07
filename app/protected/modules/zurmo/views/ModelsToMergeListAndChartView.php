@@ -171,6 +171,8 @@
                             var id = $(this).attr('id');
                             var idArray = id.split('-');
                             $('.business-card:visible').hide();
+                            $('li.selectedDupe').removeClass('selected');
+                            $(this).addClass('selected');
                             $('#dupeDetailsView-' + idArray[1]).show();
                         });
                         $('body').on('change', '.dupeContactsPrimaryModel',
@@ -275,8 +277,8 @@
             $checked = !strcmp($dupeModel->id, $this->model->id);
             return ZurmoHtml::radioButton('primaryModelId', $checked,
                     array('id'     => 'primaryModelId-' . $dupeModel->id,
-                        'class'  => 'dupeContactsPrimaryModel',
-                        'value'  => $dupeModel->id
+                          'class'  => 'dupeContactsPrimaryModel',
+                          'value'  => $dupeModel->id
                     ), null);
         }
 
