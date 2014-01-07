@@ -82,14 +82,15 @@
             foreach($attributes as $attribute)
             {
                 $attributeContent = null;
+                $position = 1;
                 foreach($this->selectedModels as $model)
                 {
                     $modelAttributeAndElementDataToMergeItem = new $modelAttributeAndElementDataToMergeItemClass(
-                                                                $model, $attribute, $this->element, $this->primaryModel);
+                                                                $model, $attribute, $this->element, $this->primaryModel, $position++);
 
                     $attributeContent .= $modelAttributeAndElementDataToMergeItem->getAttributeRenderedContent();
                 }
-                $content .= ZurmoHtml::tag('div', array(), $attributeContent);
+                $content .= ZurmoHtml::tag('div', array('class' => 'hasPossibles'), $attributeContent);
             }
             Yii::app()->clientScript->registerScript('preContentSelectScript', $this->registerScriptForAttributeReplacement());
             echo $content;
@@ -103,11 +104,15 @@
         {
             $script = "$('.attributePreElementContent').click(function(){
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
+                                                                $(this).siblings('a').removeClass('selected');
+                                                                $(this).addClass('selected');
+                                                                return false;
                                                             });";
 
             $script .= "$('.attributePreElementContentModelElement').click(function(){
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
                                                                 $('#' + $(this).data('hiddenid')).val($(this).data('hiddenvalue'));
+                                                                return false;
                                                             });";
             return $script;
         }

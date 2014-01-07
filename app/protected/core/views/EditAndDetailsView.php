@@ -96,7 +96,6 @@
                                                                 )
                                                             );
             $content .= $formStart;
-            $content .= '<div class="attributesContainer">';
             if ($form != null && $this->renderRightSideFormLayoutForEdit($form) == null)
             {
                 $class = ' full-width';
@@ -105,10 +104,10 @@
             {
                 $class = '';
             }
-            $content .= $this->beforeRenderingFormLayout();
-            $content .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
-            $content .= $this->renderRightSideContent($form);
-            $content .= '</div>';
+            $formContent  = $this->beforeRenderingFormLayout();
+            $formContent .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
+            $formContent .= $this->renderRightSideContent($form);
+            $content .= $this->renderAttributesContainerWrapperDiv($formContent);
             $content .= $this->renderAfterFormLayout($form);
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
@@ -255,6 +254,11 @@
                 $dedupeRules->registerScriptForEditAndDetailsView($element);
             }
             parent::resolveElementDuringFormLayoutRender($element);
+        }
+
+        protected function renderAttributesContainerWrapperDiv($content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
         }
     }
 ?>

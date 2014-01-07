@@ -34,11 +34,15 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * 'ListViewMerge' takes the user to a form
+     * where they can merge many models into one. This is also known as bulk merge.
+     */
     class ListViewMergeActionSecurity extends ActionSecurity
     {
         protected function getRightToCheck()
         {
-            return array('ZurmoModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
+            return array('ZurmoModule', ZurmoModule::RIGHT_BULK_MERGE);
         }
     }
 ?>

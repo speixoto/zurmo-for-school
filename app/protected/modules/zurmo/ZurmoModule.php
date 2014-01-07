@@ -47,6 +47,7 @@
         const RIGHT_ACCESS_GLOBAL_CONFIGURATION   = 'Access Global Configuration';
         const RIGHT_ACCESS_CURRENCY_CONFIGURATION = 'Access Currency Configuration';
         const RIGHT_BULK_DELETE                   = 'Mass Delete';
+        const RIGHT_BULK_MERGE                    = 'Mass Merge';
 
         const AUDIT_EVENT_ITEM_CREATED            = 'Item Created';
         const AUDIT_EVENT_ITEM_MODIFIED           = 'Item Modified';
@@ -61,6 +62,7 @@
             $labels[self::RIGHT_ACCESS_GLOBAL_CONFIGURATION]    = Zurmo::t('ZurmoModule', 'Access Global Configuration');
             $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
             $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('Core', 'Mass Delete');
+            $labels[self::RIGHT_BULK_MERGE]                     = Zurmo::t('Core', 'Mass Merge');
             return $labels;
         }
 

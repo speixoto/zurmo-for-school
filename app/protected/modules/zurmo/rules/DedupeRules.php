@@ -41,8 +41,6 @@
      */
     abstract class DedupeRules
     {
-        //TODO: @sergio: Add tests
-
         protected $model;
 
         public function __construct(RedBeanModel $model)
@@ -69,6 +67,15 @@
         }
 
         /**
+         * This array maps the relation between the attribute name and function callback for search for duplicate models
+         * @return array
+         */
+        protected function getDedupeAttributesAndSearchForDuplicateModelsCallbackMappedArray()
+        {
+            return array();
+        }
+
+        /**
          * The ViewClassName used to display the results of the dedupe models list
          * @return string
          */
@@ -80,7 +87,7 @@
         /**
          * Register the script that will make the ajax call to search for a dedupe and update the DedupeViewClassName
          * with the content returned. It also display a clickable flash message with the number of results found
-         * @see ZurmoModuleController::actionSearchForDedupes
+         * @see ZurmoModuleController::actionSearchForDuplicateModels
          * @param Element $element
          * @return null
          */
@@ -97,18 +104,17 @@
                 'data'       => array('attribute' => $this->getAttributeForDedupe($element),
                     'value'     => "js:$('#{$id}').val()",
                 ),
-                'url'        => 'searchForDedupes',
+                'url'        => 'searchForDuplicateModels',
                 'success'    => "js:function(data, textStatus, jqXHR){
                                         var returnObj = jQuery.parseJSON(data);
                                         if (returnObj != null)
                                         {
                                             $('#" . $dedupeViewId . "').replaceWith(returnObj.content);
                                             $('#FlashMessageBar').jnotifyAddMessage({
-                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show(); return false;\">' + returnObj.message + '</a>',
-                                                permanent: false,
+                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>',
+                                                permanent: true,
+                                                clickOverlay : true,
                                                 showIcon: false,
-                                                disappearTime: 10000,
-                                                removeExisting: true
                                             })
                                         }
                                  }"
@@ -201,6 +207,47 @@
                 return false;
             }
             return true;
+        }
+
+        public function searchForDuplicateModels($attribute, $value)
+        {
+            assert('is_string($attribute) && $attribute != null');
+            assert('is_string($value)');
+            $callback      = $this->getCallbackToSearchForDuplicateModelsByAttribute($attribute);
+            if ($callback == null)
+            {
+                throw new NotImplementedException('There is no search callback defined for attribute: ' . $attribute);
+            }
+            $matchedModels = call_user_func($callback, $value, ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT + 1);
+            if (count($matchedModels) > 0)
+            {
+                if (count($matchedModels) > ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT)
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                                         'There are at least {n} possible matches.',
+                                         ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT
+                    );
+                }
+                else
+                {
+                    $message =  Zurmo::t('ZurmoModule',
+                                         'There is {n} possible match.|There are {n} possible matches.',
+                                         count($matchedModels)
+                    );
+                }
+                $clickHere = ZurmoHtml::tag('span', array('class' => 'underline'), Zurmo::t('ZurmoModule', 'Click here'));
+                $message .= ' ' . $clickHere . ' ' . Zurmo::t('ZurmoModule', 'to view') . '.';
+                return array('message' => $message, 'matchedModels' => $matchedModels);
+            }
+        }
+
+        protected function getCallbackToSearchForDuplicateModelsByAttribute($attribute)
+        {
+            $callbackMappedArray = $this->getDedupeAttributesAndSearchForDuplicateModelsCallbackMappedArray();
+            if (array_key_exists($attribute, $callbackMappedArray))
+            {
+                return $callbackMappedArray[$attribute];
+            }
         }
     }
 ?>

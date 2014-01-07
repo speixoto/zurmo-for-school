@@ -661,13 +661,13 @@
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalCreate');
         }
 
-        public function testSuperUserSearchForDedupesAction()
+        public function testSuperUserSearchForDuplicateModelsAction()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->setGetArray(array('attribute' => 'dumbAttribute',
-                                     'value'     => 'dumbValue',
+            $this->setGetArray(array('attribute' => 'name',
+                                     'value'     => 'fakeValue',
             ));
-            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDedupes', true);
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels', true);
 
             $account = AccountTestHelper::createAccountByNameForOwner('testAccount', $super);
 
@@ -675,9 +675,9 @@
             $this->setGetArray(array('attribute' => 'name',
                                      'value'     => 'testAccount',
             ));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDedupes');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels');
             $object = json_decode($content);
-            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
             //Test search by officePhone
             $account->officePhone = '123456789';
@@ -685,9 +685,9 @@
             $this->setGetArray(array('attribute' => 'officePhone',
                                      'value'     => '123456789',
             ));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDedupes');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels');
             $object = json_decode($content);
-            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
             //Test search by email
             $account->primaryEmail->emailAddress = 'a@a.a';
@@ -695,9 +695,9 @@
             $this->setGetArray(array('attribute' => 'primaryEmail',
                                      'value'     => 'a@a.a',
             ));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDedupes');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels');
             $object = json_decode($content);
-            $this->assertEquals  ('There is 1 possible match.', $object->message);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
         }
     }

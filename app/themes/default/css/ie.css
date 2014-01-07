@@ -28,7 +28,7 @@
 .hasDropDown select {
   z-index: 5;
   padding-right: 15px;
-  background: #fff url(../images/dropdown-arrow.png) 100% 0 no-repeat;
+  background: #fff url("../images/dropdown-arrow.png") 100% 0 no-repeat;
 }
 .add-label {
   display: inline-block;

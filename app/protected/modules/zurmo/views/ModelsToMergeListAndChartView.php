@@ -39,11 +39,10 @@
      */
     abstract class ModelsToMergeListAndChartView extends SecuredDetailsView
     {
-        const MAX_NUMBER_OF_MODELS_TO_SHOW = 0;
-
         protected $dupeModels;
 
-        protected $colorsArray = array('#98cdff', '#12cd11');
+        protected $colorsArray = array('#315AB0', '#66367b', '#2c3e50', '#269a55', '#c0392b',
+                                       '#e67e22', '#3498db', '#501a27', '#0c5b3f', '#c05d91');
 
         public function __construct($controllerId, $moduleId, $model, $dupeModels)
         {
@@ -64,51 +63,60 @@
         protected function renderContent()
         {
             $leftContent = $this->renderSelectedContactsListWithCardView();
-            $leftContainer = ZurmoHtml::tag('div', array('class' => 'left-column'), $leftContent);
+            $leftContainer = ZurmoHtml::tag('div', array('class' => 'left-column clearfix'), $leftContent);
             $rightContent = $this->renderRightSideContent();
             $rightContainer = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightContent);
-            $content = ZurmoHtml::tag('div', array('class' => 'full-width', 'style' => 'height:200px;border:solid 1px #cccccc'),
-                                                $leftContainer . $rightContainer);
-            return ZurmoHtml::tag('div',
-                                  array('class' => 'details-table'),
-                                  $content);
+            return ZurmoHtml::tag('div', array('class' => 'chosen-entries'), $leftContainer . $rightContainer);
         }
 
         protected function renderSelectedContactsListWithCardView()
         {
-            $label           = $this->getLabelForDupes();
-            $maxWarning      = $this->getMaxWarning();
-            $preparedContent = $label . $maxWarning . '<ul>';
+            $title           = $this->getTitleBar();
+            $preparedContent = $this->renderBeforeListContent();
             $modelsToShow    = $this->dupeModels;
             $this->resolveMaxModelsToShow($modelsToShow);
-            foreach($modelsToShow as $dupeModel)
+            $cards    = null;
+            $position = 1;
+
+            foreach($modelsToShow as $key => $dupeModel)
             {
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
-                $content = ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
-                                                        'id'   => 'dupeDetailsView-' . $dupeModel->id,
-                                                        'style' => 'display:none'),
+                if (!strcmp($dupeModel->id, $this->model->id))
+                {
+                    $extraClass = ' selected';
+                    $display = 'block';
+                }
+                else
+                {
+                    $extraClass = '';
+                    $display = 'none';
+                }
+                if ($this->model->id <0)
+                {
+                    $display = ($key == 0) ? 'block' : 'none';
+                    $extraClass = ($key == 0) ? ' selected' : '';
+                }
+                $cards  .= ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
+                                                      'id'    => 'dupeDetailsView-' . $dupeModel->id,
+                                                      'style' => 'display:' . $display),
                                           $detailsViewContent);
-                $checked      = !strcmp($dupeModel->id, $this->model->id);
-                $radioElement = ZurmoHtml::radioButton('primaryModelId', $checked,
-                                                        array('id'     => 'primaryModelId-' . $dupeModel->id,
-                                                              'class'  => 'dupeContactsPrimaryModel',
-                                                              'value'  => $dupeModel->id
-                                                             )) . strval($dupeModel);
-                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe',
-                                                                 'id' => 'selectedDupe-' . $dupeModel->id),
-                                                                $radioElement) . $content;
+                $radio = ZurmoHtml::tag('span', array(), $this->renderRadioButtonContent($dupeModel));
+                $entryName = ZurmoHtml::tag('a', array('href' => '#'), strval($dupeModel));
+                $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++ . $extraClass,
+                                                                 'id'    => 'selectedDupe-' . $dupeModel->id), $radio . $entryName);
                 $preparedContent .= $contactNameElement;
             }
-            $preparedContent .= '</ul>';
             $this->registerScripts();
-            return $preparedContent;
+            $cards = ZurmoHtml::tag('div', array('class' => 'cards'), $cards);
+            $possibleMatches = ZurmoHtml::tag('ul', array('class' => 'possible-matches'), $preparedContent);
+            return $title . $possibleMatches . $cards;
         }
 
         protected function resolveMaxModelsToShow(& $models)
         {
-            if (static::MAX_NUMBER_OF_MODELS_TO_SHOW > 0 && count($this->dupeModels) > static::MAX_NUMBER_OF_MODELS_TO_SHOW)
+            if (ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT > 0 && count($this->dupeModels) > ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT)
             {
-                $models = array_slice($models, 0, static::MAX_NUMBER_OF_MODELS_TO_SHOW);
+                $models = array_slice($models, 0, ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT);
             }
         }
 
@@ -117,11 +125,11 @@
             $content = null;
             if ($model instanceof User || $model instanceof Person)
             {
-                $layout  = new PersonCardViewLayout($model);
+                $layout  = new PersonCardViewLayout($model, true);
             }
             elseif ($model instanceof Account)
             {
-                $layout  = new AccountCardViewLayout($model);
+                $layout  = new AccountCardViewLayout($model, true);
             }
             else
             {
@@ -134,10 +142,8 @@
 
         protected function renderRightSideContent($form = null)
         {
-            $chartContent = $this->renderChart();
-            $divContent   = ZurmoHtml::tag('div', array('class' => 'spidergraph', 'style' => 'display:none'), $chartContent);
-            $spanContent  = ZurmoHtml::tag('span', array('class' => 'graphDisplay'), Zurmo::t('ZurmoModule', 'Show'));
-            return $spanContent . $divContent;
+            $content = ZurmoHtml::tag('div', array('class' => 'spidergraph'), $this->renderChart());
+            return $content;
         }
 
         protected   function renderChart()
@@ -153,46 +159,28 @@
             $this->resolveDataForChart($amChart);
             $amChart->id               = $chartId;
             $amChart->type             = ChartRules::TYPE_RADAR;
+            $amChart->addValueAxisProperties('integersOnly', 'true');
             $this->resolveGraphsForChart($amChart);
             $scriptContent      = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
             $cClipWidget        = new CClipWidget();
             $cClipWidget->beginClip("Chart" . $chartId);
-            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId));
+            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'height' => '250px'));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Chart' . $chartId];
         }
 
         protected function registerScripts()
         {
-            $script = "$('body').on('mouseover', 'li.selectedDupe',
+            $script = "$('body').on('click', 'li.selectedDupe',
                         function()
                         {
                             var id = $(this).attr('id');
                             var idArray = id.split('-');
+                            $('.business-card:visible').hide();
+                            $('li.selectedDupe').removeClass('selected');
+                            $(this).addClass('selected');
                             $('#dupeDetailsView-' + idArray[1]).show();
-                        });
-                        $('body').on('mouseout', 'li.selectedDupe',
-                        function()
-                        {
-                            var id = $(this).attr('id');
-                            var idArray = id.split('-');
-                            $('#dupeDetailsView-' + idArray[1]).hide();
-                        });
-
-                        $('body').on('click', '.graphDisplay',
-                        function()
-                        {
-                            if($('.spidergraph').is(':visible'))
-                            {
-                                $('.spidergraph').hide();
-                                $('.graphDisplay').html('Show');
-                            }
-                            else
-                            {
-                                $('.spidergraph').show();
-                                $('.graphDisplay').html('Hide');
-                            }
                         });
                         $('body').on('change', '.dupeContactsPrimaryModel',
                             {$this->onChangeScript()}
@@ -212,19 +200,11 @@
         }
 
         /**
-         * The label for the list of dupes
+         * The title bar for the view
          */
-        protected function getLabelForDupes()
+        protected function getTitleBar()
         {
             return null;
-        }
-
-        protected function getMaxWarning()
-        {
-            if (static::MAX_NUMBER_OF_MODELS_TO_SHOW > 0 && count($this->dupeModels) > static::MAX_NUMBER_OF_MODELS_TO_SHOW)
-            {
-                return Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', static::MAX_NUMBER_OF_MODELS_TO_SHOW);
-            }
         }
 
         protected function getColorForDupe()
@@ -279,23 +259,47 @@
         protected function renderActivitiesTotals($model)
         {
             $itemId = $model->getClassId('Item');
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-note'), '');
             $notesTotalContent    = ZurmoHtml::tag('span',
-                                                  array('class' => 'total-notes'),
-                                                  LatestActivitiesUtil::getCountByModelClassName
-                                                      ('Note', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+                                        array('class' => 'total-notes'),
+                                        $icon .
+                                        LatestActivitiesUtil::getCountByModelClassName
+                                            ('Note', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-task'), '');
             $tasksTotalContent    = ZurmoHtml::tag('span',
-                                                   array('class' => 'total-tasks'),
-                                                   LatestActivitiesUtil::getCountByModelClassName
-                                                       ('Task', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+                                        array('class' => 'total-tasks'),
+                                        $icon .
+                                        LatestActivitiesUtil::getCountByModelClassName
+                                            ('Task', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-email'), '');
             $emailsTotalContent   = ZurmoHtml::tag('span',
-                                                   array('class' => 'total-emails'),
-                                                   LatestActivitiesUtil::getCountByModelClassName
-                                                       ('EmailMessage', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+                                        array('class' => 'total-emails'),
+                                        $icon .
+                                        LatestActivitiesUtil::getCountByModelClassName
+                                            ('EmailMessage', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-meeting'), '');
             $meetingsTotalContent = ZurmoHtml::tag('span',
-                                                   array('class' => 'total-meetings'),
-                                                   LatestActivitiesUtil::getCountByModelClassName
-                                                       ('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
-            return $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
+                                        array('class' => 'total-meetings'),
+                                        $icon .
+                                        LatestActivitiesUtil::getCountByModelClassName
+                                            ('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $content = $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
+            return ZurmoHtml::tag('div', array('class' => 'entry-stats'), $content);
+        }
+
+        protected function renderRadioButtonContent($dupeModel)
+        {
+            $checked = !strcmp($dupeModel->id, $this->model->id);
+            return ZurmoHtml::radioButton('primaryModelId', $checked,
+                    array('id'     => 'primaryModelId-' . $dupeModel->id,
+                          'class'  => 'dupeContactsPrimaryModel',
+                          'value'  => $dupeModel->id
+                    ), null);
+        }
+
+        protected function renderBeforeListContent()
+        {
+            return ZurmoHtml::tag('li', array(), Zurmo::t('ZurmoModule', 'Primary'));
         }
     }
 ?>

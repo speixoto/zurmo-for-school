@@ -105,12 +105,27 @@
             {
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
-            $themeBaseUrl           =  Yii::app()->themeManager->baseUrl . '/default/css';
+            $themeBaseUrl =  Yii::app()->themeManager->baseUrl . '/default/css';
+            $filePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+            if (!is_file($filePath))
+            {
+                Yii::app()->lessCompiler->compileCustom();
+            }
+            $customCssUrl = Yii::app()->assetManager->publish($filePath);
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName($this->getAttributeForRadioButtonList()) . "\"]').live('change', function(){
                           $removeScript
                           $(document.body).addClass(this.value);
-                          $('head').append('<link rel=\"stylesheet\" href=\"$themeBaseUrl/zurmo-'+this.value+'.css\" type=\"text/css\" />');
+                          var themeBaseUrl = '$themeBaseUrl';
+                          var customCssUrl = '$customCssUrl';
+                          if(this.value === 'custom')
+                          {
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+customCssUrl+'\" type=\"text/css\" />');
+                          }
+                          else
+                          {
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css\" type=\"text/css\" />');
+                          }
                           });
                       ";
             // End Not Coding Standard

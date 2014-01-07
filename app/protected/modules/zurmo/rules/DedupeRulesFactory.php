@@ -42,9 +42,9 @@
     {
         public static function createRulesByModel($model)
         {
-            if (in_array(get_class($model), array('Contact', 'Lead', 'Account')))
+            $dedupeRulesClassName = get_class($model) . 'DedupeRules';
+            if (@class_exists($dedupeRulesClassName))
             {
-                $dedupeRulesClassName = get_class($model) . 'DedupeRules';
                 return new $dedupeRulesClassName($model);
             }
             return false;

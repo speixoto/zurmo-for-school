@@ -101,9 +101,9 @@
             else
             {
                 // Begin Not Coding Standard
-                $alertMessage = Zurmo::t('Core', 'Minimum number of selected records needed');
                 Yii::app()->clientScript->registerScript('massActionMenuActionElementEventHandler', "
-                        function massActionMenuActionElementEventHandler(elementType, gridId, baseUrl, actionId, pageVarName, minSelected)
+                        function massActionMenuActionElementEventHandler(elementType, gridId, baseUrl, actionId,
+                                pageVarName, minSelected, alertMessage)
                         {
                             selectAll = '';
                             if (elementType == " . static::SELECTED_MENU_TYPE . ")
@@ -112,7 +112,7 @@
                                 var numberSelected = selectedIdsString == '' ? 0 : selectedIdsString.split(',').length;
                                 if (numberSelected < minSelected)
                                 {
-                                    alert('" . $alertMessage . ": ' + minSelected);
+                                    alert(alertMessage);
                                     $(this).val('');
                                     return false;
                                 }
@@ -207,7 +207,8 @@
                                         " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "'," .
                                         " actionName," .
                                         " '" . $this->getPageVarName() . "'," .
-                                        " '" . $this->getMinimumNumberOfSelectedElements() . "'" .
+                                        " '" . $this->getMinimumNumberOfSelectedElements() . "'," .
+                                        " '" . $this->getAlertMessage() . "'" .
                                         ");
                             }
                         }
@@ -267,7 +268,8 @@
                             " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "'," .
                             " '" . $this->getActionId(). "'," .
                             " '" . $this->getPageVarName() . "'," .
-                            " '" . $this->getMinimumNumberOfSelectedElements() . "'" .
+                            " '" . $this->getMinimumNumberOfSelectedElements() . "'," .
+                            " '" . $this->getAlertMessage() . "'" .
                             ")";
             // End Not Coding Standard
         }
@@ -341,6 +343,12 @@
         protected function getMinimumNumberOfSelectedElements()
         {
             return 1;
+        }
+
+        protected function getAlertMessage()
+        {
+            return Zurmo::t('Core', 'At least {n} record must be selected|At least {n} records must be selected',
+                            $this->getMinimumNumberOfSelectedElements());
         }
     }
 ?>

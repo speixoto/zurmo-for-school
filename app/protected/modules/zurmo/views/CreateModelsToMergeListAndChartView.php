@@ -36,8 +36,6 @@
 
     class CreateModelsToMergeListAndChartView extends ModelsToMergeListAndChartView
     {
-        const MAX_NUMBER_OF_MODELS_TO_SHOW = 10;
-
         protected function onChangeScript()
         {
             $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');
@@ -55,11 +53,30 @@
             return 'style="display:none"';
         }
 
-        protected function getLabelForDupes()
+        protected function getTitleBar()
         {
-            $label = Zurmo::t('ZurmoModule', 'Possible Matches');
-            $link  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#CreateModelsToMergeListAndChartView").hide()'));
-            return $label . $link;
+            $totalModelsCount = count($this->dupeModels);
+            if (ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT > 0 && $totalModelsCount > ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT)
+            {
+                $label = Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT);
+            }
+            else
+            {
+                $label = Zurmo::t('ZurmoModule', 'There is {n} possible match|There are {n} possible matches.', $totalModelsCount);
+            }
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-x'), '');
+            $link  = ZurmoHtml::link($icon . Zurmo::t('ZurmoModule', 'Close'), '#', array('class' => 'simple-link', 'onclick' => 'js:$("#CreateModelsToMergeListAndChartView").slideUp()'));
+            return ZurmoHtml::tag('div', array('class' => 'merge-title-bar'), ZurmoHtml::tag('h3', array(), $label . $link));
+        }
+
+        protected function renderRadioButtonContent($dupeModel)
+        {
+            return null;
+        }
+
+        protected function renderBeforeListContent()
+        {
+            return null;
         }
     }
 ?>

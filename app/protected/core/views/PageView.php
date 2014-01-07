@@ -260,7 +260,6 @@
             $themeBaseUrl           = Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
-            $cs->registerCssFile($themeBaseUrl . '/css/keyframes.css');
 
             $specialCssContent = null;
             $publishedAssetsPath = Yii::app()->assetManager->publish(

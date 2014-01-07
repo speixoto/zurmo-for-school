@@ -47,8 +47,7 @@
             }
             else
             {
-                $message = Yii::t('Default', 'Invalid API request type.');
-                throw new ApiException($message);
+                $requestClassName = 'ApiRestRequest';
             }
             return $requestClassName;
         }

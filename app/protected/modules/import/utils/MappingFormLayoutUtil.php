@@ -263,9 +263,9 @@
                     $content .= $element->render();
                 }
             }
-
+            $subDivsCssClass = 'has'.count($mappingRuleFormsAndElementTypes);
             $content = ZurmoHtml::tag('div', array('id' => self::getMappingRulesDivIdByColumnName($columnName),
-                                                   'class' => 'mapping-rules'), $content);
+                                                   'class' => 'mapping-rules '.$subDivsCssClass), $content);
             return $content;
         }
 

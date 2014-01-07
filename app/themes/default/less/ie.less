@@ -33,7 +33,7 @@
  * Copyright Zurmo Inc. 2014. All rights reserved.
  ********************************************************************************/
 
-//@import 'mixins.less';
+@import "variables.less";
 
 /*Target only Explorer*/
 .form{
@@ -75,7 +75,7 @@
     select{
         z-index: 5;
         padding-right:15px;
-        background: #fff url(../images/dropdown-arrow.png) 100% 0 no-repeat;
+        background: #fff url("@{path}dropdown-arrow.png") 100% 0 no-repeat;
     }
 }
 

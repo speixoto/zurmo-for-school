@@ -55,5 +55,17 @@
         {
             return array('Text', 'Phone');
         }
+
+        /**
+         * @see DedupeRules
+         */
+        protected function getDedupeAttributesAndSearchForDuplicateModelsCallbackMappedArray()
+        {
+            return array(
+                'name'          => 'AccountSearch::getAccountsByPartialName',
+                'officePhone'   => 'AccountSearch::getAccountsByAnyPhone',
+                'primaryEmail'  => 'AccountSearch::getAccountsByAnyEmailAddress',
+            );
+        }
     }
 ?>

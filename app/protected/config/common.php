@@ -145,7 +145,7 @@
                     ),
                     'css-color' => array(
                         //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/color-scheme.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/keyframes.css'
+                        //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/keyframes.css'
                     ),
                     'js' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.min.js',
@@ -251,7 +251,9 @@
                 'class' => 'application.core.components.ZurmoHttpRequest',
                 'enableCsrfValidation' => true,
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
-                'tokenEnabledRoutes' => array('contacts/external/'),
+                'excludeCsrfValidationRoutes' => array(
+                    array('route' => 'contacts/external/', 'tokenEnabled' => true),
+                ),
             ),
             'sanitizer' => array(
                 'class'          => 'application.extensions.esanitizer.ESanitizer',

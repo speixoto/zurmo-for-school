@@ -40,10 +40,12 @@
      */
     class AccountCardViewLayout extends CardViewLayout
     {
-        public function __construct($model)
+        public function __construct($model, $haveGoToDetailsLink = false)
         {
             assert('$model instanceof Account');
-            $this->model = $model;
+            assert('is_bool($haveGoToDetailsLink)');
+            $this->model               = $model;
+            $this->haveGoToDetailsLink = $haveGoToDetailsLink;
         }
 
         protected function renderFrontOfCardContent()
@@ -62,7 +64,16 @@
             {
                 $starLink = StarredUtil::getToggleStarStatusLink($this->model, null);
             }
-            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink);
+            return ZurmoHtml::tag('h2', array(), $spanContent . strval($this->model) . $starLink . $this->renderGoToDetailsLink());
+        }
+
+        protected function renderGoToDetailsLink()
+        {
+            if ($this->haveGoToDetailsLink)
+            {
+                $link = Yii::app()->createUrl('accounts/default/details/', array('id' => $this->model->id));
+                return ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Go To Details'), $link, array('class' => 'simple-link', 'target' => '_blank'));
+            }
         }
 
         protected function resolvePhoneContent()

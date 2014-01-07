@@ -45,12 +45,14 @@
         }
 
         /**
-         * Get matched models
+         * Gets matched models
+         * @param $value
+         * @param null|int $pageSize
          * @return array
          */
-        protected function getMatchedModels($value)
+        protected function getMatchedModels($value, $pageSize)
         {
-            $matchedModels  = ContactSearch::getContactsByFullName($value, 1);
+            $matchedModels  = ContactSearch::getContactsByFullName($value, $pageSize);
             return $matchedModels;
         }
     }

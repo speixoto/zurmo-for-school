@@ -100,7 +100,7 @@
             assert('is_string($action)');
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $action . '/',
                                            array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderPreviousPageLinkLabel()), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderPreviousPageLinkLabel()), $route, array('class' => 'secondary-button'));
         }
 
         protected function renderPreviousPageLinkLabel()
@@ -113,7 +113,7 @@
          */
         protected function renderNextPageLinkContent()
         {
-            return ZurmoHtml::linkButton(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), array('class' => 'green-button'));
+            return ZurmoHtml::linkButton(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), array('class' => 'z-button'));
         }
 
         protected function renderNextPageLinkLabel()

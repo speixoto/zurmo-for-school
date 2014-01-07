@@ -45,20 +45,22 @@
         }
 
         /**
-         * Get matched models
+         * Gets matched models
+         * @param $value
+         * @param null|int $pageSize
          * @return array
          */
-        protected function getMatchedModels($value)
+        protected function getMatchedModels($value, $pageSize)
         {
             $matchedModels = array();
             $penultimateModelClassName = $this->penultimateModelClassName;
             if ($penultimateModelClassName == 'Account')
             {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value, $pageSize);
             }
             elseif ($penultimateModelClassName == 'Contact')
             {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
+                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value, $pageSize);
             }
             return $matchedModels;
         }

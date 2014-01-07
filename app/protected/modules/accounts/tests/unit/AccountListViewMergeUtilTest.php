@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AccountListViewMergeUtilTest extends ListViewMergeUtilTest
+    class AccountListViewMergeUtilTest extends ListViewMergeUtilBaseTest
     {
         public $modelClass = 'Account';
 
@@ -42,6 +42,21 @@
         {
             parent::setUpBeforeClass();
             UserTestHelper::createBasicUser('Steven');
+        }
+
+        public function testSetPrimaryModelForListViewMerge()
+        {
+            $this->processSetPrimaryModelForListViewMerge();
+        }
+
+        public function testProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge()
+        {
+            $this->runProcessCopyRelationsAndDeleteNonPrimaryModelsInMerge();
+        }
+
+        public function testResolveFormLayoutMetadataForOneColumnDisplay()
+        {
+            $this->processResolveFormLayoutMetadataForOneColumnDisplay();
         }
 
         protected function setFirstModel()
@@ -60,8 +75,8 @@
 
         protected function setRelatedModels()
         {
-            $this->addProject();
-            $this->addProduct();
+            $this->addProject('accounts');
+            $this->addProduct('account');
             $this->addContact();
             $this->addOpportunity();
             $this->addTask();
@@ -72,51 +87,48 @@
         protected function validatePrimaryModelData()
         {
             $this->assertEmpty(Account::getByName('Test Account2'));
-            $primaryModel = $this->getPrimaryModel();
-            $this->assertEquals(1, count($primaryModel->projects));
-        }
-
-        private function addProject()
-        {
-            $project = ProjectTestHelper::createProjectByNameForOwner('Account Project', Yii::app()->user->userModel);
-            $project->accounts->add($this->getPrimaryModel());
-            assert($project->save());
-        }
-
-        private function addProduct()
-        {
-            $product = ProductTestHelper::createProductByNameForOwner('Account Product', Yii::app()->user->userModel);
-            $product->account = $this->getPrimaryModel();
-            $product->save();
+            $this->validateProject();
+            $this->validateProduct();
+            $this->validateContact();
+            $this->validateOpportunity();
+            $this->validateTask('name', 'Test Account2');
+            $this->validateNote('name', 'Test Account2');
+            $this->validateMeeting('name', 'Test Account2');
         }
 
         private function addContact()
         {
-            $contact = ContactTestHelper::createContactByNameForOwner('Allan Turner', Yii::app()->user->userModel);
-            $contact->account = $this->getPrimaryModel();
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(0, count($primaryModel->contacts));
+            $contact = ContactTestHelper::createContactByNameForOwner('Allan', Yii::app()->user->userModel);
+            $contact->account = $this->selectedModels[1];
             $contact->save();
+        }
+
+        private function validateContact()
+        {
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(1, count($primaryModel->contacts));
+            $contact      = $primaryModel->contacts[0];
+            $this->assertEquals('Allan', $contact->firstName);
+            $this->assertEquals('Allanson', $contact->lastName);
         }
 
         private function addOpportunity()
         {
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(0, count($primaryModel->opportunities));
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('UI Services', Yii::app()->user->userModel);
-            $opportunity->account = $this->getPrimaryModel();
+            $opportunity->account = $this->selectedModels[1];
             $opportunity->save();
         }
 
-        private function addMeeting()
+        private function validateOpportunity()
         {
-            MeetingTestHelper::createMeetingWithOwnerAndRelatedAccount('First Meeting', Yii::app()->user->userModel, $this->getPrimaryModel());
-        }
-
-        private function addNote()
-        {
-            NoteTestHelper::createNoteWithOwnerAndRelatedAccount('First Meeting', Yii::app()->user->userModel, $this->getPrimaryModel());
-        }
-
-        private function addTask()
-        {
-            TaskTestHelper::createTaskWithOwnerAndRelatedAccount('First Task', Yii::app()->user->userModel, $this->getPrimaryModel());
+            $primaryModel = $this->getPrimaryModel();
+            $this->assertEquals(1, count($primaryModel->opportunities));
+            $opportunity = $primaryModel->opportunities[0];
+            $this->assertEquals('UI Services', $opportunity->name);
         }
 
         protected function setSelectedModels()

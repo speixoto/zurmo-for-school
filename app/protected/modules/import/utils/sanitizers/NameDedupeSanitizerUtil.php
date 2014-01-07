@@ -45,17 +45,21 @@
         }
 
         /**
-         * Get matched models
+         * Gets matched models. Currently only supports if the attribute is 'name'
+         * @param $value
+         * @param null|int $pageSize
          * @return array
          */
-        protected function getMatchedModels($value)
+        protected function getMatchedModels($value, $pageSize)
         {
-            $matchedModels = array();
+            $matchedModels             = array();
             $penultimateModelClassName = $this->penultimateModelClassName;
-            $classToEvaluate        = new ReflectionClass($penultimateModelClassName);
-            if ($penultimateModelClassName != null && $classToEvaluate->isSubclassOf('Item'))
+            $classToEvaluate           = new ReflectionClass($penultimateModelClassName);
+            if ($penultimateModelClassName != null && $classToEvaluate->isSubclassOf('Item') &&
+                $penultimateModelClassName::isAnAttribute('name'))
             {
-                $matchedModels = $penultimateModelClassName::getByName($value);
+                $matchedModels = $penultimateModelClassName::getSubset(null, null, $pageSize, 'name' . " = '" .
+                                 DatabaseCompatibilityUtil::escape($value) . "'");
             }
             return $matchedModels;
         }
