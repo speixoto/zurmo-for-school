@@ -80,27 +80,22 @@
             foreach($modelsToShow as $key => $dupeModel)
             {
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
-                if (!strcmp($dupeModel->id, $this->model->id))
-                {
-                    $extraClass = ' selected';
-                    $display = 'block';
-                }
-                else
-                {
-                    $extraClass = '';
-                    $display = 'none';
-                }
-                if ($this->model->id <0)
-                {
-                    $display = ($key == 0) ? 'block' : 'none';
-                    $extraClass = ($key == 0) ? ' selected' : '';
-                }
+                $display = ($key == 0) ? 'block' : 'none';
                 $cards  .= ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
                                                       'id'    => 'dupeDetailsView-' . $dupeModel->id,
                                                       'style' => 'display:' . $display),
                                           $detailsViewContent);
-                $radio = $this->renderRadioButtonContent($dupeModel);
-                $entryName = ZurmoHtml::tag('a', array(), strval($dupeModel));
+                if (!strcmp($dupeModel->id, $this->model->id))
+                {
+                    $extraClass = ' selected';
+                }
+                else
+                {
+                    $extraClass = '';
+                }
+                //$contactNameElement  = $this->renderRadioButtonContent($dupeModel);
+                $radio = ZurmoHtml::tag('span', array(), $this->renderRadioButtonContent($dupeModel));
+                $entryName = ZurmoHtml::tag('a', array('href' => '#'), strval($dupeModel));
                 $contactNameElement = ZurmoHtml::tag('li', array('class' => 'selectedDupe merge-color-' . $position++ . $extraClass,
                                                                  'id'    => 'selectedDupe-' . $dupeModel->id), $radio . $entryName);
                 $preparedContent .= $contactNameElement;

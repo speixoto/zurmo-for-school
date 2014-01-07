@@ -121,6 +121,9 @@
 .left {
   float: left;
 }
+.underline {
+  text-decoration: underline;
+}
 html.zurmo,
 html.zurmo body {
   background: #DDDEDE;
@@ -6579,6 +6582,9 @@ i[class^="icon"] {
 .icon-merge:after {
   content: '\00EE';
 }
+.icon-x:before {
+  content: "•";
+}
 .pillbox .icon-projects-list {
   font-size: 22px;
   top: -2px !important;
@@ -6959,6 +6965,19 @@ input[type="button"].portlet-create-button:focus {
   -o-text-shadow: none !important;
   text-shadow: none !important;
   text-decoration: underline !important;
+}
+.simple-link .icon-x {
+  font-weight: normal !important;
+  font-size: 21px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 1;
+  border: none;
+  margin-right: 2px;
+  outline: none !important;
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  color: #7CB830;
 }
 .action-take .z-label,
 .action-type-finish .z-label {
@@ -18797,12 +18816,30 @@ a + .project-stats {
 #CreateModelsToMergeListAndChartView .chosen-entries .left-column {
   width: 100%;
   float: none;
+  padding: 0;
 }
 #CreateModelsToMergeListAndChartView .chosen-entries .possible-matches {
   width: 25%;
+  padding-top: 15px;
 }
 #CreateModelsToMergeListAndChartView .chosen-entries .cards {
   width: 75%;
+  border-right: none;
+  margin-top: 0;
+}
+.merge-title-bar {
+  padding: 15px 15px 10px 15px;
+  border-bottom: 1px solid #dfdfdf;
+}
+.merge-title-bar h3 {
+  margin-bottom: 0 !important;
+  line-height: 1;
+}
+.merge-title-bar .simple-link {
+  margin-left: 15px;
+  text-decoration: underline;
+  line-height: 1;
+  font-weight: normal !important;
 }
 .chosen-entries {
   top: 0;
@@ -18810,7 +18847,7 @@ a + .project-stats {
   position: relative;
   margin-bottom: 30px;
   border-bottom: 1px solid #dfdfdf;
-  height: 280px;
+  min-height: 280px;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff;
   -moz-box-shadow: inset 0 0 0 2px #ffffff;
   -ms-box-shadow: inset 0 0 0 2px #ffffff;
@@ -18830,7 +18867,7 @@ a + .project-stats {
   padding-right: 0;
 }
 .chosen-entries .right-column {
-  border-left: 1px solid #dfdfdf;
+  border-left: 1px solid #fff;
 }
 .DetailsView .chosen-entries {
   -webkit-box-shadow: none !important;
@@ -18858,11 +18895,22 @@ a + .project-stats {
 .possible-matches li {
   font-weight: bold;
   margin-bottom: 0;
-  padding: 5px 15px;
-  border: none;
+  border: none !important;
 }
-.possible-matches input {
-  margin-right: 10px;
+.possible-matches li:first-child {
+  border-bottom: 1px solid #dfdfdf !important;
+}
+.possible-matches span {
+  width: 45px;
+  text-align: center;
+  display: inline-block;
+}
+.possible-matches a {
+  display: inline-block;
+  border: none !important;
+  border-left: 1px solid #dfdfdf !important;
+  padding: 5px 10px;
+  width: calc(100% - 45px) !important;
 }
 .cards {
   padding: 15px;
@@ -18872,10 +18920,20 @@ a + .project-stats {
   height: 279px;
   margin-top: -15px;
   border-left: 1px solid #dfdfdf;
+  border-right: 1px solid #dfdfdf;
 }
 .cards > div {
   height: 100%;
   position: relative;
+}
+.cards h2 {
+  width: 100%;
+}
+.cards h2 .simple-link {
+  margin-left: 10px;
+  text-decoration: underline;
+  line-height: 1;
+  font-weight: normal !important;
 }
 .spidergraph {
   width: 100%;
@@ -18982,62 +19040,62 @@ a + .project-stats {
   border: 2px dotted #c05d91;
   color: #c05d91 !important;
 }
-.chosen-entries .merge-color-1:hover,
-.merge-color-1.selected {
+.chosen-entries .merge-color-1 a:hover,
+.merge-color-1.selected a {
   border: 2px solid #315AB0;
   background: #315AB0;
   color: #fff !important;
 }
-.chosen-entries .merge-color-2:hover,
-.merge-color-2.selected {
+.chosen-entries .merge-color-2 a:hover,
+.merge-color-2.selected a {
   border: 2px solid #66367b;
   background: #66367b;
   color: #fff !important;
 }
-.chosen-entries .merge-color-3:hover,
-.merge-color-3.selected {
+.chosen-entries .merge-color-3 a:hover,
+.merge-color-3.selected a {
   border: 2px solid #2c3e50;
   background: #2c3e50;
   color: #fff !important;
 }
-.chosen-entries .merge-color-4:hover,
-.merge-color-4.selected {
+.chosen-entries .merge-color-4 a:hover,
+.merge-color-4.selected a {
   border: 2px solid #269a55;
   background: #269a55;
   color: #fff !important;
 }
-.chosen-entries .merge-color-5:hover,
-.merge-color-5.selected {
+.chosen-entries .merge-color-5 a:hover,
+.merge-color-5.selected a {
   border: 2px solid #c0392b;
   background: #c0392b;
   color: #fff !important;
 }
-.chosen-entries .merge-color-6:hover,
-.merge-color-6.selected {
+.chosen-entries .merge-color-6 a:hover,
+.merge-color-6.selected a {
   border: 2px solid #e67e22;
   background: #e67e22;
   color: #fff !important;
 }
-.chosen-entries .merge-color-7:hover,
-.merge-color-7.selected {
+.chosen-entries .merge-color-7 a:hover,
+.merge-color-7.selected a {
   border: 2px solid #3498db;
   background: #3498db;
   color: #fff !important;
 }
-.chosen-entries .merge-color-8:hover,
-.merge-color-8.selected {
+.chosen-entries .merge-color-8 a:hover,
+.merge-color-8.selected a {
   border: 2px solid #501a27;
   background: #501a27;
   color: #fff !important;
 }
-.chosen-entries .merge-color-9:hover,
-.merge-color-9.selected {
+.chosen-entries .merge-color-9 a:hover,
+.merge-color-9.selected a {
   border: 2px solid #0c5b3f;
   background: #0c5b3f;
   color: #fff !important;
 }
-.chosen-entries .merge-color-10:hover,
-.merge-color-10.selected {
+.chosen-entries .merge-color-10 a:hover,
+.merge-color-10.selected a {
   border: 2px solid #c05d91;
   background: #c05d91;
   color: #fff !important;
