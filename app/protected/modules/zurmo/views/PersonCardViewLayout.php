@@ -108,7 +108,7 @@
                 {
                     $link = Yii::app()->createUrl('contacts/default/details/', array('id' => $this->model->id));
                 }
-                return ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Go To Details'), $link, array('target' => '_blank'));
+                return ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Go To Details'), $link, array('class' => 'simple-link', 'target' => '_blank'));
             }
         }
 

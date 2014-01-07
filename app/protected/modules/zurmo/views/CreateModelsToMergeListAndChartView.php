@@ -64,8 +64,9 @@
             {
                 $label = Zurmo::t('ZurmoModule', 'There is {n} possible match|There are {n} possible matches.', $totalModelsCount);
             }
-            $link  = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Close'), '#', array('onclick' => 'js:$("#CreateModelsToMergeListAndChartView").hide()'));
-            return ZurmoHtml::tag('div', array('class' => 'merge-title-bar'), $label . $link);
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-x'), '');
+            $link  = ZurmoHtml::link($icon . Zurmo::t('ZurmoModule', 'Close'), '#', array('class' => 'simple-link', 'onclick' => 'js:$("#CreateModelsToMergeListAndChartView").slideUp()'));
+            return ZurmoHtml::tag('div', array('class' => 'merge-title-bar'), ZurmoHtml::tag('h3', array(), $label . $link));
         }
 
         protected function renderRadioButtonContent($dupeModel)
