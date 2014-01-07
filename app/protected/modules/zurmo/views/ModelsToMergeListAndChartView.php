@@ -165,7 +165,7 @@
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
             $cClipWidget        = new CClipWidget();
             $cClipWidget->beginClip("Chart" . $chartId);
-            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'width' => '250px', 'height' => '250px'));
+            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'width' => '300px', 'height' => '250px'));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Chart' . $chartId];
         }
