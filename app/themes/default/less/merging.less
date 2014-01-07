@@ -20,15 +20,46 @@
 			float: none;
 			padding: 0;
 		}
-		.possible-matches{
-			width: 25%;
-			padding-top: 15px;
+	}
+	.cards{
+		width: 75%;
+		border-right:none;
+		margin-top: 0;
+	}
+	.possible-matches{
+		width: 25%;
+		padding-top: 15px;
+		li{
+			font-weight: bold;
+			margin-bottom:0;
+			border: none !important;
+			&:first-child{
+				border: none !important;
+				padding: 0;
+			}
 		}
-		.cards{
-			width: 75%;
-			border-right:none;
-			margin-top: 0;
+		span{
+			display: none;
 		}
+		a{
+			display: inline-block;
+			border: none !important;
+			border-left: none !important;
+			padding:10px 15px;
+			width: 100% !important;
+		}
+	}
+	.chosen-entries .merge-color-1 a:hover, .merge-color-1.selected a,
+	.chosen-entries .merge-color-2 a:hover, .merge-color-2.selected a,
+	.chosen-entries .merge-color-3 a:hover, .merge-color-3.selected a,
+	.chosen-entries .merge-color-4 a:hover, .merge-color-4.selected a,
+	.chosen-entries .merge-color-5 a:hover, .merge-color-5.selected a,
+	.chosen-entries .merge-color-6 a:hover, .merge-color-6.selected a,
+	.chosen-entries .merge-color-7 a:hover, .merge-color-7.selected a,
+	.chosen-entries .merge-color-8 a:hover, .merge-color-8.selected a,
+	.chosen-entries .merge-color-9 a:hover, .merge-color-9.selected a,
+	.chosen-entries .merge-color-10 a:hover, .merge-color-10.selected a{
+		background: @themeColor2 !important;
 	}
 }
 
@@ -93,10 +124,11 @@
 		border: none !important;
 		&:first-child{
 			border-bottom: 1px solid #dfdfdf !important;
+			padding: 0 0 10px 5px;
 		}
 	}
 	span{
-		width: 45px;
+		width: 55px;
 		text-align: center;
 		display: inline-block;
 	}
@@ -107,8 +139,8 @@
 		display: inline-block;
 		border: none !important;
 		border-left: 1px solid #dfdfdf !important;
-		padding:5px 10px;
-		width: ~"calc(100% - 45px)" !important;
+		padding:10px 10px;
+		width: ~"calc(100% - 55px)" !important;
 	}
 }
 
@@ -126,7 +158,7 @@
 		position: relative;
 	}
 	h2{
-		width: 100%;
+		white-space: nowrap;
 		.simple-link{
 			margin-left: 10px;
 			text-decoration: underline;

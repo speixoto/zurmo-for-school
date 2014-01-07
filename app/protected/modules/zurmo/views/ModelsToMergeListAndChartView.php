@@ -41,7 +41,8 @@
     {
         protected $dupeModels;
 
-        protected $colorsArray = array('#98cdff', '#12cd11');
+        protected $colorsArray = array('#315AB0', '#66367b', '#2c3e50', '#269a55', '#c0392b',
+                                       '#e67e22', '#3498db', '#501a27', '#0c5b3f', '#c05d91');
 
         public function __construct($controllerId, $moduleId, $model, $dupeModels)
         {

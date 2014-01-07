@@ -4132,6 +4132,16 @@ div.wide.form a {
 .details-table h1 + .toolbar-mbmenu .parent > ul {
   top: 27px;
 }
+#AccountContactAffiliationEditAndDetailsView .wrapper,
+#AccountAccountAffiliationEditAndDetailsView .wrapper {
+  position: relative;
+}
+#AccountContactAffiliationEditAndDetailsView .toolbar-mbmenu,
+#AccountAccountAffiliationEditAndDetailsView .toolbar-mbmenu {
+  top: 6px;
+  right: 0px;
+  position: absolute;
+}
 .DetailsView .col-0 {
   width: 20%;
 }
@@ -17066,6 +17076,12 @@ div.special-pager .hidden.next:after {
   right: 4px;
   background: url("../images/tip.png") right bottom no-repeat;
 }
+.split-button.active .icon-trigger:after {
+  color: #656565 !important;
+}
+.split-button.active .button-actions a {
+  color: #fff;
+}
 .default-button:hover .icon-trigger:before {
   display: block !important;
 }
@@ -18818,14 +18834,55 @@ a + .project-stats {
   float: none;
   padding: 0;
 }
-#CreateModelsToMergeListAndChartView .chosen-entries .possible-matches {
-  width: 25%;
-  padding-top: 15px;
-}
-#CreateModelsToMergeListAndChartView .chosen-entries .cards {
+#CreateModelsToMergeListAndChartView .cards {
   width: 75%;
   border-right: none;
   margin-top: 0;
+}
+#CreateModelsToMergeListAndChartView .possible-matches {
+  width: 25%;
+  padding-top: 15px;
+}
+#CreateModelsToMergeListAndChartView .possible-matches li {
+  font-weight: bold;
+  margin-bottom: 0;
+  border: none !important;
+}
+#CreateModelsToMergeListAndChartView .possible-matches li:first-child {
+  border: none !important;
+  padding: 0;
+}
+#CreateModelsToMergeListAndChartView .possible-matches span {
+  display: none;
+}
+#CreateModelsToMergeListAndChartView .possible-matches a {
+  display: inline-block;
+  border: none !important;
+  border-left: none !important;
+  padding: 10px 15px;
+  width: 100% !important;
+}
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-1 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-1.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-2 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-2.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-3 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-3.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-4 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-4.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-5 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-5.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-6 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-6.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-7 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-7.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-8 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-8.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-9 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-9.selected a,
+#CreateModelsToMergeListAndChartView .chosen-entries .merge-color-10 a:hover,
+#CreateModelsToMergeListAndChartView .merge-color-10.selected a {
+  background: #933140 !important;
 }
 .merge-title-bar {
   padding: 15px 15px 10px 15px;
@@ -18899,9 +18956,10 @@ a + .project-stats {
 }
 .possible-matches li:first-child {
   border-bottom: 1px solid #dfdfdf !important;
+  padding: 0 0 10px 5px;
 }
 .possible-matches span {
-  width: 45px;
+  width: 55px;
   text-align: center;
   display: inline-block;
 }
@@ -18909,8 +18967,8 @@ a + .project-stats {
   display: inline-block;
   border: none !important;
   border-left: 1px solid #dfdfdf !important;
-  padding: 5px 10px;
-  width: calc(100% - 45px) !important;
+  padding: 10px 10px;
+  width: calc(100% - 55px) !important;
 }
 .cards {
   padding: 15px;
@@ -18927,7 +18985,7 @@ a + .project-stats {
   position: relative;
 }
 .cards h2 {
-  width: 100%;
+  white-space: nowrap;
 }
 .cards h2 .simple-link {
   margin-left: 10px;
