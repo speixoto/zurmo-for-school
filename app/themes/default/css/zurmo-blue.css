@@ -7431,9 +7431,9 @@ input[type="button"].portlet-create-button:focus {
   position: relative;
 }
 .type-accountContactAffiliations .icon-empty:before {
-  content: '\00FB';
+  content: '\00F4';
   font-weight: normal !important;
-  font-size: 45px;
+  font-size: 55px;
   font-family: "zurmo_gamification_symbly_rRg";
   padding: 0;
   margin: 0;
@@ -7441,9 +7441,9 @@ input[type="button"].portlet-create-button:focus {
   position: relative;
 }
 .type-accountAccountAffiliations .icon-empty:before {
-  content: '\00F4';
+  content: '\00FB';
   font-weight: normal !important;
-  font-size: 55px;
+  font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
   padding: 0;
   margin: 0;
