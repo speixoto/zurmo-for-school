@@ -90,6 +90,11 @@
                     $extraClass = '';
                     $display = 'none';
                 }
+                if ($this->model->id <0)
+                {
+                    $display = ($key == 0) ? 'block' : 'none';
+                    $extraClass = ($key == 0) ? ' selected' : '';
+                }
                 $cards  .= ZurmoHtml::tag('div', array('class' => 'sliding-panel business-card showing-panel',
                                                       'id'    => 'dupeDetailsView-' . $dupeModel->id,
                                                       'style' => 'display:' . $display),
