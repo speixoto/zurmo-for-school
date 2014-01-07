@@ -36,7 +36,7 @@
 
     class ZurmoHttpRequest extends CHttpRequest
     {
-        public $tokenEnabledRoutes = array();
+        public $excludeCsrfValidationRoutes = array();
 
         const EXTERNAL_REQUEST_TOKEN = 'externalRequestToken';
 
@@ -54,20 +54,23 @@
 
         protected function isTrustedRequest()
         {
-            $safeUrls       = array();
-            foreach ($this->tokenEnabledRoutes as $tokenEnabledRoute)
+            $requestedUrl   = Yii::app()->getRequest()->getUrl();
+            foreach ($this->excludeCsrfValidationRoutes as $excludeCsrfValidationRoute)
             {
-                $safeUrls[] = Yii::app()->createUrl($tokenEnabledRoute);
-            }
-            $requestedUrl = Yii::app()->getRequest()->getUrl();
-            foreach ($safeUrls as $url)
-            {
-                if (strpos($requestedUrl, $url) === 0)
+                $safeUrl = Yii::app()->createUrl($excludeCsrfValidationRoute['route']);
+                if (strpos($requestedUrl, $safeUrl) === 0)
                 {
-                    $externalRequestToken = Yii::app()->getRequest()->getPost(self::EXTERNAL_REQUEST_TOKEN);
-                    if ($externalRequestToken === ZURMO_TOKEN)
+                    if ($excludeCsrfValidationRoute['tokenEnabled'] === false)
                     {
                         return true;
+                    }
+                    else
+                    {
+                        $externalRequestToken = Yii::app()->getRequest()->getPost(self::EXTERNAL_REQUEST_TOKEN);
+                        if ($externalRequestToken === ZURMO_TOKEN)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -120,6 +123,16 @@
             {
                 return false;
             }
+        }
+
+        public function isOAuthRequest()
+        {
+            $accessToken = Yii::app()->getRequest()->getParam('access_token');
+            if ($accessToken != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         /**

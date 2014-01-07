@@ -251,7 +251,9 @@
                 'class' => 'application.core.components.ZurmoHttpRequest',
                 'enableCsrfValidation' => true,
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
-                'tokenEnabledRoutes' => array('contacts/external/'),
+                'excludeCsrfValidationRoutes' => array(
+                    array('route' => 'contacts/external/', 'tokenEnabled' => true),
+                ),
             ),
             'sanitizer' => array(
                 'class'          => 'application.extensions.esanitizer.ESanitizer',
