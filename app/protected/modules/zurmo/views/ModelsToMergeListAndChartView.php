@@ -114,9 +114,9 @@
 
         protected function resolveMaxModelsToShow(& $models)
         {
-            if (ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT > 0 && count($this->dupeModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
+            if (ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT > 0 && count($this->dupeModels) > ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT)
             {
-                $models = array_slice($models, 0, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT);
+                $models = array_slice($models, 0, ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT);
             }
         }
 

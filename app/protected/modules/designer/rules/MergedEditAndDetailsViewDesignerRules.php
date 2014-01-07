@@ -34,50 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Form used for handling the selected models with list view merge tool
-     */
-    class ModelsListDuplicateMergedModelForm extends CFormModel
+    class MergedEditAndDetailsViewDesignerRules extends EditAndDetailsViewDesignerRules
     {
-        /**
-         * Selected models count for merge.
-         */
-        const MAX_SELECTED_MODELS_COUNT = 5;
-        /**
-         * Selected contacts
-         *
-         * @var array
-         */
-        public $selectedModels = array();
-        /**
-         * Primary contact for the merge
-         * @var Contact
-         */
-        public $primaryModel;
-
-        public function rules()
+        public function allowEditInLayoutTool()
         {
-            return array(
-                array('selectedModels', 'validateModelsCount'),
-                array('primaryModel', 'required'),
-            );
-        }
-
-        /**
-         * Validate the contacts which are selected.
-         *
-         * @param string $attribute
-         * @param array $params
-         */
-        public function validateModelsCount($attribute, $params)
-        {
-            if(count($this->selectedModels) > self::MAX_SELECTED_MODELS_COUNT || count($this->selectedModels) == 0)
-            {
-                $message = Zurmo::t('ZurmoModule', 'Merge is limited to a maximum of  {count} records.',
-                                     array('{count}' => self::MAX_SELECTED_MODELS_COUNT));
-                Yii::app()->user->setFlash('notification', $message);
-                $this->addError('selectedModels', $message);
-            }
+            return false;
         }
     }
 ?>

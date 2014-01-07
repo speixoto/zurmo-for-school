@@ -56,9 +56,9 @@
         protected function getTitleBar()
         {
             $totalModelsCount = count($this->dupeModels);
-            if (ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT > 0 && $totalModelsCount > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
+            if (ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT > 0 && $totalModelsCount > ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT)
             {
-                $label = Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT);
+                $label = Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT);
             }
             else
             {

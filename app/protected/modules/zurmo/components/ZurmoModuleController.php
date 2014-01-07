@@ -512,7 +512,9 @@
             $getData = GetUtil::getData();
             if($this->getAction()->id == 'listViewMerge')
             {
+                Yii::app()->gameHelper->muteScoringModelsOnSave();
                 ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model, $getData);
+                Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             }
         }
     }

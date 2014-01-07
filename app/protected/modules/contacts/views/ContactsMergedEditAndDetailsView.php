@@ -136,5 +136,10 @@
         {
             return ZurmoHtml::tag('div', array('class' => 'attributesContainer details form-fields merge-view'), $content);
         }
+
+        public static function getDesignerRulesType()
+        {
+            return 'MergedEditAndDetailsView';
+        }
     }
 ?>

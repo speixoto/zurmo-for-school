@@ -186,10 +186,9 @@
                     {
                             continue;
                     }
-                    $isReadOnly = $primaryModel->isAttributeReadOnly($attribute);
                     if($modelClassName::isRelation($attribute)
                                     && !$modelClassName::isOwnedRelation($attribute)
-                                        && !$isReadOnly)
+                                        && !$primaryModel->isAttributeReadOnly($attribute))
                     {
                         //Has one
                         if($modelClassName::isRelationTypeAHasOneVariant($attribute))
