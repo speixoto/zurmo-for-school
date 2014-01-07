@@ -159,15 +159,13 @@
             $this->resolveDataForChart($amChart);
             $amChart->id               = $chartId;
             $amChart->type             = ChartRules::TYPE_RADAR;
-            //$amChart->addValueAxisProperties('axisTtitleOffset', '0'); //@TODO SERGIO CAN YOU LOOK AT THIS PLEASE?
-            //$amChart->addValueAxisProperties('ignoreAxisWidth', 'true');
             $amChart->addValueAxisProperties('integersOnly', 'true');
             $this->resolveGraphsForChart($amChart);
             $scriptContent      = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
             $cClipWidget        = new CClipWidget();
             $cClipWidget->beginClip("Chart" . $chartId);
-            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'height' => '250px'));
+            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'width' => '250px', 'height' => '250px'));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Chart' . $chartId];
         }
