@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,22 +29,19 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
-.juiportlet-columns{
-	.juiportlet-column {
-		float: left;
-		min-height: 400px;
-		height: auto !important;
-		height: 400px;
-		+ .juiportlet-column{
-			.juiportlet-widget {
-				margin-right: 0;
-			}
+.juiportlet-column {
+	float: left;
+	min-height: 400px;
+	height: auto !important;
+	height: 400px;
+	+ .juiportlet-column{
+		.juiportlet-widget {
+			margin-right: 0;
 		}
 	}
 }
-
 .juiportlet-widget-column1 {
 	margin: 0;
 	padding: 0;
@@ -54,7 +51,7 @@
 }
 
 .juiportlet-widget-column2 {
-	padding: 0;
+	margin: 0;
 	padding: 0;
 	list-style: none;
 }
@@ -89,8 +86,8 @@
 
 .juiportlet-widget-head {
 	width: 100%;
-	height: 40px;
-	line-height: 40px;
+	height: 43px;
+	line-height: 43px;
 	#gradient > .vertical(#f6f6f6, #ededed);
 	.b-shadow(inset 0 1px 0 0 #ffffff);
 	position:relative;
@@ -105,12 +102,16 @@
 		visibility: hidden;
 		display: none; /*inline;*/
 		float: left;
-		//background: url(../images/portlet-minimize.png) 14px 50% no-repeat;
+		//background: url("@{path}portlet-minimize.png") 14px 50% no-repeat;
 		width: 14px;
 		height: 40px;
 		text-indent: -9999em;
 		margin:0 8px;
 		outline: none;
+	}
+	a.remove:hover .icon:after,
+	a.edit:hover .icon:after{
+		color: @themeColor;
 	}
 }
 
@@ -120,6 +121,7 @@
 
 .juiportlet-widget-placeholder {
 	margin: 0 20px 20px 2px;
+	border:2px dashed @themeColor;
 }
 
 .juiportlet-widget-content{
@@ -302,6 +304,20 @@
 .type-projects{
 	.icon-empty:before{
 		content: '\02C7';
+		.view-toolbar-icons(45px);
+	}
+}
+
+.type-accountContactAffiliations{
+	.icon-empty:before{
+		content: '\00F4';
+		.view-toolbar-icons(55px);
+	}
+}
+
+.type-accountAccountAffiliations{
+	.icon-empty:before{
+		content: '\00FB';
 		.view-toolbar-icons(45px);
 	}
 }

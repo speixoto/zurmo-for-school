@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoModuleTest extends ZurmoBaseTest
@@ -51,7 +51,7 @@
         public function testGetModelClassNames()
         {
             $modelClassNames = ZurmoModule::getModelClassNames();
-            $this->assertEquals(24, count($modelClassNames));
+            $this->assertEquals(25, count($modelClassNames));
             $this->assertEquals('Address', $modelClassNames[0]);
             $this->assertEquals('AuditEvent', $modelClassNames[1]);
             $this->assertEquals('BaseStarredModel', $modelClassNames[2]);
@@ -75,7 +75,8 @@
             $this->assertEquals('Role', $modelClassNames[20]);
             $this->assertEquals('SavedSearch', $modelClassNames[21]);
             $this->assertEquals('SecurableItem', $modelClassNames[22]);
-            $this->assertEquals('ZurmoModelSearch', $modelClassNames[23]);
+            $this->assertEquals('ShortUrl', $modelClassNames[23]);
+            $this->assertEquals('ZurmoModelSearch', $modelClassNames[24]);
         }
     }
 ?>

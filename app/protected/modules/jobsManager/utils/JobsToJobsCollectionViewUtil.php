@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -56,6 +56,8 @@
          */
         const STATUS_IN_PROCESS          = 3;
 
+        const NON_MONITOR_JOBS_CACHE_ID   = 'NonMonitorJobsModelClassNames';
+
         /**
          * @return array of data for the Monitor job.  Includes information such as the display label,
          * whether it is running or not, and the last completion time.
@@ -71,22 +73,41 @@
          */
         public static function getNonMonitorJobsData()
         {
-            $jobsData       = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
+            $jobClassNames = static::getNonMonitorJobClassNames();
+            $jobsData      = array();
+            foreach ($jobClassNames as $jobClassName)
             {
-                $jobsClassNames = $module::getAllClassNamesByPathFolder('jobs');
-                foreach ($jobsClassNames as $jobClassName)
-                {
-                    $classToEvaluate     = new ReflectionClass($jobClassName);
-                    if (is_subclass_of($jobClassName, 'BaseJob') && !$classToEvaluate->isAbstract() &&
-                        $jobClassName != 'MonitorJob')
-                    {
-                        $jobsData[$jobClassName::getType()] = self::getJobDataByType($jobClassName::getType());
-                    }
-                }
+                $jobsData[$jobClassName::getType()] = self::getJobDataByType($jobClassName::getType());
             }
             return $jobsData;
+        }
+
+        public static function getNonMonitorJobClassNames()
+        {
+            try
+            {
+                $jobClassNames = GeneralCache::getEntry(self::NON_MONITOR_JOBS_CACHE_ID);
+            }
+            catch (NotFoundException $e)
+            {
+                $jobClassNames = array();
+                $modules       = Module::getModuleObjects();
+                foreach ($modules as $module)
+                {
+                    $jobsClassNames = $module::getAllClassNamesByPathFolder('jobs');
+                    foreach ($jobsClassNames as $jobClassName)
+                    {
+                        $classToEvaluate     = new ReflectionClass($jobClassName);
+                        if (is_subclass_of($jobClassName, 'BaseJob') && !$classToEvaluate->isAbstract() &&
+                            $jobClassName != 'MonitorJob')
+                        {
+                            $jobClassNames[] = $jobClassName;
+                        }
+                    }
+                }
+                GeneralCache::cacheEntry(self::NON_MONITOR_JOBS_CACHE_ID, $jobClassNames);
+            }
+            return $jobClassNames;
         }
 
         protected static function getJobDataByType($type)

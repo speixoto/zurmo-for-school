@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,7 +29,9 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
+
+@import "variables.less";
 
 .symbly( @size : 32px ) {
     font-weight:normal !important;
@@ -54,7 +56,7 @@
 }
 
 .ie-shadow(@color:0, @blur:0, @alpha:0){
-    /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+    // http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript
     zoom: 1;
     filter:progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=0),
            progid:DXImageTransform.Microsoft.Shadow(Color=lighten(@color, @alpha), Strength=@blur, Direction=90),
@@ -99,6 +101,12 @@
     box-sizing: border-box;
 }
 
+.border-box-sizing{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
 .animateAll(@time: 0.5s){
     -webkit-transition: all @time ease-out;
        -moz-transition: all @time ease-out;
@@ -107,18 +115,7 @@
             transition: all @time ease-out;
 }
 
-.cf:before,
-.cf:after{
-    content:" ";
-    display:table;
-}
-.cf:after{
-    clear:both;
-}
-.cf{
-    *zoom:1;
-}
-
+.cf,
 .clearfix{
     &:before,
     &:after{
@@ -150,138 +147,32 @@
 	white-space: nowrap;
 }
 
-.modal-view-toolbar a,
-.modal-view-toolbar input[type="submit"],
-.modal-view-toolbar input[type="button"],
-.form-toolbar a,
-.form-toolbar input[type="submit"],
-.form-toolbar input[type="button"],
-.zButton,
-.z-button,
-a.zButton,
-a.z-button,
-.white-button{
-    border-top:1px solid    rgba(200, 200, 200, 0.4);
-    border-left: 1px solid  rgba(185, 185, 185, 0.4);
-    border-right:1px solid  rgba(185, 185, 185, 0.4);
-    border-bottom:1px solid rgba(170, 170, 170, 0.4);
-    color:#666 !important;
-    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
-    .radius( 3px );
-    overflow: hidden;
-    position: relative;
-    cursor:pointer;
-    text-indent:0;
-    display:inline-block;
-	.border-box();
-    .clearfix();
-    &.attachLoading.z-button{
-        color: #fff;
-    }
-    &:not(.attachLoading):not(.green-button) .z-label{
-        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-    }
-}
-
-.white-button .z-label{
-    color:#666 !important;
-    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
-    background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-
-.default-btn{
-    .zButton() !important;
-}
-
-.z-button.disabled{
-	pointer-events:none;
-	.opacity(50);
-	-webkit-filter: grayscale(85%);
-	-moz-filter: grayscale(85%);
-	-ms-filter: grayscale(85%);
-	-o-filter: grayscale(85%);
-	filter: grayscale(85%);
-	filter: gray; /* IE 6-9 */
-}
-
-/*
-.zButton:not(.attacheLoading),
-.z-button:not(.attachLoading){
-     background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
-}
-*/
-
-.green-button,
-.attachLoading{
-    color:#FFF;
-    cursor:pointer;
-}
-
-.z-label{
-	.border-box();
-    float:left;
-    font-weight:bold;
-    padding:0 25px;
-    line-height:25px;
-    display: inline-block;
-    .radius( 3px );
-    position:relative;
-	white-space: nowrap;
-}
-
-.z-label-smaller{
-    padding:0 15px;
-}
-
-.zButton.loading, .z-button.loading{
-    .z-spinner{
-        display:inline-block;
-        position: absolute;
-        margin: 1px 0 0 4px;
-    }
-    .z-icon{
-        display:none;
-    }
-}
-
-.z-spinner{
-    z-index:10;
-    width:23px;
-    height:23px;
-    display:none;
-    position:absolute;
-    left:0px;
-}
-
-.z-spinner.loading{
-    display:block !important;
-}
-
-.zLink, .z-link{
-    padding:2px 4px;
-    .radius(3px);
-    color:#fff !important;
-    .smaller();
-}
-
-.zLink:hover, .z-link:hover{
-    color:#fff !important;
-    text-decoration:underline;
-}
-
-.z-action-link{
-   .smaller();
-   .opacity(50);
-   text-decoration: none;
-   &:hover{
-       .opacity(100);
-       text-decoration: none;
-   }
-}
-
-.z-action-link-active{
-    .opacity(100);    
+.headerDropDown{
+	border:1px solid #b6b6b6;
+	#gradient > .vertical( #f5f5f5, #ebebeb );
+	.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+	z-index:9999;
+	min-width:110px;
+	display:none;
+	position:absolute;
+	left:0;
+	top:32px;
+	padding-top:3px;
+	padding-bottom:3px;
+	li{
+		line-height: 100%;
+	}
+	li > a{
+		color:#666;
+		font-size:11px;
+		font-weight:normal;
+		display:block;
+		padding:5px 10px 5px 10px;
+		margin:0 2px;
+	}
+	li > a:hover{
+		color:#fff !important;
+	}
 }
 
 // Gradients
@@ -289,46 +180,41 @@ a.z-button,
   .horizontal (@startColor: #555, @endColor: #333) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    //background-image: -khtml-gradient(linear, left top, right top, from(@startColor), to(@endColor)); // Konqueror
-    background-image: -moz-linear-gradient(left, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(left, @startColor, @endColor); // IE10
     background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, @startColor), color-stop(100%, @endColor)); // Safari 4+, Chrome 2+
     background-image: -webkit-linear-gradient(left, @startColor, @endColor); // Safari 5.1+, Chrome 10+
     background-image: -o-linear-gradient(left, @startColor, @endColor); // Opera 11.10
-    background-image: linear-gradient(left, @startColor, @endColor); // Le standard
-    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",@startColor,@endColor)); // IE9 and down
+	background-image: -moz-linear-gradient(left, @startColor, @endColor); // Le standard
+	background-image: linear-gradient(left, @startColor, @endColor); // Le standard
   }
   .vertical (@startColor: #555, @endColor: #333) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    //background-image: -khtml-gradient(linear, left top, left bottom, from(@startColor), to(@endColor)); // Konqueror
-    background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(top, @startColor, @endColor); // IE10
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @startColor), color-stop(100%, @endColor)); // Safari 4+, Chrome 2+
     background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
     background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
+	background-image: -moz-linear-gradient(top, @startColor, @endColor); // The standard
     background-image: linear-gradient(top, @startColor, @endColor); // The standard
-    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); // IE9 and down
   }
   .directional (@startColor: #555, @endColor: #333, @deg: 45deg) {
     background-color: @endColor;
     background-repeat: repeat-x;
-    background-image: -moz-linear-gradient(@deg, @startColor, @endColor); // FF 3.6+
     background-image: -ms-linear-gradient(@deg, @startColor, @endColor); // IE10
     background-image: -webkit-linear-gradient(@deg, @startColor, @endColor); // Safari 5.1+, Chrome 10+
     background-image: -o-linear-gradient(@deg, @startColor, @endColor); // Opera 11.10
-    background-image: linear-gradient(@deg, @startColor, @endColor); // The standard
+	background-image: -moz-linear-gradient(@deg, @startColor, @endColor); // The standard
+	background-image: linear-gradient(@deg, @startColor, @endColor); // The standard
   }
   .vertical-three-colors(@startColor: #00b3ee, @midColor: #7a43b6, @colorStop: 50%, @endColor: #c3325f, @importance:~"") {
     background-color: @endColor @importance;
     background-repeat: no-repeat @importance;
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), color-stop(@colorStop, @midColor), to(@endColor)) @importance;
     background-image: -webkit-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
-    background-image: -moz-linear-gradient(top, @startColor, @midColor @colorStop, @endColor) @importance;
     background-image: -ms-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
     background-image: -o-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
-    background-image: linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
-    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",@startColor,@endColor)); // IE9 and down, gets no color-stop at all for proper fallback
+	background-image: -moz-linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
+	background-image: linear-gradient(@startColor, @midColor @colorStop, @endColor) @importance;
   }
 }
 
@@ -337,7 +223,6 @@ a.z-button,
   filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
 }
 
-// Opacity
 .opacity(@opacity: 100) {
   filter: e(%("alpha(opacity=%d)", @opacity));
   -khtml-opacity: @opacity / 100;

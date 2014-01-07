@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -75,6 +75,7 @@
             }
             $content  = '<div class="wrapper">';
             $content .= $this->renderTitleContent();
+            $content .= $this->resolveAndRenderActionElementMenuForEdit();
             $maxCellsPresentInAnyRow = $this->resolveMaxCellsPresentInAnyRow($this->getFormLayoutMetadata());
             if ($maxCellsPresentInAnyRow > 1)
             {
@@ -95,7 +96,6 @@
                                                                 )
                                                             );
             $content .= $formStart;
-            $content .= '<div class="attributesContainer">';
             if ($form != null && $this->renderRightSideFormLayoutForEdit($form) == null)
             {
                 $class = ' full-width';
@@ -104,9 +104,10 @@
             {
                 $class = '';
             }
-            $content .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
-            $content .= $this->renderRightSideContent($form);
-            $content .= '</div>';
+            $formContent  = $this->beforeRenderingFormLayout();
+            $formContent .= ZurmoHtml::tag('div', array('class' => 'left-column' . $class), $this->renderFormLayout($form));
+            $formContent .= $this->renderRightSideContent($form);
+            $content .= $this->renderAttributesContainerWrapperDiv($formContent);
             $content .= $this->renderAfterFormLayout($form);
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
@@ -223,6 +224,41 @@
         protected function getNewModelTitleLabel()
         {
             throw new NotImplementedException();
+        }
+
+        protected function beforeRenderingFormLayout()
+        {
+            if ($dedupeRules = DedupeRulesFactory::createRulesByModel($this->model))
+            {
+                $dedupeViewClassName = $dedupeRules->getDedupeViewClassName();
+                $summaryView = new $dedupeViewClassName($this->controllerId,
+                    $this->moduleId,
+                    $this->model,
+                    array());
+                return $summaryView->render();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        
+        protected function resolveAndRenderActionElementMenuForEdit()
+        {
+        }
+
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+            if ($dedupeRules = DedupeRulesFactory::createRulesByModel($this->model))
+            {
+                $dedupeRules->registerScriptForEditAndDetailsView($element);
+            }
+            parent::resolveElementDuringFormLayoutRender($element);
+        }
+
+        protected function renderAttributesContainerWrapperDiv($content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
         }
     }
 ?>

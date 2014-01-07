@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -884,6 +884,36 @@
             return $isWritable;
         }
 
+        public static function isApplicationLogRuntimeWritable($instanceRoot)
+        {
+            $applicationLogFile     = "$instanceRoot/protected/runtime/application.log";
+            $runtimeDirectory       = "$instanceRoot/protected/runtime";
+
+            if (file_exists($applicationLogFile) && is_writable($applicationLogFile))
+            {
+                return true;
+            }
+            elseif (is_writable($runtimeDirectory))
+            {
+                //The application.log file may not exist yet.
+                return true;
+            }
+
+            return false;
+        }
+
+        public static function isMinScriptCacheRuntimeDirectoryWritable($instanceRoot)
+        {
+            $minScriptCacheRuntimeDirectory   = "$instanceRoot/protected/runtime/minScript/cache";
+
+            if (is_dir($minScriptCacheRuntimeDirectory) && is_writable($minScriptCacheRuntimeDirectory))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         /**
          * Writes into perInstance.php that the installation is complete.
          */
@@ -975,6 +1005,7 @@
             $messageStreamer->add(Zurmo::t('InstallModule', 'Creating super user.'));
 
             $messageLogger = new MessageLogger($messageStreamer);
+            $messageLogger->logDateTimeStamp = false;
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Starting database schema creation.'));
             $startTime = microtime(true);
@@ -1112,6 +1143,7 @@
                 {
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Starting to load demo data.'));
                     $messageLogger = new MessageLogger($messageStreamer);
+                    $messageLogger->logDateTimeStamp = false;
                     $startTime = microtime(true);
                     if (isset($args[9]))
                     {

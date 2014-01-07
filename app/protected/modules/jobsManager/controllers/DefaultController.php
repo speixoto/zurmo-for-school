@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -164,8 +164,36 @@
                         makeViewWithBreadcrumbsForCurrentUser($this, $runJobView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
             $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
-            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName, $template);
+            $isJobInProgress = false;
+            JobsManagerUtil::runFromJobManagerCommandOrBrowser($type, (int)$timeLimit, $messageLoggerClassName,
+                                                               $isJobInProgress, true, $template);
             echo ZurmoHtml::script('$("#progress-table").hide(); $("#complete-table").show();');
+        }
+
+        public function actionQueueJob($type, $delay = 0, $messageLoggerClassName = 'MessageLogger')
+        {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                echo Zurmo::t('JobsManagerModule', 'Only super administrators can run jobs from the browser');
+                Yii::app()->end(0, false);
+            }
+            if (!Yii::app()->jobQueue->isEnabled())
+            {
+                echo Zurmo::t('JobsManagerModule', 'Job queuing must be enabled in order to queue a job');
+                Yii::app()->end(0, false);
+            }
+            $breadCrumbLinks = array(
+                Zurmo::t('JobsManagerModule',
+                         'JobsManagerModuleSingularLabel',
+                         LabelUtil::getTranslationParamsForAllModules()) => array('/jobsManager/default'),
+                         Yii::app()->jobQueue->getQueueJobLabel(),
+            );
+            $messageLogger = new $messageLoggerClassName();
+            $queueJobView = new QueueJobView($this->getId(), $this->getModule()->getId(), $type, (int)$delay, $messageLogger);
+            $view = new JobsManagerPageView(ZurmoDefaultAdminViewUtil::
+                        makeViewWithBreadcrumbsForCurrentUser($this, $queueJobView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
+            echo $view->render();
+            $template = ZurmoHtml::script("$('#logging-table ol').append('<li>{message}</li>');");
         }
     }
 ?>

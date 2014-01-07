@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -941,6 +941,10 @@
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
             }
+            else
+            {
+                $sortOrder = 1;
+            }
             return $sortOrder;
         }
 
@@ -968,31 +972,28 @@
          */
         public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
         {
-            if ($task->project->id > 0 || $task->activityItems->count() > 0)
+            $kanbanItem = KanbanItem::getByTask($task->id);
+            //It should be created here but check for create as well here
+            if ($kanbanItem == null)
             {
-                $kanbanItem = KanbanItem::getByTask($task->id);
-                //It should be created here but check for create as well here
-                if ($kanbanItem == null)
+                $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+            }
+            $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+            if ($kanbanItem->type != $kanbanTypeByStatus)
+            {
+                $sourceKanbanItemType = $kanbanItem->type;
+                //put the item at the end
+                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
+                $kanbanItem->type = $kanbanTypeByStatus;
+                $kanbanItem->save();
+                //Resort the source column
+                if ($task->project->id > 0)
                 {
-                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
                 }
-                $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-                if ($kanbanItem->type != $kanbanTypeByStatus)
+                elseif ($task->activityItems->count() > 0)
                 {
-                    $sourceKanbanItemType = $kanbanItem->type;
-                    //put the item at the end
-                    $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
-                    $kanbanItem->type = $kanbanTypeByStatus;
-                    $kanbanItem->save();
-                    //Resort the source column
-                    if ($task->project->id > 0)
-                    {
-                        TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
-                    }
-                    else
-                    {
-                        TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
-                    }
+                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
                 }
             }
         }
@@ -1128,6 +1129,18 @@
                           }
                         );";
              Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Resolve that should task be opened in modal detal view
+         */
+        public static function resolveShouldOpenToTask($gridId)
+        {
+            $getData = GetUtil::getData();
+            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            {
+                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+            }
         }
     }
 ?>

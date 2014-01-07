@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class EmailArchivingJobTest extends ZurmoBaseTest
@@ -142,7 +142,7 @@
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -168,7 +168,7 @@
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -218,7 +218,7 @@
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -246,7 +246,7 @@
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -293,7 +293,7 @@
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -341,7 +341,7 @@ To: Steve <steve@example.com>
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -384,7 +384,7 @@ To: Steve <steve@example.com>
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -409,7 +409,7 @@ To: Steve <steve@example.com>
             $this->assertFalse($job->run());
             $this->assertTrue(strpos($job->getErrorMessage(), 'Failed to process Message id') !== false);
 
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageOwnerNotExist', $super));
             $notifications = Notification::getByTypeAndUser('EmailMessageOwnerNotExist', $super);
             $this->assertContains('Email address does not exist in system', $notifications[0]->notificationMessage->textContent);
@@ -454,7 +454,7 @@ To: Steve <steve@example.com>
             // Check if there are no emails in dropbox
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
@@ -479,7 +479,7 @@ To: Steve <steve@example.com>
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
@@ -500,7 +500,7 @@ To: Steve <steve@example.com>
 
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
             $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', $user));
         }
     }

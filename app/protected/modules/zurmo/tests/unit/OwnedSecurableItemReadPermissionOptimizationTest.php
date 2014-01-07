@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class OwnedSecurableItemReadPermissionOptimizationTest extends ZurmoBaseTest
@@ -63,7 +63,7 @@
             $model->member = 'test3';
             $model->owner  = $benny;
             assert($model->save()); // Not Coding Standard
-            assert(count(OwnedSecurableTestItem::getAll()) == 3); // Not Coding Standard
+            assert(OwnedSecurableTestItem::getCount() == 3); // Not Coding Standard
             $model = new OwnedSecurableTestItem2();
             $model->member = 'test5';
             assert($model->save()); // Not Coding Standard
@@ -257,12 +257,12 @@
             $model->owner  = $aUser;
             $this->assertTrue($model->save());
             Yii::app()->user->userModel = User::getByUsername('super');
-            $this->assertEquals(4, count(OwnedSecurableTestItem::getAll()));
+            $this->assertEquals(4, OwnedSecurableTestItem::getCount());
             $model = new OwnedSecurableTestItem2();
             $model->member = 'test4';
             $model->owner  = $aUser;
             $this->assertTrue($model->save());
-            $this->assertEquals(2, count(OwnedSecurableTestItem2::getAll()));
+            $this->assertEquals(2, OwnedSecurableTestItem2::getCount());
             Yii::app()->user->userModel = User::getByUsername('aaa');
 
             $quote        = DatabaseCompatibilityUtil::getQuote();

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class DashboardTest extends ZurmoBaseTest
@@ -103,7 +103,7 @@
         public function testDeleteDashboardAndRelatedPortlets()
         {
             Yii::app()->user->userModel = User::getByUsername('billy');
-            $dashboardCount = count(Dashboard::getAll());
+            $dashboardCount = Dashboard::getCount();
             $this->assertTrue($dashboardCount > 0);
             $user = User::getByUserName('billy');
             Yii::app()->user->userModel = $user;
@@ -114,8 +114,8 @@
             $dashboard->layoutType = '100';
             $dashboard->isDefault  = false;
             $this->assertTrue($dashboard->save());
-            $this->assertEquals(count(Portlet::getAll()), 0);
-            $this->assertEquals(count(Dashboard::getAll()), ($dashboardCount + 1));
+            $this->assertEquals(Portlet::getCount(), 0);
+            $this->assertEquals(Dashboard::getCount(), ($dashboardCount + 1));
             for ($i = 1; $i <= 3; $i++)
             {
                 $portlet = new Portlet();
@@ -127,15 +127,15 @@
                 $portlet->user      = $user;
                 $this->assertTrue($portlet->save());
             }
-            $this->assertEquals(count(Portlet::getAll()), 3);
+            $this->assertEquals(Portlet::getCount(), 3);
             $portlets = Portlet::getByLayoutIdAndUserSortedById('TEST' . $dashboard->layoutId, $user->id);
             foreach ($portlets as $portlet)
             {
                 $portlet->delete();
             }
             $dashboard->delete();
-            $this->assertEquals(count(Portlet::getAll()), 0);
-            $this->assertEquals(count(Dashboard::getAll()), ($dashboardCount));
+            $this->assertEquals(Portlet::getCount(), 0);
+            $this->assertEquals(Dashboard::getCount(), ($dashboardCount));
         }
 
         /**

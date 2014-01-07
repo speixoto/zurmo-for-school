@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     $basePath = Yii::app()->getBasePath();
@@ -62,7 +62,7 @@
             assert('($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE && $linkName == null) ||
                     ($linkType == RedBeanModel::LINK_TYPE_SPECIFIC && $linkName != null)');
             $this->modelClassName        = $modelClassName;
-            $tableName                   = RedBeanModel::getTableName($modelClassName);
+            $tableName                   = $modelClassName::getTableName();
             $this->bean                  = $bean;
             $this->linkName              = $linkName;
             if ($this->bean->id > 0)
@@ -123,7 +123,8 @@
         {
             if ($bean == null)
             {
-                $bean = ZurmoRedBean::dispense(RedBeanModel::getTableName($this->modelClassName));
+                $modelClassName = $this->modelClassName;
+                $bean = ZurmoRedBean::dispense($modelClassName::getTableName());
             }
             $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
             return static::resolveTableNamesWithLinkName($types, $this->linkName);
@@ -131,8 +132,8 @@
 
         public static function getTableNameByModelClassNames($modelClassName, $anotherModelClassName, $linkName = null)
         {
-            $modelTableName         = RedBeanModel::getTableName($modelClassName);
-            $anotherModelTableName  = RedBeanModel::getTableName($anotherModelClassName);
+            $modelTableName         = $modelClassName::getTableName();
+            $anotherModelTableName  = $anotherModelClassName::getTableName();
             $tableNames = array($modelTableName, $anotherModelTableName);
             return static::resolveTableNamesWithLinkName($tableNames, $linkName);
         }

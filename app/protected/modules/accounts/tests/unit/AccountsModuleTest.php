@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class AccountsModuleTest extends ZurmoBaseTest
@@ -62,6 +62,70 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             MetadataUtil::resolveEvaluateSubString($metadata, $resolveVariableName, $params);
             $this->assertEquals('Accounts', $metadata['global']['tabMenuItems'][0]['label']);
+        }
+
+        public function testUpdateLatestActivityDateTimeMethods()
+        {
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertTrue($value);
+
+            $metadata = AccountsModule::getMetadata();
+            $metadata['global']['updateLatestActivityDateTimeWhenATaskIsCompleted'] = false;
+            AccountsModule::setMetadata($metadata);
+
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertTrue($value);
+
+            $metadata = AccountsModule::getMetadata();
+            $metadata['global']['updateLatestActivityDateTimeWhenANoteIsCreated'] = false;
+            AccountsModule::setMetadata($metadata);
+
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertTrue($value);
+
+            $metadata = AccountsModule::getMetadata();
+            $metadata['global']['updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived'] = false;
+            AccountsModule::setMetadata($metadata);
+
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertTrue($value);
+
+            $metadata = AccountsModule::getMetadata();
+            $metadata['global']['updateLatestActivityDateTimeWhenAMeetingIsInThePast'] = false;
+            AccountsModule::setMetadata($metadata);
+
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertFalse($value);
         }
     }
 ?>

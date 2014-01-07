@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -61,15 +61,12 @@
             $theme        = 'themes/' . Yii::app()->theme->name;
             $cs = Yii::app()->getClientScript();
             $absoluteBaseUrl    = Yii::app()->getBaseUrl(true);
-            $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/keyframes.css');
 
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="zurmo" href="' .
                     $absoluteBaseUrl . '/' . $theme . '/less/zurmo.less"/>';
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="color-scheme" href="' .
-                    $absoluteBaseUrl . '/' . $theme . '/less/color-scheme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
@@ -81,7 +78,6 @@
             else
             {
                 $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/zurmo.css');
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/color-scheme.css');
                 if (file_exists($theme . '/css/commercial.css'))
                 {
                     $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/commercial.css');

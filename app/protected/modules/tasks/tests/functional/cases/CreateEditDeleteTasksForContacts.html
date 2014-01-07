@@ -517,7 +517,7 @@
 </tr-->
 <tr>
   <td>click</td>
-  <td>//div[@id='TaskModalDetailsView']/div[1]/div/ul/li/ul/li[3]/a/span</td>
+  <td>//div[@id='TaskModalDetailsView']/div[1]/div/ul/li/ul/li[4]/a/span</td>
   <td></td>
 </tr>
 <tr>
@@ -619,6 +619,36 @@
   <td>assertTextNotPresent</td>
   <td>Task kick-off new contact ${randomSuffix}</td>
   <td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>index.php/contacts/default</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>

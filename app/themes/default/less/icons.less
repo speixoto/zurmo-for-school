@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -23,25 +23,13 @@
 //
 // The interactive user interfaces in original and modified versions
 // of this program must display Appropriate Legal Notices, as required under
-// Section 5 of the GNU Affero General Public License version 3.
+// Section 5 of the GNU Affero  General Public License version 3.
 //
 // In accordance with Section 7(b) of the GNU Affero General Public License version 3,
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
-
-.pillbox{
-	.icon-projects-list{
-		font-size: 22px;
-		top:-2px !important;
-	}
-	.icon-permissions,
-	.icon-rights,
-	.icon-policies{
-		top:-2px !important;
-	}
-}
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 i[class^="icon"]{
 	color: #656565;
@@ -56,6 +44,8 @@ i[class^="icon"]{
 
 	position: relative;
 	top:-2px;
+
+	//.box-sizing();
 }
 
 .z-label{
@@ -109,7 +99,6 @@ i[class^="icon"]{
 	content: 'T';
 }
 
-.icon-config:after,
 .icon-options:after{
 	content: "n";
 }
@@ -130,6 +119,16 @@ i[class^="icon"]{
 
 #MarketingListMembersUnsubscribeLinkActionElement:after{
 	content: "d";
+}
+
+.icon-note:after{
+	content: "3";
+}
+.icon-task:after{
+	content: "4";
+}
+.icon-meeting:after{
+	content: "U";
 }
 
 .icon-memberships:after{
@@ -228,6 +227,10 @@ i[class^="icon"]{
 	content:'\20AC';
 }
 
+.icon-gamification:after{
+	content:'\2202';
+}
+
 .icon-by-time-workflow-in-queues:after{
 	content:'\0071';
 	font-size:28px;
@@ -320,6 +323,35 @@ i[class^="icon"]{
 	content: '\007D';
 }
 
-.icon-google:after{
-	content: '\221E';
+.icon-opportunity:after{
+	content: "9";
+}
+
+.icon-contact:after{
+	content: "y";
+}
+
+.icon-account:after{
+	content: "P";
+}
+
+.icon-merge:after{
+	content: '\00EE';
+}
+
+.icon-x:before{
+	content: "•";
+}
+
+
+.pillbox{
+	.icon-projects-list{
+		font-size: 22px;
+		top:-2px !important;
+	}
+	.icon-permissions,
+	.icon-rights,
+	.icon-policies{
+		top:-2px !important;
+	}
 }

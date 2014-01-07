@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class AccountSearch
@@ -60,6 +60,50 @@
                 ),
             );
             $metadata['structure'] = '(1 or 2)';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
+            return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
+        }
+
+        /**
+         * For a given phone number, run search by phone numbers and retrieve account models.
+         * @param string $phoneNumber
+         * @param null|int $pageSize
+         */
+        public static function getAccountsByAnyPhone($phoneNumber, $pageSize = null)
+        {
+            assert('is_string($phoneNumber)');
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'officePhone',
+                    'operatorType'         => 'equals',
+                    'value'                => $phoneNumber,
+                ),
+            );
+            $metadata['structure'] = '1';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
+            return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);
+        }
+
+        /**
+         * For a given partialName, run search by partial name and retrieve account models.
+         * @param string $partialName
+         * @param null|int $pageSize
+         */
+        public static function getAccountsByPartialName($partialName, $pageSize = null)
+        {
+            assert('is_string($partialName)');
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'name',
+                    'operatorType'         => 'contains',
+                    'value'                => $partialName,
+                ),
+            );
+            $metadata['structure'] = '1';
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Account');
             $where  = RedBeanModelDataProvider::makeWhere('Account', $metadata, $joinTablesAdapter);
             return Account::getSubset($joinTablesAdapter, null, $pageSize, $where);

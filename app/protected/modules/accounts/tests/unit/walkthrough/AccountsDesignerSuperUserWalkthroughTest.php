@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -96,9 +96,21 @@
             $this->assertEquals('[]', $content);
 
             //Now save successfully.
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertTrue($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertTrue($value);
+            $postDataForForm = $this->createModuleEditGoodValidationPostData('acc new name');
+            $postDataForForm['updateLatestActivityDateTimeWhenATaskIsCompleted']        = '';
+            $postDataForForm['updateLatestActivityDateTimeWhenANoteIsCreated']          = '';
+            $postDataForForm['updateLatestActivityDateTimeWhenAnEmailIsSentOrArchived'] = '';
+            $postDataForForm['updateLatestActivityDateTimeWhenAMeetingIsInThePast']     = '';
             $this->setGetArray(array('moduleClassName' => 'AccountsModule'));
-            $this->setPostArray(array('save' => 'Save',
-                'AccountsModuleForm' => $this->createModuleEditGoodValidationPostData('acc new name')));
+            $this->setPostArray(array('save' => 'Save', 'AccountsModuleForm' => $postDataForForm));
             $this->runControllerWithRedirectExceptionAndGetContent('designer/default/moduleEdit');
 
             //Now confirm everything did in fact save correctly.
@@ -106,6 +118,14 @@
             $this->assertEquals('Acc New Names', AccountsModule::getModuleLabelByTypeAndLanguage('Plural'));
             $this->assertEquals('acc new name',  AccountsModule::getModuleLabelByTypeAndLanguage('SingularLowerCase'));
             $this->assertEquals('acc new names', AccountsModule::getModuleLabelByTypeAndLanguage('PluralLowerCase'));
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived();
+            $this->assertFalse($value);
+            $value = AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast();
+            $this->assertFalse($value);
 
             //Load LayoutEdit for each applicable module and applicable layout
             $this->resetPostArray();

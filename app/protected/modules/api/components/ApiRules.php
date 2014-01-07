@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     class ApiRules
     {
@@ -47,8 +47,7 @@
             }
             else
             {
-                $message = Yii::t('Default', 'Invalid API request type.');
-                throw new ApiException($message);
+                $requestClassName = 'ApiRestRequest';
             }
             return $requestClassName;
         }
@@ -63,6 +62,25 @@
          */
         protected static function getRequestType()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_API_REQUEST_TYPE']))
+                {
+                    if (strtolower($httpHeaders['ZURMO_API_REQUEST_TYPE']) == 'rest')
+                    {
+                        return ApiRequest::REST;
+                    }
+                    elseif (strtolower($httpHeaders['ZURMO_API_REQUEST_TYPE']) == 'soap')
+                    {
+                        return ApiRequest::SOAP;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']))
             {
                 if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest')

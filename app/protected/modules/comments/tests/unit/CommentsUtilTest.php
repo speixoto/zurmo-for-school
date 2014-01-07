@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class CommentsUtilTest extends ZurmoBaseTest
@@ -81,21 +81,23 @@
             $this->assertTrue($steven->save());
             $this->assertTrue($jack->save());
 
-            //One email message was sent because to Steven and Jack
+            //Two email message were sent one to Steven and one to Jack
             CommentsUtil::sendNotificationOnNewComment($conversation, $comment, $super, array($steven, $jack));
-            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAll();
-            $emailMessage  = $emailMessages[0];
-            $this->assertEquals(2, count($emailMessage->recipients));
+            $emailMessage1  = $emailMessages[0];
+            $emailMessage2  = $emailMessages[1];
+            $this->assertCount(1, $emailMessage1->recipients);
+            $this->assertCount(1, $emailMessage2->recipients);
 
             //One email message was sent to Super but not to Steven
             UserConfigurationFormAdapter::setValue($steven, true, 'turnOffEmailNotifications');
             CommentsUtil::sendNotificationOnNewComment($conversation, $comment, $jack, array($steven, $super));
-            $this->assertEquals(2, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(3, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAll();
-            $emailMessage  = $emailMessages[1];
+            $emailMessage  = $emailMessages[2];
             $this->assertEquals(1, count($emailMessage->recipients));
         }
     }

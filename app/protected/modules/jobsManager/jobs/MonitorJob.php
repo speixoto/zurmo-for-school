@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,6 +40,8 @@
     class MonitorJob extends BaseJob
     {
         protected static $pageSize = 50;
+
+        protected static $stuckNotificationThreshold = 4;
 
         /**
          * @returns Translated label that describes this job type.
@@ -70,22 +72,43 @@
             return Zurmo::t('JobsManagerModule', 'The monitor job is stuck.');
         }
 
+        public static function getRunTimeThresholdInSeconds()
+        {
+            return 60;
+        }
+
         public function run()
         {
             $jobsInProcess = static::getNonMonitorJobsInProcessModels();
             $jobsAreStuck  = false;
             $jobTitleLabels = array();
+            $jobsInProcessToReset = array();
             foreach ($jobsInProcess as $jobInProcess)
             {
                 if (JobsManagerUtil::isJobInProcessOverThreshold($jobInProcess, $jobInProcess->type))
                 {
-                    $jobTitleLabels[] = strval($jobInProcess);
-                    $jobsAreStuck     = true;
+                    $stuckJob               = StuckJob::getByType($jobInProcess->type);
+                    $stuckJob->quantity     = $stuckJob->quantity + 1;
+                    if (!$stuckJob->save())
+                    {
+                        throw new FailedToSaveModelException();
+                    }
+                    $jobsInProcessToReset[] = $jobInProcess;
+                    //Only processes once the threshold is reach, not each time after that
+                    if ($stuckJob->quantity == static::$stuckNotificationThreshold)
+                    {
+                        $jobTitleLabels[]       = strval($jobInProcess);
+                        $jobsAreStuck           = true;
+                    }
                 }
             }
             if ($jobsAreStuck)
             {
                 self::makeJobStuckNotification($jobTitleLabels);
+            }
+            foreach ($jobsInProcessToReset as $jobInProcessToReset)
+            {
+                $jobInProcessToReset->delete();
             }
             $jobLogs = static::getNonMonitorJobLogsUnprocessedWithErrors();
             foreach ($jobLogs as $jobLog)

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class EmailNotificationUtil
@@ -55,8 +55,8 @@
             $htmlTemplate                       = self::getNotificationHtmlTemplate();
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
-            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'This message sent from Zurmo', LabelUtil::getTranslationParamsForAllModules());
             $htmlContent['{preferenceContent}'] = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Manage your email preferences'), $url);
+            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By <a href=\'http://www.zurmo.com\'>Zurmo</a>', LabelUtil::getTranslationParamsForAllModules());
             return strtr($htmlTemplate, $htmlContent);
         }
 
@@ -104,14 +104,18 @@
             {
                 $user = Yii::app()->user->userModel;
             }
-            $url                                = Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
-                                                  array('id' => $user->id));
-            $htmlTemplate                       = self::getNotificationTextTemplate();
-            $htmlContent                        = array();
-            $htmlContent['{bodyContent}']       = $bodyContent;
-            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'This message sent from Zurmo', LabelUtil::getTranslationParamsForAllModules());
-            $htmlContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ZurmoHtml::link(null, $url);
-            return strtr($htmlTemplate, $htmlContent);
+            $url                                = ShortUrlUtil::createShortUrl(
+                                                        Yii::app()->createAbsoluteUrl('users/default/configurationEdit',
+                                                                                      array('id' => $user->id)
+                                                        )
+                                                  );
+            $textTemplate                       = self::getNotificationTextTemplate();
+            $textContent                        = array();
+            $textContent['{bodyContent}']       = $bodyContent;
+            $textContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ': ' . $url;
+            $textContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By Zurmo', LabelUtil::getTranslationParamsForAllModules());
+            $textContent['{sourceContent}']    .= PHP_EOL . 'http://www.zurmo.com';
+            return strtr($textTemplate, $textContent);
         }
 
         protected static function getNotificationTextTemplate()

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -49,7 +49,6 @@
             $content      = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
             $linkContent  = $this->renderApplyResetContent() . $this->renderApplyLinkContent();
             $linkContent  = ZurmoHtml::tag('div', array('class' => 'form-toolbar clearfix'), $linkContent);
-            $this->renderEditableScripts();
             return $content . ZurmoHtml::tag('div', array('class' => 'view-toolbar-container'), $linkContent);
         }
 
@@ -102,23 +101,15 @@
             return $content;
         }
 
-        /**
-         * On keyUp, the search should be conducted.
-         */
-        protected function renderEditableScripts()
+        protected function renderResetScript()
         {
             $defaultSelectedAttributes = $this->model->getListAttributesSelector()->getMetadataDefinedListAttributeNames();
-            Yii::app()->clientScript->registerScript('selectedListAttributesScripts', "
-                $('#list-attributes-reset').unbind('click.reset');
-                $('#list-attributes-reset').bind('click.reset', function()
-                    {
-                        $('.select-list-attributes-view').hide();
-                        resetSelectedListAttributes('" .
+            return "$('.select-list-attributes-view').hide();
+                    resetSelectedListAttributes('" .
                             $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "', '" .
                             $this->getEditableInputId(SearchForm::SELECTED_LIST_ATTRIBUTES) . "_hidden', " .
                             CJSON::encode($defaultSelectedAttributes) . ");
-                    }
-                );");
+                   ";
         }
 
         protected function renderApplyLinkContent()
@@ -137,7 +128,7 @@
             $params['label']       = Zurmo::t('Core', 'Reset');
             $params['htmlOptions'] = array('id'  => 'list-attributes-reset',
                                            'class' => 'default-btn',
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");' . $this->renderResetScript());
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
         }

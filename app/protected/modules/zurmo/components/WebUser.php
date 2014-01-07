@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class WebUser extends CWebUser
@@ -136,28 +136,31 @@
 
             if (ApiRequest::isApiRequest())
             {
-                if ($sessionId = Yii::app()->apiRequest->getSessionId())
+                if (!Yii::app()->getRequest()->isOAuthRequest())
                 {
-                    Yii::app()->session->setSessionID($sessionId);
-                    Yii::app()->session->open();
-                    $session = Yii::app()->getSession();
-                    if (Yii::app()->apiRequest->isSessionTokenRequired())
+                    if ($sessionId = Yii::app()->apiRequest->getSessionId())
                     {
-                        if ($session['token'] != Yii::app()->apiRequest->getSessionToken() || $session['token'] == '')
+                        Yii::app()->session->setSessionID($sessionId);
+                        Yii::app()->session->open();
+                        $session = Yii::app()->getSession();
+                        if (Yii::app()->apiRequest->isSessionTokenRequired())
                         {
-                            Yii::app()->session->clear();
-                            Yii::app()->session->destroy();
+                            if ($session['token'] != Yii::app()->apiRequest->getSessionToken() || $session['token'] == '')
+                            {
+                                Yii::app()->session->clear();
+                                Yii::app()->session->destroy();
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Yii::app()->session->open();
-                    $sessionId = Yii::app()->session->getSessionID();
-                    $userPassword = Yii::app()->apiRequest->getPassword();
-                    $token = ZurmoSession::createSessionToken($sessionId, $userPassword);
-                    $session = Yii::app()->getSession();
-                    $session['token'] = $token;
+                    else
+                    {
+                        Yii::app()->session->open();
+                        $sessionId = Yii::app()->session->getSessionID();
+                        $userPassword = Yii::app()->apiRequest->getPassword();
+                        $token = ZurmoSession::createSessionToken($sessionId, $userPassword);
+                        $session = Yii::app()->getSession();
+                        $session['token'] = $token;
+                    }
                 }
             }
             else

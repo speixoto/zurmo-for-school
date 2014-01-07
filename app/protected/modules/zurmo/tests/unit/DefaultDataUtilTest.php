@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -58,8 +58,11 @@
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
             $customFieldData = CustomFieldData::getByName('MeetingCategories');
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
-            $this->assertEquals(0, count(ContactState::getAll()));
-            $this->assertEquals(1, count(Currency::getAll()));
+            $this->assertEquals(0, ContactState::getCount());
+            // do a getAll to ensure we create base currency
+            $baseCurrency = Currency::getAll();
+            $this->assertCount(1, $baseCurrency);
+            $this->assertEquals(1, Currency::getCount());
             $messageLogger   = new MessageLogger();
             DefaultDataUtil::load($messageLogger);
             $customFieldData = CustomFieldData::getByName('Titles');
@@ -72,8 +75,8 @@
             $this->assertEquals(9, count(unserialize($customFieldData->serializedData)));
             $customFieldData = CustomFieldData::getByName('MeetingCategories');
             $this->assertEquals(2, count(unserialize($customFieldData->serializedData)));
-            $this->assertEquals(6, count(ContactState::getAll()));
-            $this->assertEquals(1, count(Currency::getAll()));
+            $this->assertEquals(6, ContactState::getCount());
+            $this->assertEquals(1, Currency::getCount());
         }
     }
 ?>

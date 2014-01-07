@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -650,6 +650,55 @@
                 'content' => 'MyTask New'
             );
             $this->assertTag($matcher, $content);
+        }
+
+        public function testSuperUserModalCreateAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('modalTransferInformation' => array('sourceIdFieldId' => 'Contact_38_account_id',
+                                                                         'sourceNameFieldId' => 'Contact_38_account_name',
+                                                                         'modalId' => 'modalContainer-contact-inline-create-form-38')));
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/modalCreate');
+        }
+
+        public function testSuperUserSearchForDuplicateModelsAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('attribute' => 'name',
+                                     'value'     => 'fakeValue',
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels', true);
+
+            $account = AccountTestHelper::createAccountByNameForOwner('testAccount', $super);
+
+            //Test search by name
+            $this->setGetArray(array('attribute' => 'name',
+                                     'value'     => 'testAccount',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
+            //Test search by officePhone
+            $account->officePhone = '123456789';
+            $this->assertTrue($account->save());
+            $this->setGetArray(array('attribute' => 'officePhone',
+                                     'value'     => '123456789',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
+            //Test search by email
+            $account->primaryEmail->emailAddress = 'a@a.a';
+            $this->assertTrue($account->save());
+            $this->setGetArray(array('attribute' => 'primaryEmail',
+                                     'value'     => 'a@a.a',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
         }
     }
 ?>

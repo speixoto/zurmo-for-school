@@ -20,7 +20,7 @@
 <!--Go to accounts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/accounts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -334,4 +334,19 @@
 	<td>waitForTextPresent</td>
 	<td>Test Contact ${randomSuffix}</td>
 	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>

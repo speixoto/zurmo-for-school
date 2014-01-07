@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     abstract class ZurmoBaseController extends Controller
@@ -54,7 +54,7 @@
                         'rightName' => $moduleClassName::getAccessRight(),
                 );
                 $filters[] = array(
-                        self::getRightsFilterPath() . ' + create, createFromRelation, inlineCreateSave, copy',
+                        self::getRightsFilterPath() . ' + create, createFromRelation, inlineCreateSave, copy, modalCreate',
                         'moduleClassName' => $moduleClassName,
                         'rightName' => $moduleClassName::getCreateRight(),
                 );
@@ -251,7 +251,7 @@
                 }
                 else
                 {
-                    SavedSearchUtil::resolveSearchFormByGetData($getData, $searchModel);
+                    SavedSearchUtil::resolveSearchFormByData($getData, $searchModel);
                     if ($searchModel->savedSearchId != null)
                     {
                         $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
@@ -724,7 +724,7 @@
          * Check if form is posted. If form is posted attempt to save. If save is complete, confirm the current
          * user can still read the model.  If not, then redirect the user to the index action for the module.
          */
-        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
+        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true, $returnOnValidate = false)
         {
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             $savedSuccessfully   = false;
@@ -735,7 +735,7 @@
                 $postData = $_POST[$postVariableName];
                 $controllerUtil   = static::getZurmoControllerUtil();
                 $model            = $controllerUtil->saveModelFromPost($postData, $model, $savedSuccessfully,
-                                                                       $modelToStringValue);
+                                                                       $modelToStringValue, $returnOnValidate);
             }
             if ($savedSuccessfully && $redirect)
             {
@@ -755,7 +755,10 @@
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
             {
-                $this->beforeRedirect($model);
+                if ($model instanceof RedBeanModel)
+                {
+                    $this->beforeRedirect($model);
+                }
                 $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
             }
             else
