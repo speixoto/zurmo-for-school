@@ -50,7 +50,8 @@
 
         protected function resolveHtmlOptionsForRendering()
         {
-            return array('class' => 'cancel-button');
+            $htmlOptions = $this->getHtmlOptions();
+            return CMap::mergeArray($htmlOptions, array('class' => 'cancel-button'));
         }
 
         protected function getDefaultLabel()

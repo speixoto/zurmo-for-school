@@ -441,5 +441,10 @@
         {
             return 'task-modal-details-options-menu';
         }
+
+        protected function getFormLayoutUniqueId()
+        {
+            return 'task-details-view-form';
+        }
     }
 ?>

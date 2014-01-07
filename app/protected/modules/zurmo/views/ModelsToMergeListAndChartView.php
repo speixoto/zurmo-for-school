@@ -165,7 +165,7 @@
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $chartId, $scriptContent);
             $cClipWidget        = new CClipWidget();
             $cClipWidget->beginClip("Chart" . $chartId);
-            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'height' => '250px'));
+            $cClipWidget->widget('application.core.widgets.AmChart', array('id' => $chartId, 'width' => '300px', 'height' => '250px'));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Chart' . $chartId];
         }
@@ -259,32 +259,37 @@
         protected function renderActivitiesTotals($model)
         {
             $itemId = $model->getClassId('Item');
-            $icon = ZurmoHtml::tag('i', array('class' => 'icon-note'), '');
-            $notesTotalContent    = ZurmoHtml::tag('span',
-                                        array('class' => 'total-notes'),
-                                        $icon .
-                                        LatestActivitiesUtil::getCountByModelClassName
-                                            ('Note', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
-            $icon = ZurmoHtml::tag('i', array('class' => 'icon-task'), '');
-            $tasksTotalContent    = ZurmoHtml::tag('span',
-                                        array('class' => 'total-tasks'),
-                                        $icon .
-                                        LatestActivitiesUtil::getCountByModelClassName
-                                            ('Task', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
-            $icon = ZurmoHtml::tag('i', array('class' => 'icon-email'), '');
-            $emailsTotalContent   = ZurmoHtml::tag('span',
-                                        array('class' => 'total-emails'),
-                                        $icon .
-                                        LatestActivitiesUtil::getCountByModelClassName
-                                            ('EmailMessage', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
-            $icon = ZurmoHtml::tag('i', array('class' => 'icon-meeting'), '');
-            $meetingsTotalContent = ZurmoHtml::tag('span',
-                                        array('class' => 'total-meetings'),
-                                        $icon .
-                                        LatestActivitiesUtil::getCountByModelClassName
-                                            ('Meeting', array($itemId), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $icon  = ZurmoHtml::tag('i', array('class' => 'icon-note'), '');
+            $title = Zurmo::t('ZurmoModule', 'Notes');
+            $num   = ZurmoHtml::tag('strong', array(),
+                     LatestActivitiesUtil::getCountByModelClassName('Note', array($itemId),
+                     LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $notesTotalContent = ZurmoHtml::tag('span', array('class' => 'total-notes'), $icon . $num . ' ' . $title);
+
+            $icon  = ZurmoHtml::tag('i', array('class' => 'icon-task'), '');
+            $title = Zurmo::t('ZurmoModule', 'Tasks');
+            $num   = ZurmoHtml::tag('strong', array(),
+                     LatestActivitiesUtil::getCountByModelClassName('Task', array($itemId),
+                     LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $tasksTotalContent    = ZurmoHtml::tag('span', array('class' => 'total-tasks'), $icon . $num . ' ' . $title);
+
+            $icon  = ZurmoHtml::tag('i', array('class' => 'icon-email'), '');
+            $title = Zurmo::t('ZurmoModule', 'Emails');
+            $num   = ZurmoHtml::tag('strong', array(),
+                     LatestActivitiesUtil::getCountByModelClassName('EmailMessage', array($itemId),
+                     LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $emailsTotalContent   = ZurmoHtml::tag('span', array('class' => 'total-emails'), $icon . $num . ' ' . $title);
+
+            $icon  = ZurmoHtml::tag('i', array('class' => 'icon-meeting'), '');
+            $title = Zurmo::t('ZurmoModule', 'Meetings');
+            $num   = ZurmoHtml::tag('strong', array(),
+                     LatestActivitiesUtil::getCountByModelClassName('Meeting', array($itemId),
+                     LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $meetingsTotalContent = ZurmoHtml::tag('span', array('class' => 'total-meetings'), $icon . $num . ' ' . $title);
+
             $content = $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
-            return ZurmoHtml::tag('div', array('class' => 'entry-stats'), $content);
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ZurmoModule', "This {$this->modelClassName} has:"));
+            return ZurmoHtml::tag('div', array('class' => 'entry-stats'), $title . $content);
         }
 
         protected function renderRadioButtonContent($dupeModel)

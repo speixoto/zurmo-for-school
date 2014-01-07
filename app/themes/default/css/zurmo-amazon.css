@@ -9319,6 +9319,12 @@ table.configuration-list tr:last-child td {
 .available-portlets .icon-meetings:before {
   content: 'U';
 }
+.available-portlets .icon-accountAccountAffiliations:before {
+  content: '\00FB';
+}
+.available-portlets .icon-accountContactAffiliations:before {
+  content: '\00F4';
+}
 #modal-edit-form th {
   line-height: 24px;
 }
@@ -18944,7 +18950,7 @@ a + .project-stats {
   left: -15px;
 }
 .possible-matches {
-  width: 30%;
+  width: 35%;
   display: block;
   float: left;
   list-style: none;
@@ -18972,11 +18978,12 @@ a + .project-stats {
 }
 .cards {
   padding: 15px;
-  width: 70%;
+  width: 65%;
   display: block;
   float: left;
   height: 279px;
   margin-top: -15px;
+  margin-left: -1px;
   border-left: 1px solid #dfdfdf;
   border-right: 1px solid #dfdfdf;
 }
@@ -18996,6 +19003,10 @@ a + .project-stats {
 .spidergraph {
   width: 100%;
   height: 100%;
+  text-align: left;
+}
+.spidergraph div {
+  overflow: visible !important;
 }
 .turquoise {
   background: #1abc9c;
@@ -19209,7 +19220,6 @@ a + .project-stats {
   font-size: 12px;
 }
 .entry-stats {
-  font-weight: bold;
   border-top: 1px solid #dfdfdf;
   padding: 4px;
   position: absolute;
@@ -19220,13 +19230,20 @@ a + .project-stats {
 .entry-stats span {
   margin-right: 25px;
   display: inline-block;
+  color: #666;
 }
 .entry-stats i {
   margin-right: 3px;
 }
 .entry-stats .icon-email:before {
   font-size: 24px !important;
-  color: #656565 !important;
+  color: #666 !important;
+}
+.entry-stats h3 {
+  margin-bottom: 5px !important;
+}
+.entry-stats strong {
+  color: #444;
 }
 #bubble {
   display: none;
