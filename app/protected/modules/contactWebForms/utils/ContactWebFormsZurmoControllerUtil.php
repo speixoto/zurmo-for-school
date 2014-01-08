@@ -42,8 +42,8 @@
             {
                 $defaultPermission  = ContactWebFormAdapter::resolveAndGetDefaultPermissionSetting($contactWebForm);
                 $nonEveryoneGroup   = $contactWebForm->defaultPermissionGroupSetting;
-                $type               = static::resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType(
-                                              $defaultPermission);
+                $type               = DerivedExplicitReadWriteModelPermissionsElement::
+                                      resolveUserPermissionConfigurationToPermissionType($defaultPermission);
                 $postData           =  array('explicitReadWriteModelPermissions' =>
                                              compact('type', 'nonEveryoneGroup'));
                 $explicitReadWritePermissions = self::resolveAndMakeExplicitReadWriteModelPermissions($postData, $model);
