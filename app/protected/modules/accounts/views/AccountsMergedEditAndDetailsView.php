@@ -131,5 +131,10 @@
             $translationParams = LabelUtil::getTranslationParamsForAllModules();
             return Zurmo::t('AccountsModule', 'Merge AccountsModulePluralLabel', $translationParams);
         }
+
+        public static function getDesignerRulesType()
+        {
+            return 'MergedEditAndDetailsView';
+        }
     }
 ?>

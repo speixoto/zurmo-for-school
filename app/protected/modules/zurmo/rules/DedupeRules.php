@@ -220,14 +220,14 @@
             {
                 throw new NotImplementedException('There is no search callback defined for attribute: ' . $attribute);
             }
-            $matchedModels = call_user_func($callback, $value, ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT + 1);
+            $matchedModels = call_user_func($callback, $value, ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT + 1);
             if (count($matchedModels) > 0)
             {
-                if (count($matchedModels) > ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT)
+                if (count($matchedModels) > ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT)
                 {
                     $message =  Zurmo::t('ZurmoModule',
                                          'There are at least {n} possible matches.',
-                                         ModelsListDuplicateMergedModelForm::SELECTED_MODELS_COUNT
+                                         ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT
                     );
                 }
                 else

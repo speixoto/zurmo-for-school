@@ -755,7 +755,10 @@
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
             {
-                $this->beforeRedirect($model);
+                if ($model instanceof RedBeanModel)
+                {
+                    $this->beforeRedirect($model);
+                }
                 $this->redirectAfterSaveModel($model->id, $redirectUrlParams);
             }
             else

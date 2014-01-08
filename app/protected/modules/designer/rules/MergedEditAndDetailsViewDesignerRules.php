@@ -34,51 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CreateModelsToMergeListAndChartView extends ModelsToMergeListAndChartView
+    class MergedEditAndDetailsViewDesignerRules extends EditAndDetailsViewDesignerRules
     {
-        protected function onChangeScript()
+        public function allowEditInLayoutTool()
         {
-            $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');
-            // Begin Not Coding Standard
-            $js  = "function()
-                    {
-                        var id = $(this).attr('id');
-                        var idArray = id.split('-');
-                        window.location.href = '{$url}' + '?id=' + idArray[1];
-                    }";
-            // End Not Coding Standard
-            return $js;
-        }
-
-        protected function getViewStyle()
-        {
-            return 'style="display:none"';
-        }
-
-        protected function getTitleBar()
-        {
-            $totalModelsCount = count($this->dupeModels);
-            if (ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT > 0 && $totalModelsCount > ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT)
-            {
-                $label = Zurmo::t('ZurmoModule', 'Only showing the first {n} possible matches.', ModelsListDuplicateMergedModelForm::MAX_SELECTED_MODELS_COUNT);
-            }
-            else
-            {
-                $label = Zurmo::t('ZurmoModule', 'There is {n} possible match|There are {n} possible matches.', $totalModelsCount);
-            }
-            $icon = ZurmoHtml::tag('i', array('class' => 'icon-x'), '');
-            $link  = ZurmoHtml::link($icon . Zurmo::t('ZurmoModule', 'Close'), '#', array('class' => 'simple-link', 'onclick' => 'js:$("#CreateModelsToMergeListAndChartView").slideUp()'));
-            return ZurmoHtml::tag('div', array('class' => 'merge-title-bar'), ZurmoHtml::tag('h3', array(), $label . $link));
-        }
-
-        protected function renderRadioButtonContent($dupeModel)
-        {
-            return null;
-        }
-
-        protected function renderBeforeListContent()
-        {
-            return null;
+            return false;
         }
     }
 ?>

@@ -40,8 +40,6 @@
 
         public  $data                   = null;
 
-        public  $height                 = 300;
-
         public  $categoryField          = 'displayLabel';
 
         public  $chartIs3d              = false;

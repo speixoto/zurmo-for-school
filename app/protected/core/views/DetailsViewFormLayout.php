@@ -200,11 +200,8 @@
                 $content .= '<tr>';
                 $content .= '<td  colspan = "' . $this->maxCellsPerRow . '">';
                 $content .= ZurmoHtml::link($this->getMorePanelsLinkLabel(),
-                                        '#', array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . ''));
-                $content .= ZurmoHtml::link($this->getLessPanelsLinkLabel(),
-                                        '#',
-                                        array('class' => 'more-panels-link', 'id' => 'show-less-panels-link-' . $this->uniqueId . '',
-                                              'style' => 'display:none;'));
+                                        '#', array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . '',
+                                                   'data-unique' => $this->uniqueId, 'data-label' => $this->getLessPanelsLinkLabel()));
                 $content .= '</td>';
                 $content .= '</tr>';
             }
@@ -215,23 +212,21 @@
         {
             if ($this->shouldHidePanelsAfterFirstPanel())
             {
-                Yii::app()->clientScript->registerScript('showMorePanels' . $this->uniqueId, "
-                    $('#show-more-panels-link-" . $this->uniqueId . "').click( function()
+                Yii::app()->clientScript->registerScript('showMorePanels',
+                "
+                    $('.more-panels-link').click(
+                        function()
                         {
-                            $('.more-view-panel-{$this->uniqueId}').show();
-                            $('#show-more-panels-link-" . $this->uniqueId . "').hide();
-                            $('#show-less-panels-link-" . $this->uniqueId . "').show();
+                            var uniqueId = $(this).data('unique');
+                            var label    = $(this).data('label');
+                            var oldLabel = $(this).html();
+                            $('.more-view-panel-' + uniqueId).toggle();
+                            $(this).html(label);
+                            $(this).data('label', oldLabel);
                             return false;
                         }
                     );
-                    $('#show-less-panels-link-" . $this->uniqueId . "').click( function()
-                        {
-                            $('.more-view-panel-{$this->uniqueId}').hide();
-                            $('#show-more-panels-link-" . $this->uniqueId . "').show();
-                            $('#show-less-panels-link-" . $this->uniqueId . "').hide();
-                            return false;
-                        }
-                    );");
+                ");
             }
         }
 

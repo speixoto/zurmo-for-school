@@ -136,28 +136,31 @@
 
             if (ApiRequest::isApiRequest())
             {
-                if ($sessionId = Yii::app()->apiRequest->getSessionId())
+                if (!Yii::app()->getRequest()->isOAuthRequest())
                 {
-                    Yii::app()->session->setSessionID($sessionId);
-                    Yii::app()->session->open();
-                    $session = Yii::app()->getSession();
-                    if (Yii::app()->apiRequest->isSessionTokenRequired())
+                    if ($sessionId = Yii::app()->apiRequest->getSessionId())
                     {
-                        if ($session['token'] != Yii::app()->apiRequest->getSessionToken() || $session['token'] == '')
+                        Yii::app()->session->setSessionID($sessionId);
+                        Yii::app()->session->open();
+                        $session = Yii::app()->getSession();
+                        if (Yii::app()->apiRequest->isSessionTokenRequired())
                         {
-                            Yii::app()->session->clear();
-                            Yii::app()->session->destroy();
+                            if ($session['token'] != Yii::app()->apiRequest->getSessionToken() || $session['token'] == '')
+                            {
+                                Yii::app()->session->clear();
+                                Yii::app()->session->destroy();
+                            }
                         }
                     }
-                }
-                else
-                {
-                    Yii::app()->session->open();
-                    $sessionId = Yii::app()->session->getSessionID();
-                    $userPassword = Yii::app()->apiRequest->getPassword();
-                    $token = ZurmoSession::createSessionToken($sessionId, $userPassword);
-                    $session = Yii::app()->getSession();
-                    $session['token'] = $token;
+                    else
+                    {
+                        Yii::app()->session->open();
+                        $sessionId = Yii::app()->session->getSessionID();
+                        $userPassword = Yii::app()->apiRequest->getPassword();
+                        $token = ZurmoSession::createSessionToken($sessionId, $userPassword);
+                        $session = Yii::app()->getSession();
+                        $session['token'] = $token;
+                    }
                 }
             }
             else
