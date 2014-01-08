@@ -43,12 +43,14 @@
          * Selected models count for merge.
          */
         const SELECTED_MODELS_COUNT = 5;
+
         /**
          * Selected contacts
          *
          * @var array
          */
         public $selectedModels = array();
+
         /**
          * Primary contact for the merge
          * @var Contact
@@ -71,7 +73,7 @@
          */
         public function validateModelsCount($attribute, $params)
         {
-            if(count($this->selectedModels) > self::SELECTED_MODELS_COUNT || count($this->selectedModels) == 0)
+            if (count($this->selectedModels) > self::SELECTED_MODELS_COUNT || count($this->selectedModels) == 0)
             {
                 $message = Zurmo::t('ZurmoModule', 'The selected records should not be greater than {count}.',
                                      array('{count}' => self::SELECTED_MODELS_COUNT + 1));

@@ -39,6 +39,5 @@
      */
     class ContactsListDuplicateMergedModelForm extends ModelsListDuplicateMergedModelForm
     {
-       
     }
 ?>

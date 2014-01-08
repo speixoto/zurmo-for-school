@@ -43,22 +43,26 @@
          * @var array
          */
         public $selectedModels;
+        
         /**
          * Attributes associated to the element. This would include multiple attributes in case
          * of derived ones.
          * @var array
          */
         public $attributes;
+        
         /**
          * Primary model associated to the merged item.
          * @var RedBeanModel
          */
         public $primaryModel;
+        
         /**
          * Element associated to the merged item.
          * @var string
          */
         public $element;
+        
         /**
          * @var ModelAttributeAndElementDataToMergeItem
          */
@@ -71,7 +75,7 @@
         {
             $attributes = $this->attributes;
             $content = null;
-            if($this->modelAttributeAndElementDataToMergeItemClass == null)
+            if ($this->modelAttributeAndElementDataToMergeItemClass == null)
             {
                 $modelAttributeAndElementDataToMergeItemClass = 'ModelAttributeAndElementDataToMergeItem';
             }
@@ -79,11 +83,11 @@
             {
                 $modelAttributeAndElementDataToMergeItemClass = $this->modelAttributeAndElementDataToMergeItemClass;
             }
-            foreach($attributes as $attribute)
+            foreach ($attributes as $attribute)
             {
                 $attributeContent = null;
                 $position = 1;
-                foreach($this->selectedModels as $model)
+                foreach ($this->selectedModels as $model)
                 {
                     $modelAttributeAndElementDataToMergeItem = new $modelAttributeAndElementDataToMergeItemClass(
                                                                 $model, $attribute, $this->element, $this->primaryModel, $position++);
@@ -102,6 +106,7 @@
          */
         protected function registerScriptForAttributeReplacement()
         {
+            // Begin Not Coding Standard
             $script = "$('.attributePreElementContent').click(function(){
                                                                 $('#' + $(this).data('id')).val($(this).data('value'));
                                                                 $(this).siblings('a').removeClass('selected');
@@ -114,6 +119,7 @@
                                                                 $('#' + $(this).data('hiddenid')).val($(this).data('hiddenvalue'));
                                                                 return false;
                                                             });";
+            // End Not Coding Standard
             return $script;
         }
     }

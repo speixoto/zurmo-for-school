@@ -39,6 +39,5 @@
      */
     class AccountModelAttributeAndElementDataToMergeItem extends ModelAttributeAndElementDataToMergeItem
     {
-
     }
 ?>

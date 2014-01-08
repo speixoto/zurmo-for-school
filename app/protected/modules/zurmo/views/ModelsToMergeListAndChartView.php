@@ -78,7 +78,7 @@
             $cards    = null;
             $position = 1;
 
-            foreach($modelsToShow as $key => $dupeModel)
+            foreach ($modelsToShow as $key => $dupeModel)
             {
                 $detailsViewContent = $this->renderDetailsViewForDupeModel($dupeModel);
                 if (!strcmp($dupeModel->id, $this->model->id))

@@ -39,6 +39,5 @@
      */
     class AccountsListDuplicateMergedModelForm extends ModelsListDuplicateMergedModelForm
     {
-
     }
 ?>

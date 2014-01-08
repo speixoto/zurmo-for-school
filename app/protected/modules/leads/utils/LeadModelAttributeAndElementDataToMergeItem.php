@@ -47,7 +47,7 @@
          */
         protected function resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute)
         {
-            if($this->element instanceof LeadStateDropDownElement)
+            if ($this->element instanceof LeadStateDropDownElement)
             {
                 $label = ContactsUtil::resolveStateLabelByLanguage($this->model->$attribute, Yii::app()->language);
                 return Yii::app()->format->text($label);

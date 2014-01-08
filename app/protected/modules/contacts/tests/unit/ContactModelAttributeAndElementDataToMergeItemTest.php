@@ -36,15 +36,15 @@
 
     class ContactModelAttributeAndElementDataToMergeItemTest extends ModelAttributeAndElementDataToMergeItemBaseTest
     {
-        public $attributesToBeTested    = array('title'           => 'DropDown',
-                                                'firstName'       => 'Text',
-                                                'lastName'        => 'Text',
-                                                'null'            => 'ContactStateDropDown',
-                                                'primaryEmail'    => 'EmailAddressInformation',
-                                                'secondaryEmail'  => 'EmailAddressInformation',
-                                                'primaryAddress'  => 'Address',
-                                                'secondaryAddress'=> 'Address',
-                                                'account'         => 'Account'
+        public $attributesToBeTested    = array('title'            => 'DropDown',
+                                                'firstName'        => 'Text',
+                                                'lastName'         => 'Text',
+                                                'null'             => 'ContactStateDropDown',
+                                                'primaryEmail'     => 'EmailAddressInformation',
+                                                'secondaryEmail'   => 'EmailAddressInformation',
+                                                'primaryAddress'   => 'Address',
+                                                'secondaryAddress' => 'Address',
+                                                'account'          => 'Account'
                                                );
 
         public $nonDerivedAttributes    = array('firstName', 'lastName');
