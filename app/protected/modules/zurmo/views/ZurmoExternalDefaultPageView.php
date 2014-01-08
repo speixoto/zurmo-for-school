@@ -58,8 +58,12 @@
 
         protected function renderXHtmlHead()
         {
-            $theme        = 'themes/' . Yii::app()->theme->name;
+            $defaultThemeName       = 'default';
+            $defaultThemeBaseUrl    = Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
+            $themeName              = Yii::app()->theme->name;
+            $themeBaseUrl           = Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
+
             $absoluteBaseUrl    = Yii::app()->getBaseUrl(true);
 
             $specialCssContent = null;
