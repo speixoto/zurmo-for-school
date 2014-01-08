@@ -58,64 +58,84 @@
 
         protected function renderXHtmlHead()
         {
-            $theme        = 'themes/' . Yii::app()->theme->name;
+            $themeName              = Yii::app()->theme->name;
+            $themeBaseUrl           = Yii::app()->getRequest()->getHostInfo() .
+                                      Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
-            $absoluteBaseUrl    = Yii::app()->getBaseUrl(true);
-
             $specialCssContent = null;
+            $publishedAssetsPath = Yii::app()->getRequest()->getHostInfo() . Yii::app()->assetManager->publish(
+                    Yii::getPathOfAlias("application.core.views.assets.fonts"));
+            $specialCssContent .= "<style>" .
+                                    "@font-face" .
+                                    "{" .
+                                    "font-family: 'zurmo_gamification_symbly_rRg';" .
+                                    "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot');" .
+                                    "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), " .
+                                    "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), " .
+                                    "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), " .
+                                    "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.svg#zurmo_gamification_symbly_rRg') format('svg');" .
+                                    "font-weight: normal;" .
+                                    "font-style: normal;" .
+                                    "unicode-range: U+00-FFFF;" . // Not Coding Standard
+                                    "}" .
+                                    "</style>";
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="zurmo" href="' .
-                    $absoluteBaseUrl . '/' . $theme . '/less/zurmo.less"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' .
+                    $themeBaseUrl . '/less/default-theme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
-                        $absoluteBaseUrl . '/' . $theme . '/less/mobile.less"/>';
+                        $themeBaseUrl . '/less/mobile.less"/>';
                 }
                 $specialCssContent .= '<!--[if lt IE 9]><link rel="stylesheet/less" type="text/css" href="' .
-                    $absoluteBaseUrl . '/' . $theme . '/less/ie.less"/><![endif]-->';
+                    $themeBaseUrl . '/less/ie.less"/><![endif]-->';
             }
             else
             {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/zurmo.css');
-                if (file_exists($theme . '/css/commercial.css'))
+                Yii::app()->themeManager->registerThemeColorCss();
+                if (file_exists("themes/$themeName/css/commercial.css"))
                 {
-                    $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/commercial.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
                 }
-                if (file_exists($theme . '/css/custom.css'))
+                if (file_exists("themes/$themeName/css/custom.css"))
                 {
-                    $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/custom.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/custom.css');
                 }
                 if (Yii::app()->userInterface->isMobile())
                 {
-                    $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/mobile.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/mobile.css');
                 }
-            }
-            if (Yii::app()->getRequest()->isContextiveExternalRequest())
-            {
-                $cs->registerCssFile(Yii::app()->getBaseUrl(true) . '/' . $theme . '/css/gmail.css');
-            }
-            if (Yii::app()->getClientScript()->isIsolationMode())
-            {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/webforms-external.css');
+                if (Yii::app()->getRequest()->isContextiveExternalRequest())
+                {
+                    $cs->registerCssFile($themeBaseUrl . '/css/gmail.css');
+                }
+                if (Yii::app()->getClientScript()->isIsolationMode())
+                {
+                    $cs->registerCssFile($themeBaseUrl . '/css/webforms-external.css');
+                }
             }
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');
                 Yii::app()->minScript->generateScriptMap('css-color');
+                if (!YII_DEBUG && !defined('IS_TEST'))
+                {
+                    Yii::app()->minScript->generateScriptMap('js');
+                }
             }
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css' . '/ie.css', 'screen, projection');
+                $cs->registerCssFile($themeBaseUrl . '/css' . '/ie.css', 'screen, projection');
             }
 
             foreach ($this->getStyles() as $style)
             {
                 if ($style != 'ie')
                 {
-                    if (file_exists("$theme/css/$style.css"))
+                    if (file_exists("themes/$themeName/css/$style.css"))
                     {
-                        $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/' . $style. '.css'); // Not Coding Standard
+                        $cs->registerCssFile($themeBaseUrl . '/css/' . $style. '.css'); // Not Coding Standard
                     }
                 }
             }
