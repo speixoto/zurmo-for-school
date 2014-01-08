@@ -70,7 +70,7 @@
         protected function getEscapedAttributeByType($type)
         {
             $escapedAttributes = $this->getEscapedAttributes();
-            if(isset($escapedAttributes[$type]))
+            if (isset($escapedAttributes[$type]))
             {
                 return $escapedAttributes[$type];
             }
@@ -82,11 +82,11 @@
             $primaryModel         = $this->selectedModels[0];
             $attributesToBeTested = $this->attributesToBeTested;
             $content              = null;
-            foreach($attributesToBeTested as $attribute => $elementType)
+            foreach ($attributesToBeTested as $attribute => $elementType)
             {
                 $attributeContent = null;
                 $position = 1;
-                foreach($this->selectedModels as $selectedModel)
+                foreach ($this->selectedModels as $selectedModel)
                 {
                     $elementClass = $elementType . 'Element';
                     $type         = new $elementClass($selectedModel, $attribute);
@@ -106,7 +106,7 @@
             $model  = $this->selectedModels[0];
             $model1 = $this->selectedModels[1];
             $nonDerivedAttributes = $this->nonDerivedAttributes;
-            foreach($nonDerivedAttributes as $nonDerivedAttribute)
+            foreach ($nonDerivedAttributes as $nonDerivedAttribute)
             {
                 $matcherElement1 = array(
                     'tag' => 'a',
@@ -129,7 +129,7 @@
             $model  = $this->selectedModels[0];
             $model1 = $this->selectedModels[1];
             $dropdownAttributes   = $this->dropdownAttributes;
-            foreach($dropdownAttributes as $dropdownAttribute)
+            foreach ($dropdownAttributes as $dropdownAttribute)
             {
                 $matcherElement1 = array(
                     'tag'        => 'a',
@@ -151,13 +151,13 @@
             $model  = $this->selectedModels[0];
             $model1 = $this->selectedModels[1];
             $multiAttributeElements = $this->multiAttributeElements;
-            foreach($multiAttributeElements as $multiAttribute => $type)
+            foreach ($multiAttributeElements as $multiAttribute => $type)
             {
                 $elementClassName   = $type . 'Element';
                 $relatedAttributes  = $elementClassName::getModelAttributeNames();
-                foreach($relatedAttributes as $relatedAttribute)
+                foreach ($relatedAttributes as $relatedAttribute)
                 {
-                    if(!in_array($relatedAttribute, $this->getEscapedAttributeByType($type)))
+                    if (!in_array($relatedAttribute, $this->getEscapedAttributeByType($type)))
                     {
                         $matcherElement1 = array(
                             'tag' => 'a',
@@ -181,11 +181,11 @@
             $model  = $this->selectedModels[0];
             $model1 = $this->selectedModels[1];
             $dropdownAttributeElements   = $this->derivedElementInterfaceDropdownAttributesElements;
-            foreach($dropdownAttributeElements as $dropdownAttributeElement)
+            foreach ($dropdownAttributeElements as $dropdownAttributeElement)
             {
                 $elementClassName   = $dropdownAttributeElement . 'Element';
                 $relatedAttributes  = $elementClassName::getModelAttributeNames();
-                foreach($relatedAttributes as $relatedAttribute)
+                foreach ($relatedAttributes as $relatedAttribute)
                 {
                     $matcherElement1 = array(
                         'tag'        => 'a',
@@ -222,21 +222,21 @@
             $model  = $this->selectedModels[0];
             $model1 = $this->selectedModels[1];
             $modelElements = $this->modelElements;
-            foreach($modelElements as $modelElement)
+            foreach ($modelElements as $modelElement)
             {
                 $matcherElement1 = array(
                     'tag' => 'a',
-                    'attributes' => array('data-id'         => $this->modelClass . '_' . $modelElement . '_name',
-                                          'data-value'      => $model->$modelElement->name,
-                                          'data-hiddenid'   => $this->modelClass . '_' . $modelElement . '_id',
-                                          'data-hiddenvalue'=> $model->$modelElement->id)
+                    'attributes' => array('data-id'          => $this->modelClass . '_' . $modelElement . '_name',
+                                          'data-value'       => $model->$modelElement->name,
+                                          'data-hiddenid'    => $this->modelClass . '_' . $modelElement . '_id',
+                                          'data-hiddenvalue' => $model->$modelElement->id)
             );
                 $matcherElement2 = array(
                     'tag' => 'a',
-                    'attributes' => array('data-id'         => $this->modelClass . '_' . $modelElement . '_name',
-                                          'data-value'      => $model1->$modelElement->name,
-                                          'data-hiddenid'   => $this->modelClass . '_' . $modelElement . '_id',
-                                          'data-hiddenvalue'=> $model1->$modelElement->id)
+                    'attributes' => array('data-id'          => $this->modelClass . '_' . $modelElement . '_name',
+                                          'data-value'       => $model1->$modelElement->name,
+                                          'data-hiddenid'    => $this->modelClass . '_' . $modelElement . '_id',
+                                          'data-hiddenvalue' => $model1->$modelElement->id)
                 );
 
                 $this->assertTag($matcherElement1, $content);

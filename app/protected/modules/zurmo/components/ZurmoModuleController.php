@@ -487,7 +487,7 @@
             $model->selectedModels   = $modelsList;
             ListViewMergeUtil::setPrimaryModelForListViewMerge($model, $getData);
             $redirectUrl             = Yii::app()->createUrl($redirectUrl);
-            if($model->validate())
+            if ($model->validate())
             {
                 $titleBarAndEditView = $this->makeListMergeView(
                                             $this->attemptToSaveModelFromPost($model->primaryModel, null, $redirectUrl),
@@ -510,7 +510,7 @@
         {
             assert('$model instanceof RedBeanModel');
             $getData = GetUtil::getData();
-            if($this->getAction()->id == 'listViewMerge')
+            if ($this->getAction()->id == 'listViewMerge')
             {
                 Yii::app()->gameHelper->muteScoringModelsOnSave();
                 ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model, $getData);

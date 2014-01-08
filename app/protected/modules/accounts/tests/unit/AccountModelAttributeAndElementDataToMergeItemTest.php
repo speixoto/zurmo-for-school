@@ -77,7 +77,7 @@
             $this->verifyDerivedDropdownAttributeElements($content);
             $this->verifyModelElements($content);
         }
-        
+
         protected function setFirstModel()
         {
             $user                                   = User::getByUsername('steven');

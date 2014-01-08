@@ -39,6 +39,5 @@
      */
     class LeadsListDuplicateMergedModelForm extends ModelsListDuplicateMergedModelForm
     {
-
     }
 ?>

@@ -79,7 +79,7 @@
             if (isset($this->mappingRuleData["dedupeRule"]) &&
                 $this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
             {
-                if($value != null)
+                if ($value != null)
                 {
                     $matchedModels  = $this->getMatchedModels($value, 1);
                     if (count($matchedModels) > 0)
@@ -98,7 +98,7 @@
                     $this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND
                     )
             {
-                if($value != null)
+                if ($value != null)
                 {
                     $matchedModels  = $this->getMatchedModels($value, 1);
                     if (count($matchedModels) > 0)

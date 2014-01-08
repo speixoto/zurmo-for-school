@@ -44,21 +44,25 @@
          * @var RedBeanModel
          */
         protected $model;
+
         /**
          * Attribute associated to the merged item.
          * @var string
          */
         protected $attribute;
+
         /**
          * Element associated to the merged item.
          * @var string
          */
         protected $element;
+
         /**
          * Primary model associated to the merged item.
          * @var RedBeanModel
          */
         protected $primaryModel;
+
         /**
          * @var int The position of the model in the list
          * This is use only for the color class
@@ -101,32 +105,32 @@
         {
             $interfaces = class_implements($this->element);
             $elementClassName = get_class($this->element);
-            if(in_array('DerivedElementInterface', $interfaces))
+            if (in_array('DerivedElementInterface', $interfaces))
             {
-                if($this->element instanceof DropDownElement)
+                if ($this->element instanceof DropDownElement)
                 {
                     $attributeInputIdMap[] = $this->element->getIdForSelectInput();
                 }
                 else
                 {
                     $attributes       = $elementClassName::getModelAttributeNames();
-                    foreach($attributes as $attribute)
+                    foreach ($attributes as $attribute)
                     {
                         $attributeInputIdMap[] = $this->getDerivedInputId($attribute);
                     }
                 }
             }
-            elseif(in_array('MultipleAttributesElementInterface', $interfaces))
+            elseif (in_array('MultipleAttributesElementInterface', $interfaces))
             {
                 $relatedAttributes = $elementClassName::getModelAttributeNames();
-                foreach($relatedAttributes as $relatedAttribute)
+                foreach ($relatedAttributes as $relatedAttribute)
                 {
                     $attributeInputIdMap[] = $this->getDerivedInputId($this->attribute, $relatedAttribute);
                 }
             }
             else
             {
-                if($this->element instanceof ModelElement)
+                if ($this->element instanceof ModelElement)
                 {
                     $attributeInputIdMap[] = $this->getDerivedInputId($this->attribute, 'name');
                 }
@@ -169,12 +173,12 @@
         private function resolveInputId($attribute, $relatedAttribute = null)
         {
             assert('is_string($attribute)');
-            assert('is_string($relatedAttribute) || is_null($relatedAttribute)');
-            if($this->model->$attribute instanceof CustomField)
+            assert('is_string($relatedAttribute) || ($relatedAttribute === null)');
+            if ($this->model->$attribute instanceof CustomField)
             {
                 $inputId = Element::resolveInputIdPrefixIntoString(array(get_class($this->model), $attribute, 'value'));
             }
-            elseif($relatedAttribute != null)
+            elseif ($relatedAttribute != null)
             {
                 $inputId = Element::resolveInputIdPrefixIntoString(array(get_class($this->model), $attribute, $relatedAttribute));
             }
@@ -193,10 +197,10 @@
         protected function decorateContent($content)
         {
             $decoratedContent = null;
-            if($content != null)
+            if ($content != null)
             {
                 $inputIds = $this->getAttributeInputIdsForOnClick();
-                if($this->model->id == $this->primaryModel->id)
+                if ($this->model->id == $this->primaryModel->id)
                 {
                     $class = ' selected';
                 }
@@ -204,22 +208,22 @@
                 {
                     $class = '';
                 }
-                foreach($inputIds as $inputId)
+                foreach ($inputIds as $inputId)
                 {
                     $inputIdArray = explode('_', $inputId);
                     $attribute    = $inputIdArray[1];
                     $relatedAttribute = null;
                     //If related attribute is there
-                    if(count($inputIdArray) > 2)
+                    if (count($inputIdArray) > 2)
                     {
                         $relatedAttribute = $inputIdArray[2];
                     }
-                    if($relatedAttribute == null)
+                    if ($relatedAttribute == null)
                     {
                         $inputValue = $this->model->$attribute;
                         $displayValue = $inputValue;
                     }
-                    elseif($this->element instanceof ModelElement)
+                    elseif ($this->element instanceof ModelElement)
                     {
                         $inputValue       = $this->model->$attribute->$relatedAttribute;
                         $displayValue     = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
@@ -231,9 +235,9 @@
                         $inputValue   = $this->model->$attribute->$relatedAttribute;
                         $displayValue = $this->resolveDisplayedValueForRelatedAttribute($attribute, $relatedAttribute);
                     }
-                    if($inputValue != null)
+                    if ($inputValue != null)
                     {
-                        if($this->element instanceof ModelElement)
+                        if ($this->element instanceof ModelElement)
                         {
                             $decoratedContent .= ZurmoHtml::link($displayValue, '#', array('data-id'           => $inputId,
                                                                                            'data-value'        => $inputValue,
@@ -250,11 +254,11 @@
                     }
                 }
             }
-            if($decoratedContent == null)
+            if ($decoratedContent == null)
             {
                 $decoratedContent = ZurmoHtml::tag('span', array('class' => 'possible merge-color-' . $this->position), Zurmo::t('Core', '(None)'));
             }
-            if($this->element instanceof AddressElement)
+            if ($this->element instanceof AddressElement)
             {
                 $decoratedContent .= '</br>';
             }

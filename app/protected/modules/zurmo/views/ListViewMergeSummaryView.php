@@ -46,12 +46,14 @@
         protected function onChangeScript()
         {
             $url = Yii::app()->request->getUrl();
+            // Begin Not Coding Standard
             $js  = "function()
                     {
                         var id = $(this).attr('id');
                         var idArray = id.split('-');
                         window.location.href = '{$url}' + '&primaryModelId=' + idArray[1];
                     }";
+            // End Not Coding Standard
             return $js;
         }
     }

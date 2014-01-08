@@ -53,7 +53,7 @@
             $this->setSecondModel();
             $modelsList = ListViewMergeUtil::getSelectedModelsListForMerge($this->modelClass,
                                                         array('selectedIds' => $this->selectedModels[0]->id .
-                                                                                ',' .
+                                                                                ',' .   // Not Coding Standard
                                                                                 $this->selectedModels[1]->id));
             $formModel  = new ModelsListDuplicateMergedModelForm();
             $formModel->selectedModels = $modelsList;
@@ -70,7 +70,7 @@
             $this->setRelatedModels();
             ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($this->getPrimaryModel(),
                                                                                     array('selectedIds' => $this->selectedModels[0]->id .
-                                                                                            ',' .
+                                                                                            ',' .   // Not Coding Standard
                                                                                             $this->selectedModels[1]->id));
             $this->validatePrimaryModelData();
         }
@@ -169,11 +169,11 @@
             $layoutMetadata   = ListViewMergeUtil::resolveFormLayoutMetadataForOneColumnDisplay($viewClassName::getMetadata());
             $rows             = $layoutMetadata['global']['panels'][0]['rows'];
             $modifiedElementsData = array();
-            foreach($rows as $row)
+            foreach ($rows as $row)
             {
                 $modifiedElementsData[] = $row['cells'][0]['elements'][0];
             }
-            if($this->modelClass == 'Contact')
+            if ($this->modelClass == 'Contact')
             {
                 $this->assertEquals('title', $modifiedElementsData[0]['attributeName']);
                 $this->assertEquals('DropDown', $modifiedElementsData[0]['type']);

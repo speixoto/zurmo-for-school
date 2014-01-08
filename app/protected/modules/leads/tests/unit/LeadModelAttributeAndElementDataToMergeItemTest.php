@@ -36,23 +36,23 @@
 
     class LeadModelAttributeAndElementDataToMergeItemTest extends ModelAttributeAndElementDataToMergeItemBaseTest
     {
-        public $attributesToBeTested    = array('title'           => 'DropDown',
-                                                'firstName'       => 'Text',
-                                                'lastName'        => 'Text',
-                                                'null'            => 'LeadStateDropDown',
-                                                'jobTitle'        => 'Text',
-                                                'companyName'     => 'Text',
-                                                'department'      => 'Text',
-                                                'officePhone'     => 'Phone',
-                                                'source'          => 'DropDown',
-                                                'mobilePhone'     => 'Phone',
-                                                'officeFax'       => 'Phone',
-                                                'industry'        => 'DropDown',
-                                                'website'         => 'Url',
-                                                'primaryEmail'    => 'EmailAddressInformation',
-                                                'secondaryEmail'  => 'EmailAddressInformation',
-                                                'primaryAddress'  => 'Address',
-                                                'secondaryAddress'=> 'Address'
+        public $attributesToBeTested    = array('title'            => 'DropDown',
+                                                'firstName'        => 'Text',
+                                                'lastName'         => 'Text',
+                                                'null'             => 'LeadStateDropDown',
+                                                'jobTitle'         => 'Text',
+                                                'companyName'      => 'Text',
+                                                'department'       => 'Text',
+                                                'officePhone'      => 'Phone',
+                                                'source'           => 'DropDown',
+                                                'mobilePhone'      => 'Phone',
+                                                'officeFax'        => 'Phone',
+                                                'industry'         => 'DropDown',
+                                                'website'          => 'Url',
+                                                'primaryEmail'     => 'EmailAddressInformation',
+                                                'secondaryEmail'   => 'EmailAddressInformation',
+                                                'primaryAddress'   => 'Address',
+                                                'secondaryAddress' => 'Address'
                                           );
 
         public $nonDerivedAttributes    = array('firstName', 'lastName',
