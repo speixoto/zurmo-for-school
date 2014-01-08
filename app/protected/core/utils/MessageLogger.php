@@ -194,15 +194,15 @@
             assert('$type == MessageLogger::ERROR || $type == MessageLogger::INFO || $type == MessageLogger::DEBUG');
             if ($type == MessageLogger::ERROR)
             {
-                return Zurmo::t('Core', 'Error');
+                return str_pad(Zurmo::t('Core', 'Error'), 5);
             }
             elseif ($type == MessageLogger::INFO)
             {
-                return Zurmo::t('Core', 'Info');
+                return str_pad(Zurmo::t('Core', 'Info'), 5);
             }
             else
             {
-                return Zurmo::t('Core', 'Debug');
+                return str_pad(Zurmo::t('Core', 'Debug'), 5);
             }
         }
 

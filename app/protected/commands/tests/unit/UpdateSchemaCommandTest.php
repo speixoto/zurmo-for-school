@@ -58,7 +58,7 @@
         {
             $output = array();
             $this->runUpdateSchema($output);
-            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
+            $this->assertTrue(array_search('Info  - Schema generation completed', $output) !== false);
             $this->assertTrue(array_search('Skipping existing read Tables.', $output) !== false);
             $this->assertTrue(array_search('Skipping account_read', $output) !== false);
             $this->assertTrue(array_search('Skipping campaign_read', $output) !== false);
@@ -88,7 +88,7 @@
         {
             $output = array();
             $this->runUpdateSchema($output, 0);
-            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
+            $this->assertTrue(array_search('Info  - Schema generation completed', $output) !== false);
             $this->assertTrue(array_search('Skipping existing read Tables.', $output) !== false);
             $this->assertTrue(array_search('Skipping account_read', $output) !== false);
             $this->assertTrue(array_search('Skipping campaign_read', $output) !== false);
@@ -118,7 +118,7 @@
         {
             $output = array();
             $this->runUpdateSchema($output, 1);
-            $this->assertTrue(array_search('Info - Schema generation completed', $output) !== false);
+            $this->assertTrue(array_search('Info  - Schema generation completed', $output) !== false);
             $this->assertTrue(array_search('Overwriting any existing read Tables.', $output) !== false);
             $this->assertTrue(array_search('Building account_read', $output) !== false);
             $this->assertTrue(array_search('Building campaign_read', $output) !== false);
