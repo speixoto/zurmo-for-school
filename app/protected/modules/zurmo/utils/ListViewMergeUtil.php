@@ -59,7 +59,7 @@
             assert('$primaryModel instanceof RedBeanModel');
             assert('is_string($modelAttributeAndElementDataToMergeItemClass)');
 
-            if($element->getAttribute() != 'null')
+            if ($element->getAttribute() != 'null')
             {
                 $attributes       = array($element->getAttribute());
             }
@@ -92,14 +92,14 @@
             assert('$model instanceof ModelsListDuplicateMergedModelForm');
             assert('is_array($getData)');
             $modelsList   = $model->selectedModels;
-            if(isset($getData['primaryModelId']))
+            if (isset($getData['primaryModelId']))
             {
                 $model->primaryModel = $modelsList[$getData['primaryModelId']];
             }
             else
             {
                 $models = array_values($modelsList);
-                if(!empty($models))
+                if (!empty($models))
                 {
                     $model->primaryModel = $models[0];
                 }
@@ -117,10 +117,10 @@
             assert('is_string($modelClassName)');
             assert('is_array($getData)');
             $modelsList = array();
-            if(isset($getData['selectedIds']) && $getData['selectedIds'] != null)
+            if (isset($getData['selectedIds']) && $getData['selectedIds'] != null)
             {
                 $selectedIds = explode(',', $getData['selectedIds']);
-                foreach($selectedIds as $id)
+                foreach ($selectedIds as $id)
                 {
                     $model = $modelClassName::getById(intval($id));
                     $modelsList[$id] = $model;
@@ -141,9 +141,9 @@
             $modelClassName     = get_class($primaryModel);
             $selectedModelsList = self::getSelectedModelsListForMerge($modelClassName, $getData);
             self::processAssignRelationsToMergedModelFromModelsToBeDeleted($selectedModelsList, $primaryModel);
-            foreach($selectedModelsList as $selectedModel)
+            foreach ($selectedModelsList as $selectedModel)
             {
-                if($selectedModel->id != $primaryModel->id
+                if ($selectedModel->id != $primaryModel->id
                     &&(get_class($selectedModel) == get_class($primaryModel)))
                 {
                     ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($selectedModel);
@@ -160,7 +160,7 @@
         protected static function processAssignRelationsToMergedModelFromModelsToBeDeleted($selectedModelsList, $primaryModel)
         {
             assert('is_array($selectedModelsList)');
-            foreach($selectedModelsList as $selectedModel)
+            foreach ($selectedModelsList as $selectedModel)
             {
                 self::processNonDerivedRelationsAssignment($primaryModel, $selectedModel);
                 self::processDerivedRelationsAssignment($primaryModel, $selectedModel);
@@ -177,33 +177,33 @@
             assert('$primaryModel instanceof RedBeanModel');
             assert('$selectedModel instanceof RedBeanModel');
             $modelClassName = get_class($primaryModel);
-            if($selectedModel->id != $primaryModel->id
+            if ($selectedModel->id != $primaryModel->id
                         &&(get_class($selectedModel) == get_class($primaryModel)))
             {
-                foreach($selectedModel->attributeNames() as $attribute)
+                foreach ($selectedModel->attributeNames() as $attribute)
                 {
                     if ($attribute == 'owner')
                     {
                             continue;
                     }
-                    if($modelClassName::isRelation($attribute)
-                                    && !$modelClassName::isOwnedRelation($attribute)
-                                        && !$primaryModel->isAttributeReadOnly($attribute))
+                    if ($modelClassName::isRelation($attribute) &&
+                                    !$modelClassName::isOwnedRelation($attribute) &&
+                                        !$primaryModel->isAttributeReadOnly($attribute))
                     {
                         //Has one
-                        if($modelClassName::isRelationTypeAHasOneVariant($attribute))
+                        if ($modelClassName::isRelationTypeAHasOneVariant($attribute))
                         {
                             $primaryModel->$attribute = $selectedModel->$attribute;
                         }
                         //Has many || Many many
-                        if(($modelClassName::isRelationTypeAHasManyVariant($attribute)
-                            || $modelClassName::isRelationTypeAManyManyVariant($attribute))
-                            && ($modelClassName::getRelationType($attribute) != RedBeanModel::HAS_MANY_BELONGS_TO)
+                        if (($modelClassName::isRelationTypeAHasManyVariant($attribute) ||
+                            $modelClassName::isRelationTypeAManyManyVariant($attribute)) &&
+                            ($modelClassName::getRelationType($attribute) != RedBeanModel::HAS_MANY_BELONGS_TO)
                           )
                         {
-                            foreach($selectedModel->$attribute as $offset => $relatedModel)
+                            foreach ($selectedModel->$attribute as $offset => $relatedModel)
                             {
-                                if(!$primaryModel->$attribute->contains($relatedModel))
+                                if (!$primaryModel->$attribute->contains($relatedModel))
                                 {
                                     $primaryModel->$attribute->add($relatedModel);
                                 }
@@ -225,7 +225,7 @@
             assert('$primaryModel instanceof RedBeanModel');
             assert('$selectedModel instanceof RedBeanModel');
             $modelClassName = get_class($primaryModel);
-            if($selectedModel->id != $primaryModel->id
+            if ($selectedModel->id != $primaryModel->id
                         &&(get_class($selectedModel) == get_class($primaryModel)))
             {
                 $metadata   = $selectedModel->getMetadata();
@@ -236,14 +236,14 @@
                         foreach ($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
                         {
                             $opposingModelClassName = $derivedRelationData[1];
-                            $opposingRelation	    = $derivedRelationData[2];
-                            if($opposingRelation == 'activityItems'
-                                        && is_subclass_of($opposingModelClassName, 'Activity'))
+                            $opposingRelation       = $derivedRelationData[2];
+                            if ($opposingRelation == 'activityItems' &&
+                                        is_subclass_of($opposingModelClassName, 'Activity'))
                             {
                                 $opposingModels = $opposingModelClassName::getByActivityItemsCastedDown($selectedModel->getClassId('Item'));
-                                if($opposingModels != null)
+                                if ($opposingModels != null)
                                 {
-                                    foreach($opposingModels as $opposingModel)
+                                    foreach ($opposingModels as $opposingModel)
                                     {
                                         $opposingModel->activityItems->add($primaryModel);
                                         $opposingModel->save();
@@ -264,19 +264,19 @@
         public static function resolveFormLayoutMetadataForOneColumnDisplay($metadata)
         {
             $modifiedElementsData = array();
-            foreach($metadata['global']['panels'] as $panel)
+            foreach ($metadata['global']['panels'] as $panel)
             {
-                foreach($panel['rows'] as $row)
+                foreach ($panel['rows'] as $row)
                 {
-                    foreach($row['cells'] as $cell)
+                    foreach ($row['cells'] as $cell)
                     {
-                        foreach($cell['elements'] as $elementData)
+                        foreach ($cell['elements'] as $elementData)
                         {
-                            if($elementData['attributeName'] == 'null' && !class_exists($elementData['type'] . 'Element'))
+                            if ($elementData['attributeName'] == 'null' && !class_exists($elementData['type'] . 'Element'))
                             {
                                 continue;
                             }
-                            elseif($elementData['type'] == 'TitleFullName')
+                            elseif ($elementData['type'] == 'TitleFullName')
                             {
                                 $modifiedElementsData[] = array('attributeName' => 'title', 'type' => 'DropDown');
                                 $modifiedElementsData[] = array('attributeName' => 'firstName', 'type' => 'Text');
@@ -292,7 +292,7 @@
             }
             //Prepare panels data
             $panelsData = array();
-            foreach($modifiedElementsData as $row => $elementData)
+            foreach ($modifiedElementsData as $row => $elementData)
             {
                 $panelsData[0]['rows'][$row]['cells'][0]['elements'][0] = $elementData;
             }
