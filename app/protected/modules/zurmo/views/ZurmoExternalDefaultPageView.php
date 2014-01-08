@@ -81,7 +81,6 @@
             }
             else
             {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/zurmo.css');
                 if (file_exists($theme . '/css/commercial.css'))
                 {
                     $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/commercial.css');
