@@ -271,7 +271,7 @@
 
         public function beforeValidate()
         {
-            if($this->getScenario() != 'searchModel')
+            if ($this->getScenario() != 'searchModel')
             {
                 $this->validateHtmlOnly();
             }

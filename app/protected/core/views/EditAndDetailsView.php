@@ -242,7 +242,7 @@
                 return null;
             }
         }
-        
+
         protected function resolveAndRenderActionElementMenuForEdit()
         {
         }

@@ -39,12 +39,14 @@
         protected function onChangeScript()
         {
             $url = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');
+            // Begin Not Coding Standard
             $js  = "function()
                     {
                         var id = $(this).attr('id');
                         var idArray = id.split('-');
                         window.location.href = '{$url}' + '?id=' + idArray[1];
                     }";
+            // End Not Coding Standard
             return $js;
         }
 

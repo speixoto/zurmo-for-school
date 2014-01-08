@@ -99,6 +99,7 @@
             }
             $id           = $this->getInputIdForDedupe($element);
             $dedupeViewId = $this->getDedupeViewClassName();
+            // Begin Not Coding Standard
             $ajaxScript = ZurmoHtml::ajax(array(
                 'type'       => 'GET',
                 'data'       => array('attribute' => $this->getAttributeForDedupe($element),
@@ -125,6 +126,7 @@
             ";
 
             Yii::app()->getClientScript()->registerScript(__CLASS__ . $id . '#dedupe-for-edit-and-details-view', $js);
+            // End Not Coding Standard
         }
 
         /**
@@ -135,7 +137,7 @@
         protected function getInputIdForDedupe(Element $element)
         {
             $interfaces = class_implements($element);
-            if(in_array('MultipleAttributesElementInterface', $interfaces))
+            if (in_array('MultipleAttributesElementInterface', $interfaces))
             {
                 return Element::resolveInputIdPrefixIntoString(array(get_class($this->model), $element->getAttribute(), $this->getRelatedAttributeForDedupe($element)));
             }
@@ -154,7 +156,7 @@
         protected function getAttributeForDedupe(Element $element)
         {
             $interfaces = class_implements($element);
-            if(in_array('DerivedElementInterface', $interfaces))
+            if (in_array('DerivedElementInterface', $interfaces))
             {
                 $attributesForDedupeInElement = array_values(array_intersect(array_keys($this->getDedupeAttributesAndRelatedAttributesMappedArray()),
                                 $element->getModelAttributeNames()));

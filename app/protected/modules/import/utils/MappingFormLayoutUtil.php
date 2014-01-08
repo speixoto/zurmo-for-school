@@ -265,7 +265,7 @@
             }
             $subDivsCssClass = 'has'.count($mappingRuleFormsAndElementTypes);
             $content = ZurmoHtml::tag('div', array('id' => self::getMappingRulesDivIdByColumnName($columnName),
-                                                   'class' => 'mapping-rules '.$subDivsCssClass), $content);
+                                                   'class' => 'mapping-rules '.$subDivsCssClass), $content); // Not Coding Standard
             return $content;
         }
 

@@ -216,7 +216,6 @@
                             $model->setScenario('doNotSetModifiedDateTimeOrUser');
                             try
                             {
-
                                 $resolved = ExplicitReadWriteModelPermissionsUtil::
                                             resolveExplicitReadWriteModelPermissions(
                                                 $model,

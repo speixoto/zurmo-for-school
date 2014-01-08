@@ -400,6 +400,5 @@
                                         'AccountsMerged', 'AccountsPageView',
                                         '/accounts/default/list');
         }
-
     }
 ?>

@@ -176,7 +176,6 @@
             $this->assertEquals(1, LatestActivitiesUtil::
                 getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER));
             $this->assertEquals(1, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $user->id));
-
         }
     }
 ?>
