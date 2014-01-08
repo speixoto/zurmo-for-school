@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -48,18 +48,13 @@
         {
             if ($model instanceof SecurableItem && count($model->permissions) === 0)
             {
-                $defaultPermission  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
-                                                                                        $user);
-                $nonEveryoneGroup   = UserConfigurationFormAdapter::resolveAndGetValue($user,
-                                                                                        'defaultPermissionGroupSetting',
-                                                                                        false);
-                $type               = static::resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType(
-                                                                                                    $defaultPermission);
-                $postData           =  array('explicitReadWriteModelPermissions' =>
-                                                    compact('type', 'nonEveryoneGroup'),
-                                        );
-                $explicitReadWritePermissions   = self::resolveAndMakeExplicitReadWriteModelPermissions($postData,
-                                                                                                        $model);
+                // we use a dummy SecurableItem here because we don't care about 'owner' in permission array;
+                // using SecurableItem here even when the actual model is OwnedSecurableItem would not cause
+                // any unintended behavior.
+                // If we use $model here and $model is SecurableItem but not OwnedSecurableItem we might
+                // would have to unset($postData['owner']);
+                $postData           = static::resolveUserDefaultPermissionsForCurrentUser(new SecurableItem());
+                $explicitReadWritePermissions = self::resolveAndMakeExplicitReadWriteModelPermissions($postData, $model);
                 $updated    = ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($model,
                                                                                         $explicitReadWritePermissions);
                 if (!$updated)
@@ -69,28 +64,34 @@
             }
         }
 
+        public static function resolveUserDefaultPermissionsForCurrentUser(RedBeanModel $model = null)
+        {
+            return static::resolveUserDefaultPermissionsByUser(Yii::app()->user->userModel, $model);
+        }
+
+        public static function resolveUserDefaultPermissionsByUser(User $user, RedBeanModel $model = null)
+        {
+            $defaultPermissionSettings  = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($user);
+            $nonEveryoneGroup           = UserConfigurationFormAdapter::resolveAndGetValue($user,
+                                                                                'defaultPermissionGroupSetting', false);
+            $type                       = DerivedExplicitReadWriteModelPermissionsElement::resolveUserPermissionConfigurationToPermissionType(
+                                                                                            $defaultPermissionSettings);
+            $explicitReadWriteModelPermissions  = compact('type', 'nonEveryoneGroup');
+            $permissions                        = compact('explicitReadWriteModelPermissions');
+            if ($model === null || $model instanceof OwnedSecurableItem)
+            {
+                $owner                              = array('id' => $user->id);
+                $permissions                        = compact('owner', 'explicitReadWriteModelPermissions');
+            }
+            return $permissions;
+        }
+
         /**
          * @param SecurableItem $model
          */
         public static function updatePermissionsWithDefaultForModelByCurrentUser(SecurableItem $model)
         {
             static::updatePermissionsWithDefaultForModelByUser($model, Yii::app()->user->userModel);
-        }
-
-        protected static function resolveDefaultPermissionToExplicitReadWriteModelPermissionsUtilType($defaultPermission)
-        {
-            if ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE)
-            {
-                return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP;
-            }
-            elseif ($defaultPermission == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
-            {
-                return ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         /*

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,18 +40,6 @@
     */
     class ApiRestXmlAccountTest_Disabled extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
-
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetAccount()
         {
             $super = User::getByUsername('super');
@@ -101,9 +89,6 @@
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateAccount()
         {
             $super = User::getByUsername('super');
@@ -613,9 +598,6 @@
             //$this->assertEquals('Second Account', $response['data']['items'][0]['name']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateWithRelations()
         {
             $super = User::getByUsername('super');
@@ -778,9 +760,6 @@
             $this->assertLessThanOrEqual(0, $contact->account->id);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditAccountWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -814,9 +793,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditAccountWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');
@@ -851,9 +827,6 @@
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testNotAllowedGuestAction()
         {
             $authenticationData = $this->login('st', 'st');
@@ -867,6 +840,14 @@
             $response = XML2Array::createArray($response);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('Sign in required.', $response['message']);
+        }
+
+        protected function getApiControllerClassName()
+        {
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
         }
     }
 ?>

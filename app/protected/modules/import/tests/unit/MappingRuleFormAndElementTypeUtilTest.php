@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MappingRuleFormAndElementTypeUtilTest extends ImportBaseTest
@@ -139,7 +139,7 @@
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,
                                                                          'email', 'importColumn');
-            $this->assertEquals(1, count($collection));
+            $this->assertEquals(2, count($collection));
             $this->assertEquals('Text', $collection[0]['elementType']);
             $this->assertEquals('DefaultValueModelAttributeMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
 
@@ -148,9 +148,11 @@
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,
                                                                          'fullName', 'importColumn');
-            $this->assertEquals(1, count($collection));
-            $this->assertEquals('Text', $collection[0]['elementType']);
+            $this->assertEquals(2, count($collection));
+            $this->assertEquals('Text',                           $collection[0]['elementType']);
+            $this->assertEquals('ImportDedupeRulesRadioDropDown', $collection[1]['elementType']);
             $this->assertEquals('FullNameDefaultValueModelAttributeMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
+            $this->assertEquals('FullNameModelAttributeDedupeMappingRuleForm',       get_class($collection[1]['mappingRuleForm']));
 
             //Id
             $attributeImportRules = new IdAttributeImportRules(new ImportModelTestItem(), 'id');
@@ -472,12 +474,18 @@
             $collection           = MappingRuleFormAndElementTypeUtil::
                                     makeCollectionByAttributeImportRules($attributeImportRules,
                                     'primaryEmail__emailAddress', 'importColumn');
-            $this->assertEquals(1, count($collection));
+            $this->assertEquals(2, count($collection));
             $this->assertEquals('Text', $collection[0]['elementType']);
+            $this->assertEquals('ImportDedupeRulesRadioDropDown', $collection[1]['elementType']);
+            $this->assertEquals('EmailModelAttributeDedupeMappingRuleForm', get_class($collection[1]['mappingRuleForm']));
             $this->assertEquals('DefaultValueModelAttributeMappingRuleForm', get_class($collection[0]['mappingRuleForm']));
             $this->assertEquals('Email',        static::getReflectedPropertyValue($collection[0]['mappingRuleForm'],
                                                 'modelClassName'));
             $this->assertEquals('emailAddress', static::getReflectedPropertyValue($collection[0]['mappingRuleForm'],
+                                                'modelAttributeName'));
+            $this->assertEquals('Email',        static::getReflectedPropertyValue($collection[1]['mappingRuleForm'],
+                                                'modelClassName'));
+            $this->assertEquals('emailAddress', static::getReflectedPropertyValue($collection[1]['mappingRuleForm'],
                                                 'modelAttributeName'));
         }
     }

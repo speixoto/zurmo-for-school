@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -64,7 +64,7 @@
 
         public function testFileSetAndGet()
         {
-            $fileCount = count(FileModel::getAll());
+            $fileCount = FileModel::getCount();
             $this->assertEquals(0, $fileCount);
 
             $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
@@ -91,11 +91,11 @@
             $this->assertEquals(6495, $file->size);
 
             //Remove the fileModel. The related fileContent should also be removed because it is OWNED by the fileModel.
-            $this->assertEquals(1, count(FileModel::getAll()));
-            $this->assertEquals(1, count(FileContent::getAll()));
+            $this->assertEquals(1, FileModel::getCount());
+            $this->assertEquals(1, FileContent::getCount());
             $file->delete();
-            $this->assertEquals(0, count(FileModel::getAll()));
-            $this->assertEquals(0, count(FileContent::getAll()));
+            $this->assertEquals(0, FileModel::getCount());
+            $this->assertEquals(0, FileContent::getCount());
         }
 
         public function testMakeFileViaUpload()
@@ -117,8 +117,8 @@
             $this->assertEquals('text/plain', $file->type);
             $this->assertEquals(6495, $file->size);
             $fileModel->delete();
-            $this->assertEquals(0, count(FileModel::getAll()));
-            $this->assertEquals(0, count(FileContent::getAll()));
+            $this->assertEquals(0, FileModel::getCount());
+            $this->assertEquals(0, FileContent::getCount());
         }
 
         /**

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -137,8 +137,8 @@
                 $content .= '</div>';
 
                 $content .= '<div class="multiselect-nav">';
-                $content .= ZurmoHtml::button( '7', array( 'id' => $id . 'moveRight', 'class' => 'icon-right-arrow' ) ); //used 7, 8 becuase those are rendered as icons with symbly, other option is to make it an A with a SPAN inside it
-                $content .= ZurmoHtml::button( '8', array( 'id' => $id . 'moveLeft', 'class' => 'icon-left-arrow' ) );
+                $content .= ZurmoHtml::button( '7', array( 'id' => $id . 'moveRight', 'class' => 'white-button icon-right-arrow' ) ); //used 7, 8 becuase those are rendered as icons with symbly, other option is to make it an A with a SPAN inside it
+                $content .= ZurmoHtml::button( '8', array( 'id' => $id . 'moveLeft', 'class' => 'white-button icon-left-arrow' ) );
                 $content .= '</div>';
             }
             if ($this->hasRightSideBox === true)
@@ -152,8 +152,8 @@
                 if ($this->allowSorting)
                 {
                     $content .= '<div class="multiselect-nav' . $this->resolveMultiselectNavigationClassesContent() . '">';
-                    $content .= ZurmoHtml::button( '5', array( 'id' => $id . 'moveUp', 'class' => 'icon-up-arrow' ) );     // value "up" in icon font
-                    $content .= ZurmoHtml::button( '6', array( 'id' => $id . 'moveDown', 'class' => 'icon-down-arrow' ) ); // value "down" in icon font
+                    $content .= ZurmoHtml::button( '5', array( 'id' => $id . 'moveUp', 'class' => 'white-button icon-up-arrow' ) );     // value "up" in icon font
+                    $content .= ZurmoHtml::button( '6', array( 'id' => $id . 'moveDown', 'class' => 'white-button icon-down-arrow' ) ); // value "down" in icon font
                     $content .= '</div>';
                 }
             }

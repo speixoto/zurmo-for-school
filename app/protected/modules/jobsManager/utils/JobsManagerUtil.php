@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -43,51 +43,87 @@
          * @see JobManagerCommand.  This method is called from the JobManagerCommand which is a commandline
          * tool to run jobs.  Based on the 'type' specified this method will call to run the monitor or a
          * regular non-monitor job.
-         * @param string $type
-         * @param int $timeLimit
+         * @param $type
+         * @param $timeLimit
          * @param $messageLoggerClassName
+         * @param $isJobInProgress
+         * @param bool $useMessageStreamer
          * @param string $template
          * @param string $lineBreak
          */
         public static function runFromJobManagerCommandOrBrowser($type, $timeLimit, $messageLoggerClassName,
-                                                                 $template = "{message}\n", $lineBreak = "\n")
+                                                                 & $isJobInProgress, $useMessageStreamer = true, $template = "{message}\n",
+                                                                 $lineBreak = "\n")
         {
             assert('is_string($type)');
             assert('is_int($timeLimit)');
             assert('is_string($messageLoggerClassName) && (
                     is_subclass_of($messageLoggerClassName, "MessageLogger") ||
                     $messageLoggerClassName == "MessageLogger")');
+            assert('is_bool($isJobInProgress)');
             assert('is_string($template)');
             assert('is_string($lineBreak)');
             set_time_limit($timeLimit);
+
+            $jobManagerFileLogger = Yii::createComponent(
+                array(
+                    'class'       => 'application.modules.jobsManager.components.JobManagerFileLogger',
+                    'maxFileSize' => '5120',
+                    'logFile'     => $type . '.log',
+                    'logPath'     => Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'jobLogs'
+                )
+            );
+
+            $jobManagerFileMessageStreamer = new JobManagerFileLogRouteMessageStreamer("{message}\n", $jobManagerFileLogger);
             $messageStreamer = new MessageStreamer($template);
             $messageStreamer->setExtraRenderBytes(0);
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
-                                  array('{seconds}' => $timeLimit)));
-            echo $lineBreak;
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
-                                  array('{type}' => $type,
-                                         '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
-            $messageLogger = new $messageLoggerClassName($messageStreamer);
-            $messageLogger->addDebugMessage('Showing Debug Messages');
-            if ($type == 'Monitor')
+            $streamers = array($messageStreamer, $jobManagerFileMessageStreamer);
+            foreach ($streamers as $streamer)
             {
-                static::runMonitorJob($messageLogger);
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
+                                        array('{seconds}' => $timeLimit)));
+                $streamer->add(Zurmo::t('JobsManagerModule', 'Sending output to runtime/jobLogs/{type}.log',
+                                        array('{type}' => $type)));
+                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Starting job type: {type}',
+                                        array('{type}' => $type,
+                                              '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+            }
+            if ($useMessageStreamer)
+            {
+                $messageLogger = new $messageLoggerClassName(array($messageStreamer, $jobManagerFileMessageStreamer));
             }
             else
             {
-                static::runNonMonitorJob($type, $messageLogger);
+                $messageLogger = new $messageLoggerClassName(array($jobManagerFileMessageStreamer));
             }
-            $messageStreamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
-                                  array('{type}' => $type,
-                                         '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
+                            array('{seconds}' => $timeLimit)));
+            $messageLogger->addInfoMessage(Zurmo::t('JobsManagerModule', 'Starting job type: {type}',
+                            array('{type}' => $type)));
+            $messageLogger->addDebugMessage('Showing Debug Messages');
+            if ($type == 'Monitor')
+            {
+                static::runMonitorJob($messageLogger, $isJobInProgress);
+            }
+            else
+            {
+                static::runNonMonitorJob($type, $messageLogger, $isJobInProgress);
+            }
+            foreach ($streamers as $streamer)
+            {
+                $streamer->add(Zurmo::t('JobsManagerModule', '{dateTimeString} Ending job type: {type}',
+                                        array('{type}' => $type,
+                                              '{dateTimeString}' => static::getLocalizedDateTimeTimeZoneString())));
+            }
         }
 
         /**
-         * Run the monitor job.
+         * @param MessageLogger $messageLogger
+         * @param $isJobInProgress
          */
-        public static function runMonitorJob(MessageLogger $messageLogger)
+        public static function runMonitorJob(MessageLogger $messageLogger, & $isJobInProgress)
         {
+            assert('is_bool($isJobInProgress)');
             try
             {
                 $jobInProcess = JobInProcess::getByType('Monitor');
@@ -96,6 +132,10 @@
                 {
                     $messageLogger->addInfoMessage("Existing monitor job is stuck");
                     self::makeMonitorStuckJobNotification();
+                }
+                else
+                {
+                    $isJobInProgress = true;
                 }
             }
             catch (NotFoundException $e)
@@ -138,15 +178,20 @@
 
         /**
          * Given a 'type' of job, run the job.  This is for non-monitor jobs only.
-         * @param string $type
+         * @param $type
+         * @param MessageLogger $messageLogger
+         * @param $isJobInProgress
+         * @throws FailedToSaveModelException
          */
-        public static function runNonMonitorJob($type, MessageLogger $messageLogger)
+        public static function runNonMonitorJob($type, MessageLogger $messageLogger, & $isJobInProgress)
         {
             assert('is_string($type) && $type != "Monitor"');
+            assert('is_bool($isJobInProgress)');
             try
             {
-                $jobInProcess = JobInProcess::getByType($type);
+                JobInProcess::getByType($type);
                 $messageLogger->addInfoMessage("Existing job detected");
+                $isJobInProgress = true;
             }
             catch (NotFoundException $e)
             {
@@ -176,7 +221,16 @@
                     $jobLog->message       = $errorMessage;
                 }
                 $jobLog->isProcessed = false;
-                $s = $jobLog->save();
+                if (!$jobLog->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
+                $stuckJob               = StuckJob::getByType($type);
+                $stuckJob->quantity     = 0;
+                if (!$stuckJob->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
             }
         }
 
@@ -205,7 +259,7 @@
         protected static function getLocalizedDateTimeTimeZoneString()
         {
             $content = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                        DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+                DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $content .= ' ' . Yii::app()->user->userModel->timeZone;
             return $content;
         }

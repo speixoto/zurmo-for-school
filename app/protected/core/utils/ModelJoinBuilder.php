@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -497,7 +497,7 @@
                 $onTableAliasName = $this->joinTablesAdapter->addFromTableAndGetAliasName(
                     $attributeTableName,
                     self::resolveForeignKey($attributeTableName),
-                    $modelClassName::getTableName($modelClassName));
+                    $modelClassName::getTableName());
             }
             return $onTableAliasName;
         }
@@ -711,12 +711,12 @@
             {
                 if ($modelClassNameToCastDownTo::getCanHaveBean())
                 {
-                    $castedDownTableName = $modelClassNameToCastDownTo::getTableName($modelClassNameToCastDownTo);
+                    $castedDownTableName = $modelClassNameToCastDownTo::getTableName();
                     $onTableAliasName    = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                                            $castedDownTableName,
                                            'id',
                                            $onTableAliasName,
-                                           self::resolveForeignKey($modelClassName::getTableName($modelClassName)));
+                                           self::resolveForeignKey($modelClassName::getTableName()));
                     $modelClassName      = $modelClassNameToCastDownTo;
                 }
             }
@@ -782,7 +782,7 @@
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeModelClassName)');
-            $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
+            $attributeTableName       = $attributeModelClassName::getTableName();
             $tableAliasName           = $attributeTableName;
             $castedDownModelClassName = $modelClassName;
             $onTableAliasName         = null;
@@ -794,16 +794,16 @@
                 $modelClassName                  = get_parent_class($modelClassName);
                 if ($modelClassName::getCanHaveBean())
                 {
-                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                    $castedUpAttributeTableName = $modelClassName::getTableName();
                     if (!$this->joinTablesAdapter->isTableInFromTables($castedUpAttributeTableName))
                     {
                         if ($onTableAliasName == null && $castedDownModelClassName::getCanHaveBean())
                         {
-                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                            $onTableAliasName = $castedDownModelClassName::getTableName();
                         }
                         elseif ($onTableAliasName == null && $castedDownFurtherModelClassName::getCanHaveBean())
                         {
-                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                            $onTableAliasName = $castedDownFurtherModelClassName::getTableName();
                         }
                         elseif ($onTableAliasName == null)
                         {
@@ -821,7 +821,7 @@
                 if ($onTableAliasName == null)
                 {
                     $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
-                    $onTableAliasName = $modelClassName::getTableName($modelClassName);
+                    $onTableAliasName = $modelClassName::getTableName();
                 }
                 $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(
                                     $attributeTableName, self::resolveForeignKey($attributeTableName), $onTableAliasName);
@@ -867,7 +867,7 @@
             assert('is_string($onTableAliasName)');
             assert('is_string($modelClassName)');
             assert('is_string($attributeModelClassName)');
-            $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
+            $attributeTableName       = $attributeModelClassName::getTableName();
             $castedDownModelClassName = $modelClassName;
             while (get_parent_class($modelClassName) != $attributeModelClassName &&
                 get_parent_class($modelClassName) != 'RedBeanModel')
@@ -877,16 +877,16 @@
                 $modelClassName                  = get_parent_class($modelClassName);
                 if ($modelClassName::getCanHaveBean())
                 {
-                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                    $castedUpAttributeTableName = $modelClassName::getTableName();
 
                     /**
                     if ($castedDownModelClassName::getCanHaveBean())
                     {
-                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName();
                     }
                     elseif ($castedDownFurtherModelClassName::getCanHaveBean())
                     {
-                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                        $resolvedTableJoinIdName = $castedDownFurtherModelClassName::getTableName();
                     }
                     else
                     {
@@ -906,7 +906,7 @@
                 $attributeTableName,
                 self::resolveForeignKey($attributeTableName),
                 $onTableAliasName); //,
-                //$modelClassName::getTableName($modelClassName));
+                //$modelClassName::getTableName());
             return $onTableAliasName;
         }
 

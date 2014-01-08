@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -127,6 +127,70 @@
         protected function getEmailsInThisListTitle()
         {
             return Zurmo::t('MarketingModule', 'Emails in this Campaign');
+        }
+
+        /**
+         * Call to save the portlet configuration
+         */
+        protected function getPortletSaveConfigurationUrl()
+        {
+            $getData = GetUtil::getData();
+            $getData['portletId'] = $this->params['portletId'];
+            if (!isset($getData['uniqueLayoutId']))
+            {
+                $getData['uniqueLayoutId'] = $this->params['layoutId'];
+            }
+            $getData['portletParams'] = $this->getPortletParams();
+            return Yii::app()->createUrl('/campaigns/defaultPortlet/modalConfigSave', $getData);
+        }
+
+        /**
+         * @return CFormModel
+         * @throws NotSupportedException
+         */
+        protected function resolveForm()
+        {
+            if ($this->formModel !== null)
+            {
+                return $this->formModel;
+            }
+            if ($this->formModelClassName == null)
+            {
+                throw new NotSupportedException();
+            }
+            else
+            {
+                $formModelClassName = $this->formModelClassName;
+            }
+            $formModel = new $formModelClassName();
+
+            $user = Yii::app()->user->userModel;
+            $metadata = MetadataUtil::getMetadata('CampaignOverallMetricsView', $user);
+            $campaignId = 0;
+            if (isset($this->params['relationModel']))
+            {
+                $campaignId = $this->params['relationModel']->id;
+            }
+            elseif (isset($this->params['relationModelId']))
+            {
+                $campaignId = $this->params['relationModelId'];
+            }
+            if (isset($metadata['perUser'][$campaignId]))
+            {
+                $formModel->beginDate = $metadata['perUser'][$campaignId]['beginDate'];
+                $formModel->endDate   = $metadata['perUser'][$campaignId]['endDate'];
+                $formModel->groupBy   = $metadata['perUser'][$campaignId]['groupBy'];
+            }
+            else
+            {
+                $metadata        = self::getMetadata();
+                $perUserMetadata = $metadata['perUser'];
+                $this->resolveEvaluateSubString($perUserMetadata, null);
+                $formModel->setAttributes($perUserMetadata);
+            }
+
+            $this->formModel = $formModel;
+            return $formModel;
         }
     }
 ?>

@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,7 +29,7 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 .tableTreeView(){
 	table{
@@ -53,6 +53,7 @@
 
 .back-to-app-menu-item span{
 	vertical-align:middle;
+	color: @themeColor !important;
 	&:before{
 		content:"z";
 		.symbly(21px);
@@ -89,7 +90,7 @@
 		font-weight:bold !important;
 		height:35px;
 		line-height: 35px;
-		background: url(../images/table-items-header.png) left top repeat-x;
+		background: url("@{path}table-items-header.png") left top repeat-x;
 		padding:0 0 0 10px !important;
 	}
 	.checkbox-column{
@@ -124,7 +125,7 @@
 .configuration-list{
 	list-style:none;
 	li{
-		.box-sizing();
+		//.box-sizing();
 		width:100%;
 		position: relative;
 		margin:0;
@@ -139,32 +140,45 @@
 			border-top:none;
 			margin-top:none;
 		}
-		h4{
-			margin:0 0 0 0;
-			display:inline-block;
-		}
 		a{
-			++.z-button;
 			float:right;
 			position: absolute;
 			right:15px;
 			top:14px;
 			vertical-align: middle;
-			margin:0;
-			.z-label{
-				.z-label-smaller();
-			}
-			.z-label:before{
-				content: "n";
-				.symbly(20px);
-				color: #666;
-				margin-right:5px;
-				position:relative;
-				top:-2px;
-				font-weight: normal !important;
-				vertical-align: middle;
-			}
 		}
+	}
+	h4{
+		margin:0 0 0 0;
+		display:inline-block;
+	}
+	a{
+		//.z-button();
+		//float:right;
+		//position: absolute;
+		//right:15px;
+		//top:14px;
+		//vertical-align: middle;
+		margin:0;
+		.z-label{
+			.z-label-smaller();
+		}
+		.z-label:before{
+			content: "n";
+			.symbly(20px);
+			color: #666;
+			margin-right:5px;
+			position:relative;
+			top:-2px;
+			font-weight: normal !important;
+			vertical-align: middle;
+		}
+	}
+	a:hover,
+	a:hover span:before,
+	td:last-child a:hover,
+	td:last-child a:hover span:before{
+		color: @themeColor2;
 	}
 }
 
@@ -183,10 +197,14 @@ table.configuration-list{
 	tbody > tr > td{
 		position:relative !important;
 	}
+	td:last-child{
+		text-align: right;
+	}
 	td:last-child a{
-		++.z-button;
-		float:right;
-		margin:0;
+		float:none;
+		//.z-button();
+		//float:right;
+		//margin:0;
 		.z-label{
 			.z-label-smaller();
 		}
@@ -200,6 +218,9 @@ table.configuration-list{
 			font-weight: normal !important;
 			vertical-align: middle;
 		}
+	}
+	tr:last-child td{
+		border-bottom: none;
 	}
 }
 
@@ -249,6 +270,7 @@ table.configuration-list{
 #ModulePermissionsEditAndDetailsView{
 	table tr:first-child{
 		th{
+			color: @themeColor;
 			padding-left:15px;
 			padding-bottom: 10px;
 			font-weight:bold !important;
@@ -282,19 +304,15 @@ table.configuration-list{
 	select{
 		display:block;
 		width:100%;
-		.box-sizing();
+		//.box-sizing();
 		line-height: 150%;
 	}
 	input[type="button"]{
+		.symbly(22px);
 		display:block !important;
 		margin:0 0 15px 0 !important;
-		++.z-button;
-		.symbly(22px);
-		background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 		padding:0 15px;
 		line-height:25px;
-		.radius( 4px );
-		cursor:pointer;
 	}
 	.select-arrow{
 		display: none !important;
@@ -329,12 +347,12 @@ table.configuration-list{
 	table{
 		tr:first-child{
 			th{
-				color:#545454;
+				color:@textColor;
 				text-align:left;
 				font-weight: bold !important;
 				height: auto  !important;
 				line-height: 35px  !important;
-				background: url(../images/table-items-header.png) left top repeat-x;
+				background: url("@{path}table-items-header.png") left top repeat-x;
 				padding: 0 0 0 10px !important;
 			}
 		}
@@ -342,43 +360,43 @@ table.configuration-list{
 	td.level-0{ padding-left:10px !important;}
 	td.level-1{
 		padding-left:45px !important;
-		background: url(../images/elbow.gif) 20px 10px no-repeat;
+		background: url("@{path}elbow.gif") 20px 10px no-repeat;
 	}
 	td.level-2{
 		padding-left:75px !important;
-		background: url(../images/elbow.gif) 50px 10px no-repeat;
+		background: url("@{path}elbow.gif") 50px 10px no-repeat;
 	}
 	td.level-3{
 		padding-left:105px !important;
-		background: url(../images/elbow.gif) 80px 10px no-repeat;
+		background: url("@{path}elbow.gif") 80px 10px no-repeat;
 	}
 	td.level-4{
 		padding-left:135px !important;
-		background: url(../images/elbow.gif) 110px 10px no-repeat;
+		background: url("@{path}elbow.gif") 110px 10px no-repeat;
 	}
 	td.level-5{
 		padding-left:165px !important;
-		background: url(../images/elbow.gif) 140px 10px no-repeat;
+		background: url("@{path}elbow.gif") 140px 10px no-repeat;
 	}
 	td.level-6{
 		padding-left:195px !important;
-		background: url(../images/elbow.gif) 170px 10px no-repeat;
+		background: url("@{path}elbow.gif") 170px 10px no-repeat;
 	}
 	td.level-7{
 		padding-left:225px !important;
-		background: url(../images/elbow.gif) 200px 10px no-repeat;
+		background: url("@{path}elbow.gif") 200px 10px no-repeat;
 	}
 	td.level-8{
 		padding-left:255px !important;
-		background: url(../images/elbow.gif) 230px 10px no-repeat;
+		background: url("@{path}elbow.gif") 230px 10px no-repeat;
 	}
 	td.level-9{
 		padding-left:285px !important;
-		background: url(../images/elbow.gif) 260px 10px no-repeat;
+		background: url("@{path}elbow.gif") 260px 10px no-repeat;
 	}
 	td.level-10{
 		padding-left:315px !important;
-		background: url(../images/elbow.gif) 290px 10px no-repeat;
+		background: url("@{path}elbow.gif") 290px 10px no-repeat;
 	}
 }
 
@@ -422,11 +440,11 @@ table.configuration-list{
 	}
 	table tr:first-child{
 		th{
-			color:#545454;
+			color:@textColor;
 			text-align:left;
 			font-weight: bold !important;
 			height: auto  !important;
-			background: url(../images/table-items-header.png) left top repeat-x;
+			background: url("@{path}table-items-header.png") left top repeat-x;
 			padding: 0 0 0 10px !important;
 		}
 	}
@@ -622,7 +640,9 @@ table.configuration-list{
 .breadcrumbs{
 	padding:0 0 15px 0;
 	font-size:11px;
-
+	a{
+		color: @themeColor !important;
+	}
 }
 
 /*designer*/
@@ -661,7 +681,7 @@ table.configuration-list{
 		//padding-left:80px;
 	}
 	input + span{
-		background:url(../images/lang-label.png) left top no-repeat;
+		background:url("@{path}lang-label.png") left top no-repeat;
 		display:inline-block;
 		position: absolute;
 		left:1px;
@@ -674,7 +694,7 @@ table.configuration-list{
 		.smaller();
 		.radius(1px 0 0 1px);
 		padding: 0 10px 0 17px;
-		++.border-box;
+		//.box-sizing();
 	}
 	.errorMessage{
 		margin-bottom: 15px;
@@ -695,10 +715,10 @@ table.configuration-list{
 	}
 	.panel{
 		//width:100% !important;
-		.box-sizing();
+		//.box-sizing();
 		table{
 			margin-right:15px;
-			.box-sizing();
+			//.box-sizing();
 		}
 	}
 }
@@ -753,7 +773,6 @@ table.configuration-list{
 #PoliciesEditAndDetailsView,
 #ModulePermissionsEditAndDetailsView,
 #RightsEditAndDetailsView{
-	margin-top: 15px;
 	.details-table{
 		margin-right:0;
 	}
@@ -790,7 +809,7 @@ table.configuration-list{
 }
 
 .EmailTestingButton{
-	++.z-button;
+	.z-button();
 	border-top: 1px solid #e7e7e7;
 	border-left: 1px solid #d7d7d7;
 	border-right: 1px solid #d7d7d7;
@@ -891,12 +910,12 @@ table.configuration-list{
 		border-right:1px solid #DFDFDF;
 		tr:first-child{
 			th{
-				color:#545454;
+				color:@textColor;
 				text-align:left;
 				font-weight: bold !important;
 				height: 35px;
 				line-height: 35px;
-				background: url(../images/table-items-header.png) left top repeat-x;
+				background: url("@{path}table-items-header.png") left top repeat-x;
 				padding: 0 0 0 15px !important;
 				border-top:1px solid #DFDFDF;
 				border-bottom:1px solid #DFDFDF;
@@ -925,7 +944,7 @@ table.configuration-list{
 #sample-column-header{
 	position: relative;
 	a{
-		++.z-link;
+		.z-link();
 		.symbly(16px);
 		&:hover{
 			text-decoration: none;
@@ -949,24 +968,45 @@ table.configuration-list{
 		line-height: 26px;
 		padding-right: 10px;
 		width: 35%;
-		++.border-box;
+		//.box-sizing();
 	}
 	> div{
-		width: 49.5%;
+		width: 49%;
 		display: inline-block;
+		vertical-align: top;
 		> .has-model-select,
 		> .hasDropDown,
 		> input{
 			width: 65% !important;
 			display: inline-block;
 		}
+		.radio-input{
+			display: block;
+			width: 100%;
+			line-height: 1.5;
+			label{
+				width: auto;
+				line-height: inherit;
+			}
+		}
 	}
 	> div:last-child{
 		width: 100%;
 	}
 	> div + div:last-child{
-		width: 49.5%;
-		margin-left: 1%;
+		width: 49%;
+		margin-left: 2%;
+	}
+	&.has3{
+		> div{
+			width: 32% !important;
+			margin-right: 2%;
+			margin-left:0;
+			&:last-child{
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
 	}
 }
 
@@ -987,7 +1027,7 @@ table.configuration-list{
 	top: -21px;
 	right: -90px;
 	z-index: 99999;
-	++.z-link;
+	.z-link();
 }
 
 /*=Step 5, process details*/
@@ -1000,9 +1040,12 @@ table.configuration-list{
 
 #import-temp-table-list-view{
 	text-align: center;
+	.items-wrapper{
+		border: 1px solid #DFDFDF;
+		border-bottom: none;
+	}
 	table{
 		table-layout:auto;
-		border-bottom: 1px solid #CCCCCC;
 		background: #fafafa;
 	}
 	tr:first-child th{
@@ -1087,6 +1130,7 @@ table.configuration-list{
 	}
 	td{
 		padding: 5px !important;
+		//border-bottom: none;
 		h3{
 			margin: 0 !important;
 		}
@@ -1166,7 +1210,7 @@ table.configuration-list{
 		background: #f0f0f0;
 		.radius(3px);
 		padding:10px 10px 10px 10px;
-		++.border-box;
+		//.box-sizing();
 		.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.0)');
 		> strong{
 			display: block;
@@ -1203,7 +1247,7 @@ table.configuration-list{
 }
 
 .ui-progressbar{
-	//background: url(../images/ajax-loader.gif) left top no-repeat;
+	//background: url("@{path}ajax-loader.gif") left top no-repeat;
 }
 
 #SequentialProcessView{
@@ -1312,6 +1356,35 @@ table.configuration-list{
 	}
 }
 
+#customThemeColorPicker{
+	//display: none;
+	position: relative;
+	z-index: 12;
+	width: 45%;
+	clear: left;
+	//padding-left: 25px;
+	> div{
+		min-width: 65px;
+		width: 30%;
+		margin-left: 5%;
+		float: left;
+		position: relative;
+		&:first-child{
+			margin-left: 0;
+		}
+	}
+	.iris-picker{
+		position: absolute;
+		left: 0;
+		top: 100%;
+	}
+}
+
+#theme-color-configuration{
+	clear: left;
+	padding-top: 15px;
+}
+
 /*Menu Prefernces*/
 .user-menu-preferences{
 	td{
@@ -1340,7 +1413,7 @@ table.configuration-list{
 	padding: 5px;
 	margin-right: 5px;
 	line-height: 1;
-	background: url(../images/transparency-grid.gif) left top repeat;
+	background: url("@{path}transparency-grid.gif") left top repeat;
 	~ .file-size{
 		vertical-align:top;
 	}

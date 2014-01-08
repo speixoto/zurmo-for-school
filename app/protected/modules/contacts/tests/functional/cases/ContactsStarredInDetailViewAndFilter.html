@@ -19,7 +19,7 @@
 <!--Go to contacts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td>index.php/contacts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -123,7 +123,7 @@
 <!--clear search result-->
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td>index.php/contacts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -135,6 +135,21 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 <!--verify contact is starred or not-->
 <tr>
@@ -163,9 +178,14 @@
 	<td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=starDataColumn_filterByStarred</td>
-  <td></td>
+	<td>open</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>

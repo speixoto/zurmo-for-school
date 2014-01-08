@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class BeginRequestBehavior extends CBehavior
@@ -98,6 +98,9 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadContactLatestActivityDateTimeObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountLatestActivityDateTimeObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
         }
@@ -133,6 +136,10 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadContactLatestActivityDateTimeObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountLatestActivityDateTimeObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountContactAffiliationObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
@@ -492,7 +499,29 @@
 
         public function handleLoadWorkflowsObserver($event)
         {
-            Yii::app()->workflowsObserver;
+            Yii::app()->workflowsObserver; //runs init();
+        }
+
+        public function handleLoadReadPermissionSubscriptionObserver($event)
+        {
+            $readPermissionSubscriptionObserver = new ReadPermissionSubscriptionObserver();
+            $readPermissionSubscriptionObserver->init();
+        }
+
+        public function handleLoadContactLatestActivityDateTimeObserver($event)
+        {
+            Yii::app()->contactLatestActivityDateTimeObserver;
+        }
+
+        public function handleLoadAccountLatestActivityDateTimeObserver($event)
+        {
+            Yii::app()->accountLatestActivityDateTimeObserver;
+        }
+
+        public function handleLoadAccountContactAffiliationObserver($event)
+        {
+            $accountContactAffiliationObserver = new AccountContactAffiliationObserver();
+            $accountContactAffiliationObserver->init();
         }
 
         public function handleLoadGamification($event)
@@ -524,7 +553,7 @@
                     {
                         $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileModel->name;
                         file_put_contents($logoFilePath, $logoFileModel->fileContent->content, LOCK_EX);
-                        ZurmoConfigurationFormAdapter::publishLogo($logoFileModel->name, $logoFilePath);
+                        ZurmoUserInterfaceConfigurationFormAdapter::publishLogo($logoFileModel->name, $logoFilePath);
                     }
                     else
                     {

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     class AutoresponderItemTest extends ZurmoBaseTest
     {
@@ -50,16 +50,31 @@
 
         public function testCreateAndGetAutoresponderItemById()
         {
-            $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime(strtotime('+1 week')); // Not Coding Standard
+            $timeStamp                                  = strtotime('+1 week'); // Not Coding Standard
+            $time                                       = DateTimeUtil::convertTimestampToDbFormatDateTime($timeStamp); // Not Coding Standard
             $autoresponderItem                          = new AutoresponderItem();
             $autoresponderItem->processed               = 0;
             $autoresponderItem->processDateTime         = $time;
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue($autoresponderItem->unrestrictedSave());
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[$timeStamp - time() + 5][0]);
             $id = $autoresponderItem->id;
             unset($autoresponderItem);
             $autoresponderItem = AutoresponderItem::getById($id);
             $this->assertEquals(0,   $autoresponderItem->processed);
-            $this->assertEquals($time,                              $autoresponderItem->processDateTime);
+            $this->assertEquals($time, $autoresponderItem->processDateTime);
+
+            //Test changing processDateTime to make sure a new job is added
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $timeStamp                                  = strtotime('+2 week'); // Not Coding Standard
+            $autoresponderItem->processDateTime         = DateTimeUtil::convertTimestampToDbFormatDateTime($timeStamp);
+            $this->assertTrue($autoresponderItem->unrestrictedSave());
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[$timeStamp - time() + 5][0]);
         }
 
         /**

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class NotificationTest extends ZurmoBaseTest
@@ -113,7 +113,7 @@
             $super = User::getByUsername('super');
             $billy = User::getByUsername('billy');
             Yii::app()->user->userModel = $super;
-            $this->assertEquals(0, count(Notification::getAll()));
+            $this->assertEquals(0, Notification::getCount());
 
             $notification         = new Notification();
             $notification->type   = 'Simple';
@@ -125,7 +125,7 @@
             $this->assertTrue($notification->save());
 
             //There are 2 notifications
-            $this->assertEquals(2, count(Notification::getAll()));
+            $this->assertEquals(2, Notification::getCount());
             //And 0 notifications unread for billy
             $this->assertEquals(0, Notification::getCountByTypeAndUser('Simple', $billy));
 
@@ -218,9 +218,9 @@
              * to return 0.
             //When removing a notificationMessage with notifications, the notifications should be
             //removed too.
-            $this->assertEquals(8, count(Notification::getAll()));
+            $this->assertEquals(8, Notification::getCount());
             $message->delete();
-            $this->assertEquals(3, count(Notification::getAll()));
+            $this->assertEquals(3, Notification::getCount());
              **/
             $notifications = Notification::getByNotificationMessageId($messageId);
             $this->assertEquals(2, count($notifications));

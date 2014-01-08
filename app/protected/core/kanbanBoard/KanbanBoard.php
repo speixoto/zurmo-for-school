@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -69,36 +69,37 @@
          * $searchModel.  Also resolves for the selectedTheme variable.
          * @param object $searchModel
          * @param string $getArrayName
+         * @param $sourceData
          */
-        public static function resolveKanbanBoardOptionsForSearchModelFromGetArray($searchModel, $getArrayName)
+        public static function resolveKanbanBoardOptionsForSearchModelFromArray($searchModel, $getArrayName, $sourceData)
         {
             assert('$searchModel instanceof RedBeanModel || $searchModel instanceof ModelForm');
             assert('is_string($getArrayName)');
-            if ($searchModel->getKanbanBoard() != null && !empty($_GET[$getArrayName]))
+            if ($searchModel->getKanbanBoard() != null && !empty($sourceData[$getArrayName]))
             {
                 assert('$searchModel instanceof SearchForm');
-                if (isset($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                if (isset($sourceData[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                 {
-                    if (!is_array($_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
+                    if (!is_array($sourceData[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES]))
                     {
                         $groupByAttributeVisibleValues = null;
                     }
                     else
                     {
-                        $groupByAttributeVisibleValues = $_GET[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES];
+                        $groupByAttributeVisibleValues = $sourceData[$getArrayName][self::GROUP_BY_ATTRIBUTE_VISIBLE_VALUES];
                         $searchModel->getKanbanBoard()->setIsActive();
                     }
                     $searchModel->getKanbanBoard()->setGroupByAttributeVisibleValues($groupByAttributeVisibleValues);
                 }
-                if (isset($_GET[$getArrayName][self::SELECTED_THEME]))
+                if (isset($sourceData[$getArrayName][self::SELECTED_THEME]))
                 {
-                    if (empty($_GET[$getArrayName][self::SELECTED_THEME]))
+                    if (empty($sourceData[$getArrayName][self::SELECTED_THEME]))
                     {
                         $selectedTheme = null;
                     }
                     else
                     {
-                        $selectedTheme = $_GET[$getArrayName][self::SELECTED_THEME];
+                        $selectedTheme = $sourceData[$getArrayName][self::SELECTED_THEME];
                     }
                     $searchModel->getKanbanBoard()->setSelectedTheme($selectedTheme);
                 }

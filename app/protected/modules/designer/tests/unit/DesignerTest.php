@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class DesignerTest extends ZurmoBaseTest
@@ -83,7 +83,11 @@
             );
             $selectedListAttributes = array('name', 'officePhone');
             $data = $adapter->resolveMetadataFromSelectedListAttributes('AccountsListView', $selectedListAttributes);
-            $compareMetadata = array('panels' =>
+            $compareMetadata = array(
+                'nonPlaceableAttributeNames' => array(
+                    'account',
+                ),
+                'panels' =>
                 array(
                     array(
                         'rows' => array(
@@ -530,8 +534,7 @@
             $account = new Account();
             $adapter = new ModelAttributesAdapter($account);
             $attributes = $adapter->getStandardAttributes();
-            $this->assertEquals(20, count($attributes));
-
+            $this->assertEquals(21, count($attributes));
             $this->assertEquals('Name',                      $attributes['name']                  ['attributeLabel']);
             $this->assertEquals('Industry',                  $attributes['industry']              ['attributeLabel']);
             $this->assertEquals('Type',                      $attributes['type']                  ['attributeLabel']);
@@ -541,6 +544,7 @@
             $this->assertEquals('DropDown', $attributes['industry']              ['elementType']);
             $this->assertEquals('DropDown', $attributes['type']                  ['elementType']);
             $this->assertEquals('DateTime', $attributes['latestActivityDateTime']['elementType']);
+            $this->assertEquals('Account',  $attributes['account']               ['elementType']);
 
             $this->assertTrue(!isset($attributes['notes']));
         }

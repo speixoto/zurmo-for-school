@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ImportUtilTest extends ImportBaseTest
@@ -135,7 +135,7 @@
             $this->assertEquals('Dartmouth Financial Services', $testModels[1]->name);
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ImportModelTestItem::deleteAll();
         }
 
         /**
@@ -256,7 +256,7 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ImportModelTestItem::deleteAll();
         }
 
         /**
@@ -341,7 +341,8 @@
             $this->assertEquals(0, count($beansWithErrors));
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            Yii::app()->user->userModel = $super;
+            ImportModelTestItem::deleteAll();
         }
 
         /**
@@ -428,7 +429,7 @@
             $this->assertEquals('USD', $testModels[0]->currencyValue->currency->code);
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ImportModelTestItem::deleteAll();
         }
 
         /**
@@ -517,7 +518,7 @@
             $this->assertEquals($compareMessages, unserialize(next($beansWithErrors)->serializedMessages));
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ImportModelTestItem::deleteAll();
         }
 
         /**
@@ -582,7 +583,7 @@
             }
 
             //Clear out data in table
-            ZurmoRedBean::exec("delete from " . ImportModelTestItem::getTableName('ImportModelTestItem'));
+            ImportModelTestItem::deleteAll();
 
             //Now test with read/write permissions being set.
             $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
@@ -607,6 +608,385 @@
             {
                 $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
             }
+            ImportModelTestItem::deleteAll();
+        }
+
+        public function testSettingExplicitReadWriteModelPermissionsDuringImportDontAffectTheModifiedByUserAttribute()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(0, count($testModels));
+
+            //Add a read only user for import. Then all models should be readable by jim in addition to super.
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            $explicitReadWriteModelPermissions->addReadOnlyPermitable(User::getByUsername('jim'));
+
+            $testModels                        = ImportModelTestItem::getAll();
+            $this->assertEquals(0, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'ImportModelTestItem';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest3.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $mappingData = array(
+                'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'DefaultValueModelAttributeMappingRuleForm' =>
+                            array('defaultValue' => null))),
+                'column_7' => array('attributeIndexOrDerivedType' => 'modifiedByUser', 'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'UserValueTypeModelAttributeMappingRuleForm' =>
+                            array('type' => UserValueTypeModelAttributeMappingRuleForm::ZURMO_USERNAME))),
+                'column_23' => array('attributeIndexOrDerivedType' => 'FullName',     'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'FullNameDefaultValueModelAttributeMappingRuleForm' =>
+                            array('defaultValue' => null))),
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 3)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                $importRules,
+                $mappingData,
+                $importResultsUtil,
+                $explicitReadWriteModelPermissions,
+                $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 1 models where created.
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(1, count($testModels));
+            $jim = User::getByUsername('jim');
+            foreach ($testModels as $model)
+            {
+                $this->assertEquals(array(Permission::READ, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+                $this->assertEquals('jim', $model->modifiedByUser->username);
+            }
+
+            //Clear out data in table
+            ImportModelTestItem::deleteAll();
+
+            //Now test with read/write permissions being set.
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            $explicitReadWriteModelPermissions->addReadWritePermitable(User::getByUsername('jim'));
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                $importRules,
+                $mappingData,
+                $importResultsUtil,
+                $explicitReadWriteModelPermissions,
+                $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 1 models where created.
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(1, count($testModels));
+            $jim = User::getByUsername('jim');
+            foreach ($testModels as $model)
+            {
+                $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+                $this->assertEquals('jim', $model->modifiedByUser->username);
+            }
+        }
+
+        public function testCreateImportDataForEmailDedupe()
+        {
+            $super = User::getByUsername('super');
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
+
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importDedupeTest.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' => array('value' => ImportDedupeRulesRadioDropDownElement::DO_NOT_DEDUPE));
+            $mappingData = array(
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
+                'column_1'  => $emailMappingData
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                                             $importRules,
+                                             $mappingData,
+                                             $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(),
+                                             $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 2 models where created.
+            $testModels = Account::getAll();
+            $this->assertEquals(2, count($testModels));
+        }
+
+        /**
+         * @depends testCreateImportDataForEmailDedupe
+         */
+        //On inport of new set containing duplicate data
+        public function testVerifyNewlyImportedDataForEmailDedupe()
+        {
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
+
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getAll();
+            $this->assertEquals(2, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmailDedupeTest.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND));
+            $mappingData = array(
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
+                'column_1'  => $emailMappingData
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                                             $importRules,
+                                             $mappingData,
+                                             $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(),
+                                             $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 3 models where created.
+            $testModels = Account::getAll();
+            $this->assertEquals(3, count($testModels));
+        }
+
+        /**
+         * @depends testVerifyNewlyImportedDataForEmailDedupe
+         */
+        //On inport of new set containing duplicate data
+        public function testNewlyImportedDataForUpdateEmailDedupe()
+        {
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
+
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getByName('abc');
+            $this->assertEquals(1, count($testModels));
+            $testModels                        = Account::getByName('mom');
+            $this->assertEquals(1, count($testModels));
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(0, count($testModels));
+            $testModels                        = Account::getByName('dear');
+            $this->assertEquals(0, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importEmailUpdateDedupeTest.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND));
+            $mappingData = array(
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
+                'column_1'  => $emailMappingData
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                                             $importRules,
+                                             $mappingData,
+                                             $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(),
+                                             $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 3 models where created.
+            $testModels = Account::getAll();
+            $this->assertEquals(3, count($testModels));
+
+            $testModels                        = Account::getByName('abc');
+            $this->assertEquals(0, count($testModels));
+            $testModels                        = Account::getByName('mom');
+            $this->assertEquals(0, count($testModels));
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $testModels                        = Account::getByName('dear');
+            $this->assertEquals(1, count($testModels));
+        }
+
+        /**
+         * @depends testNewlyImportedDataForUpdateEmailDedupe
+         */
+        //On inport of new set containing duplicate data for name
+        public function testImportedDataForNameSkipDedupe()
+        {
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
+
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importDedupeNameTest.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::DO_NOT_DEDUPE));
+            $nameMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('name');
+            $nameMappingData['mappingRulesData']['NameModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND));
+            $mappingData = array(
+                'column_0'  => $nameMappingData,
+                'column_1'  => $emailMappingData
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                                             $importRules,
+                                             $mappingData,
+                                             $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(),
+                                             $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            $testModels        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $this->assertEquals('a@a.com', $testModels[0]->primaryEmail->emailAddress);
+        }
+
+        /**
+         * @depends testNewlyImportedDataForUpdateEmailDedupe
+         */
+        public function testImportedDataForNameUpdateDedupe()
+        {
+            $jim   = User::getByUsername('jim');
+            Yii::app()->user->userModel = $jim;
+
+            //Confirm Jim can can only view ImportModelTestItems he owns.
+            $item       = NamedSecurableItem::getByName('ImportModule');
+            $this->assertEquals(Permission::NONE, $item->getEffectivePermissions($jim));
+
+            $testModels                        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importDedupeNameTest.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $emailMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('primaryEmail__emailAddress');
+            $emailMappingData['mappingRulesData']['EmailModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::DO_NOT_DEDUPE));
+            $nameMappingData = ImportMappingUtil::makeEmailColumnMappingData      ('name');
+            $nameMappingData['mappingRulesData']['NameModelAttributeDedupeMappingRuleForm']
+                                            = array('dedupeRule' =>
+                                                        array('value' => ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND));
+            $mappingData = array(
+                'column_0'  => $nameMappingData,
+                'column_1'  => $emailMappingData
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                                             $importRules,
+                                             $mappingData,
+                                             $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(),
+                                             $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            $testModels        = Account::getByName('hello');
+            $this->assertEquals(1, count($testModels));
+            $this->assertEquals('test@a.com', $testModels[0]->primaryEmail->emailAddress);
         }
     }
 ?>

@@ -31,7 +31,7 @@
 <!--go to accounts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/accounts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -156,7 +156,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='DetailsPortletSelectionView']/ul/li[2]/div/a/span</td>
+	<td>//div[@id='DetailsPortletSelectionView']/ul/li[4]/div/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -279,7 +279,7 @@
 <!--clear search accounts-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/accounts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -291,6 +291,21 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

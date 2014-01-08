@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class AccountsDefaultController extends ZurmoModuleController
@@ -46,6 +46,11 @@
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + create, createFromRelation, edit',
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => $viewClassName,
+                   ),
+                    array(
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreate',
+                        'moduleClassName' => get_class($this->getModule()),
+                        'viewClassName'   => 'AccountModalCreateView',
                    ),
                     array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
@@ -79,7 +84,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                    'SecuredActionBarForAccountsSearchAndListView');
                 $view = new AccountsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -323,6 +329,76 @@
         public function actionExport()
         {
             $this->export('AccountsSearchView');
+        }
+
+        /**
+         * Modal create for account
+         */
+        public function actionModalCreate()
+        {
+            $account = new Account();
+            $this->validateCreateModalPostData();
+            if (isset($_POST['Account']) && Yii::app()->request->isAjaxRequest)
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false);
+                if ($account->id > 0)
+                {
+                    echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
+                    Yii::app()->end(0, false);
+                }
+                else
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
+                                                                                      'AccountModalCreateView',
+                                                                                      $account, 'Edit');
+        }
+
+        /**
+         * Modal validate for account
+         */
+        protected function validateCreateModalPostData()
+        {
+            $account = new Account();
+            if (isset($_POST['ajax']) && Yii::app()->request->isAjaxRequest)
+            {
+                $account = $this->attemptToSaveModelFromPost($account, null, false, true);
+                echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
+                Yii::app()->end(0, false);
+            }
+        }
+
+        /**
+         * Overriding to implement the dedupe action for new leads
+         */
+        public function actionSearchForDuplicateModels($attribute, $value)
+        {
+            assert('is_string($attribute)');
+            assert('is_string($value)');
+            $model          = new Account();
+            $depudeRules    = DedupeRulesFactory::createRulesByModel($model);
+            $viewClassName  = $depudeRules->getDedupeViewClassName();
+            $searchResult   = $depudeRules->searchForDuplicateModels($attribute, $value);
+            if ($searchResult != null)
+            {
+                $summaryView    = new $viewClassName($this->id, $this->module->id, $model, $searchResult['matchedModels']);
+                $content        = $summaryView->render();
+                $message        = $searchResult['message'];
+                echo CJSON::encode(array('content' => $content, 'message' => $message));
+            }
+        }
+
+        /**
+         * List view merge for accounts
+         */
+        public function actionListViewMerge()
+        {
+            $this->processListViewMerge('Account',
+                                        'AccountsListDuplicateMergedModelForm',
+                                        'AccountsMerged', 'AccountsPageView',
+                                        '/accounts/default/list');
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -52,35 +52,19 @@
 
         public static function sanitizePostForSavingMassEdit($postVariableName)
         {
-            foreach ($_POST[$postVariableName] as $attributeName => $values)
-            {
-                if (empty($_POST['MassEdit'][$attributeName]))
-                {
-                    unset($_POST[$postVariableName][$attributeName]);
-                }
-                else
-                {
-                    if (is_array($values) && isset($values['values']) && is_string($values['values']))
-                    {
-                        if ($_POST[$postVariableName][$attributeName]['values'] == '')
-                        {
-                            $_POST[$postVariableName][$attributeName]['values'] = array();
-                        }
-                        else
-                        {
-                            $_POST[$postVariableName][$attributeName]['values'] =
-                                explode(',', $_POST[$postVariableName][$attributeName]['values']); // Not Coding Standard
-                        }
-                    }
-                }
-            }
+            static::sanitizePostForMassAction($postVariableName, 'MassEdit');
         }
 
         public static function sanitizePostForMassDelete($postVariableName)
         {
+            static::sanitizePostForMassAction($postVariableName, 'MassDelete');
+        }
+
+        protected static function sanitizePostForMassAction($postVariableName, $massActionName)
+        {
             foreach ($_POST[$postVariableName] as $attributeName => $values)
             {
-                if (empty($_POST['MassDelete'][$attributeName]))
+                if (empty($_POST[$massActionName][$attributeName]))
                 {
                     unset($_POST[$postVariableName][$attributeName]);
                 }

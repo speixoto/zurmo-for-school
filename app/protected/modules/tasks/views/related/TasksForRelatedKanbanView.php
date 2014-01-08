@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     /**
      * Kanban view for tasks related to account/contact/lead/opportunity
@@ -61,12 +61,12 @@
                                   'itemOptions' => array('class' => 'hasDetailsFlyout'),
                                   'model'       => 'eval:$this->params["relationModel"]',
                             ),
-                            array('type'                => 'CreateTaskFromRelatedKanbanModalLink',
+                            array('type'                => 'CreateTaskFromRelatedKanbanModalMenu',
                                   'routeModuleId'       => 'eval:$this->moduleId',
                                   'routeParameters'     => 'eval:$this->getCreateLinkRouteParameters()',
                                   'ajaxOptions'         => 'eval:TasksUtil::resolveAjaxOptionsForModalView("Create", $this->getGridViewId())',
                                   'sourceKanbanBoardId' => 'eval:$this->getGridViewId()',
-                                  'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()'
+                                  'modalContainerId'    => 'eval:TasksUtil::getModalContainerId()',
                             ),
 
                         ),
@@ -127,7 +127,7 @@
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
             $this->registerKanbanGridScript();
-            $this->resolveShouldOpenToTask();
+            TasksUtil::resolveShouldOpenToTask($this->getGridId());
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
             $content .= $this->renderScripts();
             $zeroModelView = new ZeroTasksForRelatedModelYetView($this->controllerId,
@@ -388,15 +388,6 @@
                 $script .= "$('#ZeroTasksForRelatedModelYetView').hide();";
             }
             Yii::app()->clientScript->registerScript('taskKanbanDetailScript', $script);
-        }
-
-        protected function resolveShouldOpenToTask()
-        {
-            $getData = GetUtil::getData();
-            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
-            {
-                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $this->getGridId());
-            }
         }
 
         /**

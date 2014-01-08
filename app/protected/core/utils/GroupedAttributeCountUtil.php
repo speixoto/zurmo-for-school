@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -54,14 +54,14 @@
         {
             assert('($filterByAttributeName == null && $filterByAttributeValue == null) ||
                         ($filterByAttributeName != null && $filterByAttributeValue != null)');
-            $tableName          = RedBeanModel::getTableName($modelClassName);
+            $tableName          = $modelClassName::getTableName();
             $joinTablesAdapter  = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
             if ($modelClassName::isRelation($attributeName) && $modelClassName::getRelationType($attributeName) == RedBeanModel::HAS_MANY)
             {
                 assert('$attributeName == "values"'); //until we expand support on this method.
                 $relationModelClassName = $modelClassName::getRelationModelClassName($attributeName);
-                $attributeTableName     = RedBeanModel::getTableName($relationModelClassName);
+                $attributeTableName     = $relationModelClassName::getTableName();
                 $columnName             = 'value';
                 $relationTableAliasName = $joinTablesAdapter->addLeftTableAndGetAliasName(
                                                                             $attributeTableName,
@@ -79,7 +79,7 @@
             if ($filterByAttributeName != null)
             {
                $attributeModelClassName    = $modelClassName::resolveAttributeModelClassName($filterByAttributeName);
-               $filterByAttributeTableName = RedBeanModel::getTableName($attributeModelClassName);
+               $filterByAttributeTableName = $attributeModelClassName::getTableName();
                $filterByColumnName         = $modelClassName::getColumnNameByAttribute($filterByAttributeName);
                $where = $filterByAttributeTableName . '.' . $filterByColumnName . '=' . $filterByAttributeValue;
                if ($filterByAttributeTableName != $tableName)

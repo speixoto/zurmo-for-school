@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,19 +31,14 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
      * A job for processing workflow messages that are not sent immediately when triggered
      */
-    class WorkflowMessageInQueueJob extends BaseJob
+    class WorkflowMessageInQueueJob extends InQueueJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -74,18 +69,37 @@
             {
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
-                foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize) as $workflowMessageInQueue)
+                $processedModelsCount       = 0;
+                $batchSize                  = $this->resolveBatchSize();
+                if ($batchSize != null)
                 {
-                    try
+                    $resolvedBatchSize = $batchSize + 1;
+                }
+                else
+                {
+                    $resolvedBatchSize = null;
+                }
+                foreach (WorkflowMessageInQueue::getModelsToProcess($resolvedBatchSize) as $workflowMessageInQueue)
+                {
+                    if ($processedModelsCount < $batchSize || $batchSize == null)
                     {
-                        $model = $this->resolveModel($workflowMessageInQueue);
-                        $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
-                        $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                        try
+                        {
+                            $model = $this->resolveModel($workflowMessageInQueue);
+                            $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
+                            $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                        }
+                        catch (NotFoundException $e)
+                        {
+                        }
+                        $workflowMessageInQueue->delete();
+                        $processedModelsCount++;
                     }
-                    catch (NotFoundException $e)
+                    else
                     {
+                        Yii::app()->jobQueue->add('WorkflowMessageInQueue', 5);
+                        break;
                     }
-                    $workflowMessageInQueue->delete();
                 }
                 Yii::app()->user->userModel = $originalUser;
                 return true;

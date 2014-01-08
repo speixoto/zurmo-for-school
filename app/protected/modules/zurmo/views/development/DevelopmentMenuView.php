@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class DevelopmentMenuView extends ConfigureModulesMenuView
@@ -45,18 +45,22 @@
         {
             $categories = array();
             $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Clear Cache'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'In the case where you have reloaded the database, some cached items ' .
-                                                                         'might still exist. This is a way to clear that cache.'),
-                                                'route'               => 'zurmo/development?clearCache=1' // Not Coding Standard
-                                            );
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'In the case where you have reloaded the database, some cached items ' .
+                                                                        'might still exist. This is a way to clear that cache.'),
+                                          'route'               => 'zurmo/development?clearCache=1' // Not Coding Standard
+            );
             $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Update Custom Data'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'If there is new metadata to load using CustomManagement, use this option.'),
-                                                'route'               => 'zurmo/development?resolveCustomData=1' // Not Coding Standard
-                                            );
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'If there is new metadata to load using CustomManagement, use this option.'),
+                                          'route'               => 'zurmo/development?resolveCustomData=1' // Not Coding Standard
+            );
             $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'System Check'),
-                                                'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Make sure the application is properly configured.'),
-                                                'route'               => 'configuration/default/runDiagnostic' // Not Coding Standard
-                                            );
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Make sure the application is properly configured.'),
+                                          'route'               => 'configuration/default/runDiagnostic' // Not Coding Standard
+            );
+            $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Compile CSS'),
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Complile de less CSS files.'),
+                                          'route'               => 'zurmo/development/compileCss' // Not Coding Standard
+            );
             $this->setLinkText(Zurmo::t('ZurmoModule', 'Run'));
             return $categories;
         }

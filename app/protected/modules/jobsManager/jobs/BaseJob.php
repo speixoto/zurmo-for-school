@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,6 +40,18 @@
      */
     abstract class BaseJob
     {
+        /**
+         * When calling resolveJobsForQueue() to loading existing items into the jobQueue, how many to page at a time
+         */
+        const JOB_QUEUE_PAGE_SIZE = 100;
+
+        /**
+         * Override and set to true if the job can be run using jobQueues and should be run using jobQueues if
+         * available.
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = false;
+
         /**
          * Populated when the job runs if needed.
          * @var string
@@ -55,6 +67,11 @@
          * After a Job is instantiated, the run method is called to execute the job.
          */
         abstract public function run();
+
+        public static function shouldLoadJobQueueOnCleanupAndFallback()
+        {
+            return static::$loadJobQueueOnCleanupAndFallback;
+        }
 
         /**
          * @returns Translated label that describes this job type.
@@ -73,11 +90,33 @@
         }
 
         /**
+         * Call to override if needed to have additional logic to load jobs up in the queue. This is utilized
+         * when first enabling job queues and cleaning up jobs that need to be queued up
+         */
+        public static function resolveJobsForQueue()
+        {
+            static::loadJobQueue();
+        }
+
+        public static function loadJobQueue()
+        {
+            Yii::app()->jobQueue->add(static::getType(), 5);
+        }
+
+        /**
          * @return string content specifying how often this job should be run as a scheduled task.
          */
         public static function getRecommendedRunFrequencyContent()
         {
             throw new NotImplementedException();
+        }
+
+        /**
+         * @return string content specifying the Message Logger Class Name.
+         */
+        public static function getDefaultMessageLogger()
+        {
+            return 'MessageLogger';
         }
 
         /**
@@ -95,7 +134,7 @@
          */
         public static function getRunTimeThresholdInSeconds()
         {
-            return 60;
+            return 900;
         }
 
         public function setMessageLogger(MessageLogger $messageLogger)
