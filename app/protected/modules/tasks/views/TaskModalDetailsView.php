@@ -170,7 +170,9 @@
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
                 array_merge(
-                    array('id' => static::getLeftSideFormId()),
+                    array('id'    => static::getLeftSideFormId(),
+                          'action' => '#'
+                    ),
                     $this->resolveActiveFormAjaxValidationOptions()
                 )
             );
@@ -201,6 +203,7 @@
                                 array_merge(GetUtil::getData(), array('id' => $this->getModel()->id)));
             return array('enableAjaxValidation' => true,
                 'clientOptions' => array(
+                    'validateOnSubmit'  => true,
                     'validateOnChange'  => true,
                     'validationUrl' => $validationUrl
                 ),
