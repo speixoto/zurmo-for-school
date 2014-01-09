@@ -58,7 +58,7 @@
                                           'route'               => 'configuration/default/runDiagnostic' // Not Coding Standard
             );
             $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Compile CSS'),
-                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Complile de less CSS files.'),
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Compile the .less files into CSS files'),
                                           'route'               => 'zurmo/development/compileCss' // Not Coding Standard
             );
             $this->setLinkText(Zurmo::t('ZurmoModule', 'Run'));
