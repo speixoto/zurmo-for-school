@@ -57,56 +57,51 @@
 
         public function actionList()
         {
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
-            $account                        = new Account(false);
-            $searchForm                     = new AccountsSearchForm($account);
-            $listAttributesSelector         = new ListAttributesSelector('AccountsListView', get_class($this->getModule()));
-            $searchForm->setListAttributesSelector($listAttributesSelector);
-            $dataProvider = $this->resolveSearchDataProvider(
-                $searchForm,
-                $pageSize,
-                null,
-                'AccountsSearchView'
-            );
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-            {
-                $mixedView = $this->makeListView(
-                    $searchForm,
-                    $dataProvider
-                );
-                $view = new AccountsPageView($mixedView);
-            }
-            else
-            {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                                                                    'SecuredActionBarForAccountsSearchAndListView');
-                $view = new AccountsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $mixedView));
-            }
-            echo $view->render();
+//            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+//                                              'listPageSize', get_class($this->getModule()));
+//            $account                        = new Account(false);
+//            $searchForm                     = new AccountsSearchForm($account);
+//            $listAttributesSelector         = new ListAttributesSelector('AccountsListView', get_class($this->getModule()));
+//            $searchForm->setListAttributesSelector($listAttributesSelector);
+//            $dataProvider = $this->resolveSearchDataProvider(
+//                $searchForm,
+//                $pageSize,
+//                null,
+//                'AccountsSearchView'
+//            );
+//            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+//            {
+//                $mixedView = $this->makeListView(
+//                    $searchForm,
+//                    $dataProvider
+//                );
+//                $view = new AccountsPageView($mixedView);
+//            }
+//            else
+//            {
+//                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+//                                                                    'SecuredActionBarForAccountsSearchAndListView');
+//                $view = new AccountsPageView(ZurmoDefaultViewUtil::
+//                                         makeStandardViewForCurrentUser($this, $mixedView));
+//            }
+//            echo $view->render();
+            echo 'Not Implemented';
         }
 
         public function actionDetails($id)
         {
-            $account = static::getModelAndCatchNotFoundAndDisplayError('Account', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($account);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account), 'AccountsModule'), $account);
-            if (KanbanUtil::isKanbanRequest() === false)
-            {
-                $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'AccountsSearchView', $account);
-                $detailsAndRelationsView = $this->makeDetailsAndRelationsView($account, 'AccountsModule',
-                                                                              'AccountDetailsAndRelationsView',
+            $calendar = static::getModelAndCatchNotFoundAndDisplayError('SavedCalendar', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($calendar);
+            AuditEvent::logAuditEvent('ZurmoModule',
+                                      ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                      array(strval($calendar), 'CalendarModule'), $calendar);
+            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'CalendarSearchView', $calendar);
+            $detailsAndRelationsView = $this->makeEditAndDetailsView($calendar, 'CalendarModule',
+                                                                              'SavedCalendarDetailsAndRelationsView',
                                                                               Yii::app()->request->getRequestUri(),
                                                                               $breadCrumbView);
-                $view                    = new AccountsPageView(ZurmoDefaultViewUtil::
+            $view                    = new CalendarPageView(ZurmoDefaultViewUtil::
                                                                     makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
-            }
-            else
-            {
-                $view = TasksUtil::resolveTaskKanbanViewForRelation($account, $this->getModule()->getId(), $this,
-                                                                        'TasksForAccountKanbanView', 'AccountsPageView');
-            }
             echo $view->render();
         }
 
