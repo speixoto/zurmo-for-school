@@ -48,11 +48,6 @@
                         'viewClassName'   => $viewClassName,
                    ),
                     array(
-                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreate',
-                        'moduleClassName' => get_class($this->getModule()),
-                        'viewClassName'   => 'AccountModalCreateView',
-                   ),
-                    array(
                         ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
                    ),
@@ -126,9 +121,9 @@
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $account = Account::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($account);
-            $this->processEdit($account, $redirectUrl);
+            $savedCalendar = SavedCalendar::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
+            $this->processEdit($savedCalendar, $redirectUrl);
         }
 
         public function actionCopy($id)
@@ -144,173 +139,13 @@
             $this->processEdit($copyToAccount);
         }
 
-        protected function processEdit(Account $account, $redirectUrl = null)
+        protected function processEdit(SavedCalendar $calendar, $redirectUrl = null)
         {
-            $view = new AccountsPageView(ZurmoDefaultViewUtil::
+            $view = new CalendarPageView(ZurmoDefaultViewUtil::
                             makeStandardViewForCurrentUser($this,
                             $this->makeEditAndDetailsView(
-                                $this->attemptToSaveModelFromPost($account, $redirectUrl), 'Edit')));
+                                $this->attemptToSaveModelFromPost($calendar, $redirectUrl), 'Edit')));
             echo $view->render();
-        }
-
-        /**
-         * Action for displaying a mass edit form and also action when that form is first submitted.
-         * When the form is submitted, in the event that the quantity of models to update is greater
-         * than the pageSize, then once the pageSize quantity has been reached, the user will be
-         * redirected to the makeMassEditProgressView.
-         * In the mass edit progress view, a javascript refresh will take place that will call a refresh
-         * action, usually massEditProgressSave.
-         * If there is no need for a progress view, then a flash message will be added and the user will
-         * be redirected to the list view for the model.  A flash message will appear providing information
-         * on the updated records.
-         * @see Controler->makeMassEditProgressView
-         * @see Controller->processMassEdit
-         * @see
-         */
-        public function actionMassEdit()
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'massEditProgressPageSize');
-            $account = new Account(false);
-            $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
-            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new AccountsSearchForm($account),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                null,
-                'AccountsSearchView');
-            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $account = $this->processMassEdit(
-                $pageSize,
-                $activeAttributes,
-                $selectedRecordCount,
-                'AccountsPageView',
-                $account,
-                AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                $dataProvider
-            );
-            $massEditView = $this->makeMassEditView(
-                $account,
-                $activeAttributes,
-                $selectedRecordCount,
-                AccountsModule::getModuleLabelByTypeAndLanguage('Plural')
-            );
-            $view = new AccountsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $massEditView));
-            echo $view->render();
-        }
-
-        /**
-         * Action called in the event that the mass edit quantity is larger than the pageSize.
-         * This action is called after the pageSize quantity has been updated and continues to be
-         * called until the mass edit action is complete.  For example, if there are 20 records to update
-         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
-         * the actionMassEdit is called upon the initial form submission.
-         */
-        public function actionMassEditProgressSave()
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'massEditProgressPageSize');
-            $account = new Account(false);
-            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new AccountsSearchForm($account),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                null,
-                'AccountsSearchView'
-            );
-            $this->processMassEditProgressSave(
-                'Account',
-                $pageSize,
-                AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                $dataProvider
-            );
-        }
-
-        /**
-         * Action for displaying a mass delete form and also action when that form is first submitted.
-         * When the form is submitted, in the event that the quantity of models to delete is greater
-         * than the pageSize, then once the pageSize quantity has been reached, the user will be
-         * redirected to the makeMassDeleteProgressView.
-         * In the mass delete progress view, a javascript refresh will take place that will call a refresh
-         * action, usually makeMassDeleteProgressView.
-         * If there is no need for a progress view, then a flash message will be added and the user will
-         * be redirected to the list view for the model.  A flash message will appear providing information
-         * on the delete records.
-         * @see Controller->makeMassDeleteProgressView
-         * @see Controller->processMassDelete
-         * @see
-         */
-        public function actionMassDelete()
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'massDeleteProgressPageSize');
-            $account = new Account(false);
-
-            $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
-            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new AccountsSearchForm($account),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                null,
-                'AccountsSearchView');
-            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $account = $this->processMassDelete(
-                $pageSize,
-                $activeAttributes,
-                $selectedRecordCount,
-                'AccountsPageView',
-                $account,
-                AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                $dataProvider
-            );
-            $massDeleteView = $this->makeMassDeleteView(
-                $account,
-                $activeAttributes,
-                $selectedRecordCount,
-                AccountsModule::getModuleLabelByTypeAndLanguage('Plural')
-            );
-            $view = new AccountsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $massDeleteView));
-            echo $view->render();
-        }
-
-        /**
-         * Action called in the event that the mass delete quantity is larger than the pageSize.
-         * This action is called after the pageSize quantity has been delted and continues to be
-         * called until the mass delete action is complete.  For example, if there are 20 records to delete
-         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
-         * the actionMassDelete is called upon the initial form submission.
-         */
-        public function actionMassDeleteProgress()
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'massDeleteProgressPageSize');
-            $account = new Account(false);
-            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new AccountsSearchForm($account),
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                null,
-                'AccountsSearchView'
-            );
-            $this->processMassDeleteProgress(
-                'Account',
-                $pageSize,
-                AccountsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                $dataProvider
-            );
-        }
-
-        public function actionModalList()
-        {
-            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
-                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
-                                            $_GET['modalTransferInformation']['sourceNameFieldId'],
-                                            $_GET['modalTransferInformation']['modalId']
-            );
-            echo ModalSearchListControllerUtil::
-                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
         }
 
         public function actionDelete($id)
@@ -354,51 +189,6 @@
             echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
                                                                                       'AccountModalCreateView',
                                                                                       $account, 'Edit');
-        }
-
-        /**
-         * Modal validate for account
-         */
-        protected function validateCreateModalPostData()
-        {
-            $account = new Account();
-            if (isset($_POST['ajax']) && Yii::app()->request->isAjaxRequest)
-            {
-                $account = $this->attemptToSaveModelFromPost($account, null, false, true);
-                echo CJSON::encode(ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($account));
-                Yii::app()->end(0, false);
-            }
-        }
-
-        /**
-         * Overriding to implement the dedupe action for new leads
-         */
-        public function actionSearchForDuplicateModels($attribute, $value)
-        {
-            assert('is_string($attribute)');
-            assert('is_string($value)');
-            $model          = new Account();
-            $depudeRules    = DedupeRulesFactory::createRulesByModel($model);
-            $viewClassName  = $depudeRules->getDedupeViewClassName();
-            $searchResult   = $depudeRules->searchForDuplicateModels($attribute, $value);
-            if ($searchResult != null)
-            {
-                $summaryView    = new $viewClassName($this->id, $this->module->id, $model, $searchResult['matchedModels']);
-                $content        = $summaryView->render();
-                $message        = $searchResult['message'];
-                echo CJSON::encode(array('content' => $content, 'message' => $message));
-            }
-        }
-
-        /**
-         * List view merge for accounts
-         */
-        public function actionListViewMerge()
-        {
-            $this->processListViewMerge('Account',
-                                        'AccountsListDuplicateMergedModelForm',
-                                        'AccountsMerged', 'AccountsPageView',
-                                        '/accounts/default/list');
         }
     }
 ?>

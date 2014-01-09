@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarEditAndDetailsView extends SecuredEditAndDetailsView
+    class SavedCalendarEditAndDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
         {
@@ -42,10 +42,10 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
-                            array('type' => 'EditLink',       'renderType' => 'Details'),
-                            array('type' => 'CopyLink',       'renderType' => 'Details')
+                            array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'CancelLink',    'renderType' => 'Edit'),
+                            array('type' => 'EditLink',      'renderType' => 'Details'),
+                            array('type' => 'CopyLink',      'renderType' => 'Details')
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(

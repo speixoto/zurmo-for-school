@@ -429,7 +429,8 @@
             'users',
             'maps',
             'contactWebForms',
-            'projects'
+            'projects',
+            'calendar'
         ),
 
         'params' => array(

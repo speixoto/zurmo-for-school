@@ -88,14 +88,12 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'priceFrequency'    => Zurmo::t('ProductsModule', 'Price Frequency', $params, null, $language),
-                'account'           => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params, null, $language),
-                'contact'           => Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel', $params, null, $language),
-                'opportunity'       => Zurmo::t('OpportunitiesModule', 'OpportunitiesModuleSingularLabel', $params, null, $language),
-                'productTemplate'   => Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel', $params, null, $language),
-                'productCategories' => Zurmo::t('ProductTemplatesModule', 'Product Categories', array(), null, $language),
-                'sellPrice'         => Zurmo::t('ProductTemplatesModule', 'Sell Price', array(), null, $language),
-                'stage'             => Zurmo::t('ZurmoModule', 'Stage', array(), null, $language)
+                'description'   => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
+                'location'      => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
+                'name'          => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
+                'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
+                'timeZone'      => Zurmo::t('ZurmoModule', 'Time Zone',      array(), null, $language),
                 ));
         }
 
@@ -113,7 +111,7 @@
                     'moduleClassName',
                     'startDateTime',
                     'endDateTime',
-                    'timezone'
+                    'timeZone'
                 ),
                 'relations' => array(),
                 'rules' => array(
@@ -136,18 +134,10 @@
                     array('timeZone', 'ValidateTimeZone'),
                 ),
                 'elements' => array(
-                    'account'         => 'Account',
-                    'contact'         => 'Contact',
-                    'description'     => 'TextArea',
-                    'opportunity'     => 'Opportunity',
-                    'priceFrequency'  => 'ProductTemplatePriceFrequencyDropDown',
-                    'productTemplate' => 'ProductTemplate',
-                    'sellPrice'       => 'CurrencyValue',
-                    'type'            => 'ProductTemplateTypeDropDown',
+                    'endDateTime'   => 'DateTime',
+                    'startDateTime' => 'DateTime',
                 ),
-                'customFields' => array(
-                    'stage'    => 'ProductStages',
-                ),
+                'customFields' => array(),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
@@ -180,18 +170,7 @@
          */
         public static function getGamificationRulesType()
         {
-            return 'ProductGamification';
-        }
-
-        /**
-         * Sets the scenario for currencyvalue elements to positiveValue for the validation of the price
-         * using the rule in CurrencyValue
-         * @return bool
-         */
-        protected function beforeValidate()
-        {
-            $this->sellPrice->setScenario('positiveValue');
-            return parent::beforeValidate();
+            return null;
         }
     }
 ?>
