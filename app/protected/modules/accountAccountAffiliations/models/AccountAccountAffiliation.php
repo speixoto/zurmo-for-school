@@ -115,7 +115,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'primaryAccount'   => Zurmo::t('AccountAccountAffiliationsModule', 'Partner', null,  null, $language),
-                    'secondaryAccount' => Zurmo::t('AccountAccountAffiliationsModule', 'Customer', null,  null, $language),
+                    'secondaryAccount' => Zurmo::t('ZurmoModule', 'Customer', null,  null, $language),
                 )
             );
         }
