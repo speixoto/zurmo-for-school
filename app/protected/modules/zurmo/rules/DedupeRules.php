@@ -112,16 +112,42 @@
                                         {
                                             $('#" . $dedupeViewId . "').replaceWith(returnObj.content);
                                             $('#FlashMessageBar').jnotifyAddMessage({
-                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>',
+                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();dedupeShouldSubmitFormAfterMessage = false;$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>',
                                                 permanent: true,
                                                 clickOverlay : true,
                                                 showIcon: false,
                                             })
                                         }
+                                        $('#" . $dedupeViewId . "').closest('form').off('submit.dedupe');
+                                        setTimeout(function ()
+                                        {
+                                            if (!$('#" . $dedupeViewId . "').is(':visible'))
+                                            {
+                                                $('#" . $dedupeViewId . "').closest('form')[0].submit();
+                                            }
+                                            else
+                                            {
+                                                $('#" . $dedupeViewId . "').closest('form').find('a[name=\'save\']').removeClass('loading');
+                                                $('#" . $dedupeViewId . "').closest('form').find('a[name=\'save\']').click(
+                                                    function() {
+                                                        $(this).addClass('loading');
+                                                        \$('#" . $dedupeViewId . "').closest('form')[0].submit(); return false;
+                                                    }
+                                                );
+                                            }
+                                        }, 3000);
                                  }"
             ));
-            $js = "$('#{$id}' ).blur(function() {
-                        if ($('#{$id}').val() != ''){ {$ajaxScript} }
+            $js = "$('#{$id}' ).change(function() {
+                        if ($('#{$id}').val() != '')
+                        {
+                            {$ajaxScript}
+                            $(this).closest('form').on('submit.dedupe', function(e)
+                            {
+                                return false;
+                            });
+                        }
+
                    });
             ";
 
