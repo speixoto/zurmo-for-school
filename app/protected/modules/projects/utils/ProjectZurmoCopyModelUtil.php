@@ -63,5 +63,34 @@
                 $copyToModel->opportunities->add($opportunity);
             }
         }
+        
+        public static function processAfterCopy(RedBeanModel $model, RedBeanModel $copyToModel)
+        {
+            foreach ($model->tasks as $task)
+            {
+                $copyToTask  = new Task();
+                $copyToTask->completedDateTime          = $task->completedDateTime;
+                $copyToTask->completed                  = $task->completed;
+                $copyToTask->dueDateTime                = $task->dueDateTime;
+                $copyToTask->description                = $task->description;
+                $copyToTask->name                       = $task->name;
+                $copyToTask->status                     = $task->status;
+                $copyToTask->requestedByUser            = $task->requestedByUser;
+                $copyToTask->owner                      = $task->owner;
+                foreach ($task->checkListItems as $taskCheckListItem)
+                {
+                    $copytToTaskCheckListItem              = new TaskCheckListItem();
+                    $copytToTaskCheckListItem->name        = $taskCheckListItem->name;
+                    $copyToTask->checkListItems->add($copytToTaskCheckListItem);
+                }
+                foreach ($task->activityItems as $taskActivityItems)
+                {
+                    $copyToTask->activityItems->add($taskActivityItems);
+                }
+                $copyToModel->tasks->add($copyToTask);
+            }
+            $copyToModel->save();
+        }
+        
     }
 ?>
