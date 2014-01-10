@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,7 +29,7 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 .juiportlet-column {
 	float: left;
@@ -102,7 +102,7 @@
 		visibility: hidden;
 		display: none; /*inline;*/
 		float: left;
-		//background: url(../images/portlet-minimize.png) 14px 50% no-repeat;
+		//background: url("@{path}portlet-minimize.png") 14px 50% no-repeat;
 		width: 14px;
 		height: 40px;
 		text-indent: -9999em;
@@ -304,6 +304,20 @@
 .type-projects{
 	.icon-empty:before{
 		content: '\02C7';
+		.view-toolbar-icons(45px);
+	}
+}
+
+.type-accountContactAffiliations{
+	.icon-empty:before{
+		content: '\00F4';
+		.view-toolbar-icons(55px);
+	}
+}
+
+.type-accountAccountAffiliations{
+	.icon-empty:before{
+		content: '\00FB';
 		.view-toolbar-icons(45px);
 	}
 }

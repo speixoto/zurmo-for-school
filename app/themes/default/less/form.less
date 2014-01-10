@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,7 +29,7 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 div.form input, div.form textarea, div.form select {
 	//margin: 0 0 0 0;
@@ -58,15 +58,15 @@ div.form span.required {
 	font-weight: bold;
 }
 
-div.form div.error label, 
-div.form label.error, 
+div.form div.error label,
+div.form label.error,
 div.form span.error {
 	color: #C00;
 }
 
 div.form div.error input,
 div.form div.error textarea,
-div.form div.error select, 
+div.form div.error select,
 div.form td.error input, /* Added in response to #1934 Yii bug */
 div.form td.error textarea, /* Added in response to #1934 Yii bug */
 div.form td.error select, /* Added in response to #1934 Yii bug */
@@ -78,10 +78,10 @@ div.form select.error {
 }
 
 div.form div.success input,
-div.form div.success textarea, 
-div.form div.success select, 
-div.form input.success, 
-div.form textarea.success, 
+div.form div.success textarea,
+div.form div.success select,
+div.form input.success,
+div.form textarea.success,
 div.form select.success {
 	//background: #E6EFC2;
 	//border-color: #C6D880;
@@ -124,7 +124,7 @@ div.form .errorMessage {
 		position: absolute;
 		left:6px;
 		top:-8px;
-		background:url(../images/error-tip.png) left bottom no-repeat;
+		background:url("@{path}error-tip.png") left bottom no-repeat;
 	}
 }
 
@@ -147,8 +147,8 @@ div.wide.form .row {
 	clear: left;
 }
 
-div.wide.form .buttons, 
-div.wide.form .hint, 
+div.wide.form .buttons,
+div.wide.form .hint,
 div.wide.form .errorMessage {
 	clear: both;
 	padding-left: 2px;

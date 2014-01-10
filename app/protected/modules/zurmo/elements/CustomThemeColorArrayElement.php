@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class CustomThemeColorArrayElement extends Element
@@ -59,6 +59,7 @@
             $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
@@ -69,12 +70,14 @@
                                                     $('div.custom .theme-color-1').css('background-color', ui.color.toString());
                                           }",
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content = ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor2';
             $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $inputId,
@@ -85,12 +88,14 @@
                                                     $('div.custom .theme-color-2').css('background-color', ui.color.toString());
                                           }",
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             $attribute   = 'customThemeColor3';
             $inputId     = $this->getEditableInputId($attribute);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($attribute);
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.ZurmoColorPicker', array(
                 'inputName'            => $this->getEditableInputName($attribute),
                 'inputId'              => $this->getEditableInputId($attribute),
@@ -101,6 +106,7 @@
                                                     $('div.custom .theme-color-3').css('background-color', ui.color.toString());
                                           }",
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content .= ZurmoHtml::tag('div', array(), $cClipWidget->getController()->clips[$attribute]);
             return ZurmoHtml::tag('div',
@@ -113,6 +119,7 @@
 
         public function registerScript()
         {
+            // Begin Not Coding Standard
             $script = "
                             $('.color-picker').focus(function(){
                                 $('.color-picker').iris('hide');
@@ -124,6 +131,7 @@
                                 }
                             });
                       ";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('changeThemeColorArray', $script);
         }
     }

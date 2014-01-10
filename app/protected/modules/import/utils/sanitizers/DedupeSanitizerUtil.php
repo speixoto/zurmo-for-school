@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -63,7 +63,7 @@
 
         protected function assertMappingRuleDataIsValid()
         {
-            if(isset($this->mappingRuleData["dedupeRule"]))
+            if (isset($this->mappingRuleData["dedupeRule"]))
             {
                 assert('is_array($this->mappingRuleData["dedupeRule"])');
             }
@@ -76,26 +76,40 @@
         protected function checkIfRowToBeSkippedAndSetAnalysisMessages($value)
         {
             assert('$value === null || is_string($value)');
-            $matchedModels  = $this->getMatchedModels($value);
-            if(count($matchedModels) > 0 && isset($this->mappingRuleData["dedupeRule"]))
+            if (isset($this->mappingRuleData["dedupeRule"]) &&
+                $this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
             {
-                if($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::SKIP_ROW_ON_MATCH_FOUND)
+                if ($value != null)
                 {
-                    $this->shouldSkipRow = true;
-                    $label = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
-                    $this->analysisMessages[] = $label;
-                    if($this->importSanitizeResultsUtil != null)
+                    $matchedModels  = $this->getMatchedModels($value, 1);
+                    if (count($matchedModels) > 0)
                     {
-                        $this->importSanitizeResultsUtil->setModelShouldNotBeSaved();
+                        $this->shouldSkipRow = true;
+                        $label = Zurmo::t('ImportModule', 'The record will be skipped during import due to dedupe rule.');
+                        $this->analysisMessages[] = $label;
+                        if ($this->importSanitizeResultsUtil != null)
+                        {
+                            $this->importSanitizeResultsUtil->setModelShouldNotBeSaved();
+                        }
                     }
                 }
-                elseif($this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND)
+            }
+            elseif (isset($this->mappingRuleData["dedupeRule"]) &&
+                    $this->mappingRuleData["dedupeRule"]["value"] == ImportDedupeRulesRadioDropDownElement::UPDATE_ROW_ON_MATCH_FOUND
+                    )
+            {
+                if ($value != null)
                 {
-                    $label = Zurmo::t('ImportModule', 'A record with this value already exists and will be updated with the values of the imported record.');
-                    $this->analysisMessages[] = $label;
-                    if($this->importSanitizeResultsUtil != null)
+                    $matchedModels  = $this->getMatchedModels($value, 1);
+                    if (count($matchedModels) > 0)
                     {
-                        $this->importSanitizeResultsUtil->setMatchedModel($matchedModels[0]);
+                        $label = Zurmo::t('ImportModule',
+                                          'A record with this value already exists and will be updated with the values of the imported record.');
+                        $this->analysisMessages[] = $label;
+                        if ($this->importSanitizeResultsUtil != null)
+                        {
+                            $this->importSanitizeResultsUtil->setMatchedModel($matchedModels[0]);
+                        }
                     }
                 }
             }
@@ -103,9 +117,11 @@
 
         /**
          * Gets matched models
+         * @param $value
+         * @param int $pageSize
          * @return array
          */
-        protected function getMatchedModels($value)
+        protected function getMatchedModels($value, $pageSize)
         {
             return array();
         }

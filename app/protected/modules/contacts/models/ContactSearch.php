@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ContactSearch extends BaseModelAutoCompleteUtil
@@ -42,14 +42,15 @@
          * @param string $partialName
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
-         * @param $autoCompleteOptions
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByPartialFullName($partialName, $pageSize,
-                                                    $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
+                                                            $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             $personTableName   = Person::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Contact');
             if (!$joinTablesAdapter->isTableInFromTables('person'))
@@ -80,7 +81,7 @@
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
          * @param null|string $operatorType
-         * @param $autoCompleteOptions
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByPartialFullNameOrAnyEmailAddress($partialNameOrEmailAddress, $pageSize,
                                                                              $stateMetadataAdapterClassName = null,
@@ -91,6 +92,7 @@
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$operatorType == null || is_string($operatorType)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             if ($operatorType == null)
             {
               $operatorType = 'startsWith';
@@ -139,13 +141,16 @@
          * For a given email address, run search by email address and retrieve contact models.
          * @param string $emailAddress
          * @param null|int $pageSize
-         * @param null|sting $stateMetadataAdapterClassName
-         * @param $autoCompleteOptions
+         * @param null|string $stateMetadataAdapterClassName
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByAnyEmailAddress($emailAddress, $pageSize = null,
                                                 $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
         {
             assert('is_string($emailAddress)');
+            assert('$pageSize == null || is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             $metadata = array();
             $metadata['clauses'] = array(
                 1 => array(
@@ -174,13 +179,52 @@
         }
 
         /**
+         * For a given phone number, run search by phone numbers and retrieve contact models.
+         * @param string $phoneNumber
+         * @param null|int $pageSize
+         * @param null|string $stateMetadataAdapterClassName
+         * @param null|string $autoCompleteOptions
+         */
+        public static function getContactsByAnyPhone($phoneNumber, $pageSize = null,
+                                                     $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
+        {
+            assert('is_string($phoneNumber)');
+            assert('$pageSize == null || is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'mobilePhone',
+                    'operatorType'         => 'equals',
+                    'value'                => $phoneNumber,
+                ),
+                2 => array(
+                    'attributeName'        => 'officePhone',
+                    'operatorType'         => 'equals',
+                    'value'                => $phoneNumber,
+                ),
+            );
+            $metadata['structure'] = '(1 or 2)';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Contact');
+            if ($stateMetadataAdapterClassName != null)
+            {
+                $stateMetadataAdapter = new $stateMetadataAdapterClassName($metadata);
+                $metadata = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+            }
+            $where  = RedBeanModelDataProvider::makeWhere('Contact', $metadata, $joinTablesAdapter);
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
+            return Contact::getSubset($joinTablesAdapter, null, $pageSize, $where);
+        }
+
+        /**
          * For a give Contact name, run a full search by full name and retrieve contact models.
          * This is required in case we are importing the data for contacts and search is performed for
          * exact full name to identify the duplicates
          * @param string $fullName
          * @param int $pageSize
          * @param null|string $stateMetadataAdapterClassName
-         * @param $autoCompleteOptions
+         * @param null|string $autoCompleteOptions
          */
         public static function getContactsByFullName($fullName, $pageSize,
                                                     $stateMetadataAdapterClassName = null, $autoCompleteOptions = null)
@@ -188,6 +232,7 @@
             assert('is_string($fullName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
             $personTableName   = Person::getTableName();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Contact');
             if (!$joinTablesAdapter->isTableInFromTables('person'))

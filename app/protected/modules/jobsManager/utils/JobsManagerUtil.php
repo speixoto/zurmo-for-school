@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -68,7 +68,7 @@
             $jobManagerFileLogger = Yii::createComponent(
                 array(
                     'class'       => 'application.modules.jobsManager.components.JobManagerFileLogger',
-                    'maxFileSize' => '2048',
+                    'maxFileSize' => '5120',
                     'logFile'     => $type . '.log',
                     'logPath'     => Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'jobLogs'
                 )
@@ -80,7 +80,6 @@
             $streamers = array($messageStreamer, $jobManagerFileMessageStreamer);
             foreach ($streamers as $streamer)
             {
-
                 $streamer->add(Zurmo::t('JobsManagerModule', 'Script will run at most for {seconds} seconds.',
                                         array('{seconds}' => $timeLimit)));
                 $streamer->add(Zurmo::t('JobsManagerModule', 'Sending output to runtime/jobLogs/{type}.log',
@@ -91,7 +90,6 @@
             }
             if ($useMessageStreamer)
             {
-
                 $messageLogger = new $messageLoggerClassName(array($messageStreamer, $jobManagerFileMessageStreamer));
             }
             else
@@ -223,13 +221,13 @@
                     $jobLog->message       = $errorMessage;
                 }
                 $jobLog->isProcessed = false;
-                if(!$jobLog->save())
+                if (!$jobLog->save())
                 {
                     throw new FailedToSaveModelException();
                 }
                 $stuckJob               = StuckJob::getByType($type);
                 $stuckJob->quantity     = 0;
-                if(!$stuckJob->save())
+                if (!$stuckJob->save())
                 {
                     throw new FailedToSaveModelException();
                 }

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -138,18 +138,18 @@
                 if ($message[0] != MessageLogger::DEBUG ||
                     ($this->shouldPrintDebugMessages() && $message[0] == MessageLogger::DEBUG))
                 {
-					foreach ($this->messageStreamers as $messageStreamer)
-					{
-                    	if($this->logDateTimeStamp)
-                    	{
-                        	$prefixContent = $message[2] . ' ';
-                    	}
-                    	else
-                    	{
-                        	$prefixContent = null;
-                    	}
-                    	$messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
-					}
+                    foreach ($this->messageStreamers as $messageStreamer)
+                    {
+                        if ($this->logDateTimeStamp)
+                        {
+                            $prefixContent = $message[2] . ' ';
+                        }
+                        else
+                        {
+                            $prefixContent = null;
+                        }
+                        $messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+                    }
                 }
             }
         }
@@ -194,15 +194,15 @@
             assert('$type == MessageLogger::ERROR || $type == MessageLogger::INFO || $type == MessageLogger::DEBUG');
             if ($type == MessageLogger::ERROR)
             {
-                return Zurmo::t('Core', 'Error');
+                return str_pad(Zurmo::t('Core', 'Error'), 5);
             }
             elseif ($type == MessageLogger::INFO)
             {
-                return Zurmo::t('Core', 'Info');
+                return str_pad(Zurmo::t('Core', 'Info'), 5);
             }
             else
             {
-                return Zurmo::t('Core', 'Debug');
+                return str_pad(Zurmo::t('Core', 'Debug'), 5);
             }
         }
 

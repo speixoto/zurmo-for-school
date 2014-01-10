@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class WorkflowActionProcessingHelperTest extends WorkflowBaseTest
@@ -153,7 +153,7 @@
                                                   'type'          => WorkflowActionAttributeForm::TYPE_STATIC,
                                                   'value'         => self::$marketingListId));
             $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
-            
+
             $helper = new WorkflowActionProcessingHelper($action, $contact, Yii::app()->user->userModel);
             $helper->processNonUpdateSelfAction();
             $marketingList->forget();
@@ -179,7 +179,7 @@
             $this->assertEquals(1, $marketingList->marketingListMembers->count());
             $this->assertEquals(1, $marketingList->marketingListMembers[0]->unsubscribed);
         }
-        
+
         /**
          * @expectedException NotSupportedException
          */
@@ -195,7 +195,7 @@
             $helper = new WorkflowActionProcessingHelper($action, $account, Yii::app()->user->userModel);
             $helper->processNonUpdateSelfAction();
         }
-        
+
         /**
          * Confirms that values for boolean, date, and dateTime get set on creating new records.
          */

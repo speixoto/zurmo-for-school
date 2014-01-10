@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     $basePath = Yii::app()->getBasePath();
@@ -229,7 +229,7 @@
                 }
             }
             $this->deferredUnrelatedBeans = array();
-            foreach($this->deferredUnrelatedModels as $model)
+            foreach ($this->deferredUnrelatedModels as $model)
             {
                 $event = new CModelEvent($model);
                 $model->onRedBeanOneToManyRelatedModelsChange($event);
@@ -271,7 +271,7 @@
         public function add(RedBeanModel $model)
         {
             parent::add($model);
-            if(get_class($model) != get_class($this->relatedModel) &&
+            if (get_class($model) != get_class($this->relatedModel) &&
                (null != $opposingRelationName = $this->getOpposingRelationName($model)))
             {
                    $model->$opposingRelationName = $this->relatedModel;
@@ -288,7 +288,7 @@
         {
             $model = $this->getByIndex($i);
             parent::removeByIndex($i);
-            if((get_class($model) != get_class($this->relatedModel) &&
+            if ((get_class($model) != get_class($this->relatedModel) &&
                 null != $opposingRelationName = $this->getOpposingRelationName($model))
                     )
             {
@@ -299,19 +299,17 @@
 
         protected function getOpposingRelationName($model)
         {
-            if(!$this->opposingRelationNameRetrieved)
+            if (!$this->opposingRelationNameRetrieved)
             {
-                if(null !== $opposingRelationName = RedBeanModel::
+                if (null !== $opposingRelationName = RedBeanModel::
                                                     getHasManyOpposingRelationName($model, $this->relatedModelClassName,
                                                                                    $this->relatedAttributeName))
                 {
-
                     $this->opposingRelationName = $opposingRelationName;
                 }
                 $this->opposingRelationNameRetrieved = true;
             }
             return $this->opposingRelationName;
-
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ImportUtilTest extends ImportBaseTest
@@ -607,6 +607,99 @@
             foreach ($testModels as $model)
             {
                 $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+            }
+            ImportModelTestItem::deleteAll();
+        }
+
+        public function testSettingExplicitReadWriteModelPermissionsDuringImportDontAffectTheModifiedByUserAttribute()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(0, count($testModels));
+
+            //Add a read only user for import. Then all models should be readable by jim in addition to super.
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            $explicitReadWriteModelPermissions->addReadOnlyPermitable(User::getByUsername('jim'));
+
+            $testModels                        = ImportModelTestItem::getAll();
+            $this->assertEquals(0, count($testModels));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'ImportModelTestItem';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest3.csv', $import->getTempTableName(), true);
+
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $mappingData = array(
+                'column_0' => array('attributeIndexOrDerivedType' => 'string',        'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'DefaultValueModelAttributeMappingRuleForm' =>
+                            array('defaultValue' => null))),
+                'column_7' => array('attributeIndexOrDerivedType' => 'modifiedByUser', 'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'UserValueTypeModelAttributeMappingRuleForm' =>
+                            array('type' => UserValueTypeModelAttributeMappingRuleForm::ZURMO_USERNAME))),
+                'column_23' => array('attributeIndexOrDerivedType' => 'FullName',     'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'FullNameDefaultValueModelAttributeMappingRuleForm' =>
+                            array('defaultValue' => null))),
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 3)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                $importRules,
+                $mappingData,
+                $importResultsUtil,
+                $explicitReadWriteModelPermissions,
+                $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 1 models where created.
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(1, count($testModels));
+            $jim = User::getByUsername('jim');
+            foreach ($testModels as $model)
+            {
+                $this->assertEquals(array(Permission::READ, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+                $this->assertEquals('jim', $model->modifiedByUser->username);
+            }
+
+            //Clear out data in table
+            ImportModelTestItem::deleteAll();
+
+            //Now test with read/write permissions being set.
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            $explicitReadWriteModelPermissions->addReadWritePermitable(User::getByUsername('jim'));
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                $importRules,
+                $mappingData,
+                $importResultsUtil,
+                $explicitReadWriteModelPermissions,
+                $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 1 models where created.
+            $testModels = ImportModelTestItem::getAll();
+            $this->assertEquals(1, count($testModels));
+            $jim = User::getByUsername('jim');
+            foreach ($testModels as $model)
+            {
+                $this->assertEquals(array(Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER, Permission::NONE), $model->getExplicitActualPermissions ($jim));
+                $this->assertEquals('jim', $model->modifiedByUser->username);
             }
         }
 

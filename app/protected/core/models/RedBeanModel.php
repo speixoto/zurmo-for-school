@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -2057,7 +2057,6 @@
             $this->raiseEvent('onRedBeanOneToManyRelatedModelsChange', $event);
         }
 
-
         /**
          * This event is raised before the record is deleted.
          * By setting {@link CModelEvent::isValid} to be false, the normal {@link delete()} process will be stopped.
@@ -3155,9 +3154,9 @@
         {
             assert('is_string($precedingModelClassName)');
             assert('is_string($precedingRelation)');
-            foreach($model->attributeNames() as $attributeName)
+            foreach ($model->attributeNames() as $attributeName)
             {
-                if($model->isRelation($attributeName) &&
+                if ($model->isRelation($attributeName) &&
                     ($model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
                         $model->getRelationType($attributeName) ==  RedBeanModel::HAS_MANY_BELONGS_TO) &&
                     static::relationLinksToPrecedingRelation(get_class($model), $attributeName,

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -43,7 +43,7 @@
          * @var string
          */
         protected $formModelClassName = 'MarketingOverallMetricsForm';
-        
+
         /**
          * The view's module class name.
          */
@@ -72,7 +72,7 @@
             $content .= $this->renderMetricsWrapperContent();
             return $content;
         }
-        
+
         /**
          * @return string
          */
@@ -91,7 +91,7 @@
         {
             return new MarketingOverallMetricsConfigView($this->resolveForm(), $this->params);
         }
-        
+
         /**
          * Override to supply a campaign
          * @param string $type
@@ -104,7 +104,7 @@
             $chartDataProvider->setCampaign($this->params['relationModel']);
             return $chartDataProvider;
         }
-        
+
         /**
          * @return string
          */
@@ -128,7 +128,7 @@
         {
             return Zurmo::t('MarketingModule', 'Emails in this Campaign');
         }
-        
+
         /**
          * Call to save the portlet configuration
          */
@@ -143,7 +143,7 @@
             $getData['portletParams'] = $this->getPortletParams();
             return Yii::app()->createUrl('/campaigns/defaultPortlet/modalConfigSave', $getData);
         }
-        
+
         /**
          * @return CFormModel
          * @throws NotSupportedException
@@ -163,7 +163,7 @@
                 $formModelClassName = $this->formModelClassName;
             }
             $formModel = new $formModelClassName();
-            
+
             $user = Yii::app()->user->userModel;
             $metadata = MetadataUtil::getMetadata('CampaignOverallMetricsView', $user);
             $campaignId = 0;
@@ -175,7 +175,7 @@
             {
                 $campaignId = $this->params['relationModelId'];
             }
-            if(isset($metadata['perUser'][$campaignId]))
+            if (isset($metadata['perUser'][$campaignId]))
             {
                 $formModel->beginDate = $metadata['perUser'][$campaignId]['beginDate'];
                 $formModel->endDate   = $metadata['perUser'][$campaignId]['endDate'];
@@ -188,10 +188,9 @@
                 $this->resolveEvaluateSubString($perUserMetadata, null);
                 $formModel->setAttributes($perUserMetadata);
             }
-            
+
             $this->formModel = $formModel;
             return $formModel;
         }
-        
     }
 ?>

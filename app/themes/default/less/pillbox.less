@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,7 +29,7 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 .toolbar-mbmenu{
 	i[class^="icon"]{
@@ -61,7 +61,7 @@
 	.radius(4px);
 	margin:0 0 30px 0;
 	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
-	background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+	background:url("@{path}view-toolbar-gradient.png") left bottom repeat-x;
 	display: inline-block;
 	+ .pillbox{
 		float: right;
@@ -116,7 +116,15 @@
 	.button-actions{
 		&:before{
 			right:4px;
-			background:url(../images/tip.png) right bottom no-repeat; //another option is an img with 4px trasnparent padding on the right just for this class
+			background:url("@{path}tip.png") right bottom no-repeat; //another option is an img with 4px trasnparent padding on the right just for this class
+		}
+	}
+	&.active{
+		.icon-trigger:after{
+			color: #656565 !important;
+		}
+		.button-actions a{
+			color: #fff;
 		}
 	}
 }
@@ -190,7 +198,7 @@
 			right:-2px;
 			width:13px;
 			height:8px;
-			background: url(../images/tip.png) right bottom no-repeat;
+			background: url("@{path}tip.png") right bottom no-repeat;
 		}
 	}
 }
@@ -295,7 +303,7 @@
 			.radius(inherit);
 		}
 		a:hover{
-			background: url(../images/dropdown-general.png) left top no-repeat !important;
+			background: url("@{path}dropdown-general.png") left top no-repeat !important;
 		}
 	}
 }

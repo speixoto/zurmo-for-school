@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -87,13 +87,13 @@
                         $meeting->activityItems, $meeting->startDateTime, 'Account');
                 $meeting->processedForLatestActivity = true;
                 $saved = $meeting->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
                 else
                 {
-                    $processed ++;
+                    $processed++;
                 }
             }
 
@@ -111,7 +111,7 @@
         {
             $params          = LabelUtil::getTranslationParamsForAllModules();
             $params['{count}'] = $processed;
-            if($processed > 0 && $processed < 2)
+            if ($processed > 0 && $processed < 2)
             {
                 return Zurmo::t('MeetingsModule', 'Processed {count} MeetingsModuleSingularLabel',
                                 $params);

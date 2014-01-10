@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Campaign extends OwnedSecurableItem
@@ -137,7 +137,7 @@
                 $sendingTimestamp = time();
             }
             $sendOnDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
-            if($inPast)
+            if ($inPast)
             {
                 $sendOnDateTimeOperator = 'lessThan';
             }
@@ -205,10 +205,10 @@
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'CampaignMergeTagsValidator'),
-                    array('textContent',            'CampaignMergeTagsValidator'),
+                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'searchModel'),
+                    array('textContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'searchModel'),
+                    array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),
+                    array('textContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),
                     array('enableTracking',         'boolean'),
                     array('enableTracking',         'default', 'value' => false),
                     array('marketingList',          'required'),
@@ -271,7 +271,10 @@
 
         public function beforeValidate()
         {
-            $this->validateHtmlOnly();
+            if ($this->getScenario() != 'searchModel')
+            {
+                $this->validateHtmlOnly();
+            }
             return parent::beforeValidate();
         }
 

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,6 +40,19 @@
      */
     abstract class LatestActivityDateTimeObserver extends CComponent
     {
+        protected $attachedEventHandlersIndexedByModelClassName = array();
+
+        /**
+         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
+         */
+        public function destroy()
+        {
+            foreach ($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
+            {
+                $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
+            }
+        }
+
         /**
          * Given a event, check that the event's sender is a meeting.  this is a beforeSave event
          * that should reset the latestActivityDateTimeProcessFlag if the startDateTime has changed.
@@ -50,7 +63,7 @@
         public function resolveModelLatestActivityDateTimeProcessFlagByMeeting(Cevent $event)
         {
             assert('$event->sender instanceof Meeting');
-            if(array_key_exists('startDateTime', $event->sender->originalAttributeValues))
+            if (array_key_exists('startDateTime', $event->sender->originalAttributeValues))
             {
                 $event->sender->processedForLatestActivity = false;
             }
@@ -85,12 +98,12 @@
             try
             {
                 $castedDownModel = $item->castDown(array($modelDerivationPathToItem));
-                if(DateTimeUtil::isDateTimeStringNull($castedDownModel->latestActivityDateTime) ||
+                if (DateTimeUtil::isDateTimeStringNull($castedDownModel->latestActivityDateTime) ||
                     $dateTime > $castedDownModel->latestActivityDateTime)
                 {
                     $castedDownModel->setLatestActivityDateTime($dateTime);
                     $saved = $castedDownModel->save();
-                    if(!$saved)
+                    if (!$saved)
                     {
                         throw new FailedToSaveModelException();
                     }
@@ -100,7 +113,7 @@
             {
                 //do nothing
             }
-            catch(AccessDeniedSecurityException $e)
+            catch (AccessDeniedSecurityException $e)
             {
                 //do nothing, since the current user cannot update the related model. Fail silently.
             }

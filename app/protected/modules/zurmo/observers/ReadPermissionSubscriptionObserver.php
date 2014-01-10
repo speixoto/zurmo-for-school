@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -64,8 +64,8 @@
                         $modelClassName = $module->getPrimaryModelName();
                         if ($modelClassName != null &&
                             is_subclass_of($modelClassName, 'OwnedSecurableItem') &&
-                            $modelClassName::hasReadPermissionsSubscriptionOptimization() === true
-                            && !in_array($modelClassName, $observedModels))
+                            $modelClassName::hasReadPermissionsSubscriptionOptimization() === true &&
+                                !in_array($modelClassName, $observedModels))
                         {
                             $observedModels[]           = $modelClassName;
                             $this->attachEventsByModelClassName($modelClassName);
@@ -111,7 +111,7 @@
          */
         public function readPermissionSubscriptionOnAfterSave(CEvent $event)
         {
-            if($event->sender->getIsNewModel())
+            if ($event->sender->getIsNewModel())
             {
                 Yii::app()->jobQueue->add('ReadPermissionSubscriptionQuickUpdate', 5);
             }

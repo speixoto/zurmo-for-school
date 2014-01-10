@@ -1,9 +1,10 @@
 .z-label{
 	//.box-sizing();
-	.radius( 3px );
-	display: inline-block;
+	//.radius( 3px );
 	//position:relative;
 	//float:left;
+
+	display: inline-block;
 
 	color:#fff;
 	font-weight:bold;
@@ -36,8 +37,7 @@ a:active{
 
 .button-layout{
 	cursor:pointer;
-	.radius( 3px );
-	//.box-sizing();
+	.radius( 4px );
 	.clearfix();
 	overflow: hidden;
 	position: relative;
@@ -66,6 +66,7 @@ a:active{
 	border-bottom:1px solid darken(@hexToRGBA, 10%); /*darker*/
 }
 
+.secondary-button,
 .default-btn,
 .white-button,
 .cancel-button,
@@ -78,7 +79,7 @@ a:active{
 	.z-label{
 		color:#666;
 		.t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
-		background: transparent url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+		background: transparent url("@{path}view-toolbar-gradient.png") left bottom repeat-x;
 	}
 	&:hover{
 		.z-label{
@@ -97,7 +98,7 @@ input[type="button"]{ //because it doesn't contain a span=z-label usually
 	&.portlet-create-button{
 		color:#666;
 		.t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
-		background: transparent url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+		background: transparent url("@{path}view-toolbar-gradient.png") left bottom repeat-x;
 		&:hover{
 			color: @themeColor2 !important;
 			background-image: none;
@@ -201,6 +202,19 @@ input[type="button"]{ //because it doesn't contain a span=z-label usually
 		color: @themeColor;
 		.t-shadow(none) !important;
 		text-decoration:underline !important;
+	}
+	.icon-x{
+		font-weight: normal !important;
+		font-size: 21px;
+		font-family: "zurmo_gamification_symbly_rRg";
+		line-height: 1;
+		border: none;
+		margin-right: 2px;
+		outline: none !important;
+		display: inline-block;
+		position: relative;
+		top: -1px;
+		color: #7CB830;
 	}
 }
 

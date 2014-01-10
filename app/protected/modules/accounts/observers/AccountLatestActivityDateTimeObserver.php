@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -42,23 +42,29 @@
     {
         public function init()
         {
-            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
+            if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenATaskIsCompleted())
             {
-                Task::model()->attachEventHandler('onAfterSave', array($this, 'updateAccountLatestActivityDateTimeByTask'));
+                $eventHandler = array($this, 'updateAccountLatestActivityDateTimeByTask');
+                Task::model()->attachEventHandler('onAfterSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['Task'] = array('onAfterSave', $eventHandler);
             }
-            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
+            if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenANoteIsCreated())
             {
-                Note::model()->attachEventHandler('onAfterSave', array($this, 'updateAccountLatestActivityDateTimeByNote'));
+                $eventHandler = array($this, 'updateAccountLatestActivityDateTimeByNote');
+                Note::model()->attachEventHandler('onAfterSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['Note'] = array('onAfterSave', $eventHandler);
             }
-            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
+            if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenAnEmailIsSentOrArchived())
             {
-                EmailMessage::model()->attachEventHandler('onAfterSave',
-                    array($this, 'updateAccountLatestActivityDateTimeByEmailMessage'));
+                $eventHandler = array($this, 'updateAccountLatestActivityDateTimeByEmailMessage');
+                EmailMessage::model()->attachEventHandler('onAfterSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['EmailMessage'] = array('onAfterSave', $eventHandler);
             }
-            if(AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
+            if (AccountsModule::shouldUpdateLatestActivityDateTimeWhenAMeetingIsInThePast())
             {
-                Meeting::model()->attachEventHandler('onBeforeSave',
-                    array($this, 'resolveModelLatestActivityDateTimeProcessFlagByMeeting'));
+                $eventHandler = array($this, 'resolveModelLatestActivityDateTimeProcessFlagByMeeting');
+                Meeting::model()->attachEventHandler('onBeforeSave', $eventHandler);
+                $this->attachedEventHandlersIndexedByModelClassName['Meeting'] = array('onBeforeSave', $eventHandler);
             }
         }
 
@@ -70,7 +76,7 @@
         public function updateAccountLatestActivityDateTimeByTask(CEvent $event)
         {
             assert('$event->sender instanceof Task');
-            if(array_key_exists('status', $event->sender->originalAttributeValues) &&
+            if (array_key_exists('status', $event->sender->originalAttributeValues) &&
                 $event->sender->status == Task::STATUS_COMPLETED)
             {
                 $this->resolveRelatedModelsAndSetLatestActivityDateTime($event->sender->activityItems,
@@ -86,7 +92,7 @@
         public function updateAccountLatestActivityDateTimeByNote(CEvent $event)
         {
             assert('$event->sender instanceof Note');
-            if($event->sender->getIsNewModel())
+            if ($event->sender->getIsNewModel())
             {
                 $this->resolveRelatedModelsAndSetLatestActivityDateTime($event->sender->activityItems,
                     DateTimeUtil::convertTimestampToDbFormatDateTime(time()), 'Account');
@@ -103,17 +109,17 @@
         {
             assert('$event->sender instanceof EmailMessage');
             //Check for a just sent message
-            if(array_key_exists('sentDateTime', $event->sender->originalAttributeValues) &&
+            if (array_key_exists('sentDateTime', $event->sender->originalAttributeValues) &&
                 !DateTimeUtil::isDateTimeStringNull($event->sender->sentDateTime))
             {
-                foreach($event->sender->sender->personsOrAccounts as $senderPersonsOrAccount)
+                foreach ($event->sender->sender->personsOrAccounts as $senderPersonsOrAccount)
                 {
                     $this->resolveItemToModelAndPopulateLatestActivityDateTime($senderPersonsOrAccount,
                         $event->sender->sentDateTime, 'Account');
                 }
-                foreach($event->sender->recipients as $emailMessageRecipient)
+                foreach ($event->sender->recipients as $emailMessageRecipient)
                 {
-                    foreach($emailMessageRecipient->personsOrAccounts as $recipientPersonsOrAccount)
+                    foreach ($emailMessageRecipient->personsOrAccounts as $recipientPersonsOrAccount)
                     {
                         $this->resolveItemToModelAndPopulateLatestActivityDateTime($recipientPersonsOrAccount,
                             $event->sender->sentDateTime, 'Account');

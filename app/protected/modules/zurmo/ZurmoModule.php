@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoModule extends SecurableModule
@@ -47,6 +47,7 @@
         const RIGHT_ACCESS_GLOBAL_CONFIGURATION   = 'Access Global Configuration';
         const RIGHT_ACCESS_CURRENCY_CONFIGURATION = 'Access Currency Configuration';
         const RIGHT_BULK_DELETE                   = 'Mass Delete';
+        const RIGHT_BULK_MERGE                    = 'Mass Merge';
 
         const AUDIT_EVENT_ITEM_CREATED            = 'Item Created';
         const AUDIT_EVENT_ITEM_MODIFIED           = 'Item Modified';
@@ -61,6 +62,7 @@
             $labels[self::RIGHT_ACCESS_GLOBAL_CONFIGURATION]    = Zurmo::t('ZurmoModule', 'Access Global Configuration');
             $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
             $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('Core', 'Mass Delete');
+            $labels[self::RIGHT_BULK_MERGE]                     = Zurmo::t('Core', 'Mass Merge');
             return $labels;
         }
 

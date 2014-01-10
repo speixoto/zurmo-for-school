@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -126,7 +126,7 @@
                 $skippedColumns[] = $idColumnName;
             }
             //Dedupe fields processing
-            if(static::processDedupeAttributesToCheckForSkipIfRequired($importRules,
+            if (static::processDedupeAttributesToCheckForSkipIfRequired($importRules,
                                                                                $model,
                                                                                $mappingData,
                                                                                $rowBean,
@@ -134,16 +134,16 @@
                                                                                $importSanitizeResultsUtil,
                                                                                $skippedColumns) !== true)
             {
-                if(null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
+                if (null != $matchedModel = $importSanitizeResultsUtil->getMatchedModel())
                 {
                     $model = $matchedModel;
                     $makeNewModel = false;
                 }
                 //Process the dedupe fields
-                foreach($importRules->getDedupeAttributes() as $dedupeField)
+                foreach ($importRules->getDedupeAttributes() as $dedupeField)
                 {
                     $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
-                    if(false !== $sourceColumnName)
+                    if (false !== $sourceColumnName)
                     {
                         $columnMappingData = $mappingData[$sourceColumnName];
                         static::processImportInformationForAttributeDataAndPopulateModel($importRules,
@@ -213,6 +213,7 @@
                     {
                         if ($model instanceof SecurableItem)
                         {
+                            $model->setScenario('doNotSetModifiedDateTimeOrUser');
                             try
                             {
                                 $resolved = ExplicitReadWriteModelPermissionsUtil::
@@ -233,6 +234,7 @@
                                 'to set the security the way you did. The record will only be viewable by the owner.');
                                 $importRowDataResultsUtil->setStatusToError();
                             }
+                            $model->setScenario('importModel');
                         }
                         else
                         {
@@ -473,7 +475,6 @@
             }
         }
 
-
         protected static function resolveModelForModelDerivedAttribute(
                                   RedBeanModel $model,
                                   $importRulesType,
@@ -679,7 +680,6 @@
                                                   $afterSaveActionsData);
         }
 
-
         /**
          * Process mapped columns to check for matched record by column
          * @param ImportRules $importRules
@@ -700,10 +700,10 @@
             assert('$rowBean instanceof RedBean_OODBBean');
             $isSkipped = false;
             //Process the dedupe fields
-            foreach($importRules->getDedupeAttributes() as $dedupeField)
+            foreach ($importRules->getDedupeAttributes() as $dedupeField)
             {
                 $sourceColumnName = static::getMappedColumnNameByMappingData($dedupeField, $mappingData);
-                if(false !== $sourceColumnName)
+                if (false !== $sourceColumnName)
                 {
                     $columnMappingData      = $mappingData[$sourceColumnName];
                     $attributeValueData     = static::getAttributeValueData($importRules,

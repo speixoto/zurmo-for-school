@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class CampaignItemsRelatedListView extends RelatedListView
@@ -39,9 +39,9 @@
         protected static $persistantCampaignItemsPortletConfigs = array(
             'filteredByStage'
         );
-        
+
         protected $showStageFilter = true;
-        
+
         function __construct($viewData, $params, $uniqueLayoutId)
         {
             parent::__construct($viewData, $params, $uniqueLayoutId);
@@ -51,7 +51,7 @@
             $this->configurationForm        = $campaignItemsConfigurationForm;
             $this->relationModuleId         = $this->params['relationModuleId'];
         }
-        
+
         protected function renderContent()
         {
             $content  = $this->renderConfigurationForm();
@@ -73,7 +73,7 @@
         {
             return 'CampaignItemsForPortletView';
         }
-        
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -146,10 +146,9 @@
             array_unshift($columns, $firstColumn);
             return $columns;
         }
-        
-        
+
         /**
-         * 
+         *
          * Override to filter by email message stage
          */
         protected function makeSearchAttributeData()
@@ -164,7 +163,7 @@
                 )
             );
             $searchAttributeData['structure'] = '1';
-            
+
             if ($this->configurationForm->filteredByStage != CampaignItemsConfigurationForm::FILTERED_BY_ALL_STAGES)
             {
                 switch($this->configurationForm->filteredByStage)
@@ -187,10 +186,10 @@
                 );
                 $searchAttributeData['structure'] = '1 AND 2';
             }
-            
+
             return $searchAttributeData;
         }
-        
+
         /**
          * @return string
          */
@@ -226,7 +225,7 @@
                 $element                   = new CampaignItemStageFilterRadioElement($this->configurationForm,
                                                                         'filteredByStage',
                                                                         $form,
-                                                                        array('relationModel'=>$this->params['relationModel']));
+                                                                        array('relationModel' => $this->params['relationModel']));
                 $element->editableTemplate =  '<div id="CampaignItemsConfigurationForm_filteredByStage_area">{content}</div>';
                 $stageFilterContent        = $element->render();
                 $innerContent             .= $stageFilterContent;
@@ -268,7 +267,7 @@
             );
             ");
         }
-        
+
         /**
          * @return CampaignItemsConfigurationForm
          */
@@ -339,7 +338,7 @@
             }
             return $campaignItemsConfigurationForm;
         }
-        
+
         /**
          * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
          * refresh the portlet content.

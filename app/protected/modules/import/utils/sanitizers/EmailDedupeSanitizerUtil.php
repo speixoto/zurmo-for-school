@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -45,20 +45,22 @@
         }
 
         /**
-         * Get matched models
+         * Gets matched models
+         * @param $value
+         * @param null|int $pageSize
          * @return array
          */
-        protected function getMatchedModels($value)
+        protected function getMatchedModels($value, $pageSize)
         {
             $matchedModels = array();
             $penultimateModelClassName = $this->penultimateModelClassName;
-            if($penultimateModelClassName == 'Account')
+            if ($penultimateModelClassName == 'Account')
             {
-                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value);
+                $matchedModels  = AccountSearch::getAccountsByAnyEmailAddress($value, $pageSize);
             }
-            elseif($penultimateModelClassName == 'Contact')
+            elseif ($penultimateModelClassName == 'Contact')
             {
-                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value);
+                $matchedModels  = ContactSearch::getContactsByAnyEmailAddress($value, $pageSize);
             }
             return $matchedModels;
         }
