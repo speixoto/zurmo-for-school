@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class AccountSearchTest extends ZurmoBaseTest
@@ -42,22 +42,23 @@
             $user = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $user;
             $accountData = array(
-                'Samsonite',
-                'Zurmo',
-                'Auto',
-                'Build',
-                'Roger'
+                'Samsonite' => '123-456-789',
+                'Zurmo'     => '123-456-789',
+                'Auto'      => '123-456-789',
+                'Build'     => '123-456-789',
+                'Roger'     => '123-123-123',
             );
 
-            foreach ($accountData as $key => $name)
+            foreach ($accountData as $name => $phone)
             {
-                $account = new Account();
-                $account->name    = $name;
+                $account               = new Account();
+                $account->name         = $name;
                 $account->owner        = $user;
                 $account->primaryEmail = new Email();
                 $account->primaryEmail->emailAddress = strtolower($name) . '@zurmoland.com';
                 $account->secondaryEmail = new Email();
                 $account->secondaryEmail->emailAddress = 'a' . strtolower($name) . '@zurmoworld.com';
+                $account->officePhone = $phone;
                 assert($account->save()); // Not Coding Standard
             }
         }
@@ -76,6 +77,32 @@
             $data = AccountSearch::getAccountsByAnyEmailAddress('aroger@zurmoworld.com', 5);
             $this->assertEquals(1, count($data));
             $this->assertEquals('Roger', $data[0]->name);
+        }
+
+        public function testGetAccountsByAnyPhone()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $data = AccountSearch::getAccountsByAnyPhone('123-456-789');
+            $this->assertEquals(4, count($data));
+
+            $data = AccountSearch::getAccountsByAnyPhone('123-123-123');
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Roger', $data[0]->name);
+        }
+
+        public function testGetAccountsByPartialName()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $data = AccountSearch::getAccountsByPartialName('zurmo');
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Zurmo', $data[0]->name);
+
+            $data = AccountSearch::getAccountsByPartialName('sonite');
+            $this->assertEquals(1, count($data));
+            $this->assertEquals('Samsonite', $data[0]->name);
+
+            $data = AccountSearch::getAccountsByPartialName('u');
+            $this->assertEquals(3, count($data));
         }
     }
 ?>

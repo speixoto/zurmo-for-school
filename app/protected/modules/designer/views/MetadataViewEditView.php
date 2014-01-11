@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MetadataViewEditView extends View
@@ -105,8 +105,8 @@
             $content .= '</div>';
             $content .= $this->renderDesignerLayoutEditorWidget();
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
-            $content .= $this->renderCancelLink();
             $content .= $this->renderSaveLayoutButton('FlashMessageBar');
+            $content .= $this->renderCancelLink();
             $content .= '</div></div>';
 
             $formEnd  = $clipWidget->renderEndWidget();
@@ -149,7 +149,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/moduleLayoutsList/',
                                                  array('moduleClassName' => $this->moduleClassName));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $route, array('class' => 'cancel-button'));
         }
 
         /**

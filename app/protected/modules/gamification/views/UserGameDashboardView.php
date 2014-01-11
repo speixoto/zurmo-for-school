@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -68,7 +68,7 @@
                                        Zurmo::t('GamificationModule', 'Collection'));
             $content .= static::renderCollectionItemsContent($user, $collection, $gameCollectionRules);
             $content  = ZurmoHtml::tag('div', array(), $content);
-            if ($collection->canRedeem())
+            if ($collection->canRedeem() && $user->id == Yii::app()->user->userModel->id)
             {
                 $extraClass = ' redeemable';
             }
@@ -80,13 +80,16 @@
                                                'class' => 'gd-collection-panel clearfix'. $extraClass), $content);
         }
 
-        public static function renderCoinsContent($coinValue)
+        public static function renderCoinsContent($coinValue, User $user)
         {
             $url  = Yii::app()->createUrl('gameRewards/default/redeemList/');
             $content  = ZurmoHtml::tag('span', array('id' => 'gd-z-coin'), '');
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('GamificationModule', '{n} coin|{n} coins',
                 array($coinValue)));
-            $content .= ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Redeem'), $url);
+            if($user->id == Yii::app()->user->userModel->id)
+            {
+                $content .= ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Redeem'), $url);
+            }
             return      ZurmoHtml::tag('div', array('id' => self::getGameCoinContainerId()), $content);
         }
 
@@ -189,7 +192,7 @@ SPT;
         {
             $content  = $this->renderProfileContent();
             $content .= $this->renderBadgesContent();
-            $content .= static::renderCoinsContent($this->getGameCoinForUser()->value);
+            $content .= static::renderCoinsContent($this->getGameCoinForUser()->value, $this->user);
             $content .= $this->renderLeaderboardContent();
             $content .= $this->renderStatisticsContent();
             $content .= $this->renderCollectionsContent();
@@ -388,7 +391,7 @@ SPT;
             $htmlOptions   = array();
             $disabledClass = null;
             $disabled      = false;
-            if (!$canCollect)
+            if (!$canCollect || $userId != Yii::app()->user->userModel->id)
             {
                 $disabledClass = ' disabled';
                 $disabled      = true;

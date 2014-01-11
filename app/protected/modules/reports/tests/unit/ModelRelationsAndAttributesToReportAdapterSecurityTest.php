@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ModelRelationsAndAttributesToReportAdapterSecurityTest extends ZurmoBaseTest
@@ -61,13 +61,17 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $relations = $adapter->getSelectableRelationsDataResolvedForUserAccess(Yii::app()->user->userModel, $relations);
-            $this->assertEquals(14, count($relations));
+            $this->assertEquals(17, count($relations));
             $compareData        = array('label' => 'Billing Address');
             $this->assertEquals($compareData, $relations['billingAddress']);
+            $compareData        = array('label' => 'Contact Affiliations');
+            $this->assertEquals($compareData, $relations['contactAffiliations']);
             $compareData        = array('label' => 'Contacts');
             $this->assertEquals($compareData, $relations['contacts']);
             $compareData        = array('label' => 'Created By User');
             $this->assertEquals($compareData, $relations['createdByUser']);
+            $compareData        = array('label' => 'Customer Affiliations');
+            $this->assertEquals($compareData, $relations['secondaryAccountAffiliations']);
             $compareData        = array('label' => 'Meetings');
             $this->assertEquals($compareData, $relations['meetings']);
             $compareData        = array('label' => 'Modified By User');
@@ -82,6 +86,8 @@
             $this->assertEquals($compareData, $relations['projects']);
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
+            $compareData        = array('label' => 'Partner Affiliations');
+            $this->assertEquals($compareData, $relations['primaryAccountAffiliations']);
             $compareData        = array('label' => 'Primary Email');
             $this->assertEquals($compareData, $relations['primaryEmail']);
             $compareData        = array('label' => 'Shipping Address');

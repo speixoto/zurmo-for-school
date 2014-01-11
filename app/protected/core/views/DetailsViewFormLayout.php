@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class DetailsViewFormLayout extends FormLayout
@@ -200,11 +200,8 @@
                 $content .= '<tr>';
                 $content .= '<td  colspan = "' . $this->maxCellsPerRow . '">';
                 $content .= ZurmoHtml::link($this->getMorePanelsLinkLabel(),
-                                        '#', array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . ''));
-                $content .= ZurmoHtml::link($this->getLessPanelsLinkLabel(),
-                                        '#',
-                                        array('class' => 'more-panels-link', 'id' => 'show-less-panels-link-' . $this->uniqueId . '',
-                                              'style' => 'display:none;'));
+                                        '#', array('class' => 'more-panels-link', 'id' => 'show-more-panels-link-' . $this->uniqueId . '',
+                                                   'data-unique' => $this->uniqueId, 'data-label' => $this->getLessPanelsLinkLabel()));
                 $content .= '</td>';
                 $content .= '</tr>';
             }
@@ -215,23 +212,21 @@
         {
             if ($this->shouldHidePanelsAfterFirstPanel())
             {
-                Yii::app()->clientScript->registerScript('showMorePanels' . $this->uniqueId, "
-                    $('#show-more-panels-link-" . $this->uniqueId . "').click( function()
+                Yii::app()->clientScript->registerScript('showMorePanels',
+                "
+                    $('.more-panels-link').click(
+                        function()
                         {
-                            $('.more-view-panel-{$this->uniqueId}').show();
-                            $('#show-more-panels-link-" . $this->uniqueId . "').hide();
-                            $('#show-less-panels-link-" . $this->uniqueId . "').show();
+                            var uniqueId = $(this).data('unique');
+                            var label    = $(this).data('label');
+                            var oldLabel = $(this).html();
+                            $('.more-view-panel-' + uniqueId).toggle();
+                            $(this).html(label);
+                            $(this).data('label', oldLabel);
                             return false;
                         }
                     );
-                    $('#show-less-panels-link-" . $this->uniqueId . "').click( function()
-                        {
-                            $('.more-view-panel-{$this->uniqueId}').hide();
-                            $('#show-more-panels-link-" . $this->uniqueId . "').show();
-                            $('#show-less-panels-link-" . $this->uniqueId . "').hide();
-                            return false;
-                        }
-                    );");
+                ");
             }
         }
 

@@ -1,6 +1,6 @@
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
- * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
  *
  * Zurmo is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -30,10 +30,10 @@
  * these Appropriate Legal Notices must retain the display of the Zurmo
  * logo and Zurmo copyright notice. If the display of the logo is not reasonably
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
- * Copyright Zurmo Inc. 2013. All rights reserved.
+ * Copyright Zurmo Inc. 2014. All rights reserved.
  ********************************************************************************/
 
-@import 'mixins.less';
+@import "variables.less";
 
 /*Target only Explorer*/
 .form{
@@ -45,7 +45,7 @@
 
 /*Top Right Create New Menu*/
 #ShortcutsMenu > li > a {
-	filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
+	//filter: e(%("progid:DXImageTransform.Microsoft.gradient(enabled = false)"));
 }
 
 /*Calendar with dates*/
@@ -75,7 +75,7 @@
     select{
         z-index: 5;
         padding-right:15px;
-        background: #fff url(../images/dropdown-arrow.png) 100% 0 no-repeat;
+        background: #fff url("@{path}dropdown-arrow.png") 100% 0 no-repeat;
     }
 }
 
@@ -87,25 +87,25 @@
 
 #ActionBarSearchAndListView{
     > div:first-child{
-        z-index:10005;       
+        z-index:10005;
     }
 }
 
-.modal-view-toolbar a,
-.modal-view-toolbar input[type="submit"],
-.modal-view-toolbar input[type="button"],
-.form-toolbar a,
-.form-toolbar input[type="submit"],
-.form-toolbar input[type="button"]{
-    border-top:1px solid    rgb(235, 235, 235);
-    border-left: 1px solid  rgb(220, 220, 220);
-    border-right:1px solid  rgb(220, 220, 220);
-    border-bottom:1px solid rgb(205, 205, 205);
-    color:#666;
-    overflow: hidden;
-    position: relative;
-    cursor:pointer;
-    margin:0 10px;
-    text-indent:0;
-    display:inline-block;
+.modal-view-toolbar,
+.form-toolbar{
+	a,
+	input[type="submit"],
+	input[type="button"]{
+		border-top:1px solid    rgb(235, 235, 235);
+		border-left: 1px solid  rgb(220, 220, 220);
+		border-right:1px solid  rgb(220, 220, 220);
+		border-bottom:1px solid rgb(205, 205, 205);
+		color:#666;
+		overflow: hidden;
+		position: relative;
+		cursor:pointer;
+		margin:0 10px;
+		text-indent:0;
+		display:inline-block;
+	}
 }

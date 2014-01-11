@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -41,11 +41,43 @@
     class AutoresponderQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
         /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
+
+        /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
            return Zurmo::t('AutorespondersModule', 'Process autoresponder messages');
+        }
+
+        /**
+         * @see parent::resolveJobsForQueue()
+         */
+        public static function resolveJobsForQueue()
+        {
+            parent::resolveJobsForQueue();
+            $pageSize       = static::JOB_QUEUE_PAGE_SIZE;
+            $offset         = 0;
+            $timeStamp      = time();
+            do
+            {
+                $autoresponderItems = AutoresponderItem::getByProcessedAndProcessDateTime(0, $timeStamp,
+                                                            $pageSize, $offset, false);
+                $offset    = $offset + $pageSize;
+                if (is_array($autoresponderItems) && count($autoresponderItems) > 0)
+                {
+                    foreach ($autoresponderItems as $autoresponderItem)
+                    {
+                        Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($autoresponderItem, 'processDateTime',
+                                                'AutoresponderQueueMessagesInOutbox');
+                    }
+                }
+            }
+            while (is_array($autoresponderItems) && count($autoresponderItems) > 0);
         }
 
         /**
@@ -61,30 +93,44 @@
 
         protected function processRun()
         {
-            $batchSize = $this->resolveBatchSize();
-            $autoresponderItemsToProcess    = AutoresponderItem::getByProcessedAndProcessDateTime(
-                                                                                        0,
-                                                                                        time(),
-                                                                                        $batchSize);
+            $batchSize                   = $this->resolveBatchSize();
+            if ($batchSize != null)
+            {
+                $resolvedBatchSize = $batchSize + 1;
+            }
+            else
+            {
+                $resolvedBatchSize = null;
+            }
+            $autoresponderItemsToProcess = AutoresponderItem::getByProcessedAndProcessDateTime(0, time(),
+                $resolvedBatchSize);
             $startingMemoryUsage = memory_get_usage();
             $modelsProcessedCount = 0;
             foreach ($autoresponderItemsToProcess as $autoresponderItem)
             {
-                try
+                if ($modelsProcessedCount < $batchSize || $batchSize == null)
                 {
-                    $this->processAutoresponderItemInQueue($autoresponderItem);
+                    try
+                    {
+                        $this->processAutoresponderItemInQueue($autoresponderItem);
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        return $autoresponderItem->delete();
+                    }
+                    catch (NotSupportedException $e)
+                    {
+                        $this->errorMessage = $e->getMessage();
+                        return false;
+                    }
+                    $this->runGarbageCollection($autoresponderItem);
+                    $modelsProcessedCount++;
                 }
-                catch (NotFoundException $e)
+                else
                 {
-                    return $autoresponderItem->delete();
+                    Yii::app()->jobQueue->add('AutoresponderQueueMessagesInOutbox', 5);
+                    break;
                 }
-                catch (NotSupportedException $e)
-                {
-                    $this->errorMessage = $e->getMessage();
-                    return false;
-                }
-                $this->runGarbageCollection($autoresponderItem);
-                $modelsProcessedCount++;
             }
             $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;

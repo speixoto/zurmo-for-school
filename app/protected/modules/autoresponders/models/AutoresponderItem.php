@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class AutoresponderItem extends OwnedModel
@@ -113,14 +113,25 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, 'processDateTime');
         }
 
-        public static function getByProcessedAndProcessDateTime($processed, $timestamp = null, $pageSize = null)
+        public static function getByProcessedAndProcessDateTime($processed, $timestamp = null, $pageSize = null,
+                                                                $offset = 0, $inPast = true)
         {
+            assert('is_int($processed)');
+            assert('is_int($offset)');
+            assert('is_bool($inPast)');
             if (empty($timestamp))
             {
                 $timestamp = time();
             }
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
-            assert('is_int($processed)');
+            if ($inPast)
+            {
+                $processDateTimeOperator = 'lessThan';
+            }
+            else
+            {
+                $processDateTimeOperator = 'greaterThan';
+            }
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -130,7 +141,7 @@
                 ),
                 2 => array(
                     'attributeName'             => 'processDateTime',
-                    'operatorType'              => 'lessThan',
+                    'operatorType'              => $processDateTimeOperator,
                     'value'                     => $dateTime,
                 ),
             );
@@ -236,6 +247,26 @@
                 throw new FailedToSaveModelException();
             }
             return $saved;
+        }
+
+        /**
+         * Special handling to set 'isNewModel'. This is needed to properly set the jobQueue
+         * //todo: move backwards into OwnedModel if that is ok generally.
+         * @see RedBeanModel::beforeSave()
+         */
+        protected function beforeSave()
+        {
+            $this->isNewModel = $this->id < 0;
+            return parent::beforeSave();
+        }
+
+        protected function afterSave()
+        {
+            Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($this, 'processDateTime',
+                                    'AutoresponderQueueMessagesInOutbox');
+            parent::afterSave();
+            $this->originalAttributeValues = array();
+            $this->isNewModel = false; //reset.
         }
     }
 ?>

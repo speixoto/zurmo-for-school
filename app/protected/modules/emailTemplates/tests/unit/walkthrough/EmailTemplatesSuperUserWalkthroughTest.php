@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -416,6 +416,33 @@
 
         /**
          * @depends testSuperUserDetailsJsonActionForWorkflow
+         */
+        public function testSuperUserDetailsJsonActionForCreateEmailMessage()
+        {
+            $contact         = ContactTestHelper::createContactByNameForOwner('test', $this->super);
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
+            $emailTemplate   = EmailTemplate::getById($emailTemplateId);
+            $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                    UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                    MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $emailTemplate->textContent = "Test text content with contact tag: [[FIRST^NAME]] {$unsubscribePlaceholder}";
+            $emailTemplate->htmlContent = "Test html content with contact tag: [[FIRST^NAME]] {$manageSubscriptionsPlaceholder}";
+            $this->assertTrue($emailTemplate->save());
+            $this->setGetArray(array('id'                 => $emailTemplateId,
+                                     'renderJson'         => true,
+                                     'includeFilesInJson' => false,
+                                     'contactId'          => $contact->id));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals('Test text content with contact tag: test ', $emailTemplateDetailsResolvedArray['textContent']);
+            $this->assertEquals('Test html content with contact tag: test ', $emailTemplateDetailsResolvedArray['htmlContent']);
+        }
+
+        /**
+         * @depends testSuperUserDetailsJsonActionForCreateEmailMessage
          */
         public function testSuperUserDetailsActionForWorkflow()
         {

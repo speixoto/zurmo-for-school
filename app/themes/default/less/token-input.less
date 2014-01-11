@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,7 +29,7 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 .token-input-list {
 	position: relative;
@@ -40,7 +40,7 @@
 }
 
 /* Example tokeninput style #2: Facebook style */
-ul.token-input-list {
+.token-input-list {
 	z-index: 0;
 	overflow: hidden;
 	height: auto !important;
@@ -59,7 +59,7 @@ ul.token-input-list {
 	color: #999;
 	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
 	width: 100%;
-	.box-sizing();
+	//.box-sizing();
 	input[type="text"]{
 		border:none;
 		.b-shadow(~"none !important");
@@ -75,7 +75,7 @@ ul.token-input-list {
 	}
 }
 
-ul.token-input-list li input {
+.token-input-list li input {
 	border: 0;
 	margin: 0 !important;
 	-webkit-appearance: caret;
@@ -83,17 +83,16 @@ ul.token-input-list li input {
 	line-height:100%;
 }
 
-li.token-input-token {
+.token-input-token {
 	overflow: hidden;
 	height: auto !important;
-	margin: 3px;
-	padding: 0 5px;
 	height: 20px;
 	line-height: 20px;
+	margin: 3px;
+	padding: 0 5px;
 	background-color: #D4E7BC;
 	color: #666 !important;
 	cursor: default;
-	//font-size: 12px;
 	.radius(3px);
 	float: left;
 	white-space: nowrap;
@@ -102,7 +101,7 @@ li.token-input-token {
 		display: inline;
 		padding: 0;
 		margin: 0;
-		color: #545454 !important;
+		color: @textColor !important;
 		font-size: 11px;
 		font-style: normal;
 	}
@@ -110,7 +109,7 @@ li.token-input-token {
 		line-height: 1;
 		padding:0 3px;
 		.radius(2px);
-		color: #545454 !important;
+		color: @textColor !important;
 		margin-left: 2px;
 		font-weight: normal;
 		cursor: pointer;
@@ -118,29 +117,28 @@ li.token-input-token {
 			color: #fff !important;
 			background: darken(#D4E7BC, 45%);
 		}
-		
 	}
 	b, p{
 		font-weight:normal;
 	}
 }
 
-li.token-input-selected-token {
+.token-input-selected-token {
+	background-color: @themeColor2;
 	color: #fff !important;
 	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
 }
 
-li.token-input-input-token {
+.token-input-input-token {
 	float: left;
 	margin: 0;
 	padding: 0;
 	list-style-type: none;
 }
 
-div.token-input-dropdown {
-	.box-sizing();
+.token-input-dropdown {
+	//.box-sizing();
 	position: absolute;
-	//min-width: 400px;
 	background-color: #fff;
 	overflow: hidden;
 	border-left: 1px solid #ccc;
@@ -149,41 +147,40 @@ div.token-input-dropdown {
 	cursor: default;
 	z-index: 1;
 	.radius(0 0 3px 3px);
-	//font-size: 12px;
 	color: #999;
 	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
 }
 
-div.token-input-dropdown p {
+.token-input-dropdown p {
 	margin: 0;
 	padding: 5px;
 }
 
-div.token-input-dropdown ul {
+.token-input-dropdown ul {
 	margin: 0;
 	padding: 0;
 }
 
-div.token-input-dropdown ul li {
+.token-input-dropdown ul li {
 	background-color: #fff;
 	padding: 3px;
 	margin: 3px;
 	list-style-type: none;
 }
 
-div.token-input-dropdown ul li.token-input-dropdown-item {
+.token-input-dropdown ul .token-input-dropdown-item {
 	background-color: #fff;
 }
 
-div.token-input-dropdown ul li.token-input-dropdown-item2 {
+.token-input-dropdown ul .token-input-dropdown-item2 {
 	background-color: #fff;
 }
 
-div.token-input-dropdown ul li em {
+.token-input-dropdown ul li em {
 	font-style: normal;
 }
 
-div.token-input-dropdown ul li.token-input-selected-dropdown-item {
+.token-input-dropdown ul .token-input-selected-dropdown-item {
 	background-color: #D4E7BC;
-	color: #545454;
+	color: @textColor;
 }

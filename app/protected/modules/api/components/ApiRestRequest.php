@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /*
@@ -81,6 +81,18 @@
          */
         public function getSessionId()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_SESSION_ID']))
+                {
+                    return $httpHeaders['ZURMO_SESSION_ID'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_SESSION_ID']))
             {
                 return $_SERVER['HTTP_ZURMO_SESSION_ID'];
@@ -96,6 +108,18 @@
          */
         public function getSessionToken()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_TOKEN']))
+                {
+                    return $httpHeaders['ZURMO_TOKEN'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_TOKEN']))
             {
                 return $_SERVER['HTTP_ZURMO_TOKEN'];
@@ -111,6 +135,18 @@
          */
         public function getUsername()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_AUTH_USERNAME']))
+                {
+                    return $httpHeaders['ZURMO_AUTH_USERNAME'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_AUTH_USERNAME']))
             {
                 return $_SERVER['HTTP_ZURMO_AUTH_USERNAME'];
@@ -126,6 +162,18 @@
          */
         public function getPassword()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_AUTH_PASSWORD']))
+                {
+                    return $httpHeaders['ZURMO_AUTH_PASSWORD'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_AUTH_PASSWORD']))
             {
                 return $_SERVER['HTTP_ZURMO_AUTH_PASSWORD'];
@@ -141,6 +189,18 @@
          */
         public function getLanguage()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_LANG']))
+                {
+                    return $httpHeaders['ZURMO_LANG'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_LANG']))
             {
                 return $_SERVER['HTTP_ZURMO_LANG'];
@@ -197,6 +257,18 @@
          */
         public function getRequestType()
         {
+            if (function_exists('getallheaders'))
+            {
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_API_REQUEST_TYPE']))
+                {
+                    return $httpHeaders['ZURMO_API_REQUEST_TYPE'];
+                }
+                else
+                {
+                    return false;
+                }
+            }
             if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']))
             {
                 if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest')

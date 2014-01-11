@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -210,8 +210,7 @@
 
             try
             {
-                $redBeanModelToApiDataUtil = new RedBeanModelToApiDataUtil($model);
-                $data                      = $redBeanModelToApiDataUtil->getData();
+                $data           = static::getModelToApiDataUtilData($model);
                 $resultClassName = Yii::app()->apiRequest->getResultClassName();
                 $result                    = new $resultClassName(ApiResponse::STATUS_SUCCESS, $data, null, null);
             }
@@ -333,8 +332,7 @@
                     $formattedData = $dataProvider->getData();
                     foreach ($formattedData as $model)
                     {
-                        $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                        $data['items'][] = $redBeanModelToApiDataUtil->getData();
+                        $data['items'][] = static::getModelToApiDataUtilData($model);
                     }
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
@@ -497,7 +495,8 @@
                     $modelRelations = $data['modelRelations'];
                     unset($data['modelRelations']);
                 }
-                $model = $this->attemptToSaveModelFromData(new $modelClassName, $data, null, false);
+                $model = new $modelClassName();
+                $model = $this->attemptToSaveModelFromData($model, $data, null, false);
                 $id = $model->id;
                 $model->forget();
                 if (!count($model->getErrors()))
@@ -516,9 +515,8 @@
                             throw new ApiException($message);
                         }
                     }
-                    $model = $modelClassName::getById($id);
-                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                    $data  = $redBeanModelToApiDataUtil->getData();
+                    $model  = $modelClassName::getById($id);
+                    $data   = static::getModelToApiDataUtilData($model);
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
                 else
@@ -596,8 +594,7 @@
                     }
 
                     $model = $modelClassName::getById($id);
-                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                    $data  = $redBeanModelToApiDataUtil->getData();
+                    $data  = static::getModelToApiDataUtilData($model);
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
                 else
@@ -738,15 +735,47 @@
 
             if (isset($data))
             {
+                $this->preAttemptToSaveModelFromDataHook($model, $data);
                 $controllerUtil   = new ZurmoControllerUtil();
                 $model            = $controllerUtil->saveModelFromSanitizedData($data, $model, $savedSucessfully,
-                    $modelToStringValue, false);
+                                                                                            $modelToStringValue, false);
             }
             if ($savedSucessfully && $redirect)
             {
                 $this->actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
             }
             return $model;
+        }
+
+        /**
+         * Hook to alter $model or $data before we attempt to save it.
+         * @param RedBeanModel $model
+         * @param array $data
+         */
+        protected function preAttemptToSaveModelFromDataHook(RedBeanModel $model, array & $data)
+        {
+        }
+
+        /**
+         * Util used to convert model to array
+         * @return string
+         */
+        protected static function getModelToApiDataUtil()
+        {
+            return 'RedBeanModelToApiDataUtil';
+        }
+
+        /**
+         * Returns data array for provided model using getModelToApiDataUtil
+         * @param RedBeanModel $model
+         * @return array
+         */
+        protected static function getModelToApiDataUtilData(RedBeanModel $model)
+        {
+            $dataUtil                   = static::getModelToApiDataUtil();
+            $redBeanModelToApiDataUtil  = new $dataUtil($model);
+            $data                       = $redBeanModelToApiDataUtil->getData();
+            return $data;
         }
     }
 ?>

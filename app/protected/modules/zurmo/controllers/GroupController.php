@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoGroupController extends ZurmoModuleController
@@ -320,7 +320,7 @@
          * the _set is blocking the entry of a reserved name and _set is used
          * by setAttributes which comes before validate is called.
          */
-        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
+        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true, $returnOnValidate = false)
         {
             assert('$redirectUrlParams == null || is_array($redirectUrlParams)');
             $postVariableName = get_class($model);
@@ -388,8 +388,8 @@
             {
                 $groups = array();
             }
-            $where    = Group::getTableName('Group') . ".name NOT IN( '" . Group::EVERYONE_GROUP_NAME . "', '" . Group::SUPER_ADMINISTRATORS_GROUP_NAME . "')";
-            $orderBy  = Group::getTableName('Group') . '.name asc';
+            $where    = Group::getTableName() . ".name NOT IN( '" . Group::EVERYONE_GROUP_NAME . "', '" . Group::SUPER_ADMINISTRATORS_GROUP_NAME . "')";
+            $orderBy  = Group::getTableName() . '.name asc';
             return array_merge($groups, Group::getSubset(null, null, null, $where, $orderBy));
         }
 

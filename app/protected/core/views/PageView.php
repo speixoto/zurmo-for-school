@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -255,12 +255,11 @@
                 $title = "$title - $subtitle";
             }
             $defaultThemeName       = 'default';
-            $defaultThemeBaseUrl    =  Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
+            $defaultThemeBaseUrl    = Yii::app()->themeManager->baseUrl . '/' . $defaultThemeName;
             $themeName              = Yii::app()->theme->name;
-            $themeBaseUrl           =  Yii::app()->themeManager->baseUrl . '/' . $themeName;
+            $themeBaseUrl           = Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
-            $cs->registerCssFile($themeBaseUrl . '/css/keyframes.css');
 
             $specialCssContent = null;
             $publishedAssetsPath = Yii::app()->assetManager->publish(
@@ -281,10 +280,8 @@
                                   "</style>";
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="zurmo" href="' .
-                                                                                $themeBaseUrl . '/less/zurmo.less?version='.rand() .'"/>';
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="color-scheme" href="' .
-                                                                                $themeBaseUrl . '/less/color-scheme.less?version='.rand() .'"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' .
+                                                                                $themeBaseUrl . '/less/default-theme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
@@ -295,8 +292,7 @@
             }
             else
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/zurmo.css');
-                $cs->registerCssFile($themeBaseUrl . '/css/color-scheme.css');
+                Yii::app()->themeManager->registerThemeColorCss();
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');

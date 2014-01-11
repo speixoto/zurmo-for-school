@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,87 +31,37 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MinimalDynamicLabelMbMenu extends MbMenu
     {
-        // TODO: @Shoaibi: Low: Refactor this and MbMenu
-        protected function renderMenuRecursive($items)
+        protected function doRenderMenuHeader(array $item)
         {
-            foreach ($items as $item)
-            {
-                $liClose    = null;
-                $rendered   = false;
-                if (!array_key_exists('renderHeader', $item) || $item['renderHeader'])
-                {
-                    $rendered   = true;
-                    $liClose    = ZurmoHtml::closeTag('li') . "\n";
-                    $liOptions  = array();
-                    if (isset($item['itemOptions']))
-                    {
-                        $liOptions  =  $item['itemOptions'];
-                    }
-                    echo ZurmoHtml::openTag('li', $liOptions);
-                    if (isset($item['linkOptions']))
-                    {
-                         $htmlOptions = $item['linkOptions'];
-                    }
-                    else
-                    {
-                        $htmlOptions = array();
-                    }
-                    if (!empty($item['label']))
-                    {
-                        $resolvedLabelContent = $this->renderLabelPrefix() . ZurmoHtml::tag('span', array(), $item['label']);
-                    }
-                    else
-                    {
-                        $resolvedLabelContent = static::resolveAndGetSpanAndDynamicLabelContent($item);
-                    }
-                    if ((isset($item['ajaxLinkOptions'])))
-                    {
-                        echo ZurmoHtml::ajaxLink($resolvedLabelContent, $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
-                    }
-                    elseif (isset($item['url']))
-                    {
-                        echo ZurmoHtml::link($this->renderLinkPrefix() . $resolvedLabelContent, $item['url'], $htmlOptions);
-                    }
-                    else
-                    {
-                        if (!empty($item['label']))
-                        {
-                            echo ZurmoHtml::link($resolvedLabelContent, "javascript:void(0);", $htmlOptions);
-                        }
-                        else
-                        {
-                            echo $resolvedLabelContent;
-                        }
-                    }
-                }
-                if (isset($item['items']) && count($item['items']))
-                {
-                    $nestedUlOpen   = null;
-                    $nestedUlClose  = null;
-                    if ($rendered)
-                    {
-                        $nestedUlOpen   = "\n" . ZurmoHtml::openTag('ul', $this->submenuHtmlOptions) . "\n";
-                        $nestedUlClose  = ZurmoHtml::closeTag('ul') . "\n";
-                    }
-                    echo $nestedUlOpen;
-                    $this->renderMenuRecursive($item['items']);
-                    echo $nestedUlClose;
-                }
-                echo $liClose;
-            }
+            return (!array_key_exists('renderHeader', $item) || $item['renderHeader']);
         }
 
-        protected static function resolveAndGetSpanAndDynamicLabelContent($item)
+        protected function resolveLabelContent(array $item)
         {
-            if (isset($item['dynamicLabelContent']))
+            $content = null;
+            if (!empty($item['label']))
             {
-                return $item['dynamicLabelContent'];
+                $content    = $this->renderLabelPrefix() . ZurmoHtml::tag('span', array(), $item['label']);
             }
+            else
+            {
+                $content    = $this->resolveAndGetSpanAndDynamicLabelContent($item);
+            }
+            return $content;
+        }
+
+        protected function renderMenuItemWithNoURLSpecified($resolvedLabelContent, array $htmlOptions, array $item)
+        {
+            if (!empty($item['label']))
+            {
+                return parent::renderMenuItemWithNoURLSpecified($resolvedLabelContent, $htmlOptions, $item);
+            }
+            return $resolvedLabelContent;
         }
 
         protected function resolveNavigationClass()

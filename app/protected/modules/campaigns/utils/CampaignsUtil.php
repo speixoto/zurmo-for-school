@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -45,16 +45,34 @@
          */
         public static function markProcessedCampaignsAsCompleted($pageSize = null)
         {
-            $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $pageSize);
+            if ($pageSize != null)
+            {
+                $resolvedPageSize = $pageSize + 1;
+            }
+            else
+            {
+                $resolvedPageSize = $pageSize;
+            }
+            $processingCampaigns = Campaign::getByStatus(Campaign::STATUS_PROCESSING, $resolvedPageSize);
+            $campaignsProcessed  = 0;
             foreach ($processingCampaigns as $processingCampaign)
             {
-                if (static::areAllCampaignItemsProcessed($processingCampaign->id))
+                if ($campaignsProcessed < $pageSize || $pageSize == null)
                 {
-                    $processingCampaign->status = Campaign::STATUS_COMPLETED;
-                    if (!$processingCampaign->save())
+                    if (static::areAllCampaignItemsProcessed($processingCampaign->id))
                     {
-                        return false;
+                        $processingCampaign->status = Campaign::STATUS_COMPLETED;
+                        if (!$processingCampaign->save())
+                        {
+                            return false;
+                        }
                     }
+                    $campaignsProcessed++;
+                }
+                else
+                {
+                    Yii::app()->jobQueue->add('CampaignMarkCompleted', 5);
+                    break;
                 }
             }
             return true;

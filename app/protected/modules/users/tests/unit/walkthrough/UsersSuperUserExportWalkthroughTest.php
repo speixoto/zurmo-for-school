@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -181,13 +181,13 @@
             $this->assertEquals('users', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals(1, count(Notification::getAll()));
-            $this->assertEquals(1, count(NotificationMessage::getAll()));
+            $this->assertEquals(1, Notification::getCount());
+            $this->assertEquals(1, NotificationMessage::getCount());
 
             // Check export job, when many ids are selected.
             // This will probably never happen, but we need test for this case too.
-            $notificationsBeforeCount        = count(Notification::getAll());
-            $notificationMessagesBeforeCount = count(NotificationMessage::getAll());
+            $notificationsBeforeCount        = Notification::getCount();
+            $notificationMessagesBeforeCount = NotificationMessage::getCount();
 
             // Now test case when multiple ids are selected
             $exportItems = ExportItem::getAll();
@@ -229,8 +229,8 @@
             $this->assertEquals('users', $exportItems[0]->exportFileName);
             $this->assertTrue($fileModel instanceOf ExportFileModel);
 
-            $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
-            $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+            $this->assertEquals($notificationsBeforeCount + 1, Notification::getCount());
+            $this->assertEquals($notificationMessagesBeforeCount + 1, NotificationMessage::getCount());
         }
     }
 ?>

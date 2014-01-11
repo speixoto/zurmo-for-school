@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -172,7 +172,7 @@
                 ),
                 'relations' => array(
                     'person' => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
-                                      static::LINK_TYPE_SPECIFIC, 'person'),
+                        static::LINK_TYPE_SPECIFIC, 'person'),
                 ),
                 'rules' => array(
                     array('type',           'required'),
@@ -251,11 +251,8 @@
          */
         public static function processRandomReceivingCollectionItemByUser(User $user)
         {
-            $availableTypes = GameCollection::getAvailableTypes();
-            $randomKey      = array_rand($availableTypes, 1);
-            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomKey], $user);
-            $itemsData      = $collection->getItemsData();
-            $randomKey      = array_rand($itemsData, 1);
+            list($collection, $randomKey, $randomTypeKey) = static::getARandomCollectionItemForUser($user);
+            $itemsData             = $collection->getItemsData();
             $itemsData[$randomKey] = $itemsData[$randomKey] + 1;
             $collection->setItemsData($itemsData);
             $saved = $collection->save();
@@ -264,6 +261,21 @@
                 throw new FailedToSaveModelException();
             }
             return array($collection, $randomKey);
+        }
+
+        /**
+         * Get a random collection item that can be collected by user
+         * @param User $user
+         * @return array
+         */
+        public static function getARandomCollectionItemForUser(User $user)
+        {
+            $availableTypes = GameCollection::getAvailableTypes();
+            $randomTypeKey  = array_rand($availableTypes, 1);
+            $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$randomTypeKey], $user);
+            $itemsData      = $collection->getItemsData();
+            $randomKey      = array_rand($itemsData, 1);
+            return array($collection, $randomKey, $randomTypeKey);
         }
 
         /**

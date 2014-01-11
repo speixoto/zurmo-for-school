@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ContactSearchTest extends ZurmoBaseTest
@@ -154,6 +154,32 @@
             $this->assertTrue($contact->save());
             $data = ContactSearch::getContactsByAnyEmailAddress('zurmo@test.com');
             $this->assertEquals(1, count($data));
+        }
+
+        public function testGetContactsByAnyPhone()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $contactStates = ContactState::getAll();
+            $this->assertTrue(count($contactStates) > 1);
+            $firstContactState = $contactStates[0];
+            $contact = new Contact();
+            $contact->title->value = 'Mr.';
+            $contact->firstName    = 'test contact';
+            $contact->lastName     = 'for search by any phone';
+            $contact->owner        = $super;
+            $contact->state        = $firstContactState;
+            $contact->primaryEmail = new Email();
+            $contact->primaryEmail->emailAddress = 'testing@zurmo.com';
+            $contact->mobilePhone  = '123-456-789';
+            $contact->officePhone  = '987-654-321';
+            $this->assertTrue($contact->save());
+            $data = ContactSearch::getContactsByAnyPhone('123-456-789');
+            $this->assertEquals(1, count($data));
+            $data = ContactSearch::getContactsByAnyPhone('987-654-321');
+            $this->assertEquals(1, count($data));
+            $data = ContactSearch::getContactsByAnyPhone('987-987-987');
+            $this->assertEquals(0, count($data));
         }
     }
 ?>

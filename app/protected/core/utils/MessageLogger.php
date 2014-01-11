@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -54,22 +54,51 @@
          */
         const DEBUG = 3;
 
+        /**
+         * @var bool
+         */
+        public $logDateTimeStamp = true;
+
+        /**
+         * @var bool
+         */
         protected $errorMessagePresent = false;
 
+        /**
+         * @var array
+         */
         protected $messages = array();
 
+        /**
+         * @var null|object
+         */
         protected $messageStreamer;
+
+        protected $messageStreamers = array();
 
         /**
          * Specify a MessageStreamer if desired.  A message streamer can allow messages to be streamed to the user
          * interface or command line as they are generated instead of waiting for the entire output to be finished.
-         * @param object $messageStreamer MessageStreamer or null
+         * @param object $messageStreamer MessageStreamer or array of MessageStreamers or null
          * @see MessageStreamer class
          */
         public function __construct($messageStreamer = null)
         {
-            assert('$messageStreamer == null || $messageStreamer instanceof MessageStreamer');
-            $this->messageStreamer = $messageStreamer;
+            assert('$messageStreamer == null || $messageStreamer instanceof MessageStreamer || $messageStreamer instanceof JobManagerFileLogRouteMessageStreamer || is_array($messageStreamer)');
+            $messageStreamers = array();
+            if ($messageStreamer instanceof MessageStreamer || $messageStreamer instanceof JobManagerFileLogRouteMessageStreamer)
+            {
+                $messageStreamers[] = $messageStreamer;
+            }
+            elseif (is_array($messageStreamer) && !empty($messageStreamer))
+            {
+                foreach ($messageStreamer as $messageStreamerItem)
+                {
+                    assert('$messageStreamerItem instanceof MessageStreamer || $messageStreamerItem instanceof JobManagerFileLogRouteMessageStreamer');
+                    $messageStreamers[] = $messageStreamerItem;
+                }
+            }
+            $this->messageStreamers = $messageStreamers;
         }
 
         /**
@@ -78,7 +107,7 @@
          */
         public function addInfoMessage($message)
         {
-            $this->add(array(MessageLogger::INFO, $message));
+            $this->add(array(MessageLogger::INFO, $message, static::getFormattedDateTimeStampForNow()));
         }
 
         /**
@@ -88,7 +117,7 @@
         public function addErrorMessage($message)
         {
             $this->errorMessagePresent = true;
-            $this->add(array(MessageLogger::ERROR, $message));
+            $this->add(array(MessageLogger::ERROR, $message, static::getFormattedDateTimeStampForNow()));
         }
 
         /**
@@ -97,19 +126,30 @@
          */
         public function addDebugMessage($message)
         {
-            $this->add(array(MessageLogger::DEBUG, $message));
+            $this->add(array(MessageLogger::DEBUG, $message, static::getFormattedDateTimeStampForNow()));
         }
 
         protected function add($message)
         {
             assert('is_array($message)');
             $this->messages[] = $message;
-            if ($this->messageStreamer != null)
+            if (!empty($this->messageStreamers))
             {
                 if ($message[0] != MessageLogger::DEBUG ||
                     ($this->shouldPrintDebugMessages() && $message[0] == MessageLogger::DEBUG))
                 {
-                    $this->messageStreamer->add(static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+                    foreach ($this->messageStreamers as $messageStreamer)
+                    {
+                        if ($this->logDateTimeStamp)
+                        {
+                            $prefixContent = $message[2] . ' ';
+                        }
+                        else
+                        {
+                            $prefixContent = null;
+                        }
+                        $messageStreamer->add($prefixContent . static::getTypeLabel($message[0]) . ' - ' . $message[1]);
+                    }
                 }
             }
         }
@@ -154,15 +194,15 @@
             assert('$type == MessageLogger::ERROR || $type == MessageLogger::INFO || $type == MessageLogger::DEBUG');
             if ($type == MessageLogger::ERROR)
             {
-                return Zurmo::t('Core', 'Error');
+                return str_pad(Zurmo::t('Core', 'Error'), 5);
             }
             elseif ($type == MessageLogger::INFO)
             {
-                return Zurmo::t('Core', 'Info');
+                return str_pad(Zurmo::t('Core', 'Info'), 5);
             }
             else
             {
-                return Zurmo::t('Core', 'Debug');
+                return str_pad(Zurmo::t('Core', 'Debug'), 5);
             }
         }
 
@@ -184,6 +224,15 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Blocking error on date because that is how Yii::log does it. Not sure why this is the case.
+         * @return bool|string
+         */
+        protected static function getFormattedDateTimeStampForNow()
+        {
+            return @date('Y/m/d H:i:s', microtime(true));
         }
     }
 ?>

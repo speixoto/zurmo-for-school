@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -781,6 +781,46 @@
             $actualSubscribedCountAfterSecondRequest     = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList1->id, 0);
             $this->assertEquals($expectedSubscribedCountAfterSecondRequest, $actualSubscribedCountAfterSecondRequest);
             $this->assertEquals(0, MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList2->id, 0));
+        }
+
+        public function testSuperUserSearchForDuplicateModelsAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('attribute' => 'lastName',
+                                     'value'     => 'fakeValue',
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels', true);
+
+            $contact = LeadTestHelper::createLeadbyNameForOwner('test', $super);
+
+            //Test search by lastName
+            $this->setGetArray(array('attribute' => 'lastName',
+                'value'     => 'testson',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
+            //Test search by phone
+            $contact->mobilePhone = '123456789';
+            $this->assertTrue($contact->save());
+            $this->setGetArray(array('attribute' => 'officePhone',
+                'value'     => '123456789',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
+            //Test search by email
+            $contact->secondaryEmail->emailAddress = 'a@a.a';
+            $this->assertTrue($contact->save());
+            $this->setGetArray(array('attribute' => 'primaryEmail',
+                'value'     => 'a@a.a',
+            ));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels');
+            $object = json_decode($content);
+            $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
+            $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
         }
     }
 ?>

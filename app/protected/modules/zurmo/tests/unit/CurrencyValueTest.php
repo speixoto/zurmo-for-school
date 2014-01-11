@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class CurrencyValueTest extends ZurmoBaseTest
@@ -96,7 +96,9 @@
             $currencyHelper = Yii::app()->currencyHelper;
             $this->assertEquals('USD', $currencyHelper->getBaseCode());
             $this->assertEquals(0, Currency::getCount());
-            $this->assertEquals(1, count(Currency::getAll()));
+            // do a getAll to ensure we create base currency
+            $baseCurrency = Currency::getAll();
+            $this->assertCount(1, $baseCurrency);
             $this->assertEquals(1, Currency::getCount());
 
             //create a currency value and confirm the rateToBase populates correctly.
@@ -107,9 +109,9 @@
             $opportunity->amount->value    = 456.78;
 
             //Setting the amount currency should not increase the currency table with a blank currency.
-            $this->assertEquals(1, count(Currency::getAll()));
+            $this->assertEquals(1, Currency::getCount());
             $opportunity->amount->currency = Currency::getByCode('USD');
-            $this->assertEquals(1, count(Currency::getAll()));
+            $this->assertEquals(1, Currency::getCount());
 
             $this->assertTrue($opportunity->save());
             $this->assertEquals(1, $opportunity->amount->rateToBase);

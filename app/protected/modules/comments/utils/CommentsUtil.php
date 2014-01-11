@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -49,24 +49,15 @@
         {
             if (count($peopleToSendNotification) > 0)
             {
-                $emailRecipients = array();
                 foreach ($peopleToSendNotification as $people)
                 {
                     if ($people->primaryEmail->emailAddress !== null &&
                     !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
                     {
-                        $emailRecipients[] = $people;
+                        $subject = self::getEmailSubject($relatedModel);
+                        $content = self::getEmailContent($relatedModel, $comment, $people);
+                        EmailNotificationUtil::resolveAndSendEmail($senderPerson, array($people), $subject, $content);
                     }
-                }
-                $subject = self::getEmailSubject($relatedModel);
-                $content = self::getEmailContent($relatedModel, $comment, $senderPerson);
-                if ($emailRecipients > 0)
-                {
-                    EmailNotificationUtil::resolveAndSendEmail($senderPerson, $emailRecipients, $subject, $content);
-                }
-                else
-                {
-                    return;
                 }
             }
             else
@@ -85,17 +76,18 @@
         {
             $emailContent  = new EmailMessageContent();
             $url           = static::getUrlToEmail($model);
+            $shortUrl      = ShortUrlUtil::createShortUrl($url);
             $textContent   = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} ",
                                     array('{lineBreak}'           => "\n",
                                           '{strongStartTag}'      => null,
                                           '{strongEndTag}'        => null,
-                                          '{updaterName}'         => strval($user),
+                                          '{updaterName}'         => strval($comment->createdByUser),
                                           '{modelName}'           => $model->getModelLabelByTypeAndLanguage(
                                                                      'SingularLowerCase'),
                                           '{commentDescription}'  => strval($comment),
-                                          '{url}'                 => ZurmoHtml::link($url, $url)
+                                          '{url}'                 => $shortUrl
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate($textContent);
@@ -105,7 +97,7 @@
                                array('{lineBreak}'           => "<br/>",
                                      '{strongStartTag}'      => '<strong>',
                                      '{strongEndTag}'        => '</strong>',
-                                     '{updaterName}'         => strval($user),
+                                     '{updaterName}'         => strval($comment->createdByUser),
                                      '{commentDescription}'  => strval($comment),
                                      '{url}'                 => ZurmoHtml::link($model->getModelLabelByTypeAndLanguage(
                                                                 'SingularLowerCase'), $url)
