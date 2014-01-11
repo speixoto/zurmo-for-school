@@ -34,20 +34,21 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FullCalendarForCombinedView extends View
+    class SavedCalendarSubscriptions
     {
-        protected $calendarItems;
-
-        public function __construct(array $calendarItems)
+        public static function makeByUser(User $user)
         {
-            $this->calendarItems = $calendarItems;
-            //todo: need to pass some information on what day we are looking at?
-            //todo: pass info are we sticky to month/week/day
-        }
+            $savedCalendarSubscriptions = new SavedCalendarSubscription();
 
-        protected function renderContent()
-        {
-            return 'todo light up the widget and render content';
+            //todo: get saved calendars that the user owns
+
+                //$savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, $selected);
+
+            //todo: get saved calendars that the user is subscribed too
+
+                //$savedCalendarSubscriptions->addMySavedCalendar($subscribedToSavedCalendar, $selected);
+
+            return $savedCalendarSubscriptions;
         }
     }
 ?>

@@ -38,6 +38,8 @@
     {
         protected $dataProvider;
 
+        protected $savedCalendarSubscriptions;
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -61,10 +63,10 @@
             return $metadata;
         }
 
-        public function __construct(FullCalendarDataProvider $dataProvider)
+        public function __construct(CalendarItemsDataProvider $dataProvider, SavedCalendarSubscriptions $savedCalendarSubscriptions)
         {
-            $this->dataProvider = $dataProvider;
-            //todo: pass info on what calendars available/selected, and what shared are selected to show.(picked, vs checked. are 2 different things)
+            $this->dataProvider               = $dataProvider;
+            $this->savedCalendarSubscriptions = $savedCalendarSubscriptions;
         }
 
         protected function renderContent()
@@ -98,7 +100,7 @@
 
         protected function renderFullCalendarContent()
         {
-            $view = new FullInteractiveCalendarView($this->dataProvider->getData());
+            $view = new FullCalendarForCombinedView($this->dataProvider->getData());
             return $view->render();
         }
     }

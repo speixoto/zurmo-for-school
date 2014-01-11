@@ -34,20 +34,8 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FullCalendarForCombinedView extends View
+    class CalendarItem
     {
-        protected $calendarItems;
 
-        public function __construct(array $calendarItems)
-        {
-            $this->calendarItems = $calendarItems;
-            //todo: need to pass some information on what day we are looking at?
-            //todo: pass info are we sticky to month/week/day
-        }
-
-        protected function renderContent()
-        {
-            return 'todo light up the widget and render content';
-        }
     }
 ?>

@@ -151,48 +151,13 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        protected static function getSearchFormClassName()
-        {
-            return 'AccountsSearchForm';
-        }
-
-        public function actionExport()
-        {
-            $this->export('AccountsSearchView');
-        }
-
-        /**
-         * Modal create for account
-         */
-        public function actionModalCreate()
-        {
-            $account = new Account();
-            $this->validateCreateModalPostData();
-            if (isset($_POST['Account']) && Yii::app()->request->isAjaxRequest)
-            {
-                $account = $this->attemptToSaveModelFromPost($account, null, false);
-                if ($account->id > 0)
-                {
-                    echo CJSON::encode(array('id' => $account->id, 'name' => $account->name));
-                    Yii::app()->end(0, false);
-                }
-                else
-                {
-                    throw new FailedToSaveModelException();
-                }
-            }
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalEditAndDetailsView($this,
-                                                                                      'AccountModalCreateView',
-                                                                                      $account, 'Edit');
-        }
-
         public function actionCombinedDetails()
         {
-            //todo: need to add savedCalendarPart in here.
-            $dataProvider = new FullCalendarDataProvider(); //todo: not sure how should correctly make this.
-            $interactiveCalendarView = new CombinedCalendarView($dataProvider);
-            $view = new CalendarPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,$interactiveCalendarView));
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
+            $dataProvider               = new CalendarItemsDataProvider($savedCalendarSubscriptions);
+            $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $savedCalendarSubscriptions);
+            $view                       = new CalendarPageView(ZurmoDefaultViewUtil::
+                                              makeStandardViewForCurrentUser($this,$interactiveCalendarView));
             echo $view->render();
         }
     }
