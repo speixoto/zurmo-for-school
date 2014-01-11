@@ -36,19 +36,61 @@
 
     class SavedCalendarSubscriptions
     {
+        protected $mySavedCalendarsAndSelected;
+
+        protected $subscribedToSavedCalendarsAndSelected;
+
         public static function makeByUser(User $user)
         {
             $savedCalendarSubscriptions = new SavedCalendarSubscription();
 
-            //todo: get saved calendars that the user owns
+            //todo: get saved calendars that the user owns (from somewhereelse?)
 
                 //$savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, $selected);
 
-            //todo: get saved calendars that the user is subscribed too
+            //todo: get saved calendars that the user is subscribed too (from some subscription model?)
 
-                //$savedCalendarSubscriptions->addMySavedCalendar($subscribedToSavedCalendar, $selected);
+                //$savedCalendarSubscriptions->addSubscribedToSavedCalendar($subscribedToSavedCalendar, $selected);
 
             return $savedCalendarSubscriptions;
+        }
+
+        /**
+         * @param SavedCalendar $savedCalendar
+         * @param bool $selected
+         */
+        public function addMySavedCalendar(SavedCalendar $savedCalendar, $selected)
+        {
+            assert('is_bool($selected)');
+            if(!isset($this->mySavedCalendarsAndSelected[$savedCalendar->id]) &&
+               !isset($this->subscribedToSavedCalendarsAndSelected[$savedCalendar->id]))
+            {
+                $this->mySavedCalendarsAndSelected[$savedCalendar->id] = array($savedCalendar, $selected);
+            }
+        }
+
+        /**
+         * @param SavedCalendar $savedCalendar
+         * @param bool $selected
+         */
+        public function addSubscribedToCalendar(SavedCalendar $savedCalendar, $selected)
+        {
+            assert('is_bool($selected)');
+            if(!isset($this->mySavedCalendarsAndSelected[$savedCalendar->id]) &&
+                !isset($this->subscribedToSavedCalendarsAndSelected[$savedCalendar->id]))
+            {
+                $this->subscribedToSavedCalendarsAndSelected[$savedCalendar->id] = array($savedCalendar, $selected);
+            }
+        }
+
+        public function getMySavedCalendarsAndSelected()
+        {
+            return $this->mySavedCalendarsAndSelected;
+        }
+
+        public function getSubscribedToSavedCalendarsAndSelected()
+        {
+            return $this->subscribedToSavedCalendarsAndSelected;
         }
     }
 ?>

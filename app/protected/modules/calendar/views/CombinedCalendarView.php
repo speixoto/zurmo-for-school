@@ -73,7 +73,7 @@
         {
             $content  = $this->renderSmallCalendarContent();
             $content .= $this->renderMyCalendarsContent();
-            $content .= $this->renderSharedCalendarsContent();
+            $content .= $this->renderSubscribedToCalendarsContent();
             $content .= $this->renderFullCalendarContent();
             return $content;
         }
@@ -86,21 +86,32 @@
 
         protected function renderMyCalendarsContent()
         {
-            //todo: need to know what calendars are 'checked'
-            //todo: need to know array of available calendars
+            //todo: render labels/checkboxes, then ajax action on change... to call action to update sticky.
+            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
+            {
+                //$savedCalendarAndSelected[0] is a SavedCalendar
+                //$savedCalendarAndSelected[1] is a Boolean whether selceted to view or not
+            }
             return 'todo my calendar content';
         }
 
-        protected function renderSharedCalendarsContent()
+        protected function renderSubscribedToCalendarsContent()
         {
-            //todo: need to know what shared calendars 'checked'
-            //todo: type ahead of what is shared? or available list?
+            //todo: render labels/checkboxes, then ajax action on change... to call action to update sticky.
+            foreach($this->savedCalendarSubscriptions->getSubscribedToCalendarsAndSelected() as $savedCalendarAndSelected)
+            {
+                //$savedCalendarAndSelected[0] is a SavedCalendar
+                //$savedCalendarAndSelected[1] is a Boolean whether selected to view or not
+            }
+            //todo: add the area where you can selecte from other shared calendars. so probably a MODEL type-ahead on
+            //todo: SavedCalendar would work i think... (but need to exclude your ones you own and ones you already have shared?)
+            //todo: then on adding, need to call ajax to refresh the subscribedToDiv... (so maybe this needs to be its own div. this entire method..
             return 'todo shared calendar content';
         }
 
         protected function renderFullCalendarContent()
         {
-            $view = new FullCalendarForCombinedView($this->dataProvider->getData());
+            $view = new FullCalendarForCombinedView($this->dataProvider);
             return $view->render();
         }
     }

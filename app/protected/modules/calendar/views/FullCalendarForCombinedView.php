@@ -36,18 +36,21 @@
 
     class FullCalendarForCombinedView extends View
     {
-        protected $calendarItems;
+        protected $dataProvider;
 
-        public function __construct(array $calendarItems)
+        public function __construct(CalendarItemsDataProvider $dataProvider)
         {
-            $this->calendarItems = $calendarItems;
-            //todo: need to pass some information on what day we are looking at?
-            //todo: pass info are we sticky to month/week/day
+            $this->dataProvider = $dataProvider;
         }
 
         protected function renderContent()
         {
             return 'todo light up the widget and render content';
+            //$this->dataProvider->getData() -> returns array of CalenderItems
+            //$this->dataProvider->getStartDateTime() //? returns start date time? do we need this?
+            //$this->dataProvider->endStartDateTime() //? returns start date time? do we need this?
+            //$this->dataProvider->getDateRangeType() //? returns month/day/week? so we know what kind of calendar to look at?
+            //@mayank, let me know the API calls we need.
         }
     }
 ?>
