@@ -36,13 +36,13 @@
 
     class SavedCalendarSubscriptions
     {
-        protected $mySavedCalendarsAndSelected;
+        protected $mySavedCalendarsAndSelected = array();
 
-        protected $subscribedToSavedCalendarsAndSelected;
+        protected $subscribedToSavedCalendarsAndSelected = array();
 
         public static function makeByUser(User $user)
         {
-            $savedCalendarSubscriptions = new SavedCalendarSubscription();
+            $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
 
             //todo: get saved calendars that the user owns (from somewhereelse?)
 

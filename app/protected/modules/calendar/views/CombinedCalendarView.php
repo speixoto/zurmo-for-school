@@ -98,7 +98,7 @@
         protected function renderSubscribedToCalendarsContent()
         {
             //todo: render labels/checkboxes, then ajax action on change... to call action to update sticky.
-            foreach($this->savedCalendarSubscriptions->getSubscribedToCalendarsAndSelected() as $savedCalendarAndSelected)
+            foreach($this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected() as $savedCalendarAndSelected)
             {
                 //$savedCalendarAndSelected[0] is a SavedCalendar
                 //$savedCalendarAndSelected[1] is a Boolean whether selected to view or not
