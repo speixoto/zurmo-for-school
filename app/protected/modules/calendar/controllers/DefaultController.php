@@ -185,5 +185,15 @@
                                                                                       'AccountModalCreateView',
                                                                                       $account, 'Edit');
         }
+
+        public function actionCombinedDetails()
+        {
+            //todo: need to add savedCalendarPart in here.
+            $dataProvider = new FullCalendarDataProvider(); //todo: not sure how should correctly make this.
+            $interactiveCalendarView = new CombinedCalendarView($dataProvider);
+            $view = new CalendarPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this,$interactiveCalendarView));
+            echo $view->render();
+        }
     }
 ?>

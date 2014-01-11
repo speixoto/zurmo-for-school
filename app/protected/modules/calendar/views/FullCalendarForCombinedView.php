@@ -34,36 +34,20 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarDetailsView extends SecuredDetailsView
+    class FullCalendarForCombinedView extends View
     {
-        public static function getDefaultMetadata()
+        protected $calendarItemsCollection;
+
+        public function __construct(CalendarItemsCollection $calendarItemsCollection)
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-//                            array('type'        => 'CampaignsDetailsMenu',
-//                                  'iconClass'   => 'icon-details',
-//                                  'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
-//                                  'model'       => 'eval:$this->model',
-//                                  'itemOptions' => array('class' => 'hasDetailsFlyout')
-//                            ),
-//                            array('type'        => 'CampaignsOptionsMenu',
-//                                  'iconClass'   => 'icon-edit',
-//                                  'htmlOptions' => array('id' => 'ListViewOptionsActionMenu')
-//                            )
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            $this->calendarItemsCollection = $calendarItemsCollection;
+            //todo: need to pass some information on what day we are looking at?
+            //todo: pass info are we sticky to month/week/day
         }
 
         protected function renderContent()
         {
-            //$this->renderQuicklyCreateEvent();
-            //$this->renderMyCalendars()
-            //$this->renderSharedCalendars();
+            return 'todo light up the widget and render content';
         }
     }
 ?>
