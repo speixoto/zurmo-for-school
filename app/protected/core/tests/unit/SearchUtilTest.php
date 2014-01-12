@@ -68,6 +68,15 @@
             $this->assertTrue  ($sortDescending);
         }
 
+        public function testResolveSearchFormByStickyFilteredByData()
+        {
+            $searchModel  = new AFilteredBySearchFormTestModel(new A());
+            SearchUtil::resolveSearchFormByStickyFilteredByData(array(), $searchModel, array());
+            $this->assertEmpty($searchModel->filteredBy);
+            SearchUtil::resolveSearchFormByStickyFilteredByData(array(), $searchModel, array('filteredBy' => 'all'));
+            $this->assertEquals('all', $searchModel->filteredBy);
+        }
+
         public function testGetSorAttributeFromSortArray()
         {
             $sortAttribute = SearchUtil::getSortAttributeFromSortString('name.desc');
@@ -404,6 +413,22 @@
             $this->assertFalse($searchModel->filterByStarred);
         }
 
+        public function testResolveFilteredByFromGetArray()
+        {
+            $searchModel  = new AFilteredBySearchFormTestModel(new A());
+            $getArrayName = 'someArray';
+            SearchUtil::resolveFilteredByFromArray($searchModel, $getArrayName, $_GET);
+            $this->assertNull($searchModel->filteredBy);
+
+            $_GET['someArray']['filteredBy'] = 'all';
+            SearchUtil::resolveFilteredByFromArray($searchModel, $getArrayName, $_GET);
+            $this->assertEquals('all', $searchModel->filteredBy);
+
+            $_GET['someArray']['filteredBy'] = 'none';
+            SearchUtil::resolveFilteredByFromArray($searchModel, $getArrayName, $_GET);
+            $this->assertEquals('none', $searchModel->filteredBy);
+        }
+
         public function testGetDynamicSearchAttributesFromGetArray()
         {
             //Test without any dynamic search
@@ -715,6 +740,21 @@
             );
             $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
             $this->assertEquals($testArray, $newArray);
+        }
+
+        public function testGetFilteredByFromArray()
+        {
+            $getArrayName = 'someArray';
+            $result       = SearchUtil::getFilteredByFromArray($getArrayName, $_GET);
+            $this->assertNull($result);
+
+            $_GET['someArray']['filteredBy'] = 'all';
+            $result       = SearchUtil::getFilteredByFromArray($getArrayName, $_GET);
+            $this->assertEquals('all', $result);
+
+            $_GET['someArray']['filteredBy'] = 'none';
+            $result       = SearchUtil::getFilteredByFromArray($getArrayName, $_GET);
+            $this->assertEquals('none', $result);
         }
     }
 ?>

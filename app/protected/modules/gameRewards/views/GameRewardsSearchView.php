@@ -55,6 +55,16 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'filteredBy',
+                                                    'type' => 'FilterByRadio', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                         array(

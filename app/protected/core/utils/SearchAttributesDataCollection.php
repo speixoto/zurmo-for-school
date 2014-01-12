@@ -116,6 +116,11 @@
             return SearchUtil::getFilterByStarredFromArray(get_class($this->model), $this->getSourceData());
         }
 
+        public function getFilteredBy()
+        {
+            return SearchUtil::getFilteredByFromArray(get_class($this->model), $this->getSourceData());
+        }
+
         public function hasKanbanBoard()
         {
             if ($this->model->getKanbanBoard() == null)
@@ -229,6 +234,13 @@
             SearchUtil::resolveFilterByStarredFromArray($this->model,
                                                         get_class($this->model),
                                                         $this->getSourceData());
+        }
+
+        public function resolveFilteredByFromSourceData()
+        {
+            SearchUtil::resolveFilteredByFromArray($this->model,
+                                                   get_class($this->model),
+                                                   $this->getSourceData());
         }
     }
 ?>
