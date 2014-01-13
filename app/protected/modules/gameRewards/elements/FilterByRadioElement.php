@@ -101,7 +101,6 @@
             $script  = "$('#{$buttonAreaId}').off('change.filterBy');
                         $('#{$buttonAreaId}').on('change.filterBy', function()
                         {
-                        console.log($(this));
                             $(this).parent('label').siblings().removeClass('ui-state-active');
                             $(this).parent('label').addClass('ui-state-active');
                             $(this).closest('form').submit();
