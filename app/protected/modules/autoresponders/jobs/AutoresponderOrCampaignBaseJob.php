@@ -103,5 +103,28 @@
             $message = Zurmo::t('CampaignsModule', 'Final memory usage: {usage}', array('{usage}' => $endingMemoryUsage));
             $this->getMessageLogger()->addInfoMessage($message);
         }
+
+        /**
+         * @param int $modelsProcessedCount
+         * @param int || null $batchSize
+         * @return bool
+         */
+        protected function hasReachedMaximumProcessingCount($modelsProcessedCount, $batchSize)
+        {
+            if ($batchSize !== null && $modelsProcessedCount >= $batchSize)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected function addMaximumMemoryUsageReached()
+        {
+            $message = Zurmo::t('CampaignsModule', 'Remaining autoresponder messages must be finished on next run because the ' .
+                'maximum memory usage has been reached. Using {usedMemory}Bytes of allocated {allocatedMemory}Bytes.',
+                array('{usedMemory}' => Yii::app()->performance->getMemoryUsage(),
+                      '{allocatedMemory}'  => Yii::app()->performance->getAllocatedMemoryInBytes()));
+            $this->getMessageLogger()->addInfoMessage($message);
+        }
     }
 ?>

@@ -133,15 +133,24 @@
         }
 
         /**
+         * Get memory allocated for PHP scripts in bytes
+         */
+        public function getAllocatedMemoryInBytes()
+        {
+            $allocatedMemory = ini_get('memory_limit');
+            $allocatedMemoryInBytes = $this->convertToBytes($allocatedMemory);
+            return $allocatedMemoryInBytes;
+        }
+
+        /**
          * Get ration between used and allocated memory
          * @return float|int
          */
         public function getMemoryUsageRatio()
         {
             $memoryUsageRatio = 0;
-            $allocatedMemory = ini_get('memory_limit');
-            $allocatedMemoryInBytes = $this->convertToBytes($allocatedMemory);
-            $usedMemory      = $this->getMemoryMarkerUsage(true);
+            $allocatedMemoryInBytes = $this->getAllocatedMemoryInBytes();
+            $usedMemory      = $this->getMemoryUsage(true);
             if (is_int($allocatedMemoryInBytes) && $allocatedMemoryInBytes > 0 &&
                 $usedMemory > 0)
             {
