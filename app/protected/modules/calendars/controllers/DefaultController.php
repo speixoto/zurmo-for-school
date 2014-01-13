@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarDefaultController extends ZurmoModuleController
+    class CalendarsDefaultController extends ZurmoModuleController
     {
         public function filters()
         {
