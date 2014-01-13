@@ -91,20 +91,42 @@
         protected function getArray()
         {
             $data = array(GameRewardsSearchForm::FILTERED_BY_ALL => Zurmo::t('ActivitiesModule', 'All'),
-                          GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM  => Zurmo::t('Core', 'I can redeem'));
+                          GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM  => Zurmo::t('GameRewardsModule', 'Redeemable'));
             return $data;
         }
 
         protected function renderEditableScripts()
         {
             $buttonAreaId = $this->getEditableInputId() . '_area';
-            $script  = "$('#{$buttonAreaId}').buttonset();
-                        $('#{$buttonAreaId}').off('change.filterBy');
-                        $('#{$buttonAreaId}').on('change.filterBy', function(){
+            $script  = "$('#{$buttonAreaId}').off('change.filterBy');
+                        $('#{$buttonAreaId}').on('change.filterBy', function()
+                        {
+                        console.log($(this));
+                            $(this).parent('label').siblings().removeClass('ui-state-active');
+                            $(this).parent('label').addClass('ui-state-active');
                             $(this).closest('form').submit();
                         });
                         ";
-            Yii::app()->clientScript->registerScript('searchFilterByFor' . $buttonAreaId, $script);
+            Yii::app()->clientScript->registerScript('searchFilterByFor' . $buttonAreaId, $script . $this->getScriptForButtonset());
+        }
+
+        private function getScriptForButtonset()
+        {
+            $buttonAreaId = $this->getEditableInputId() . '_area';
+            $script = "
+                    $('#{$buttonAreaId}').find('input:checked').next().addClass('ui-state-active');
+                    $('#{$buttonAreaId}').find('label').each(
+                                function()
+                                {
+                                    \$(this).click(function()
+                                    {
+                                        $('#{$buttonAreaId}').find('label').each(function(){\$(this).removeClass('ui-state-active')});
+                                        \$(this).addClass('ui-state-active');
+                                     })
+                                }
+                            );
+                ";
+            return $script;
         }
     }
 ?>
