@@ -71,5 +71,12 @@
         {
             return 'GameRewardsSearchForm';
         }
+
+        protected function renderFiltersContent($form)
+        {
+            $element = new FilterByRadioElement($this->model, 'filteredBy', $form);
+            $element->editableTemplate = "{content}";
+            return $element->render();
+        }
     }
 ?>

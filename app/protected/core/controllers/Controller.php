@@ -90,6 +90,7 @@
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
             $dataCollection->resolveFilterByStarredFromSourceData();
+            $dataCollection->resolveFilteredByFromSourceData();
             $dataCollection->resolveKanbanBoardOptionsForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
@@ -103,6 +104,7 @@
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
                                                                               $dataCollection);
             $this->resolveKanbanBoardMetadataBeforeMakingDataProvider($searchModel, $metadata);
+            $this->resolveFilteredByMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveMetadataBeforeMakingDataProvider($metadata);
             $dataProviderClassName = 'RedBeanModelDataProvider';
             if ($searchModel->filterByStarred)
@@ -130,6 +132,10 @@
                     $searchForm->getKanbanBoard()->resolveVisibleValuesForAdaptedMetadata($metadata);
                 }
             }
+        }
+
+        protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
+        {
         }
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)

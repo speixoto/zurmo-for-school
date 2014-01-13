@@ -345,6 +345,7 @@
             }
             $content .= $this->renderListAttributesSelectionContent($form);
             $content .= $this->renderKanbanBoardOptionsContent($form);
+            $content .= $this->renderFiltersContent($form);
             $content .= $this->renderFormBottomPanel();
 
             return $content;
@@ -650,6 +651,16 @@
                                                array('class' => $form->id . '_filterByStarred'));
             }
             return $content;
+        }
+
+        /**
+         * This should be used to render the filters buttons element
+         * @param $form
+         * @return null|string
+         */
+        protected function renderFiltersContent($form)
+        {
+            return null;
         }
     }
 ?>
