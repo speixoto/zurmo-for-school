@@ -97,8 +97,11 @@
             {
                 return null;
             }
-            $id           = $this->getInputIdForDedupe($element);
-            $dedupeViewId = $this->getDedupeViewClassName();
+            $id            = $this->getInputIdForDedupe($element);
+            $dedupeViewId  = $this->getDedupeViewClassName();
+            $link          = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'click here'), '#', array('onclick' => 'js:$("#' . $dedupeViewId . '").closest("form")[0].submit();'));
+            $spanUnderline = ZurmoHtml::tag('span', array('class' => 'underline'), $link);
+            $textMessage   = '<br>' . Zurmo::t('ZurmoModule', 'If you still want to save {link}.', array('{link}' => $spanUnderline));
             // Begin Not Coding Standard
             $ajaxScript = ZurmoHtml::ajax(array(
                 'type'       => 'GET',
@@ -108,42 +111,33 @@
                 'url'        => 'searchForDuplicateModels',
                 'success'    => "js:function(data, textStatus, jqXHR){
                                         var returnObj = jQuery.parseJSON(data);
+                                        $('#" . $dedupeViewId . "').closest('form').off('submit.dedupe');
                                         if (returnObj != null)
                                         {
+                                            var textMessage = '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();dedupeShouldSubmitFormAfterMessage = false;$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>';
+                                            if (shouldSubmitForm)
+                                            {
+                                                $('#" . $dedupeViewId . "').closest('form').find('a[name=\'save\']').removeClass('loading');
+                                                textMessage += '" . $textMessage . "';
+                                            }
                                             $('#" . $dedupeViewId . "').replaceWith(returnObj.content);
                                             $('#FlashMessageBar').jnotifyAddMessage({
-                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();dedupeShouldSubmitFormAfterMessage = false;$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>',
+                                                text: textMessage,
                                                 permanent: true,
                                                 clickOverlay : true,
                                                 showIcon: false,
                                             })
                                         }
-                                        $('#" . $dedupeViewId . "').closest('form').off('submit.dedupe');
-                                        setTimeout(function ()
-                                        {
-                                            if (!$('#" . $dedupeViewId . "').is(':visible'))
-                                            {
-                                                $('#" . $dedupeViewId . "').closest('form')[0].submit();
-                                            }
-                                            else
-                                            {
-                                                $('#" . $dedupeViewId . "').closest('form').find('a[name=\'save\']').removeClass('loading');
-                                                $('#" . $dedupeViewId . "').closest('form').find('a[name=\'save\']').click(
-                                                    function() {
-                                                        $(this).addClass('loading');
-                                                        \$('#" . $dedupeViewId . "').closest('form')[0].submit(); return false;
-                                                    }
-                                                );
-                                            }
-                                        }, 3000);
                                  }"
             ));
-            $js = "$('#{$id}' ).change(function() {
+            $js = "var shouldSubmitForm = false;
+                    $('#{$id}' ).change(function() {
                         if ($('#{$id}').val() != '')
                         {
                             {$ajaxScript}
                             $(this).closest('form').on('submit.dedupe', function(e)
                             {
+                                shouldSubmitForm = true;
                                 return false;
                             });
                         }
