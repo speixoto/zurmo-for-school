@@ -60,7 +60,7 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'filteredBy'      => Zurmo::t('GameRewardsModule', 'Filtered By'),
+                'filteredBy'      => ZurmoHtml::tag('strong', array(), Zurmo::t('GameRewardsModule', 'Filtered By')),
             ));
         }
     }
