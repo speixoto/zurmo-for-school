@@ -189,8 +189,8 @@
                     $initialCallToFunction = " stageToProbabilityMapping($('#" . $stageInputId . "'));";
                 }
                 Yii::app()->clientScript->registerScript('stageToProbabilityMapping', "
-                $('#" . $stageInputId . "').unbind('change');
-                $('#" . $stageInputId . "').bind('change', function()
+                $('#" . $stageInputId . "').unbind('change.probabilityMapping');
+                $('#" . $stageInputId . "').bind('change.probabilityMapping', function()
                     {
                         stageToProbabilityMapping($(this));
                     }

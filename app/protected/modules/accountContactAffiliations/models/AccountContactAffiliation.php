@@ -179,8 +179,8 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'account' => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',  $params, null, $language),
-                    'contact' => Zurmo::t('AccountsModule', 'ContactsModuleSingularLabel',  $params, null, $language),
-                    'role'    => Zurmo::t('AccountContactAffiliationsModule', 'Role', null,  null, $language),
+                    'contact' => Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel',  $params, null, $language),
+                    'role'    => Zurmo::t('ZurmoModule', 'Role', null,  null, $language),
                     'primary' => Zurmo::t('AccountContactAffiliationsModule', 'Primary Relationship', null,  null, $language),
                 )
             );

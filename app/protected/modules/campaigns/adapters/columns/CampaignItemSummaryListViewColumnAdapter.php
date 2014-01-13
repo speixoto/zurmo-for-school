@@ -458,7 +458,7 @@
             $tableContent .= '<thead><tr>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Event') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('ZurmoModule', 'Latest Date Time') . '</th>';
-            $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Quantity') . '</th>';
+            $tableContent .= '<th>' . Zurmo::t('Core', 'Quantity') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('MarketingModule', 'Latest source IP') . '</th>';
             $tableContent .= '<th>' . Zurmo::t('Core', 'URL') . '</th>';
             $tableContent .= '</tr></thead>';
