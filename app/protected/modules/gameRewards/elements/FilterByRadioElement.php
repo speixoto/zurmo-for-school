@@ -53,7 +53,10 @@
                 $this->getEditableHtmlOptions()
             );
             $this->renderEditableScripts();
-            return Zurmo::t('Core', 'View') . ':' . ZurmoHtml::tag('div', array('id' => $this->getEditableInputId() . '_area'), $content);
+            return Zurmo::t('Core', 'View') . ':' . ZurmoHtml::tag('div',
+                                                                    array('id' => $this->getEditableInputId() . '_area',
+                                                                          'class' => 'filters-bar'),
+                                                                    $content);
         }
 
         protected function renderControlNonEditable()

@@ -55,16 +55,6 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'filteredBy',
-                                                    'type' => 'FilterByRadio', 'wide' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
                             ),
                         ),
                         array(
@@ -80,6 +70,13 @@
         public static function getModelForMetadataClassName()
         {
             return 'GameRewardsSearchForm';
+        }
+
+        protected function renderFiltersContent($form)
+        {
+            $element = new FilterByRadioElement($this->model, 'filteredBy', $form);
+            $element->editableTemplate = "{content}";
+            return $element->render();
         }
     }
 ?>
