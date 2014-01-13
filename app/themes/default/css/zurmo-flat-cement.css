@@ -5476,6 +5476,7 @@ div.radio-input .hasDropDown {
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
+#GameRewardsSearchForm_filteredBy_area,
 #MashableInboxForm_filteredBy_area,
 #MashableInboxForm_optionForModel_area,
 .latest-activity-toolbar,
@@ -5483,6 +5484,7 @@ div.radio-input .hasDropDown {
   font-size: 11px;
   padding-left: 8px;
 }
+#GameRewardsSearchForm_filteredBy_area label,
 #MashableInboxForm_filteredBy_area label,
 #MashableInboxForm_optionForModel_area label,
 .latest-activity-toolbar label,
@@ -5495,6 +5497,7 @@ div.radio-input .hasDropDown {
   margin: 0 3px;
   white-space: nowrap;
 }
+#GameRewardsSearchForm_filteredBy_area label:hover,
 #MashableInboxForm_filteredBy_area label:hover,
 #MashableInboxForm_optionForModel_area label:hover,
 .latest-activity-toolbar label:hover,
@@ -5508,6 +5511,8 @@ div.radio-input .hasDropDown {
   border: none;
   background-color: #2c3e50 !important;
 }
+#GameRewardsSearchForm_filteredBy_area input[type="radio"],
+#GameRewardsSearchForm_filteredBy_area input[type="checkbox"],
 #MashableInboxForm_filteredBy_area input[type="radio"],
 #MashableInboxForm_filteredBy_area input[type="checkbox"],
 #MashableInboxForm_optionForModel_area input[type="radio"],
@@ -5519,6 +5524,7 @@ div.radio-input .hasDropDown {
   visibility: hidden;
   display: none;
 }
+#GameRewardsSearchForm_filteredBy_area .ui-state-active,
 #MashableInboxForm_filteredBy_area .ui-state-active,
 #MashableInboxForm_optionForModel_area .ui-state-active,
 .latest-activity-toolbar .ui-state-active,
@@ -5532,12 +5538,22 @@ div.radio-input .hasDropDown {
   border: none;
   background-color: #2c3e50 !important;
 }
+#GameRewardsSearchForm_filteredBy_area .ui-button-text,
 #MashableInboxForm_filteredBy_area .ui-button-text,
 #MashableInboxForm_optionForModel_area .ui-button-text,
 .latest-activity-toolbar .ui-button-text,
 .filter-portlet-model-bar .ui-button-text {
   padding: 0;
   margin: 0;
+}
+#GameRewardsSearchForm_filteredBy_area {
+  display: inline-block;
+  margin-left: 15px;
+  left: 320px;
+  top: 21px;
+}
+#GameRewardsSearchForm_filteredBy_area label {
+  float: none;
 }
 .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;

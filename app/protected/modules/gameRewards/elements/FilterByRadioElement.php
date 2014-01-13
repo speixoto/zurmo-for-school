@@ -46,17 +46,16 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof GameRewardsSearchForm');
-            $content = $this->form->radioButtonList(
+            $content  = ZurmoHtml::tag('strong', array(), Zurmo::t('Core', 'View') . ':');
+            $content .= $this->form->radioButtonList(
                 $this->model,
                 $this->attribute,
                 $this->getArray(),
                 $this->getEditableHtmlOptions()
             );
             $this->renderEditableScripts();
-            return Zurmo::t('Core', 'View') . ':' . ZurmoHtml::tag('div',
-                                                                    array('id' => $this->getEditableInputId() . '_area',
-                                                                          'class' => 'filters-bar'),
-                                                                    $content);
+            $content = ZurmoHtml::tag('div', array('id' => $this->getEditableInputId() . '_area', 'class' => 'filters-bar'), $content);
+            return $content;
         }
 
         protected function renderControlNonEditable()
@@ -91,11 +90,8 @@
 
         protected function getArray()
         {
-            $data = array(
-                        GameRewardsSearchForm::FILTERED_BY_ALL => Zurmo::t('ActivitiesModule', 'All'),
-                        GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM  => Zurmo::t('Core', 'I can redeem')
-                    );
-
+            $data = array(GameRewardsSearchForm::FILTERED_BY_ALL => Zurmo::t('ActivitiesModule', 'All'),
+                          GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM  => Zurmo::t('Core', 'I can redeem'));
             return $data;
         }
 
