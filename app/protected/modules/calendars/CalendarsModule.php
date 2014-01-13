@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarModule extends SecurableModule
+    class CalendarsModule extends SecurableModule
     {
         const RIGHT_CREATE_CALENDAR = 'Create Calendar';
         const RIGHT_DELETE_CALENDAR = 'Delete Calendar';
@@ -57,9 +57,9 @@
         {
             $params                              = LabelUtil::getTranslationParamsForAllModules();
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_CALENDAR] = Zurmo::t('CalendarModule', 'Create CalendarModulePluralLabel',     $params);
-            $labels[self::RIGHT_DELETE_CALENDAR] = Zurmo::t('CalendarModule', 'Delete CalendarModulePluralLabel',     $params);
-            $labels[self::RIGHT_ACCESS_CALENDAR] = Zurmo::t('CalendarModule', 'Access CalendarModulePluralLabel Tab', $params);
+            $labels[self::RIGHT_CREATE_CALENDAR] = Zurmo::t('CalendarsModule', 'Create CalendarsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_CALENDAR] = Zurmo::t('CalendarsModule', 'Delete CalendarsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_CALENDAR] = Zurmo::t('CalendarsModule', 'Access CalendarsModulePluralLabel Tab', $params);
             return $labels;
         }
 
@@ -74,13 +74,12 @@
                     'showMenusLink' => true,
                 ),
                 'globalSearchAttributeNames' => array(
-                    'quantity',
                     'name'
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('CalendarModule', 'CalendarModulePluralLabel', \$translationParams)",
-                        'url'   => array('/calendar/default'),
+                        'label' => "eval:Zurmo::t('CalendarsModule', 'CalendarsModulePluralLabel', \$translationParams)",
+                        'url'   => array('/calendars/default'),
                         'right' => self::RIGHT_ACCESS_CALENDAR,
                     ),
                 ),
@@ -95,17 +94,17 @@
 
         public static function getSingularCamelCasedName()
         {
-            return 'Calendar';
+            return 'Calendars';
         }
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('CalendarModule', 'Calendar', array(), null, $language);
+            return Zurmo::t('CalendarsModule', 'Calendars', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)
         {
-            return Zurmo::t('CalendarModule', 'Calendars', array(), null, $language);
+            return Zurmo::t('CalendarsModule', 'Calendars', array(), null, $language);
         }
 
         public static function getAccessRight()
@@ -125,17 +124,17 @@
 
         public static function getDefaultDataMakerClassName()
         {
-            return 'CalendarDefaultDataMaker';
+            return 'CalendarsDefaultDataMaker';
         }
 
         public static function getDemoDataMakerClassNames()
         {
-            return array('CalendarDemoDataMaker');
+            return array('CalendarsDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()
         {
-            return 'CalendarSearchForm';
+            return 'CalendarsSearchForm';
         }
 
         public static function hasPermissions()

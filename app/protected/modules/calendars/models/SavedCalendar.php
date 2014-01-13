@@ -69,7 +69,7 @@
          */
         public static function getModuleClassName()
         {
-            return 'CalendarModule';
+            return 'CalendarsModule';
         }
 
         /**
@@ -88,12 +88,13 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'description'   => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
-                'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
-                'location'      => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
-                'name'          => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
-                'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
-                'timeZone'      => Zurmo::t('ZurmoModule', 'Time Zone',      array(), null, $language),
+                'description'       => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                'endDateTime'       => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
+                'location'          => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
+                'name'              => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
+                'startDateTime'     => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
+                'timeZone'          => Zurmo::t('ZurmoModule',    'Time Zone',      array(), null, $language),
+                'moduleClassName'   => Zurmo::t('ZurmoModule',    'Module Class Name',      array(), null, $language),
                 ));
         }
 
@@ -121,6 +122,7 @@
                     array('description',      'type',    'type' => 'string'),
                     array('location',         'type',    'type' => 'string'),
                     array('moduleClassName',  'type',    'type' => 'string'),
+                    array('moduleClassName',  'length',  'max'   => 64),
                     array('startDateTime',    'required'),
                     array('startDateTime',    'type', 'type' => 'datetime'),
                     array('startDateTime',    'RedBeanModelCompareDateTimeValidator', 'type' => 'before',
@@ -128,20 +130,20 @@
                     array('endDateTime',      'type', 'type' => 'datetime'),
                     array('endDateTime',      'RedBeanModelCompareDateTimeValidator', 'type' => 'after',
                                               'compareAttribute' => 'startDateTime'),
-                    array('timeZone', 'type',    'type'  => 'string'),
-                    array('timeZone', 'length',  'max'   => 64),
-                    array('timeZone', 'UserDefaultTimeZoneDefaultValueValidator'),
-                    array('timeZone', 'ValidateTimeZone'),
+                    array('timeZone',         'type',    'type'  => 'string'),
+                    array('timeZone',         'length',  'max'   => 64),
+                    array('timeZone',         'UserDefaultTimeZoneDefaultValueValidator'),
+                    array('timeZone',         'ValidateTimeZone'),
                 ),
                 'elements' => array(
-                    'endDateTime'   => 'DateTime',
-                    'startDateTime' => 'DateTime',
+                    'endDateTime'     => 'DateTime',
+                    'startDateTime'   => 'DateTime',
+                    'moduleClassName' => 'CalendarModuleClassNameDropDown'
                 ),
                 'customFields' => array(),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
-                'nonConfigurableAttributes' => array('priceFrequency', 'type', 'productTemplate'),
                 'globalSearchAttributeNames' => array(
                     'name',
                 ),
@@ -171,6 +173,25 @@
         public static function getGamificationRulesType()
         {
             return null;
+        }
+
+        /**
+         * @return array of module class names and display labels
+         */
+        public static function getAvailableModulesForCalendar()
+        {
+            $moduleClassNames = array();
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                if ($module::hasCalendar())
+                {
+                    $moduleClassName    = get_class($module);
+                    $label              = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
+                    $moduleClassNames[$moduleClassName] = $label;
+                }
+            }
+            return $moduleClassNames;
         }
     }
 ?>

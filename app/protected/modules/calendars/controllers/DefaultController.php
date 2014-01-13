@@ -90,18 +90,16 @@
 
         public function actionDetails($id)
         {
-            $calendar = static::getModelAndCatchNotFoundAndDisplayError('SavedCalendar', intval($id));
+            $calendar                   = static::getModelAndCatchNotFoundAndDisplayError('SavedCalendar', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($calendar);
             AuditEvent::logAuditEvent('ZurmoModule',
                                       ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
-                                      array(strval($calendar), 'CalendarModule'), $calendar);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'CalendarSearchView', $calendar);
-            $detailsAndRelationsView = $this->makeEditAndDetailsView($calendar, 'CalendarModule',
-                                                                              'SavedCalendarDetailsAndRelationsView',
-                                                                              Yii::app()->request->getRequestUri(),
-                                                                              $breadCrumbView);
-            $view                    = new CalendarPageView(ZurmoDefaultViewUtil::
-                                                                    makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+                                      array(strval($calendar), 'CalendarsModule'), $calendar);
+            $calendarItemsDataProvider  = new CalendarItemsDataProvider(new SavedCalendarSubscriptions());
+            $gridView                   = new GridView(1, 1);
+            $gridView->setView(new CombinedCalendarView($calendarItemsDataProvider, new SavedCalendarSubscriptions()), 0, 0);
+            $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
+                                                                    makeStandardViewForCurrentUser($this, $gridView));
             echo $view->render();
         }
 
@@ -109,7 +107,7 @@
         {
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost(new SavedCalendar()), 'Edit');
-            $view               = new CalendarPageView(ZurmoDefaultViewUtil::
+            $view               = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
             echo $view->render();
         }
@@ -136,7 +134,7 @@
 
         protected function processEdit(SavedCalendar $calendar, $redirectUrl = null)
         {
-            $view = new CalendarPageView(ZurmoDefaultViewUtil::
+            $view = new CalendarsPageView(ZurmoDefaultViewUtil::
                             makeStandardViewForCurrentUser($this,
                             $this->makeEditAndDetailsView(
                                 $this->attemptToSaveModelFromPost($calendar, $redirectUrl), 'Edit')));
@@ -156,7 +154,7 @@
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
             $dataProvider               = new CalendarItemsDataProvider($savedCalendarSubscriptions);
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $savedCalendarSubscriptions);
-            $view                       = new CalendarPageView(ZurmoDefaultViewUtil::
+            $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                               makeStandardViewForCurrentUser($this,$interactiveCalendarView));
             echo $view->render();
         }

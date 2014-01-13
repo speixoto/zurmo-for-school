@@ -157,5 +157,10 @@
         {
             return true;
         }
+
+        public static function hasCalendar()
+        {
+            return true;
+        }
     }
 ?>

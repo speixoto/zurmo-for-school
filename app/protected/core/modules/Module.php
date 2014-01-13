@@ -619,5 +619,13 @@
         {
             return false;
         }
+
+        /**
+         * Override in modules that can be used in calendar module
+         */
+        public static function hasCalendar()
+        {
+            return false;
+        }
     }
 ?>

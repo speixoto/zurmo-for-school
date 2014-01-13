@@ -34,11 +34,33 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarPageView extends ZurmoDefaultPageView
+    /**
+     * Class that builds demo accounts.
+     */
+    class CalendarsDemoDataMaker extends DemoDataMaker
     {
-        protected function getSubtitle()
+        protected $ratioToLoad = 1;
+
+        public static function getDependencies()
         {
-            return Zurmo::t('CalendarModule', 'CalendarModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return array('users');
+        }
+
+        /**
+         * @param DemoDataHelper $demoDataHelper
+         */
+        public function makeAll(& $demoDataHelper)
+        {
+            assert('$demoDataHelper instanceof DemoDataHelper');
+            assert('$demoDataHelper->isSetRange("User")');
+        }
+
+        /**
+         * @param RedBeanModel $model
+         */
+        public function populateModel(& $model)
+        {
+
         }
     }
 ?>

@@ -86,6 +86,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'moduleClassName', 'type' => 'CalendarModuleClassNameDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'startDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
@@ -120,13 +129,13 @@
 
         protected function getNewModelTitleLabel()
         {
-            return Zurmo::t('CalendarModule', 'Create CalendarModuleSingularLabel',
+            return Zurmo::t('CalendarsModule', 'Create CalendarsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
 
         public static function getModuleClassName()
         {
-            return 'CalendarModule';
+            return 'CalendarsModule';
         }
     }
 ?>
