@@ -398,7 +398,6 @@
             try
             {
                 $filterParams = array();
-
                 if (strtolower($_SERVER['REQUEST_METHOD']) != 'post')
                 {
                     if (isset($params['filter']) && $params['filter'] != '')
@@ -410,27 +409,24 @@
                 {
                     $filterParams = $params['data'];
                 }
-
                 // Check if modelClassName exist and if it is subclass of RedBeanModel
-                if (class_exists($filterParams['search']['modelClassName']))
+                if (@class_exists($filterParams['search']['modelClassName']))
                 {
                     $modelClassName = $filterParams['search']['modelClassName'];
-                    $modelClass = new $modelClassName();
-                    if (!$modelClass instanceof RedBeanModel)
+                    @$modelClass = new $modelClassName();
+                    if (!($modelClass instanceof RedBeanModel))
                     {
                         $message = Zurmo::t('ZurmoModule', '{modelClassName} should be subclass of RedBeanModel.',
                             array('{modelClassName}' => $modelClassName));
                         throw new NotSupportedException($message);
                     }
-
                 }
                 else
                 {
                     $message = Zurmo::t('ZurmoModule', "{modelClassName} class does not exist.",
                         array('{modelClassName}' => $filterParams['search']['modelClassName']));
-                    throw new NotSupportedException();
+                    throw new NotSupportedException($message);
                 }
-
                 $pageSize    = Yii::app()->pagination->getGlobalValueByType('apiListPageSize');
                 if (isset($filterParams['pagination']['pageSize']))
                 {
@@ -447,12 +443,7 @@
                 {
                     $currentPage = 1;
                 }
-                $offset = (int)(($currentPage - 1) * $pageSize);
-                if ($offset == 0)
-                {
-                    $offset = null;
-                }
-
+                $offset = $this->getOffsetFromCurrentPageAndPageSize($currentPage, $pageSize);
                 $sort = null;
                 if (isset($filterParams['sort']))
                 {
@@ -464,8 +455,7 @@
                     $filterParams['search']['searchAttributeData'], $joinTablesAdapter);
 
                 $results = $modelClassName::getSubset($joinTablesAdapter,
-                    $offset, $pageSize,
-                    $where, $sort, $modelClassName, true);
+                    $offset, $pageSize, $where, $sort, $modelClassName, true);
                 $totalItems = $modelClassName::getCount($joinTablesAdapter, $where, null, true);
 
                 $data = array();
@@ -490,6 +480,21 @@
                 throw new ApiException($message);
             }
             return $result;
+        }
+
+        /**
+         * @param $currentPage
+         * @param $pageSize
+         * @return integer || null
+         */
+        protected function getOffsetFromCurrentPageAndPageSize($currentPage, $pageSize)
+        {
+            $offset = (int)(($currentPage - 1) * $pageSize);
+            if ($offset == 0)
+            {
+                $offset = null;
+            }
+            return $offset;
         }
 
         /**

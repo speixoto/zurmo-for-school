@@ -1015,6 +1015,20 @@
             $this->assertEquals(3, $response['data']['totalCount']);
             $this->assertEquals(2, $response['data']['currentPage']);
             $this->assertEquals('Second Account', $response['data']['items'][0]['name']);
+
+            // Check with invalid search options
+            // Invalid modelClassName
+            $data['search']['modelClassName'] = 'InvalidClassName';
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+            $this->assertEquals('InvalidClassName class does not exist.', $response['message']);
+
+            $data['search']['modelClassName'] = 'AccountsModule';
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
+            $this->assertEquals('AccountsModule should be subclass of RedBeanModel.', $response['message']);
         }
 
 
