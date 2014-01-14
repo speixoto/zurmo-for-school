@@ -154,6 +154,15 @@
             }
         }
 
+        public static function resolveSearchFormByStickyFilteredByData
+                (array $getData, SearchForm $searchForm, $stickyData)
+        {
+            if (isset($stickyData['filteredBy']))
+            {
+                $searchForm->filteredBy = $stickyData['filteredBy'];
+            }
+        }
+
         /**
          * Get the sort attribute array by resolving the array
          * for the information.
@@ -203,6 +212,15 @@
             if (isset($filterByStarred))
             {
                 $searchModel->filterByStarred = $filterByStarred;
+            }
+        }
+
+        public static function resolveFilteredByFromArray($searchModel, $getArrayName, $sourceData)
+        {
+            $filteredBy = static::getFilteredByFromArray($getArrayName, $sourceData);
+            if (isset($filteredBy))
+            {
+                $searchModel->filteredBy = $filteredBy;
             }
         }
 
@@ -504,6 +522,16 @@
             {
                 $filterByStarred = $sourceData[$getArrayName]['filterByStarred'];
                 return $filterByStarred;
+            }
+        }
+
+        public static function getFilteredByFromArray($getArrayName, $sourceData)
+        {
+            assert('is_string($getArrayName)');
+            if (!empty($sourceData[$getArrayName]) && isset($sourceData[$getArrayName]['filteredBy']))
+            {
+                $filteredBy = $sourceData[$getArrayName]['filteredBy'];
+                return $filteredBy;
             }
         }
     }
