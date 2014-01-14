@@ -89,6 +89,7 @@
             
             $copyToProject      = new Project();
             ProjectZurmoCopyModelUtil::copy($project, $copyToProject);
+            ProjectZurmoCopyModelUtil::processAfterCopy($project, $copyToProject);
             $this->assertTrue($copyToProject->save());
             $this->assertEquals($copyToProject->name, $project->name);
             $this->assertEquals($copyToProject->description, $project->description);
@@ -96,7 +97,7 @@
             $project            = Project::getByName('Project 1');
             $this->assertEquals(2, count($project));
             $tasks = Task::getAll();
-            $this->assertEquals(1, count($tasks));
+            $this->assertEquals(2, count($tasks));
         }
     }
 ?>

@@ -68,25 +68,9 @@
         {
             foreach ($model->tasks as $task)
             {
-                $copyToTask  = new Task();
-                $copyToTask->completedDateTime          = $task->completedDateTime;
-                $copyToTask->completed                  = $task->completed;
-                $copyToTask->dueDateTime                = $task->dueDateTime;
-                $copyToTask->description                = $task->description;
-                $copyToTask->name                       = $task->name;
-                $copyToTask->status                     = $task->status;
-                $copyToTask->requestedByUser            = $task->requestedByUser;
-                $copyToTask->owner                      = $task->owner;
-                foreach ($task->checkListItems as $taskCheckListItem)
-                {
-                    $copytToTaskCheckListItem              = new TaskCheckListItem();
-                    $copytToTaskCheckListItem->name        = $taskCheckListItem->name;
-                    $copyToTask->checkListItems->add($copytToTaskCheckListItem);
-                }
-                foreach ($task->activityItems as $taskActivityItems)
-                {
-                    $copyToTask->activityItems->add($taskActivityItems);
-                }
+                $copyToTask   = new Task();
+                TaskActivityCopyModelUtil::copy($task, $copyToTask);
+                $copyToTask->status = Task::STATUS_NEW;
                 $copyToModel->tasks->add($copyToTask);
             }
             $copyToModel->save();

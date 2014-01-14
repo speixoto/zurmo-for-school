@@ -218,11 +218,10 @@
             $project            = Project::getById((int)$id);
             if (!isset($_POST[$postVariableName]))
             {
-                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
                 ProjectZurmoCopyModelUtil::copy($project, $copyToProject);
                 $this->processEdit($copyToProject);
             }
-            if (isset($_POST[$postVariableName]))
+            else
             {
                 $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
                 ProjectZurmoCopyModelUtil::processAfterCopy($project, $copyToProject);
