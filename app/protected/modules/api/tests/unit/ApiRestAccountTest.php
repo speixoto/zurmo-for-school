@@ -752,7 +752,7 @@
         /**
         * @depends testUnprivilegedUserViewUpdateDeleteAcounts
         */
-        public function testSearchAccounts()
+        public function testBasicSearchAccounts()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -884,9 +884,9 @@
         }
 
         /**
-        * @depends testSearchAccounts
+        * @depends testBasicSearchAccounts
         */
-        public function testAdvancedSearchAccounts()
+        public function testDynamicSearchAccounts()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel        = $super;
@@ -950,6 +950,73 @@
             $this->assertEquals(2, $response['data']['currentPage']);
             $this->assertEquals('Second Account', $response['data']['items'][0]['name']);
         }
+
+        public function testNewSearchAccounts()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $data = array(
+                'search' => array(
+                    'modelClassName' => 'Account',
+                    'searchAttributeData' => array(
+                        'clauses' => array(
+                            1 => array(
+                                'attributeName'        => 'owner',
+                                'relatedAttributeName' => 'id',
+                                'operatorType'         => 'equals',
+                                'value'                => Yii::app()->user->userModel->id,
+                            ),
+                            2 => array(
+                                'attributeName'        => 'name',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Fi'
+                            ),
+                            3 => array(
+                                'attributeName'        => 'name',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Se'
+                            ),
+                        ),
+                        'structure' => '1 AND (2 OR 3)',
+                    ),
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'name asc',
+            );
+
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('Fifth Account', $response['data']['items'][0]['name']);
+            $this->assertEquals('First Account', $response['data']['items'][1]['name']);
+
+            // Get second page
+            $data['pagination']['page'] = 2;
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('Second Account', $response['data']['items'][0]['name']);
+        }
+
 
         public function testCreateWithRelations()
         {
