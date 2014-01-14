@@ -680,7 +680,7 @@
         /**
         * @depends testListOpportunities
         */
-        public function testSearchOpportunities()
+        public function testBasicSearchOpportunities()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -815,9 +815,9 @@
         }
 
         /**
-        * @depends testSearchOpportunities
+        * @depends testBasicSearchOpportunities
         */
-        public function testAdvancedSearchOpportunities()
+        public function testDynamicSearchOpportunities()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel        = $super;
@@ -882,9 +882,76 @@
             $this->assertEquals('Second Opportunity', $response['data']['items'][0]['name']);
         }
 
+        public function testNewSearchOpportunities()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $data = array(
+                'search' => array(
+                    'modelClassName' => 'Opportunity',
+                    'searchAttributeData' => array(
+                        'clauses' => array(
+                            1 => array(
+                                'attributeName'        => 'owner',
+                                'relatedAttributeName' => 'id',
+                                'operatorType'         => 'equals',
+                                'value'                => Yii::app()->user->userModel->id,
+                            ),
+                            2 => array(
+                                'attributeName'        => 'name',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Fi'
+                            ),
+                            3 => array(
+                                'attributeName'        => 'name',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Se'
+                            ),
+                        ),
+                        'structure' => '1 AND (2 OR 3)',
+                    ),
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'name asc',
+            );
+
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('Fifth Opportunity', $response['data']['items'][0]['name']);
+            $this->assertEquals('First Opportunity', $response['data']['items'][1]['name']);
+
+            // Get second page
+            $data['pagination']['page'] = 2;
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('Second Opportunity', $response['data']['items'][0]['name']);
+        }
+
         /**
         * Test get opportunities that are releted with contacts(MANY_MANY relationship)
-        * @depends testAdvancedSearchOpportunities
+        * @depends testDynamicSearchOpportunities
         */
         public function testGetOpportunitiesThatAreRelatedWithContact()
         {
