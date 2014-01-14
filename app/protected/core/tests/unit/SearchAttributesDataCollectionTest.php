@@ -50,5 +50,36 @@
             $this->assertEquals(array('a', 'b'), $dataCollection->getKanbanBoardGroupByAttributeVisibleValuesFromModel());
             $this->assertEquals('someTheme',     $dataCollection->getKanbanBoardSelectedThemeFromModel());
         }
+
+        public function testGetFilteredBy()
+        {
+            $searchModel    = new AFilteredBySearchFormTestModel(new A());
+            $dataCollection = new SearchAttributesDataCollection($searchModel);
+            $this->assertEmpty($dataCollection->getFilteredBy());
+            $_GET['AFilteredBySearchFormTestModel']['filteredBy'] = 'all';
+            $this->assertEquals('all', $dataCollection->getFilteredBy());
+            $dataCollection->setSourceData(array());
+            $this->assertEmpty($dataCollection->getFilteredBy());
+            $dataCollection->setSourceData(array('AFilteredBySearchFormTestModel' => array('filteredBy' => 'none')));
+            $this->assertEquals('none', $dataCollection->getFilteredBy());
+        }
+
+        public function testResolveFilteredByFromSourceData()
+        {
+            $searchModel    = new AFilteredBySearchFormTestModel(new A());
+            $dataCollection = new SearchAttributesDataCollection($searchModel);
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEmpty($searchModel->filteredBy);
+            $_GET['AFilteredBySearchFormTestModel']['filteredBy'] = 'all';
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEquals('all', $searchModel->filteredBy);
+            //Since the sourceDate dont have the filteredBy, no new value will be set
+            $dataCollection->setSourceData(array());
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEquals('all', $searchModel->filteredBy);
+            $dataCollection->setSourceData(array('AFilteredBySearchFormTestModel' => array('filteredBy' => 'none')));
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEquals('none', $searchModel->filteredBy);
+        }
     }
 ?>

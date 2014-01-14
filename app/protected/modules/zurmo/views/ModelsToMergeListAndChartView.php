@@ -260,14 +260,14 @@
         {
             $itemId = $model->getClassId('Item');
             $icon  = ZurmoHtml::tag('i', array('class' => 'icon-note'), '');
-            $title = Zurmo::t('ZurmoModule', 'Notes');
+            $title = Zurmo::t('NotesModule', 'Notes');
             $num   = ZurmoHtml::tag('strong', array(),
                      LatestActivitiesUtil::getCountByModelClassName('Note', array($itemId),
                      LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
             $notesTotalContent = ZurmoHtml::tag('span', array('class' => 'total-notes'), $icon . $num . ' ' . $title);
 
             $icon  = ZurmoHtml::tag('i', array('class' => 'icon-task'), '');
-            $title = Zurmo::t('ZurmoModule', 'Tasks');
+            $title = Zurmo::t('TasksModule', 'Tasks');
             $num   = ZurmoHtml::tag('strong', array(),
                      LatestActivitiesUtil::getCountByModelClassName('Task', array($itemId),
                      LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
@@ -281,7 +281,7 @@
             $emailsTotalContent   = ZurmoHtml::tag('span', array('class' => 'total-emails'), $icon . $num . ' ' . $title);
 
             $icon  = ZurmoHtml::tag('i', array('class' => 'icon-meeting'), '');
-            $title = Zurmo::t('ZurmoModule', 'Meetings');
+            $title = Zurmo::t('MeetingsModule', 'Meetings');
             $num   = ZurmoHtml::tag('strong', array(),
                      LatestActivitiesUtil::getCountByModelClassName('Meeting', array($itemId),
                      LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
