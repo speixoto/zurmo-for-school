@@ -289,6 +289,7 @@
                     array('<module>/<model>Api/read',           'pattern' => '<module:\w+>/<model:\w+>/api/read/<id:\w+>',    'verb' => 'GET'),
                     array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/*',           'verb' => 'GET'),
                     array('<module>/<model>Api/list',           'pattern' => '<module:\w+>/<model:\w+>/api/list/',            'verb' => 'POST'),
+                    array('<module>/<model>Api/search',           'pattern' => '<module:\w+>/<model:\w+>/api/search/',            'verb' => 'POST'),
                     array('<module>/<model>Api/listAttributes', 'pattern' => '<module:\w+>/<model:\w+>/api/listAttributes',   'verb' => 'GET'),
                     array('<module>/<model>Api/update',         'pattern' => '<module:\w+>/<model:\w+>/api/update/<id:\d+>',  'verb' => 'PUT'),
                     array('<module>/<model>Api/delete',         'pattern' => '<module:\w+>/<model:\w+>/api/delete/<id:\d+>',  'verb' => 'DELETE'),
