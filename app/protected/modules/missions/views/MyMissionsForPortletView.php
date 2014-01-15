@@ -167,7 +167,7 @@
         {
            assert('is_string($uniquePageId)');
            assert('$form instanceOf MissionsListConfigurationForm');
-           $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
+           $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
            $mission  = new Mission();
            return MissionsUtil::makeDataProviderByType($mission, $form->type, $pageSize);
         }
