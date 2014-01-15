@@ -328,6 +328,11 @@
                 {
                     unset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]);
                 }
+                if (isset($_POST[$formModelClassName]['filteredBy']))
+                {
+                    $searchForm->filterByStarred = $_POST[$formModelClassName]['filteredBy'];
+                    unset($_POST[$formModelClassName]['filteredBy']);
+                }
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
                 $searchForm->setAttributes($sanitizedSearchData);
@@ -373,6 +378,7 @@
                     SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
                     SavedSearchUtil::resolveSearchFormByStickySortData($sourceData, $searchModel, $stickySearchData);
                     SearchUtil::resolveSearchFormByStickyFilterByStarredData($sourceData, $searchModel, $stickySearchData);
+                    SearchUtil::resolveSearchFormByStickyFilteredByData($sourceData, $searchModel, $stickySearchData);
                     $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
                 }
                 else

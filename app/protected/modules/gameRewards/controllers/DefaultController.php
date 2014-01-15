@@ -431,5 +431,26 @@
             echo CJSON::encode(array('message' => $message));
             Yii::app()->end(0, false);
         }
+
+        protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
+        {
+            if ($searchForm->filteredBy == GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM)
+            {
+                $gameCoin          = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+                $totalCoinsForUser =  (int)$gameCoin->value;
+                $clauseNumber = count($metadata['clauses']) + 1;
+                $metadata['clauses'][$clauseNumber] = array('attributeName' => 'cost',
+                                               'operatorType' => 'lessThanOrEqualTo',
+                                               'value' => $totalCoinsForUser);
+                if ($metadata['structure'] == '')
+                {
+                    $metadata['structure'] = $clauseNumber;
+                }
+                else
+                {
+                    $metadata['structure'] .= ' AND ' . $clauseNumber;
+                }
+            }
+        }
     }
 ?>

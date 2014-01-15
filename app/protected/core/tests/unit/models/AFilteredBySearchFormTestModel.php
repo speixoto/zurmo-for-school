@@ -34,33 +34,24 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class GameRewardsSearchForm extends SavedDynamicSearchForm
+    /**
+     * Used for testing with @see A with filteredBy on the searchForm
+     */
+    class AFilteredBySearchFormTestModel extends ASearchFormTestModel
     {
-        const FILTERED_BY_ALL = 'all';
-
-        const FILTERED_BY_CAN_REDEEM = 'canRedeem';
-
-        public $filteredBy = self::FILTERED_BY_ALL;
-
-        /**
-         * @return string|void
-         */
-        protected static function getRedBeanModelClassName()
-        {
-            return 'GameReward';
-        }
+        public $filteredBy;
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('filteredBy', 'type', 'type' => 'string'),
+                array('filteredBy', 'string'),
             ));
         }
 
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'filteredBy'      => Zurmo::t('GameRewardsModule', 'Filtered By'),
+                'filteredBy' => Zurmo::t('Core', 'Filtered By'),
             ));
         }
     }
