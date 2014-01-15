@@ -93,7 +93,7 @@
             $calendarItems = array();
             foreach($selectedModels as $selectedModel)
             {
-                $calendarItems[] = CalendarUtil::createCalendarItemByModel($selectedModel, $this->savedCalendar);
+                $calendarItems[] = CalendarUtil::makeCalendarItemByModel($selectedModel, $this->savedCalendar);
             }
 //            $report = new Report();
 //            $report->setModuleClassName($this->moduleClassName);

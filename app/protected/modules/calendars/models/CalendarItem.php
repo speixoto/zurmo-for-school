@@ -34,138 +34,90 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarItem extends RedBeanModel
+    class CalendarItem
     {
-        /**
-         * @return string
-         */
-        public function __toString()
+        protected $title;
+
+        protected $startDateTime;
+
+        protected $endDateTime;
+
+        protected $calendarId;
+
+        protected $modelClass;
+
+        protected $modelId;
+
+        protected $moduleClassName;
+
+        public function getTitle()
         {
-            try
-            {
-                if (trim($this->title) == '')
-                {
-                    return Zurmo::t('Core', '(Untitled)');
-                }
-                return $this->title;
-            }
-            catch (AccessDeniedSecurityException $e)
-            {
-                return '';
-            }
+            return $this->title;
         }
 
-        /**
-         * @return bool
-         */
-        public static function canSaveMetadata()
+        public function getStartDateTime()
         {
-            return true;
+            return $this->startDateTime;
         }
 
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function getEndDateTime()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'title',
-                    'startDateTime',
-                    'endDateTime',
-                    'relatedModelType',
-                    'relatedModelId'
-                ),
-                'relations' => array(
-                    'calendar'              => array(static::HAS_ONE, 'SavedCalendar', static::NOT_OWNED),
-                ),
-                'rules' => array(
-                    array('endDateTime',      'type', 'type' => 'datetime'),
-                    array('endDateTime',      'RedBeanModelCompareDateTimeValidator', 'type' => 'after',
-                                              'compareAttribute' => 'startDateTime'),
-                    array('title',            'required'),
-                    array('title',            'type',    'type' => 'string'),
-                    array('title',            'length',  'min'  => 1, 'max' => 64),
-                    array('startDateTime',    'required'),
-                    array('startDateTime',    'type', 'type' => 'datetime'),
-                    array('startDateTime',    'RedBeanModelCompareDateTimeValidator', 'type' => 'before',
-                                              'compareAttribute' => 'endDateTime'),
-                    array('relatedModelType', 'required'),
-                    array('relatedModelType', 'type',    'type' => 'string'),
-                    array('relatedModelType', 'length',  'min'  => 1, 'max' => 64),
-                    array('relatedModelId',   'required'),
-                    array('relatedModelId',   'type',    'type' => 'integer'),
-                ),
-                'elements' => array(
-                    'endDateTime'           => 'DateTime',
-                    'startDateTime'         => 'DateTime'
-                ),
-                'defaultSortAttribute' => 'title',
-                'noAudit' => array(),
-            );
-            return $metadata;
+            return $this->endDateTime;
         }
 
-        /**
-         * @return array
-         */
-        protected static function translatedAttributeLabels($language)
+        public function setTitle($title)
         {
-            return array_merge(parent::translatedAttributeLabels($language),
-                array(
-                    'endDateTime'       => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
-                    'startDateTime'     => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
-                    'title'             => Zurmo::t('ZurmoModule',    'Title',       array(), null, $language),
-                    'relatedModelType'  => Zurmo::t('CalendarsModule',    'Related Model Type',       array(), null, $language),
-                    'relatedModelId'    => Zurmo::t('CalendarsModule',    'Related Model Id',       array(), null, $language),
-                    'calendar'          => Zurmo::t('CalendarsModule',    'Calendar',       array(), null, $language),
-                )
-            );
+            $this->title = $title;
         }
 
-        public static function isTypeDeletable()
+        public function setStartDateTime($startDateTime)
         {
-            return true;
+            $this->startDateTime = $startDateTime;
         }
 
-        public static function getByModelAndCalendar(RedBeanModel $model, SavedCalendar $savedCalendar)
+        public function setEndDateTime($endDateTime)
         {
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'             => 'relatedModelType',
-                    'operatorType'              => 'equals',
-                    'value'                     => get_class($model),
-                ),
-                2 => array(
-                    'attributeName'             => 'relatedModelId',
-                    'operatorType'              => 'equals',
-                    'value'                     => intval($model->id),
-                ),
-                3 => array(
-                    'attributeName'             => 'calendar',
-                    'relatedAttributeName'      => 'id',
-                    'operatorType'              => 'equals',
-                    'value'                     => intval($savedCalendar->id),
-                )
-            );
-            $searchAttributeData['structure'] = '(1 AND 2 AND 3)';
-            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
-            $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
-            if (count($models) == 0)
-            {
-                return null;
-            }
-            elseif (count($models) > 1)
-            {
-                throw new NotSupportedException();
-            }
-            else
-            {
-                return $models[0];
-            }
+            $this->endDateTime = $endDateTime;
+        }
+
+        public function getCalendarId()
+        {
+            return $this->calendarId;
+        }
+
+        public function setCalendarId($calendarId)
+        {
+            $this->calendarId = $calendarId;
+        }
+
+        public function getModelClass()
+        {
+            return $this->modelClass;
+        }
+
+        public function getModelId()
+        {
+            return $this->modelId;
+        }
+
+        public function getModuleClassName()
+        {
+            return $this->moduleClassName;
+        }
+
+        public function setModelClass($modelClass)
+        {
+            $this->modelClass = $modelClass;
+        }
+
+        public function setModelId($modelId)
+        {
+            $this->modelId = $modelId;
+        }
+
+        public function setModuleClassName($moduleClassName)
+        {
+            $this->moduleClassName = $moduleClassName;
         }
     }
 ?>

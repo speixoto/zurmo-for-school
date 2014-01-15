@@ -95,7 +95,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'startDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'startAttributeName', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -104,7 +104,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'endDateTime', 'type' => 'DateTime'),
+                                                array('attributeName' => 'endAttributeName', 'type' => 'Text'),
                                             ),
                                         ),
                                     )

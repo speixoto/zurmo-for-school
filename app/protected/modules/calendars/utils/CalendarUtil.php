@@ -36,21 +36,22 @@
 
     class CalendarUtil
     {
-        public static function createCalendarItemByModel(RedBeanModel $model, SavedCalendar $savedCalendar)
+        public static function makeCalendarItemByModel(RedBeanModel $model, SavedCalendar $savedCalendar)
         {
-            $existingCalendarItem = CalendarItem::getByModelAndCalendar($model, $savedCalendar);
-            if($existingCalendarItem == null)
+            $calendarItem   = new CalendarItem();
+            $startAttribute = $savedCalendar->startAttributeName;
+            $endAttribute   = $savedCalendar->endAttributeName;
+            $calendarItem->setTitle($model->name);
+            $calendarItem->setStartDateTime($model->$startAttribute);
+            if($endAttribute != null)
             {
-                $calendarItem                   = new CalendarItem();
-                $calendarItem->title            = $model->name;
-                $calendarItem->startDateTime    = $model->createdDateTime;
-                $calendarItem->calendar         = $savedCalendar;
-                $calendarItem->relatedModelType = get_class($model);
-                $calendarItem->relatedModelId   = $model->id;
-                $calendarItem->save();
-                return $calendarItem;
+                $calendarItem->setEndDateTime($model->$endAttribute);
             }
-            return $existingCalendarItem;
+            $calendarItem->setCalendarId($savedCalendar->id);
+            $calendarItem->setModelClass(get_class($model));
+            $calendarItem->setModelId($model->id);
+            $calendarItem->setModuleClassName($savedCalendar->moduleClassName);
+            return $calendarItem;
         }
     }
 ?>

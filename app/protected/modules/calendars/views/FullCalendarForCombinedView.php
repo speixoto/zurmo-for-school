@@ -45,18 +45,56 @@
 
         protected function renderContent()
         {
-            $data = $this->dataProvider->getData();
-            print "<pre>";
-            print_r($data);
-            print "</pre>";
-            exit;
-            Yii::app()->controller->widget('FullCalendar', array('inputId' => 'calendar'));
+            $calendarItems = $this->dataProvider->getData();
+            $events = null;
+            for($k = 0; $k < count($calendarItems); $k++)
+            {
+                $calItem = $calendarItems[$k];
+                $title = $calItem->getTitle();
+                $events .= "{ title: '{$title}'";
+                $startJsElement = $this->getJavascriptDateTimeElement($calItem->getStartDateTime());
+                $events .= ", start: {$startJsElement}";
+                if($calItem->getEndDateTime() != null)
+                {
+                    $endJsElement = $this->getJavascriptDateTimeElement($calItem->getEndDateTime());
+                    $events .= ", end: {$endJsElement}";
+                }
+                if($k == count($calendarItems) - 1)
+                {
+                    $events .= " }";
+                }
+                else
+                {
+                    $events .= " },";
+                }
+            }
+            Yii::app()->controller->widget('FullCalendar', array('inputId' => 'calendar', 'events' => $events));
             return ZurmoHtml::tag('div', array('id' => 'calendar'), '');
             //$this->dataProvider->getData() -> returns array of CalenderItems
             //$this->dataProvider->getStartDateTime() //? returns start date time? do we need this?
             //$this->dataProvider->endStartDateTime() //? returns start date time? do we need this?
             //$this->dataProvider->getDateRangeType() //? returns month/day/week? so we know what kind of calendar to look at?
             //@mayank, let me know the API calls we need.
+        }
+
+        protected function getJavascriptDateTimeElement($dateTime)
+        {
+            if(DateTimeUtil::isValidDbFormattedDateTime($dateTime))
+            {
+                $dateTimeArray = preg_split('/[- :]/', $dateTime);
+                $month = $dateTimeArray[1] - 1;
+                return "new Date({$dateTimeArray[0]},{$month},{$dateTimeArray[2]},{$dateTimeArray[3]},{$dateTimeArray[4]},{$dateTimeArray[5]})";
+            }
+            elseif(DateTimeUtil::isValidDbFormattedDate($dateTime))
+            {
+                $dateTimeArray = preg_split('/[-]/', $dateTime);
+                $month = $dateTimeArray[1] - 1;
+                return "new Date({$dateTimeArray[0]},{$month},{$dateTimeArray[2]})";
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

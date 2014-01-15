@@ -41,6 +41,8 @@
     {
         public $inputId;
 
+        public $events;
+
         /**
          * Initialize the Calendar Widget
          */
@@ -51,6 +53,7 @@
 
         public function run()
         {
+            $events = $this->events;
             $cs = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
             $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
@@ -60,6 +63,7 @@
                                 "$(document).ready(function() {
                                     $('#{$inputId}').fullCalendar({
                                 editable: true,
+                                events: [{$events}],
                                 header: {
                                             left: 'prev,next today',
                                             center: 'title',

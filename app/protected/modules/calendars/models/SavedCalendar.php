@@ -89,10 +89,10 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
                 'description'       => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
-                'endDateTime'       => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
+                'endAttributeName'  => Zurmo::t('CalendarsModule', 'End Attribute Name',    array(), null, $language),
                 'location'          => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
                 'name'              => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
-                'startDateTime'     => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
+                'startAttributeName'=> Zurmo::t('CalendarsModule', 'Start Attribute Name',  array(), null, $language),
                 'timeZone'          => Zurmo::t('ZurmoModule',    'Time Zone',      array(), null, $language),
                 'moduleClassName'   => Zurmo::t('ZurmoModule',    'Module Class Name',      array(), null, $language),
                 ));
@@ -110,8 +110,8 @@
                     'description',
                     'location',
                     'moduleClassName',
-                    'startDateTime',
-                    'endDateTime',
+                    'startAttributeName',
+                    'endAttributeName',
                     'timeZone'
                 ),
                 'relations' => array(),
@@ -123,21 +123,15 @@
                     array('location',         'type',    'type' => 'string'),
                     array('moduleClassName',  'type',    'type' => 'string'),
                     array('moduleClassName',  'length',  'max'   => 64),
-                    array('startDateTime',    'required'),
-                    array('startDateTime',    'type', 'type' => 'datetime'),
-                    array('startDateTime',    'RedBeanModelCompareDateTimeValidator', 'type' => 'before',
-                                              'compareAttribute' => 'endDateTime'),
-                    array('endDateTime',      'type', 'type' => 'datetime'),
-                    array('endDateTime',      'RedBeanModelCompareDateTimeValidator', 'type' => 'after',
-                                              'compareAttribute' => 'startDateTime'),
+                    array('startAttributeName',    'required'),
+                    array('startAttributeName',    'type', 'type' => 'string'),
+                    array('endAttributeName',    'type', 'type' => 'string'),
                     array('timeZone',         'type',    'type'  => 'string'),
                     array('timeZone',         'length',  'max'   => 64),
                     array('timeZone',         'UserDefaultTimeZoneDefaultValueValidator'),
                     array('timeZone',         'ValidateTimeZone'),
                 ),
                 'elements' => array(
-                    'endDateTime'     => 'DateTime',
-                    'startDateTime'   => 'DateTime',
                     'moduleClassName' => 'CalendarModuleClassNameDropDown'
                 ),
                 'customFields' => array(),
