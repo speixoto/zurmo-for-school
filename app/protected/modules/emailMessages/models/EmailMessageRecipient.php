@@ -112,6 +112,10 @@
                         'unique'    => false,
                     ),
                 ),
+                'elements' => array(
+                    'type'                => 'EmailMessageRecipientTypeDropDown',
+
+                ),
             );
             return $metadata;
         }
