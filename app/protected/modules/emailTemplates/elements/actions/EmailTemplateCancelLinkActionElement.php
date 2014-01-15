@@ -68,5 +68,11 @@
                 throw new NotSupportedException();
             }
         }
+
+        protected function resolveHtmlOptionsForRendering()
+        {
+            $htmlOptions = array('class' => 'cancel-button');
+            return $htmlOptions;
+        }
     }
 ?>

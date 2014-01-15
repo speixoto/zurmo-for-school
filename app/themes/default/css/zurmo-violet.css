@@ -6958,6 +6958,8 @@ input[type="button"].portlet-create-button:focus {
   font-size: 11px;
   color: #4A3970;
   border: none !important;
+  text-decoration: underline;
+  overflow: hidden;
 }
 .simple-link:before,
 .simple-link:after {
@@ -13898,6 +13900,7 @@ a.user-link {
 .remove-action-row-link {
   position: relative;
   top: -9px;
+  margin-left: 10px;
 }
 .dynamic-row.clone {
   padding: 15px;
@@ -15160,11 +15163,7 @@ a.user-link {
 }
 .marketing-graph {
   float: left;
-  margin-left: 2%;
-  padding-bottom: 15px;
-}
-.marketing-graph:first-child {
-  margin-left: 0;
+  padding: 0 5px 15px 5px;
 }
 .marketing-graph h3 {
   padding-left: 15px;
