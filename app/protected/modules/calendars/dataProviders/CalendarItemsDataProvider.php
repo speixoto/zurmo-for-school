@@ -38,6 +38,10 @@
     {
         protected $savedCalendarSubscriptions;
 
+        protected $moduleClassName;
+
+        protected $savedCalendar;
+
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param array $config
@@ -84,7 +88,18 @@
          */
         protected function fetchData()
         {
-            return array(); //todo: temporary. probably add back in limit and offiset?
+            $models = Product::getAll();
+            $selectedModels = array_slice($models, 0, 5);
+            $calendarItems = array();
+            foreach($selectedModels as $selectedModel)
+            {
+                $calendarItems[] = CalendarUtil::createCalendarItemByModel($selectedModel, $this->savedCalendar);
+            }
+//            $report = new Report();
+//            $report->setModuleClassName($this->moduleClassName);
+//            $report->addDisplayAttribute($displayAttribute);
+//            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            return $calendarItems; //todo: temporary. probably add back in limit and offiset?
             $offset = $this->resolveOffset();
             $limit  = $this->resolveLimit();
             if ($this->getTotalItemCount() == 0)

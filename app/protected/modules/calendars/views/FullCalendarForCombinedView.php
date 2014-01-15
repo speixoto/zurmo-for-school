@@ -45,7 +45,13 @@
 
         protected function renderContent()
         {
-            return 'todo light up the widget and render content';
+            $data = $this->dataProvider->getData();
+            print "<pre>";
+            print_r($data);
+            print "</pre>";
+            exit;
+            Yii::app()->controller->widget('FullCalendar', array('inputId' => 'calendar'));
+            return ZurmoHtml::tag('div', array('id' => 'calendar'), '');
             //$this->dataProvider->getData() -> returns array of CalenderItems
             //$this->dataProvider->getStartDateTime() //? returns start date time? do we need this?
             //$this->dataProvider->endStartDateTime() //? returns start date time? do we need this?

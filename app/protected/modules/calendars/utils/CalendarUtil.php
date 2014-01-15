@@ -34,8 +34,23 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarItem
+    class CalendarUtil
     {
-
+        public static function createCalendarItemByModel(RedBeanModel $model, SavedCalendar $savedCalendar)
+        {
+            $existingCalendarItem = CalendarItem::getByModelAndCalendar($model, $savedCalendar);
+            if($existingCalendarItem == null)
+            {
+                $calendarItem                   = new CalendarItem();
+                $calendarItem->title            = $model->name;
+                $calendarItem->startDateTime    = $model->createdDateTime;
+                $calendarItem->calendar         = $savedCalendar;
+                $calendarItem->relatedModelType = get_class($model);
+                $calendarItem->relatedModelId   = $model->id;
+                $calendarItem->save();
+                return $calendarItem;
+            }
+            return $existingCalendarItem;
+        }
     }
 ?>

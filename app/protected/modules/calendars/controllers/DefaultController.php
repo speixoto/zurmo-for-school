@@ -95,7 +95,9 @@
             AuditEvent::logAuditEvent('ZurmoModule',
                                       ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                       array(strval($calendar), 'CalendarsModule'), $calendar);
-            $calendarItemsDataProvider  = new CalendarItemsDataProvider(new SavedCalendarSubscriptions());
+            $calendarItemsDataProvider  = new CalendarItemsDataProvider(new SavedCalendarSubscriptions(),
+                                                                        array('moduleClassName' => $calendar->moduleClassName,
+                                                                              'savedCalendar'   => $calendar));
             $gridView                   = new GridView(1, 1);
             $gridView->setView(new CombinedCalendarView($calendarItemsDataProvider, new SavedCalendarSubscriptions()), 0, 0);
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
