@@ -63,5 +63,18 @@
                 $copyToModel->opportunities->add($opportunity);
             }
         }
+        
+        public static function processAfterCopy(RedBeanModel $model, RedBeanModel $copyToModel)
+        {
+            foreach ($model->tasks as $task)
+            {
+                $copyToTask   = new Task();
+                TaskActivityCopyModelUtil::copy($task, $copyToTask);
+                $copyToTask->status = Task::STATUS_NEW;
+                $copyToModel->tasks->add($copyToTask);
+            }
+            $copyToModel->save();
+        }
+        
     }
 ?>
