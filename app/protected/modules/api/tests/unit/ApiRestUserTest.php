@@ -382,7 +382,7 @@
         /**
         * @depends testUnprivilegedUserViewUpdateDeleteUsers
         */
-        public function testSearchUsers()
+        public function testBasicSearchUsers()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -514,9 +514,9 @@
         }
 
         /**
-        * @depends testSearchUsers
+        * @depends testBasicSearchUsers
         */
-        public function testAdvancedSearchUsers()
+        public function testDynamicSearchUsers()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel        = $super;
@@ -565,6 +565,67 @@
             // Get second page
             $data['pagination']['page'] = 2;
             $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('second', $response['data']['items'][0]['username']);
+        }
+
+        public function testNewSearchUsers()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $data = array(
+                'search' => array(
+                    'modelClassName' => 'User',
+                    'searchAttributeData' => array(
+                        'clauses' => array(
+                            1 => array(
+                                'attributeName'        => 'username',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Fi'
+                            ),
+                            2 => array(
+                                'attributeName'        => 'username',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Se'
+                            ),
+                        ),
+                        'structure' => '1 OR 2',
+                    ),
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'username asc',
+            );
+
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('fifth', $response['data']['items'][0]['username']);
+            $this->assertEquals('first', $response['data']['items'][1]['username']);
+
+            // Get second page
+            $data['pagination']['page'] = 2;
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);

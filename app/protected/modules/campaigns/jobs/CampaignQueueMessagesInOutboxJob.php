@@ -85,38 +85,43 @@
             $signalMarkCompletedJob = true;
             foreach ($campaignItemsToProcess as $campaignItem)
             {
-                if ($modelsProcessedCount < $batchSize || $batchSize == null)
+                try
                 {
-                    try
-                    {
-                        $this->processCampaignItemInQueue($campaignItem);
-                    }
-                    catch (NotFoundException $e)
-                    {
-                        //todo: handle if delete returns false.
-                        $campaignItem->delete();
-                    }
-                    catch (NotSupportedException $e)
-                    {
-                        $this->errorMessage = $e->getMessage();
-                        //todo: returning false if using job queueing will cause job to not run again. maybe do something different?
-                        return false;
-                    }
-                    $this->runGarbageCollection($campaignItem);
-                    $modelsProcessedCount++;
+                    $this->processCampaignItemInQueue($campaignItem);
                 }
-                else
+                catch (NotFoundException $e)
+                {
+                    //todo: handle if delete returns false.
+                    $campaignItem->delete();
+                }
+                catch (NotSupportedException $e)
+                {
+                    $this->errorMessage = $e->getMessage();
+                    //todo: returning false if using job queueing will cause job to not run again. maybe do something different?
+                    return false;
+                }
+                $this->runGarbageCollection($campaignItem);
+                $modelsProcessedCount++;
+
+                if ($this->hasReachedMaximumProcessingCount($modelsProcessedCount, $batchSize))
                 {
                     Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
                     $signalMarkCompletedJob = false;
                     break;
                 }
+                if (!Yii::app()->performance->isMemoryUsageSafe())
+                {
+                    $this->addMaximumMemoryUsageReached();
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+                    $signalMarkCompletedJob = false;
+                    break;
+                }
             }
+            $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             if ($signalMarkCompletedJob)
             {
                 Yii::app()->jobQueue->add('CampaignMarkCompleted', 5);
             }
-            $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
             return true;
         }
 
