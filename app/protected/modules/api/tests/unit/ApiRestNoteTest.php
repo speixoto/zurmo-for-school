@@ -561,7 +561,7 @@
         /**
         * @depends testUnprivilegedUserViewUpdateDeleteNotes
         */
-        public function testSearchNotes()
+        public function testBasicSearchNotes()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -731,10 +731,10 @@
             $this->assertEquals('Fifth Note', $response['data']['items'][2]['description']);
         }
 
-    /**
-        * @depends testSearchNotes
+        /**
+        * @depends testBasicSearchNotes
         */
-        public function testAdvancedSearchNotes()
+        public function testDynamicSearchNotes()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel        = $super;
@@ -790,6 +790,73 @@
             // Get second page
             $data['pagination']['page'] = 2;
             $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('Second Note', $response['data']['items'][0]['description']);
+        }
+
+        public function testNewSearchNotes()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $data = array(
+                'search' => array(
+                    'modelClassName' => 'Note',
+                    'searchAttributeData' => array(
+                        'clauses' => array(
+                            1 => array(
+                                'attributeName'        => 'owner',
+                                'relatedAttributeName' => 'id',
+                                'operatorType'         => 'equals',
+                                'value'                => Yii::app()->user->userModel->id,
+                            ),
+                            2 => array(
+                                'attributeName'        => 'description',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Fi'
+                            ),
+                            3 => array(
+                                'attributeName'        => 'description',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Se'
+                            ),
+                        ),
+                        'structure' => '1 AND (2 OR 3)',
+                    ),
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'description asc',
+            );
+
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('Fifth Note', $response['data']['items'][0]['description']);
+            $this->assertEquals('First Note', $response['data']['items'][1]['description']);
+
+            // Get second page
+            $data['pagination']['page'] = 2;
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
