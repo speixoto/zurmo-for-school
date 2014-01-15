@@ -558,7 +558,7 @@
         protected function addMaximumMemoryUsageReachedForAllExportItems()
         {
             $message = Zurmo::t('ExportModule', 'Remaining export jobs must be finished on next run because the ' .
-                'maximum memory usage has been reached. Using {usedMemory}Bytes of allocated {allocatedMemory}Bytes.',
+                'maximum memory usage has been reached. Using {usedMemory} Bytes of allocated {allocatedMemory} Bytes.',
                 array('{usedMemory}' => Yii::app()->performance->getMemoryUsage(),
                       '{allocatedMemory}'  => Yii::app()->performance->getAllocatedMemoryInBytes()));
             $this->getMessageLogger()->addInfoMessage($message);

@@ -120,8 +120,8 @@
 
         protected function addMaximumMemoryUsageReached()
         {
-            $message = Zurmo::t('CampaignsModule', 'Remaining autoresponder messages must be finished on next run because the ' .
-                'maximum memory usage has been reached. Using {usedMemory}Bytes of allocated {allocatedMemory}Bytes.',
+            $message = Zurmo::t('CampaignsModule', 'Remaining autoresponder/campaign messages must be finished on next run because the ' .
+                'maximum memory usage has been reached. Using {usedMemory} Bytes of allocated {allocatedMemory} Bytes.',
                 array('{usedMemory}' => Yii::app()->performance->getMemoryUsage(),
                       '{allocatedMemory}'  => Yii::app()->performance->getAllocatedMemoryInBytes()));
             $this->getMessageLogger()->addInfoMessage($message);
