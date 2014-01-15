@@ -33,71 +33,19 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
     /**
-     * A class for storing email message content.
+     * Type dropdown element for emailMessageRecipient type
      */
-    class EmailMessageContent extends OwnedModel
+    class EmailMessageRecipientTypeDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'htmlContent',
-                    'textContent',
-                ),
-                'rules' => array(
-                    array('htmlContent',   'type',    'type' => 'string'),
-                    array('textContent',   'type',    'type' => 'string'),
-                ),
-                'elements' => array(
-                    'htmlContent'     => 'TextArea',
-                    'textContent'     => 'TextArea',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'EmailMessagesModule';
-        }
-
+        protected static $attributeName = 'type';
 
         /**
-         * Returns the display name for the model class.
-         * @param null | string $language
-         * @return dynamic label name based on module.
+         * @return array
          */
-        protected static function getLabel($language = null)
+        protected static function resolveDropDownArray()
         {
-            return Zurmo::t('EmailMessagesModule', 'Email Content', array(), null, $language);
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @param null | string $language
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
-        {
-            return Zurmo::t('EmailMessagesModule', 'Email Contents', array(), null, $language);
-        }
-
-        protected static function translatedAttributeLabels($language)
-        {
-            return array_merge(parent::translatedAttributeLabels($language),
-                array(
-                    'htmlContent' => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
-                    'textContent' => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
-                )
-            );
+            return EmailMessageRecipient::getRecipientTypesArray();
         }
     }
 ?>

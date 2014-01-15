@@ -35,69 +35,34 @@
      ********************************************************************************/
 
     /**
-     * A class for storing email message content.
+     * Report rules to be used with the EmailMessages module.
      */
-    class EmailMessageContent extends OwnedModel
+    class EmailMessagesReportRules extends SecuredReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'htmlContent',
-                    'textContent',
+            $metadata = array(
+                'EmailMessage' => array(
+                    'nonReportable' =>
+                    array('files'),
                 ),
-                'rules' => array(
-                    array('htmlContent',   'type',    'type' => 'string'),
-                    array('textContent',   'type',    'type' => 'string'),
+                'EmailMessageRecipient' => array(
+                    'nonReportable' =>
+                        array('personsOrAccounts'),
+                    'availableOperatorsTypes' =>
+                        array('type'   => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('type'   => 'EmailMessageRecipientTypeStaticDropDownForWizardModel'),
                 ),
-                'elements' => array(
-                    'htmlContent'     => 'TextArea',
-                    'textContent'     => 'TextArea',
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'EmailMessagesModule';
-        }
-
-
-        /**
-         * Returns the display name for the model class.
-         * @param null | string $language
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel($language = null)
-        {
-            return Zurmo::t('EmailMessagesModule', 'Email Content', array(), null, $language);
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @param null | string $language
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
-        {
-            return Zurmo::t('EmailMessagesModule', 'Email Contents', array(), null, $language);
-        }
-
-        protected static function translatedAttributeLabels($language)
-        {
-            return array_merge(parent::translatedAttributeLabels($language),
-                array(
-                    'htmlContent' => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
-                    'textContent' => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                'EmailMessageSender' => array(
+                    'nonReportable' =>
+                        array('personsOrAccounts'),
                 )
             );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>
