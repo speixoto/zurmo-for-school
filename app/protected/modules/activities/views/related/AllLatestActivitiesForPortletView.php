@@ -99,7 +99,7 @@
         {
             assert('is_string($uniquePageId)');
             assert('$form instanceOf LatestActivitiesConfigurationForm');
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
             $filteredMashableModelClassNames = LatestActivitiesUtil::resolveMashableModelClassNamesByFilteredBy(
                                                     array_keys($form->mashableModelClassNamesAndDisplayLabels),
                                                     $form->filteredByModelName);

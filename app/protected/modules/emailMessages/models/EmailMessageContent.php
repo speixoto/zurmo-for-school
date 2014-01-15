@@ -64,6 +64,12 @@
             return true;
         }
 
+        public static function getModuleClassName()
+        {
+            return 'EmailMessagesModule';
+        }
+
+
         /**
          * Returns the display name for the model class.
          * @param null | string $language

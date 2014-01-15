@@ -34,34 +34,35 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class GameRewardsSearchForm extends SavedDynamicSearchForm
+    /**
+     * Report rules to be used with the EmailMessages module.
+     */
+    class EmailMessagesReportRules extends SecuredReportRules
     {
-        const FILTERED_BY_ALL = 'all';
-
-        const FILTERED_BY_CAN_REDEEM = 'canRedeem';
-
-        public $filteredBy = self::FILTERED_BY_ALL;
-
         /**
-         * @return string|void
+         * @return array
          */
-        protected static function getRedBeanModelClassName()
+        public static function getDefaultMetadata()
         {
-            return 'GameReward';
-        }
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('filteredBy', 'type', 'type' => 'string'),
-            ));
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                'filteredBy'      => Zurmo::t('GameRewardsModule', 'Filtered By'),
-            ));
+            $metadata = array(
+                'EmailMessage' => array(
+                    'nonReportable' =>
+                    array('files'),
+                ),
+                'EmailMessageRecipient' => array(
+                    'nonReportable' =>
+                        array('personsOrAccounts'),
+                    'availableOperatorsTypes' =>
+                        array('type'   => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('type'   => 'EmailMessageRecipientTypeStaticDropDownForWizardModel'),
+                ),
+                'EmailMessageSender' => array(
+                    'nonReportable' =>
+                        array('personsOrAccounts'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>
