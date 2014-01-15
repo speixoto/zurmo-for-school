@@ -267,7 +267,7 @@ EOD;
                         $languageCode
                     )
                 ),
-                'class' => 'attachLoading z-button'
+                'class' => 'action-button attachLoading z-button'
             );
             if ($action == 'deactivate')
             {

@@ -178,7 +178,7 @@
             $lastAttempedDateTime = Yii::app()->currencyHelper->getLastAttemptedRateUpdateDateTime();
             if ($lastAttempedDateTime == null)
             {
-                $content .= Zurmo::t('ZurmoModule', 'Never');
+                $content .= Zurmo::t('Core', 'Never');
             }
             else
             {
