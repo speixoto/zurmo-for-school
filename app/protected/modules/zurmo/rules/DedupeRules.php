@@ -237,7 +237,7 @@
                                          count($matchedModels)
                     );
                 }
-                $clickHere = ZurmoHtml::tag('span', array('class' => 'underline'), Zurmo::t('ZurmoModule', 'Click here'));
+                $clickHere = ZurmoHtml::tag('span', array('class' => 'underline'), Zurmo::t('Core', 'Click here'));
                 $message .= ' ' . $clickHere . ' ' . Zurmo::t('ZurmoModule', 'to view') . '.';
                 return array('message' => $message, 'matchedModels' => $matchedModels);
             }

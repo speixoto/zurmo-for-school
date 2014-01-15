@@ -57,5 +57,19 @@
         {
             throw new NotImplementedException();
         }
+
+        /**
+         * @return array
+         */
+        public static function getModelAttributeNames()
+        {
+            return array('primaryAccount', 'secondaryAccount');
+        }
+
+        public static function getDisplayName()
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return Zurmo::t('AccountAccountAffiliationsModule', 'Opposite AccountsModuleSingularLabel Affiliation', $params);
+        }
     }
 ?>
