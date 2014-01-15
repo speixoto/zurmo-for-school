@@ -592,7 +592,8 @@
          */
         public function actionShowActiveProjects()
         {
-            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView($this);
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView($this, $pageSize);
             echo $listView->render();
         }
 
@@ -601,7 +602,8 @@
          */
         public function actionShowProjectsLatestActivityFeed()
         {
-            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView($this);
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView($this, $pageSize);
             echo $listView->render();
         }
     }

@@ -75,6 +75,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'dashboardListPageSize', 'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'themeColor', 'type' => 'ThemeColor'),
                                             ),
                                         ),
