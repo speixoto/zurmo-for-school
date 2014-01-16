@@ -42,7 +42,7 @@
             $account                = new Account();
             $account->name          = 'Some Account';
             $account->owner         = $user;
-            assert($account->save());
+            assert($account->save()); // Not Coding Standard
             $contactStates          = ContactState::getByName('Qualified');
             $contact                = new Contact();
             $dateTime               = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
@@ -81,7 +81,7 @@
             $contact->secondaryAddress->state      = 'Haryana';
             $contact->secondaryAddress->postalCode = '5123-4';
             $contact->secondaryAddress->country    = 'Latinoland';
-            assert($contact->save());
+            assert($contact->save()); // Not Coding Standard
             return $contact;
         }
 
@@ -91,7 +91,7 @@
             $account                = new Account();
             $account->name          = 'New Account';
             $account->owner         = $user;
-            assert($account->save());
+            assert($account->save()); // Not Coding Standard
             $contactCustomerStates   = ContactState::getByName('Customer');
             $contact2                = ContactTestHelper::createContactByNameForOwner('shozin', Yii::app()->user->userModel);
             $contact2->title->value  = 'Mrs.';
@@ -125,7 +125,7 @@
             $contact2->secondaryAddress->state      = 'Haryana';
             $contact2->secondaryAddress->postalCode = '5123-4';
             $contact2->secondaryAddress->country    = 'IndiaTest';
-            assert($contact2->save());
+            assert($contact2->save()); // Not Coding Standard
             return $contact2;
         }
     }
