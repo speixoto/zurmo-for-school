@@ -69,7 +69,6 @@
             return 'EmailMessagesModule';
         }
 
-
         /**
          * Returns the display name for the model class.
          * @param null | string $language
