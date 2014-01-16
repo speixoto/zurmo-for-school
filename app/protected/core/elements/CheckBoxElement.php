@@ -66,7 +66,7 @@
             if ($this->getDisabledValue())
             {
                 $htmlOptions['disabled'] = $this->getDisabledValue();
-                if (BooleanUtil::boolVal($this->model->{$this->attribute}))
+                if ((int)$this->model->{$this->attribute} == 1)
                 {
                     $htmlOptions['uncheckValue'] = 1;
                 }
