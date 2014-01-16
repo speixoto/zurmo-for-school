@@ -90,6 +90,8 @@
 
         public function actionDetails($id)
         {
+            throw new NotImplementedException();
+            /**
             $calendar                   = static::getModelAndCatchNotFoundAndDisplayError('SavedCalendar', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($calendar);
             AuditEvent::logAuditEvent('ZurmoModule',
@@ -103,6 +105,7 @@
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                                     makeStandardViewForCurrentUser($this, $gridView));
             echo $view->render();
+             * **/
         }
 
         public function actionCreate()
