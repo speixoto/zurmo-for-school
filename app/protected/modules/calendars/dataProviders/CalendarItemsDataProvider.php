@@ -122,5 +122,92 @@
             }
             return $keys;
         }
+
+        protected function resolveCalendarItems()
+        {
+            //todo: check if cached _calendarItems. ?
+
+            $calendarItems = array();
+            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarData)
+            {
+                if($savedCalendarData[1])
+                {
+                    $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]);
+                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models);
+                }
+
+            }
+            foreach($this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected() as $savedCalendarData)
+            {
+                if($savedCalendarData[1])
+                {
+                    $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]);
+                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models);
+                }
+            }
+            return $calendarItems;
+        }
+
+        protected function resolveRedBeanModelsByCalendar(SavedCalendar $calendar)
+        {
+            $models             = array();
+            $report             = $this-> makeReportBySavedCalendar($calendar);
+            $reportDataProvider = new RowsAndColumnsReportDataProvider($report);
+            $reportResultsRows = $reportDataProvider->getData();
+            foreach($reportResultsRows as $reportResultsRowData)
+            {
+                $models[] = $reportResultsRowData->getModel('attribute0'); //todo: even though it is 0 because we only have one displayAttribute, we should
+                                                                           //todo: be pulling this from somewhere else instead of statically defining it here. probably...
+            }
+
+            //todo: need to set distinct? or we do we set it somewhere else? we need this otherwise we could have duplicate models...
+            //todo: we don't want duplicate models in the results from the report data provider.we might have to just block has-many filtering?
+            //todo: that might force it to always be distinct
+
+            return $models;
+        }
+
+        protected function makeReportBySavedCalendar(SavedCalendar $calendar)
+        {
+            //todO: what about the start/end filter? we need to pass that into the data provider or do we? like if we are showing march 2014
+            //todo; we need the start/end for that
+            $moduleClassName  = $calendar->moduleClassName;
+            $report           = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName($moduleClassName);
+
+            $startFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelClassName(), $report->getType());
+            $startFilter->attributeIndexOrDerivedType = $calendar->startAttribute;
+            $startFilter->value                       = 'aValue'; //todo: getStartDateTime & adjust for timezone
+            $startFilter->operator                    = 'greaterThanOrEqualTo';
+            $report->addFilter($startFilter);
+            $this->assertFalse($report->hasRuntimeFilters());
+            $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelClassName(), $report->getType());
+            $endFilter->attributeIndexOrDerivedType = $calendar->endAttribute;
+            $endFilter->value                       = 'aValue';  //todo: getEndDateTime & adjust for timezone
+            $endFilter->operator                    = 'lessThanOrEqualTo';
+            $report->addFilter($endFilter);
+
+
+
+            $report->setFiltersStructure('1 AND 2'); //todo: change this once we add filtering in to the user interface for saved calendar
+            //todo outline future extra filters - need to use $calendar->serializedData['filters'] to convert to extra filters
+            //todo then we can add to the filter structure.
+
+            $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelClassName(),
+                                    $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'id';
+            $report->addDisplayAttribute($displayAttribute);
+
+            return $report;
+        }
+
+        protected function resolveRedBeanModelsToCalendarItems(& $calendarItems, array $models)
+        {
+            foreach($models as $model)
+            {
+                $calendarItems[] = CalendarUtil::makeCalendarItemByModel($model, $this->savedCalendar);
+            }
+        }
     }
 ?>
