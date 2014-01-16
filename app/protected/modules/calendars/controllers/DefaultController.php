@@ -156,12 +156,39 @@
 
         public function actionCombinedDetails()
         {
+
+
+
+//todo: start move into util like a dataProviderFactory maybe.
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
-            $dataProvider               = new CalendarItemsDataProvider($savedCalendarSubscriptions);
+            $dateRangeType              = ComingFromSomePlace::getDateRangeType(); //is this sticky? maybe this is sticky
+            //so for startDateTIme - if it is MONTH, then get beginning of month stamp
+            //so for startDateTime - if it is WEEK , get beginning of week
+            $startDateTime              = ComingFromSomePlace::getStartDateTime(); //is this sticky? i dont know. maybe it defaults to TODAY
+            $endDateTime                = ComingFromSomePlace::getEndDateTime();
+
+
+            $dataProvider               = new CalendarItemsDataProvider($savedCalendarSubscriptions, $startDateTime, $endDateTime, $dateRangeType);
+//todo: end move into util like a dataProviderFactory maybe.
+
+
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $savedCalendarSubscriptions);
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                               makeStandardViewForCurrentUser($this,$interactiveCalendarView));
             echo $view->render();
+        }
+
+        public function actionChangeFullCalendarDetails($dateRangeType, $startDateTime, $endDateTime)
+        {
+            //todo: start move into util like a dataProviderFactory maybe.
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
+            $dataProvider               = new CalendarItemsDataProvider($savedCalendarSubscriptions, $startDateTime, $endDateTime, $dateRangeType);
+//todo: end move into util like a dataProviderFactory maybe.
+
+            //todo: get json of calendar items from data provider. you needto refactor
+            $calendarItems = $this->dataProvider->getData();
+            //todo todo convert to json
+
         }
     }
 ?>
