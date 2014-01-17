@@ -62,7 +62,7 @@
          */
         protected static function getRequestType()
         {
-            if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']))
+            if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) && $_SERVER['HTTP_ZURMO_API_REQUEST_TYPE'] != '')
             {
                 if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest' )
                 {
