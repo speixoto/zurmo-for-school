@@ -47,7 +47,7 @@
                 'rules' => array(
                     array('category',           'required'),
                     array('category',           'type', 'type' => 'string'),
-                    array('category',           'length',  'min'  => 1, 'max' => 30),
+                    array('category',           'length',  'min'  => 1, 'max' => 50),
                     array('source',             'required'),
                     array('source',             'type', 'type' => 'blob')
                 ),
@@ -108,6 +108,13 @@
             $model = new MessageSource();
             $model->category = $category;
             $model->source   = $source;
+
+            if (!$model->validate())
+            {
+                print_r($model->getErrors());
+                exit();
+            }
+
             if (!$model->save())
             {
                 throw new FailedToSaveModelException();
