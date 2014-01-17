@@ -108,13 +108,6 @@
             $model = new MessageSource();
             $model->category = $category;
             $model->source   = $source;
-
-            if (!$model->validate())
-            {
-                print_r($model->getErrors());
-                exit();
-            }
-
             if (!$model->save())
             {
                 throw new FailedToSaveModelException();
