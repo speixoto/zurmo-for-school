@@ -156,23 +156,14 @@
 
         public function actionCombinedDetails()
         {
-
-
-
-//todo: start move into util like a dataProviderFactory maybe.
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
-            $dateRangeType              = ComingFromSomePlace::getDateRangeType(); //is this sticky? maybe this is sticky
-            //so for startDateTIme - if it is MONTH, then get beginning of month stamp
-            //so for startDateTime - if it is WEEK , get beginning of week
-            $startDateTime              = ComingFromSomePlace::getStartDateTime(); //is this sticky? i dont know. maybe it defaults to TODAY
-            $endDateTime                = ComingFromSomePlace::getEndDateTime();
+            $dateRangeType              = CalendarUtil::getDateRangeType(); //is this sticky? maybe this is sticky
+            $startDateTime              = CalendarUtil::getStartDateTime(); //is this sticky? i dont know. maybe it defaults to TODAY
+            $endDateTime                = CalendarUtil::getEndDateTime();
 
-
-            $dataProvider               = new CalendarItemsDataProvider($savedCalendarSubscriptions, $startDateTime, $endDateTime, $dateRangeType);
-//todo: end move into util like a dataProviderFactory maybe.
-
-
-            $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $savedCalendarSubscriptions);
+            $dateProvider               = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
+                                                                                                $startDateTime, $endDateTime, $dateRangeType);
+            $interactiveCalendarView    = new CombinedCalendarView($dataProvider);
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                               makeStandardViewForCurrentUser($this,$interactiveCalendarView));
             echo $view->render();

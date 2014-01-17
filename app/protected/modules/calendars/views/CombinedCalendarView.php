@@ -63,10 +63,10 @@
             return $metadata;
         }
 
-        public function __construct(CalendarItemsDataProvider $dataProvider, SavedCalendarSubscriptions $savedCalendarSubscriptions)
+        public function __construct(CalendarItemsDataProvider $dataProvider)
         {
             $this->dataProvider               = $dataProvider;
-            $this->savedCalendarSubscriptions = $savedCalendarSubscriptions;
+            $this->savedCalendarSubscriptions = $this->dataProvider->savedCalendarSubscriptions;
         }
 
         protected function renderContent()

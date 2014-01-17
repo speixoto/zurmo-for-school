@@ -53,5 +53,88 @@
             $calendarItem->setModuleClassName($savedCalendar->moduleClassName);
             return $calendarItem;
         }
+
+        public static function getDateRangeType()
+        {
+            return SavedCalendar::DATERANGE_TYPE_MONTH;
+        }
+
+        public static function getStartDateTime($dateRangeType)
+        {
+            assert('is_string($dateRangeType)');
+            if($dateRangeType == SavedCalendar::DATERANGE_TYPE_MONTH)
+            {
+                return DateTimeUtil::getFirstDayOfAMonthDate() . ' 00:00:00';
+            }
+            if($dateRangeType == SavedCalendar::DATERANGE_TYPE_WEEK)
+            {
+                return DateTimeUtil::getFirstDayOfAWeek() . ' 00:00:00';
+            }
+            if($dateRangeType == SavedCalendar::DATERANGE_TYPE_DAY)
+            {
+                return DateTimeUtil::getTodaysDate() . ' 00:00:00';
+            }
+        }
+
+        public static function getEndDateTime($dateRangeType)
+        {
+            assert('is_string($dateRangeType)');
+            if($dateRangeType == SavedCalendar::DATERANGE_TYPE_MONTH)
+            {
+                $dateTime = new DateTime();
+                $dateTime->modify('first day of next month');
+                return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp()) . ' 00:00:00';
+            }
+            if($dateRangeType == SavedCalendar::DATERANGE_TYPE_WEEK)
+            {
+                $dateTime       = new DateTime('first day of next week');
+                return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp()) . ' 00:00:00';
+            }
+            if($dateRangeType == SavedCalendar::DATERANGE_TYPE_DAY)
+            {
+                $today    = DateTimeUtil::getTodaysDate();
+                $dateTime = new DateTime($today);
+                $dateTime->add(new DateInterval('P1D'));
+                return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp()) . ' 00:00:00';
+            }
+        }
+
+        /**
+         * Get saved calendars for user.
+         * @param User $user
+         * @return array
+         */
+        public static function getUserSavedCalendars(User $user)
+        {
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'createdByUser',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $user->id,
+                )
+            );
+            $metadata['structure'] = '1';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('SavedCalendar');
+            $where  = RedBeanModelDataProvider::makeWhere('SavedCalendar', $metadata, $joinTablesAdapter);
+            return SavedCalendar::getSubset($joinTablesAdapter, null, null, $where);
+        }
+
+        public static function processUserCalendarsAndGetDataProviderForCombinedView()
+        {
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
+            $dateRangeType              = CalendarUtil::getDateRangeType(); //is this sticky? maybe this is sticky
+            $startDateTime              = CalendarUtil::getStartDateTime($dateRangeType); //is this sticky? i dont know. maybe it defaults to TODAY
+            $endDateTime                = CalendarUtil::getEndDateTime($dateRangeType);
+
+            $dataProvider               = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
+                                                                                                $startDateTime, $endDateTime, $dateRangeType);
+            return $dataProvider;
+        }
+
     }
 ?>

@@ -36,6 +36,11 @@
 
     class SavedCalendar extends OwnedSecurableItem
     {
+        const DATERANGE_TYPE_MONTH = 'Month';
+
+        const DATERANGE_TYPE_DAY   = 'Day';
+
+        const DATERANGE_TYPE_WEEK  = 'Week';
         /**
          * @param string $name
          * @return string

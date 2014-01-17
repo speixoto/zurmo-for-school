@@ -45,9 +45,18 @@
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
 
             //todo: get saved calendars that the user owns (from somewhereelse?)
-
-                //$savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, $selected);
-
+            $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
+            foreach ($mySavedCalendars as $key => $mySavedCalendar)
+            {
+                if($key == 0)
+                {
+                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
+                }
+                else
+                {
+                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
+                }
+            }
             //todo: get saved calendars that the user is subscribed too (from some subscription model?)
 
                 //$savedCalendarSubscriptions->addSubscribedToSavedCalendar($subscribedToSavedCalendar, $selected);

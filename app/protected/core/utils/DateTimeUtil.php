@@ -554,5 +554,38 @@
             }
             return $monthsData;
         }
+
+        public static function getFirstDayOfAWeek($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('Monday this week');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        public static function getLastDayOfAWeek($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('Sunday this week');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        public static function getTodaysDate()
+        {
+            $dateTime = new DateTime();
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        public static function getFirstDayOfNextWeek()
+        {
+            $dateTime = new DateTime();
+            $dateTime->modify('next monday');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
     }
 ?>

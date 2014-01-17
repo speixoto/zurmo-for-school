@@ -42,6 +42,10 @@
 
         protected $savedCalendar;
 
+        protected $startDateTime;
+
+        protected $endDateTime;
+
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param array $config
@@ -88,18 +92,9 @@
          */
         protected function fetchData()
         {
-            $models = Product::getAll();
-            $selectedModels = array_slice($models, 0, 5);
-            $calendarItems = array();
-            foreach($selectedModels as $selectedModel)
-            {
-                $calendarItems[] = CalendarUtil::makeCalendarItemByModel($selectedModel, $this->savedCalendar);
-            }
-//            $report = new Report();
-//            $report->setModuleClassName($this->moduleClassName);
-//            $report->addDisplayAttribute($displayAttribute);
-//            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
-            return $calendarItems; //todo: temporary. probably add back in limit and offiset?
+            return $this->resolveCalendarItems(); //todo: temporary. probably add back in limit and offiset?
+
+
             $offset = $this->resolveOffset();
             $limit  = $this->resolveLimit();
             if ($this->getTotalItemCount() == 0)
@@ -133,7 +128,7 @@
                 if($savedCalendarData[1])
                 {
                     $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]);
-                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models);
+                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendarData[0]);
                 }
 
             }
@@ -142,7 +137,7 @@
                 if($savedCalendarData[1])
                 {
                     $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]);
-                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models);
+                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendarData[0]);
                 }
             }
             return $calendarItems;
@@ -176,25 +171,30 @@
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName($moduleClassName);
 
-            $startFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelClassName(), $report->getType());
-            $startFilter->attributeIndexOrDerivedType = $calendar->startAttribute;
+            $startFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
+            $startFilter->attributeIndexOrDerivedType = $calendar->startAttributeName;
             $startFilter->value                       = 'aValue'; //todo: getStartDateTime & adjust for timezone
             $startFilter->operator                    = 'greaterThanOrEqualTo';
             $report->addFilter($startFilter);
-            $this->assertFalse($report->hasRuntimeFilters());
-            $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelClassName(), $report->getType());
-            $endFilter->attributeIndexOrDerivedType = $calendar->endAttribute;
-            $endFilter->value                       = 'aValue';  //todo: getEndDateTime & adjust for timezone
-            $endFilter->operator                    = 'lessThanOrEqualTo';
-            $report->addFilter($endFilter);
+            if($calendar->endAttributeName != null)
+            {
+                $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
+                $endFilter->attributeIndexOrDerivedType = $calendar->endAttributeName;
+                $endFilter->value                       = 'aValue';  //todo: getEndDateTime & adjust for timezone
+                $endFilter->operator                    = 'lessThanOrEqualTo';
+                $report->addFilter($endFilter);
+                $report->setFiltersStructure('1 AND 2');
+            }
+            else
+            {
+                $report->setFiltersStructure('1');
+            }
 
-
-
-            $report->setFiltersStructure('1 AND 2'); //todo: change this once we add filtering in to the user interface for saved calendar
+            //$report->setFiltersStructure('1 AND 2'); //todo: change this once we add filtering in to the user interface for saved calendar
             //todo outline future extra filters - need to use $calendar->serializedData['filters'] to convert to extra filters
             //todo then we can add to the filter structure.
 
-            $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelClassName(),
+            $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                     $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'id';
             $report->addDisplayAttribute($displayAttribute);
@@ -202,11 +202,11 @@
             return $report;
         }
 
-        protected function resolveRedBeanModelsToCalendarItems(& $calendarItems, array $models)
+        protected function resolveRedBeanModelsToCalendarItems(& $calendarItems, array $models, SavedCalendar $savedCalendar)
         {
             foreach($models as $model)
             {
-                $calendarItems[] = CalendarUtil::makeCalendarItemByModel($model, $this->savedCalendar);
+                $calendarItems[] = CalendarUtil::makeCalendarItemByModel($model, $savedCalendar);
             }
         }
     }
