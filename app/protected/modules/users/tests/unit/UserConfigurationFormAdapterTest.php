@@ -50,11 +50,13 @@
             $sally = User::getByUsername('sally');
             Yii::app()->pagination->setGlobalValueByType('listPageSize',      50);
             Yii::app()->pagination->setGlobalValueByType('subListPageSize',   51);
+            Yii::app()->pagination->setGlobalValueByType('dashboardListPageSize',   52);
 
             //Confirm sally's configuration is the defaults.
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
             $this->assertEquals(50,                 $form->listPageSize);
             $this->assertEquals(51,                 $form->subListPageSize);
+            $this->assertEquals(52,                 $form->dashboardListPageSize);
             $this->assertEquals('blue',             Yii::app()->themeManager->resolveAndGetThemeColorValue($sally));
             $this->assertEquals(null,               Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($sally));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'hideWelcomeView'));
@@ -78,6 +80,7 @@
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals(50,                 $form->listPageSize);
             $this->assertEquals(51,                 $form->subListPageSize);
+            $this->assertEquals(52,                 $form->dashboardListPageSize);
             $this->assertEquals('blue',             Yii::app()->themeManager->resolveAndGetThemeColorValue($billy));
             $this->assertEquals(null,               Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($billy));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'hideWelcomeView'));
@@ -91,6 +94,7 @@
             //Now change configuration for Billy.
             $form->listPageSize                     = 60;
             $form->subListPageSize                  = 61;
+            $form->dashboardListPageSize            = 62;
             $form->themeColor                       = 'lime';
             $form->backgroundTexture                = 'paper';
             $form->hideWelcomeView                  = true;
@@ -106,6 +110,7 @@
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals(60,                 $form->listPageSize);
             $this->assertEquals(61,                 $form->subListPageSize);
+            $this->assertEquals(62,                 $form->dashboardListPageSize);
             $this->assertEquals('lime',             Yii::app()->themeManager->resolveAndGetThemeColorValue($billy));
             $this->assertEquals('paper',            Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($billy));
             $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'hideWelcomeView'));
@@ -128,6 +133,7 @@
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
             $this->assertEquals(60,                 $form->listPageSize);
             $this->assertEquals(61,                 $form->subListPageSize);
+            $this->assertEquals(62,                 $form->dashboardListPageSize);
             $this->assertEquals('lime',             Yii::app()->themeManager->resolveAndGetThemeColorValue($sally));
             $this->assertEquals('paper',            Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($sally));
             $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'hideWelcomeView'));

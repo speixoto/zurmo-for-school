@@ -5476,6 +5476,7 @@ div.radio-input .hasDropDown {
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
+#GameRewardsSearchForm_filteredBy_area,
 #MashableInboxForm_filteredBy_area,
 #MashableInboxForm_optionForModel_area,
 .latest-activity-toolbar,
@@ -5483,6 +5484,7 @@ div.radio-input .hasDropDown {
   font-size: 11px;
   padding-left: 8px;
 }
+#GameRewardsSearchForm_filteredBy_area label,
 #MashableInboxForm_filteredBy_area label,
 #MashableInboxForm_optionForModel_area label,
 .latest-activity-toolbar label,
@@ -5495,6 +5497,7 @@ div.radio-input .hasDropDown {
   margin: 0 3px;
   white-space: nowrap;
 }
+#GameRewardsSearchForm_filteredBy_area label:hover,
 #MashableInboxForm_filteredBy_area label:hover,
 #MashableInboxForm_optionForModel_area label:hover,
 .latest-activity-toolbar label:hover,
@@ -5508,6 +5511,8 @@ div.radio-input .hasDropDown {
   border: none;
   background-color: #2B434F !important;
 }
+#GameRewardsSearchForm_filteredBy_area input[type="radio"],
+#GameRewardsSearchForm_filteredBy_area input[type="checkbox"],
 #MashableInboxForm_filteredBy_area input[type="radio"],
 #MashableInboxForm_filteredBy_area input[type="checkbox"],
 #MashableInboxForm_optionForModel_area input[type="radio"],
@@ -5519,6 +5524,7 @@ div.radio-input .hasDropDown {
   visibility: hidden;
   display: none;
 }
+#GameRewardsSearchForm_filteredBy_area .ui-state-active,
 #MashableInboxForm_filteredBy_area .ui-state-active,
 #MashableInboxForm_optionForModel_area .ui-state-active,
 .latest-activity-toolbar .ui-state-active,
@@ -5532,12 +5538,22 @@ div.radio-input .hasDropDown {
   border: none;
   background-color: #2B434F !important;
 }
+#GameRewardsSearchForm_filteredBy_area .ui-button-text,
 #MashableInboxForm_filteredBy_area .ui-button-text,
 #MashableInboxForm_optionForModel_area .ui-button-text,
 .latest-activity-toolbar .ui-button-text,
 .filter-portlet-model-bar .ui-button-text {
   padding: 0;
   margin: 0;
+}
+#GameRewardsSearchForm_filteredBy_area {
+  display: inline-block;
+  margin-left: 15px;
+  left: 320px;
+  top: 21px !important;
+}
+#GameRewardsSearchForm_filteredBy_area label {
+  float: none;
 }
 .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;
@@ -6406,6 +6422,7 @@ i[class^="icon"] {
 .icon-details:after {
   content: 'T';
 }
+.icon-config:after,
 .icon-options:after {
   content: "n";
 }
@@ -6594,6 +6611,9 @@ i[class^="icon"] {
 }
 .icon-x:before {
   content: "•";
+}
+.icon-google:after {
+  content: '\221E';
 }
 .pillbox .icon-projects-list {
   font-size: 22px;
@@ -6938,6 +6958,8 @@ input[type="button"].portlet-create-button:focus {
   font-size: 11px;
   color: #2B434F;
   border: none !important;
+  text-decoration: underline;
+  overflow: hidden;
 }
 .simple-link:before,
 .simple-link:after {
@@ -13878,6 +13900,7 @@ a.user-link {
 .remove-action-row-link {
   position: relative;
   top: -9px;
+  margin-left: 10px;
 }
 .dynamic-row.clone {
   padding: 15px;
@@ -15140,11 +15163,7 @@ a.user-link {
 }
 .marketing-graph {
   float: left;
-  margin-left: 2%;
-  padding-bottom: 15px;
-}
-.marketing-graph:first-child {
-  margin-left: 0;
+  padding: 0 5px 15px 5px;
 }
 .marketing-graph h3 {
   padding-left: 15px;
@@ -15440,6 +15459,7 @@ a + .autoresponder-stats {
   -o-box-shadow: inset 0 0 1px 1px #efefef;
   box-shadow: inset 0 0 1px 1px #efefef;
 }
+.gmail-user-stage-status,
 .import-item-stage-status,
 .email-recipient-stage-status {
   text-align: center;
@@ -15457,6 +15477,7 @@ a + .autoresponder-stats {
   display: inline-block;
   border-left: 1px solid #bababa;
 }
+.gmail-user-stage-status.stage-true i,
 .import-item-stage-status.stage-true i,
 .email-recipient-stage-status.stage-true i {
   color: #97c43d;
@@ -15466,6 +15487,7 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #97c43d;
   text-shadow: 0 0 5px #97c43d;
 }
+.gmail-user-stage-status.stage-false i,
 .import-item-stage-status.stage-false i,
 .email-recipient-stage-status.stage-false i {
   color: #c43d53;
@@ -15475,6 +15497,7 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #c43d53;
   text-shadow: 0 0 5px #c43d53;
 }
+.gmail-user-stage-status i,
 .import-item-stage-status i,
 .email-recipient-stage-status i {
   font-weight: bold;
@@ -15487,10 +15510,12 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
 }
+.gmail-user-stage-status:first-child,
 .import-item-stage-status:first-child,
 .email-recipient-stage-status:first-child {
   border-left: none;
 }
+.gmail-user-stage-status span,
 .import-item-stage-status span,
 .email-recipient-stage-status span {
   font-size: 10px;
@@ -19110,63 +19135,66 @@ a + .project-stats {
   color: #c05d91 !important;
 }
 .chosen-entries .merge-color-1 a:hover,
-.merge-color-1.selected a {
+.merge-color-1.selected {
   border: 2px solid #315AB0;
   background: #315AB0;
   color: #fff !important;
 }
 .chosen-entries .merge-color-2 a:hover,
-.merge-color-2.selected a {
+.merge-color-2.selected {
   border: 2px solid #66367b;
   background: #66367b;
   color: #fff !important;
 }
 .chosen-entries .merge-color-3 a:hover,
-.merge-color-3.selected a {
+.merge-color-3.selected {
   border: 2px solid #2c3e50;
   background: #2c3e50;
   color: #fff !important;
 }
 .chosen-entries .merge-color-4 a:hover,
-.merge-color-4.selected a {
+.merge-color-4.selected {
   border: 2px solid #269a55;
   background: #269a55;
   color: #fff !important;
 }
 .chosen-entries .merge-color-5 a:hover,
-.merge-color-5.selected a {
+.merge-color-5.selected {
   border: 2px solid #c0392b;
   background: #c0392b;
   color: #fff !important;
 }
 .chosen-entries .merge-color-6 a:hover,
-.merge-color-6.selected a {
+.merge-color-6.selected {
   border: 2px solid #e67e22;
   background: #e67e22;
   color: #fff !important;
 }
 .chosen-entries .merge-color-7 a:hover,
-.merge-color-7.selected a {
+.merge-color-7.selected {
   border: 2px solid #3498db;
   background: #3498db;
   color: #fff !important;
 }
 .chosen-entries .merge-color-8 a:hover,
-.merge-color-8.selected a {
+.merge-color-8.selected {
   border: 2px solid #501a27;
   background: #501a27;
   color: #fff !important;
 }
 .chosen-entries .merge-color-9 a:hover,
-.merge-color-9.selected a {
+.merge-color-9.selected {
   border: 2px solid #0c5b3f;
   background: #0c5b3f;
   color: #fff !important;
 }
 .chosen-entries .merge-color-10 a:hover,
-.merge-color-10.selected a {
+.merge-color-10.selected {
   border: 2px solid #c05d91;
   background: #c05d91;
+  color: #fff !important;
+}
+.chosen-entries .selected a {
   color: #fff !important;
 }
 .details-item-editable > label {

@@ -34,34 +34,18 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class GameRewardsSearchForm extends SavedDynamicSearchForm
+    /**
+     * Column adapter for type dropdown in reports for Product Templates
+     */
+    class EmailMessageRecipientTypeDropDownForReportListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        const FILTERED_BY_ALL = 'all';
-
-        const FILTERED_BY_CAN_REDEEM = 'canRedeem';
-
-        public $filteredBy = self::FILTERED_BY_ALL;
-
-        /**
-         * @return string|void
-         */
-        protected static function getRedBeanModelClassName()
+        public function renderGridViewData()
         {
-            return 'GameReward';
-        }
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('filteredBy', 'type', 'type' => 'string'),
-            ));
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                'filteredBy'      => Zurmo::t('GameRewardsModule', 'Filtered By'),
-            ));
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'EmailMessageRecipientTypeDropDownElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
+                    'type'  => 'raw',
+                );
         }
     }
 ?>

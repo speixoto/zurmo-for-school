@@ -48,6 +48,8 @@
 
         public $subListPageSize;
 
+        public $dashboardListPageSize;
+
         public $themeColor;
 
         public $backgroundTexture;
@@ -105,6 +107,9 @@
                 array('subListPageSize',                'required'),
                 array('subListPageSize',                'type',      'type' => 'integer'),
                 array('subListPageSize',                'numerical', 'min' => 1),
+                array('dashboardListPageSize',          'required'),
+                array('dashboardListPageSize',          'type',      'type' => 'integer'),
+                array('dashboardListPageSize',          'numerical', 'min' => 1),
                 array('themeColor',                     'required'),
                 array('themeColor',                     'type',      'type' => 'string'),
                 array('backgroundTexture',              'type',      'type' => 'string'),
@@ -125,6 +130,7 @@
             return array(
                 'listPageSize'                  => Zurmo::t('ZurmoModule', 'List page size'),
                 'subListPageSize'               => Zurmo::t('ZurmoModule', 'Sublist page size'),
+                'dashboardListPageSize'         => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'themeColor'                    => Zurmo::t('Core', 'Theme'),
                 'backgroundTexture'             => Zurmo::t('UsersModule', 'Texture'),
                 'hideWelcomeView'               => Zurmo::t('UsersModule', 'Hide welcome page'),

@@ -33,35 +33,19 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    class GameRewardsSearchForm extends SavedDynamicSearchForm
+    /**
+     * Type dropdown element for emailMessageRecipient type
+     */
+    class EmailMessageRecipientTypeDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
-        const FILTERED_BY_ALL = 'all';
-
-        const FILTERED_BY_CAN_REDEEM = 'canRedeem';
-
-        public $filteredBy = self::FILTERED_BY_ALL;
+        protected static $attributeName = 'type';
 
         /**
-         * @return string|void
+         * @return array
          */
-        protected static function getRedBeanModelClassName()
+        protected static function resolveDropDownArray()
         {
-            return 'GameReward';
-        }
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('filteredBy', 'type', 'type' => 'string'),
-            ));
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                'filteredBy'      => Zurmo::t('GameRewardsModule', 'Filtered By'),
-            ));
+            return EmailMessageRecipient::getRecipientTypesArray();
         }
     }
 ?>

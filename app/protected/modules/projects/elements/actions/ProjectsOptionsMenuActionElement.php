@@ -60,7 +60,9 @@
             $deleteElementContent   = $deleteElement->renderMenuItem();
             $editElement            = new EditLinkActionElement($this->controllerId, $this->params["relationModuleId"], $this->modelId);
             $editElementContent     = $editElement->renderMenuItem();
-            $menuItems              = array( $editElementContent, $deleteElementContent);
+            $copyElement            = new CopyLinkActionElement($this->controllerId, $this->params["relationModuleId"], $this->modelId);
+            $copyElementContent     = $copyElement->renderMenuItem();
+            $menuItems              = array( $editElementContent, $copyElementContent, $deleteElementContent);
             return $menuItems;
         }
     }

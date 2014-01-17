@@ -48,7 +48,9 @@
             parent::copy($model, $copyToModel);
             foreach ($model->checkListItems as $checkListItem)
             {
-                $copyToModel->checkListItems->add($checkListItem);
+                $taskCheckListItem            = new TaskCheckListItem();
+                $taskCheckListItem->name      = $checkListItem->name;
+                $copyToModel->checkListItems->add($taskCheckListItem);
             }
         }
     }

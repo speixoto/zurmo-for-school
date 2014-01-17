@@ -101,7 +101,7 @@
             $this->assertEquals(0, count($primaryModel->projects));
             $project = ProjectTestHelper::createProjectByNameForOwner($this->modelClass . ' Project', Yii::app()->user->userModel);
             $project->$relatedFieldName->add($this->selectedModels[1]);
-            assert($project->save());
+            assert($project->save()); // Not Coding Standard
         }
 
         protected function validateProject()
