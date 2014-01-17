@@ -146,9 +146,9 @@
         protected function resolveRedBeanModelsByCalendar(SavedCalendar $calendar)
         {
             $models             = array();
-            $report             = $this-> makeReportBySavedCalendar($calendar);
+            $report             = $this->makeReportBySavedCalendar($calendar);
             $reportDataProvider = new RowsAndColumnsReportDataProvider($report);
-            $reportResultsRows = $reportDataProvider->getData();
+            $reportResultsRows  = $reportDataProvider->getData();
             foreach($reportResultsRows as $reportResultsRowData)
             {
                 $models[] = $reportResultsRowData->getModel('attribute0'); //todo: even though it is 0 because we only have one displayAttribute, we should
@@ -208,6 +208,46 @@
             {
                 $calendarItems[] = CalendarUtil::makeCalendarItemByModel($model, $savedCalendar);
             }
+        }
+
+        public function getModuleClassName()
+        {
+            return $this->moduleClassName;
+        }
+
+        public function getStartDateTime()
+        {
+            return $this->startDateTime;
+        }
+
+        public function getEndDateTime()
+        {
+            return $this->endDateTime;
+        }
+
+        public function setModuleClassName($moduleClassName)
+        {
+            $this->moduleClassName = $moduleClassName;
+        }
+
+        public function setStartDateTime($startDateTime)
+        {
+            $this->startDateTime = $startDateTime;
+        }
+
+        public function setEndDateTime($endDateTime)
+        {
+            $this->endDateTime = $endDateTime;
+        }
+
+        public function getSavedCalendarSubscriptions()
+        {
+            return $this->savedCalendarSubscriptions;
+        }
+
+        public function setSavedCalendarSubscriptions($savedCalendarSubscriptions)
+        {
+            $this->savedCalendarSubscriptions = $savedCalendarSubscriptions;
         }
     }
 ?>

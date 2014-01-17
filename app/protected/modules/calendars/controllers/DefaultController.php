@@ -156,13 +156,7 @@
 
         public function actionCombinedDetails()
         {
-            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
-            $dateRangeType              = CalendarUtil::getDateRangeType(); //is this sticky? maybe this is sticky
-            $startDateTime              = CalendarUtil::getStartDateTime(); //is this sticky? i dont know. maybe it defaults to TODAY
-            $endDateTime                = CalendarUtil::getEndDateTime();
-
-            $dateProvider               = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
-                                                                                                $startDateTime, $endDateTime, $dateRangeType);
+            $dataProvider               = CalendarUtil::processUserCalendarsAndGetDataProviderForCombinedView();
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider);
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                               makeStandardViewForCurrentUser($this,$interactiveCalendarView));

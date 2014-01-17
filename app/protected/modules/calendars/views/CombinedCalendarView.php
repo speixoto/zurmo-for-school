@@ -66,7 +66,7 @@
         public function __construct(CalendarItemsDataProvider $dataProvider)
         {
             $this->dataProvider               = $dataProvider;
-            $this->savedCalendarSubscriptions = $this->dataProvider->savedCalendarSubscriptions;
+            $this->savedCalendarSubscriptions = $this->dataProvider->getSavedCalendarSubscriptions();
         }
 
         protected function renderContent()

@@ -36,6 +36,12 @@
 
     class CalendarUtil
     {
+        /**
+         * Make calendar items by model.
+         * @param RedBeanModel $model
+         * @param SavedCalendar $savedCalendar
+         * @return CalendarItem
+         */
         public static function makeCalendarItemByModel(RedBeanModel $model, SavedCalendar $savedCalendar)
         {
             $calendarItem   = new CalendarItem();
@@ -124,6 +130,10 @@
             return SavedCalendar::getSubset($joinTablesAdapter, null, null, $where);
         }
 
+        /**
+         * Process user calendars and get data provider.
+         * @return CalendarItemsDataProvider
+         */
         public static function processUserCalendarsAndGetDataProviderForCombinedView()
         {
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);

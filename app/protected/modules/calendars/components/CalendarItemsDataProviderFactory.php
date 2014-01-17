@@ -41,8 +41,9 @@
     class CalendarItemsDataProviderFactory
     {
         public static function getDataProviderByDateRangeType($savedCalendarSubscriptions,
-                                                                 $startDateTime,
-                                                                 $endDateTime, $dateRangeType)
+                                                              $startDateTime,
+                                                              $endDateTime,
+                                                              $dateRangeType)
         {
             $dataProviderClassName = $dateRangeType . 'CalendarItemsDataProvider';
             if (@class_exists($dataProviderClassName))
