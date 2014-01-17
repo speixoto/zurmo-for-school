@@ -35,37 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Used to observe when a model that can be an activityItem is deleted so that the activity_item can be properly removed.
+     * Base observer class. Extend as needed
      */
-    class ActivitiesObserver extends BaseObserver
+    abstract class BaseObserver extends CComponent
     {
-        public function init()
-        {
-            $metadata                = Activity::getMetadata();
-            $observedModelClassNames = $metadata['Activity']['activityItemsModelClassNames'];
-            if ($observedModelClassNames == null)
-            {
-                return;
-            }
-            foreach ($observedModelClassNames as $modelClassName)
-            {
-                $eventHandler = array($this, 'deleteActivityItems');
-                $modelClassName::model()->attachEventHandler('onAfterDelete', $eventHandler);
-                $this->attachedEventHandlersIndexedByModelClassName[$modelClassName] = array('onAfterDelete', $eventHandler);
-            }
-        }
+        protected $attachedEventHandlersIndexedByModelClassName = array();
 
         /**
-         * Given a event, perform the deletion of activityItems related to the event sender.
-         * @param CEvent $event
+         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
          */
-        public function deleteActivityItems(CEvent $event)
+        public function destroy()
         {
-            $model                   = $event->sender;
-            assert('$model instanceof Item');
-            $itemId                  = $model->getClassId('Item');
-            $sql                     = 'DELETE from activity_item where item_id = ' . $itemId;
-            ZurmoRedBean::exec($sql);
+            foreach ($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
+            {
+                $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
+            }
         }
     }
 ?>
