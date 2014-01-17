@@ -47,15 +47,21 @@
     {
         public static $activateDefaultLanguages = true;
 
+        protected static $account;
+
+        protected static $account2;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            $super                      = User::getByUsername('super');
+            $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             Currency::makeBaseCurrency();
-            //Create a account for testing
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+
+            //Setup test data owned by the super user.
+            self::$account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            self::$account2 = AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
         }
 
         public function testSuperUserAccountAccountAffiliationDefaultControllerActions()
@@ -87,14 +93,14 @@
             $this->setPostArray(array('ajax' => 'edit-form',
                 'AccountAccountAffiliationsModuleForm' => $this->createModuleEditBadValidationPostData()));
             $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/moduleEdit');
-            
+
             //Now validate save with successful validation.
             $this->setGetArray(array('moduleClassName' => 'AccountAccountAffiliationsModule'));
             $this->setPostArray(array('ajax' => 'edit-form',
                 'AccountAccountAffiliationsModuleForm' => $this->createModuleEditGoodValidationPostData('acc new name')));
             $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/moduleEdit');
             $this->assertEquals('[]', $content);
-           
+
             //Load LayoutEdit for each applicable module and applicable layout
             $this->resetPostArray();
             $this->setGetArray(array('moduleClassName' => 'AccountAccountAffiliationsModule',
@@ -104,7 +110,7 @@
                                      'viewClassName'   => 'AccountAccountAffiliationsRelatedListView'));
             $this->runControllerWithNoExceptionsAndGetContent('designer/default/LayoutEdit');
         }
-        
+
         /**
          * @depends testSuperUserAccountAccountAffiliationDefaultControllerActions
          */
@@ -118,9 +124,6 @@
 
             //View creation screen, then create custom field for each custom field type.
             $this->createCheckBoxCustomFieldByModule            ('AccountAccountAffiliationsModule', 'checkbox');
-            $this->createCurrencyValueCustomFieldByModule       ('AccountAccountAffiliationsModule', 'currency');
-            $this->createDateCustomFieldByModule                ('AccountAccountAffiliationsModule', 'date');
-            $this->createDateTimeCustomFieldByModule            ('AccountAccountAffiliationsModule', 'datetime');
             $this->createDecimalCustomFieldByModule             ('AccountAccountAffiliationsModule', 'decimal');
             $this->createDropDownCustomFieldByModule            ('AccountAccountAffiliationsModule', 'picklist');
             $this->createDependentDropDownCustomFieldByModule   ('AccountAccountAffiliationsModule', 'countrylist');
@@ -137,7 +140,7 @@
             $this->createTextAreaCustomFieldByModule            ('AccountAccountAffiliationsModule', 'textarea');
             $this->createUrlCustomFieldByModule                 ('AccountAccountAffiliationsModule', 'url');
         }
-        
+
         /**
          * @depends testSuperUserCustomFieldsWalkthroughForAccountAccountAffiliationsModule
          */
@@ -145,10 +148,10 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Add custom fields to AccountEditAndDetailsView.
+            //Add custom fields to AccountAccountAffiliationEditAndDetailsView.
             $this->setGetArray(array('moduleClassName' => 'AccountAccountAffiliationsModule',
                                      'viewClassName'   => 'AccountAccountAffiliationEditAndDetailsView'));
-            $layout = AccountAccountAffiliationsDesignerWalkthroughHelperUtil::getAccountEditAndDetailsViewLayoutWithAllCustomFieldsPlaced();
+            $layout = AccountAccountAffiliationsDesignerWalkthroughHelperUtil::getAccountAccountAffiliationEditAndDetailsViewLayoutWithAllCustomFieldsPlaced();
             $this->setPostArray(array('save'  => 'Save', 'layout' => $layout,
                                       'LayoutPanelsTypeForm' => array('type' => FormLayout::PANELS_DISPLAY_TYPE_ALL)));
             $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
@@ -157,10 +160,36 @@
             //Add all fields to AccountsRelatedListView.
             $this->setGetArray(array('moduleClassName' => 'AccountsModule',
                                      'viewClassName'   => 'AccountsRelatedListView'));
-            $layout = AccountsDesignerWalkthroughHelperUtil::getAccountsListViewLayoutWithAllStandardAndCustomFieldsPlaced();
+            $layout = AccountAccountAffiliationsDesignerWalkthroughHelperUtil::getAccountAccountAffiliationsRelatedListViewLayoutWithAllStandardAndCustomFieldsPlaced();
             $this->setPostArray(array('save'  => 'Save', 'layout' => $layout));
             $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
             $this->assertFalse(strpos($content, 'Layout saved successfully') === false);
+        }
+
+        /**
+         * @depends testSuperUserCustomFieldsWalkthroughForAccountAccountAffiliationsModule
+         */
+        public function testLayoutsLoadOkAfterCustomFieldsPlacedForAccountAccountAffiliationsModule()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //Load create, edit views.
+            $this->runControllerWithNoExceptionsAndGetContent('accountAccountAffiliations/default/create');
+            $accountAccountAffiliations = AccountAccountAffiliation::getAll();
+            $this->assertEquals(0, count($accountAccountAffiliations));
+
+            //Create a new AccountAccountAffiliation from a related account.
+            $this->setGetArray(array(   'relationAttributeName' => 'primaryAccount',
+                                        'relationModelId'       => self::$account2->id,
+                                        'relationModuleId'      => 'accounts',
+                                        'redirectUrl'           => 'someRedirect'));
+            $this->setPostArray(array('AccountAccountAffiliation' => array(
+                                        'secondaryAccount'   => array('id' => self::$account->id))));
+            $this->runControllerWithRedirectExceptionAndGetContent('accountAccountAffiliations/default/createFromRelation');
+
+            $accountAccountAffiliations = AccountAccountAffiliation::getAll();
+            $this->assertEquals(1, count($accountAccountAffiliations));
+            $this->setGetArray(array('id' => $accountAccountAffiliations[0]->id));
+            $this->runControllerWithRedirectExceptionAndGetContent('accountAccountAffiliations/default/edit');
         }
     }
 ?>

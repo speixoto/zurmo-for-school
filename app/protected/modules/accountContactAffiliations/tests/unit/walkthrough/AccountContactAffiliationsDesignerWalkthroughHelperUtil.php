@@ -37,9 +37,9 @@
     /**
      * Helper functions to assist with testing designer walkthroughs specifically for account layouts.
      */
-    class AccountAccountAffiliationsDesignerWalkthroughHelperUtil
+    class AccountContactAffiliationsDesignerWalkthroughHelperUtil
     {
-        public static function getAccountAccountAffiliationEditAndDetailsViewLayoutWithAllCustomFieldsPlaced()
+        public static function getAccountContactAffiliationEditAndDetailsViewLayoutWithAllCustomFieldsPlaced()
         {
             return array(
                     'panels' => array(
@@ -50,14 +50,28 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'primaryAccount',
+                                            'element' => 'role',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'secondaryAccount',
+                                            'element' => 'account',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'contact',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'primary',
                                         ),
                                     )
                                 ),
@@ -233,7 +247,7 @@
         /**
          * Can be use for listView or relatedListView.
          */
-        public static function getAccountAccountAffiliationsRelatedListViewLayoutWithAllStandardAndCustomFieldsPlaced()
+        public static function getContactAffiliationsForAccountRelatedListViewLayoutWithAllStandardAndCustomFieldsPlaced()
         {
             return array(
                     'panels' => array(
@@ -242,14 +256,28 @@
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'primaryAccount',
+                                            'element' => 'role',
                                         ),
                                     )
                                 ),
                                 array('cells' =>
                                     array(
                                         array(
-                                            'element' => 'secondaryAccount',
+                                            'element' => 'account',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'contact',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'element' => 'primary',
                                         ),
                                     )
                                 ),
