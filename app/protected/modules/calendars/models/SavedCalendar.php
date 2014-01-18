@@ -117,6 +117,7 @@
                     'moduleClassName',
                     'startAttributeName',
                     'endAttributeName',
+                    'serializedData',
                     'timeZone'
                 ),
                 'relations' => array(),
@@ -131,6 +132,8 @@
                     array('startAttributeName',    'required'),
                     array('startAttributeName',    'type', 'type' => 'string'),
                     array('endAttributeName',    'type', 'type' => 'string'),
+                    array('serializedData',      'required'),
+                    array('serializedData',      'type', 'type' => 'string'),
                     array('timeZone',         'type',    'type'  => 'string'),
                     array('timeZone',         'length',  'max'   => 64),
                     array('timeZone',         'UserDefaultTimeZoneDefaultValueValidator'),

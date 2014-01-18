@@ -42,9 +42,9 @@
 
         protected $savedCalendar;
 
-        protected $startDateTime;
+        protected $startDate;
 
-        protected $endDateTime;
+        protected $endDate;
 
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
@@ -162,43 +162,41 @@
             return $models;
         }
 
-        protected function makeReportBySavedCalendar(SavedCalendar $calendar)
+        protected function makeReportBySavedCalendar(SavedCalendar $savedCalendar)
         {
-            //todO: what about the start/end filter? we need to pass that into the data provider or do we? like if we are showing march 2014
-            //todo; we need the start/end for that
-            $moduleClassName  = $calendar->moduleClassName;
-            $report           = new Report();
-            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
-            $report->setModuleClassName($moduleClassName);
-
+            $moduleClassName  = $savedCalendar->moduleClassName;
+            $report           = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
+            $existingFilters  = $report->getFilters();
             $startFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
-            $startFilter->attributeIndexOrDerivedType = $calendar->startAttributeName;
-            $startFilter->value                       = '1980-06-03'; //todo: getStartDate & adjust for timezone (NOT DATETIME)
+            $startFilter->attributeIndexOrDerivedType = $savedCalendar->startAttributeName;
+            $startFilter->value                       = $this->startDate;
             $startFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER;
             $report->addFilter($startFilter);
             $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
-            if($calendar->endAttributeName != null)
+            if($savedCalendar->endAttributeName != null)
             {
-                $endFilter->attributeIndexOrDerivedType = $calendar->endAttributeName;
+                $endFilter->attributeIndexOrDerivedType = $savedCalendar->endAttributeName;
             }
             else
             {
-                $endFilter->attributeIndexOrDerivedType = $calendar->startAttributeName;
+                $endFilter->attributeIndexOrDerivedType = $savedCalendar->startAttributeName;
             }
-            $endFilter->value                       = '1980-06-03';  //todo: getEndDate & adjust for timezone (NOT DATETIME)
+            $endFilter->value                       = $this->endDate;
             $endFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE;
             $report->addFilter($endFilter);
-            $report->setFiltersStructure('1 AND 2');
-
-            //$report->setFiltersStructure('1 AND 2'); //todo: change this once we add filtering in to the user interface for saved calendar
-            //todo outline future extra filters - need to use $calendar->serializedData['filters'] to convert to extra filters
-            //todo then we can add to the filter structure.
-
+            if(count($existingFilters) > 0)
+            {
+                $report->setFiltersStructure($report->getFiltersStructure() .
+                                             '(' . (count($existingFilters) + 1) . ' AND ' . ($existingFilters + 2) . ')');
+            }
+            else
+            {
+                $report->setFiltersStructure('1 AND 2');
+            }
             $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                     $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'id';
             $report->addDisplayAttribute($displayAttribute);
-
             return $report;
         }
 
@@ -215,14 +213,14 @@
             return $this->moduleClassName;
         }
 
-        public function getStartDateTime()
+        public function getStartDate()
         {
-            return $this->startDateTime;
+            return $this->startDate;
         }
 
-        public function getEndDateTime()
+        public function getEndDate()
         {
-            return $this->endDateTime;
+            return $this->endDate;
         }
 
         public function setModuleClassName($moduleClassName)

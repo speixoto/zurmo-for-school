@@ -50,23 +50,23 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testGetStartDateTime()
+        public function testGetStartDate()
         {
-            $startDateTime = CalendarUtil::getStartDateTime(SavedCalendar::DATERANGE_TYPE_MONTH);
+            $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_MONTH);
             $this->assertEquals(date('Y-m-01') . ' 00:00:00', $startDateTime);
-            $startDateTime = CalendarUtil::getStartDateTime(SavedCalendar::DATERANGE_TYPE_WEEK);
+            $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_WEEK);
             $this->assertEquals(date('Y-m-d H:i:s', strtotime('last monday', strtotime('tomorrow'))), $startDateTime);
-            $startDateTime = CalendarUtil::getStartDateTime(SavedCalendar::DATERANGE_TYPE_DAY);
+            $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_DAY);
             $this->assertEquals(date('Y-m-d') . ' 00:00:00', $startDateTime);
         }
 
-        public function testGetEndDateTime()
+        public function testGetEndDate()
         {
-            $endDateTime = CalendarUtil::getEndDateTime(SavedCalendar::DATERANGE_TYPE_MONTH);
+            $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_MONTH);
             $this->assertEquals(date('Y-m-d', strtotime('first day of next month')) . ' 00:00:00', $endDateTime);
-            $endDateTime = CalendarUtil::getEndDateTime(SavedCalendar::DATERANGE_TYPE_WEEK);
+            $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_WEEK);
             $this->assertEquals(date('Y-m-d', strtotime('first day of next week')) . ' 00:00:00', $endDateTime);
-            $endDateTime = CalendarUtil::getEndDateTime(SavedCalendar::DATERANGE_TYPE_DAY);
+            $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_DAY);
             $this->assertEquals(date('Y-m-d', strtotime('tomorrow')) . ' 00:00:00', $endDateTime);
         }
 
@@ -83,9 +83,9 @@
             $this->assertCount(1, $calendars);
         }
 
-        public function testProcessUserCalendarsAndGetDataProviderForCombinedView()
+        public function testProcessUserCalendarsAndMakeDataProviderForCombinedView()
         {
-            $dp = CalendarUtil::processUserCalendarsAndGetDataProviderForCombinedView();
+            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
             $calendarItems = $dp->getData();
             $this->assertCount(2, $calendarItems);
             $this->assertEquals('First Product', $calendarItems[0]->getTitle());

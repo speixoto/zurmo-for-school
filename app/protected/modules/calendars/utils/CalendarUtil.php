@@ -65,46 +65,42 @@
             return SavedCalendar::DATERANGE_TYPE_MONTH;
         }
 
-        public static function getStartDateTime($dateRangeType)
+        public static function getStartDate($dateRangeType)
         {
             assert('is_string($dateRangeType)');
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_MONTH)
             {
-                return DateTimeUtil::getFirstDayOfAMonthDate() . ' 00:00:00';
+                return DateTimeUtil::getFirstDayOfAMonthDate();
             }
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_WEEK)
             {
-                return DateTimeUtil::getFirstDayOfAWeek() . ' 00:00:00';
+                return DateTimeUtil::getFirstDayOfAWeek();
             }
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_DAY)
             {
-                return DateTimeUtil::getTodaysDate() . ' 00:00:00';
+                return DateTimeUtil::getTodaysDate();
             }
         }
 
-        public static function getEndDateTime($dateRangeType)
+        public static function getEndDate($dateRangeType)
         {
             assert('is_string($dateRangeType)');
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_MONTH)
             {
                 $dateTime = new DateTime();
-                $dateTime->modify('first day of next month');
+                $dateTime->modify('last day of this month');
                 return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                        $dateTime->getTimestamp()) . ' 00:00:00';
+                        $dateTime->getTimestamp());
             }
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_WEEK)
             {
-                $dateTime       = new DateTime('first day of next week');
+                $dateTime       = new DateTime('last day of this week');
                 return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                        $dateTime->getTimestamp()) . ' 00:00:00';
+                        $dateTime->getTimestamp());
             }
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_DAY)
             {
-                $today    = DateTimeUtil::getTodaysDate();
-                $dateTime = new DateTime($today);
-                $dateTime->add(new DateInterval('P1D'));
-                return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                        $dateTime->getTimestamp()) . ' 00:00:00';
+                return DateTimeUtil::getTodaysDate();
             }
         }
 
@@ -134,15 +130,14 @@
          * Process user calendars and get data provider.
          * @return CalendarItemsDataProvider
          */
-        public static function processUserCalendarsAndGetDataProviderForCombinedView()
+        public static function processUserCalendarsAndMakeDataProviderForCombinedView()
         {
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
             $dateRangeType              = CalendarUtil::getDateRangeType(); //is this sticky? maybe this is sticky
-            $startDateTime              = CalendarUtil::getStartDateTime($dateRangeType); //is this sticky? i dont know. maybe it defaults to TODAY
-            $endDateTime                = CalendarUtil::getEndDateTime($dateRangeType);
-
+            $startDate                  = CalendarUtil::getStartDate($dateRangeType); //is this sticky? i dont know. maybe it defaults to TODAY
+            $endDate                     = CalendarUtil::getEndDate($dateRangeType);
             $dataProvider               = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
-                                                                                                $startDateTime, $endDateTime, $dateRangeType);
+                                                                                                $startDate, $endDate, $dateRangeType);
             return $dataProvider;
         }
 

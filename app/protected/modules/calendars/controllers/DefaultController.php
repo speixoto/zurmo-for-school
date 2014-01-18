@@ -156,7 +156,7 @@
 
         public function actionCombinedDetails()
         {
-            $dataProvider               = CalendarUtil::processUserCalendarsAndGetDataProviderForCombinedView();
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider);
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                               makeStandardViewForCurrentUser($this,$interactiveCalendarView));

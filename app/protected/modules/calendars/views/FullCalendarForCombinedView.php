@@ -71,9 +71,9 @@
             Yii::app()->controller->widget('FullCalendar', array('inputId' => 'calendar', 'events' => $events));
             return ZurmoHtml::tag('div', array('id' => 'calendar'), '');
             //$this->dataProvider->getData() -> returns array of CalenderItems
-            //$this->dataProvider->getStartDateTime() //? returns start date time? do we need this?
-            //$this->dataProvider->endStartDateTime() //? returns start date time? do we need this?
-            //$this->dataProvider->getDateRangeType() //? returns month/day/week? so we know what kind of calendar to look at?
+            //$this->dataProvider->getStartDate()
+            //$this->dataProvider->endStartDate()
+            //$this->dataProvider->getDateRangeType()
             //@mayank, let me know the API calls we need.
         }
 
