@@ -91,10 +91,6 @@
                 $attributeData   = $metadataAdapter->getAdaptedMetadata();
                 //todo: right now in makeWhere we always set setDistinct to true when instantiating new ModelWhereAndJoinBuilder
                 //todo: but when we are calling makeWhere from here we should not set that to true. or should it? TBD
-                echo "<pre>";
-                print_r($attributeData);
-                echo "</pre>";
-
                 return ModelDataProviderUtil::makeWhere($modelClassName, $attributeData, $this->joinTablesAdapter,
                                                         $onTableAliasName);
             }
