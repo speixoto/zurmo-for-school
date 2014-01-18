@@ -173,22 +173,22 @@
 
             $startFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
             $startFilter->attributeIndexOrDerivedType = $calendar->startAttributeName;
-            $startFilter->value                       = 'aValue'; //todo: getStartDateTime & adjust for timezone
-            $startFilter->operator                    = 'greaterThanOrEqualTo';
+            $startFilter->value                       = '1980-06-03'; //todo: getStartDate & adjust for timezone (NOT DATETIME)
+            $startFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER;
             $report->addFilter($startFilter);
+            $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
             if($calendar->endAttributeName != null)
             {
-                $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
                 $endFilter->attributeIndexOrDerivedType = $calendar->endAttributeName;
-                $endFilter->value                       = 'aValue';  //todo: getEndDateTime & adjust for timezone
-                $endFilter->operator                    = 'lessThanOrEqualTo';
-                $report->addFilter($endFilter);
-                $report->setFiltersStructure('1 AND 2');
             }
             else
             {
-                $report->setFiltersStructure('1');
+                $endFilter->attributeIndexOrDerivedType = $calendar->startAttributeName;
             }
+            $endFilter->value                       = '1980-06-03';  //todo: getEndDate & adjust for timezone (NOT DATETIME)
+            $endFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE;
+            $report->addFilter($endFilter);
+            $report->setFiltersStructure('1 AND 2');
 
             //$report->setFiltersStructure('1 AND 2'); //todo: change this once we add filtering in to the user interface for saved calendar
             //todo outline future extra filters - need to use $calendar->serializedData['filters'] to convert to extra filters
