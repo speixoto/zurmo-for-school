@@ -158,7 +158,7 @@
             return true;
         }
 
-        public static function hasCalendar()
+        public static function canShowOnCalendar()
         {
             return true;
         }

@@ -35,28 +35,27 @@
      ********************************************************************************/
 
     /**
-     * Display a module drop down for calendar module.
+     * View class for the filter component used by saved calendars
      */
-    class CalendarModuleClassNameDropDownElement extends StaticDropDownFormElement
+    class SavedCalendarFiltersForReportWizardView extends FiltersForReportWizardView
     {
         /**
-         * Gets dropdown array.
-         * @return array
+         * @return string
          */
-        protected function getDropDownArray()
+        protected function getAddAttributeUrl()
         {
-            return $this->getAvailableModulesForCalendar();
+            return  Yii::app()->createUrl('calendars/default/addAttributeFromTree',
+                        array_merge($_GET, array('type'                       => $this->model->type,
+                                                 'treeType'                   => static::getTreeType(),
+                                                 'trackableStructurePosition' => true)));
         }
 
-        /**
-         * Get modules available to be used with calendar.
-         * @return array
-         */
-        protected function getAvailableModulesForCalendar()
+        protected function renderPreviousPageLinkContent()
         {
-            $moduleClassNames = SavedCalendar::getAvailableModulesForCalendar();
-            asort($moduleClassNames);
-            return $moduleClassNames;
+        }
+
+        protected function renderNextPageLinkContent()
+        {
         }
     }
 ?>

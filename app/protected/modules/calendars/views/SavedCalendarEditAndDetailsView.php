@@ -137,5 +137,52 @@
         {
             return 'CalendarsModule';
         }
+
+        protected function renderAfterFormLayout($form)
+        {
+            $content = parent::renderAfterFormLayout($form);
+            return $content . $this->renderFiltersContent($form);
+        }
+
+        protected function renderFiltersContent($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $content = null;
+            $report  = SavedCalendarToReportAdapter::makeReportBySavedCalendar($this->model);
+
+            //todo: if CREATE - then we don't have the moduleClassName....
+            //todo: need to figure out how to deal with this and default it. i think if moduleclassname is not selected, we shouldn't show 'filters' link
+            //todo: anyways. so we need to get taht working correctly.
+            //todo: maybe default moduleClassName on new saved cal to Meetings since we won't have an empty anyways.
+
+            $adapter = new ReportToWizardFormAdapter($report);
+            $reportWizardForm = $adapter->makeRowsAndColumnsWizardForm();
+
+            $filtersForReportWizardView = new SavedCalendarFiltersForReportWizardView($reportWizardForm, $form, false); //todo: maybe hide view by default or not?
+            $content .= $filtersForReportWizardView->render();
+            $this->renderFiltersScripts();
+            return $content;
+        }
+
+        protected function renderFiltersScripts()
+        {
+            Yii::app()->getClientScript()->registerCoreScript('treeview');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
+            Yii::app()->clientScript->registerScript('clickflow', "
+                function loadFiltersTreeView()
+                {
+                    " . RowsAndColumnsReportForSavedCalendarWizardView::renderTreeViewAjaxScriptContent(
+                            static::getFormId(), 'SavedCalendarFiltersForReportWizardView', Report::TYPE_ROWS_AND_COLUMNS) . "
+                }
+                loadFiltersTreeView();
+            ");
+        }
+
+        protected static function getFormClassName()
+        {
+            return 'WizardActiveForm';
+        }
     }
 ?>

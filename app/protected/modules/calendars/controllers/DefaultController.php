@@ -110,8 +110,10 @@
 
         public function actionCreate()
         {
+            $savedCalendar                  = new SavedCalendar();
+            $savedCalendar->moduleClassName = 'MeetingsModule';
             $editAndDetailsView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost(new SavedCalendar()), 'Edit');
+                                            $this->attemptToSaveModelFromPost($savedCalendar), 'Edit');
             $view               = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
             echo $view->render();
@@ -174,6 +176,85 @@
             $calendarItems = $this->dataProvider->getData();
             //todo todo convert to json
 
+        }
+
+        public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
+        {
+            $report        = $this->resolveReportBySavedCalendarPostData($type, $id);
+            if ($nodeId != null)
+            {
+                $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
+                echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
+                Yii::app()->end(0, false);
+            }
+            $view        = new ReportRelationsAndAttributesForSavedCalendarTreeView($type, $treeType, 'edit-form');
+            $content     = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
+        //todO: refactor to reuse same code in controller for reporting? do if it makes sense after done.
+        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
+                                                   $trackableStructurePosition = false, $id = null)
+        {
+            $report                             = $this->resolveReportBySavedCalendarPostData($type, $id);
+            $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
+                                                     removeTreeTypeFromNodeId($nodeId, $treeType);
+            $moduleClassName                    = $report->getModuleClassName();
+            $modelClassName                     = $moduleClassName::getPrimaryModelName();
+            $form                               = new WizardActiveForm();
+            $form->id                           = 'edit-form';
+            $form->enableAjaxValidation         = true; //ensures error validation populates correctly
+
+            $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
+            $model                              = ComponentForReportFormFactory::makeByComponentType($moduleClassName,
+                                                      $modelClassName, $report->getType(), $treeType);
+            $form->modelClassNameForError       = $wizardFormClassName;
+            $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
+            $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
+            $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveInputPrefixData($wizardFormClassName,
+                                                      $treeType, (int)$rowNumber);
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                      $form, $treeType);
+            $view                               = new AttributeRowForReportComponentView($adapter,
+                                                      (int)$rowNumber, $inputPrefixData, $attribute,
+                                                      (bool)$trackableStructurePosition, true, $treeType);
+            $content               = $view->render();
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
+        protected function resolveReportBySavedCalendarPostData($type, $id = null)
+        {
+            $postData = PostUtil::getData();
+            if ($id == null)
+            {
+                $report = new Report();
+                $report->setType($type);
+            }
+            else
+            {
+                $savedCalendar              = SavedCalendar::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
+                $report                     = SavedCalendarToReportAdapter:: makeReportBySavedCalendar($savedCalendar);
+            }
+            if(isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
+            {
+                $report->setModuleClassName($postData['SavedCalendar']['moduleClassName']);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            DataToReportUtil::resolveReportByWizardPostData($report, $postData,
+                ReportToWizardFormAdapter::getFormClassNameByType($type));
+            return $report;
         }
     }
 ?>

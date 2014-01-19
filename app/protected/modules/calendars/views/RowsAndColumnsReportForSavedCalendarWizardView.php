@@ -35,28 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Display a module drop down for calendar module.
+     * Class for working with the row and column reports in the report wizard
      */
-    class CalendarModuleClassNameDropDownElement extends StaticDropDownFormElement
+    class RowsAndColumnsReportForSavedCalendarWizardView extends RowsAndColumnsReportWizardView
     {
-        /**
-         * Gets dropdown array.
-         * @return array
-         */
-        protected function getDropDownArray()
+        public static function getControllerId()
         {
-            return $this->getAvailableModulesForCalendar();
-        }
-
-        /**
-         * Get modules available to be used with calendar.
-         * @return array
-         */
-        protected function getAvailableModulesForCalendar()
-        {
-            $moduleClassNames = SavedCalendar::getAvailableModulesForCalendar();
-            asort($moduleClassNames);
-            return $moduleClassNames;
+            return 'calendars';
         }
     }
 ?>

@@ -35,28 +35,13 @@
      ********************************************************************************/
 
     /**
-     * Display a module drop down for calendar module.
+     * Specific override to handle report filters for saved calendar.
      */
-    class CalendarModuleClassNameDropDownElement extends StaticDropDownFormElement
+    class ReportRelationsAndAttributesForSavedCalendarTreeView extends ReportRelationsAndAttributesTreeView
     {
-        /**
-         * Gets dropdown array.
-         * @return array
-         */
-        protected function getDropDownArray()
+        public static function getControllerId()
         {
-            return $this->getAvailableModulesForCalendar();
-        }
-
-        /**
-         * Get modules available to be used with calendar.
-         * @return array
-         */
-        protected function getAvailableModulesForCalendar()
-        {
-            $moduleClassNames = SavedCalendar::getAvailableModulesForCalendar();
-            asort($moduleClassNames);
-            return $moduleClassNames;
+            return 'calendars';
         }
     }
 ?>

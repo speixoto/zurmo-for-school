@@ -51,8 +51,14 @@
                 $report->setId((int)$savedCalendar->id);
             }
             $report->setDescription($savedCalendar->description);
-            $report->setModuleClassName($savedCalendar->moduleClassName);
-            $report->setName($savedCalendar->name);
+            if($savedCalendar->moduleClassName != null)
+            {
+                $report->setModuleClassName($savedCalendar->moduleClassName);
+            }
+            if($savedCalendar->name != null)
+            {
+                $report->setName($savedCalendar->name);
+            }
             $report->setOwner($savedCalendar->owner);
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($savedCalendar);

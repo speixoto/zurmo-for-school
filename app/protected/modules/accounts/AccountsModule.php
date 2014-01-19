@@ -206,10 +206,5 @@
             }
             return false;
         }
-
-        public static function hasCalendar()
-        {
-            return true;
-        }
     }
 ?>

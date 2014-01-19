@@ -186,7 +186,7 @@
             $modules = Module::getModuleObjects();
             foreach ($modules as $module)
             {
-                if ($module::hasCalendar())
+                if ($module::canShowOnCalendar())
                 {
                     $moduleClassName    = get_class($module);
                     $label              = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
