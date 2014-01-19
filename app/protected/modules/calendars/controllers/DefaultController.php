@@ -90,28 +90,15 @@
 
         public function actionDetails($id)
         {
-            throw new NotImplementedException();
-            /**
-            $calendar                   = static::getModelAndCatchNotFoundAndDisplayError('SavedCalendar', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($calendar);
-            AuditEvent::logAuditEvent('ZurmoModule',
-                                      ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
-                                      array(strval($calendar), 'CalendarsModule'), $calendar);
-            $calendarItemsDataProvider  = new CalendarItemsDataProvider(new SavedCalendarSubscriptions(),
-                                                                        array('moduleClassName' => $calendar->moduleClassName,
-                                                                              'savedCalendar'   => $calendar));
-            $gridView                   = new GridView(1, 1);
-            $gridView->setView(new CombinedCalendarView($calendarItemsDataProvider, new SavedCalendarSubscriptions()), 0, 0);
-            $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
-                                                                    makeStandardViewForCurrentUser($this, $gridView));
-            echo $view->render();
-             * **/
+            $urlParams = array($this->getId() . '/combinedDetails');
+            $this->redirect($urlParams);
         }
 
         public function actionCreate()
         {
             $savedCalendar                  = new SavedCalendar();
             $savedCalendar->moduleClassName = 'MeetingsModule';
+            $this->attemptToValidateAjaxFromPost($savedCalendar, 'SavedCalendar');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost($savedCalendar), 'Edit');
             $view               = new CalendarsPageView(ZurmoDefaultViewUtil::
@@ -122,10 +109,11 @@
         public function actionEdit($id, $redirectUrl = null)
         {
             $savedCalendar = SavedCalendar::getById(intval($id));
+            $this->attemptToValidateAjaxFromPost($savedCalendar, 'SavedCalendar');
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
             $this->processEdit($savedCalendar, $redirectUrl);
         }
-
+/**
         public function actionCopy($id)
         {
             $copyToAccount  = new Account();
@@ -138,7 +126,7 @@
             }
             $this->processEdit($copyToAccount);
         }
-
+**/
         protected function processEdit(SavedCalendar $calendar, $redirectUrl = null)
         {
             $view = new CalendarsPageView(ZurmoDefaultViewUtil::
@@ -218,7 +206,7 @@
             $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
                                                       resolveInputPrefixData($wizardFormClassName,
                                                       $treeType, (int)$rowNumber);
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+            $adapter                            = new ReportAttributeForSavedCalendarToElementAdapter($inputPrefixData, $model,
                                                       $form, $treeType);
             $view                               = new AttributeRowForReportComponentView($adapter,
                                                       (int)$rowNumber, $inputPrefixData, $attribute,
@@ -255,6 +243,37 @@
             DataToReportUtil::resolveReportByWizardPostData($report, $postData,
                 ReportToWizardFormAdapter::getFormClassNameByType($type));
             return $report;
+        }
+
+        protected function attemptToValidateAjaxFromPost($model, $postVariableName)
+        {
+            //todo: refactor - this is the same as used by note controller for saving inline.
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            {
+            $readyToUsePostData            = ExplicitReadWriteModelPermissionsUtil::
+                                                     removeIfExistsFromPostData($_POST[get_class($model)]);
+            $sanitizedPostData             = PostUtil::
+                                             sanitizePostByDesignerTypeForSavingModel($model, $readyToUsePostData);
+            $sanitizedOwnerPostData        = PostUtil::
+                                             sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
+            $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
+            $model->setAttributes($sanitizedPostDataWithoutOwner);
+            if ($model->validate())
+            {
+                $modelToStringValue = strval($model);
+                if ($sanitizedOwnerPostData != null)
+                {
+                    $model->setAttributes($sanitizedOwnerPostData);
+                }
+                if ($model instanceof OwnedSecurableItem)
+                {
+                    $model->validate(array('owner'));
+                }
+            }
+            $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+            echo CJSON::encode($errorData);
+            Yii::app()->end(0, false);
+            }
         }
     }
 ?>

@@ -157,14 +157,16 @@
 
             $adapter = new ReportToWizardFormAdapter($report);
             $reportWizardForm = $adapter->makeRowsAndColumnsWizardForm();
-
-            $filtersForReportWizardView = new SavedCalendarFiltersForReportWizardView($reportWizardForm, $form, false); //todo: maybe hide view by default or not?
+            $filtersForReportWizardViewClassName = static::getFiltersForReportWizardViewClassName();
+            $filtersForReportWizardView = new $filtersForReportWizardViewClassName($reportWizardForm, $form, false); //todo: maybe hide view by default or not?
             $content .= $filtersForReportWizardView->render();
-            $this->renderFiltersScripts();
+            $this->registerFiltersScripts();
+            $this->registerModuleClassNameChangeScript();
+            $this->registerFiltersCss();
             return $content;
         }
 
-        protected function renderFiltersScripts()
+        protected function registerFiltersScripts()
         {
             Yii::app()->getClientScript()->registerCoreScript('treeview');
             Yii::app()->clientScript->registerScriptFile(
@@ -174,15 +176,86 @@
                 function loadFiltersTreeView()
                 {
                     " . RowsAndColumnsReportForSavedCalendarWizardView::renderTreeViewAjaxScriptContent(
-                            static::getFormId(), 'SavedCalendarFiltersForReportWizardView', Report::TYPE_ROWS_AND_COLUMNS) . "
+                            static::getFormId(), static::getFiltersForReportWizardViewClassName(), Report::TYPE_ROWS_AND_COLUMNS) . "
                 }
                 loadFiltersTreeView();
             ");
+            Yii::app()->getClientScript()->registerCoreScript('bbq');
+            OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
+        }
+
+        protected function registerFiltersCss()
+        {
+            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getClientScript()->getCoreScriptUrl() .
+                                                           '/treeview/jquery.treeview.css');
         }
 
         protected static function getFormClassName()
         {
             return 'WizardActiveForm';
+        }
+
+        protected function resolveActiveFormAjaxValidationOptions()
+        {
+            return array('enableAjaxValidation' => true,
+                //todo: add ? 'modelClassNameForError'  => get_class($this->model like in WizardView?
+                         'clientOptions'        => $this->getClientOptions());
+        }
+
+        /**
+         * @return array
+         */
+        protected function getClientOptions()
+        {
+            return array(
+                'validateOnSubmit'  => true,
+                'validateOnChange'  => false,
+                'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
+                'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
+            );
+        }
+
+        protected function renderConfigSaveAjax($formName)
+        {
+            // Begin Not Coding Standard
+            return ZurmoHtml::ajax(array(
+                'type' => 'POST',
+                'data' => 'js:$("#' . $formName . '").serialize()',
+                'url'  =>  $this->getValidateAndSaveUrl(),
+             //   'update' => '#' . $this->uniquePageId,
+            ));
+            // End Not Coding Standard
+        }
+
+        protected function getValidateAndSaveUrl()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' .
+                                         Yii::app()->controller->action->id, $_GET);
+        }
+
+        protected function registerModuleClassNameChangeScript()
+        {
+            //todo: add handling for altering the startAttributeName and end AttributeName inputs..
+            $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
+            $filtersForReportWizardViewClassName = static::getFiltersForReportWizardViewClassName();
+            Yii::app()->clientScript->registerScript('moduleForSavedCalendarChangeScript', "
+                $('[name=\"" . $moduleClassNameId . "\"]').live('change', function()
+                    {
+                        $('#" . $filtersForReportWizardViewClassName . "').find('.dynamic-rows').find('ul:first').find('li').remove();
+                        $('#FiltersTreeArea').html('');
+                        $('." . $filtersForReportWizardViewClassName::getZeroComponentsClassName() . "').show();
+                        rebuildReportFiltersAttributeRowNumbersAndStructureInput('" .
+                                $filtersForReportWizardViewClassName . "');
+                        loadFiltersTreeView();
+                    }
+                );
+            ");
+        }
+
+        protected static function getFiltersForReportWizardViewClassName()
+        {
+            return 'SavedCalendarFiltersForReportWizardView';
         }
     }
 ?>
