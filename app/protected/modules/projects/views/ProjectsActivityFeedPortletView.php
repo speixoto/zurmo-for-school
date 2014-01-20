@@ -165,7 +165,8 @@
          */
         protected function renderLatestActivityFeed()
         {
-            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView(Yii::app()->getController());
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView(Yii::app()->getController(), $pageSize);
             return $listView->render();
         }
     }
