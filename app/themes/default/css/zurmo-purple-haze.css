@@ -13995,6 +13995,9 @@ a.user-link {
   float: right;
   width: 80%;
 }
+.value-data .has-model-select {
+  width: 100%;
+}
 .report-runtime-availability {
   min-width: 145px;
   position: relative;
