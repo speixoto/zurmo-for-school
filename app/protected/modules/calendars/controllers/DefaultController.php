@@ -280,12 +280,21 @@
         {
             if (isset($_POST['SavedCalendar']))
             {
+                $postData   = PostUtil::getData();
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
                 $this->attemptToSaveModelFromPost($savedCalendar, null, false);
-                $report = $this->resolveReportBySavedCalendarPostData(Report::TYPE_ROWS_AND_COLUMNS, $savedCalendar->id);
+                $report = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
+                $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
+                if (!isset($postData[$wizardFormClassName]))
+                {
+                    throw new NotSupportedException();
+                }
+                DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report, true);
+                $filtersData          = ArrayUtil::getArrayValue($postData[$wizardFormClassName],
+                                                                        ComponentForReportForm::TYPE_FILTERS);
                 $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
                                                                               $report->getType(),
-                                                                              $report->getFilters());
+                                                                              $filtersData);
                 $data   = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
                                         'filtersStructure' => $report->getFiltersStructure());
                 $savedCalendar->serializedData = serialize($data);
