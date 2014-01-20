@@ -398,7 +398,34 @@
             sleep(20);
             $messages = $imap->getMessages();
             $this->assertEquals(1, count($messages));
-            $this->assertEquals("آزمایش", $messages[0]->subject);
+            $this->assertEquals(imap_utf8("=?utf-8?B?2KLYstmF2KfbjNi0?="), $messages[0]->subject);
+        }
+
+        public function testGetMessagesWithNonUtf8Charset()
+        {
+            $this->skipTestIfMissingSettings();
+            $imap = EmailMessageTestHelper::resolveImapObject();
+            $this->assertTrue($imap->connect());
+
+            $imap->deleteMessages(true);
+            Yii::app()->emailHelper->sendRawEmail("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?=", // Not Coding Standard
+                                                   Yii::app()->emailHelper->outboundUsername,
+                                                   $imap->imapUsername,
+                                                   'test',
+                                                   '',
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   array('CC' => '=?ISO-8859-1?Q?Andr=E9?= <andre@zurmo.org>')
+            );
+            sleep(20);
+            $messages = $imap->getMessages();
+            $this->assertEquals(1, count($messages));
+            $this->assertEquals(imap_utf8("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?="),
+                                $messages[0]->subject);
+            $this->assertEquals(imap_utf8("=?ISO-8859-1?Q?Andr=E9?="),
+                                $messages[0]->cc[0]['name']);
         }
 
         protected function skipTestIfMissingSettings($checkBounceSettingsToo = false)

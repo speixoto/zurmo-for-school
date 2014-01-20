@@ -163,7 +163,8 @@
          */
         protected function renderActiveProjectsContent()
         {
-            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView(Yii::app()->getController());
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView(Yii::app()->getController(), $pageSize);
             return $listView->render();
         }
     }

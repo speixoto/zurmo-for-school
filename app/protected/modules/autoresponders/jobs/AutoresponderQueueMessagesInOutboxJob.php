@@ -108,26 +108,30 @@
             $modelsProcessedCount = 0;
             foreach ($autoresponderItemsToProcess as $autoresponderItem)
             {
-                if ($modelsProcessedCount < $batchSize || $batchSize == null)
+                try
                 {
-                    try
-                    {
-                        $this->processAutoresponderItemInQueue($autoresponderItem);
-                    }
-                    catch (NotFoundException $e)
-                    {
-                        return $autoresponderItem->delete();
-                    }
-                    catch (NotSupportedException $e)
-                    {
-                        $this->errorMessage = $e->getMessage();
-                        return false;
-                    }
-                    $this->runGarbageCollection($autoresponderItem);
-                    $modelsProcessedCount++;
+                    $this->processAutoresponderItemInQueue($autoresponderItem);
                 }
-                else
+                catch (NotFoundException $e)
                 {
+                    return $autoresponderItem->delete();
+                }
+                catch (NotSupportedException $e)
+                {
+                    $this->errorMessage = $e->getMessage();
+                    return false;
+                }
+                $this->runGarbageCollection($autoresponderItem);
+                $modelsProcessedCount++;
+
+                if ($this->hasReachedMaximumProcessingCount($modelsProcessedCount, $batchSize))
+                {
+                    Yii::app()->jobQueue->add('AutoresponderQueueMessagesInOutbox', 5);
+                    break;
+                }
+                if (!Yii::app()->performance->isMemoryUsageSafe())
+                {
+                    $this->addMaximumMemoryUsageReached();
                     Yii::app()->jobQueue->add('AutoresponderQueueMessagesInOutbox', 5);
                     break;
                 }

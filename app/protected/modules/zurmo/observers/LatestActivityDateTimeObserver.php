@@ -38,21 +38,8 @@
      * Used to observe when a model's related model has a change that should update the model's latestActivityDateTime
      * These settings are enabled/disabled in the designer under the contacts or accounts module.
      */
-    abstract class LatestActivityDateTimeObserver extends CComponent
+    abstract class LatestActivityDateTimeObserver extends BaseObserver
     {
-        protected $attachedEventHandlersIndexedByModelClassName = array();
-
-        /**
-         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
-         */
-        public function destroy()
-        {
-            foreach ($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
-            {
-                $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
-            }
-        }
-
         /**
          * Given a event, check that the event's sender is a meeting.  this is a beforeSave event
          * that should reset the latestActivityDateTimeProcessFlag if the startDateTime has changed.

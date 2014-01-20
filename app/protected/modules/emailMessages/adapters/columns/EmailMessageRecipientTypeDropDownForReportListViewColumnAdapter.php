@@ -35,60 +35,17 @@
      ********************************************************************************/
 
     /**
-     * Displays the standard boolean field
-     * rendered as a check box.
+     * Column adapter for type dropdown in reports for Product Templates
      */
-    class CheckBoxElement extends Element
+    class EmailMessageRecipientTypeDropDownForReportListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        /**
-         * Render A standard text input.
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        public function renderGridViewData()
         {
-            assert('empty($this->model->{$this->attribute}) ||
-                is_string($this->model->{$this->attribute}) ||
-                is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
-            );
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions             = array();
-                $htmlOptions['disabled'] = 'disabled';
-            }
-            return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
-        }
-
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions['disabled'] = $this->getDisabledValue();
-                if ((int)$this->model->{$this->attribute} == 1)
-                {
-                    $htmlOptions['uncheckValue'] = 1;
-                }
-                if ($htmlOptions['disabled'] == 'disabled')
-                {
-                    $htmlOptions['labelClass'] = 'disabled';
-                }
-            }
-            return $htmlOptions;
-        }
-
-        /**
-         * Renders the attribute from the model.
-         * @return The element's content.
-         */
-        protected function renderControlNonEditable()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['disabled'] = 'disabled';
-            return ZurmoHtml::activeCheckBox($this->model, $this->attribute, $htmlOptions);
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'EmailMessageRecipientTypeDropDownElement::renderDisplayAttributeForReport($data, "' . $this->attribute . '")',
+                    'type'  => 'raw',
+                );
         }
     }
 ?>

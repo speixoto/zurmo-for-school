@@ -156,5 +156,10 @@
         {
             return false;
         }
+
+        public static function canHaveContentTemplates()
+        {
+            return true;
+        }
     }
 ?>

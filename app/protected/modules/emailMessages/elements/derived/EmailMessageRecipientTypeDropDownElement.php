@@ -33,62 +33,19 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
     /**
-     * Displays the standard boolean field
-     * rendered as a check box.
+     * Type dropdown element for emailMessageRecipient type
      */
-    class CheckBoxElement extends Element
+    class EmailMessageRecipientTypeDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
-        /**
-         * Render A standard text input.
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
-        {
-            assert('empty($this->model->{$this->attribute}) ||
-                is_string($this->model->{$this->attribute}) ||
-                is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
-            );
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions             = array();
-                $htmlOptions['disabled'] = 'disabled';
-            }
-            return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
-        }
-
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions['disabled'] = $this->getDisabledValue();
-                if ((int)$this->model->{$this->attribute} == 1)
-                {
-                    $htmlOptions['uncheckValue'] = 1;
-                }
-                if ($htmlOptions['disabled'] == 'disabled')
-                {
-                    $htmlOptions['labelClass'] = 'disabled';
-                }
-            }
-            return $htmlOptions;
-        }
+        protected static $attributeName = 'type';
 
         /**
-         * Renders the attribute from the model.
-         * @return The element's content.
+         * @return array
          */
-        protected function renderControlNonEditable()
+        protected static function resolveDropDownArray()
         {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['disabled'] = 'disabled';
-            return ZurmoHtml::activeCheckBox($this->model, $this->attribute, $htmlOptions);
+            return EmailMessageRecipient::getRecipientTypesArray();
         }
     }
 ?>

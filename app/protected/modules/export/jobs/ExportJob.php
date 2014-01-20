@@ -114,12 +114,17 @@
                     }
                     if ($this->hasReachedMaximumProcessingCount())
                     {
-                        $this->addMaxmimumProcessingCountMessageForAllExportItems();
+                        $this->addMaximumProcessingCountMessageForAllExportItems();
+                        break;
+                    }
+                    if (!Yii::app()->performance->isMemoryUsageSafe())
+                    {
+                        $this->addMaximumMemoryUsageReachedForAllExportItems();
                         break;
                     }
                 }
                 Yii::app()->user->userModel = $originalUser;
-                if ($this->hasReachedMaximumProcessingCount())
+                if ($this->hasReachedMaximumProcessingCount() || !Yii::app()->performance->isMemoryUsageSafe())
                 {
                     Yii::app()->jobQueue->add('Export', 5);
                 }
@@ -543,10 +548,19 @@
             $this->getMessageLogger()->addInfoMessage($message);
         }
 
-        protected function addMaxmimumProcessingCountMessageForAllExportItems()
+        protected function addMaximumProcessingCountMessageForAllExportItems()
         {
             $message = Zurmo::t('ExportModule', 'Remaining export items must be finished on next run because the ' .
                 'maximum processing count has been reached.');
+            $this->getMessageLogger()->addInfoMessage($message);
+        }
+
+        protected function addMaximumMemoryUsageReachedForAllExportItems()
+        {
+            $message = Zurmo::t('ExportModule', 'Remaining export jobs must be finished on next run because the ' .
+                'maximum memory usage has been reached. Using {usedMemory} Bytes of allocated {allocatedMemory} Bytes.',
+                array('{usedMemory}' => Yii::app()->performance->getMemoryUsage(),
+                      '{allocatedMemory}'  => Yii::app()->performance->getAllocatedMemoryInBytes()));
             $this->getMessageLogger()->addInfoMessage($message);
         }
 

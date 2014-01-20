@@ -158,6 +158,11 @@
             return true;
         }
 
+        public static function canHaveContentTemplates()
+        {
+            return true;
+        }
+
         public static function canShowOnCalendar()
         {
             return true;

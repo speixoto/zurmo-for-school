@@ -119,7 +119,7 @@
             $modelsList = array();
             if (isset($getData['selectedIds']) && $getData['selectedIds'] != null)
             {
-                $selectedIds = explode(',', $getData['selectedIds']);
+                $selectedIds = explode(',', $getData['selectedIds']); // Not Coding Standard
                 foreach ($selectedIds as $id)
                 {
                     $model = $modelClassName::getById(intval($id));
