@@ -135,7 +135,7 @@
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
             $dateRangeType              = CalendarUtil::getDateRangeType(); //is this sticky? maybe this is sticky
             $startDate                  = CalendarUtil::getStartDate($dateRangeType); //is this sticky? i dont know. maybe it defaults to TODAY
-            $endDate                     = CalendarUtil::getEndDate($dateRangeType);
+            $endDate                    = CalendarUtil::getEndDate($dateRangeType);
             $dataProvider               = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
                                                                                                 $startDate, $endDate, $dateRangeType);
             return $dataProvider;

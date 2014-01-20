@@ -100,7 +100,7 @@
             $savedCalendar->moduleClassName = 'MeetingsModule';
             $this->attemptToValidateAjaxFromPost($savedCalendar, 'SavedCalendar');
             $editAndDetailsView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost($savedCalendar), 'Edit');
+                                            $this->resolveReportDataAndSaveCalendar($savedCalendar), 'Edit');
             $view               = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
             echo $view->render();
@@ -132,7 +132,7 @@
             $view = new CalendarsPageView(ZurmoDefaultViewUtil::
                             makeStandardViewForCurrentUser($this,
                             $this->makeEditAndDetailsView(
-                                $this->attemptToSaveModelFromPost($calendar, $redirectUrl), 'Edit')));
+                                $this->resolveReportDataAndSaveCalendar($calendar), 'Edit')));
             echo $view->render();
         }
 
@@ -230,16 +230,16 @@
             {
                 $savedCalendar              = SavedCalendar::getById(intval($id));
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
-                $report                     = SavedCalendarToReportAdapter:: makeReportBySavedCalendar($savedCalendar);
+                $report                     = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
             }
             if(isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
             {
                 $report->setModuleClassName($postData['SavedCalendar']['moduleClassName']);
             }
-            else
-            {
-                throw new NotSupportedException();
-            }
+//            else
+//            {
+//                throw new NotSupportedException();
+//            }
             DataToReportUtil::resolveReportByWizardPostData($report, $postData,
                 ReportToWizardFormAdapter::getFormClassNameByType($type));
             return $report;
@@ -250,30 +250,45 @@
             //todo: refactor - this is the same as used by note controller for saving inline.
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
-            $readyToUsePostData            = ExplicitReadWriteModelPermissionsUtil::
-                                                     removeIfExistsFromPostData($_POST[get_class($model)]);
-            $sanitizedPostData             = PostUtil::
-                                             sanitizePostByDesignerTypeForSavingModel($model, $readyToUsePostData);
-            $sanitizedOwnerPostData        = PostUtil::
-                                             sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
-            $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
-            $model->setAttributes($sanitizedPostDataWithoutOwner);
-            if ($model->validate())
+                $readyToUsePostData            = ExplicitReadWriteModelPermissionsUtil::
+                                                         removeIfExistsFromPostData($_POST[get_class($model)]);
+                $sanitizedPostData             = PostUtil::
+                                                 sanitizePostByDesignerTypeForSavingModel($model, $readyToUsePostData);
+                $sanitizedOwnerPostData        = PostUtil::
+                                                 sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
+                $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
+                $model->setAttributes($sanitizedPostDataWithoutOwner);
+                if ($model->validate())
+                {
+                    $modelToStringValue = strval($model);
+                    if ($sanitizedOwnerPostData != null)
+                    {
+                        $model->setAttributes($sanitizedOwnerPostData);
+                    }
+                    if ($model instanceof OwnedSecurableItem)
+                    {
+                        $model->validate(array('owner'));
+                    }
+                }
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
+            }
+        }
+
+        protected function resolveReportDataAndSaveCalendar(SavedCalendar $savedCalendar)
+        {
+            if (isset($_POST['SavedCalendar']))
             {
-                $modelToStringValue = strval($model);
-                if ($sanitizedOwnerPostData != null)
-                {
-                    $model->setAttributes($sanitizedOwnerPostData);
-                }
-                if ($model instanceof OwnedSecurableItem)
-                {
-                    $model->validate(array('owner'));
-                }
+                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
+                $this->attemptToSaveModelFromPost($savedCalendar, null, false);
+                $report = $this->resolveReportBySavedCalendarPostData(Report::TYPE_ROWS_AND_COLUMNS, $savedCalendar->id);
+                $data   = array(ComponentForReportForm::TYPE_FILTERS => $report->getFilters(),
+                                        'filtersStructure' => $report->getFiltersStructure());
+                $savedCalendar->serializedData = serialize($data);
+                $savedCalendar->save();
             }
-            $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
-            echo CJSON::encode($errorData);
-            Yii::app()->end(0, false);
-            }
+            return $savedCalendar;
         }
     }
 ?>
