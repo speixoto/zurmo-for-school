@@ -69,7 +69,9 @@
                 }
             }
             Yii::app()->controller->widget('FullCalendar', array('inputId' => 'calendar', 'events' => $events));
-            return ZurmoHtml::tag('div', array('id' => 'calendar'), '');
+            $spinner = ZurmoHtml::tag('div', array('class' => 'calendar-loading'), 'Loading..');
+            $calendar = ZurmoHtml::tag('div', array('id' => 'calendar'), '');
+            return $spinner . $calendar;
             //$this->dataProvider->getData() -> returns array of CalenderItems
             //$this->dataProvider->getStartDate()
             //$this->dataProvider->endStartDate()

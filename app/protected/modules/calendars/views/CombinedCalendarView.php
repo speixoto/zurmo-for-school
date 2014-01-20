@@ -74,8 +74,9 @@
             $content  = $this->renderSmallCalendarContent();
             $content .= $this->renderMyCalendarsContent();
             $content .= $this->renderSubscribedToCalendarsContent();
-            $content .= $this->renderFullCalendarContent();
-            return $content;
+            $left = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
+            $right = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
+            return ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
         }
 
         protected function renderSmallCalendarContent()
@@ -92,7 +93,8 @@
                 //$savedCalendarAndSelected[0] is a SavedCalendar
                 //$savedCalendarAndSelected[1] is a Boolean whether selceted to view or not
             }
-            return 'todo my calendar content';
+            $content = 'todo calendar content';
+            return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $content);
         }
 
         protected function renderSubscribedToCalendarsContent()
@@ -106,7 +108,8 @@
             //todo: add the area where you can selecte from other shared calendars. so probably a MODEL type-ahead on
             //todo: SavedCalendar would work i think... (but need to exclude your ones you own and ones you already have shared?)
             //todo: then on adding, need to call ajax to refresh the subscribedToDiv... (so maybe this needs to be its own div. this entire method..
-            return 'todo shared calendar content';
+            $content = 'todo shared calendar content';
+            return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $content);
         }
 
         protected function renderFullCalendarContent()
