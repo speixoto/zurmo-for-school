@@ -137,6 +137,7 @@
                     array('timeZone',         'length',  'max'   => 64),
                     array('timeZone',         'UserDefaultTimeZoneDefaultValueValidator'),
                     array('timeZone',         'ValidateTimeZone'),
+                    array('serializedData',   'type', 'type' => 'string'),
                 ),
                 'elements' => array(
                     'moduleClassName' => 'CalendarModuleClassNameDropDown'

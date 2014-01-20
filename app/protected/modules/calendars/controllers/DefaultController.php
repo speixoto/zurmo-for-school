@@ -283,7 +283,10 @@
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
                 $this->attemptToSaveModelFromPost($savedCalendar, null, false);
                 $report = $this->resolveReportBySavedCalendarPostData(Report::TYPE_ROWS_AND_COLUMNS, $savedCalendar->id);
-                $data   = array(ComponentForReportForm::TYPE_FILTERS => $report->getFilters(),
+                $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
+                                                                              $report->getType(),
+                                                                              $report->getFilters());
+                $data   = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
                                         'filtersStructure' => $report->getFiltersStructure());
                 $savedCalendar->serializedData = serialize($data);
                 $savedCalendar->save();
