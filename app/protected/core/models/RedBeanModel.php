@@ -1190,12 +1190,15 @@
 
         private static function findNextDerivativeBean($bean, $modelClassName1, $modelClassName2)
         {
-            $key = strtolower($modelClassName1) . '_id';
-            $tableName = $modelClassName2::getTableName();
-            $beans = ZurmoRedBean::find($tableName, "$key = :id", array('id' => $bean->id));
-            if (count($beans) == 1)
+            if($bean->id > 0)
             {
-                return reset($beans);
+                $key = strtolower($modelClassName1) . '_id';
+                $tableName = $modelClassName2::getTableName();
+                $beans = ZurmoRedBean::find($tableName, "$key = :id", array('id' => $bean->id));
+                if (count($beans) == 1)
+                {
+                    return reset($beans);
+                }
             }
             return null;
         }
