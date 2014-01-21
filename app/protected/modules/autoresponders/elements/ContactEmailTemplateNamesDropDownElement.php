@@ -85,8 +85,7 @@
                             }
                             updateElementWithData(textContentElement, data.textContent);
                             updateElementWithData(subjectElement, data.subject);
-                            $(htmlContentElement).redactor("set", data.htmlContent);
-                            //$(htmlContentElement).redactor("sync");
+                            $(htmlContentElement).redactor("insertHtml", data.htmlContent);
                         }
 
                         function updateElementWithData(element, data)
