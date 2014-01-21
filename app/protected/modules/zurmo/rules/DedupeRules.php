@@ -128,6 +128,10 @@
                                                 showIcon: false,
                                             })
                                         }
+                                        else if (shouldSubmitForm)
+                                        {
+                                            $('#" . $dedupeViewId . "').closest('form')[0].submit();
+                                        }
                                  }"
             ));
             $js = "var shouldSubmitForm = false;

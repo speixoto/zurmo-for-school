@@ -288,8 +288,21 @@
             $meetingsTotalContent = ZurmoHtml::tag('span', array('class' => 'total-meetings'), $icon . $num . ' ' . $title);
 
             $content = $notesTotalContent . $tasksTotalContent . $emailsTotalContent . $meetingsTotalContent;
-            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('ZurmoModule', "This {$this->modelClassName} has:"));
+            $label = Zurmo::t('ZurmoModule', "This {moduleLabel} has:",
+                                array('{moduleLabel}' => $this->resolveRealModuleClassNameLabelByModel($model)));
+            $title = ZurmoHtml::tag('h3', array(), $label);
             return ZurmoHtml::tag('div', array('class' => 'entry-stats'), $title . $content);
+        }
+
+        protected function resolveRealModuleClassNameLabelByModel(RedBeanModel $model)
+        {
+            $moduleClassName   = $model::getModuleClassName();
+            $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName();
+            if ($stateMetadataAdapterClassName != null)
+            {
+                $moduleClassName = $stateMetadataAdapterClassName::getModuleClassNameByModel($model);
+            }
+            return $moduleClassName::getModuleLabelByTypeAndLanguage("Singular");
         }
 
         protected function renderRadioButtonContent($dupeModel)
