@@ -67,6 +67,7 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/list');
             $this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/create');
             $this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/edit');
+            $this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/dashboardDetails');
             $this->setGetArray(array('id' => $project->id));
             $this->resetPostArray();
             $this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/details');
@@ -126,6 +127,7 @@
 
             //Test nobody, access to edit and details should fail.
             $nobody = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            $this->runControllerWithNoExceptionsAndGetContent('projects/default/dashboardDetails');
             $this->setGetArray(array('id' => $project->id));
             $this->runControllerShouldResultInAccessFailureAndGetContent('projects/default/edit');
             $this->setGetArray(array('id' => $project->id));

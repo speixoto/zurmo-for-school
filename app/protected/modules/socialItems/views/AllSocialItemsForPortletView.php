@@ -108,7 +108,7 @@
 
         protected function getDataProvider()
         {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
             $searchAttributeData              = array();
             $searchAttributeData['clauses']   = array();
             $searchAttributeData['structure'] = '';

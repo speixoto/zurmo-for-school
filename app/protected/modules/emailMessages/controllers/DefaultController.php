@@ -531,6 +531,7 @@
                 $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
                 $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
                 ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessageForm->getModel());
+                Yii::app()->jobQueue->add('ProcessOutboundEmail');
             }
             else
             {

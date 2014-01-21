@@ -6958,6 +6958,8 @@ input[type="button"].portlet-create-button:focus {
   font-size: 11px;
   color: #2B434F;
   border: none !important;
+  text-decoration: underline;
+  overflow: hidden;
 }
 .simple-link:before,
 .simple-link:after {
@@ -13898,6 +13900,7 @@ a.user-link {
 .remove-action-row-link {
   position: relative;
   top: -9px;
+  margin-left: 10px;
 }
 .dynamic-row.clone {
   padding: 15px;
@@ -13991,6 +13994,9 @@ a.user-link {
 .value-data {
   float: right;
   width: 80%;
+}
+.value-data .has-model-select {
+  width: 100%;
 }
 .report-runtime-availability {
   min-width: 145px;
@@ -15160,11 +15166,7 @@ a.user-link {
 }
 .marketing-graph {
   float: left;
-  margin-left: 2%;
-  padding-bottom: 15px;
-}
-.marketing-graph:first-child {
-  margin-left: 0;
+  padding: 0 5px 15px 5px;
 }
 .marketing-graph h3 {
   padding-left: 15px;
@@ -15887,8 +15889,10 @@ a + .autoresponder-stats {
   height: 100%;
   width: 100%;
 }
-.drop-zone {
+.drop-zone-container .drop-zone {
   position: relative;
+}
+.drop-zone {
   border: 2px dashed #2B434F;
 }
 .kanban-column {
@@ -19292,6 +19296,83 @@ a + .project-stats {
   height: 229px;
   background: #fff;
   border-left: 1px solid #dfdfdf;
+}
+#calendar {
+  width: 100%;
+  margin: 0 auto;
+}
+#calendar td {
+  padding: 0;
+}
+.fc-header {
+  text-transform: capitalize;
+}
+.calendar-view .left-column {
+  width: 25%;
+}
+.calendar-view .right-column {
+  width: 75%;
+}
+.calendars-list {
+  margin-top: 30px;
+}
+.calendars-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.calendars-list > ul > li {
+  display: block;
+  padding: 5px 0;
+  line-height: 1;
+}
+.calendars-list .edit-row-menu > li > a:before {
+  line-height: 12px;
+}
+.calendars-list a {
+  color: #545454 !important;
+}
+.calendars-list + .calendars-list {
+  margin-top: 30px;
+}
+.calendars-list + .calendars-list .cal-color {
+  background: darkgoldenrod;
+}
+.calendars-list + .calendars-list .cal-color.outline {
+  background: none;
+  border: 1px solid rosybrown;
+}
+.cal-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: #3a87ad;
+  margin-right: 4px;
+  position: relative;
+  top: 1px;
+}
+.cal-color.outline {
+  background: none;
+  border: 1px solid salmon;
+}
+.task-subscribers {
+  border-top: none;
+  padding: 0 0 0 16px;
+  margin-top: 5px;
+  box-shadow: none;
+}
+.quick-insert {
+  padding: 0;
+  margin-top: 30px;
+}
+.quick-insert .details-item-editable {
+  padding-left: 0;
+  padding-bottom: 5px;
+}
+.quick-insert .simple-link {
+  margin: 5px 0 0 0;
+  display: block;
 }
 body.flat-cement * {
   box-shadow: none !important;

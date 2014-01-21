@@ -211,17 +211,27 @@
          * Copies the project
          * @param int $id
          */
-        public function actionCopy($id)
+        public function actionCopy($id, $redirectUrl = null)
         {
             $copyToProject      = new Project();
             $postVariableName   = get_class($copyToProject);
+            $project            = Project::getById((int)$id);
             if (!isset($_POST[$postVariableName]))
             {
-                $project        = Project::getById((int)$id);
-                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
                 ProjectZurmoCopyModelUtil::copy($project, $copyToProject);
+                $this->processEdit($copyToProject);
             }
-            $this->processEdit($copyToProject);
+            else
+            {
+                $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
+                ProjectZurmoCopyModelUtil::processAfterCopy($project, $copyToProject);
+                $view            = new ProjectsPageView(ProjectDefaultViewUtil::
+                                                        makeViewWithBreadcrumbsForCurrentUser($this,
+                                                            $this->makeEditAndDetailsView(
+                                                                $this->attemptToSaveModelFromPost(
+                                                                    $copyToProject, $redirectUrl), 'Edit'), $breadCrumbLinks, 'ProjectBreadCrumbView'));
+                echo $view->render();
+            }
         }
 
         /**
@@ -582,7 +592,8 @@
          */
         public function actionShowActiveProjects()
         {
-            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView($this);
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView($this, $pageSize);
             echo $listView->render();
         }
 
@@ -591,7 +602,8 @@
          */
         public function actionShowProjectsLatestActivityFeed()
         {
-            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView($this);
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView($this, $pageSize);
             echo $listView->render();
         }
     }
