@@ -190,6 +190,10 @@ EOD;
 
                 if ($languageCode != Yii::app()->sourceLanguage)
                 {
+                    if (!Yii::app()->languageHelper->canDeactivateLanguage($languageCode))
+                    {
+                        $content .= ' - ' . Zurmo::t('ZurmoModule', 'Language in use.');
+                    }
                     $content .= $this->renderUpdateButton($languageCode, $languageData);
                     $content .= $this->renderDeactivateButton($languageCode, $languageData);
                 }
@@ -223,6 +227,10 @@ EOD;
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
+            if (!Yii::app()->languageHelper->canDeactivateLanguage($languageCode))
+            {
+                return;
+            }
             return ZurmoHtml::link(
                 $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
