@@ -120,17 +120,24 @@
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
                 $combinedRight = Right::NONE;
-                foreach ($this->rights as $right)
+                try
                 {
-                    if ($right->moduleName == $moduleName &&
-                        $right->name       == $rightName)
+                    foreach ($this->rights as $right)
                     {
-                        $combinedRight |= $right->type;
-                        if ($right->type == Right::DENY)
+                        if ($right->moduleName == $moduleName &&
+                            $right->name       == $rightName)
                         {
-                            break; // Shortcircuit.
+                            $combinedRight |= $right->type;
+                            if ($right->type == Right::DENY)
+                            {
+                                break; // Shortcircuit.
+                            }
                         }
                     }
+                }
+                catch(NotSupportedException $e)
+                {
+                    //Super Administrator group for example doesn't allow right retrieval.
                 }
                 if (($combinedRight & Right::DENY) == Right::DENY)
                 {

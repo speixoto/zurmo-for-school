@@ -86,7 +86,7 @@
             $kanbanItem1            = KanbanItem::getByTask($task->id);
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem1->type);
             $this->assertEquals($task->project->id, $kanbanItem1->kanbanRelatedItem->id);
-            
+
             $copyToProject      = new Project();
             ProjectZurmoCopyModelUtil::copy($project, $copyToProject);
             ProjectZurmoCopyModelUtil::processAfterCopy($project, $copyToProject);

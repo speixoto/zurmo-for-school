@@ -1031,7 +1031,6 @@
             $this->assertEquals('AccountsModule should be subclass of RedBeanModel.', $response['message']);
         }
 
-
         public function testCreateWithRelations()
         {
             $super = User::getByUsername('super');

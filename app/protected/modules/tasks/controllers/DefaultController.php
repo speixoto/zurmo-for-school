@@ -514,16 +514,15 @@
                             else
                             {
                                 //This would be the one which is dragged across column
-                                //kanban update has to be done first
-                                $kanbanItem->sortOrder = $counter;
-                                $kanbanItem->type = intval($type);
-                                $kanbanItem->save();
                                 $targetStatus = TasksUtil::getDefaultTaskStatusForKanbanItemType(intval($type));
                                 $this->processStatusUpdateViaAjax($task, $targetStatus, false);
                                 $content = TasksUtil::resolveActionButtonForTaskByStatus($targetStatus,
                                                                                         $this->getId(),
                                                                                         $this->getModule()->getId(),
                                                                                         intval($taskId));
+                                $kanbanItem->sortOrder = $counter;
+                                $kanbanItem->type = intval($type);
+                                $kanbanItem->save();
                                 $subscriptionContent = TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
                                 $subscriptionContent .= TasksUtil::resolveSubscriptionLink($task, 'subscribe-task-link', 'unsubscribe-task-link');
                                 $response['button'] = $content;

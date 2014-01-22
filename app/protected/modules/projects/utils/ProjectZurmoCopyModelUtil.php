@@ -63,7 +63,7 @@
                 $copyToModel->opportunities->add($opportunity);
             }
         }
-        
+
         public static function processAfterCopy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
             foreach ($model->tasks as $task)
@@ -75,6 +75,5 @@
             }
             $copyToModel->save();
         }
-        
     }
 ?>

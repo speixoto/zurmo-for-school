@@ -35,60 +35,21 @@
      ********************************************************************************/
 
     /**
-     * Displays the standard boolean field
-     * rendered as a check box.
+     * Base observer class. Extend as needed
      */
-    class CheckBoxElement extends Element
+    abstract class BaseObserver extends CComponent
     {
-        /**
-         * Render A standard text input.
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
-        {
-            assert('empty($this->model->{$this->attribute}) ||
-                is_string($this->model->{$this->attribute}) ||
-                is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
-            );
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions             = array();
-                $htmlOptions['disabled'] = 'disabled';
-            }
-            return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
-        }
-
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions['disabled'] = $this->getDisabledValue();
-                if ((int)$this->model->{$this->attribute} == 1)
-                {
-                    $htmlOptions['uncheckValue'] = 1;
-                }
-                if ($htmlOptions['disabled'] == 'disabled')
-                {
-                    $htmlOptions['labelClass'] = 'disabled';
-                }
-            }
-            return $htmlOptions;
-        }
+        protected $attachedEventHandlersIndexedByModelClassName = array();
 
         /**
-         * Renders the attribute from the model.
-         * @return The element's content.
+         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
          */
-        protected function renderControlNonEditable()
+        public function destroy()
         {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['disabled'] = 'disabled';
-            return ZurmoHtml::activeCheckBox($this->model, $this->attribute, $htmlOptions);
+            foreach ($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
+            {
+                $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
+            }
         }
     }
 ?>

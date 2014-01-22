@@ -56,7 +56,7 @@
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
             $this->assertEquals(50,                 $form->listPageSize);
             $this->assertEquals(51,                 $form->subListPageSize);
-            $this->assertEquals(51,                 $form->dashboardListPageSize);
+            $this->assertEquals(52,                 $form->dashboardListPageSize);
             $this->assertEquals('blue',             Yii::app()->themeManager->resolveAndGetThemeColorValue($sally));
             $this->assertEquals(null,               Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($sally));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'hideWelcomeView'));
