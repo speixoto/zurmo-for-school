@@ -191,7 +191,7 @@
          */
         public function castDownPermitable()
         {
-            if(get_class($this->permitable) == 'Permitable' &&
+            if (get_class($this->permitable) == 'Permitable' &&
                isset(self::$cachedCastedDownPermitables[$this->permitable->id]))
             {
                 $permitableId = $this->permitable->id;
@@ -206,7 +206,6 @@
                 $this->permitable = null;
                 $this->permitable = $permitable;
                 self::$cachedCastedDownPermitables[$this->permitable->getClassId('Permitable')] = $permitable;
-
             }
         }
 

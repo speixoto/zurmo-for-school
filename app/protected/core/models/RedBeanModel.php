@@ -1190,7 +1190,7 @@
 
         private static function findNextDerivativeBean($bean, $modelClassName1, $modelClassName2)
         {
-            if($bean->id > 0)
+            if ($bean->id > 0)
             {
                 $key = strtolower($modelClassName1) . '_id';
                 $tableName = $modelClassName2::getTableName();
