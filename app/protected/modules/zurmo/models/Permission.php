@@ -264,7 +264,7 @@
             return true;
         }
 
-        public static function forgetCachedCastedDownPermitables()
+        public static function resetCaches()
         {
             static::$cachedCastedDownPermitables = array();
         }
