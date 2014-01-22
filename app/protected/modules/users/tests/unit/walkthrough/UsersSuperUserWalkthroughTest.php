@@ -152,6 +152,11 @@
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('users/default/securityDetails');
 
+            //Load Model Security Detail View for super user
+            $this->setGetArray(array('id' => $super->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/securityDetails');
+
             //Load Model MassEdit Views.
             //MassEdit view for single selected ids
             $this->setGetArray(array('selectedIds' => '4,5,6,7', 'selectAll' => '')); // Not Coding Standard
