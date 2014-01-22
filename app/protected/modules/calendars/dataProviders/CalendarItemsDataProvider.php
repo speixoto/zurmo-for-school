@@ -184,15 +184,15 @@
             $endFilter->value                       = $this->endDate;
             $endFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE;
             $report->addFilter($endFilter);
-            if(count($existingFilters) > 0)
-            {
-                $report->setFiltersStructure($report->getFiltersStructure() .
-                                             '(' . (count($existingFilters) + 1) . ' AND ' . ($existingFilters + 2) . ')');
-            }
-            else
-            {
+//            if(count($existingFilters) > 0)
+//            {
+//                $report->setFiltersStructure($report->getFiltersStructure() .
+//                                             '(' . (count($existingFilters) + 1) . ' AND ' . ($existingFilters + 2) . ')');
+//            }
+//            else
+//            {
                 $report->setFiltersStructure('1 AND 2');
-            }
+            //}
             $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                     $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'id';

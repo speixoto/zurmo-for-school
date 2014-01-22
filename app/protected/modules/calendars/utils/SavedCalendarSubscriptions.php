@@ -40,21 +40,28 @@
 
         protected $subscribedToSavedCalendarsAndSelected = array();
 
-        public static function makeByUser(User $user)
+        public static function makeByUser(User $user, $selectedCalendarId = null)
         {
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
 
             //todo: get saved calendars that the user owns (from somewhereelse?)
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
-            foreach ($mySavedCalendars as $key => $mySavedCalendar)
+            if(count($mySavedCalendars) > 0)
             {
-                if($key == 0)
+                if($selectedCalendarId == null)
                 {
-                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
+                    $selectedCalendarId = $mySavedCalendars[0]->id;
                 }
-                else
+                foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
-                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
+                    if($mySavedCalendar->id == $selectedCalendarId)
+                    {
+                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
+                    }
+                    else
+                    {
+                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
+                    }
                 }
             }
             //todo: get saved calendars that the user is subscribed too (from some subscription model?)

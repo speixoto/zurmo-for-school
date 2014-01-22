@@ -54,22 +54,31 @@
         public function run()
         {
             $events = $this->events;
+            $url    = Yii::app()->createUrl('calendars/default/getEvents');
             $cs = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
             $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
             $inputId = $this->inputId;
             $cs->registerScript('loadcalendar',
-                                "$(document).ready(function() {
+                                "$(document).on('ready', function() {
                                     $('#{$inputId}').fullCalendar({
-                                editable: true,
-                                events: [{$events}],
-                                header: {
-                                            left: 'prev,next today',
-                                            center: 'title',
-                                            right: 'month,agendaWeek,agendaDay'
-                                        },
-                                }); });", ClientScript::POS_END);
+                                                                    editable: true,
+                                                                    events: {
+                                                                              url : '$url',
+                                                                              data :function()
+                                                                              {
+                                                                                  return {
+                                                                                            selectedId : $('.mycalendar').val(),
+                                                                                         };
+                                                                              }
+                                                                            },
+                                                                    header: {
+                                                                                left: 'prev,next today',
+                                                                                center: 'title',
+                                                                                right: 'month,agendaWeek,agendaDay'
+                                                                            },
+                                                                    }); });", ClientScript::POS_END);
             $cs->registerCss('calendarcss', '
                                                 #FullCalendarForCombinedView .fc-content
                                                 {

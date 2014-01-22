@@ -149,7 +149,7 @@
             $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider);
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
-                                              makeStandardViewForCurrentUser($this,$interactiveCalendarView));
+                                                  makeStandardViewForCurrentUser($this,$interactiveCalendarView));
             echo $view->render();
         }
 
@@ -301,6 +301,12 @@
                 $savedCalendar->save();
             }
             return $savedCalendar;
+        }
+
+        public function actionGetEvents()
+        {
+            $dataProvider = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
+            echo CalendarUtil::getFullCalendarItemsString($dataProvider);
         }
     }
 ?>

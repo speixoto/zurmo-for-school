@@ -76,24 +76,30 @@
             $content .= $this->renderSubscribedToCalendarsContent();
             $left = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
             $right = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
+            $this->registerMyCalendarSelectScript();
             return ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
         }
 
         protected function renderSmallCalendarContent()
         {
-            //todo should default to today's period.
-            return 'todo small calendar content';
+            Yii::app()->clientScript->registerScript('smallcalendarscript', '$( "#smallcalendar" ).datepicker();', ClientScript::POS_END);
+            return ZurmoHtml::tag('div', array('id' => 'smallcalendar'), '');
         }
 
         protected function renderMyCalendarsContent()
         {
-            //todo: render labels/checkboxes, then ajax action on change... to call action to update sticky.
+            $content = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
+            $data    = array();
+            $selected = '';
             foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
             {
-                //$savedCalendarAndSelected[0] is a SavedCalendar
-                //$savedCalendarAndSelected[1] is a Boolean whether selceted to view or not
+                if($savedCalendarAndSelected[1] === true)
+                {
+                    $selected = $savedCalendarAndSelected[0]->id;
+                }
+                $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
             }
-            $content = 'todo calendar content';
+            $content .= ZurmoHtml::radioButtonList('mycalendar', $selected, $data, array('class' => 'mycalendar'));
             return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $content);
         }
 
@@ -116,6 +122,27 @@
         {
             $view = new FullCalendarForCombinedView($this->dataProvider);
             return $view->render();
+        }
+
+        protected function registerMyCalendarSelectScript()
+        {
+            //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
+            $url    = Yii::app()->createUrl('calendars/default/getEvents');
+            Yii::app()->clientScript->registerScript('mycalendarselectscript', "$('.mycalendar').on('change', function(){
+                    var selectedCal = $(this).val();
+                    var events = {
+                        url : '$url',
+                        data :function()
+                        {
+                            return {
+                                selectedId : selectedCal,
+                                }
+                        }
+                    };
+                    $('#calendar').fullCalendar('removeEventSource', events);
+                    $('#calendar').fullCalendar('addEventSource', events);
+                    $('#calendar').fullCalendar('refetchEvents');
+                });");
         }
     }
 ?>

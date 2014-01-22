@@ -132,7 +132,9 @@
          */
         public static function processUserCalendarsAndMakeDataProviderForCombinedView()
         {
-            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
+            $getData                    = GetUtil::getData();
+            $selectedId                 = isset($getData['selectedId'])? $getData['selectedId']:null;
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel, $selectedId);
             $dateRangeType              = CalendarUtil::getDateRangeType(); //is this sticky? maybe this is sticky
             $startDate                  = CalendarUtil::getStartDate($dateRangeType); //is this sticky? i dont know. maybe it defaults to TODAY
             $endDate                    = CalendarUtil::getEndDate($dateRangeType);
@@ -141,5 +143,30 @@
             return $dataProvider;
         }
 
+        public static function getFullCalendarItemsString(CalendarItemsDataProvider $dataProvider)
+        {
+            $calendarItems = $dataProvider->getData();
+            $fullCalendarItems = array();
+            for($k = 0; $k < count($calendarItems); $k++)
+            {
+                $fullCalendarItem = array();
+                $calItem = $calendarItems[$k];
+                $fullCalendarItem['title'] = $calItem->getTitle();
+                $fullCalendarItem['start'] = self::getFullCalendarFormattedDateTimeElement($calItem->getStartDateTime());
+                if($calItem->getEndDateTime() != null)
+                {
+                    $fullCalendarItem['end'] = self::getFullCalendarFormattedDateTimeElement($calItem->getEndDateTime());
+                }
+                $fullCalendarItems[] = $fullCalendarItem;
+            }
+            return CJSON::encode($fullCalendarItems);
+        }
+
+        public static function getFullCalendarFormattedDateTimeElement($dateTime)
+        {
+            $dateTimeObject = new DateTime($dateTime);
+            return Yii::app()->dateFormatter->format('yyyy-MM-dd HH::mm',
+                        $dateTimeObject->getTimestamp());
+        }
     }
 ?>
