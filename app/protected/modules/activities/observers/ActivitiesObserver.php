@@ -37,10 +37,8 @@
     /**
      * Used to observe when a model that can be an activityItem is deleted so that the activity_item can be properly removed.
      */
-    class ActivitiesObserver extends CComponent
+    class ActivitiesObserver extends BaseObserver
     {
-        protected $attachedEventHandlersIndexedByModelClassName = array();
-
         public function init()
         {
             $metadata                = Activity::getMetadata();
@@ -54,17 +52,6 @@
                 $eventHandler = array($this, 'deleteActivityItems');
                 $modelClassName::model()->attachEventHandler('onAfterDelete', $eventHandler);
                 $this->attachedEventHandlersIndexedByModelClassName[$modelClassName] = array('onAfterDelete', $eventHandler);
-            }
-        }
-
-        /**
-         * Removes attached eventHandlers. Used by tests to ensure there are not duplicate event handlers
-         */
-        public function destroy()
-        {
-            foreach ($this->attachedEventHandlersIndexedByModelClassName as $modelClassName => $nameAndHandler)
-            {
-                $modelClassName::model()->detachEventHandler($nameAndHandler[0], $nameAndHandler[1]);
             }
         }
 

@@ -159,6 +159,11 @@
             return true;
         }
 
+        public static function isReportable()
+        {
+            return true;
+        }
+
         public static function getLastArchivingImapDropboxCheckTime()
         {
             return static::getLastImapDropboxCheckTimeByKey('lastImapDropboxCheckTime');

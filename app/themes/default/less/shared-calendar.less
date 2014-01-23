@@ -31,98 +31,88 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
-#MashableInboxActionBarForViews{
-	.view-toolbar ul:first-child > li > a {
-		border-left: none;
+#calendar {
+	width:100%;
+	margin:0 auto;
+	td {
+		padding:0;
 	}
-	.search-view-0{
-		padding:0 15px 15px 15px;
-		
+}
+
+.fc-header {
+	text-transform:capitalize;
+}
+
+.calendar-view .left-column {
+	width:25%;
+}
+
+.calendar-view .right-column {
+	width:75%;
+}
+
+.calendars-list {
+	margin-top:30px;
+	ul {
+		list-style:none;
+		padding:0;
+		margin:0;
 	}
-	.list-view-items-summary-clone{
-		margin-top:5px;
+	> ul > li {
+		display:block;
+		padding:5px 0;
+		line-height:1;
 	}
-	.global-search-loopa{
-		width: 24px;
+	.edit-row-menu > li > a:before {
+		line-height:12px;
 	}
-	#MashableInboxForm_searchTerm{
-		width: 204px;
+	a {
+		color:#545454 !important;
 	}
-	.nav > li:first-child:before{
-		margin: 0;
-	}
-	.nav > li:first-child > a{
-		color: #656565;
-		font-weight: bold;
-		text-shadow: #fff 0 1px 0;
-		padding: 0 10px 0 40px;
-		line-height: 30px;
-		display: inline-block;
-		position: relative;
-		vertical-align: middle;
-		border-left: 1px solid #bababa;
-		&:after{
-			margin-left: 6px;
+	+ .calendars-list {
+		margin-top:30px;
+		.cal-color {
+			background:darkgoldenrod;
+		}
+		.cal-color.outline {
+			background:none;
+			border:1px solid rosybrown;
 		}
 	}
-	.icon-conversation,
-	.icon-mission{
-		position: relative;
-		ul{
-			width: 100%;
-			left: 0;
-			right: 0;
-			top: 31px;
-		}
-	}
 }
 
-.inbox-item{
-	position: relative;
-	div + span{
-		display: block;
-		padding-right: 80px;
-		overflow:hidden;
-	}
-	.list-item-details{
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
+.cal-color {
+	display:inline-block;
+	width:12px;
+	height:12px;
+	border-radius:3px;
+	background:#3a87ad;
+	margin-right:4px;
+	position:relative;
+	top:1px;
 }
 
-.model-tag{
-	display: inline-block;
-	font-weight:400;
-	.smaller() !important;
-	float: left;
-	margin:1px 5px 0 0 !important;
-	span{
-		.radius(3px);
-		color:#fff;
-		padding:2px 4px;
-		line-height: 1;
-	}
-	&.mission span{
-		#gradient > .vertical(#1ABC9C, #16A085 ); //green
-	}
-	&.conversation span{
-		#gradient > .vertical(#34495E, #2C3E50 ); //dark
-	}
-	&.notification span{
-		#gradient > .vertical(#9B59B6, #8E44AD ); //purple
-	}
+.cal-color.outline {
+	background:none;
+	border:1px solid salmon;
 }
 
-.last-comment{
-	ul, li{
-		list-style: none;
-	}
-	li{
-		margin-top: 2px;
-	}
+.task-subscribers {
+	border-top:none;
+	padding:0 0 0 16px;
+	margin-top:5px;
+	box-shadow:none;
 }
 
-.back-to-inbox-link{
-	color: @themeColor;
+.quick-insert {
+	padding:0;
+	margin-top:30px;
+	.details-item-editable {
+		padding-left:0;
+		padding-bottom:5px;
+	}
+	.simple-link {
+		margin:5px 0 0 0;
+		display:block;
+	}
 }

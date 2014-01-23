@@ -85,7 +85,6 @@
 
         public function resolveElementInformationDuringFormLayoutRender(DetailsView $view, &$elementInformation)
         {
-            self::resolveIsCustomDataLoaded();
         }
     }
 ?>

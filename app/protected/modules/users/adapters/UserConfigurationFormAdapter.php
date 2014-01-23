@@ -49,6 +49,7 @@
             $form                                   = new UserConfigurationForm($user);
             $form->listPageSize                     = Yii::app()->pagination->getByUserAndType($user, 'listPageSize');
             $form->subListPageSize                  = Yii::app()->pagination->getByUserAndType($user, 'subListPageSize');
+            $form->dashboardListPageSize            = Yii::app()->pagination->getByUserAndType($user, 'dashboardListPageSize');
             $form->themeColor                       = Yii::app()->themeManager->resolveAndGetThemeColorValue($user);
             $form->backgroundTexture                = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
             $form->hideWelcomeView                  = static::resolveAndGetValue($user, 'hideWelcomeView');
@@ -71,6 +72,7 @@
             assert('$user instanceOf User && $user->id > 0');
             Yii::app()->pagination->setByUserAndType($user, 'listPageSize', (int)$form->listPageSize);
             Yii::app()->pagination->setByUserAndType($user, 'subListPageSize', (int)$form->subListPageSize);
+            Yii::app()->pagination->setByUserAndType($user, 'dashboardListPageSize', (int)$form->dashboardListPageSize);
             Yii::app()->themeManager->setThemeColorValue($user, $form->themeColor);
             Yii::app()->themeManager->setBackgroundTextureValue ($user, $form->backgroundTexture);
             static::setValue($user, (bool)$form->hideWelcomeView, 'hideWelcomeView');
@@ -102,6 +104,7 @@
             static::setConfigurationFromForm($form, $user);
             Yii::app()->user->setState('listPageSize', (int)$form->listPageSize);
             Yii::app()->user->setState('subListPageSize', (int)$form->subListPageSize);
+            Yii::app()->user->setState('dashboardListPageSize', (int)$form->dashboardListPageSize);
         }
 
         /**

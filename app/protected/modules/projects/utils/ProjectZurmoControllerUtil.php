@@ -174,16 +174,18 @@
          * Get latest activity feed list view
          * @return ListView
          */
-        public static function getProjectsLatestActivityFeedView($controller)
+        public static function getProjectsLatestActivityFeedView($controller, $pageSize)
         {
-            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', 'ProjectsModule');
             $project            = new Project(false);
             $searchForm         = new ProjectsSearchForm($project);
-            $listModelClassName = get_class($searchForm->getModel());
-            $dataCollection     = new SearchAttributesDataCollection($searchForm);
-            $dataProvider       = $controller->makeRedBeanDataProviderByDataCollection($searchForm, $pageSize,
-                                    null, $dataCollection);
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                array(),
+                'ProjectAuditEvent',
+                'RedBeanModelDataProvider',
+                'dateTime',
+                true,
+                $pageSize
+            );
             $listView           = new ProjectsFeedListView(
                                    $controller->id,
                                    $controller->getModule()->getId(),
@@ -201,10 +203,8 @@
          * Get active projects list view
          * @return ListView
          */
-        public static function getActiveProjectsListView($controller)
+        public static function getActiveProjectsListView($controller, $pageSize)
         {
-            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', 'ProjectsModule');
             $project            = new Project(false);
             $searchForm         = new ProjectsSearchForm($project);
             $listModelClassName = get_class($searchForm->getModel());

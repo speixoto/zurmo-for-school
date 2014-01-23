@@ -87,7 +87,7 @@
                     'nextPageLabel'    => '<span>next</span>',
                     'lastPageLabel'    => '<span>last</span>',
                     'paginationParams' => GetUtil::getData(),
-                    'route'            => $this->getGridViewActionRoute($this->getListActionId(), $this->moduleId),
+                    'route'            => $this->getGridViewActionRoute($this->getListActionId(), 'projects'),
                     'class'            => 'SimpleListLinkPager',
                 );
         }

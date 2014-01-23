@@ -35,60 +35,34 @@
      ********************************************************************************/
 
     /**
-     * Displays the standard boolean field
-     * rendered as a check box.
+     * Report rules to be used with the EmailMessages module.
      */
-    class CheckBoxElement extends Element
+    class EmailMessagesReportRules extends SecuredReportRules
     {
         /**
-         * Render A standard text input.
-         * @return The element's content as a string.
+         * @return array
          */
-        protected function renderControlEditable()
+        public static function getDefaultMetadata()
         {
-            assert('empty($this->model->{$this->attribute}) ||
-                is_string($this->model->{$this->attribute}) ||
-                is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
+            $metadata = array(
+                'EmailMessage' => array(
+                    'nonReportable' =>
+                    array('files'),
+                ),
+                'EmailMessageRecipient' => array(
+                    'nonReportable' =>
+                        array('personsOrAccounts'),
+                    'availableOperatorsTypes' =>
+                        array('type'   => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'filterValueElementTypes' =>
+                        array('type'   => 'EmailMessageRecipientTypeStaticDropDownForWizardModel'),
+                ),
+                'EmailMessageSender' => array(
+                    'nonReportable' =>
+                        array('personsOrAccounts'),
+                )
             );
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions             = array();
-                $htmlOptions['disabled'] = 'disabled';
-            }
-            return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
-        }
-
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions['disabled'] = $this->getDisabledValue();
-                if ((int)$this->model->{$this->attribute} == 1)
-                {
-                    $htmlOptions['uncheckValue'] = 1;
-                }
-                if ($htmlOptions['disabled'] == 'disabled')
-                {
-                    $htmlOptions['labelClass'] = 'disabled';
-                }
-            }
-            return $htmlOptions;
-        }
-
-        /**
-         * Renders the attribute from the model.
-         * @return The element's content.
-         */
-        protected function renderControlNonEditable()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['disabled'] = 'disabled';
-            return ZurmoHtml::activeCheckBox($this->model, $this->attribute, $htmlOptions);
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

@@ -62,6 +62,17 @@
          */
         protected static function getRequestType()
         {
+            if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) && $_SERVER['HTTP_ZURMO_API_REQUEST_TYPE'] != '')
+            {
+                if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest' )
+                {
+                    return ApiRequest::REST;
+                }
+                elseif (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'soap')
+                {
+                    return ApiRequest::SOAP;
+                }
+            }
             if (function_exists('getallheaders'))
             {
                 $httpHeaders = getallheaders();
@@ -76,26 +87,8 @@
                         return ApiRequest::SOAP;
                     }
                 }
-                else
-                {
-                    return false;
-                }
             }
-            if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']))
-            {
-                if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest')
-                {
-                    return ApiRequest::REST;
-                }
-                elseif (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'soap')
-                {
-                    return ApiRequest::SOAP;
-                }
-            }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 ?>

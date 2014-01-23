@@ -91,7 +91,7 @@
                     'nextPageLabel'    => '<span>next</span>',
                     'lastPageLabel'    => '<span>last</span>',
                     'paginationParams' => GetUtil::getData(),
-                    'route'            => $this->getGridViewActionRoute($this->getListActionId(), $this->moduleId),
+                    'route'            => $this->getGridViewActionRoute($this->getListActionId(), 'projects'),
                     'class'            => 'SimpleListLinkPager',
                 );
         }
@@ -130,15 +130,6 @@
         }
 
         /**
-         * @return RedBeanModelDataProvider
-         */
-        protected function getDataProvider()
-        {
-            $dataProvider = new RedBeanModelDataProvider('ProjectAuditEvent', 'dateTime', true);
-            return $dataProvider;
-        }
-
-        /**
          * @return array
          */
         protected function getCGridViewLastColumn()
@@ -152,20 +143,6 @@
         public function getGridViewId()
         {
             return 'projects-feed-list-view';
-        }
-
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'MyList';
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'NonModifiableListView';
         }
     }
 ?>

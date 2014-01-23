@@ -57,6 +57,7 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             Currency::resetCaches();  //php only cache
+            Permission::resetCaches(); //php only cache
             self::$activitiesObserver = new ActivitiesObserver();
             self::$activitiesObserver->init(); //runs init();
             self::$conversationsObserver = new ConversationsObserver();
