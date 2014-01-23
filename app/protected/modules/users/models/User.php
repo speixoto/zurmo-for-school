@@ -1025,15 +1025,15 @@
 
         /**
          * @return bool
+         * @throws NotSupportedException
          */
         public function isSuperAdministrator()
         {
-            $superGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if ($this->groups->contains($superGroup))
+            if ($this->id < 0)
             {
-                return true;
+                throw new NotSupportedException();
             }
-            return false;
+            return Group::isUserASuperAdministrator($this);
         }
     }
 ?>
