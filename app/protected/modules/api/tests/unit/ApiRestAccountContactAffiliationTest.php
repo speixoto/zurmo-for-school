@@ -37,9 +37,9 @@
     /**
     * Test Account related API functions.
     */
-    class ApiRestAccountAccountAffiliationTest extends ApiRestTest
+    class ApiRestAccountContactAffiliationTest extends ApiRestTest
     {
-        public function testGetAccountAccountAffiliation()
+        public function testGetAccountContactAffiliation()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -54,29 +54,32 @@
 
             $account = AccountTestHelper::createAccountByNameForOwner('firstAccount', Yii::app()->user->userModel);
             $account2 = AccountTestHelper::createAccountByNameForOwner('secondAccount', Yii::app()->user->userModel);
-            $account3 = AccountTestHelper::createAccountByNameForOwner('thirdAccount', Yii::app()->user->userModel);
 
-            $accountAccountAffiliation = new AccountAccountAffiliation();
-            $accountAccountAffiliation->primaryAccount   = $account;
-            $accountAccountAffiliation->secondaryAccount = $account2;
-            $this->assertTrue($accountAccountAffiliation->save());
+            $contact = ContactTestHelper::createContactByNameForOwner('First', Yii::app()->user->userModel);
+            $contact2 = ContactTestHelper::createContactByNameForOwner('Second', Yii::app()->user->userModel);
 
-            $accountAccountAffiliation2 = new AccountAccountAffiliation();
-            $accountAccountAffiliation2->primaryAccount   = $account;
-            $accountAccountAffiliation2->secondaryAccount = $account3;
-            $this->assertTrue($accountAccountAffiliation2->save());
 
-            $compareData    = $this->getModelToApiDataUtilData($accountAccountAffiliation);
-            $response = $this->createApiCallWithRelativeUrl('read/' . $accountAccountAffiliation->id, 'GET', $headers);
+            $accountContactAffiliation = new AccountContactAffiliation();
+            $accountContactAffiliation->account   = $account;
+            $accountContactAffiliation->contact   = $contact;
+            $this->assertTrue($accountContactAffiliation->save());
+
+            $accountContactAffiliation2 = new AccountContactAffiliation();
+            $accountContactAffiliation2->account   = $account2;
+            $accountContactAffiliation2->contact   = $contact2;
+            $this->assertTrue($accountContactAffiliation2->save());
+
+            $compareData    = $this->getModelToApiDataUtilData($accountContactAffiliation);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $accountContactAffiliation->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
         }
 
         /**
-        * @depends testGetAccountAccountAffiliation
+        * @depends testGetAccountContactAffiliation
         */
-        public function testDeleteAccountAccountAffiliation()
+        public function testDeleteAccountContactAffiliation()
         {
             Yii::app()->user->userModel        = User::getByUsername('super');
             $authenticationData = $this->login();
@@ -87,7 +90,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $affiliations = AccountAccountAffiliation::getAll();
+            $affiliations = AccountContactAffiliation::getAll();
             $this->assertEquals(2, count($affiliations));
 
             $response = $this->createApiCallWithRelativeUrl('delete/' . $affiliations[0]->id, 'DELETE', $headers);
@@ -99,14 +102,14 @@
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('The ID specified was invalid.', $response['message']);
 
-            $affiliations = AccountAccountAffiliation::getAll();
+            $affiliations = AccountContactAffiliation::getAll();
             $this->assertEquals(1, count($affiliations));
         }
 
         /**
-         * @depends testGetAccountAccountAffiliation
+         * @depends testGetAccountContactAffiliation
          */
-        public function testCreateAccountAccountAffiliation()
+        public function testCreateAccountContactAffiliation()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -118,28 +121,28 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $account = AccountTestHelper::createAccountByNameForOwner('primaryAccount', Yii::app()->user->userModel);
-            $account2 = AccountTestHelper::createAccountByNameForOwner('secondaryAccount', Yii::app()->user->userModel);
+            $account = AccountTestHelper::createAccountByNameForOwner('CreateAccount', Yii::app()->user->userModel);
+            $contact = ContactTestHelper::createContactByNameForOwner('CreateContact', Yii::app()->user->userModel);
 
-            $data['primaryAccount']['id']   = $account->id;
-            $data['secondaryAccount']['id'] = $account2->id;
+            $data['account']['id'] = $account->id;
+            $data['contact']['id'] = $contact->id;
             $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals($account->id, $response['data']['primaryAccount']['id']);
-            $this->assertEquals($account2->id, $response['data']['secondaryAccount']['id']);
+            $this->assertEquals($account->id, $response['data']['account']['id']);
+            $this->assertEquals($contact->id, $response['data']['contact']['id']);
 
             $response = $this->createApiCallWithRelativeUrl('read/' . $response['data']['id'], 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals($account->id, $response['data']['primaryAccount']['id']);
-            $this->assertEquals($account2->id, $response['data']['secondaryAccount']['id']);
+            $this->assertEquals($account->id, $response['data']['account']['id']);
+            $this->assertEquals($contact->id, $response['data']['contact']['id']);
         }
 
         /**
-         * @depends testCreateAccountAccountAffiliation
+         * @depends testCreateAccountContactAffiliation
          */
-        public function testUpdateAccountAccountAffiliation()
+        public function testUpdateAccountContactAffiliation()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -152,31 +155,31 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $account = AccountTestHelper::createAccountByNameForOwner('primaryUpdateAccount', Yii::app()->user->userModel);
-            $account2 = AccountTestHelper::createAccountByNameForOwner('secondaryUpdateAccount', Yii::app()->user->userModel);
-            $account3 = AccountTestHelper::createAccountByNameForOwner('thirdUpdateAccount', Yii::app()->user->userModel);
+            $account = AccountTestHelper::createAccountByNameForOwner('UpdateAccount', Yii::app()->user->userModel);
+            $contact = ContactTestHelper::createContactByNameForOwner('FirstUpdateContact', Yii::app()->user->userModel);
+            $contact2 = ContactTestHelper::createContactByNameForOwner('SecondUpdateContact', Yii::app()->user->userModel);
 
-            $accountAccountAffiliation = new AccountAccountAffiliation();
-            $accountAccountAffiliation->primaryAccount   = $account;
-            $accountAccountAffiliation->secondaryAccount = $account2;
-            $this->assertTrue($accountAccountAffiliation->save());
+            $accountContactAffiliation = new AccountContactAffiliation();
+            $accountContactAffiliation->account   = $account;
+            $accountContactAffiliation->contact = $contact;
+            $this->assertTrue($accountContactAffiliation->save());
 
-            $data['secondaryAccount']['id'] = $account3->id;
+            $data['contact']['id'] = $contact2->id;
 
-            $response = $this->createApiCallWithRelativeUrl('update/' . $accountAccountAffiliation->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $accountContactAffiliation->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
-            $this->assertEquals($account->id, $response['data']['primaryAccount']['id']);
-            $this->assertEquals($account3->id, $response['data']['secondaryAccount']['id']);
+            $this->assertEquals($account->id, $response['data']['account']['id']);
+            $this->assertEquals($contact2->id, $response['data']['contact']['id']);
 
-            $accountAccountAffiliationId = $accountAccountAffiliation->id;
-            $accountAccountAffiliation->forgetAll();
-            $accountAccountAffiliation = AccountAccountAffiliation::getById($accountAccountAffiliationId);
-            $this->assertEquals($accountAccountAffiliation->primaryAccount->id, $response['data']['primaryAccount']['id']);
-            $this->assertEquals($accountAccountAffiliation->secondaryAccount->id, $response['data']['secondaryAccount']['id']);
+            $accountContactAffiliationId = $accountContactAffiliation->id;
+            $accountContactAffiliation->forgetAll();
+            $accountContactAffiliation = AccountContactAffiliation::getById($accountContactAffiliationId);
+            $this->assertEquals($accountContactAffiliation->account->id, $response['data']['account']['id']);
+            $this->assertEquals($accountContactAffiliation->contact->id, $response['data']['contact']['id']);
         }
 
-        public function testGetAffiliatedAccounts()
+        public function testGetAffiliatedAccountsAndContacts()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -192,43 +195,44 @@
             $account = AccountTestHelper::createAccountByNameForOwner('firstAffAccount', Yii::app()->user->userModel);
             $account2 = AccountTestHelper::createAccountByNameForOwner('secondAffAccount', Yii::app()->user->userModel);
             $account3 = AccountTestHelper::createAccountByNameForOwner('thirdAffAccount', Yii::app()->user->userModel);
-            $account4 = AccountTestHelper::createAccountByNameForOwner('forthAffAccount', Yii::app()->user->userModel);
+            $contact = ContactTestHelper::createContactByNameForOwner('firstAffContact', Yii::app()->user->userModel);
+            $contact2 = ContactTestHelper::createContactByNameForOwner('secondAffContact', Yii::app()->user->userModel);
+            $contact3 = ContactTestHelper::createContactByNameForOwner('thirdAffContact', Yii::app()->user->userModel);
 
-            $accountAccountAffiliation = new AccountAccountAffiliation();
-            $accountAccountAffiliation->primaryAccount   = $account;
-            $accountAccountAffiliation->secondaryAccount = $account2;
-            $this->assertTrue($accountAccountAffiliation->save());
+            $accountContactAffiliation = new AccountContactAffiliation();
+            $accountContactAffiliation->account   = $account;
+            $accountContactAffiliation->contact = $contact;
+            $this->assertTrue($accountContactAffiliation->save());
             sleep(1);
-            $accountAccountAffiliation2 = new AccountAccountAffiliation();
-            $accountAccountAffiliation2->primaryAccount   = $account3;
-            $accountAccountAffiliation2->secondaryAccount = $account;
-            $this->assertTrue($accountAccountAffiliation2->save());
+            $accountContactAffiliation2 = new AccountContactAffiliation();
+            $accountContactAffiliation2->account   = $account;
+            $accountContactAffiliation2->contact = $contact2;
+            $this->assertTrue($accountContactAffiliation2->save());
             sleep(1);
-            $accountAccountAffiliation3 = new AccountAccountAffiliation();
-            $accountAccountAffiliation3->primaryAccount   = $account3;
-            $accountAccountAffiliation3->secondaryAccount = $account4;
-            $this->assertTrue($accountAccountAffiliation3->save());
+            $accountContactAffiliation = new AccountContactAffiliation();
+            $accountContactAffiliation->account   = $account2;
+            $accountContactAffiliation->contact = $contact2;
+            $this->assertTrue($accountContactAffiliation->save());
+            sleep(1);
+            $accountContactAffiliation = new AccountContactAffiliation();
+            $accountContactAffiliation->account   = $account3;
+            $accountContactAffiliation->contact = $contact3;
+            $this->assertTrue($accountContactAffiliation->save());
 
-
+            // Get all contacts affiliated with account
             $data = array(
                 'search' => array(
-                    'modelClassName' => 'AccountAccountAffiliation',
+                    'modelClassName' => 'AccountContactAffiliation',
                     'searchAttributeData' => array(
                         'clauses' => array(
                             1 => array(
-                                'attributeName'        => 'primaryAccount',
-                                'relatedAttributeName' => 'id',
-                                'operatorType'         => 'equals',
-                                'value'                => $account->id,
-                            ),
-                            2 => array(
-                                'attributeName'        => 'secondaryAccount',
+                                'attributeName'        => 'account',
                                 'relatedAttributeName' => 'id',
                                 'operatorType'         => 'equals',
                                 'value'                => $account->id,
                             ),
                         ),
-                        'structure' => '(1 OR 2)',
+                        'structure' => '1',
                     ),
                 ),
                 'pagination' => array(
@@ -243,21 +247,54 @@
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(2, $response['data']['totalCount']);
             $this->assertEquals(2, count($response['data']['items']));
-            $this->assertEquals($account->id, $response['data']['items'][0]['primaryAccount']['id']);
-            $this->assertEquals($account2->id, $response['data']['items'][0]['secondaryAccount']['id']);
-            $this->assertEquals($account3->id, $response['data']['items'][1]['primaryAccount']['id']);
-            $this->assertEquals($account->id, $response['data']['items'][1]['secondaryAccount']['id']);
+            $this->assertEquals($account->id, $response['data']['items'][0]['account']['id']);
+            $this->assertEquals($contact->id, $response['data']['items'][0]['contact']['id']);
+            $this->assertEquals($account->id, $response['data']['items'][1]['account']['id']);
+            $this->assertEquals($contact2->id, $response['data']['items'][1]['contact']['id']);
+
+            // Get all accounts affiliated with account
+            $data = array(
+                'search' => array(
+                    'modelClassName' => 'AccountContactAffiliation',
+                    'searchAttributeData' => array(
+                        'clauses' => array(
+                            1 => array(
+                                'attributeName'        => 'contact',
+                                'relatedAttributeName' => 'id',
+                                'operatorType'         => 'equals',
+                                'value'                => $contact2->id,
+                            ),
+                        ),
+                        'structure' => '1',
+                    ),
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 5,
+                ),
+                'sort' => 'id asc',
+            );
+
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, $response['data']['totalCount']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals($account->id, $response['data']['items'][0]['account']['id']);
+            $this->assertEquals($contact2->id, $response['data']['items'][0]['contact']['id']);
+            $this->assertEquals($account2->id, $response['data']['items'][1]['account']['id']);
+            $this->assertEquals($contact2->id, $response['data']['items'][1]['contact']['id']);
         }
 
         protected function getApiControllerClassName()
         {
-            Yii::import('application.modules.accountAccountAffiliations.controllers.AccountAccountAffiliationApiController', true);
-            return 'AccountAccountAffiliationsAccountAccountAffiliationApiController';
+            Yii::import('application.modules.accountContactAffiliations.controllers.AccountContactAffiliationApiController', true);
+            return 'AccountContactAffiliationsAccountContactAffiliationApiController';
         }
 
         protected function getModuleBaseApiUrl()
         {
-            return 'accountAccountAffiliations/AccountAccountAffiliation/api/';
+            return 'accountContactAffiliations/AccountContactAffiliation/api/';
         }
     }
 ?>

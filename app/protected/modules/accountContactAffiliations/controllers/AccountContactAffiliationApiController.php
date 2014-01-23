@@ -39,16 +39,6 @@
      */
     class AccountContactAffiliationsAccountContactAffiliationApiController extends ZurmoModuleApiController
     {
-        public function actionList()
-        {
-            throw new ApiUnsupportedException();
-        }
-
-        public function actionSearch()
-        {
-            throw new ApiUnsupportedException();
-        }
-
         public function actionAddRelation()
         {
             throw new ApiUnsupportedException();
