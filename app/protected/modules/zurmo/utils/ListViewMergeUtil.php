@@ -162,6 +162,7 @@
             assert('is_array($selectedModelsList)');
             foreach ($selectedModelsList as $selectedModel)
             {
+                self::processCopyEmailActivity($primaryModel, $selectedModel);
                 self::processNonDerivedRelationsAssignment($primaryModel, $selectedModel);
                 self::processDerivedRelationsAssignment($primaryModel, $selectedModel);
             }
@@ -298,6 +299,28 @@
             }
             $metadata['global']['panels'] = $panelsData;
             return $metadata;
+        }
+
+        /**
+         * Process copy email activity.
+         *
+         * @param RedBeanModel $primaryModel
+         * @param RedBeanModel $selectedModel
+         */
+        public static function processCopyEmailActivity($primaryModel, $selectedModel)
+        {
+            $searchAttributesData = LatestActivitiesUtil::
+                                        getSearchAttributesDataByModelClassNamesAndRelatedItemIds(array('EmailMessage'),
+                                                                                                  array($selectedModel->id),
+                                                                                                  LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
+            $where               = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributesData[0]['EmailMessage'], $joinTablesAdapter);
+            $models              = EmailMessage::getSubset($joinTablesAdapter, 0, null, $where, null);
+            foreach($models as $model)
+            {
+                $model->personsOrAccounts->add($primaryModel);
+                $model->save();
+            }
         }
     }
 ?>
