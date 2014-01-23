@@ -126,6 +126,8 @@
 
         protected function registerMyCalendarSelectScript()
         {
+            $startDate     = $this->dataProvider->getStartDate();
+            $endDate       = $this->dataProvider->getEndDate();
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
             $url    = Yii::app()->createUrl('calendars/default/getEvents');
             Yii::app()->clientScript->registerScript('mycalendarselectscript', "$('.mycalendar').on('change', function(){
@@ -136,8 +138,21 @@
                         {
                             return {
                                 selectedId : selectedCal,
+                                start      : '{$startDate}',
+                                end        : '{$endDate}'
                                 }
-                        }
+                        },
+                        loading: function(bool)
+                                 {
+                                    if (bool)
+                                    {
+                                        $(this).makeLargeLoadingSpinner(true, '#calendar');
+                                    }
+                                    else
+                                    {
+                                        $(this).makeLargeLoadingSpinner(false, '#calendar');
+                                    }
+                                 }
                     };
                     $('#calendar').fullCalendar('removeEventSource', events);
                     $('#calendar').fullCalendar('addEventSource', events);

@@ -47,7 +47,9 @@
         {
             //echo CalendarUtil::renderFullCalendarWidget($this->dataProvider);
             Yii::app()->controller->widget('FullCalendar',
-                                           array('inputId' => 'calendar'));
+                                           array('inputId' => 'calendar',
+                                                 'startDate' => strtotime($this->dataProvider->getStartDate()),
+                                                 'endDate'   => strtotime($this->dataProvider->getEndDate())));
             $spinner = ZurmoHtml::tag('div', array('class' => 'calendar-loading'), 'Loading..');
             $calendar = ZurmoHtml::tag('div', array('id' => 'calendar'), '');
             return $spinner . $calendar;

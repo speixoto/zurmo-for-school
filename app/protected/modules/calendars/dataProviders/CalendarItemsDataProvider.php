@@ -228,16 +228,6 @@
             $this->moduleClassName = $moduleClassName;
         }
 
-        public function setStartDateTime($startDateTime)
-        {
-            $this->startDateTime = $startDateTime;
-        }
-
-        public function setEndDateTime($endDateTime)
-        {
-            $this->endDateTime = $endDateTime;
-        }
-
         public function getSavedCalendarSubscriptions()
         {
             return $this->savedCalendarSubscriptions;

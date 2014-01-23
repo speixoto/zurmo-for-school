@@ -41,7 +41,11 @@
     {
         public $inputId;
 
-        public $events;
+        public $startDate;
+
+        public $endDate;
+
+        public $defaultView;
 
         /**
          * Initialize the Calendar Widget
@@ -53,32 +57,51 @@
 
         public function run()
         {
-            $events = $this->events;
-            $url    = Yii::app()->createUrl('calendars/default/getEvents');
-            $cs = Yii::app()->getClientScript();
+            $defaultView   = ($this->defaultView == null)? 'agendaWeek':$this->defaultView;
+            $startDate     = $this->startDate;
+            $endDate       = $this->endDate;
+            $url           = Yii::app()->createUrl('calendars/default/getEvents');
+            $cs            = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
             $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
             $inputId = $this->inputId;
             $cs->registerScript('loadcalendar',
                                 "$(document).on('ready', function() {
+                                    var selectedCal = $('.mycalendar').val();
                                     $('#{$inputId}').fullCalendar({
                                                                     editable: true,
-                                                                    events: {
-                                                                              url : '$url',
-                                                                              data :function()
-                                                                              {
-                                                                                  return {
-                                                                                            selectedId : $('.mycalendar').val(),
-                                                                                         };
-                                                                              }
-                                                                            },
                                                                     header: {
                                                                                 left: 'prev,next today',
                                                                                 center: 'title',
                                                                                 right: 'month,agendaWeek,agendaDay'
                                                                             },
-                                                                    }); });", ClientScript::POS_END);
+                                                                    events:  {
+                                                                                url : '$url',
+                                                                                data :function()
+                                                                                {
+                                                                                    return {
+                                                                                        selectedId : selectedCal,
+                                                                                        start      : '{$startDate}',
+                                                                                        end        : '{$endDate}'
+                                                                                        }
+                                                                                }
+                                                                            },
+                                                                    loading: function(bool)
+                                                                            {
+                                                                               if (bool)
+                                                                               {
+                                                                                   $(this).makeLargeLoadingSpinner(true, '#calendar');
+                                                                               }
+                                                                               else
+                                                                               {
+                                                                                   $(this).makeLargeLoadingSpinner(false, '#calendar');
+                                                                               }
+                                                                            },
+                                                                     defaultView: '{$defaultView}'
+                                                                    });
+
+                                        });", ClientScript::POS_END);
             $cs->registerCss('calendarcss', '
                                                 #FullCalendarForCombinedView .fc-content
                                                 {
