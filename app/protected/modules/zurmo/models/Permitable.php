@@ -120,17 +120,24 @@
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
                 $combinedRight = Right::NONE;
-                foreach ($this->rights as $right)
+                try
                 {
-                    if ($right->moduleName == $moduleName &&
-                        $right->name       == $rightName)
+                    foreach ($this->rights as $right)
                     {
-                        $combinedRight |= $right->type;
-                        if ($right->type == Right::DENY)
+                        if ($right->moduleName == $moduleName &&
+                            $right->name       == $rightName)
                         {
-                            break; // Shortcircuit.
+                            $combinedRight |= $right->type;
+                            if ($right->type == Right::DENY)
+                            {
+                                break; // Shortcircuit.
+                            }
                         }
                     }
+                }
+                catch(NotSupportedException $e)
+                {
+                    //Super Administrator group for example doesn't allow right retrieval.
                 }
                 if (($combinedRight & Right::DENY) == Right::DENY)
                 {
@@ -282,14 +289,10 @@
             assert('is_string($policyName)');
             assert('$moduleName != ""');
             assert('$policyName != ""');
-            // A permitable gets the default policy until it is saved.
-            if ($this->id > 0)
+            $value = $this->getActualPolicy($moduleName, $policyName);
+            if ($value !== null)
             {
-                $value = $this->getActualPolicy($moduleName, $policyName);
-                if ($value !== null)
-                {
-                    return $value;
-                }
+                return $value;
             }
             return $moduleName::getPolicyDefault($policyName);
         }

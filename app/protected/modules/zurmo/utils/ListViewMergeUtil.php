@@ -164,6 +164,7 @@
             {
                 self::processNonDerivedRelationsAssignment($primaryModel, $selectedModel);
                 self::processDerivedRelationsAssignment($primaryModel, $selectedModel);
+                self::processCopyEmailActivity($primaryModel, $selectedModel);
             }
         }
 
@@ -298,6 +299,98 @@
             }
             $metadata['global']['panels'] = $panelsData;
             return $metadata;
+        }
+
+        /**
+         * Process copy email activity.
+         *
+         * @param RedBeanModel $primaryModel
+         * @param RedBeanModel $selectedModel
+         */
+        public static function processCopyEmailActivity($primaryModel, $selectedModel)
+        {
+            $searchAttributesData = LatestActivitiesUtil::
+                                        getSearchAttributesDataByModelClassNamesAndRelatedItemIds(array('EmailMessage'),
+                                                                                                  array($selectedModel->getClassId('Item')),
+                                                                                                  LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
+            $where               = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributesData[0]['EmailMessage'], $joinTablesAdapter);
+            $models              = EmailMessage::getSubset($joinTablesAdapter, null, null, $where, null);
+
+            foreach($models as $model)
+            {
+                //Sender
+                $sender  = $model->sender;
+                if($sender->fromName == self::getSelectedModelName($selectedModel))
+                {
+                    $newSender                    = new EmailMessageSender();
+                    $newSender->fromAddress       = $sender->fromAddress;
+                    $newSender->fromName          = self::getPrimaryModelName($primaryModel);
+                    $newSender->personsOrAccounts->add($primaryModel);
+                    $model->sender                = $newSender;
+                }
+                //recipient
+                $recipients                   = $model->recipients;
+                foreach($recipients as $recipient)
+                {
+                    if($recipient->toName == self::getSelectedModelName($selectedModel))
+                    {
+                        $newRecipient                  = new EmailMessageRecipient();
+                        $newRecipient->toAddress       = $recipient->toAddress;
+                        $newRecipient->toName          = self::getPrimaryModelName($primaryModel);
+                        $newRecipient->type            = $recipient->type;
+                        $newRecipient->emailMessage    = $recipient->emailMessage;
+                        $newRecipient->personsOrAccounts->add($primaryModel);
+                        $model->recipients->add($newRecipient);
+                        $model->recipients->remove($recipient);
+                    }
+                }
+                $model->save();
+            }
+        }
+
+        /**
+         * Gets selected model name.
+         * @param RedBeanModel $selectedModel
+         * @throws NotSupportedException
+         */
+        protected static function getSelectedModelName($selectedModel)
+        {
+            if($selectedModel instanceof Contact)
+            {
+                $selectedName = $selectedModel->getFullName();
+            }
+            elseif ($selectedModel instanceof Account)
+            {
+                $selectedName = $selectedModel->name;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $selectedName;
+        }
+
+        /**
+         * Gets primary model name.
+         * @param RedBeanModel $selectedModel
+         * @throws NotSupportedException
+         */
+        protected static function getPrimaryModelName($primaryModel)
+        {
+            if($primaryModel instanceof Contact)
+            {
+                $primaryName = $primaryModel->getFullName();
+            }
+            elseif ($primaryModel instanceof Account)
+            {
+                $primaryName = $primaryModel->name;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $primaryName;
         }
     }
 ?>

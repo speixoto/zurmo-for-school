@@ -34,12 +34,24 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    define('MAJOR_VERSION', 2);                           // Update for marketing purposes.
-    define('MINOR_VERSION', 6);                           // Update when functionality changes.
-    define('PATCH_VERSION', 4);                          // Update when fixes are made that does not change functionality.
-    define('REPO_ID',       '$Revision$'); // Updated by Mercurial. Numbers like 3650 have no meaning across
-                                                          // clones. This tells us the actual changeset that is universally
-                                                          // meaningful.
+    /**
+     * AccountAccountAffiliations API Controller
+     */
+    class AccountAccountAffiliationsAccountAccountAffiliationApiController extends ZurmoModuleApiController
+    {
+        public function actionAddRelation()
+        {
+            throw new ApiUnsupportedException();
+        }
 
-    define('VERSION', join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION)) . ' (' . substr(REPO_ID, strlen('$Revision: '), -2) . ')');
+        public function actionRemoveRelation()
+        {
+            throw new ApiUnsupportedException();
+        }
+
+        protected static function getSearchFormClassName()
+        {
+            return 'AccountAccountAffiliationSearchForm';
+        }
+    }
 ?>
