@@ -107,7 +107,7 @@
                                     $(id).find('.endless-list-pager').replaceWith($(id, data).find('.endless-list-pager'));
                                 });
                                 var \$data = $(data);
-                                jQuery.globalEval(\$data.filter('script').last().text());
+                                jQuery.globalEval(\$data.filter('script').last().html());
                                 if (settings.afterAjaxUpdate !== undefined)
                                     settings.afterAjaxUpdate(id, data);
                                 $('#'+id).removeClass(settings.loadingClass);
