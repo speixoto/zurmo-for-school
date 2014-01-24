@@ -160,13 +160,17 @@
          * user. This can happen if a user can modify groups, which would include modifying the NamedSecurableItems for the
          * various modules, but does not have access to all those modules.
          * @param $requiredPermissions
+         * @param null|User $user
          * @throws AccessDeniedSecurityException
          */
-        protected function checkPermissionsHasAnyOf($requiredPermissions)
+        public function checkPermissionsHasAnyOf($requiredPermissions, User $user = null)
         {
             assert('is_int($requiredPermissions)');
-            $currentUser = Yii::app()->user->userModel;
-            $effectivePermissions = $this->getEffectivePermissions($currentUser);
+            if($user == null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
+            $effectivePermissions = $this->getEffectivePermissions($user);
             if (($effectivePermissions & $requiredPermissions) == 0)
             {
                 if ($this->allowChangePermissionsRegardlessOfUser)
@@ -175,7 +179,7 @@
                 }
                 else
                 {
-                    throw new AccessDeniedSecurityException($currentUser, $requiredPermissions, $effectivePermissions);
+                    throw new AccessDeniedSecurityException($user, $requiredPermissions, $effectivePermissions);
                 }
             }
         }

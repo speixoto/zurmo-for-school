@@ -97,6 +97,18 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
+            if(Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($permitable))
+            {
+                return Permission::ALL;
+            }
+            else
+            {
+                return parent::getEffectivePermissions($permitable);
+            }
+        }
+
+        protected function resolveEffectivePermissionsForOwnerAndCreatedByUser($permitable)
+        {
             $owner         = $this->unrestrictedGet('owner');
             $createdByUser = $this->unrestrictedGet('createdByUser');
             # If an owned securable item doesn't yet have an owner
@@ -112,16 +124,13 @@
             //Or if the record has not been created yet and doesn't have a createdByUser than any user can
             //have full access
             elseif ((($this->id < 0) &&
-                   (($createdByUser->id > 0 &&
-                    $createdByUser->isSame($permitable)) || $createdByUser->id < 0)) ||
-                    $this->treatCurrentUserAsOwnerForPermissions)
+                    (($createdByUser->id > 0 &&
+                            $createdByUser->isSame($permitable)) || $createdByUser->id < 0)) ||
+                $this->treatCurrentUserAsOwnerForPermissions)
             {
                 return Permission::ALL;
             }
-            else
-            {
-                return parent::getEffectivePermissions($permitable);
-            }
+            return null;
         }
 
         public function getActualPermissions($permitable = null)
@@ -401,6 +410,33 @@
         public static function supportsQueueing()
         {
             return false;
+        }
+
+        public function checkPermissionsHasAnyOf($requiredPermissions, User $user = null)
+        {
+            assert('is_int($requiredPermissions)');
+            assert('in_array($requiredPermissions,
+                             array(Permission::READ, Permission::WRITE, Permission::DELETE,
+                                   Permission::CHANGE_PERMISSIONS, Permission::CHANGE_OWNER))');
+            if($user == null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
+            if(Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($user))
+            {
+                return Permission::ALL;
+            }
+            else
+            {
+                if(SECURITY_OPTIMIZED)
+                {
+                    if(AllPermissionsOptimizationUtil::checkPermissionsHasAnyOf($requiredPermissions, $this, $user))
+                    {
+                        return;
+                    }
+                }
+                parent::checkPermissionsHasAnyOf($requiredPermissions, $user);
+            }
         }
     }
 ?>

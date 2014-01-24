@@ -35,75 +35,32 @@
      ********************************************************************************/
 
     /**
-     * Base class for handling whether or not a user
-     * can perform an action or not.
+     * Helper class for working with all permission optimizations. (Munge)
      */
-    abstract class ActionSecurity
+    class AllPermissionsOptimizationUtil
     {
-        protected $user;
+        //todo: add cache here.
 
-        protected $model;
-
-        /**
-         * @param User $user
-         * @param Item $model
-         */
-        public function __construct($user, $model)
+        public static function checkPermissionsHasAnyOf($requiredPermissions, OwnedSecurableItem $this, User $user)
         {
-            assert('$model instanceof Item');
-            assert('$user instanceof User && $user->id >0');
-            $this->user  = $user;
-            $this->model = $model;
-        }
-
-        /**
-         * @return boolean - true if user can perform action
-         */
-        public function canUserPerformAction()
-        {
-            $rightToCheckArray = $this->getRightToCheck();
-            $permissionToCheck = $this->getPermissionToCheck();
-            if (empty($rightToCheckArray) && $permissionToCheck == null)
+            assert('is_int($requiredPermissions)');
+            if($requiredPermissions == Permission::READ)
             {
-                throw new NotSupportedException();
+                return false; //todo:
             }
-            if (!empty($rightToCheckArray))
+            elseif(in_array($requiredPermissions, array(Permission::READ, Permission::WRITE, Permission::DELETE,
+                                                        Permission::CHANGE_PERMISSIONS, Permission::CHANGE_OWNER)))
             {
-                if (!RightsUtil::doesUserHaveAllowByRightName(
-                    $rightToCheckArray[0], $rightToCheckArray[1], $this->user))
-                {
-                    return false;
-                }
+                return false; //todo:
             }
-            if (!empty($permissionToCheck))
+            else
             {
-                try
-                {
-                    $this->model->checkPermissionsHasAnyOf($permissionToCheck, $this->user);
-                    return true;
-                }
-                catch(AccessDeniedSecurityException $e)
-                {
-                    return false;
-                }
+                //we should throw an exception, but just in case there is some custom scenario with a permission
+                //not supported, we should just return false.
+                return false;
             }
-            return true;
         }
 
-        /**
-         * Returns an array of the module class name
-         * and the right if there is a right to check against
-         * this action.
-         * Example: return array('ZurmoModule', ZurmoModule::RIGHT_BULK_WRITE);
-         */
-        protected function getRightToCheck()
-        {
-            return array();
-        }
-
-        protected function getPermissionToCheck()
-        {
-            return null;
-        }
+        //todo: add wrapper methods for ReadPermissionsOptimizationUtil so we can call and wrap for future write
     }
 ?>
