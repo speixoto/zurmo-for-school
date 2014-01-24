@@ -249,6 +249,25 @@
             $this->assertEquals($account->id, $response['data']['items'][1]['secondaryAccount']['id']);
         }
 
+        public function testListAccountAccountAffiliationAttributes()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new AccountAccountAffiliation());
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
+        }
+
         protected function getApiControllerClassName()
         {
             Yii::import('application.modules.accountAccountAffiliations.controllers.AccountAccountAffiliationApiController', true);
