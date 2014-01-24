@@ -120,7 +120,9 @@
                     'serializedData',
                     'timeZone'
                 ),
-                'relations' => array(),
+                'relations' => array(
+                    'sharedSubscribers'   => array(static::HAS_MANY, 'SharedCalendarSubscriber', static::OWNED),
+                ),
                 'rules' => array(
                     array('name',             'required'),
                     array('name',             'type',    'type' => 'string'),
