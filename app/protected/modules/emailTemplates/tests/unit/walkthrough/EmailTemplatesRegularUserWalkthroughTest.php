@@ -61,7 +61,7 @@
                                                                                                     'Test Name1',
                                                                                                     'Test HtmlContent1',
                                                                                                     'Test TextContent1');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

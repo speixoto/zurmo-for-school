@@ -80,7 +80,7 @@
             $columnWithTableAlias = self::makeColumnNameWithTableAlias($tableAliasName,
                                     $this->modelAttributeToDataProviderAdapter->getColumnName());
             $mungeTableName      = ReadPermissionsOptimizationUtil::getMungeTableName($this->modelAttributeToDataProviderAdapter->getModelClassName());
-            $mungeIds            = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+            $mungeIds            = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
             $whereContent        = $columnWithTableAlias . " " . SQLOperatorUtil::getOperatorByType('equals'). " ";
             $whereContent       .= "(select securableitem_id from {$q}$mungeTableName{$q} " .
                                    "where {$q}securableitem_id{$q} = $columnWithTableAlias and {$q}munge_id{$q}" .

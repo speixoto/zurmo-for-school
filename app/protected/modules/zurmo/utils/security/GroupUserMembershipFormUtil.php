@@ -130,11 +130,11 @@
             $group->save();
             foreach ($removedUsers as $user)
             {
-                ReadPermissionsOptimizationUtil::userRemovedFromGroup($group, $user);
+                AllPermissionsOptimizationUtil::userRemovedFromGroup($group, $user);
             }
             foreach ($addedUsers as $user)
             {
-                ReadPermissionsOptimizationUtil::userAddedToGroup($group, $user);
+                AllPermissionsOptimizationUtil::userAddedToGroup($group, $user);
             }
             return true;
         }

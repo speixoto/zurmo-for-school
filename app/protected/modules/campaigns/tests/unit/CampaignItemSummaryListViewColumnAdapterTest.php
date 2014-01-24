@@ -67,7 +67,7 @@
             {
                 throw new FailedToSaveModelException();
             }
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

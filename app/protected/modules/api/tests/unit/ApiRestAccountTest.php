@@ -98,7 +98,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -245,7 +245,7 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $billy  = User::getByUsername('billy');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',
@@ -392,7 +392,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $authenticationData = $this->login();
             $headers = array(
                 'Accept: application/json',

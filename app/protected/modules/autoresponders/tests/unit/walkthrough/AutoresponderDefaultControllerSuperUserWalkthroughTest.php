@@ -65,7 +65,7 @@
                             'This is html Content 01', 10, Autoresponder::OPERATION_SUBSCRIBE, true, $marketingList);
             AutoresponderTestHelper::createAutoresponder('Subject 02', 'This is text Content 02',
                         'This is html Content 02', 5, Autoresponder::OPERATION_UNSUBSCRIBE, false, $marketingList);
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

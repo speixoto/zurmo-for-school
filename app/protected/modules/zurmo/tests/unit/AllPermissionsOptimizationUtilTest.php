@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ReadPermissionsOptimizationUtilTest extends ZurmoBaseTest
+    class AllPermissionsOptimizationUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -51,11 +51,11 @@
         public function testGetMungeIdsByUserIncludesEveryoneGroup()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+            $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
             $this->assertEquals(2, count($mungeIds));
             $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $group->save();
-            $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+            $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
             $this->assertEquals(3, count($mungeIds));
         }
     }

@@ -251,7 +251,7 @@
             if (((isset($this->originalAttributeValues['role'])) || $this->isNewModel) &&
                 $this->role != null && $this->role->id > 0)
             {
-                ReadPermissionsOptimizationUtil::userAddedToRole($this);
+                AllPermissionsOptimizationUtil::userAddedToRole($this);
                 $this->onChangeRights();
                 $this->onChangePolicies();
             }
@@ -274,7 +274,7 @@
             {
                 if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
                 {
-                    ReadPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));
+                    AllPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));
                     $this->onChangeRights();
                     $this->onChangePolicies();
                 }
@@ -292,7 +292,7 @@
             {
                 return false;
             }
-            ReadPermissionsOptimizationUtil::userBeingDeleted($this);
+            AllPermissionsOptimizationUtil::userBeingDeleted($this);
             return true;
         }
 

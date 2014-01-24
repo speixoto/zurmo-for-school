@@ -51,7 +51,7 @@
             $everyone = Group::getByName('Everyone');
             $saved = $everyone->save();
             assert('$saved'); // Not Coding Standard
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()
@@ -744,7 +744,7 @@
             $account1->addPermissions($user,     Permission::READ);
             $account1->addPermissions($group,    Permission::WRITE);
             $this->assertTrue($account1->save());
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account1, $user);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account1, $user);
 
             $account2->addPermissions($user,     Permission::WRITE);
             $account2->addPermissions($group,    Permission::CHANGE_OWNER);
@@ -836,6 +836,7 @@
                 Yii::app()->user->userModel = $originalOwner;
                 $this->assertEquals(Permission::ALL, $account->getEffectivePermissions());
                 $account->addPermissions($buddy, Permission::READ);
+                AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $buddy);
                 $this->assertTrue($account->save());
 
                 Yii::app()->user->userModel = $buddy;

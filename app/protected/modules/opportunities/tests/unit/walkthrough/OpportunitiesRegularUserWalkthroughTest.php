@@ -63,7 +63,7 @@
             OpportunityTestHelper::createOpportunityWithAccountByNameForOwner('superOpp4',     $super, $account);
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser                                  (Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function testRegularUserAllControllerActions()

@@ -226,12 +226,12 @@
             {
                 if ($this->isNewModel)
                 {
-                    ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($this);
+                    AllPermissionsOptimizationUtil::ownedSecurableItemCreated($this);
                 }
                 elseif (isset($this->originalAttributeValues['owner']) &&
                               $this->originalAttributeValues['owner'][1] > 0)
                 {
-                    ReadPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
+                    AllPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($this,
                                                             User::getById($this->originalAttributeValues['owner'][1]));
                 }
             }
@@ -251,7 +251,7 @@
             }
             if ($this->hasReadPermissionsOptimization())
             {
-                ReadPermissionsOptimizationUtil::securableItemBeingDeleted($this);
+                AllPermissionsOptimizationUtil::securableItemBeingDeleted($this);
             }
             return true;
         }
@@ -337,7 +337,7 @@
             if (static::hasReadPermissionsOptimization() && $moduleClassName != null &&
                 is_subclass_of($moduleClassName, 'SecurableModule'))
             {
-                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);
+                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForUser($moduleClassName);
 
                 if ($permission == Permission::NONE || $permission == Permission::DENY)
                 {
@@ -347,7 +347,7 @@
                     $builder           = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
                     $ownedTableAliasName = $builder->resolveJoins();
                     $ownerColumnName = static::getForeignKeyName('OwnedSecurableItem', 'owner');
-                    $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($user);
+                    $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser($user);
                     if ($where != null)
                     {
                         $where = '(' . $where . ') and ';
@@ -428,9 +428,14 @@
             }
             else
             {
-                if(SECURITY_OPTIMIZED)
+                if(SECURITY_OPTIMIZED && !$this->isDeleting) //todo: checking isDeleting is not ideal should be able to use munge
                 {
-                    if(AllPermissionsOptimizationUtil::checkPermissionsHasAnyOf($requiredPermissions, $this, $user))
+                    $modelClassName  = get_called_class();
+                    $moduleClassName = $modelClassName::getModuleClassName();
+                    if(static::hasReadPermissionsSubscriptionOptimization() &&
+                       $moduleClassName != null &&
+                       is_subclass_of($moduleClassName, 'SecurableModule') &&
+                       AllPermissionsOptimizationUtil::checkPermissionsHasAnyOf($requiredPermissions, $this, $user))
                     {
                         return;
                     }

@@ -1023,7 +1023,7 @@
             }
             $messageStreamer->add(Zurmo::t('InstallModule', 'Database schema creation complete.'));
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Permissions.'));
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Read Permissions Subscription tables.'));
             ReadPermissionsSubscriptionUtil::buildTables();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Writing Configuration File.'));

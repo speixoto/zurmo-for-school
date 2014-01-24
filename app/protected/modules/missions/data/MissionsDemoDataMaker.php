@@ -78,7 +78,7 @@
                 $saved = $mission->save();
                 assert('$saved');
                 $mission = Mission::getById($mission->id);
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                         securableItemGivenPermissionsForGroup($mission, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $mission->save();
                 $missions[] = $mission->id;

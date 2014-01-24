@@ -45,7 +45,7 @@
             SecurityTestHelper::createUsers();
             SecurityTestHelper::createGroups();
             SecurityTestHelper::createAccounts();
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

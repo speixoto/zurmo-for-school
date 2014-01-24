@@ -186,11 +186,15 @@
          * Given a moduleClassName, what is the actual read permission?
          * Permission::DENY, Permission::ALLOW, or Permission::NONE?
          */
-        public static function getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName)
+        public static function getActualPermissionDataForReadByModuleNameForUser($moduleClassName, User $user = null)
         {
             assert('is_string($moduleClassName)');
+            if($user == null)
+            {
+                $user = Yii::app()->user->userModel;
+            }
             $item  = NamedSecurableItem::getByName($moduleClassName);
-            return PermissionsUtil::resolveActualPermission($item->getActualPermissions(), Permission::READ);
+            return PermissionsUtil::resolveActualPermission($item->getActualPermissions($user), Permission::READ);
         }
     }
 ?>
