@@ -19255,9 +19255,15 @@ a + .project-stats {
 #calendar {
   width: 100%;
   margin: 0 auto;
+  position: relative;
 }
 #calendar td {
   padding: 0;
+}
+#calendar .big-spinner {
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
 }
 .fc-header {
   text-transform: capitalize;
@@ -19286,6 +19292,9 @@ a + .project-stats {
 }
 .calendars-list a {
   color: #545454 !important;
+}
+.calendars-list .hasCheckBox {
+  display: inline-block;
 }
 .calendars-list + .calendars-list {
   margin-top: 30px;
@@ -19328,6 +19337,14 @@ a + .project-stats {
 .quick-insert .simple-link {
   margin: 5px 0 0 0;
   display: block;
+}
+#smallcalendar .ui-datepicker.ui-datepicker-inline {
+  margin: 0;
+}
+.cal-color {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
 }
 body.flat-cement * {
   box-shadow: none !important;

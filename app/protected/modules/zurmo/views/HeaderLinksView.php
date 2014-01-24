@@ -127,6 +127,8 @@
             {
                 $content .= static::renderHeaderGameDashboardContent();
             }
+            //@TODO Maynak, add the calendar link here, use this renderHeaderGameDashboardContent() structure
+            $content .= '<a href="#" class="user-menu-item">Calendar</a>';
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
             $content     .= static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
             return $content;

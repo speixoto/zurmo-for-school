@@ -34,8 +34,14 @@
 #calendar {
 	width:100%;
 	margin:0 auto;
+	position: relative;
 	td {
 		padding:0;
+	}
+	.big-spinner{
+		position: absolute;
+		top: 50%;
+		margin-top: -25px;
 	}
 }
 
@@ -68,6 +74,9 @@
 	}
 	a {
 		color:#545454 !important;
+	}
+	.hasCheckBox{
+		display: inline-block;
 	}
 	+ .calendars-list {
 		margin-top:30px;
@@ -115,4 +124,16 @@
 		margin:5px 0 0 0;
 		display:block;
 	}
+}
+
+#smallcalendar{
+	.ui-datepicker.ui-datepicker-inline{
+		margin:0;
+	}
+}
+
+.cal-color{
+	display: inline-block;
+	width: 15px;
+	height: 15px;
 }

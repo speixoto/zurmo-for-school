@@ -77,7 +77,15 @@
             $left = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
             $right = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
             $this->registerMyCalendarSelectScript();
-            return ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
+
+            $title = ZurmoHtml::tag('h1', array(), 'Shared Calendar (todo)');
+            $view = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
+
+            $createButton = ZurmoHtml::tag('a', array('href' => 'http://localhost/zurmo-cal/app/index.php/calendars/default/create'), 'create');
+
+            $wrapper = ZurmoHtml::tag('div', array('class' => 'wrapper'), $title . $createButton . $view);
+
+            return $wrapper;
         }
 
         protected function renderSmallCalendarContent()
@@ -88,7 +96,7 @@
 
         protected function renderMyCalendarsContent()
         {
-            $content = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars - ADD CREATE BUTTON HERE'));
             $data    = array();
             $selected = '';
             foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
@@ -99,8 +107,22 @@
                 }
                 $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
             }
-            $content .= ZurmoHtml::radioButtonList('mycalendar', $selected, $data, array('class' => 'mycalendar'));
-            return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $content);
+            $gear = '<ul class="options-menu edit-row-menu nav">
+<li class="parent last"><a href="javascript:void(0);"><span></span></a>
+<ul>
+<li><a class="edit-related-open-task" id="EditModalLinkActionElement-79-yt10" href="#"><span>Delete</span></a></li>
+<li><a class="edit-related-open-task" id="EditModalLinkActionElement-79-yt10" href="#"><span>Edit</span></a></li>
+<li class="last"><a id="list-viewAccountDetailsAndRelationsView_5-delete-79" class="delete-related-open-task" href="#"><span>Color</span></a></li>
+</ul>
+</li>
+</ul>';
+            $htmlOptions = array(
+                'template' => '<li>{input} <span class="cal-color" style="background:pink"></span>{label}' . $gear . '</li>',
+                'separator' => '',
+                'class' => 'mycalendar'
+            );
+            $content = ZurmoHtml::tag('ul', array(), ZurmoHtml::checkBoxList('mycalendar', $selected, $data, $htmlOptions));
+            return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
         }
 
         protected function renderSubscribedToCalendarsContent()

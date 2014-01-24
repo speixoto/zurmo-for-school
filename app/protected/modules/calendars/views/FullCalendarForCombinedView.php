@@ -50,9 +50,8 @@
                                                  'startDate'   => strtotime($this->dataProvider->getStartDate()),
                                                  'endDate'     => strtotime($this->dataProvider->getEndDate()),
                                                  'defaultView' => $this->dataProvider->getDateRangeType()));
-            $spinner = ZurmoHtml::tag('div', array('class' => 'calendar-loading'), 'Loading..');
             $calendar = ZurmoHtml::tag('div', array('id' => 'calendar'), '');
-            return $spinner . $calendar;
+            return $calendar;
             //@mayank, let me know the API calls we need.
         }
     }
