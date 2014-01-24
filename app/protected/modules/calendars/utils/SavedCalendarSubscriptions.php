@@ -48,10 +48,7 @@
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
             if(count($mySavedCalendars) > 0)
             {
-                if($selectedCalendarId == null)
-                {
-                    $selectedCalendarId = $mySavedCalendars[0]->id;
-                }
+                $selectedCalendarId = CalendarUtil::resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars);
                 foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
                     if($mySavedCalendar->id == $selectedCalendarId)

@@ -45,13 +45,14 @@
                                                               $endDate,
                                                               $dateRangeType)
         {
-            $dataProviderClassName = $dateRangeType . 'CalendarItemsDataProvider';
+            $dataProviderClassName = 'CalendarItemsDataProvider';
             if (@class_exists($dataProviderClassName))
             {
                 return new $dataProviderClassName($savedCalendarSubscriptions,
                                                   array(
                                                         'startDate' => $startDate,
-                                                        'endDate'   => $endDate
+                                                        'endDate'   => $endDate,
+                                                        'dateRangeType' => $dateRangeType
                                                        ));
             }
             return false;

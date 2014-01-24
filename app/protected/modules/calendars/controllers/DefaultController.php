@@ -153,19 +153,6 @@
             echo $view->render();
         }
 
-        public function actionChangeFullCalendarDetails($dateRangeType, $startDateTime, $endDateTime)
-        {
-            //todo: start move into util like a dataProviderFactory maybe.
-            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
-            $dataProvider               = new CalendarItemsDataProvider($savedCalendarSubscriptions, $startDateTime, $endDateTime, $dateRangeType);
-//todo: end move into util like a dataProviderFactory maybe.
-
-            //todo: get json of calendar items from data provider. you needto refactor
-            $calendarItems = $this->dataProvider->getData();
-            //todo todo convert to json
-
-        }
-
         public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
         {
             $report        = $this->resolveReportBySavedCalendarPostData($type, $id);

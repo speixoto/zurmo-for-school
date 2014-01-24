@@ -46,6 +46,8 @@
 
         protected $endDate;
 
+        protected $dateRangeType;
+
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param array $config
@@ -236,6 +238,16 @@
         public function setSavedCalendarSubscriptions($savedCalendarSubscriptions)
         {
             $this->savedCalendarSubscriptions = $savedCalendarSubscriptions;
+        }
+
+        public function getDateRangeType()
+        {
+            return $this->dateRangeType;
+        }
+
+        public function setDateRangeType($dateRangeType)
+        {
+            $this->dateRangeType = $dateRangeType;
         }
     }
 ?>

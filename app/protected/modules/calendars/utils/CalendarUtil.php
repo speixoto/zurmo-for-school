@@ -135,8 +135,8 @@
             $getData                    = GetUtil::getData();
             $selectedId                 = isset($getData['selectedId'])? $getData['selectedId']:null;
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel, $selectedId);
-            $dateRangeType              = CalendarUtil::getDateRangeType(); //is this sticky? maybe this is sticky
-            $startDate                  = CalendarUtil::getStartDate($dateRangeType); //is this sticky? i dont know. maybe it defaults to TODAY
+            $dateRangeType              = CalendarUtil::getDateRangeType();
+            $startDate                  = CalendarUtil::getStartDate($dateRangeType);
             $endDate                    = CalendarUtil::getEndDate($dateRangeType);
             $dataProvider               = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
                                                                                                 $startDate, $endDate, $dateRangeType);
@@ -167,6 +167,28 @@
             $dateTimeObject = new DateTime($dateTime);
             return Yii::app()->dateFormatter->format('yyyy-MM-dd HH::mm',
                         $dateTimeObject->getTimestamp());
+        }
+
+        public static function resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars)
+        {
+            if($selectedCalendarId == null)
+            {
+                $value = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar');
+                if($value == null)
+                {
+                    $selectedCalendarId = $mySavedCalendars[0]->id;
+                    ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar', $selectedCalendarId);
+                }
+                else
+                {
+                    $selectedCalendarId = $value;
+                }
+            }
+            else
+            {
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar', $selectedCalendarId);
+            }
+            return $selectedCalendarId;
         }
     }
 ?>

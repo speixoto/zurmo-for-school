@@ -57,7 +57,7 @@
 
         public function run()
         {
-            $defaultView   = ($this->defaultView == null)? 'agendaWeek':$this->defaultView;
+            $defaultView   = ($this->defaultView == null)? SavedCalendar::DATERANGE_TYPE_MONTH:$this->defaultView;
             $startDate     = $this->startDate;
             $endDate       = $this->endDate;
             $url           = Yii::app()->createUrl('calendars/default/getEvents');
@@ -65,10 +65,11 @@
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
             $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
-            $inputId = $this->inputId;
+            $inputId       = $this->inputId;
+            $value         = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar');
             $cs->registerScript('loadcalendar',
                                 "$(document).on('ready', function() {
-                                    var selectedCal = $('.mycalendar').val();
+                                    var selectedCal = '{$value}';
                                     $('#{$inputId}').fullCalendar({
                                                                     editable: true,
                                                                     header: {

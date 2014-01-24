@@ -45,18 +45,14 @@
 
         protected function renderContent()
         {
-            //echo CalendarUtil::renderFullCalendarWidget($this->dataProvider);
             Yii::app()->controller->widget('FullCalendar',
                                            array('inputId' => 'calendar',
-                                                 'startDate' => strtotime($this->dataProvider->getStartDate()),
-                                                 'endDate'   => strtotime($this->dataProvider->getEndDate())));
+                                                 'startDate'   => strtotime($this->dataProvider->getStartDate()),
+                                                 'endDate'     => strtotime($this->dataProvider->getEndDate()),
+                                                 'defaultView' => $this->dataProvider->getDateRangeType()));
             $spinner = ZurmoHtml::tag('div', array('class' => 'calendar-loading'), 'Loading..');
             $calendar = ZurmoHtml::tag('div', array('id' => 'calendar'), '');
             return $spinner . $calendar;
-            //$this->dataProvider->getData() -> returns array of CalenderItems
-            //$this->dataProvider->getStartDate()
-            //$this->dataProvider->endStartDate()
-            //$this->dataProvider->getDateRangeType()
             //@mayank, let me know the API calls we need.
         }
     }
