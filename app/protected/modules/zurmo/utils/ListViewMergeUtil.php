@@ -311,14 +311,50 @@
         {
             $searchAttributesData = LatestActivitiesUtil::
                                         getSearchAttributesDataByModelClassNamesAndRelatedItemIds(array('EmailMessage'),
-                                                                                                  array($selectedModel->id),
+                                                                                                  array($selectedModel->getClassId('Item')),
                                                                                                   LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
             $where               = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributesData[0]['EmailMessage'], $joinTablesAdapter);
-            $models              = EmailMessage::getSubset($joinTablesAdapter, 0, null, $where, null);
+            $models              = EmailMessage::getSubset($joinTablesAdapter, null, null, $where, null);
+            if($selectedModel instanceof Contact)
+            {
+                $name = $selectedModel->getFullName();
+            }
+            elseif ($selectedModel instanceof Account)
+            {
+                $name = $selectedModel->name;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
             foreach($models as $model)
             {
-                $model->personsOrAccounts->add($primaryModel);
+                //Sender
+                $sender  = $model->sender;
+                if($sender->fromName == $name)
+                {
+                    $newSender                    = new EmailMessageSender();
+                    $newSender->fromAddress       = $sender->fromAddress;
+                    $newSender->fromName          = $primaryModel->getFullName();
+                    $newSender->personsOrAccounts->add($primaryModel);
+                    $model->sender                = $newSender;
+                }
+                //recipient
+                $recipients                   = $model->recipients;
+                foreach($recipients as $recipient)
+                {
+                    if($recipient->toName == $name)
+                    {
+                        $newRecipient                  = new EmailMessageRecipient();
+                        $newRecipient->toAddress       = $recipient->toAddress;
+                        $newRecipient->toName          = $recipient->toName;
+                        $newRecipient->type            = $recipient->type;
+                        $newRecipient->emailMessage    = $recipient->emailMessage;
+                        $newRecipient->personsOrAccounts->add($primaryModel);
+                        $model->recipients->add($newRecipient);
+                    }
+                }
                 $model->save();
             }
         }
