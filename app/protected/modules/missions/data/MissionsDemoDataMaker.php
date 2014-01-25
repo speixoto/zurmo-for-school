@@ -74,7 +74,7 @@
                     $comment->description   = $commentDescription;
                     $mission->comments->add($comment);
                 }
-                $mission->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE);
+                $mission->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
                 $saved = $mission->save();
                 assert('$saved');
                 $mission = Mission::getById($mission->id);
