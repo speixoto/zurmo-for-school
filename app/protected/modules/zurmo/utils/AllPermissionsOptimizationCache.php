@@ -104,7 +104,7 @@
                 if ($serializedData !== false)
                 {
                     $permitablesHasReadPermission = unserialize($serializedData);
-                    assert('is_array($permitablesHasReadPermissions)');
+                    assert('is_array($permitablesHasReadPermission)');
                     if (isset($permitablesHasReadPermission[$permitableModelIdentifier]))
                     {
                         $hasReadPermission = $permitablesHasReadPermission[$permitableModelIdentifier];

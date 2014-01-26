@@ -85,7 +85,7 @@
                 catch(AccessDeniedSecurityException $e)
                 {
                     $hasReadPermission = false;
-                    AllPermissionsOptimizationCache::setHasReadPermissionOnSecurableItem(
+                    AllPermissionsOptimizationCache::cacheHasReadPermissionOnSecurableItem(
                         $ownedSecurableItem, $user, $hasReadPermission);
                     throw new AccessDeniedSecurityException($user, $requiredPermissions, Permission::NONE);
                 }

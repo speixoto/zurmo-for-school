@@ -426,7 +426,7 @@
             {
                 return;
             }
-            elseif(!$this->isDeleting)
+            elseif($this->isDeleting)
             {
                 //Avoid potential problems with accessing information already removed from munge.
                 //Potentially there could be some gap with doing this, but it improves performance on complex
