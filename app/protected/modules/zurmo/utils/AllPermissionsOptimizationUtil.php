@@ -39,6 +39,18 @@
      */
     class AllPermissionsOptimizationUtil
     {
+        /**
+         * Performance booster to replace constant calls to getEffectivePermissions. While getEffectivePermissions does
+         * make use of cache, in scenarios with complex nested roles and groups, the initial call to get the effective
+         * permissions for a given user can take a long time. This is true with securityOptimization = true and when false.
+         * This utility makes use of the existing munge 'read' tables already in place that can give accurate permission
+         * information at the atomic 'model' level.
+         * //todo: add munge write/change also
+         * @param $requiredPermissions
+         * @param OwnedSecurableItem $ownedSecurableItem
+         * @param User $user
+         * @return bool
+         */
         public static function checkPermissionsHasAnyOf($requiredPermissions, OwnedSecurableItem $ownedSecurableItem, User $user)
         {
             assert('is_int($requiredPermissions)');
@@ -59,6 +71,13 @@
             }
         }
 
+        /**
+         * @param $requiredPermissions
+         * @param OwnedSecurableItem $ownedSecurableItem
+         * @param User $user
+         * @return bool
+         * @throws AccessDeniedSecurityException
+         */
         protected static function resolveAndCheckPermissionsForRead($requiredPermissions,
                                                                     OwnedSecurableItem $ownedSecurableItem, User $user)
         {
@@ -92,6 +111,14 @@
             }
         }
 
+        /**
+         * @param $requiredPermissions
+         * @param OwnedSecurableItem $ownedSecurableItem
+         * @param User $user
+         * @return bool
+         * @throws NotSupportedException
+         * @throws AccessDeniedSecurityException
+         */
         protected static function checkPermissionsHasRead($requiredPermissions, OwnedSecurableItem  $ownedSecurableItem, User $user)
         {
             $modelClassName  = get_class($ownedSecurableItem);
@@ -134,11 +161,19 @@
             }
         }
 
+        /**
+         * @param bool $overwriteExistingTables
+         * @param bool $forcePhp
+         * @param null $messageStreamer
+         */
         public static function rebuild($overwriteExistingTables = true, $forcePhp = false, $messageStreamer = null)
         {
             ReadPermissionsOptimizationUtil::rebuild($overwriteExistingTables, $forcePhp, $messageStreamer);
         }
 
+        /**
+         * @param OwnedSecurableItem $ownedSecurableItem
+         */
         public static function ownedSecurableItemCreated(OwnedSecurableItem $ownedSecurableItem)
         {
             ReadPermissionsOptimizationUtil::ownedSecurableItemCreated($ownedSecurableItem);
@@ -356,22 +391,29 @@
          */
         public static function getMungeIdsByUser(User $user)
         {
-            //todo: add php level caching for this.
-            list($roleId, $groupIds) = self::getUserRoleIdAndGroupIds($user);
-            $mungeIds = array("U$user->id");
-            if ($roleId != null)
+            try
             {
-                $mungeIds[] = "R$roleId";
+                return AllPermissionsOptimizationCache::getMungeIdsByUser($user);
             }
-            foreach ($groupIds as $groupId)
+            catch(NotFoundException $e)
             {
-                $mungeIds[] = "G$groupId";
-            }
-            //Add everyone group
-            $everyoneGroupId = Group::getByName(Group::EVERYONE_GROUP_NAME)->id;
-            if (!in_array("G" . $everyoneGroupId, $mungeIds) && $everyoneGroupId > 0)
-            {
-                $mungeIds[] = "G" . $everyoneGroupId;
+                list($roleId, $groupIds) = self::getUserRoleIdAndGroupIds($user);
+                $mungeIds = array("U$user->id");
+                if ($roleId != null)
+                {
+                    $mungeIds[] = "R$roleId";
+                }
+                foreach ($groupIds as $groupId)
+                {
+                    $mungeIds[] = "G$groupId";
+                }
+                //Add everyone group
+                $everyoneGroupId = Group::getByName(Group::EVERYONE_GROUP_NAME)->id;
+                if (!in_array("G" . $everyoneGroupId, $mungeIds) && $everyoneGroupId > 0)
+                {
+                    $mungeIds[] = "G" . $everyoneGroupId;
+                }
+                AllPermissionsOptimizationCache::cacheMungeIdsByUser($user, $mungeIds);
             }
             return $mungeIds;
         }

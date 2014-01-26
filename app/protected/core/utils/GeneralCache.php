@@ -56,7 +56,7 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($identifier, static::$cacheType);
+                $prefix = static::getCachePrefix($identifier);
 
                 @$serializedData = Yii::app()->cache->get($prefix . $identifier);
                 //echo "GET:" . $prefix . $identifier . "\n";
@@ -94,7 +94,7 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($identifier, static::$cacheType);
+                $prefix = static::getCachePrefix($identifier);
                 @Yii::app()->cache->set($prefix . $identifier, serialize($entry));
             }
         }
@@ -110,7 +110,7 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($identifier, static::$cacheType);
+                $prefix = static::getCachePrefix($identifier);
                 @Yii::app()->cache->delete($prefix . $identifier);
             }
         }

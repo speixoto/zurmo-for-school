@@ -55,6 +55,7 @@
             $this->assertEquals(2, count($mungeIds));
             $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
             $group->save();
+            AllPermissionsOptimizationCache::forgetAll();
             $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
             $this->assertEquals(3, count($mungeIds));
         }

@@ -52,10 +52,20 @@
         const CHANGE = 'C';
 
         /**
+         * @var string
+         */
+        public static $mungeIdsCachePrefix = 'MI:';
+
+        /**
          * Just Permission::READ
          * @var array
          */
         private static $securableItemToPermitableToReadPermissions   = array();
+
+        /**
+         * @var array
+         */
+        private static $mungeIdsByUser = array();
 
         /**
          * Includes PERMISSION::WRITE, PERMISSION::CHANGE_OWNER, and PERMISSION::CHANGE_PERMISSIONS
@@ -64,6 +74,9 @@
          */
         private static $securableItemToPermitableToChangePermissions = array();
 
+        /**
+         * @var string
+         */
         public static $cacheType = 'APO:';
 
 //todo: figure out how to best refactor to support write more easily... without needing total duplication.
@@ -118,11 +131,6 @@
                     }
                 }
             }
-
-            // NOTE: the db level will get the permissions from the db level cache
-            // when php asks for them to be calculated so it doesn't need to be done
-            // explicity here.
-
             throw new NotFoundException();
         }
 
@@ -154,7 +162,7 @@
 
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($securableItemModelIdentifer, static::$cacheType). self::READ;
+                $prefix = static::getCachePrefix($securableItemModelIdentifer). self::READ;
                 $permitablesHasReadPermission = Yii::app()->cache->get($prefix . $securableItemModelIdentifer);
                 if ($permitablesHasReadPermission === false)
                 {
@@ -170,6 +178,60 @@
                     Yii::app()->cache->set($prefix . $securableItemModelIdentifer,
                                            serialize($permitablesHasReadPermission));
                 }
+            }
+        }
+
+        /**
+         * @param User $user
+         * @return mixed | array $mungeIds
+         * @throws NotFoundException
+         */
+        public static function getMungeIdsByUser(User $user)
+        {
+            if ($user->getClassId('Permitable')    == 0)
+            {
+                throw new NotFoundException();
+            }
+            $userModelIdentifier = $user->getModelIdentifier();
+            if (static::supportsAndAllowsPhpCaching())
+            {
+                if (isset(static::$mungeIdsByUser[$user->id]))
+                {
+                    return static::$mungeIdsByUser[$user->id];
+                }
+            }
+            if (static::supportsAndAllowsMemcache())
+            {
+                $prefix = static::getCachePrefix($userModelIdentifier) . static::$mungeIdsCachePrefix;
+                $serializedData = Yii::app()->cache->get($prefix . $userModelIdentifier);
+                if ($serializedData !== false)
+                {
+                    return unserialize($serializedData);
+                }
+            }
+            throw new NotFoundException();
+        }
+
+        /**
+         * @param User $user
+         * @param array $mungeIds
+         */
+        public static function cacheMungeIdsByUser(User $user, array $mungeIds)
+        {
+            if ($user->getClassId('Permitable') == 0)
+            {
+                return;
+            }
+            $userModelIdentifier   = $user->getModelIdentifier();
+            if (static::supportsAndAllowsPhpCaching())
+            {
+                static::$mungeIdsByUser[$user->id] = $mungeIds;
+            }
+            if (static::supportsAndAllowsMemcache())
+            {
+                $prefix = static::getCachePrefix($userModelIdentifier) . static::$mungeIdsCachePrefix;
+
+                Yii::app()->cache->set($prefix . $userModelIdentifier, serialize($mungeIds));
             }
         }
 
@@ -224,6 +286,7 @@
             {
                 static::$securableItemToPermitableToReadPermissions   = array();
                 static::$securableItemToPermitableToChangePermissions = array();
+                static::$mungeIdsByUser                               = array();
             }
             if (static::supportsAndAllowsMemcache())
             {

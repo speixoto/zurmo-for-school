@@ -62,7 +62,7 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier);
                 $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
                 if ($cachedData === false)
                 {
@@ -114,7 +114,7 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier);
 
                 $serializedModel = serialize($model);
                 $checksum  = YII_DEBUG ? crc32($serializedModel) : 0;
@@ -140,7 +140,7 @@
             }
             if (static::supportsAndAllowsMemcache())
             {
-                $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
+                $prefix = static::getCachePrefix($modelIdentifier);
                 Yii::app()->cache->delete($prefix . $modelIdentifier);
             }
         }
