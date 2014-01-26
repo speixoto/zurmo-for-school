@@ -39,15 +39,12 @@
      */
     class AllPermissionsOptimizationUtil
     {
-        //todo: add cache here.
-
         public static function checkPermissionsHasAnyOf($requiredPermissions, OwnedSecurableItem $ownedSecurableItem, User $user)
         {
             assert('is_int($requiredPermissions)');
             if($requiredPermissions == Permission::READ)
             {
-                //todo: need to do caching on this.. (need to then know when to clear this..
-                return self::checkPermissionsHasRead($requiredPermissions, $ownedSecurableItem, $user);
+                return static::resolveAndCheckPermissionsForRead($requiredPermissions, $ownedSecurableItem, $user);
             }
             elseif(in_array($requiredPermissions, array(Permission::READ, Permission::WRITE, Permission::DELETE,
                                                         Permission::CHANGE_PERMISSIONS, Permission::CHANGE_OWNER)))
@@ -56,9 +53,42 @@
             }
             else
             {
-                //we should throw an exception, but just in case there is some custom scenario with a permission
+                //ideally we should throw an exception, but just in case there is some custom scenario with a permission
                 //not supported, we should just return false.
                 return false;
+            }
+        }
+
+        protected static function resolveAndCheckPermissionsForRead($requiredPermissions,
+                                                                    OwnedSecurableItem $ownedSecurableItem, User $user)
+        {
+            try
+            {
+                if(AllPermissionsOptimizationCache::getHasReadPermissionOnSecurableItem($ownedSecurableItem, $user))
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new AccessDeniedSecurityException($user, $requiredPermissions, Permission::NONE);
+                }
+            }
+            catch(NotFoundException $e)
+            {
+                try
+                {
+                    $hasReadPermission = self::checkPermissionsHasRead($requiredPermissions, $ownedSecurableItem, $user);
+                    AllPermissionsOptimizationCache::cacheHasReadPermissionOnSecurableItem(
+                        $ownedSecurableItem, $user, $hasReadPermission);
+                    return $hasReadPermission;
+                }
+                catch(AccessDeniedSecurityException $e)
+                {
+                    $hasReadPermission = false;
+                    AllPermissionsOptimizationCache::setHasReadPermissionOnSecurableItem(
+                        $ownedSecurableItem, $user, $hasReadPermission);
+                    throw new AccessDeniedSecurityException($user, $requiredPermissions, Permission::NONE);
+                }
             }
         }
 
@@ -121,6 +151,7 @@
         public static function ownedSecurableItemOwnerChanged(OwnedSecurableItem $ownedSecurableItem, User $oldUser = null)
         {
             ReadPermissionsOptimizationUtil::ownedSecurableItemOwnerChanged($ownedSecurableItem, $oldUser);
+            AllPermissionsOptimizationCache::forgetSecurableItemForRead($ownedSecurableItem);
         }
 
         /**
@@ -129,6 +160,7 @@
         public static function securableItemBeingDeleted(SecurableItem $securableItem)
         {
             ReadPermissionsOptimizationUtil::securableItemBeingDeleted($securableItem);
+            AllPermissionsOptimizationCache::forgetSecurableItemForRead($securableItem);
         }
 
         /**
@@ -174,6 +206,7 @@
         public static function securableItemGivenReadPermissionsForUser(SecurableItem $securableItem, User $user)
         {
             ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($securableItem, $user);
+            AllPermissionsOptimizationCache::forgetSecurableItemForRead($securableItem);
         }
 
         /**
@@ -183,6 +216,7 @@
         public static function securableItemGivenReadPermissionsForGroup(SecurableItem $securableItem, Group $group)
         {
             ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($securableItem, $group);
+            AllPermissionsOptimizationCache::forgetSecurableItemForRead($securableItem);
         }
 
         /**
@@ -192,6 +226,7 @@
         public static function securableItemLostReadPermissionsForUser(SecurableItem $securableItem, User $user)
         {
             ReadPermissionsOptimizationUtil::securableItemLostPermissionsForUser($securableItem, $user);
+            AllPermissionsOptimizationCache::forgetSecurableItemForRead($securableItem);
         }
 
         /**
@@ -201,6 +236,7 @@
         public static function securableItemLostReadPermissionsForGroup(SecurableItem $securableItem, Group $group)
         {
             ReadPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($securableItem, $group);
+            AllPermissionsOptimizationCache::forgetSecurableItemForRead($securableItem);
         }
 
         /**
@@ -209,6 +245,7 @@
         public static function userBeingDeleted($user)
         {
             ReadPermissionsOptimizationUtil::userBeingDeleted($user);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -218,6 +255,7 @@
         public static function userAddedToGroup(Group $group, User $user)
         {
             ReadPermissionsOptimizationUtil::userAddedToGroup($group, $user);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -227,6 +265,7 @@
         public static function userRemovedFromGroup(Group $group, User $user)
         {
             ReadPermissionsOptimizationUtil::userRemovedFromGroup($group, $user);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -235,6 +274,7 @@
         public static function groupAddedToGroup(Group $group)
         {
             ReadPermissionsOptimizationUtil::groupAddedToGroup($group);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -243,6 +283,7 @@
         public static function groupBeingRemovedFromGroup(Group $group)
         {
             ReadPermissionsOptimizationUtil::groupBeingRemovedFromGroup($group);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -251,6 +292,7 @@
         public static function groupBeingDeleted($group)
         {
             ReadPermissionsOptimizationUtil::groupBeingDeleted($group);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -259,6 +301,7 @@
         public static function roleParentSet(Role $role)
         {
             ReadPermissionsOptimizationUtil::roleParentSet($role);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -267,6 +310,7 @@
         public static function roleParentBeingRemoved(Role $role)
         {
             ReadPermissionsOptimizationUtil::roleParentBeingRemoved($role);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -275,6 +319,7 @@
         public static function roleBeingDeleted(Role $role)
         {
             ReadPermissionsOptimizationUtil::roleBeingDeleted($role);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -283,6 +328,7 @@
         public static function userAddedToRole(User $user)
         {
             ReadPermissionsOptimizationUtil::userAddedToRole($user);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -292,6 +338,7 @@
         public static function userBeingRemovedFromRole(User $user, Role $role)
         {
             ReadPermissionsOptimizationUtil::userBeingRemovedFromRole($user, $role);
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         /**
@@ -309,7 +356,7 @@
          */
         public static function getMungeIdsByUser(User $user)
         {
-            //todo: add caching for this.. think about when to reset it though.
+            //todo: add php level caching for this.
             list($roleId, $groupIds) = self::getUserRoleIdAndGroupIds($user);
             $mungeIds = array("U$user->id");
             if ($roleId != null)

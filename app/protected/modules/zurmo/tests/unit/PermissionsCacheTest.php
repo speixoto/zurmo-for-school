@@ -108,6 +108,7 @@ exit;
                 $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
 
                 PermissionsCache::forgetSecurableItem($account);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($account);
                 try
                 {
                     PermissionsCache::getCombinedPermissions($account, $super);

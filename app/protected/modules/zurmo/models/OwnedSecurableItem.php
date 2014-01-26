@@ -424,11 +424,18 @@
             }
             if(Permission::ALL == $this->resolveEffectivePermissionsForOwnerAndCreatedByUser($user))
             {
-                return Permission::ALL;
+                return;
+            }
+            elseif(!$this->isDeleting)
+            {
+                //Avoid potential problems with accessing information already removed from munge.
+                //Potentially there could be some gap with doing this, but it improves performance on complex
+                //role/group setups.
+                return;
             }
             else
             {
-                if(SECURITY_OPTIMIZED && !$this->isDeleting) //todo: checking isDeleting is not ideal should be able to use munge
+                if(SECURITY_OPTIMIZED)
                 {
                     $modelClassName  = get_called_class();
                     $moduleClassName = $modelClassName::getModuleClassName();

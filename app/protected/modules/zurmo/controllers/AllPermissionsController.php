@@ -35,10 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Controller Class for managing currency actions.
+     * Controller Class for managing read/write permissions and munge rebuild
      *
      */
-    class ZurmoReadPermissionsController extends Controller
+    class ZurmoAllPermissionsController extends Controller
     {
         public function filters()
         {
@@ -53,8 +53,8 @@
 
         public function actionRebuildMunge()
         {
-            ReadPermissionsOptimizationUtil::rebuild();
-            echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.') . "<BR>";
+            AllPermissionsOptimizationUtil::rebuild();
+            echo Zurmo::t('ZurmoModule', 'All permissions rebuild complete.') . "<BR>";
             if (SHOW_QUERY_DATA)
             {
                 echo PageView::makeShowQueryDataContent();

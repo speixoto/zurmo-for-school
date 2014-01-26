@@ -78,6 +78,7 @@
         public static function removeForPermitable(Permitable $permitable)
         {
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             ZurmoRedBean::exec("delete from permission where permitable_id = :id;",
                     array('id' => $permitable->getClassId('Permitable')));
         }
@@ -85,6 +86,7 @@
         public static function deleteAll()
         {
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             parent::deleteAll();
         }
 

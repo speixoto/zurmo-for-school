@@ -507,6 +507,7 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
         }
     }
 ?>

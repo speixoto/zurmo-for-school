@@ -342,10 +342,12 @@
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
             }
             else
             {
                 PermissionsCache::forgetSecurableItem($this);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($this);
             }
             $found = false;
             foreach ($this->permissions as $permission)
@@ -388,10 +390,12 @@
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
             }
             else
             {
                 PermissionsCache::forgetSecurableItem($this);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($this);
             }
             foreach ($this->permissions as $permission)
             {
@@ -409,10 +413,12 @@
             if ($this instanceof NamedSecurableItem)
             {
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
             }
             else
             {
                 PermissionsCache::forgetSecurableItem($this);
+                AllPermissionsOptimizationCache::forgetSecurableItemForRead($this);
             }
         }
 
@@ -420,6 +426,7 @@
         {
             $this->checkPermissionsHasAnyOf(Permission::CHANGE_PERMISSIONS);
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
             $this->permissions->removeAll();
         }
 
