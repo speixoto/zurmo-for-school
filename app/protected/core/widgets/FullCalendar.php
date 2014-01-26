@@ -66,10 +66,8 @@
             $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
             $inputId       = $this->inputId;
-            $value         = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar');
             $cs->registerScript('loadcalendar',
                                 "$(document).on('ready', function() {
-                                    var selectedCal = '{$value}';
                                     $('#{$inputId}').fullCalendar({
                                                                     editable: true,
                                                                     header: {
@@ -81,8 +79,9 @@
                                                                                 url : '$url',
                                                                                 data :function()
                                                                                 {
+                                                                                    var selectedCalString = getSelectedMyCalendars();
                                                                                     return {
-                                                                                        selectedId : selectedCal,
+                                                                                        selectedId : selectedCalString,
                                                                                         start      : '{$startDate}',
                                                                                         end        : '{$endDate}'
                                                                                         }

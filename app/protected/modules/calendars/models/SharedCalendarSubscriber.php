@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class SharedCalendarSubscriber extends OwnedModel
+    class SharedCalendarSubscriber extends RedBeanModel
     {
         public static function getDefaultMetadata()
         {
@@ -42,9 +42,8 @@
             $metadata[__CLASS__] = array(
                 'members' => array(),
                 'relations' => array(
-                    'person'      => array(static::HAS_ONE, 'Item', static::NOT_OWNED,
-                                                static::LINK_TYPE_SPECIFIC, 'person'),
-                    'calendar'    => array(static::HAS_ONE,  'SavedCalendar', static::NOT_OWNED),
+                    'user'        => array(static::HAS_ONE, 'User', static::NOT_OWNED),
+                    'calendar'    => array(static::HAS_ONE, 'SavedCalendar', static::NOT_OWNED),
                 ),
                 'rules' => array(),
                 'defaultSortAttribute' => '',
@@ -58,7 +57,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'person'        => Zurmo::t('CalendarsModule', 'Shared Subscriber',  array(), null, $language)
+                    'user'        => Zurmo::t('CalendarsModule', 'Shared Subscriber',  array(), null, $language)
                 )
             );
         }

@@ -49,9 +49,10 @@
             if(count($mySavedCalendars) > 0)
             {
                 $selectedCalendarId = CalendarUtil::resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars);
+                $selectedCalendarIdArray = explode(',', $selectedCalendarId);
                 foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
-                    if($mySavedCalendar->id == $selectedCalendarId)
+                    if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))
                     {
                         $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
                     }

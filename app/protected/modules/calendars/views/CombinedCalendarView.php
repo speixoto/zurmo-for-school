@@ -71,6 +71,9 @@
 
         protected function renderContent()
         {
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.calendars.assets')) . '/CalendarsUtil.js',
+                                            CClientScript::POS_END);
             $content  = $this->renderSmallCalendarContent();
             $content .= $this->renderMyCalendarsContent();
             $content .= $this->renderSubscribedToCalendarsContent();
@@ -81,9 +84,9 @@
             $title = ZurmoHtml::tag('h1', array(), 'Shared Calendar (todo)');
             $view = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
 
-            $createButton = ZurmoHtml::tag('a', array('href' => 'http://localhost/zurmo-cal/app/index.php/calendars/default/create'), 'create');
+            //$createButton = ZurmoHtml::tag('a', array('href' => 'http://localhost/zurmo-cal/app/index.php/calendars/default/create'), 'create');
 
-            $wrapper = ZurmoHtml::tag('div', array('class' => 'wrapper'), $title . $createButton . $view);
+            $wrapper = ZurmoHtml::tag('div', array('class' => 'wrapper'), $title . $view);
 
             return $wrapper;
         }
@@ -96,14 +99,15 @@
 
         protected function renderMyCalendarsContent()
         {
-            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars - ADD CREATE BUTTON HERE'));
-            $data    = array();
-            $selected = '';
+            $title         = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
+            $title         .= ZurmoHtml::link(Zurmo::t('Core', 'Create'), Yii::app()->createUrl('/calendars/default/create'));
+            $data          = array();
+            $selectedItems = array();
             foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
             {
                 if($savedCalendarAndSelected[1] === true)
                 {
-                    $selected = $savedCalendarAndSelected[0]->id;
+                    $selectedItems[] = $savedCalendarAndSelected[0]->id;
                 }
                 $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
             }
@@ -121,7 +125,7 @@
                 'separator' => '',
                 'class' => 'mycalendar'
             );
-            $content = ZurmoHtml::tag('ul', array(), ZurmoHtml::checkBoxList('mycalendar', $selected, $data, $htmlOptions));
+            $content = ZurmoHtml::tag('ul', array(), ZurmoHtml::checkBoxList('mycalendar', $selectedItems, $data, $htmlOptions));
             return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
         }
 
@@ -152,14 +156,14 @@
             $endDate       = $this->dataProvider->getEndDate();
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
             $url    = Yii::app()->createUrl('calendars/default/getEvents');
-            Yii::app()->clientScript->registerScript('mycalendarselectscript', "$('.mycalendar').on('change', function(){
-                    var selectedCal = $(this).val();
+            Yii::app()->clientScript->registerScript('mycalendarselectscript', "$('.mycalendar').on('click', function(){
+                    var selectedCalString = getSelectedMyCalendars();
                     var events = {
                         url : '$url',
                         data :function()
                         {
                             return {
-                                selectedId : selectedCal,
+                                selectedId : selectedCalString,
                                 start      : '{$startDate}',
                                 end        : '{$endDate}'
                                 }
