@@ -321,29 +321,35 @@
             {
                 //Sender
                 $sender  = $model->sender;
-                if($sender->fromName == self::getSelectedModelName($selectedModel))
+                if($sender->fromName == self::getMergedModelName($selectedModel))
                 {
                     $newSender                    = new EmailMessageSender();
                     $newSender->fromAddress       = $sender->fromAddress;
-                    $newSender->fromName          = self::getPrimaryModelName($primaryModel);
+                    $newSender->fromName          = self::getMergedModelName($primaryModel);
                     $newSender->personsOrAccounts->add($primaryModel);
                     $model->sender                = $newSender;
                 }
                 //recipient
                 $recipients                   = $model->recipients;
+                $recipientToBeRemoved         = array();
                 foreach($recipients as $recipient)
                 {
-                    if($recipient->toName == self::getSelectedModelName($selectedModel))
+                    if($recipient->toName == self::getMergedModelName($selectedModel))
                     {
                         $newRecipient                  = new EmailMessageRecipient();
                         $newRecipient->toAddress       = $recipient->toAddress;
-                        $newRecipient->toName          = self::getPrimaryModelName($primaryModel);
+                        $newRecipient->toName          = self::getMergedModelName($primaryModel);
                         $newRecipient->type            = $recipient->type;
                         $newRecipient->emailMessage    = $recipient->emailMessage;
                         $newRecipient->personsOrAccounts->add($primaryModel);
                         $model->recipients->add($newRecipient);
-                        $model->recipients->remove($recipient);
+                        $recipientToBeRemoved[]        = $recipient;
+                        //$model->recipients->remove($recipient);
                     }
+                }
+                foreach($recipientToBeRemoved as $recipient)
+                {
+                    $model->recipients->remove($recipient);
                 }
                 $model->save();
             }
@@ -354,7 +360,7 @@
          * @param RedBeanModel $selectedModel
          * @throws NotSupportedException
          */
-        protected static function getSelectedModelName($selectedModel)
+        public static function getMergedModelName($selectedModel)
         {
             if($selectedModel instanceof Contact)
             {
@@ -369,28 +375,6 @@
                 throw new NotSupportedException();
             }
             return $selectedName;
-        }
-
-        /**
-         * Gets primary model name.
-         * @param RedBeanModel $selectedModel
-         * @throws NotSupportedException
-         */
-        protected static function getPrimaryModelName($primaryModel)
-        {
-            if($primaryModel instanceof Contact)
-            {
-                $primaryName = $primaryModel->getFullName();
-            }
-            elseif ($primaryModel instanceof Account)
-            {
-                $primaryName = $primaryModel->name;
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $primaryName;
         }
     }
 ?>
