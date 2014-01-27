@@ -362,19 +362,7 @@
          */
         public static function getMergedModelName($selectedModel)
         {
-            if($selectedModel instanceof Contact)
-            {
-                $selectedName = $selectedModel->getFullName();
-            }
-            elseif ($selectedModel instanceof Account)
-            {
-                $selectedName = $selectedModel->name;
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $selectedName;
+            return strval($selectedModel);
         }
     }
 ?>
