@@ -61,9 +61,9 @@
             $content = DashboardActiveProjectListViewColumnAdapter::getActiveProjectInformationForDashboard($this->project);
             $this->assertTag(
                 array(
-                    'tag'=> 'strong',
+                    'tag' => 'strong',
                     'ancestor' => array(
-                        'tag'=> 'div',
+                        'tag' => 'div',
                         'attributes' => array('class' => 'project-stats percent-complete percent-red')
                     ),
                     'content' => '0'
@@ -97,9 +97,9 @@
             $content = DashboardActiveProjectListViewColumnAdapter::getActiveProjectInformationForDashboard($this->project);
             $this->assertTag(
                 array(
-                    'tag'=> 'strong',
+                    'tag' => 'strong',
                     'ancestor' => array(
-                        'tag'=> 'div',
+                        'tag' => 'div',
                         'attributes' => array('class' => 'project-stats percent-complete percent-yellow')
                     ),
                     'content' => '20'

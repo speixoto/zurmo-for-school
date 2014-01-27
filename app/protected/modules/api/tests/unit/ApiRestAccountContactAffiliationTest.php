@@ -58,7 +58,6 @@
             $contact = ContactTestHelper::createContactByNameForOwner('First', Yii::app()->user->userModel);
             $contact2 = ContactTestHelper::createContactByNameForOwner('Second', Yii::app()->user->userModel);
 
-
             $accountContactAffiliation = new AccountContactAffiliation();
             $accountContactAffiliation->account   = $account;
             $accountContactAffiliation->contact   = $contact;

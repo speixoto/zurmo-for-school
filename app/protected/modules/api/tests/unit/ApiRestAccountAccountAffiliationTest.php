@@ -209,7 +209,6 @@
             $accountAccountAffiliation3->secondaryAccount = $account4;
             $this->assertTrue($accountAccountAffiliation3->save());
 
-
             $data = array(
                 'search' => array(
                     'modelClassName' => 'AccountAccountAffiliation',
