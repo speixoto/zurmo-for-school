@@ -135,7 +135,7 @@
                         }
                     }
                 }
-                catch(NotSupportedException $e)
+                catch (NotSupportedException $e)
                 {
                     //Super Administrator group for example doesn't allow right retrieval.
                 }

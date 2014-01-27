@@ -164,6 +164,7 @@
             {
                 self::processNonDerivedRelationsAssignment($primaryModel, $selectedModel);
                 self::processDerivedRelationsAssignment($primaryModel, $selectedModel);
+                self::processCopyEmailActivity($primaryModel, $selectedModel);
             }
         }
 
@@ -298,6 +299,70 @@
             }
             $metadata['global']['panels'] = $panelsData;
             return $metadata;
+        }
+
+        /**
+         * Process copy email activity.
+         *
+         * @param RedBeanModel $primaryModel
+         * @param RedBeanModel $selectedModel
+         */
+        public static function processCopyEmailActivity($primaryModel, $selectedModel)
+        {
+            $searchAttributesData = LatestActivitiesUtil::
+                                        getSearchAttributesDataByModelClassNamesAndRelatedItemIds(array('EmailMessage'),
+                                                                                                  array($selectedModel->getClassId('Item')),
+                                                                                                  LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
+            $where               = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributesData[0]['EmailMessage'], $joinTablesAdapter);
+            $models              = EmailMessage::getSubset($joinTablesAdapter, null, null, $where, null);
+
+            foreach($models as $model)
+            {
+                //Sender
+                $sender  = $model->sender;
+                if($sender->fromName == self::getMergedModelName($selectedModel))
+                {
+                    $newSender                    = new EmailMessageSender();
+                    $newSender->fromAddress       = $sender->fromAddress;
+                    $newSender->fromName          = self::getMergedModelName($primaryModel);
+                    $newSender->personsOrAccounts->add($primaryModel);
+                    $model->sender                = $newSender;
+                }
+                //recipient
+                $recipients                   = $model->recipients;
+                $recipientToBeRemoved         = array();
+                foreach($recipients as $recipient)
+                {
+                    if($recipient->toName == self::getMergedModelName($selectedModel))
+                    {
+                        $newRecipient                  = new EmailMessageRecipient();
+                        $newRecipient->toAddress       = $recipient->toAddress;
+                        $newRecipient->toName          = self::getMergedModelName($primaryModel);
+                        $newRecipient->type            = $recipient->type;
+                        $newRecipient->emailMessage    = $recipient->emailMessage;
+                        $newRecipient->personsOrAccounts->add($primaryModel);
+                        $model->recipients->add($newRecipient);
+                        $recipientToBeRemoved[]        = $recipient;
+                        //$model->recipients->remove($recipient);
+                    }
+                }
+                foreach($recipientToBeRemoved as $recipient)
+                {
+                    $model->recipients->remove($recipient);
+                }
+                $model->save();
+            }
+        }
+
+        /**
+         * Gets selected model name.
+         * @param RedBeanModel $selectedModel
+         * @throws NotSupportedException
+         */
+        public static function getMergedModelName($selectedModel)
+        {
+            return strval($selectedModel);
         }
     }
 ?>
