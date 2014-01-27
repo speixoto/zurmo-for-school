@@ -57,6 +57,7 @@
                 }
                 foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
+                    self::setColor($mySavedCalendar);
                     if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))
                     {
                         $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
@@ -110,6 +111,19 @@
         public function getSubscribedToSavedCalendarsAndSelected()
         {
             return $this->subscribedToSavedCalendarsAndSelected;
+        }
+
+        private static function setColor($savedCalendar)
+        {
+            if($savedCalendar->color == null)
+            {
+                $usedColors      = CalendarUtil::getUsedCalendarColorsByUser(Yii::app()->user->userModel);
+                $availableColors = SavedCalendar::$colorsArray;
+                $filteredColors  = array_diff($availableColors, $usedColors);
+                $color           = array_shift($filteredColors);
+                $savedCalendar->color = $color;
+                $savedCalendar->save();
+            }
         }
     }
 ?>

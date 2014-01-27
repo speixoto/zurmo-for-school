@@ -41,6 +41,10 @@
         const DATERANGE_TYPE_DAY   = 'agendaDay';
 
         const DATERANGE_TYPE_WEEK  = 'agendaWeek';
+
+        public static $colorsArray = array('#315AB0', '#66367b', '#2c3e50', '#269a55', '#c0392b',
+                                       '#e67e22', '#3498db', '#501a27', '#0c5b3f', '#c05d91');
+
         /**
          * @param string $name
          * @return string
@@ -118,7 +122,8 @@
                     'startAttributeName',
                     'endAttributeName',
                     'serializedData',
-                    'timeZone'
+                    'timeZone',
+                    'color'
                 ),
                 'relations' => array(
                     'sharedSubscribers'   => array(static::HAS_MANY, 'SharedCalendarSubscriber', static::OWNED),
@@ -140,6 +145,8 @@
                     array('timeZone',         'UserDefaultTimeZoneDefaultValueValidator'),
                     array('timeZone',         'ValidateTimeZone'),
                     array('serializedData',   'type', 'type' => 'string'),
+                    array('color',            'type',    'type' => 'string'),
+                    array('color',            'length',  'min'  => 1, 'max' => 64),
                 ),
                 'elements' => array(
                     'moduleClassName' => 'CalendarModuleClassNameDropDown'
@@ -180,7 +187,8 @@
         }
 
         /**
-         * @return array of module class names and display labels
+         * Gets module class name and display labels.
+         * @return array
          */
         public static function getAvailableModulesForCalendar()
         {

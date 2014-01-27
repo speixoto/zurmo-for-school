@@ -40,6 +40,10 @@
 
         protected $savedCalendarSubscriptions;
 
+        protected $controllerId;
+
+        protected $moduleId;
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -63,10 +67,12 @@
             return $metadata;
         }
 
-        public function __construct(CalendarItemsDataProvider $dataProvider)
+        public function __construct(CalendarItemsDataProvider $dataProvider, $controllerId, $moduleId)
         {
             $this->dataProvider               = $dataProvider;
             $this->savedCalendarSubscriptions = $this->dataProvider->getSavedCalendarSubscriptions();
+            $this->controllerId               = $controllerId;
+            $this->moduleId                   = $moduleId;
         }
 
         protected function renderContent()
@@ -97,41 +103,56 @@
             return ZurmoHtml::tag('div', array('id' => 'smallcalendar'), '');
         }
 
+        /**
+         * Renders my calendar content.
+         * @return string
+         */
         protected function renderMyCalendarsContent()
         {
             $title         = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
             $title         .= ZurmoHtml::link(Zurmo::t('Core', 'Create'), Yii::app()->createUrl('/calendars/default/create'));
             $data          = array();
             $selectedItems = array();
+            $content       = null;
             foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
             {
+                $isChecked = false;
                 if($savedCalendarAndSelected[1] === true)
                 {
-                    $selectedItems[] = $savedCalendarAndSelected[0]->id;
+                    $isChecked = true;
                 }
                 $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
+                $input          = ZurmoHtml::checkBox('mycalendar[]',
+                                                      $isChecked,
+                                                      array('value' => $savedCalendarAndSelected[0]->id,
+                                                            'class' => 'mycalendar'));
+                $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
+                                                                                                        $savedCalendarAndSelected[0]->color), '');
+                $label          = $savedCalendarAndSelected[0]->name;
+                $options        = $this->renderMyCalendarItemOptions($savedCalendarAndSelected[0]->id);
+                $content        .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
             }
-            $gear = '<ul class="options-menu edit-row-menu nav">
-<li class="parent last"><a href="javascript:void(0);"><span></span></a>
-<ul>
-<li><a class="edit-related-open-task" id="EditModalLinkActionElement-79-yt10" href="#"><span>Delete</span></a></li>
-<li><a class="edit-related-open-task" id="EditModalLinkActionElement-79-yt10" href="#"><span>Edit</span></a></li>
-<li class="last"><a id="list-viewAccountDetailsAndRelationsView_5-delete-79" class="delete-related-open-task" href="#"><span>Color</span></a></li>
-</ul>
-</li>
-</ul>';
-            $htmlOptions = array(
-                'template' => '<li>{input} <span class="cal-color" style="background:pink"></span>{label}' . $gear . '</li>',
-                'separator' => '',
-                'class' => 'mycalendar'
-            );
-            $content = ZurmoHtml::tag('ul', array(), ZurmoHtml::checkBoxList('mycalendar', $selectedItems, $data, $htmlOptions));
+            $content = ZurmoHtml::tag('ul', array(), $content);
             return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
         }
 
-        private function renderMyCalendarItem()
+        /**
+         * Render my calendar options.
+         * @param int $calendarId
+         * @return string
+         */
+        private function renderMyCalendarItemOptions($calendarId)
         {
-            
+            $elementContent = null;
+            $editElement    = new EditLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
+            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
+            $deleteElement  = new CalendarDeleteLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
+            $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
+            $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
+            $content        = ZurmoHtml::tag('li', array('class' => 'parent last'),
+                                                   ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
+            $content        = ZurmoHtml::tag('ul', array('class' => 'options-menu edit-row-menu nav'), $content);
+            return $content;
         }
 
         protected function renderSubscribedToCalendarsContent()
@@ -162,7 +183,7 @@
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
             $url    = Yii::app()->createUrl('calendars/default/getEvents');
             Yii::app()->clientScript->registerScript('mycalendarselectscript', "$('.mycalendar').on('click', function(){
-                    var selectedCalString = getSelectedMyCalendars();
+                    var selectedCalString = getMySelectedCalendars();
                     var events = {
                         url : '$url',
                         data :function()

@@ -34,102 +34,18 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarItem
+    class CalendarDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        protected $title;
-
-        protected $startDateTime;
-
-        protected $endDateTime;
-
-        protected $calendarId;
-
-        protected $modelClass;
-
-        protected $modelId;
-
-        protected $moduleClassName;
-
-        protected $color;
-
-        public function getTitle()
+        /**
+         * Resolve confirm alert options while deleting product
+         * @param array $htmlOptions
+         * @return array
+         */
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            return $this->title;
-        }
-
-        public function getStartDateTime()
-        {
-            return $this->startDateTime;
-        }
-
-        public function getEndDateTime()
-        {
-            return $this->endDateTime;
-        }
-
-        public function setTitle($title)
-        {
-            $this->title = $title;
-        }
-
-        public function setStartDateTime($startDateTime)
-        {
-            $this->startDateTime = $startDateTime;
-        }
-
-        public function setEndDateTime($endDateTime)
-        {
-            $this->endDateTime = $endDateTime;
-        }
-
-        public function getCalendarId()
-        {
-            return $this->calendarId;
-        }
-
-        public function setCalendarId($calendarId)
-        {
-            $this->calendarId = $calendarId;
-        }
-
-        public function getModelClass()
-        {
-            return $this->modelClass;
-        }
-
-        public function getModelId()
-        {
-            return $this->modelId;
-        }
-
-        public function getModuleClassName()
-        {
-            return $this->moduleClassName;
-        }
-
-        public function setModelClass($modelClass)
-        {
-            $this->modelClass = $modelClass;
-        }
-
-        public function setModelId($modelId)
-        {
-            $this->modelId = $modelId;
-        }
-
-        public function setModuleClassName($moduleClassName)
-        {
-            $this->moduleClassName = $moduleClassName;
-        }
-
-        public function getColor()
-        {
-            return $this->color;
-        }
-
-        public function setColor($color)
-        {
-            $this->color = $color;
+            $htmlOptions['confirm'] = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => CalendarsModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            return $htmlOptions;
         }
     }
 ?>

@@ -56,6 +56,7 @@
             $calendarItem->setCalendarId($savedCalendar->id);
             $calendarItem->setModelClass(get_class($model));
             $calendarItem->setModelId($model->id);
+            $calendarItem->setColor($savedCalendar->color);
             $calendarItem->setModuleClassName($savedCalendar->moduleClassName);
             return $calendarItem;
         }
@@ -142,6 +143,7 @@
 
         /**
          * Process user calendars and get data provider.
+         * @param mixed $selectedId
          * @return CalendarItemsDataProvider
          */
         public static function processUserCalendarsAndMakeDataProviderForCombinedView($selectedId = null)
@@ -174,6 +176,7 @@
                 {
                     $fullCalendarItem['end'] = self::getFullCalendarFormattedDateTimeElement($calItem->getEndDateTime());
                 }
+                $fullCalendarItem['color'] = $calItem->getColor();
                 $fullCalendarItems[] = $fullCalendarItem;
             }
             return $fullCalendarItems;
@@ -202,6 +205,43 @@
         {
             ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar', $selectedCalendarId);
             return $selectedCalendarId;
+        }
+
+        /**
+         * Gets used color by user.
+         *
+         * @param User $user
+         * @return array
+         */
+        public static function getUsedCalendarColorsByUser(User $user)
+        {
+            $quote                     = DatabaseCompatibilityUtil::getQuote();
+            $selectDistinct            = false;
+            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('SavedCalendar');
+            $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $selectQueryAdapter->addClause('savedcalendar', 'color');
+            $metadata                  = array();
+            $metadata['clauses']       = array(
+                                                    1 => array(
+                                                        'attributeName'        => 'createdByUser',
+                                                        'relatedAttributeName' => 'id',
+                                                        'operatorType'         => 'equals',
+                                                        'value'                => $user->id,
+                                                    )
+                                                );
+            $metadata['structure'] = '1';
+            $where   = RedBeanModelDataProvider::makeWhere('SavedCalendar', $metadata, $joinTablesAdapter);
+            $sql     = SQLQueryUtil::makeQuery(SavedCalendar::getTableName(), $selectQueryAdapter, $joinTablesAdapter, null, null, $where);
+            $records = ZurmoRedBean::getAll($sql);
+            $colors  = array();
+            foreach($records as $record)
+            {
+                if($record['color'] != null && $record['color'] != '')
+                {
+                    $colors[] = $record['color'];
+                }
+            }
+            return $colors;
         }
     }
 ?>
