@@ -99,6 +99,7 @@
             Yii::app()->user->userModel = User::getByUsername('super');
             $this->contact->addPermissions($betty, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
             $this->assertTrue($this->contact->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($this->contact, $betty);
 
             //Betty has now access to contact but not the emailMessage
             Yii::app()->user->userModel = $betty;
@@ -111,6 +112,7 @@
             $emailMessage = $this->campaignItem->emailMessage;
             $emailMessage->addPermissions($betty, Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);
             $this->assertTrue($emailMessage->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($emailMessage, $betty);
 
             //Betty has now access to contact and emailMessage
             Yii::app()->user->userModel = $betty;
