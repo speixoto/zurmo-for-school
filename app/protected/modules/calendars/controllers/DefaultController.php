@@ -55,39 +55,6 @@
             );
         }
 
-        public function actionList()
-        {
-//            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-//                                              'listPageSize', get_class($this->getModule()));
-//            $account                        = new Account(false);
-//            $searchForm                     = new AccountsSearchForm($account);
-//            $listAttributesSelector         = new ListAttributesSelector('AccountsListView', get_class($this->getModule()));
-//            $searchForm->setListAttributesSelector($listAttributesSelector);
-//            $dataProvider = $this->resolveSearchDataProvider(
-//                $searchForm,
-//                $pageSize,
-//                null,
-//                'AccountsSearchView'
-//            );
-//            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-//            {
-//                $mixedView = $this->makeListView(
-//                    $searchForm,
-//                    $dataProvider
-//                );
-//                $view = new AccountsPageView($mixedView);
-//            }
-//            else
-//            {
-//                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-//                                                                    'SecuredActionBarForAccountsSearchAndListView');
-//                $view = new AccountsPageView(ZurmoDefaultViewUtil::
-//                                         makeStandardViewForCurrentUser($this, $mixedView));
-//            }
-//            echo $view->render();
-            echo 'Not Implemented';
-        }
-
         public function actionDetails($id)
         {
             $urlParams = array($this->getId() . '/combinedDetails');
@@ -134,14 +101,6 @@
                             $this->makeEditAndDetailsView(
                                 $this->resolveReportDataAndSaveCalendar($calendar), 'Edit')));
             echo $view->render();
-        }
-
-        public function actionDelete($id)
-        {
-            $account = Account::GetById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($account);
-            $account->delete();
-            $this->redirect(array($this->getId() . '/index'));
         }
 
         public function actionCombinedDetails()
@@ -292,6 +251,9 @@
             return $savedCalendar;
         }
 
+        /**
+         * Get events for the selected calendars.
+         */
         public function actionGetEvents()
         {
             $getData                    = GetUtil::getData();
@@ -299,6 +261,18 @@
             $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedId);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
             echo CJSON::encode($items);
+        }
+
+        /**
+         * Deletes a calendar.
+         * @param string $id
+         */
+        public function actionDelete($id)
+        {
+            $savedCalendar = SavedCalendar::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($savedCalendar);
+            $savedCalendar->delete();
+            $this->redirect(array($this->getId() . '/combinedDetails'));
         }
     }
 ?>
