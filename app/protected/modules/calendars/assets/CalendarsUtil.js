@@ -1,4 +1,4 @@
-function getSelectedMyCalendars()
+function getMySelectedCalendars()
 {
     var selectedCal = [];
     $('.mycalendar').each(function()

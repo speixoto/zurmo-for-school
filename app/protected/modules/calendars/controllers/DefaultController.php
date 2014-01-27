@@ -146,7 +146,9 @@
 
         public function actionCombinedDetails()
         {
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
+            $value                      = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'defaultCalendar');
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($value);
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $this->getId(), $this->getModule()->getId());
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                   makeStandardViewForCurrentUser($this,$interactiveCalendarView));
@@ -292,8 +294,11 @@
 
         public function actionGetEvents()
         {
-            $dataProvider = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
-            echo CalendarUtil::getFullCalendarItemsString($dataProvider);
+            $getData                    = GetUtil::getData();
+            $selectedId                 = isset($getData['selectedId'])? $getData['selectedId']:null;
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedId);
+            $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
+            echo CJSON::encode($items);
         }
     }
 ?>

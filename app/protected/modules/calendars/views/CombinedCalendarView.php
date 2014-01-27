@@ -129,6 +129,11 @@
             return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
         }
 
+        private function renderMyCalendarItem()
+        {
+            
+        }
+
         protected function renderSubscribedToCalendarsContent()
         {
             //todo: render labels/checkboxes, then ajax action on change... to call action to update sticky.

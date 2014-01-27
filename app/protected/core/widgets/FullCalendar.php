@@ -79,7 +79,7 @@
                                                                                 url : '$url',
                                                                                 data :function()
                                                                                 {
-                                                                                    var selectedCalString = getSelectedMyCalendars();
+                                                                                    var selectedCalString = getMySelectedCalendars();
                                                                                     return {
                                                                                         selectedId : selectedCalString,
                                                                                         start      : '{$startDate}',

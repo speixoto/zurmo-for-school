@@ -555,6 +555,11 @@
             return $monthsData;
         }
 
+        /**
+         * Gets first day of week.
+         * @param string|null $stringTime
+         * @return string
+         */
         public static function getFirstDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
@@ -564,6 +569,11 @@
                         $dateTime->getTimestamp());
         }
 
+        /**
+         * Gets last day of week.
+         * @param string|null $stringTime
+         * @return string
+         */
         public static function getLastDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
@@ -573,6 +583,10 @@
                         $dateTime->getTimestamp());
         }
 
+        /**
+         * Gets todays date.
+         * @return string
+         */
         public static function getTodaysDate()
         {
             $dateTime = new DateTime();
@@ -580,6 +594,10 @@
                         $dateTime->getTimestamp());
         }
 
+        /**
+         * Get first day of next week.
+         * @return string
+         */
         public static function getFirstDayOfNextWeek()
         {
             $dateTime = new DateTime();

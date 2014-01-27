@@ -43,13 +43,18 @@
         public static function makeByUser(User $user, $selectedCalendarId = null)
         {
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
-
-            //todo: get saved calendars that the user owns (from somewhereelse?)
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
             if(count($mySavedCalendars) > 0)
             {
                 $selectedCalendarId = CalendarUtil::resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars);
-                $selectedCalendarIdArray = explode(',', $selectedCalendarId);
+                if($selectedCalendarId != null)
+                {
+                    $selectedCalendarIdArray = explode(',', $selectedCalendarId);
+                }
+                else
+                {
+                    $selectedCalendarIdArray = array();
+                }
                 foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
                     if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))

@@ -60,11 +60,20 @@
             return $calendarItem;
         }
 
+        /**
+         * Gets date range type.
+         * @return string
+         */
         public static function getDateRangeType()
         {
             return SavedCalendar::DATERANGE_TYPE_MONTH;
         }
 
+        /**
+         * Gets start date.
+         * @param string $dateRangeType
+         * @return string
+         */
         public static function getStartDate($dateRangeType)
         {
             assert('is_string($dateRangeType)');
@@ -82,6 +91,11 @@
             }
         }
 
+        /**
+         * Gets end date.
+         * @param string $dateRangeType
+         * @return string
+         */
         public static function getEndDate($dateRangeType)
         {
             assert('is_string($dateRangeType)');
@@ -130,10 +144,8 @@
          * Process user calendars and get data provider.
          * @return CalendarItemsDataProvider
          */
-        public static function processUserCalendarsAndMakeDataProviderForCombinedView()
+        public static function processUserCalendarsAndMakeDataProviderForCombinedView($selectedId = null)
         {
-            $getData                    = GetUtil::getData();
-            $selectedId                 = isset($getData['selectedId'])? $getData['selectedId']:null;
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel, $selectedId);
             $dateRangeType              = CalendarUtil::getDateRangeType();
             $startDate                  = CalendarUtil::getStartDate($dateRangeType);
@@ -143,7 +155,12 @@
             return $dataProvider;
         }
 
-        public static function getFullCalendarItemsString(CalendarItemsDataProvider $dataProvider)
+        /**
+         * Get full calendar items.
+         * @param CalendarItemsDataProvider $dataProvider
+         * @return array
+         */
+        public static function getFullCalendarItems(CalendarItemsDataProvider $dataProvider)
         {
             $calendarItems = $dataProvider->getData();
             $fullCalendarItems = array();
@@ -159,9 +176,14 @@
                 }
                 $fullCalendarItems[] = $fullCalendarItem;
             }
-            return CJSON::encode($fullCalendarItems);
+            return $fullCalendarItems;
         }
 
+        /**
+         * Gets full calendar formatted date time.
+         * @param string $dateTime
+         * @return string formatted in datetime format required for full calendar widget
+         */
         public static function getFullCalendarFormattedDateTimeElement($dateTime)
         {
             $dateTimeObject = new DateTime($dateTime);
@@ -169,25 +191,16 @@
                         $dateTimeObject->getTimestamp());
         }
 
+        /**
+         * Resolve selected calendar id.
+         *
+         * @param int $selectedCalendarId
+         * @param array $mySavedCalendars
+         * @return int
+         */
         public static function resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars)
         {
-            if($selectedCalendarId == null)
-            {
-                $value = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar');
-                if($value == null)
-                {
-                    $selectedCalendarId = $mySavedCalendars[0]->id;
-                    ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar', $selectedCalendarId);
-                }
-                else
-                {
-                    $selectedCalendarId = $value;
-                }
-            }
-            else
-            {
-                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar', $selectedCalendarId);
-            }
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar', $selectedCalendarId);
             return $selectedCalendarId;
         }
     }
