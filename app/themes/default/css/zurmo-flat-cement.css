@@ -13541,7 +13541,7 @@ a.user-link {
 }
 #CreateEmailMessageModalEditView .more-panels-link {
   display: block;
-  margin: 0 0 0 4%;
+  margin: 0 0 0 10%;
   font-size: 11px;
   float: left;
   position: relative;
@@ -13566,12 +13566,17 @@ a.user-link {
 }
 .recipient > label {
   float: left;
-  width: 3%;
+  width: 10%;
   margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .recipient > div {
   float: right;
-  width: 96%;
+  width: 90%;
 }
 #cc-bcc-fields .recipient {
   margin-top: 15px;
@@ -13596,6 +13601,12 @@ a.user-link {
 }
 #NoUserEmailConfigurationYetView p {
   margin-top: 15px;
+}
+#redactor_modal input[type="text"],
+#redactor_modal input[type="password"],
+#redactor_modal input[type="email"],
+#redactor_modal textarea {
+  z-index: 9999 !important;
 }
 .outbound-settings {
   clear: left;
