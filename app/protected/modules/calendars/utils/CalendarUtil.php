@@ -143,12 +143,14 @@
 
         /**
          * Process user calendars and get data provider.
-         * @param mixed $selectedId
+         * @param mixed $myCalendarIds
          * @return CalendarItemsDataProvider
          */
-        public static function processUserCalendarsAndMakeDataProviderForCombinedView($selectedId = null)
+        public static function processUserCalendarsAndMakeDataProviderForCombinedView($myCalendarIds = null, $mySubscribedCalendarIds = null)
         {
-            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel, $selectedId);
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel,
+                                                                                 $myCalendarIds,
+                                                                                 $mySubscribedCalendarIds);
             $dateRangeType              = CalendarUtil::getDateRangeType();
             $startDate                  = CalendarUtil::getStartDate($dateRangeType);
             $endDate                    = CalendarUtil::getEndDate($dateRangeType);
@@ -195,43 +197,30 @@
         }
 
         /**
-         * Resolve selected calendar id.
-         *
-         * @param int $selectedCalendarId
-         * @param array $mySavedCalendars
-         * @return int
-         */
-        public static function resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars)
-        {
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel, 'CalendarsModule', 'defaultCalendar', $selectedCalendarId);
-            return $selectedCalendarId;
-        }
-
-        /**
          * Gets used color by user.
          *
          * @param User $user
          * @return array
          */
-        public static function getUsedCalendarColorsByUser(User $user)
+        public static function getUsedCalendarColorsByUser(User $user, $modelClassName, $attributeName)
         {
             $quote                     = DatabaseCompatibilityUtil::getQuote();
             $selectDistinct            = false;
-            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('SavedCalendar');
+            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
-            $selectQueryAdapter->addClause('savedcalendar', 'color');
+            $selectQueryAdapter->addClause($modelClassName::getTableName(), 'color');
             $metadata                  = array();
             $metadata['clauses']       = array(
                                                     1 => array(
-                                                        'attributeName'        => 'createdByUser',
+                                                        'attributeName'        => $attributeName,
                                                         'relatedAttributeName' => 'id',
                                                         'operatorType'         => 'equals',
                                                         'value'                => $user->id,
                                                     )
                                                 );
             $metadata['structure'] = '1';
-            $where   = RedBeanModelDataProvider::makeWhere('SavedCalendar', $metadata, $joinTablesAdapter);
-            $sql     = SQLQueryUtil::makeQuery(SavedCalendar::getTableName(), $selectQueryAdapter, $joinTablesAdapter, null, null, $where);
+            $where   = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
+            $sql     = SQLQueryUtil::makeQuery($modelClassName::getTableName(), $selectQueryAdapter, $joinTablesAdapter, null, null, $where);
             $records = ZurmoRedBean::getAll($sql);
             $colors  = array();
             foreach($records as $record)
@@ -291,24 +280,23 @@
 
         /**
          * Get the items by user
-         * @param int $userId
+         * @param User $user
          * @return integer
          */
-        public static function getByUser($userId)
+        public static function getUserSubscribedCalendars(User $user)
         {
-            assert('is_int($userId)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'             => 'user',
                     'operatorType'              => 'equals',
-                    'value'                     => intval($userId),
+                    'value'                     => intval($user->id),
                 )
             );
             $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
-            $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('SavedCalendarSubscription');
+            $where  = RedBeanModelDataProvider::makeWhere('SavedCalendarSubscription', $searchAttributeData, $joinTablesAdapter);
+            $models = SavedCalendarSubscription::getSubset($joinTablesAdapter, null, null, $where, null);
             return $models;
         }
     }

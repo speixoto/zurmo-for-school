@@ -43,13 +43,14 @@
         /**
          * Makes save
          * @param User $user
-         * @param type $selectedCalendarId
-         * @return type
+         * @param string $selectedCalendarIds
+         * @return SavedCalendarSubscriptions
          */
-        public static function makeByUser(User $user, $selectedCalendarId = null)
+        public static function makeByUser(User $user, $selectedCalendarIds = null, $subscribedCalendarIds = null)
         {
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
-            $savedCalendarSubscriptions = $this->addMySavedCalendars($savedCalendarSubscriptions, $user);
+            self::addMySavedCalendars($savedCalendarSubscriptions, $user, $selectedCalendarIds);
+            self::addMySubscribedCalendars($savedCalendarSubscriptions, $user, $selectedCalendarIds);
             return $savedCalendarSubscriptions;
         }
 
@@ -60,23 +61,23 @@
          * @param User $user
          * @return \SavedCalendarSubscriptions
          */
-        private function addMySavedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions, User $user)
+        private static function addMySavedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions,
+                                                    User $user, $selectedCalendarIds)
         {
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
             if(count($mySavedCalendars) > 0)
             {
-                $selectedCalendarId = CalendarUtil::resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars);
-                if($selectedCalendarId != null)
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarSelections', $selectedCalendarIds);
+                $selectedCalendarIdArray = array();
+                if($selectedCalendarIds != null)
                 {
-                    $selectedCalendarIdArray = explode(',', $selectedCalendarId);
-                }
-                else
-                {
-                    $selectedCalendarIdArray = array();
+                    $selectedCalendarIdArray = explode(',', $selectedCalendarIds);
                 }
                 foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
-                    self::setColor($mySavedCalendar);
+                    self::setMyCalendarColor($mySavedCalendar);
                     if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))
                     {
                         $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
@@ -87,37 +88,43 @@
                     }
                 }
             }
-            return $savedCalendarSubscriptions;
         }
 
-        private function addMySubscribedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions, User $user)
+        /**
+         * Add my subscribed calendars.
+         * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
+         * @param User $user
+         * @param string $subscribedCalendarIds
+         * @return \SavedCalendarSubscriptions
+         */
+        private static function addMySubscribedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions,
+                                                  User $user,
+                                                  $subscribedCalendarIds)
         {
-            $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
-            if(count($mySavedCalendars) > 0)
+            $mySubscribedCalendars           = CalendarUtil::getUserSubscribedCalendars($user);
+            if(count($mySubscribedCalendars) > 0)
             {
-                $selectedCalendarId = CalendarUtil::resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars);
-                if($selectedCalendarId != null)
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'mySubscribedCalendarSelections', $subscribedCalendarIds);
+                $subscribedCalendarIdArray = array();
+                if($subscribedCalendarIds != null)
                 {
-                    $selectedCalendarIdArray = explode(',', $selectedCalendarId);
+                    $subscribedCalendarIdArray = explode(',', $subscribedCalendarIds);
                 }
-                else
+                foreach ($mySubscribedCalendars as $key => $mySubscribedCalendar)
                 {
-                    $selectedCalendarIdArray = array();
-                }
-                foreach ($mySavedCalendars as $key => $mySavedCalendar)
-                {
-                    self::setColor($mySavedCalendar);
-                    if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))
+                    self::setSharedCalendarColor($mySubscribedCalendar);
+                    if(in_array($mySubscribedCalendar->id, $subscribedCalendarIdArray))
                     {
-                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
+                        $savedCalendarSubscriptions->addSubscribedToCalendar($mySubscribedCalendar, true);
                     }
                     else
                     {
-                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
+                        $savedCalendarSubscriptions->addSubscribedToCalendar($mySubscribedCalendar, false);
                     }
                 }
             }
-            return $savedCalendarSubscriptions;
         }
 
         /**
@@ -127,24 +134,22 @@
         public function addMySavedCalendar(SavedCalendar $savedCalendar, $selected)
         {
             assert('is_bool($selected)');
-            if(!isset($this->mySavedCalendarsAndSelected[$savedCalendar->id]) &&
-               !isset($this->subscribedToSavedCalendarsAndSelected[$savedCalendar->id]))
+            if(!isset($this->mySavedCalendarsAndSelected[$savedCalendar->id]))
             {
                 $this->mySavedCalendarsAndSelected[$savedCalendar->id] = array($savedCalendar, $selected);
             }
         }
 
         /**
-         * @param SavedCalendar $savedCalendar
+         * @param SavedCalendar $subscribedCalendar
          * @param bool $selected
          */
-        public function addSubscribedToCalendar(SavedCalendar $savedCalendar, $selected)
+        public function addSubscribedToCalendar(SavedCalendarSubscription $subscribedCalendar, $selected)
         {
             assert('is_bool($selected)');
-            if(!isset($this->mySavedCalendarsAndSelected[$savedCalendar->id]) &&
-                !isset($this->subscribedToSavedCalendarsAndSelected[$savedCalendar->id]))
+            if(!isset($this->subscribedToSavedCalendarsAndSelected[$subscribedCalendar->id]))
             {
-                $this->subscribedToSavedCalendarsAndSelected[$savedCalendar->id] = array($savedCalendar, $selected);
+                $this->subscribedToSavedCalendarsAndSelected[$subscribedCalendar->id] = array($subscribedCalendar, $selected);
             }
         }
 
@@ -158,17 +163,31 @@
             return $this->subscribedToSavedCalendarsAndSelected;
         }
 
-        private static function setColor($savedCalendar)
+        private static function setMyCalendarColor(SavedCalendar $savedCalendar)
         {
             if($savedCalendar->color == null)
             {
-                $usedColors      = CalendarUtil::getUsedCalendarColorsByUser(Yii::app()->user->userModel);
-                $availableColors = SavedCalendar::$colorsArray;
-                $filteredColors  = array_diff($availableColors, $usedColors);
-                $color           = array_shift($filteredColors);
-                $savedCalendar->color = $color;
-                $savedCalendar->save();
+                $usedColors      = CalendarUtil::getUsedCalendarColorsByUser(Yii::app()->user->userModel, 'SavedCalendar', 'createdByUser');
+                self::processAndSaveColor($savedCalendar, $usedColors);
             }
+        }
+
+        private static function setSharedCalendarColor(SavedCalendarSubscription $sharedCalendar)
+        {
+            if($sharedCalendar->color == null)
+            {
+                $usedColors      = CalendarUtil::getUsedCalendarColorsByUser(Yii::app()->user->userModel, 'SavedCalendarSubscription', 'user');
+                self::processAndSaveColor($sharedCalendar, $usedColors);
+            }
+        }
+
+        private static function processAndSaveColor($calendar, $usedColors)
+        {
+            $availableColors = SavedCalendar::$colorsArray;
+            $filteredColors  = array_diff($availableColors, $usedColors);
+            $color           = array_shift($filteredColors);
+            $calendar->color = $color;
+            $calendar->save();
         }
     }
 ?>

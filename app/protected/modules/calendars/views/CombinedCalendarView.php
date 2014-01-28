@@ -125,31 +125,36 @@
          */
         protected function renderMyCalendarsContent()
         {
-            $title         = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
-            $title         .= ZurmoHtml::link(Zurmo::t('Core', 'Create'), Yii::app()->createUrl('/calendars/default/create'));
-            $data          = array();
-            $selectedItems = array();
-            $content       = null;
-            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
-            {
-                $isChecked = false;
-                if($savedCalendarAndSelected[1] === true)
-                {
-                    $isChecked = true;
-                }
-                $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
-                $input          = ZurmoHtml::checkBox('mycalendar[]',
-                                                      $isChecked,
-                                                      array('value' => $savedCalendarAndSelected[0]->id,
-                                                            'class' => 'mycalendar'));
-                $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
-                                                                                                        $savedCalendarAndSelected[0]->color), '');
-                $label          = $savedCalendarAndSelected[0]->name;
-                $options        = $this->renderMyCalendarItemOptions($savedCalendarAndSelected[0]->id);
-                $content        .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
-            }
-            $content = ZurmoHtml::tag('ul', array(), $content);
-            return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
+            //$title         = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
+            //$title         .= ZurmoHtml::link(Zurmo::t('Core', 'Create'), Yii::app()->createUrl('/calendars/default/create'));
+            //$data               = array();
+            $myCalendarsListView = new MyCalendarListView($this->controllerId,
+                                                          $this->moduleId,
+                                                          $this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected(),
+                                                          'mycalendar[]', 'mycalendar');
+            return $myCalendarsListView->render();
+//            $content       = null;
+//            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
+//            {
+//                $isChecked = false;
+//                if($savedCalendarAndSelected[1] === true)
+//                {
+//                    $isChecked = true;
+//                }
+//                $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
+//                $input          = ZurmoHtml::checkBox('mycalendar[]',
+//                                                      $isChecked,
+//                                                      array('value' => $savedCalendarAndSelected[0]->id,
+//                                                            'class' => 'mycalendar'));
+//                $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
+//                                                                                                        $savedCalendarAndSelected[0]->color), '');
+//                $label          = $savedCalendarAndSelected[0]->name;
+//                $options        = $this->renderMyCalendarItemOptions($savedCalendarAndSelected[0]->id);
+//                $content        .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
+//            }
+            //$content = ZurmoHtml::tag('ul', array(), $content);
+            //return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
+            //return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $content);
         }
 
         /**
@@ -157,7 +162,7 @@
          * @param int $calendarId
          * @return string
          */
-        private function renderMyCalendarItemOptions($calendarId)
+        /*private function renderMyCalendarItemOptions($calendarId)
         {
             $elementContent = null;
             $editElement    = new EditLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
@@ -169,7 +174,7 @@
                                                    ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
             $content        = ZurmoHtml::tag('ul', array('class' => 'options-menu edit-row-menu nav'), $content);
             return $content;
-        }
+        }*/
 
         /**
          * Renders calendar content which user has subscribed to.
@@ -178,20 +183,26 @@
         protected function renderSubscribedToCalendarsContent()
         {
             //todo: render labels/checkboxes, then ajax action on change... to call action to update sticky.
-            foreach($this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected() as $savedCalendarAndSelected)
+            /*foreach($this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected() as $savedCalendarAndSelected)
             {
                 //$savedCalendarAndSelected[0] is a SavedCalendar
                 //$savedCalendarAndSelected[1] is a Boolean whether selected to view or not
-            }
+            }*/
+            $mySharedCalendarsListView = new MySharedCalendarListView($this->controllerId,
+                                                          $this->moduleId,
+                                                          $this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
+                                                          'sharedcalendar[]', 'sharedcalendar');
+            return $mySharedCalendarsListView->render();
+
             //todo: add the area where you can selecte from other shared calendars. so probably a MODEL type-ahead on
             //todo: SavedCalendar would work i think... (but need to exclude your ones you own and ones you already have shared?)
             //todo: then on adding, need to call ajax to refresh the subscribedToDiv... (so maybe this needs to be its own div. this entire method..
-            $content     = ZurmoHtml::link('Select', '#', array('class' => 'selectsharedcal'));
-            $script      = CalendarUtil::registerSharedCalendarModalScript(Yii::app()->createUrl('calendars/default/modalList'),
-                                                                           '.selectsharedcal');
-            Yii::app()->clientScript->registerScript('selectsharedcalscript', $script, ClientScript::POS_END);
-            $sharedCalendars = ZurmoHtml::tag('div', array('id' => 'shared-calendars-list'), '');
-            return ZurmoHtml::tag('div', array('class' => 'calendars-list shared-calendars'), $content . $sharedCalendars);
+//            $content     .= ZurmoHtml::link('Select', '#', array('class' => 'selectsharedcal'));
+//            $script      = CalendarUtil::registerSharedCalendarModalScript(Yii::app()->createUrl('calendars/default/modalList'),
+//                                                                           '.selectsharedcal');
+//            Yii::app()->clientScript->registerScript('selectsharedcalscript', $script, ClientScript::POS_END);
+//            $sharedCalendars = ZurmoHtml::tag('div', array('id' => 'shared-calendars-list'), '');
+//            return ZurmoHtml::tag('div', array('class' => 'calendars-list shared-calendars'), $content . $sharedCalendars);
         }
 
         /**
@@ -241,6 +252,28 @@
                     $('#calendar').fullCalendar('addEventSource', events);
                     $('#calendar').fullCalendar('refetchEvents');
                 });");
+        }
+
+        protected static function processSavedOrSubscribedCalendars($data, $fieldName, $itemClass)
+        {
+            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
+            {
+                $isChecked = false;
+                if($savedCalendarAndSelected[1] === true)
+                {
+                    $isChecked = true;
+                }
+                $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
+                $input          = ZurmoHtml::checkBox('mycalendar[]',
+                                                      $isChecked,
+                                                      array('value' => $savedCalendarAndSelected[0]->id,
+                                                            'class' => 'mycalendar'));
+                $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
+                                                                                                        $savedCalendarAndSelected[0]->color), '');
+                $label          = $savedCalendarAndSelected[0]->name;
+                $options        = $this->renderMyCalendarItemOptions($savedCalendarAndSelected[0]->id);
+                $content        .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
+            }
         }
     }
 ?>

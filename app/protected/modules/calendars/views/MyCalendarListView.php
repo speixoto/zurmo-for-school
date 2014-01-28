@@ -34,49 +34,37 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class SavedCalendarSubscription extends RedBeanModel
+    class MyCalendarListView extends CalendarListView
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        protected function getCalendarOptions($calendarId)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'color'
-                ),
-                'relations' => array(
-                    'user'             => array(static::HAS_ONE, 'User', static::NOT_OWNED),
-                    'savedcalendar'    => array(static::HAS_ONE, 'SavedCalendar', static::NOT_OWNED),
-                ),
-                'rules' => array(
-                    array('color',            'type',    'type' => 'string'),
-                    array('color',            'length',  'min'  => 1, 'max' => 64),
-                ),
-                'elements' => array(
-                    'user'          => 'User',
-                    'savedcalendar'      => 'SavedCalendar'
-                ),
-                'defaultSortAttribute' => '',
-                'customFields' => array(
-                ),
-            );
-            return $metadata;
+            return $this->renderItemOptions($calendarId);
         }
 
         /**
-         * Translated attribute labels.
-         * @param string $language
-         * @return array
+         * Render my calendar options.
+         * @param int $calendarId
+         * @return string
          */
-        protected static function translatedAttributeLabels($language)
+        private function renderItemOptions($calendarId)
         {
-            return array_merge(parent::translatedAttributeLabels($language),
-                array(
-                    'user'        => Zurmo::t('CalendarsModule', 'Shared Subscriber',  array(), null, $language)
-                )
-            );
+            $elementContent = null;
+            $editElement    = new EditLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
+            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
+            $deleteElement  = new CalendarDeleteLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
+            $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
+            $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
+            $content        = ZurmoHtml::tag('li', array('class' => 'parent last'),
+                                                   ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
+            $content        = ZurmoHtml::tag('ul', array('class' => 'options-menu edit-row-menu nav'), $content);
+            return $content;
+        }
+
+        protected function renderTitleContent()
+        {
+            $title         = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
+            $title         .= ZurmoHtml::link(Zurmo::t('Core', 'Create'), Yii::app()->createUrl('/calendars/default/create'));
+            return $title;
         }
     }
 ?>

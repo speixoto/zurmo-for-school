@@ -105,9 +105,12 @@
 
         public function actionCombinedDetails()
         {
-            $value                      = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
-                                                                                        'CalendarsModule', 'defaultCalendar');
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($value);
+            $mySavedCalendarIds         = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'myCalendarSelections');
+            $mySubscribedCalendarIds    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'mySubscribedCalendarSelections');
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds,
+                                                                                                               $mySubscribedCalendarIds);
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $this->getId(), $this->getModule()->getId());
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                   makeStandardViewForCurrentUser($this,$interactiveCalendarView));
@@ -257,8 +260,8 @@
         public function actionGetEvents()
         {
             $getData                    = GetUtil::getData();
-            $selectedId                 = isset($getData['selectedId'])? $getData['selectedId']:null;
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedId);
+            $mySavedCalendarIds         = isset($getData['selectedId'])? $getData['selectedId']:null;
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
             echo CJSON::encode($items);
         }
