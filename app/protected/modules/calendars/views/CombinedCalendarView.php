@@ -36,30 +36,37 @@
 
     class CombinedCalendarView extends ConfigurableMetadataView
     {
+        /**
+         * Data provider associated with the combined calendar view.
+         * @var CalendarItemsDataProvider
+         */
         protected $dataProvider;
-
+        /**
+         * Saved calendar subscriptions.
+         * @var savedCalendarSubscriptions
+         */
         protected $savedCalendarSubscriptions;
-
+        /**
+         * Controller id associated with the view.
+         * @var string
+         */
         protected $controllerId;
-
+        /**
+         * Module id associated with the view.
+         * @var string
+         */
         protected $moduleId;
 
+        /**
+         * Get default metadata.
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-//                            array('type'        => 'CampaignsDetailsMenu',
-//                                  'iconClass'   => 'icon-details',
-//                                  'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
-//                                  'model'       => 'eval:$this->model',
-//                                  'itemOptions' => array('class' => 'hasDetailsFlyout')
-//                            ),
-//                            array('type'        => 'CampaignsOptionsMenu',
-//                                  'iconClass'   => 'icon-edit',
-//                                  'htmlOptions' => array('id' => 'ListViewOptionsActionMenu')
-//                            )
                         ),
                     ),
                 ),
@@ -67,6 +74,12 @@
             return $metadata;
         }
 
+        /**
+         * Class constructor.
+         * @param CalendarItemsDataProvider $dataProvider
+         * @param string $controllerId
+         * @param string $moduleId
+         */
         public function __construct(CalendarItemsDataProvider $dataProvider, $controllerId, $moduleId)
         {
             $this->dataProvider               = $dataProvider;
@@ -75,28 +88,31 @@
             $this->moduleId                   = $moduleId;
         }
 
+        /**
+         * Renders content.
+         * @return string
+         */
         protected function renderContent()
         {
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.calendars.assets')) . '/CalendarsUtil.js',
                                             CClientScript::POS_END);
             $content  = $this->renderSmallCalendarContent();
-            $content .= $this->renderMyCalendarsContent();
-            $content .= $this->renderSubscribedToCalendarsContent();
-            $left = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
-            $right = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
+            $content  .= $this->renderMyCalendarsContent();
+            $content  .= $this->renderSubscribedToCalendarsContent();
+            $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
+            $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
             $this->registerMyCalendarSelectScript();
-
-            $title = ZurmoHtml::tag('h1', array(), 'Shared Calendar (todo)');
-            $view = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
-
-            //$createButton = ZurmoHtml::tag('a', array('href' => 'http://localhost/zurmo-cal/app/index.php/calendars/default/create'), 'create');
-
-            $wrapper = ZurmoHtml::tag('div', array('class' => 'wrapper'), $title . $view);
-
+            $title    = ZurmoHtml::tag('h1', array(), 'Shared Calendar (todo)');
+            $view     = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
+            $wrapper  = ZurmoHtml::tag('div', array('class' => 'wrapper'), $title . $view);
             return $wrapper;
         }
 
+        /**
+         * Renders small calendar content.
+         * @return string
+         */
         protected function renderSmallCalendarContent()
         {
             Yii::app()->clientScript->registerScript('smallcalendarscript', '$( "#smallcalendar" ).datepicker();', ClientScript::POS_END);
@@ -155,6 +171,10 @@
             return $content;
         }
 
+        /**
+         * Renders calendar content which user has subscribed to.
+         * @return string
+         */
         protected function renderSubscribedToCalendarsContent()
         {
             //todo: render labels/checkboxes, then ajax action on change... to call action to update sticky.
@@ -166,16 +186,27 @@
             //todo: add the area where you can selecte from other shared calendars. so probably a MODEL type-ahead on
             //todo: SavedCalendar would work i think... (but need to exclude your ones you own and ones you already have shared?)
             //todo: then on adding, need to call ajax to refresh the subscribedToDiv... (so maybe this needs to be its own div. this entire method..
-            $content = 'todo shared calendar content';
-            return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $content);
+            $content     = ZurmoHtml::link('Select', '#', array('class' => 'selectsharedcal'));
+            $script      = CalendarUtil::registerSharedCalendarModalScript(Yii::app()->createUrl('calendars/default/modalList'),
+                                                                           '.selectsharedcal');
+            Yii::app()->clientScript->registerScript('selectsharedcalscript', $script, ClientScript::POS_END);
+            $sharedCalendars = ZurmoHtml::tag('div', array('id' => 'shared-calendars-list'), '');
+            return ZurmoHtml::tag('div', array('class' => 'calendars-list shared-calendars'), $content . $sharedCalendars);
         }
 
+        /**
+         * Renders full calendar content.
+         * @return string
+         */
         protected function renderFullCalendarContent()
         {
             $view = new FullCalendarForCombinedView($this->dataProvider);
             return $view->render();
         }
 
+        /**
+         * Register script whick would be invoked on click of any calendar item in My Calendars
+         */
         protected function registerMyCalendarSelectScript()
         {
             $startDate     = $this->dataProvider->getStartDate();

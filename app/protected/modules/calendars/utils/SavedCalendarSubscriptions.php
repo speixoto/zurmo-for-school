@@ -40,9 +40,28 @@
 
         protected $subscribedToSavedCalendarsAndSelected = array();
 
+        /**
+         * Makes save
+         * @param User $user
+         * @param type $selectedCalendarId
+         * @return type
+         */
         public static function makeByUser(User $user, $selectedCalendarId = null)
         {
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
+            $savedCalendarSubscriptions = $this->addMySavedCalendars($savedCalendarSubscriptions, $user);
+            return $savedCalendarSubscriptions;
+        }
+
+        /**
+         * Add My saved calendars.
+         *
+         * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
+         * @param User $user
+         * @return \SavedCalendarSubscriptions
+         */
+        private function addMySavedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions, User $user)
+        {
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
             if(count($mySavedCalendars) > 0)
             {
@@ -68,10 +87,36 @@
                     }
                 }
             }
-            //todo: get saved calendars that the user is subscribed too (from some subscription model?)
+            return $savedCalendarSubscriptions;
+        }
 
-                //$savedCalendarSubscriptions->addSubscribedToSavedCalendar($subscribedToSavedCalendar, $selected);
-
+        private function addMySubscribedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions, User $user)
+        {
+            $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
+            if(count($mySavedCalendars) > 0)
+            {
+                $selectedCalendarId = CalendarUtil::resolveSelectedCalendarId($selectedCalendarId, $mySavedCalendars);
+                if($selectedCalendarId != null)
+                {
+                    $selectedCalendarIdArray = explode(',', $selectedCalendarId);
+                }
+                else
+                {
+                    $selectedCalendarIdArray = array();
+                }
+                foreach ($mySavedCalendars as $key => $mySavedCalendar)
+                {
+                    self::setColor($mySavedCalendar);
+                    if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))
+                    {
+                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
+                    }
+                    else
+                    {
+                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
+                    }
+                }
+            }
             return $savedCalendarSubscriptions;
         }
 

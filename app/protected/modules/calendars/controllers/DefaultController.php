@@ -274,5 +274,32 @@
             $savedCalendar->delete();
             $this->redirect(array($this->getId() . '/combinedDetails'));
         }
+
+        /**
+         * Renders modal list for the shared calendars for the user.
+         */
+        public function actionModalList()
+        {
+            $modalListLinkProvider = new SelectFromSharedCalendarsModalListLinkProvider(
+                                            CalendarUtil::getModalContainerId(),
+                                            'shared-calendars-list'
+                                        );
+            echo ModalSearchListControllerUtil::
+                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
+
+        /**
+         * Add subscription for calendar.
+         * @param int $id
+         */
+        public function actionAddSubsriptionForCalendar($id)
+        {
+            $savedCalendar                       = SavedCalendar::getById(intval($id));
+            $user                                = Yii::app()->user->userModel;
+            $savedCalendarSubscription           = new SavedCalendarSubscription();
+            $savedCalendarSubscription->user     = $user;
+            $savedCalendarSubscription->savedcalendar = $savedCalendar;
+            $savedCalendarSubscription->save();
+        }
     }
 ?>

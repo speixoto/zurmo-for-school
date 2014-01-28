@@ -243,5 +243,73 @@
             }
             return $colors;
         }
+
+        /**
+         * @return string
+         */
+        public static function getModalContainerId()
+        {
+            return ModalContainerView::ID;
+        }
+
+        /**
+         * @return array
+         */
+        public static function resolveAjaxOptionsForModalView()
+        {
+            $title = Zurmo::t('Calendarsmodule', 'Shared Calendars');
+            return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
+                     'center top+25', $class = "''");
+        }
+
+        /**
+         * Get task modal script
+         * @param string $url
+         * @param string $selector
+         * @return string
+         */
+        public static function registerSharedCalendarModalScript($url, $selector)
+        {
+            assert('is_string($url)');
+            assert('is_string($selector)');
+            $modalId     = CalendarUtil::getModalContainerId();
+            $ajaxOptions = CalendarUtil::resolveAjaxOptionsForModalView();
+            $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
+            return "$(document).on('click', '{$selector}', function()
+                         {
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}',
+                                'beforeSend' : {$ajaxOptions['beforeSend']},
+                                'update'     : '{$ajaxOptions['update']}',
+                                'success': function(html){jQuery('#{$modalId}').html(html)}
+                            });
+                          }
+                        );";
+        }
+
+        /**
+         * Get the items by user
+         * @param int $userId
+         * @return integer
+         */
+        public static function getByUser($userId)
+        {
+            assert('is_int($userId)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'user',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($userId),
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            return $models;
+        }
     }
 ?>

@@ -34,32 +34,16 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class SharedCalendarSubscriber extends RedBeanModel
+    class CalendarsModalSearchAndListView extends ModalSearchAndListView
     {
-        public static function getDefaultMetadata()
+        public static function getListViewClassName()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(),
-                'relations' => array(
-                    'user'        => array(static::HAS_ONE, 'User', static::NOT_OWNED),
-                    'calendar'    => array(static::HAS_ONE, 'SavedCalendar', static::NOT_OWNED),
-                ),
-                'rules' => array(),
-                'defaultSortAttribute' => '',
-                'customFields' => array(
-                ),
-            );
-            return $metadata;
+            return 'SharedCalendarsModalListView';
         }
 
-        protected static function translatedAttributeLabels($language)
+        public static function getSearchViewClassName()
         {
-            return array_merge(parent::translatedAttributeLabels($language),
-                array(
-                    'user'        => Zurmo::t('CalendarsModule', 'Shared Subscriber',  array(), null, $language)
-                )
-            );
+            return 'SharedCalendarsModalSearchView';
         }
     }
 ?>
