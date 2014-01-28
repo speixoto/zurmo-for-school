@@ -439,7 +439,7 @@
                 {
                     $modelClassName  = get_called_class();
                     $moduleClassName = $modelClassName::getModuleClassName();
-                    if(static::hasReadPermissionsSubscriptionOptimization() &&
+                    if(static::hasReadPermissionsOptimization() &&
                        $moduleClassName != null &&
                        is_subclass_of($moduleClassName, 'SecurableModule') &&
                        AllPermissionsOptimizationUtil::checkPermissionsHasAnyOf($requiredPermissions, $this, $user))
