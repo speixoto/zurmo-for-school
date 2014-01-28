@@ -95,7 +95,6 @@
                             'SPL',
                             'Ctype',
                             'FilePermissionsAfterInstall',
-                            'FileExists',
                             'InstanceFolders',
                             'APC',
                             'Soap',
