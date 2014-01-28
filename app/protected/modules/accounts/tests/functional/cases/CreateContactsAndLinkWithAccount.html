@@ -100,12 +100,12 @@
 	<td>Test Account ${randomSuffix}</td>
 	<td></td>
 </tr>
+<!--create 1st contact link with account-->
 <tr>
-	<td>setSpeed</td>
-	<td>2000</td>
+	<td>waitForElementPresent</td>
+	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/a/span</td>
 	<td></td>
 </tr>
-<!--create 1st contact link with account-->
 <tr>
 	<td>clickAndWait</td>
 	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/a/span</td>
@@ -120,6 +120,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=Contact_firstName</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
@@ -217,11 +222,6 @@
 	<td>Test Zurmo ${randomSuffix}</td>
 	<td></td>
 </tr>
-<tr>
-	<td>setSpeed</td>
-	<td>2000</td>
-	<td></td>
-</tr>
 <!--to check if we cancel unlink, then it wont unlink contact-->
 <tr>
 	<td>click</td>
@@ -294,11 +294,6 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>1</td>
-	<td></td>
 </tr>
 <tr>
 	<td>type</td>
