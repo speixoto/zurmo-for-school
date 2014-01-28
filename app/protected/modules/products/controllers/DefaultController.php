@@ -448,5 +448,16 @@
                                 $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit')));
             echo $view->render();
         }
+
+        public function actionModalList()
+        {
+            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+                $_GET['modalTransferInformation']['sourceIdFieldId'],
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
+            );
+            echo ModalSearchListControllerUtil::
+                setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
     }
 ?>
