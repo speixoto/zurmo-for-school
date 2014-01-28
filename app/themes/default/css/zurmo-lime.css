@@ -9826,7 +9826,7 @@ div.wide.form .errorMessage {
   margin: 0;
   opacity: 0;
   filter: alpha(opacity=0);
-  font-size: 200px;
+  font-size: 25px;
   direction: ltr;
   cursor: pointer;
 }
@@ -19241,6 +19241,16 @@ a + .project-stats {
   height: 229px;
   background: #fff;
   border-left: 1px solid #dfdfdf;
+}
+#dedupe-spinner {
+  display: block;
+  visibility: visible;
+  position: absolute;
+  top: 1px;
+  right: 20px;
+}
+#dedupe-spinner .z-spinner {
+  display: block;
 }
 #calendar {
   width: 100%;

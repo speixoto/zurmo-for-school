@@ -34,58 +34,24 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailMessageContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
+    /**
+     * AccountContactAffiliations API Controller
+     */
+    class AccountContactAffiliationsAccountContactAffiliationApiController extends ZurmoModuleApiController
     {
-        /**
-         * Override so it only render if to recipient is a Contact
-         * and the user has the right to access Email Templates
-         * @return string
-         */
-        protected function renderControlEditable()
+        public function actionAddRelation()
         {
-            if ($this->shouldUseTemplate() &&
-                RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
-            {
-                return parent::renderControlEditable();
-            }
-            return null;
+            throw new ApiUnsupportedException();
         }
 
-        protected function getModuleId()
+        public function actionRemoveRelation()
         {
-            return 'CreateEmailMessageForm';
+            throw new ApiUnsupportedException();
         }
 
-        protected function getHtmlContentId()
+        protected static function getSearchFormClassName()
         {
-            $htmlContentId = $this->getModuleId() . '_content';
-            $htmlContentId .= '_';
-            $htmlContentId .= EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME;
-            return $htmlContentId;
-        }
-
-        protected function getContactId()
-        {
-            if ($this->shouldUseTemplate())
-            {
-                $relatedId = Yii::app()->request->getQuery('relatedId');
-                return $relatedId;
-            }
-            return parent::getContactId();
-        }
-
-        /**
-         * If the emailMessage content can be populated from an emailTemplate
-         * @return bool
-         */
-        protected function shouldUseTemplate()
-        {
-            $relatedModelClassName = Yii::app()->request->getQuery('relatedModelClassName');
-            if ($relatedModelClassName == 'Contact')
-            {
-                return true;
-            }
-            return false;
+            return 'AccountContactAffiliationSearchForm';
         }
     }
 ?>

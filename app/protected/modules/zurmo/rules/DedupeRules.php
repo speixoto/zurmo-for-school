@@ -102,13 +102,19 @@
             $link          = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'click here'), '#', array('onclick' => 'js:$("#' . $dedupeViewId . '").closest("form")[0].submit();'));
             $spanUnderline = ZurmoHtml::tag('span', array('class' => 'underline'), $link);
             $textMessage   = '<br>' . Zurmo::t('ZurmoModule', 'If you still want to save {link}.', array('{link}' => $spanUnderline));
+            $spinnerId     = 'dedupe-spinner';
             // Begin Not Coding Standard
             $ajaxScript = ZurmoHtml::ajax(array(
                 'type'       => 'GET',
                 'data'       => array('attribute' => $this->getAttributeForDedupe($element),
-                    'value'     => "js:$('#{$id}').val()",
+                                      'value'     => "js:$('#{$id}').val()",
                 ),
                 'url'        => 'searchForDuplicateModels',
+
+                'beforeSend' => "js:function(){
+                                     $('#" . $id . "').after('<div id=\"" . $spinnerId . "\"><span class=\"z-spinner\"></span></div>');
+                                     $(this).makeOrRemoveLoadingSpinner(true, '#" . $spinnerId . "', 'dark');
+                                }",
                 'success'    => "js:function(data, textStatus, jqXHR){
                                         var returnObj = jQuery.parseJSON(data);
                                         $('#" . $dedupeViewId . "').closest('form').off('submit.dedupe');
@@ -126,13 +132,15 @@
                                                 permanent: true,
                                                 clickOverlay : true,
                                                 showIcon: false,
-                                            })
+                                            });
+
                                         }
                                         else if (shouldSubmitForm)
                                         {
                                             $('#" . $dedupeViewId . "').closest('form')[0].submit();
                                         }
-                                 }"
+                                 }",
+                'complete'    => "js:function(){ $('#" . $id . "').next('#" . $spinnerId . "').remove(); }"
             ));
             $js = "var shouldSubmitForm = false;
                     $('#{$id}' ).change(function() {

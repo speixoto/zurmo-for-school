@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo campaignItems.
+     * Class that builds demo campaignItems
      */
     class CampaignItemsDemoDataMaker extends DemoDataMaker
     {
