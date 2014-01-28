@@ -65,7 +65,7 @@
                     $passed = false;
                 }
             }
-            $debugExists =  InstallUtil::isDebugConfigExists(INSTANCE_ROOT);
+            $debugExists =  InstallUtil::doesDebugConfigExist(INSTANCE_ROOT);
             if ($debugExists)
             {
                 $this->message  .= "\n" . Zurmo::t('InstallModule', 'The debug.php file is present.');

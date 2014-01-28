@@ -865,7 +865,7 @@
             return $isWritable;
         }
         
-        public static function isDebugConfigExists($instanceRoot)
+        public static function doesDebugConfigExist($instanceRoot)
         {
             $debugConfigFile     = "$instanceRoot/protected/config/debug.php";
 
