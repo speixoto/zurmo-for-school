@@ -111,5 +111,54 @@
             $users = User::getSubset($joinTablesAdapter, null, null, $where);
             return $users;
         }
+
+        public static function getUsersByPartialFullNameOrAnyEmailAddress($partialNameOrEmailAddress, $pageSize,
+                                                                          $stateMetadataAdapterClassName = null,
+                                                                          $operatorType = null,
+                                                                          $autoCompleteOptions = null)
+        {
+            $modelName = 'User';
+            assert('is_string($partialNameOrEmailAddress)');
+            assert('is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            assert('$operatorType == null || is_string($operatorType)');
+            assert('$autoCompleteOptions == null || is_string($autoCompleteOptions)');
+            if ($operatorType == null)
+            {
+                $operatorType = 'startsWith';
+            }
+            $metadata = array();
+            $metadata['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'primaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => $operatorType,
+                    'value'                => $partialNameOrEmailAddress,
+                ),
+            );
+            $metadata['structure'] = '(1 or partialnamesearch)';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelName);
+            if ($stateMetadataAdapterClassName != null)
+            {
+                $stateMetadataAdapter = new $stateMetadataAdapterClassName($metadata);
+                $metadata = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+            }
+            $where  = RedBeanModelDataProvider::makeWhere($modelName, $metadata, $joinTablesAdapter);
+            $partialNameWherePart = self::getWherePartForPartialNameSearchByPartialName($partialNameOrEmailAddress);
+            $where  = strtr(strtolower($where), array('partialnamesearch' => $partialNameWherePart));
+            static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
+            return User::getSubset($joinTablesAdapter, null, $pageSize, $where, "person.firstname, person.lastname");
+        }
+
+        protected static function getWherePartForPartialNameSearchByPartialName($partialName)
+        {
+            assert('is_string($partialName)');
+            $fullNameSql = DatabaseCompatibilityUtil::concat(array('person.firstname',
+                                                                   '\' \'',
+                                                                   'person.lastname'));
+            return "      (person.firstname      like '$partialName%' or "    .
+                   "       person.lastname       like '$partialName%' or "    .
+                   "       $fullNameSql like '$partialName%') ";
+        }
    }
 ?>

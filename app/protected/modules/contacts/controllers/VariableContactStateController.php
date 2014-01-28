@@ -92,8 +92,17 @@
             foreach ($contacts as $contact)
             {
                 $autoCompleteResults[] = array(
-                    'id'   => $contact->id,
+                    'id'   => Meeting::CONTACT_ATTENDEE_PREFIX . $contact->id,
                     'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromContactAndKeyword($contact, $term)
+                );
+            }
+            $users = UserSearch::getUsersByPartialFullNameOrAnyEmailAddress($term, $pageSize, $adapterName,
+                                                                            null, $autoCompleteOptions);
+            foreach ($users as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => Meeting::USER_ATTENDEE_PREFIX . $user->id,
+                    'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromUserAndKeyword($user, $term)
                 );
             }
             echo CJSON::encode($autoCompleteResults);
