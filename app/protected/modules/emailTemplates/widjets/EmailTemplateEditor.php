@@ -76,7 +76,7 @@
             $content = '
                 <table class="container">
                       <tr>
-                        <td>
+                        <td class="sortable-rows">
 
                           <table class="row">
                             <tr>
@@ -100,6 +100,24 @@
                                     <td>
 
                                       Four Columns
+
+                                    </td>
+                                  </tr>
+                                </table>
+
+                              </td>
+                            </tr>
+                          </table>
+
+                          <table class="row">
+                            <tr>
+                              <td class="wrapper last">
+
+                                <table class="twelve columns">
+                                  <tr class="sortable">
+                                    <td>
+
+                                      Twelve Columns
 
                                     </td>
                                   </tr>

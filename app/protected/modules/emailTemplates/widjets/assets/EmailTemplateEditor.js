@@ -41,6 +41,7 @@ var emailTemplateEditor = {
     setupLayout : function() {
         this.initDraggableElements(".elementToPlace");
         this.initSortableElements(".sortable");
+        this.initSortableRows(".sortable-rows");
     },
     initDraggableElements: function ( selector ) {
         $( selector ).each(function(){
@@ -52,8 +53,7 @@ var emailTemplateEditor = {
         $( selector ).draggable({
             helper: "clone",
             cursor: 'move',
-            connectToSortable: ".sortable",
-            scope: "elements"
+            connectToSortable: ".sortable, .sortable-rows",
         });
     },
     initSortableElements: function ( selector ) {
@@ -64,13 +64,33 @@ var emailTemplateEditor = {
             }
         });
         $( selector ).sortable({
-            scope: "elements",
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
             receive: function( event, ui ) {
                 console.log("Great... i've one more element!");
             },
+            cursor: 'move',
+            connectWith: selector
+        });
+    },
+    initSortableRows: function ( selector ) {
+        $( selector ).each(function(){
+            if ($(this).data('sortable'))
+            {
+                $(this).sortable("destroy");
+            }
+        });
+        $( selector ).sortable({
+            hoverClass: "ui-state-hover",
+            placeholder: "ui-state-highlight",
+            receive: function( event, ui ) {
+                if (ui.item.is('td')) {
+                    ui.placeholder.wrapInner('<table class="row"><tbody><tr><td class="wrapper last"></td></tr></tbody></table>');
+                }
+            },
+            cursor: 'move',
             connectWith: selector
         });
     }
+
 }
