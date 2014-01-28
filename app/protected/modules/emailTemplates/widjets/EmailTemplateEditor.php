@@ -63,7 +63,11 @@
             $content .= ZurmoHtml::openTag('table');
             $content .= ZurmoHtml::openTag('tr');
             //Put here all element to be draggable
-            $image = ZurmoHtml::image('http://zurmo.org/wp-content/themes/Zurmo/images/Zurmo-logo.png');
+            $image = ZurmoHtml::image('http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png');
+            $content .= ZurmoHtml::tag('td', array('class' => 'elementToPlace'), $image);
+            $image = ZurmoHtml::image('http://storage9.static.itmages.com/i/14/0128/h_1390936148_2296154_06ea86ccdc.png');
+            $content .= ZurmoHtml::tag('td', array('class' => 'elementToPlace'), $image);
+            $image = ZurmoHtml::image('http://storage8.static.itmages.com/i/14/0128/h_1390936248_7631312_22db602519.png');
             $content .= ZurmoHtml::tag('td', array('class' => 'elementToPlace'), $image);
             $content .= ZurmoHtml::closeTag('tr');
             $content .= ZurmoHtml::closeTag('table');
@@ -78,29 +82,15 @@
                       <tr>
                         <td class="sortable-rows">
 
-                          <table class="row">
+                          <table class="row" data-row-id="1">
                             <tr>
-                              <td class="wrapper">
 
-                                <table class="eight columns">
-                                  <tr class="sortable">
-                                    <td>
-
-                                      Eight Columns
-
-                                    </td>
-                                  </tr>
-                                </table>
-
-                              </td>
                               <td class="wrapper last">
 
-                                <table class="four columns">
-                                  <tr class="sortable">
+                                <table class="twelve columns" data-column-id="1">
+                                  <tr class="sortable-elements">
                                     <td>
-
-                                      Four Columns
-
+                                        <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
                                     </td>
                                   </tr>
                                 </table>
@@ -109,16 +99,14 @@
                             </tr>
                           </table>
 
-                          <table class="row">
+                          <table class="row" data-row-id="2">
                             <tr>
                               <td class="wrapper last">
 
-                                <table class="twelve columns">
-                                  <tr class="sortable">
+                                <table class="twelve columns" data-column-id="1">
+                                  <tr class="sortable-elements">
                                     <td>
-
-                                      Twelve Columns
-
+                                        <img alt="" src="http://storage8.static.itmages.com/i/14/0128/h_1390936248_7631312_22db602519.png">
                                     </td>
                                   </tr>
                                 </table>
@@ -141,11 +129,21 @@
         public function run()
         {
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id,
-                "emailTemplateEditor.init();");
+                "emailTemplateEditor.init(
+                    '{$this->getRowWrapper()}'
+                );
+                ");
             echo ZurmoHtml::openTag('div', array('id' => 'email-template-editor-container'));
             echo $this->renderElementsToolbar();
             echo $this->renderLayout();
             echo ZurmoHtml::closeTag('div');
+        }
+
+        protected function getRowWrapper()
+        {
+            return '<table class="row rowsToPlace" style=""><tbody><tr><td class="wrapper last">' .
+                   '<table class="twelve columns"><tbody><tr class="sortable-elements"><td style="" class=""></td></tr></tbody></table>' .
+                   '</td></tr></tbody></table>';
         }
     }
 ?>

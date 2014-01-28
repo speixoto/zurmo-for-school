@@ -35,15 +35,19 @@
 
 var emailTemplateEditor = {
     jQuery : $,
-    init : function () {
+    settings : {
+        rowWrapper: ''
+    },
+    init : function (rowWrapper) {
+        this.settings.rowWrapper = rowWrapper;
         this.setupLayout();
     },
     setupLayout : function() {
-        this.initDraggableElements(".elementToPlace");
-        this.initSortableElements(".sortable");
+        this.initDraggableElements(".elementToPlace", ".sortable-elements, .sortable-rows");
+        this.initSortableElements(".sortable-elements");
         this.initSortableRows(".sortable-rows");
     },
-    initDraggableElements: function ( selector ) {
+    initDraggableElements: function ( selector , connectToSelector) {
         $( selector ).each(function(){
             if ($(this).data('draggable'))
             {
@@ -53,7 +57,7 @@ var emailTemplateEditor = {
         $( selector ).draggable({
             helper: "clone",
             cursor: 'move',
-            connectToSortable: ".sortable, .sortable-rows",
+            connectToSortable: connectToSelector
         });
     },
     initSortableElements: function ( selector ) {
@@ -74,6 +78,7 @@ var emailTemplateEditor = {
         });
     },
     initSortableRows: function ( selector ) {
+        emailTemplateEditor = this;
         $( selector ).each(function(){
             if ($(this).data('sortable'))
             {
@@ -83,13 +88,14 @@ var emailTemplateEditor = {
         $( selector ).sortable({
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
-            receive: function( event, ui ) {
+            stop: function( event, ui ) {
                 if (ui.item.is('td')) {
-                    ui.placeholder.wrapInner('<table class="row"><tbody><tr><td class="wrapper last"></td></tr></tbody></table>');
+                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
                 }
             },
-            cursor: 'move',
-            connectWith: selector
+            update: function(event, ui) {
+            },
+            cursor: 'move'
         });
     }
 
