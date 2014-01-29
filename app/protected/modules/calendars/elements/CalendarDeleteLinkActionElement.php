@@ -48,6 +48,11 @@
             return $htmlOptions;
         }
 
+        /**
+         * Override to remove simple link class
+         * @param array $htmlOptions
+         * @return array
+         */
         protected function resolveSimpleLinkClassHtmlOptions($htmlOptions)
         {
             return $htmlOptions;

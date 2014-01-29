@@ -489,8 +489,10 @@
         {
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
             $url    = Yii::app()->createUrl('calendars/default/getEvents');
-            $script = "$(document).on('click', '.mycalendar, .sharedcalendar',
-                                                      refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}'));";
+            $script = "$(document).on('click', '.mycalendar,.sharedcalendar',
+                                                      function(){
+                                                        refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}');
+                                                        });";
             $cs = Yii::app()->getClientScript();
             if($cs->isScriptRegistered('mycalendarselectscript', ClientScript::POS_END) === false)
             {
