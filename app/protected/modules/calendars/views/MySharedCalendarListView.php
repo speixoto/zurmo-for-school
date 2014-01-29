@@ -36,30 +36,6 @@
 
     class MySharedCalendarListView extends CalendarListView
     {
-        protected function getCalendarOptions($calendarId)
-        {
-            return $this->renderItemOptions($calendarId);
-        }
-
-        /**
-         * Render my calendar options.
-         * @param int $calendarId
-         * @return string
-         */
-        private function renderItemOptions($calendarId)
-        {
-            $elementContent = null;
-//            $editElement    = new EditLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
-//            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
-//            $deleteElement  = new CalendarDeleteLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
-//            $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
-//            $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
-            $content        = ZurmoHtml::tag('li', array('class' => 'parent last'),
-                                                   ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
-            $content        = ZurmoHtml::tag('ul', array('class' => 'options-menu edit-row-menu nav'), $content);
-            return $content;
-        }
-
         protected function renderTitleContent()
         {
             $content       = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Shared Calendars'));
@@ -73,12 +49,6 @@
         protected function wrapContent($content)
         {
             return ZurmoHtml::tag('div', array('id' => 'shared-calendars-list'), $content);
-        }
-
-        protected function getLabel($calendarModel)
-        {
-            $savedCalendar = $calendarModel->savedcalendar;
-            return $savedCalendar->name;
         }
     }
 ?>

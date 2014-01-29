@@ -299,5 +299,76 @@
             $models = SavedCalendarSubscription::getSubset($joinTablesAdapter, null, null, $where, null);
             return $models;
         }
+
+        public static function makeCalendarItemsList($data, $field, $itemClass, $type)
+        {
+            $itemsContent = null;
+            foreach($data as $calendarArray)
+            {
+                $isChecked = false;
+                if($calendarArray[1] === true)
+                {
+                    $isChecked = true;
+                }
+                $input          = ZurmoHtml::checkBox($field,
+                                                      $isChecked,
+                                                      array('value' => $calendarArray[0]->id,
+                                                            'class' => $itemClass));
+                $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
+                                                                                                        $calendarArray[0]->color), '');
+                if($type == 'saved')
+                {
+                    $label          = $calendarArray[0]->name;
+                    $options        = self::getSavedCalendarOptions($calendarArray[0]->id);
+                }
+                else
+                {
+                    $savedCalendar = $calendarArray[0]->savedcalendar;
+                    $label         = $savedCalendar->name;
+                    $options       = self::getSharedCalendarOptions($calendarArray[0]->id);
+                }
+                $itemsContent   .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
+            }
+            return ZurmoHtml::tag('ul', array(), $itemsContent);
+        }
+
+        protected static function getSharedCalendarOptions($calendarId)
+        {
+            $elementContent = null;
+//            $editElement    = new EditLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
+//            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
+//            $deleteElement  = new CalendarDeleteLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
+//            $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
+//            $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
+            $content        = ZurmoHtml::tag('li', array('class' => 'parent last'),
+                                                   ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
+            $content        = ZurmoHtml::tag('ul', array('class' => 'options-menu edit-row-menu nav'), $content);
+            return $content;
+        }
+
+        protected static function getSavedCalendarOptions($calendarId)
+        {
+            $elementContent = null;
+            $controllerId   = Yii::app()->controller->getId();
+            $moduleId       = Yii::app()->controller->getModule()->getId();
+            $editElement    = new EditLinkActionElement($controllerId, $moduleId, $calendarId, array());
+            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
+            $deleteElement  = new CalendarDeleteLinkActionElement($controllerId, $moduleId, $calendarId, array());
+            $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
+            $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
+            $content        = ZurmoHtml::tag('li', array('class' => 'parent last'),
+                                                   ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
+            $content        = ZurmoHtml::tag('ul', array('class' => 'options-menu edit-row-menu nav'), $content);
+            return $content;
+        }
+
+        public static function getCalendarItemsDataProvider()
+        {
+            $mySavedCalendarIds         = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'myCalendarSelections');
+            $mySubscribedCalendarIds    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'mySubscribedCalendarSelections');
+            return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds, $mySubscribedCalendarIds);
+        }
     }
 ?>

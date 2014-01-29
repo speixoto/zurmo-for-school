@@ -50,7 +50,7 @@
         {
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
             self::addMySavedCalendars($savedCalendarSubscriptions, $user, $selectedCalendarIds);
-            self::addMySubscribedCalendars($savedCalendarSubscriptions, $user, $selectedCalendarIds);
+            self::addMySubscribedCalendars($savedCalendarSubscriptions, $user, $subscribedCalendarIds);
             return $savedCalendarSubscriptions;
         }
 

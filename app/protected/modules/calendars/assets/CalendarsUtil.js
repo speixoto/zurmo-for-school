@@ -1,7 +1,7 @@
-function getMySelectedCalendars()
+function getSelectedCalendars(selector)
 {
     var selectedCal = [];
-    $('.mycalendar').each(function()
+    $(selector).each(function()
     {
         if($(this).is(':checked'))
         {

@@ -131,7 +131,7 @@
             $myCalendarsListView = new MyCalendarListView($this->controllerId,
                                                           $this->moduleId,
                                                           $this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected(),
-                                                          'mycalendar[]', 'mycalendar');
+                                                          'mycalendar[]', 'mycalendar', 'saved');
             return $myCalendarsListView->render();
 //            $content       = null;
 //            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
@@ -191,7 +191,7 @@
             $mySharedCalendarsListView = new MySharedCalendarListView($this->controllerId,
                                                           $this->moduleId,
                                                           $this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
-                                                          'sharedcalendar[]', 'sharedcalendar');
+                                                          'sharedcalendar[]', 'sharedcalendar', 'shared');
             return $mySharedCalendarsListView->render();
 
             //todo: add the area where you can selecte from other shared calendars. so probably a MODEL type-ahead on
@@ -224,14 +224,16 @@
             $endDate       = $this->dataProvider->getEndDate();
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
             $url    = Yii::app()->createUrl('calendars/default/getEvents');
-            Yii::app()->clientScript->registerScript('mycalendarselectscript', "$('.mycalendar').on('click', function(){
-                    var selectedCalString = getMySelectedCalendars();
+            Yii::app()->clientScript->registerScript('mycalendarselectscript', "$(document).on('click', '.mycalendar, .sharedcalendar', function(){
+                    var selectedMyCalendars = getSelectedCalendars('.mycalendar');
+                    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
                     var events = {
                         url : '$url',
                         data :function()
                         {
                             return {
-                                selectedId : selectedCalString,
+                                selectedMyCalendarIds : selectedMyCalendars,
+                                selectedSharedCalendarIds : selectedSharedCalendars,
                                 start      : '{$startDate}',
                                 end        : '{$endDate}'
                                 }
@@ -252,28 +254,6 @@
                     $('#calendar').fullCalendar('addEventSource', events);
                     $('#calendar').fullCalendar('refetchEvents');
                 });");
-        }
-
-        protected static function processSavedOrSubscribedCalendars($data, $fieldName, $itemClass)
-        {
-            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarAndSelected)
-            {
-                $isChecked = false;
-                if($savedCalendarAndSelected[1] === true)
-                {
-                    $isChecked = true;
-                }
-                $data[$savedCalendarAndSelected[0]->id] = $savedCalendarAndSelected[0]->name;
-                $input          = ZurmoHtml::checkBox('mycalendar[]',
-                                                      $isChecked,
-                                                      array('value' => $savedCalendarAndSelected[0]->id,
-                                                            'class' => 'mycalendar'));
-                $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
-                                                                                                        $savedCalendarAndSelected[0]->color), '');
-                $label          = $savedCalendarAndSelected[0]->name;
-                $options        = $this->renderMyCalendarItemOptions($savedCalendarAndSelected[0]->id);
-                $content        .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
-            }
         }
     }
 ?>

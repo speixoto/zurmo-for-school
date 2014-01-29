@@ -80,20 +80,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
             $this->processEdit($savedCalendar, $redirectUrl);
         }
-/**
-        public function actionCopy($id)
-        {
-            $copyToAccount  = new Account();
-            $postVariableName   = get_class($copyToAccount);
-            if (!isset($_POST[$postVariableName]))
-            {
-                $account        = Account::getById((int)$id);
-                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($account);
-                ZurmoCopyModelUtil::copy($account, $copyToAccount);
-            }
-            $this->processEdit($copyToAccount);
-        }
-**/
+
         protected function processEdit(SavedCalendar $calendar, $redirectUrl = null)
         {
             $view = new CalendarsPageView(ZurmoDefaultViewUtil::
@@ -105,12 +92,7 @@
 
         public function actionCombinedDetails()
         {
-            $mySavedCalendarIds         = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
-                                                                                        'CalendarsModule', 'myCalendarSelections');
-            $mySubscribedCalendarIds    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
-                                                                                        'CalendarsModule', 'mySubscribedCalendarSelections');
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds,
-                                                                                                               $mySubscribedCalendarIds);
+            $dataProvider               = CalendarUtil::getCalendarItemsDataProvider();
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $this->getId(), $this->getModule()->getId());
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                   makeStandardViewForCurrentUser($this,$interactiveCalendarView));
@@ -260,8 +242,10 @@
         public function actionGetEvents()
         {
             $getData                    = GetUtil::getData();
-            $mySavedCalendarIds         = isset($getData['selectedId'])? $getData['selectedId']:null;
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds);
+            $mySavedCalendarIds         = isset($getData['selectedMyCalendarIds'])? $getData['selectedMyCalendarIds']:null;
+            $mySubscribedCalendarIds    = isset($getData['selectedSharedCalendarIds'])? $getData['selectedSharedCalendarIds']:null;
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds,
+                                                                                                               $mySubscribedCalendarIds);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
             echo CJSON::encode($items);
         }
@@ -303,6 +287,11 @@
             $savedCalendarSubscription->user     = $user;
             $savedCalendarSubscription->savedcalendar = $savedCalendar;
             $savedCalendarSubscription->save();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
+            $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
+                                                                                       'sharedcalendar[]', 'sharedcalendar', 'shared');
+            echo $content;
         }
     }
 ?>

@@ -46,55 +46,29 @@
 
         protected $moduleId;
 
-        public function __construct($controllerId, $moduleId, $data, $field, $itemClass)
+        protected $listType;
+
+        public function __construct($controllerId, $moduleId, $data, $field, $itemClass, $listType)
         {
             $this->controllerId = $controllerId;
             $this->moduleId     = $moduleId;
             $this->data         = $data;
             $this->field        = $field;
             $this->itemClass    = $itemClass;
+            $this->listType     = $listType;
         }
 
         protected function renderContent()
         {
-            $itemsContent = null;
-            foreach($this->data as $calendarArray)
-            {
-                $isChecked = false;
-                if($calendarArray[1] === true)
-                {
-                    $isChecked = true;
-                }
-                //$data[$calendarModel[0]->id] = $calendarModel[0]->name;
-                $input          = ZurmoHtml::checkBox($this->field,
-                                                      $isChecked,
-                                                      array('value' => $calendarArray[0]->id,
-                                                            'class' => $this->itemClass));
-                $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
-                                                                                                        $calendarArray[0]->color), '');
-                $label          = $this->getLabel($calendarArray[0]);
-                $options        = $this->getCalendarOptions($calendarArray[0]->id);
-                $itemsContent   .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
-            }
-            $content = ZurmoHtml::tag('ul', array(), $itemsContent);
+            $content = CalendarUtil::makeCalendarItemsList($this->data, $this->field, $this->itemClass, $this->listType);
             $content = $this->wrapContent($content);
             $title   = $this->renderTitleContent();
             return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
         }
 
-        protected function getCalendarOptions($calendarId)
-        {
-            return null;
-        }
-
         protected function wrapContent($content)
         {
             return $content;
-        }
-
-        protected function getLabel($calendarModel)
-        {
-            return $calendarModel->name;
         }
     }
 ?>
