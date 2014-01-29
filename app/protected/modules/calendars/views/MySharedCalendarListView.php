@@ -42,10 +42,12 @@
          */
         protected function renderTitleContent()
         {
-            $content       = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Shared Calendars'));
-            $content      .= ZurmoHtml::link('Select', '#', array('class' => 'selectsharedcal'));
-            $script        = CalendarUtil::registerSharedCalendarModalScript(Yii::app()->createUrl('calendars/default/modalList'),
-                                                                           '.selectsharedcal');
+            $title   = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Shared Calendars'));
+            $link    = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), 'Y'), '#',
+                       array('class' => 'white-button selectsharedcal'));
+            $content = ZurmoHtml::tag('div', array('class' => 'cal-list-header clearfix'), $title . $link);
+            $script  = CalendarUtil::registerSharedCalendarModalScript(Yii::app()->createUrl('calendars/default/modalList'),
+                       '.selectsharedcal');
             Yii::app()->clientScript->registerScript('selectsharedcalscript', $script, ClientScript::POS_END);
             return $content;
         }

@@ -338,6 +338,7 @@
                     $options          = self::getSharedCalendarOptions($calendarArray[0]->id);
                     $subscriptionData = CalendarUtil::getCalendarSubscriberData($calendarArray[0]->savedcalendar);
                 }
+                $label = ZurmoHtml::tag('strong', array('class' => 'cal-name'), $label);
                 $itemsContent   .= ZurmoHtml::tag('li', array(), $input . $color . $label . $subscriptionData . $options);
             }
             return ZurmoHtml::tag('ul', array(), $itemsContent);

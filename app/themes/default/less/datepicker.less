@@ -31,22 +31,19 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
-#ui-datepicker-div{
-	max-width: 250px;
-}
-
 .ui-datepicker{
 	z-index:10000;
 	&.ui-datepicker-inline{
 		margin:15px;
 	}
-	#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-	.b-shadow( 0 0 5px 0 rgba(0, 0, 0, 0.3) );
 	.ui-datepicker-header{
 		height:35px;
-		background:#111 url("@{path}datepicker-header.png") left top repeat-x !important;
-		color:#FFF;
+		//background:#efefef !important;
+
+		//background:#111 url("@{path}datepicker-header.png") left top repeat-x !important;
+		color:@themeColor;
 		font-weight:bold;
+//		border: 1px solid #ddd !important;
 		a:hover:before,
 		a:hover:after{
 			color: @themeColor2;
@@ -56,7 +53,6 @@
 		float:left;
 		width:15%;
 		line-height: 35px;
-		
 		padding-left:10px;
 		text-align:left;
 		cursor:pointer;
@@ -75,15 +71,15 @@
 		width:15%;
 		line-height: 35px;
 		text-align:right;
-		
 		cursor:pointer;
 		position: relative;
 		span{
 			visibility:hidden;
+			display: none;
 		}
 		&:before{
 			content:"▶";
-			margin-left: 10px;
+			margin-right: 10px;
 		}
 		:hover{
 			cursor:pointer !important;
@@ -96,22 +92,21 @@
 		line-height: 35px;
 		font-size:14px;
 		font-weight:bold;
-		color:#DFDFDF;
-		.t-shadow( #000 0 1px 0 );
+		color:@themeColor;
 	}
 	.ui-datepicker-calendar{
-		
         width:100%;
-		border-color: #BBB;
+		border-color: #ddd;
     	border-style: solid;
 		border-width: 0 0 1px 1px;
 	    border-spacing: 0;
 	    border-collapse: collapse;
-		background:#fff;
+		table-layout: fixed;
+		//background:#fff;
 		th{
-			background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left -35px repeat-x !important;
+			//background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left -35px repeat-x !important;
 			&:last-child{
-				border-right:1px solid #BBB;
+				border-right:1px solid #ddd;
 			}
 		}
     	a{
@@ -122,9 +117,7 @@
     		display:inline-block;
     		width:100%;
     		text-indent:5px;
-    		
     		padding-top:3px;
-    		.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
     		cursor:pointer;
     	}
 		span{
@@ -137,31 +130,30 @@
 			font-size:9px;
 			text-transform:uppercase;
 			line-height: 20px;
-			.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
 			cursor:pointer;
 		}
 		td{
 			min-width:30px;
 			height:30px;
-    		border-color: #BBB;
+    		border-color: #ddd;
     		border-style: solid;
     		border-width: 1px 1px 0 0;
-    		border-top:1px solid #bbb !important;
-    		background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left top repeat-x !important;
+    		border-top:1px solid #ddd !important;
+    		//background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left top repeat-x !important;
     		&.ui-datepicker-other-month{
-    			background-image:none;
-				background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left bottom repeat-x !important;
+    			//background-image:none;
+				//background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left bottom repeat-x !important;
     			span{
     				color:#B3B3B3;
     			}
     		}
     		&.ui-datepicker-today{
     			background-image:none !important;
-			    background:lighten(@themeColor, 50%) !important;
+			    //background:lighten(@themeColor, 50%) !important;
 		    }
     		&:hover{
     			background-image:none;
-    			background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left bottom repeat-x !important;
+    			//background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left bottom repeat-x !important;
     		}
 		}
 	}
@@ -185,7 +177,7 @@
 	.ui-timepicker-div{
 		float: left;
 		padding:10px 5px 0 5px;
-		border-bottom:1px solid #bbb;
+		border-bottom:1px solid #ddd;
 		line-height: 1;
 		dt{
 			float: left;
@@ -265,7 +257,6 @@
 	.calendar-events-6 span:before{
 		content:"‧‧‧\202F‧‧‧";
 	}
-
 	.ui_tpicker_second,
 	.ui_tpicker_millisec,
 	.ui_tpicker_microsec{
@@ -273,3 +264,63 @@
 	}
 }
 
+.juiportlet-widget-content,
+#ui-datepicker-div{
+	.ui-datepicker{
+		#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+		.b-shadow( 0 0 5px 0 rgba(0, 0, 0, 0.3) );
+	}
+	.ui-datepicker-header{
+		background:#111 url("@{path}datepicker-header.png") left top repeat-x !important;
+		color:#FFF;
+		//border: 1px solid #BBB !important;
+	}
+	.ui-datepicker-calendar{
+		background:#fff;
+		border-color: #BBB;
+		th{
+			background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left -37px repeat-x !important;
+			&:last-child{
+				border-color:#bbb;
+			}
+		}
+		td{
+			border-color: #bbb;
+			border-top:1px solid #bbb !important;
+			background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left top repeat-x !important;
+			&.ui-datepicker-other-month{
+				background-image:none;
+				background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left bottom repeat-x !important;
+			}
+			&.ui-datepicker-today{
+				background-image:none !important;
+				background:lighten(@themeColor, 50%) !important;
+			}
+			&:hover{
+				background-image:none;
+				background:#f5f5f5 url("@{path}datepicker-sprite-ie.png") left bottom repeat-x !important;
+			}
+		}
+		&:last-child{
+			border-right:1px solid #BBB;
+		}
+		a, span{
+			color:#656565;
+			.t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
+		}
+	}
+	.ui-datepicker-title{
+		color:#DFDFDF;
+		.t-shadow( #000 0 1px 0 );
+	}
+	.ui-timepicker-div{
+		width: 100%;
+		border-bottom:1px solid #bbb;
+	}
+}
+
+#ui-datepicker-div{
+	max-width: 250px;
+	#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+	.b-shadow( 0 0 5px 0 rgba(0, 0, 0, 0.3) );
+}

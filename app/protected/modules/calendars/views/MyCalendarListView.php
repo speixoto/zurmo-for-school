@@ -42,9 +42,11 @@
          */
         protected function renderTitleContent()
         {
-            $title         = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
-            $title         .= ZurmoHtml::link(Zurmo::t('Core', 'Create'), Yii::app()->createUrl('/calendars/default/create'));
-            return $title;
+            $title   = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));
+            $link    = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), 'Y'),
+                                       Yii::app()->createUrl('/calendars/default/create'), array('class' => 'white-button'));
+            $content = ZurmoHtml::tag('div', array('class' => 'cal-list-header clearfix'), $title . $link);
+            return $content;
         }
     }
 ?>
