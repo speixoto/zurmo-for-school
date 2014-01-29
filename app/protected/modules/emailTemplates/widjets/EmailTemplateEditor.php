@@ -64,11 +64,11 @@
             $content .= ZurmoHtml::openTag('tr');
             //Put here all element to be draggable
             $image = ZurmoHtml::image('http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png');
-            $content .= ZurmoHtml::tag('td', array('class' => 'elementToPlace'), $image);
+            $content .= ZurmoHtml::tag('p', array('class' => 'elementToPlace'), $image);
             $image = ZurmoHtml::image('http://storage9.static.itmages.com/i/14/0128/h_1390936148_2296154_06ea86ccdc.png');
-            $content .= ZurmoHtml::tag('td', array('class' => 'elementToPlace'), $image);
+            $content .= ZurmoHtml::tag('p', array('class' => 'elementToPlace'), $image);
             $image = ZurmoHtml::image('http://storage8.static.itmages.com/i/14/0128/h_1390936248_7631312_22db602519.png');
-            $content .= ZurmoHtml::tag('td', array('class' => 'elementToPlace'), $image);
+            $content .= ZurmoHtml::tag('p', array('class' => 'elementToPlace'), $image);
             $content .= ZurmoHtml::closeTag('tr');
             $content .= ZurmoHtml::closeTag('table');
             $content .= ZurmoHtml::closeTag('div');
@@ -78,45 +78,71 @@
         protected function renderLayout()
         {
             $content = '
-                <table class="container">
-                      <tr>
-                        <td class="sortable-rows">
-
-                          <table class="row" data-row-id="1">
-                            <tr>
-
-                              <td class="wrapper last">
-
-                                <table class="twelve columns" data-column-id="1">
-                                  <tr class="sortable-elements">
-                                    <td>
-                                        <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
-                                    </td>
-                                  </tr>
+                <table class="body">
+                    <tr>
+                        <td class="sortable-rows" align="center" valign="top">
+                                <table class="row header">
+                                    <tr>
+                                        <td>
+                                            <table class="container" data-row-id="1">
+                                                <tr>
+                                                    <td class="wrapper last">
+                                                        <table class="twelve columns">
+                                                            <tr>
+                                                                <td  class="sortable-elements">
+                                                                    <p><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></p>
+                                                                </td>
+                                                                <td class="expander"></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
                                 </table>
 
-                              </td>
-                            </tr>
-                          </table>
+                                <table class="container">
+                                      <tr>
+                                         <td>
+                                          <table class="row" data-row-id="2">
+                                            <tr>
 
-                          <table class="row" data-row-id="2">
-                            <tr>
-                              <td class="wrapper last">
+                                              <td class="wrapper">
 
-                                <table class="twelve columns" data-column-id="1">
-                                  <tr class="sortable-elements">
-                                    <td>
-                                        <img alt="" src="http://storage8.static.itmages.com/i/14/0128/h_1390936248_7631312_22db602519.png">
-                                    </td>
-                                  </tr>
+                                                <table class="six columns" data-column-id="1">
+                                                  <tr>
+                                                    <td class="sortable-elements">
+                                                        <p><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></p>
+                                                    </td>
+                                                    <td class="expander"></td>
+                                                  </tr>
+                                                </table>
+
+                                              </td>
+
+                                              <td class="wrapper last">
+
+                                                <table class="six columns" data-column-id="2">
+                                                  <tr>
+                                                    <td class="sortable-elements">
+                                                        <p><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></p>
+                                                    </td>
+                                                    <td class="expander"></td>
+                                                  </tr>
+                                                </table>
+
+                                              </td>
+
+                                            </tr>
+                                          </table>
+
+                                        </td>
+                                      </tr>
                                 </table>
-
-                              </td>
-                            </tr>
-                          </table>
 
                         </td>
-                      </tr>
+                    </tr>
                 </table>
             ';
             return $content;
@@ -141,9 +167,10 @@
 
         protected function getRowWrapper()
         {
-            return '<table class="row rowsToPlace" style=""><tbody><tr><td class="wrapper last">' .
-                   '<table class="twelve columns"><tbody><tr class="sortable-elements"><td style="" class=""></td></tr></tbody></table>' .
-                   '</td></tr></tbody></table>';
+            return '<table class="container"><tr><td><table class="row" data-row-id="2"><tr>' .
+                   '<td class="wrapper last"><table class="twelve columns" data-column-id="new"><tr>' .
+                   '<td class="sortable-elements"></td><td class="expander"></td></tr></table></td>' .
+                   '</tr></table></td></tr></table>';
         }
     }
 ?>

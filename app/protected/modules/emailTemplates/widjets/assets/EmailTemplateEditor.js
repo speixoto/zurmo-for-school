@@ -89,7 +89,7 @@ var emailTemplateEditor = {
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
             stop: function( event, ui ) {
-                if (ui.item.is('td')) {
+                if (ui.item.is('p')) {
                     ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
                 }
             },
