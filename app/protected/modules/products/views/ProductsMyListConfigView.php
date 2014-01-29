@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * View for showing the configuration parameters for the @see LeadsMyListView.
+     * View for showing the configuration parameters for the @see ProductsMyListView.
      */
     class ProductsMyListConfigView extends MyListConfigView
     {
@@ -48,12 +48,8 @@
                             array('type' => 'SaveButton'),
                         ),
                     ),
-                    'derivedAttributeTypes' => array(
-                        'ProductStateDropDown',
-                    ),
                     'nonPlaceableAttributeNames' => array(
                         'anyMixedAttributes',
-                        'state',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -64,7 +60,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ProductStateDropDown', 'addBlank' => true),
+                                                array('attributeName' => 'stage', 'type' => 'DropDownAsMultiSelect', 'addBlank' => true),
                                             ),
                                         ),
                                     )
