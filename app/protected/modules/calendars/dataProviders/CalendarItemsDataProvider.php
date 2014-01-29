@@ -33,19 +33,34 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Data provider for calendar items.
+      */
     class CalendarItemsDataProvider extends CDataProvider
     {
+        /**
+         * @var array
+         */
         protected $savedCalendarSubscriptions;
-
+        /**
+         * @var string
+         */
         protected $moduleClassName;
-
+        /**
+         * @var SavedCalendar
+         */
         protected $savedCalendar;
-
+        /**
+         * @var string
+         */
         protected $startDate;
-
+        /**
+         * @var string
+         */
         protected $endDate;
-
+        /**
+         * @var string
+         */
         protected $dateRangeType;
 
         /**
@@ -120,6 +135,10 @@
             return $keys;
         }
 
+        /**
+         * Resolve calendar items.
+         * @return array
+         */
         protected function resolveCalendarItems()
         {
             //todo: check if cached _calendarItems. ?
@@ -164,6 +183,11 @@
             return $models;
         }
 
+        /**
+         * Makes report by saved calendar.
+         * @param SavedCalendar $savedCalendar
+         * @return Report
+         */
         protected function makeReportBySavedCalendar(SavedCalendar $savedCalendar)
         {
             $moduleClassName  = $savedCalendar->moduleClassName;
@@ -202,6 +226,12 @@
             return $report;
         }
 
+        /**
+         * Get the list of calendar items
+         * @param array $calendarItems
+         * @param array $models
+         * @param SavedCalendar $savedCalendar
+         */
         protected function resolveRedBeanModelsToCalendarItems(& $calendarItems, array $models, SavedCalendar $savedCalendar)
         {
             foreach($models as $model)
@@ -210,41 +240,65 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public function getModuleClassName()
         {
             return $this->moduleClassName;
         }
 
+        /**
+         * @return string
+         */
         public function getStartDate()
         {
             return $this->startDate;
         }
 
+        /**
+         * @return string
+         */
         public function getEndDate()
         {
             return $this->endDate;
         }
 
+        /**
+         * @param string $moduleClassName
+         */
         public function setModuleClassName($moduleClassName)
         {
             $this->moduleClassName = $moduleClassName;
         }
 
+        /**
+         * @return array
+         */
         public function getSavedCalendarSubscriptions()
         {
             return $this->savedCalendarSubscriptions;
         }
 
+        /**
+         * @param array $savedCalendarSubscriptions
+         */
         public function setSavedCalendarSubscriptions($savedCalendarSubscriptions)
         {
             $this->savedCalendarSubscriptions = $savedCalendarSubscriptions;
         }
 
+        /**
+         * @return string
+         */
         public function getDateRangeType()
         {
             return $this->dateRangeType;
         }
 
+        /**
+         * @param string $dateRangeType
+         */
         public function setDateRangeType($dateRangeType)
         {
             $this->dateRangeType = $dateRangeType;

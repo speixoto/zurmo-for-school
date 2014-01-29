@@ -39,6 +39,9 @@
      */
     class RowsAndColumnsReportForSavedCalendarWizardView extends RowsAndColumnsReportWizardView
     {
+        /**
+         * @return string
+         */
         public static function getControllerId()
         {
             return 'calendars';

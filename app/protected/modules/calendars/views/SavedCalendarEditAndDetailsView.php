@@ -36,6 +36,9 @@
 
     class SavedCalendarEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -127,23 +130,35 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         protected function getNewModelTitleLabel()
         {
             return Zurmo::t('CalendarsModule', 'Create CalendarsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'CalendarsModule';
         }
 
+        /**
+         * @return string
+         */
         protected function renderAfterFormLayout($form)
         {
             $content = parent::renderAfterFormLayout($form);
             return $content . $this->renderFiltersContent($form);
         }
 
+        /**
+         * @return string
+         */
         protected function renderFiltersContent($form)
         {
             assert('$form instanceof ZurmoActiveForm');
@@ -166,6 +181,9 @@
             return $content;
         }
 
+        /**
+         * Register filter scripts.
+         */
         protected function registerFiltersScripts()
         {
             Yii::app()->getClientScript()->registerCoreScript('treeview');
@@ -184,17 +202,26 @@
             OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
         }
 
+        /**
+         * Register filter css.
+         */
         protected function registerFiltersCss()
         {
             Yii::app()->getClientScript()->registerCssFile(Yii::app()->getClientScript()->getCoreScriptUrl() .
                                                            '/treeview/jquery.treeview.css');
         }
 
+        /**
+         * @return string
+         */
         protected static function getFormClassName()
         {
             return 'WizardActiveForm';
         }
 
+        /**
+         * @return array
+         */
         protected function resolveActiveFormAjaxValidationOptions()
         {
             return array('enableAjaxValidation' => true,
@@ -216,6 +243,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         protected function renderConfigSaveAjax($formName)
         {
             // Begin Not Coding Standard
@@ -228,6 +258,9 @@
             // End Not Coding Standard
         }
 
+        /**
+         * @return string
+         */
         protected function getValidateAndSaveUrl()
         {
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' .
@@ -253,6 +286,9 @@
             ");
         }
 
+        /**
+         * @return string
+         */
         protected static function getFiltersForReportWizardViewClassName()
         {
             return 'SavedCalendarFiltersForReportWizardView';

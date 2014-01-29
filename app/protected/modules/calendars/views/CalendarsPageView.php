@@ -36,6 +36,9 @@
 
     class CalendarsPageView extends ZurmoDefaultPageView
     {
+        /**
+         * @return string
+         */
         protected function getSubtitle()
         {
             return Zurmo::t('CalendarsModule', 'CalendarsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());

@@ -36,6 +36,10 @@
 
     class MyCalendarListView extends CalendarListView
     {
+        /**
+         * Renders title content.
+         * @return string
+         */
         protected function renderTitleContent()
         {
             $title         = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Calendars'));

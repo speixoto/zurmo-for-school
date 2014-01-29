@@ -36,6 +36,9 @@
 
     class SharedCalendarsModalSearchView extends SearchView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -77,11 +80,17 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getDesignerRulesType()
         {
             return 'ModalSearchView';
         }
 
+        /**
+         * @return string
+         */
         public static function getModelForMetadataClassName()
         {
             return 'CalendarsSearchForm';

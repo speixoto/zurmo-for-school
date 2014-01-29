@@ -41,13 +41,16 @@
         protected $subscribedToSavedCalendarsAndSelected = array();
 
         /**
-         * Makes save
+         * Makes shared and saved subscriptions.
          * @param User $user
          * @param string $selectedCalendarIds
+         * @param string $subscribedCalendarIds
          * @return SavedCalendarSubscriptions
          */
         public static function makeByUser(User $user, $selectedCalendarIds = null, $subscribedCalendarIds = null)
         {
+            assert('is_string($subscribedCalendarIds) || is_null($subscribedCalendarIds)');
+            assert('is_string($selectedCalendarIds) || is_null($selectedCalendarIds)');
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
             self::addMySavedCalendars($savedCalendarSubscriptions, $user, $selectedCalendarIds);
             self::addMySubscribedCalendars($savedCalendarSubscriptions, $user, $subscribedCalendarIds);
@@ -153,16 +156,26 @@
             }
         }
 
+        /**
+         * @return array
+         */
         public function getMySavedCalendarsAndSelected()
         {
             return $this->mySavedCalendarsAndSelected;
         }
 
+        /**
+         * @return array
+         */
         public function getSubscribedToSavedCalendarsAndSelected()
         {
             return $this->subscribedToSavedCalendarsAndSelected;
         }
 
+        /**
+         * Sets my calendar color.
+         * @param SavedCalendar $savedCalendar
+         */
         private static function setMyCalendarColor(SavedCalendar $savedCalendar)
         {
             if($savedCalendar->color == null)
@@ -172,6 +185,10 @@
             }
         }
 
+        /**
+         * Sets shared calendar color.
+         * @param SavedCalendarSubscription $sharedCalendar
+         */
         private static function setSharedCalendarColor(SavedCalendarSubscription $sharedCalendar)
         {
             if($sharedCalendar->color == null)
@@ -181,8 +198,15 @@
             }
         }
 
+        /**
+         * Process and save the color for the model.
+         * @param SavedCalendar|SavedCalendarSubscription $calendar
+         * @param array $usedColors
+         */
         private static function processAndSaveColor($calendar, $usedColors)
         {
+            assert('$calendar instanceof SavedCalendar || $calendar instanceof SavedCalendarSubscription');
+            assert('is_array($usedColors)');
             $availableColors = SavedCalendar::$colorsArray;
             $filteredColors  = array_diff($availableColors, $usedColors);
             $color           = array_shift($filteredColors);

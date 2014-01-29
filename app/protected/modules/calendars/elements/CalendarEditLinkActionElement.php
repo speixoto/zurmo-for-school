@@ -36,11 +36,17 @@
 
     class CalendarEditLinkActionElement extends EditLinkActionElement
     {
+        /**
+         * @return string
+         */
         protected function getDefaultRoute()
         {
             return '#';
         }
 
+        /**
+         * @return string
+         */
         protected function resolveLabelAndWrap()
         {
             return $this->getLabel();

@@ -36,11 +36,17 @@
 
     class CalendarsModalSearchAndListView extends ModalSearchAndListView
     {
+        /**
+         * @return string
+         */
         public static function getListViewClassName()
         {
             return 'SharedCalendarsModalListView';
         }
 
+        /**
+         * @return string
+         */
         public static function getSearchViewClassName()
         {
             return 'SharedCalendarsModalSearchView';

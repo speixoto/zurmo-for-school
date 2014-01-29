@@ -36,13 +36,25 @@
 
     class FullCalendarForCombinedView extends View
     {
+        /**
+         * Data provider associated with the view
+         * @var CalendarItemsDataProvider
+         */
         protected $dataProvider;
 
+        /**
+         * Class constructor.
+         * @param CalendarItemsDataProvider $dataProvider
+         */
         public function __construct(CalendarItemsDataProvider $dataProvider)
         {
             $this->dataProvider = $dataProvider;
         }
 
+        /**
+         * Renders content.
+         * @return string
+         */
         protected function renderContent()
         {
             Yii::app()->controller->widget('FullCalendar',
@@ -52,7 +64,6 @@
                                                  'defaultView' => $this->dataProvider->getDateRangeType()));
             $calendar = ZurmoHtml::tag('div', array('id' => 'calendar'), '');
             return $calendar;
-            //@mayank, let me know the API calls we need.
         }
     }
 ?>

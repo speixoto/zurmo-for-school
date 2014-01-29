@@ -39,6 +39,9 @@
      */
     class ReportRelationsAndAttributesForSavedCalendarTreeView extends ReportRelationsAndAttributesTreeView
     {
+        /**
+         * @return string
+         */
         public static function getControllerId()
         {
             return 'calendars';

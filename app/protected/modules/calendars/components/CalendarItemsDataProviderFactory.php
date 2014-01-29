@@ -40,11 +40,22 @@
      */
     class CalendarItemsDataProviderFactory
     {
+        /**
+         * @param array $savedCalendarSubscriptions
+         * @param string $startDate
+         * @param string $endDate
+         * @param string $dateRangeType
+         * @return boolean|\dataProviderClassName
+         */
         public static function getDataProviderByDateRangeType($savedCalendarSubscriptions,
                                                               $startDate,
                                                               $endDate,
                                                               $dateRangeType)
         {
+            assert('$savedCalendarSubscriptions instanceof SavedCalendarSubscriptions');
+            assert('is_string($startDate)');
+            assert('is_string($endDate)');
+            assert('is_string($dateRangeType)');
             $dataProviderClassName = 'CalendarItemsDataProvider';
             if (@class_exists($dataProviderClassName))
             {

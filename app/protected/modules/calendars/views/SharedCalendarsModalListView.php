@@ -36,6 +36,9 @@
 
     class SharedCalendarsModalListView extends ModalListView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -60,6 +63,9 @@
             return $metadata;
         }
 
+        /**
+         * Render scripts.
+         */
         protected function renderScripts()
         {
             parent::renderScripts();

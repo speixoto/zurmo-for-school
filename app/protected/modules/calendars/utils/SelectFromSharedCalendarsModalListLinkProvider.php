@@ -36,8 +36,16 @@
 
     class SelectFromSharedCalendarsModalListLinkProvider extends ModalListLinkProvider
     {
+        /**
+         * @var string
+         */
         protected $modalId;
 
+        /**
+         * Class constructor
+         * @param string $modalId
+         * @param string $uniqueLayoutId
+         */
         public function __construct($modalId, $uniqueLayoutId)
         {
             $this->modalId           = $modalId;

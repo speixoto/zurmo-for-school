@@ -33,23 +33,56 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Base class for calendar list view.
+      */
     abstract class CalendarListView extends View
     {
+        /**
+         * Calendar data items
+         * @var array
+         */
         protected $data;
-
+        /**
+         * Field name
+         * @var string
+         */
         protected $field;
-
+        /**
+         * Css class for the item.
+         * @var string
+         */
         protected $itemClass;
-
+        /**
+         * @var string
+         */
         protected $controllerId;
-
+        /**
+         * @var string
+         */
         protected $moduleId;
-
+        /**
+         * @var string
+         */
         protected $listType;
 
+        /**
+         * Class constructor
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $data
+         * @param string $field
+         * @param string $itemClass
+         * @param string $listType
+         */
         public function __construct($controllerId, $moduleId, $data, $field, $itemClass, $listType)
         {
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
+            assert('is_array($data)');
+            assert('is_string($field)');
+            assert('is_string($itemClass)');
+            assert('is_string($listType)');
             $this->controllerId = $controllerId;
             $this->moduleId     = $moduleId;
             $this->data         = $data;
@@ -58,6 +91,10 @@
             $this->listType     = $listType;
         }
 
+        /**
+         * Renders content.
+         * @return string
+         */
         protected function renderContent()
         {
             $content = CalendarUtil::makeCalendarItemsList($this->data, $this->field, $this->itemClass, $this->listType);
@@ -66,6 +103,11 @@
             return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
         }
 
+        /**
+         * Wraps content.
+         * @param string $content
+         * @return string
+         */
         protected function wrapContent($content)
         {
             return $content;

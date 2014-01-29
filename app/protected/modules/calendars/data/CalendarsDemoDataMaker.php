@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo accounts.
+     * Class that builds demo calendars.
      */
     class CalendarsDemoDataMaker extends DemoDataMaker
     {

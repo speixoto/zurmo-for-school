@@ -36,6 +36,10 @@
 
     class MySharedCalendarListView extends CalendarListView
     {
+        /**
+         * Renders title.
+         * @return string
+         */
         protected function renderTitleContent()
         {
             $content       = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Shared Calendars'));
@@ -46,6 +50,11 @@
             return $content;
         }
 
+        /**
+         * Wraps content in a container.
+         * @param string $content
+         * @return string
+         */
         protected function wrapContent($content)
         {
             return ZurmoHtml::tag('div', array('id' => 'shared-calendars-list'), $content);
