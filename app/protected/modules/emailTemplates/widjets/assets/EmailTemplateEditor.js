@@ -44,7 +44,7 @@ var emailTemplateEditor = {
     },
     setupLayout : function() {
         this.initDraggableElements(".elementToPlace", ".sortable-elements, .sortable-rows");
-        this.initSortableElements(".sortable-elements");
+        this.initSortableElements(".sortable-elements", ".sortable-elements");
         this.initSortableRows(".sortable-rows");
     },
     initDraggableElements: function ( selector , connectToSelector) {
@@ -60,7 +60,7 @@ var emailTemplateEditor = {
             connectToSortable: connectToSelector
         });
     },
-    initSortableElements: function ( selector ) {
+    initSortableElements: function ( selector , connectToSelector) {
         $( selector ).each(function(){
             if ($(this).data('sortable'))
             {
@@ -73,8 +73,16 @@ var emailTemplateEditor = {
             receive: function( event, ui ) {
                 console.log("Great... i've one more element!");
             },
+            remove: function ( event, ui ) {
+                 if ($(this).sortable("toArray").length < 1)
+                 {
+                     //TODO: @sergio: What should we the sortable-elements became empty?
+                     // We should not have that problem , we need to be able to drag item in an empty sortable
+                     //$(this).remove();
+                 }
+            },
             cursor: 'move',
-            connectWith: selector
+            connectWith: connectToSelector
         });
     },
     initSortableRows: function ( selector ) {
@@ -88,12 +96,12 @@ var emailTemplateEditor = {
         $( selector ).sortable({
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
+            handle: "table",
             stop: function( event, ui ) {
                 if (ui.item.is('p')) {
                     ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
+                    emailTemplateEditor.initSortableElements(ui.item.closest(".sortable-elements"), ".sortable-elements");
                 }
-            },
-            update: function(event, ui) {
             },
             cursor: 'move'
         });
