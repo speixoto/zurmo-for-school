@@ -47,3 +47,35 @@ function addCalendarRowToSharedCalendarListView(calendarId, url, sharedListConta
     );
 }
 
+function refreshCalendarEvents(url, startDate, endDate)
+{
+    var selectedMyCalendars = getSelectedCalendars('.mycalendar');
+    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
+    var events = {
+        url : url,
+        data :function()
+        {
+            return {
+                selectedMyCalendarIds : selectedMyCalendars,
+                selectedSharedCalendarIds : selectedSharedCalendars,
+                start      : startDate,
+                end        : endDate
+                }
+        },
+        loading: function(bool)
+                 {
+                    if (bool)
+                    {
+                        $(this).makeLargeLoadingSpinner(true, '#calendar');
+                    }
+                    else
+                    {
+                        $(this).makeLargeLoadingSpinner(false, '#calendar');
+                    }
+                 }
+    };
+    $('#calendar').fullCalendar('removeEventSource', events);
+    $('#calendar').fullCalendar('addEventSource', events);
+    $('#calendar').fullCalendar('refetchEvents');
+};
+

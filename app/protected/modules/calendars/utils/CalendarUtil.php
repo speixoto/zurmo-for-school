@@ -301,6 +301,14 @@
             return $models;
         }
 
+        /**
+         * Make calendar items list.
+         * @param array $data
+         * @param string $field
+         * @param string $itemClass
+         * @param string $type
+         * @return string
+         */
         public static function makeCalendarItemsList($data, $field, $itemClass, $type)
         {
             $itemsContent = null;
@@ -335,26 +343,71 @@
             return ZurmoHtml::tag('ul', array(), $itemsContent);
         }
 
-        protected static function getSharedCalendarOptions($calendarId)
+        /**
+         * Get shared calendar options.
+         * @param int $savedCalendarSubscriptionId
+         * @return string
+         */
+        public static function getSharedCalendarOptions($savedCalendarSubscriptionId)
         {
-            $elementContent = null;
+            //$elementContent = null;
+            $elementContent = ZurmoHtml::tag('li', array(),
+                                            ZurmoHtml::link('Unsubscribe', '#',
+                                                    array('data-value'  => $savedCalendarSubscriptionId,
+                                                          'class'       => 'shared-cal-unsubscribe')));
 //            $editElement    = new EditLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
 //            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
 //            $deleteElement  = new CalendarDeleteLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
 //            $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
-//            $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
+            $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
             $content        = ZurmoHtml::tag('li', array('class' => 'parent last'),
                                                    ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
             $content        = ZurmoHtml::tag('ul', array('class' => 'options-menu edit-row-menu nav'), $content);
             return $content;
         }
 
-        protected static function getSavedCalendarOptions($calendarId)
+        public static function registerCalendarUnsubscriptionScript($startDate, $endDate)
+        {
+            $url    = Yii::app()->createUrl('/calendars/default/unsubscribe');
+            $eventsUrl = Yii::app()->createUrl('calendars/default/getEvents');
+            $script = "$(document).on('click', '.shared-cal-unsubscribe', function(){
+                            $.ajax(
+                            {
+                                type : 'GET',
+                                url  : '{$url}',
+                                data : {'id' : $(this).data('value')},
+                                beforeSend: function(xhr)
+                                            {
+                                                $('#shared-calendars-list').html('');
+                                                $(this).makeLargeLoadingSpinner(true, '#shared-calendars-list');
+                                            },
+                                success : function(data)
+                                          {
+                                                $('#shared-calendars-list').html(data);
+                                                $(this).makeLargeLoadingSpinner(false, '#shared-calendars-list');
+                                          }
+                            }
+                            );
+                            refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
+                      })";
+            $cs = Yii::app()->getClientScript();
+            if($cs->isScriptRegistered('calunsubscribescript', ClientScript::POS_END) === false)
+            {
+                $cs->registerScript('calunsubscribescript', $script, ClientScript::POS_END);
+            }
+        }
+
+        /**
+         * Get saved calendar options.
+         * @param int $calendarId
+         * @return string
+         */
+        public static function getSavedCalendarOptions($calendarId)
         {
             $elementContent = null;
             $controllerId   = Yii::app()->controller->getId();
             $moduleId       = Yii::app()->controller->getModule()->getId();
-            $editElement    = new EditLinkActionElement($controllerId, $moduleId, $calendarId, array());
+            $editElement    = new CalendarEditLinkActionElement($controllerId, $moduleId, $calendarId, array());
             $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
             $deleteElement  = new CalendarDeleteLinkActionElement($controllerId, $moduleId, $calendarId, array());
             $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
@@ -365,6 +418,10 @@
             return $content;
         }
 
+        /**
+         * Get calendar items data provider.
+         * @return CalendarItemsDataProvider
+         */
         public static function getCalendarItemsDataProvider()
         {
             $mySavedCalendarIds         = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
@@ -374,6 +431,11 @@
             return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds, $mySubscribedCalendarIds);
         }
 
+        /**
+         * Get users subscribed for calendar.
+         * @param SavedCalendar $subscribedCalendar
+         * @return array
+         */
         public static function getUsersSubscribedForCalendar(SavedCalendar $subscribedCalendar)
         {
             $searchAttributeData = array();
@@ -418,6 +480,22 @@
             }
 
             return $content;
+        }
+
+        /**
+         * Register script whick would be invoked on click of any calendar item in my calendars or shared calendars
+         */
+        public static function registerSelectCalendarScript($startDate, $endDate)
+        {
+            //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
+            $url    = Yii::app()->createUrl('calendars/default/getEvents');
+            $script = "$(document).on('click', '.mycalendar, .sharedcalendar',
+                                                      refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}'));";
+            $cs = Yii::app()->getClientScript();
+            if($cs->isScriptRegistered('mycalendarselectscript', ClientScript::POS_END) === false)
+            {
+                $cs->registerScript('mycalendarselectscript', $script);
+            }
         }
     }
 ?>

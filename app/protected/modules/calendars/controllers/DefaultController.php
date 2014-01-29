@@ -293,5 +293,20 @@
                                                                                        'sharedcalendar[]', 'sharedcalendar', 'shared');
             echo $content;
         }
+
+        /**
+         * Remove the subscription for the calendar.
+         * @param int $id
+         */
+        public function actionUnsubscribe($id)
+        {
+            $savedCalendarSubscription = SavedCalendarSubscription::getById(intval($id));
+            $savedCalendarSubscription->delete();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
+            $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
+                                                                                       'sharedcalendar[]', 'sharedcalendar', 'shared');
+            echo $content;
+        }
     }
 ?>

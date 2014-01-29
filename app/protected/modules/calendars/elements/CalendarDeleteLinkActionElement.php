@@ -47,5 +47,10 @@
                                       array('{modelLabel}' => CalendarsModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
             return $htmlOptions;
         }
+
+        protected function resolveSimpleLinkClassHtmlOptions($htmlOptions)
+        {
+            return $htmlOptions;
+        }
     }
 ?>

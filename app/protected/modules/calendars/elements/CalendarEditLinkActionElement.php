@@ -40,5 +40,10 @@
         {
             return '#';
         }
+
+        protected function resolveLabelAndWrap()
+        {
+            return $this->getLabel();
+        }
     }
 ?>
