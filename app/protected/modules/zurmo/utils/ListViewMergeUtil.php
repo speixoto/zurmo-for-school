@@ -162,10 +162,18 @@
             assert('is_array($selectedModelsList)');
             foreach ($selectedModelsList as $selectedModel)
             {
-                self::processNonDerivedRelationsAssignment($primaryModel, $selectedModel);
-                self::processDerivedRelationsAssignment($primaryModel, $selectedModel);
-                self::processCopyEmailActivity($primaryModel, $selectedModel);
+                if ($selectedModel->getClassId('Item') != $primaryModel->getClassId('Item')
+                    && (get_class($selectedModel) == get_class($primaryModel)))
+                {
+                    self::processNonDerivedRelationsAssignment($primaryModel, $selectedModel);
+                    self::processDerivedRelationsAssignment($primaryModel, $selectedModel);
+                    if($primaryModel instanceof Account || $primaryModel instanceof Contact)
+                    {
+                        self::processCopyEmailActivity($primaryModel, $selectedModel);
+                    }
+                }
             }
+            $primaryModel->save();
         }
 
         /**
@@ -178,42 +186,37 @@
             assert('$primaryModel instanceof RedBeanModel');
             assert('$selectedModel instanceof RedBeanModel');
             $modelClassName = get_class($primaryModel);
-            if ($selectedModel->id != $primaryModel->id
-                        &&(get_class($selectedModel) == get_class($primaryModel)))
+            foreach ($selectedModel->attributeNames() as $attribute)
             {
-                foreach ($selectedModel->attributeNames() as $attribute)
+                if ($attribute == 'owner')
                 {
-                    if ($attribute == 'owner')
+                        continue;
+                }
+                if ($modelClassName::isRelation($attribute) &&
+                                !$modelClassName::isOwnedRelation($attribute) &&
+                                    !$primaryModel->isAttributeReadOnly($attribute))
+                {
+                    //Has one
+                    if ($modelClassName::isRelationTypeAHasOneVariant($attribute))
                     {
-                            continue;
+                        $primaryModel->$attribute = $selectedModel->$attribute;
                     }
-                    if ($modelClassName::isRelation($attribute) &&
-                                    !$modelClassName::isOwnedRelation($attribute) &&
-                                        !$primaryModel->isAttributeReadOnly($attribute))
+                    //Has many || Many many
+                    if (($modelClassName::isRelationTypeAHasManyVariant($attribute) ||
+                        $modelClassName::isRelationTypeAManyManyVariant($attribute)) &&
+                        ($modelClassName::getRelationType($attribute) != RedBeanModel::HAS_MANY_BELONGS_TO)
+                      )
                     {
-                        //Has one
-                        if ($modelClassName::isRelationTypeAHasOneVariant($attribute))
+                        foreach ($selectedModel->$attribute as $offset => $relatedModel)
                         {
-                            $primaryModel->$attribute = $selectedModel->$attribute;
-                        }
-                        //Has many || Many many
-                        if (($modelClassName::isRelationTypeAHasManyVariant($attribute) ||
-                            $modelClassName::isRelationTypeAManyManyVariant($attribute)) &&
-                            ($modelClassName::getRelationType($attribute) != RedBeanModel::HAS_MANY_BELONGS_TO)
-                          )
-                        {
-                            foreach ($selectedModel->$attribute as $offset => $relatedModel)
+                            if (!$primaryModel->$attribute->contains($relatedModel))
                             {
-                                if (!$primaryModel->$attribute->contains($relatedModel))
-                                {
-                                    $primaryModel->$attribute->add($relatedModel);
-                                }
+                                $primaryModel->$attribute->add($relatedModel);
                             }
                         }
                     }
                 }
             }
-            $primaryModel->save();
         }
 
         /**
@@ -225,30 +228,25 @@
         {
             assert('$primaryModel instanceof RedBeanModel');
             assert('$selectedModel instanceof RedBeanModel');
-            $modelClassName = get_class($primaryModel);
-            if ($selectedModel->id != $primaryModel->id
-                        &&(get_class($selectedModel) == get_class($primaryModel)))
+            $metadata   = $selectedModel->getMetadata();
+            foreach ($metadata as $modelClassName => $modelClassMetadata)
             {
-                $metadata   = $selectedModel->getMetadata();
-                foreach ($metadata as $modelClassName => $modelClassMetadata)
+                if (isset($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"]))
                 {
-                    if (isset($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"]))
+                    foreach ($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
                     {
-                        foreach ($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
+                        $opposingModelClassName = $derivedRelationData[1];
+                        $opposingRelation       = $derivedRelationData[2];
+                        if ($opposingRelation == 'activityItems' &&
+                                    is_subclass_of($opposingModelClassName, 'Activity'))
                         {
-                            $opposingModelClassName = $derivedRelationData[1];
-                            $opposingRelation       = $derivedRelationData[2];
-                            if ($opposingRelation == 'activityItems' &&
-                                        is_subclass_of($opposingModelClassName, 'Activity'))
+                            $opposingModels = $opposingModelClassName::getByActivityItemsCastedDown($selectedModel->getClassId('Item'));
+                            if ($opposingModels != null)
                             {
-                                $opposingModels = $opposingModelClassName::getByActivityItemsCastedDown($selectedModel->getClassId('Item'));
-                                if ($opposingModels != null)
+                                foreach ($opposingModels as $opposingModel)
                                 {
-                                    foreach ($opposingModels as $opposingModel)
-                                    {
-                                        $opposingModel->activityItems->add($primaryModel);
-                                        $opposingModel->save();
-                                    }
+                                    $opposingModel->activityItems->add($primaryModel);
+                                    $opposingModel->save();
                                 }
                             }
                         }
@@ -313,56 +311,36 @@
                                         getSearchAttributesDataByModelClassNamesAndRelatedItemIds(array('EmailMessage'),
                                                                                                   array($selectedModel->getClassId('Item')),
                                                                                                   LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
             $where               = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributesData[0]['EmailMessage'], $joinTablesAdapter);
             $models              = EmailMessage::getSubset($joinTablesAdapter, null, null, $where, null);
-
             foreach($models as $model)
             {
-                //Sender
-                $sender  = $model->sender;
-                if($sender->fromName == self::getMergedModelName($selectedModel))
+                //Resolve sender
+                if($model->sender->personsOrAccounts->contains($selectedModel))
                 {
-                    $newSender                    = new EmailMessageSender();
-                    $newSender->fromAddress       = $sender->fromAddress;
-                    $newSender->fromName          = self::getMergedModelName($primaryModel);
-                    $newSender->personsOrAccounts->add($primaryModel);
-                    $model->sender                = $newSender;
-                }
-                //recipient
-                $recipients                   = $model->recipients;
-                $recipientToBeRemoved         = array();
-                foreach($recipients as $recipient)
-                {
-                    if($recipient->toName == self::getMergedModelName($selectedModel))
+                    $model->sender->personsOrAccounts->remove($selectedModel);
+                    if(!$model->sender->personsOrAccounts->contains($primaryModel))
                     {
-                        $newRecipient                  = new EmailMessageRecipient();
-                        $newRecipient->toAddress       = $recipient->toAddress;
-                        $newRecipient->toName          = self::getMergedModelName($primaryModel);
-                        $newRecipient->type            = $recipient->type;
-                        $newRecipient->emailMessage    = $recipient->emailMessage;
-                        $newRecipient->personsOrAccounts->add($primaryModel);
-                        $model->recipients->add($newRecipient);
-                        $recipientToBeRemoved[]        = $recipient;
-                        //$model->recipients->remove($recipient);
+                        $model->sender->personsOrAccounts->add($primaryModel);
                     }
                 }
-                foreach($recipientToBeRemoved as $recipient)
+                //recipients
+                foreach($model->recipients as $key => $unused)
                 {
-                    $model->recipients->remove($recipient);
+                    if($model->recipients[$key]->personsOrAccounts->contains($selectedModel))
+                    {
+                        $model->recipients[$key]->personsOrAccounts->remove($selectedModel);
+                        if(!$model->recipients[$key]->personsOrAccounts->contains($primaryModel))
+                        {
+                            $model->recipients[$key]->personsOrAccounts->add($primaryModel);
+                        }
+                    }
+
                 }
                 $model->save();
             }
-        }
-
-        /**
-         * Gets selected model name.
-         * @param RedBeanModel $selectedModel
-         * @throws NotSupportedException
-         */
-        public static function getMergedModelName($selectedModel)
-        {
-            return strval($selectedModel);
         }
     }
 ?>
