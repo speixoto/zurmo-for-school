@@ -289,6 +289,7 @@
             $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'             => 'user',
+                    'relatedAttributeName'      => 'id',
                     'operatorType'              => 'equals',
                     'value'                     => intval($user->id),
                 )
@@ -320,14 +321,16 @@
                 {
                     $label          = $calendarArray[0]->name;
                     $options        = self::getSavedCalendarOptions($calendarArray[0]->id);
+                    $subscriptionData = null;
                 }
                 else
                 {
-                    $savedCalendar = $calendarArray[0]->savedcalendar;
-                    $label         = $savedCalendar->name;
-                    $options       = self::getSharedCalendarOptions($calendarArray[0]->id);
+                    $savedCalendar    = $calendarArray[0]->savedcalendar;
+                    $label            = $savedCalendar->name;
+                    $options          = self::getSharedCalendarOptions($calendarArray[0]->id);
+                    $subscriptionData = CalendarUtil::getCalendarSubscriberData($calendarArray[0]->savedcalendar);
                 }
-                $itemsContent   .= ZurmoHtml::tag('li', array(), $input . $color . $label . $options);
+                $itemsContent   .= ZurmoHtml::tag('li', array(), $input . $color . $label . $subscriptionData . $options);
             }
             return ZurmoHtml::tag('ul', array(), $itemsContent);
         }
@@ -369,6 +372,52 @@
             $mySubscribedCalendarIds    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
                                                                                         'CalendarsModule', 'mySubscribedCalendarSelections');
             return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds, $mySubscribedCalendarIds);
+        }
+
+        public static function getUsersSubscribedForCalendar(SavedCalendar $subscribedCalendar)
+        {
+            $searchAttributeData = array();
+            $users               = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'savedcalendar',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($subscribedCalendar->id),
+                )
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('SavedCalendarSubscription');
+            $where  = RedBeanModelDataProvider::makeWhere('SavedCalendarSubscription', $searchAttributeData, $joinTablesAdapter);
+            $models = SavedCalendarSubscription::getSubset($joinTablesAdapter, null, null, $where, null);
+            foreach($models as $model)
+            {
+                $users[] = $model->user;
+            }
+            return $users;
+        }
+
+        /**
+         * Get shared calendar subscriber data
+         * @param Task $task
+         * @return string
+         */
+        public static function getCalendarSubscriberData(SavedCalendar $subscribedCalendar)
+        {
+            $users    = CalendarUtil::getUsersSubscribedForCalendar($subscribedCalendar);
+            $content  = null;
+            $alreadySubscribedUsers = array();
+            foreach ($users as $user)
+            {
+                //Take care of duplicates if any
+                if (!in_array($user->id, $alreadySubscribedUsers))
+                {
+                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 25);
+                    $alreadySubscribedUsers[] = $user->id;
+                }
+            }
+
+            return $content;
         }
     }
 ?>
