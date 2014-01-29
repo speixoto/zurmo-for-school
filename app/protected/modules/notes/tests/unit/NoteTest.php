@@ -258,6 +258,7 @@
             //add nobody permission to read, write and delete the note
             $note->addPermissions($nobody, Permission::READ_WRITE_DELETE);
             $this->assertTrue($note->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($note, $nobody);
 
             //now acces to the notes read by nobody should not fail
             Yii::app()->user->userModel = $nobody;

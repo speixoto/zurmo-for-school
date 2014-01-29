@@ -188,6 +188,7 @@
             Yii::app()->user->userModel = $super;
             $opportunity->addPermissions($nobody, Permission::READ);
             $this->assertTrue($opportunity->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($opportunity, $nobody);
 
             //Now the nobody user can access the details view.
             Yii::app()->user->userModel = $nobody;
@@ -202,6 +203,8 @@
             Yii::app()->user->userModel = $super;
             $opportunity->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($opportunity->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($opportunity, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($opportunity, $nobody);
 
             //Now the nobody user should be able to access the edit view and still the details view.
             Yii::app()->user->userModel = $nobody;
@@ -212,8 +215,9 @@
 
             //revoke nobody access to read
             Yii::app()->user->userModel = $super;
-            $opportunity->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
+            $opportunity->removePermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($opportunity->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($opportunity, $nobody);
 
             //Test nobody, access to detail should fail.
             Yii::app()->user->userModel = $nobody;
@@ -240,7 +244,16 @@
             $parentRole->users->add($userInParentRole);
             $parentRole->roles->add($childRole);
             $this->assertTrue($parentRole->save());
-
+            $userInChildRole->forget();
+            $userInChildRole = User::getByUsername('nobody');
+            $userInParentRole->forget();
+            $userInParentRole = User::getByUsername('confused');
+            $parentRoleId = $parentRole->id;
+            $parentRole->forget();
+            $parentRole = Role::getById($parentRoleId);
+            $childRoleId = $childRole->id;
+            $childRole->forget();
+            $childRole = Role::getById($childRoleId);
             //create opportunity owned by super
 
             $opportunity2 = OpportunityTestHelper::createOpportunityByNameForOwner('testingParentRolePermission', $super);
@@ -256,6 +269,7 @@
             Yii::app()->user->userModel = $super;
             $opportunity2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($opportunity2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($opportunity2, $userInChildRole);
 
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -271,6 +285,8 @@
             Yii::app()->user->userModel = $super;
             $opportunity2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($opportunity2->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($opportunity2, $userInChildRole);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($opportunity2, $userInChildRole);
 
             //Test userInChildRole, access to edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -286,6 +302,7 @@
             Yii::app()->user->userModel = $super;
             $opportunity2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($opportunity2->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($opportunity2, $userInChildRole);
 
             //Test userInChildRole, access to detail should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -357,6 +374,7 @@
             Yii::app()->user->userModel = $super;
             $opportunity3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($opportunity3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($opportunity3, $parentGroup);
 
             //Test userInParentGroup, access to details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -372,6 +390,8 @@
             Yii::app()->user->userModel = $super;
             $opportunity3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($opportunity3->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForGroup($opportunity3, $parentGroup);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($opportunity3, $parentGroup);
 
             //Test userInParentGroup, access to edit should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -388,6 +408,7 @@
             Yii::app()->user->userModel = $super;
             $opportunity3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
             $this->assertTrue($opportunity3->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($opportunity3, $parentGroup);
 
             //Test userInChildGroup, access to detail should fail.
             Yii::app()->user->userModel = $userInChildGroup;

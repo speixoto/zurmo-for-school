@@ -231,6 +231,7 @@
             Yii::app()->user->userModel = $super;
             $note->removePermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($note->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($note, $nobody);
 
             //Now nobodys, access to edit, details and delete of notes should fail.
             Yii::app()->user->userModel = $nobody;
@@ -248,7 +249,7 @@
             Yii::app()->user->userModel = $super;
             $note->addPermissions($nobody, Permission::READ_WRITE_DELETE);
             $this->assertTrue($note->save());
-            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($note, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($note, $nobody);
 
             //Now nobodys, access to delete of notes should not fail.
             Yii::app()->user->userModel = $nobody;
