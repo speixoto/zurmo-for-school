@@ -192,7 +192,7 @@
         public static function getFullCalendarFormattedDateTimeElement($dateTime)
         {
             $dateTimeObject = new DateTime($dateTime);
-            return Yii::app()->dateFormatter->format('yyyy-MM-dd HH::mm',
+            return Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',
                         $dateTimeObject->getTimestamp());
         }
 
