@@ -72,26 +72,9 @@
 
         public function testGetUserSavedCalendars()
         {
-            $savedCalendar                      = new SavedCalendar();
-            $savedCalendar->name                = 'Test Cal';
-            $savedCalendar->timeZone            = 'America/Chicago';
-            $savedCalendar->location            = 'Newyork';
-            $savedCalendar->moduleClassName     = 'ProductsModule';
-            $savedCalendar->startAttributeName  = 'createdDateTime';
-            $savedCalendar->color               = '#315AB0';
-            $savedCalendar->save();
-            $calendars                          = CalendarUtil::getUserSavedCalendars(Yii::app()->user->userModel);
+            $savedCalendar = CalendarTestHelper::createSavedCalendarByName('Test Cal', '#315AB0');
+            $calendars     = CalendarUtil::getUserSavedCalendars(Yii::app()->user->userModel);
             $this->assertCount(1, $calendars);
-        }
-
-        public function testProcessUserCalendarsAndMakeDataProviderForCombinedView()
-        {
-            $this->markTestIncomplete();
-            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
-            $calendarItems = $dp->getData();
-            $this->assertCount(2, $calendarItems);
-            $this->assertEquals('First Product', $calendarItems[0]->getTitle());
-            $this->assertEquals('Second Product', $calendarItems[1]->getTitle());
         }
 
         public function testGetFullCalendarFormattedDateTimeElement()
@@ -102,13 +85,9 @@
 
         public function testGetUserSubscribedCalendars()
         {
-            $savedCalendars                                 = SavedCalendar::getByName('Test Cal');
-            $savedCalendarSubscription                      = new SavedCalendarSubscription();
-            $savedCalendarSubscription->user                = Yii::app()->user->userModel;
-            $savedCalendarSubscription->savedcalendar       = $savedCalendars[0];
-            $savedCalendarSubscription->color               = '#66367b';
-            $savedCalendarSubscription->save();
-            $calendars                          = CalendarUtil::getUserSubscribedCalendars(Yii::app()->user->userModel);
+            $savedCalendar               = CalendarTestHelper::createSavedCalendarByName('Test Cal New', '#c05d91');
+            $savedCalendarSubscription   = CalendarTestHelper::createSavedCalendarSubscription('Test Cal New', '#66367b', Yii::app()->user->userModel);
+            $calendars                   = CalendarUtil::getUserSubscribedCalendars(Yii::app()->user->userModel);
             $this->assertCount(1, $calendars);
         }
 
@@ -127,7 +106,43 @@
             $this->assertTrue(strpos($content, 'Test Cal') > 0);
             $content = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
                                                            'sharedcalendar[]', 'sharedcalendar', 'shared');
-            $this->assertTrue(strpos($content, 'Test Cal') > 0);
+            $this->assertTrue(strpos($content, 'Test Cal New') > 0);
+        }
+
+        public function testProcessUserCalendarsAndMakeDataProviderForCombinedView()
+        {
+            $savedCalendars = SavedCalendar::getByName('Test Cal');
+            $subscribedCalendars = CalendarUtil::getUserSubscribedCalendars(Yii::app()->user->userModel);
+            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($savedCalendars[0]->id, $subscribedCalendars[0]->savedcalendar->id);
+            $calendarItems = $dp->getData();
+            $this->assertCount(2, $calendarItems);
+            $this->assertEquals('First Product', $calendarItems[0]->getTitle());
+            $this->assertEquals('Second Product', $calendarItems[1]->getTitle());
+        }
+
+        public function testGetUsersSubscribedForCalendar()
+        {
+            $user                        = UserTestHelper::createBasicUser('sam');
+            $savedCalendarSubscription   = CalendarTestHelper::createSavedCalendarSubscription('Test Cal New', '#66367b', $user);
+            $savedCalendar               = SavedCalendar::getByName('Test Cal New');
+            $subscribedUsers = CalendarUtil::getUsersSubscribedForCalendar($savedCalendar[0]);
+            $this->assertCount(2, $subscribedUsers);
+        }
+
+        public function testSetMyCalendarColor()
+        {
+            $savedCalendar = CalendarTestHelper::createSavedCalendarByName('Color Cal', null);
+            CalendarUtil::setMyCalendarColor($savedCalendar);
+            $this->assertNotEquals('#66367b', $savedCalendar->color);
+            $this->assertNotEquals('#315AB0', $savedCalendar->color);
+        }
+
+        public function testSetMySharedCalendarColor()
+        {
+            $user                      = User::getByUsername('sam');
+            $savedCalendarSubscription = CalendarTestHelper::createSavedCalendarSubscription('Color Cal', null, $user);
+            CalendarUtil::setSharedCalendarColor($savedCalendarSubscription);
+            $this->assertNotEquals('#66367b', $savedCalendarSubscription->color);
         }
     }
 ?>
