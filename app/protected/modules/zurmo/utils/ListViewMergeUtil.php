@@ -162,12 +162,12 @@
             assert('is_array($selectedModelsList)');
             foreach ($selectedModelsList as $selectedModel)
             {
-                if ($selectedModel->getClassId('Item') != $primaryModel->getClassId('Item')
-                    && (get_class($selectedModel) == get_class($primaryModel)))
+                if ($selectedModel->getClassId('Item') != $primaryModel->getClassId('Item') &&
+                        (get_class($selectedModel) == get_class($primaryModel)))
                 {
                     self::processNonDerivedRelationsAssignment($primaryModel, $selectedModel);
                     self::processDerivedRelationsAssignment($primaryModel, $selectedModel);
-                    if($primaryModel instanceof Account || $primaryModel instanceof Contact)
+                    if ($primaryModel instanceof Account || $primaryModel instanceof Contact)
                     {
                         self::processCopyEmailActivity($primaryModel, $selectedModel);
                     }
@@ -315,29 +315,28 @@
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
             $where               = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributesData[0]['EmailMessage'], $joinTablesAdapter);
             $models              = EmailMessage::getSubset($joinTablesAdapter, null, null, $where, null);
-            foreach($models as $model)
+            foreach ($models as $model)
             {
                 //Resolve sender
-                if($model->sender->personsOrAccounts->contains($selectedModel))
+                if ($model->sender->personsOrAccounts->contains($selectedModel))
                 {
                     $model->sender->personsOrAccounts->remove($selectedModel);
-                    if(!$model->sender->personsOrAccounts->contains($primaryModel))
+                    if (!$model->sender->personsOrAccounts->contains($primaryModel))
                     {
                         $model->sender->personsOrAccounts->add($primaryModel);
                     }
                 }
                 //recipients
-                foreach($model->recipients as $key => $unused)
+                foreach ($model->recipients as $key => $unused)
                 {
-                    if($model->recipients[$key]->personsOrAccounts->contains($selectedModel))
+                    if ($model->recipients[$key]->personsOrAccounts->contains($selectedModel))
                     {
                         $model->recipients[$key]->personsOrAccounts->remove($selectedModel);
-                        if(!$model->recipients[$key]->personsOrAccounts->contains($primaryModel))
+                        if (!$model->recipients[$key]->personsOrAccounts->contains($primaryModel))
                         {
                             $model->recipients[$key]->personsOrAccounts->add($primaryModel);
                         }
                     }
-
                 }
                 $model->save();
             }
