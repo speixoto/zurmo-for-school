@@ -358,7 +358,7 @@
             
         }
         
-        public function testAddProductsMyListPortlettodashboard()
+        public function testAddProductsMyListPortletToDashboard()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $superDashboard1 = Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
@@ -409,6 +409,11 @@
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
+            
+            //load details view
+            $this->setGetArray(array('id' => $superDashboard1->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/default/dashboardDetails');
         }
     }
 ?>
