@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ListViewMergeUtilBaseTest extends ZurmoBaseTest
+    abstract class ListViewMergeUtilBaseTest extends ZurmoBaseTest
     {
         public $selectedModels          = array();
 

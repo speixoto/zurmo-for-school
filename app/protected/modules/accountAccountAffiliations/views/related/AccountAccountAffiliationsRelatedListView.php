@@ -135,12 +135,12 @@
 
         protected function getSelectPrimaryAccountLinkLabel()
         {
-            return AccountAccountAffiliationsModule::resolveAccountRelationLabel('SingularLowerCase', 'primary');
+            return AccountAccountAffiliationsModule::resolveAccountRelationLabel('Singular', 'primary');
         }
 
         protected function getSelectSecondaryAccountLinkLabel()
         {
-            return AccountAccountAffiliationsModule::resolveAccountRelationLabel('SingularLowerCase', 'secondary');
+            return AccountAccountAffiliationsModule::resolveAccountRelationLabel('Singular', 'secondary');
         }
 
         /**
