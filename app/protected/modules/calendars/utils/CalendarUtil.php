@@ -347,7 +347,7 @@
                 $label = ZurmoHtml::tag('strong', array('class' => 'cal-name'), $label);
                 $itemsContent   .= ZurmoHtml::tag('li', array(), $input . $color . $label . $subscriptionData . $options);
             }
-            return ZurmoHtml::tag('ul', array(), $itemsContent);
+            return ZurmoHtml::tag('ul', array('class' => 'calendars-list'), $itemsContent);
         }
 
         /**
@@ -359,7 +359,7 @@
         {
             assert('is_int($savedCalendarSubscriptionId)');
             $elementContent = ZurmoHtml::tag('li', array(),
-                                            ZurmoHtml::link(Zurmo::t('CalendarsModule', 'Unsubscribe'), '#',
+                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('CalendarsModule', 'Unsubscribe')), '#',
                                                     array('data-value'  => $savedCalendarSubscriptionId,
                                                           'class'       => 'shared-cal-unsubscribe')));
             $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
@@ -379,11 +379,11 @@
             assert('is_int($calendarId)');
             $editUrl         = Yii::app()->createUrl('calendars/default/edit', array('id' => $calendarId));
             $editLinkContent = ZurmoHtml::tag('li', array(),
-                                            ZurmoHtml::link(Zurmo::t('Core', 'Edit'), $editUrl,
+                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Edit')), $editUrl,
                                                     array('data-value'  => $calendarId,
                                                           'class'       => 'my-cal-edit')));
             $deleteLinkContent = ZurmoHtml::tag('li', array(),
-                                            ZurmoHtml::link(Zurmo::t('Core', 'Delete'), '#',
+                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Delete')), '#',
                                                     array('data-value'  => $calendarId,
                                                           'class'       => 'my-cal-delete')));
             $elementContent = ZurmoHtml::tag('ul', array(), $editLinkContent . $deleteLinkContent);

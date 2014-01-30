@@ -100,7 +100,7 @@
             $content = CalendarUtil::makeCalendarItemsList($this->data, $this->field, $this->itemClass, $this->listType);
             $content = $this->wrapContent($content);
             $title   = $this->renderTitleContent();
-            return ZurmoHtml::tag('div', array('class' => 'calendars-list my-calendars'), $title . $content);
+            return ZurmoHtml::tag('div', array('class' => 'calendars-list-container'), $title . $content);
         }
 
         /**

@@ -1625,6 +1625,7 @@ body > .ui-autocomplete {
   position: relative;
   float: left;
   width: 100%;
+  display: table;
 }
 #MashableInboxActionBarForViews > div,
 #ActionBarSearchAndListView > div {
@@ -2055,6 +2056,8 @@ td {
   border: 1px solid #dfdfdf;
 }
 .items-wrapper {
+  display: table;
+  width: 100%;
   overflow-x: auto;
   background: -webkit-linear-gradient(left,#fff 30%,rgba(255,255,255,0)), -webkit-linear-gradient(left,rgba(255,255,255,0),#fff 70%) 100%, -webkit-radial-gradient(0 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)), -webkit-radial-gradient(100% 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)) 100% 0;
   background-repeat: no-repeat;
@@ -9858,12 +9861,15 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker {
   z-index: 10000;
+  display: table !important;
 }
 .ui-datepicker.ui-datepicker-inline {
   margin: 15px;
 }
 .ui-datepicker .ui-datepicker-header {
-  height: 35px;
+  display: table;
+  height: 36px;
+  width: 100%;
   color: #547980;
   font-weight: bold;
 }
@@ -9918,15 +9924,34 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-calendar {
   width: 100%;
-  border-color: #ddd;
-  border-style: solid;
-  border-width: 0 0 1px 1px;
   border-spacing: 0;
-  border-collapse: collapse;
   table-layout: fixed;
+  border: 1px solid #ddd;
+  border-top: none;
 }
 .ui-datepicker .ui-datepicker-calendar th:last-child {
-  border-right: 1px solid #ddd;
+  border-right: none;
+}
+.ui-datepicker .ui-datepicker-calendar td {
+  min-width: 30px;
+  height: 30px;
+  border-color: #ddd;
+  border-style: solid;
+  border-width: 1px 1px 0 0;
+  border-top: 1px solid #ddd !important;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
+  color: #B3B3B3;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
+  background-image: none !important;
+  background: #e5edee !important;
+}
+.ui-datepicker .ui-datepicker-calendar td:hover {
+  background-image: none;
+}
+.ui-datepicker .ui-datepicker-calendar td:last-child {
+  border-right: none;
 }
 .ui-datepicker .ui-datepicker-calendar a {
   font-size: 9px;
@@ -9950,23 +9975,6 @@ div.wide.form .errorMessage {
   text-transform: uppercase;
   line-height: 20px;
   cursor: pointer;
-}
-.ui-datepicker .ui-datepicker-calendar td {
-  min-width: 30px;
-  height: 30px;
-  border-color: #ddd;
-  border-style: solid;
-  border-width: 1px 1px 0 0;
-  border-top: 1px solid #ddd !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
-  color: #B3B3B3;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
-  background-image: none !important;
-}
-.ui-datepicker .ui-datepicker-calendar td:hover {
-  background-image: none;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   float: left;
@@ -10231,9 +10239,9 @@ div.wide.form .errorMessage {
   background-image: none;
   background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
 }
-.juiportlet-widget-content .ui-datepicker-calendar:last-child,
-#ui-datepicker-div .ui-datepicker-calendar:last-child {
-  border-right: 1px solid #BBB;
+.juiportlet-widget-content .ui-datepicker-calendar td:last-child,
+#ui-datepicker-div .ui-datepicker-calendar td:last-child {
+  border-right: none;
 }
 .juiportlet-widget-content .ui-datepicker-calendar a,
 .juiportlet-widget-content .ui-datepicker-calendar span,
@@ -19363,36 +19371,29 @@ a + .project-stats {
 .calendar-view .right-column {
   width: 75%;
 }
-.calendars-list {
+.calendars-list-container {
   margin-top: 30px;
 }
-.calendars-list ul {
-  list-style: none;
-  padding: 0;
+.calendars-list-container + .calendars-list-container {
+  margin-top: 30px;
+}
+.calendars-list {
   margin: 0;
-}
-.calendars-list > ul > li {
+  padding: 0;
+  list-style: none;
   display: block;
-  padding: 0 !important;
   line-height: 1;
+}
+.calendars-list > li {
+  padding: 0;
   margin-bottom: 5px;
-}
-.calendars-list .edit-row-menu {
-  position: relative;
-  top: 5px;
-}
-.calendars-list .edit-row-menu > li > a:before {
-  line-height: 12px;
-}
-.calendars-list a {
-  color: #545454 !important;
 }
 .calendars-list .hasCheckBox {
   display: inline-block;
   line-height: 1;
 }
-.calendars-list + .calendars-list {
-  margin-top: 30px;
+.calendars-list .edit-row-menu {
+  margin-right: 0;
 }
 .cal-list-header {
   margin-bottom: 10px;
@@ -19462,6 +19463,7 @@ a + .project-stats {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   -o-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
+  border: 1px solid #ddd !important;
 }
 #SavedCalendarFiltersForReportWizardView .dynamic-droppable-area {
   width: 70%;

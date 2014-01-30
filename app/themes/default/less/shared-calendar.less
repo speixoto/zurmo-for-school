@@ -83,35 +83,28 @@
 	width:75%;
 }
 
-.calendars-list {
+.calendars-list-container {
 	margin-top:30px;
-	ul {
-		list-style:none;
-		padding:0;
-		margin:0;
+	+ .calendars-list-container {
+		margin-top:30px;
 	}
-	> ul > li {
-		display:block;
-		padding:0 !important;
-		line-height:1;
+}
+.calendars-list{
+	margin:0;
+	padding:0;
+	list-style:none;
+	display:block;
+	line-height:1;
+	> li{
+		padding: 0;
 		margin-bottom: 5px;
-	}
-	.edit-row-menu{
-		position: relative;
-		top: 5px;
-	}
-	.edit-row-menu > li > a:before {
-		line-height:12px;
-	}
-	a {
-		color:#545454 !important;
 	}
 	.hasCheckBox{
 		display: inline-block;
 		line-height: 1;
 	}
-	+ .calendars-list {
-		margin-top:30px;
+	.edit-row-menu{
+		margin-right: 0;
 	}
 }
 
@@ -177,6 +170,7 @@
 	.ui-datepicker-header{
 		#gradient > .vertical(#f6f6f6, #ededed) !important;
 		.b-shadow(inset 0 1px 0 0 #ffffff);
+		border:1px solid #ddd !important;
 	}
 }
 
