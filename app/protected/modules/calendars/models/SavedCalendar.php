@@ -126,7 +126,7 @@
                     'color'
                 ),
                 'relations' => array(
-                    'sharedSubscribers'   => array(static::HAS_MANY, 'SavedCalendarSubscription', static::OWNED),
+                    'sharedSubscribers'   => array(static::HAS_MANY, 'SavedCalendarSubscription'),
                 ),
                 'rules' => array(
                     array('name',             'required'),

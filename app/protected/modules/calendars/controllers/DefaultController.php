@@ -276,7 +276,7 @@
                                             'shared-calendars-list'
                                         );
             echo ModalSearchListControllerUtil::
-                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+                 setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, 'SharedCalendersStateMetadataAdapter');
         }
 
         /**

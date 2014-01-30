@@ -102,7 +102,8 @@
             $content  .= $this->renderSubscribedToCalendarsContent();
             $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
             $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
-            $title    = ZurmoHtml::tag('h1', array(), 'Shared Calendar (todo)');
+            $params   = LabelUtil::getTranslationParamsForAllModules();
+            $title    = ZurmoHtml::tag('h1', array(), Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params));
             $view     = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
             $wrapper  = ZurmoHtml::tag('div', array('class' => 'wrapper'), $title . $view);
             CalendarUtil::registerSelectCalendarScript($this->dataProvider->getStartDate(), $this->dataProvider->getEndDate());

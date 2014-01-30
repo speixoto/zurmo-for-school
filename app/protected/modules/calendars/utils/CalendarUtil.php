@@ -129,7 +129,7 @@
             $metadata = array();
             $metadata['clauses'] = array(
                 1 => array(
-                    'attributeName'        => 'createdByUser',
+                    'attributeName'        => 'owner',
                     'relatedAttributeName' => 'id',
                     'operatorType'         => 'equals',
                     'value'                => $user->id,

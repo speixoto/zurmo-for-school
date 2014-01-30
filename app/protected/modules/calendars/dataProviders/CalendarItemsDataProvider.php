@@ -93,7 +93,7 @@
         }
 
         /**
-        * Override so when refresh is true it resets _rowsData
+         * Override so when refresh is true it resets _rowsData
          */
         public function getData($refresh = false)
         {
