@@ -50,6 +50,21 @@
                                                  'trackableStructurePosition' => true)));
         }
 
+        protected function renderContent()
+        {
+            $content  = $this->renderTitleContent();
+            $content .= $this->renderFormContent();
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column clearfix'), $content);
+            $actionElementContent = $this->renderActionElementBar(true);
+            if ($actionElementContent != null)
+            {
+                $content .= $this->resolveAndWrapDockableViewToolbarContent($actionElementContent);
+            }
+            $this->registerScripts();
+            return $content;
+        }
+
+
         protected function renderPreviousPageLinkContent()
         {
         }

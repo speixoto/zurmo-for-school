@@ -106,7 +106,7 @@
                                         });", ClientScript::POS_END);
             $publishedUrl    =  Yii::app()->assetManager->publish(
                                                             Yii::getPathOfAlias('application.modules.calendars.assets'));
-            $cs->registerCssFile($publishedUrl . '/calendar.css');
+            //$cs->registerCssFile($publishedUrl . '/calendar.css');
         }
     }
 ?>

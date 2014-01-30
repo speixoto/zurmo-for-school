@@ -102,12 +102,12 @@
             $content  .= $this->renderSubscribedToCalendarsContent();
             $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
             $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
-            //$this->registerMyCalendarSelectScript();
             $title    = ZurmoHtml::tag('h1', array(), 'Shared Calendar (todo)');
             $view     = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
             $wrapper  = ZurmoHtml::tag('div', array('class' => 'wrapper'), $title . $view);
             CalendarUtil::registerSelectCalendarScript($this->dataProvider->getStartDate(), $this->dataProvider->getEndDate());
             CalendarUtil::registerCalendarUnsubscriptionScript($this->dataProvider->getStartDate(), $this->dataProvider->getEndDate());
+            CalendarUtil::registerSavedCalendarDeleteScript($this->dataProvider->getStartDate(), $this->dataProvider->getEndDate());
             return $wrapper;
         }
 

@@ -259,7 +259,11 @@
             $savedCalendar = SavedCalendar::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($savedCalendar);
             $savedCalendar->delete();
-            $this->redirect(array($this->getId() . '/combinedDetails'));
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
+            $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getMySavedCalendarsAndSelected(),
+                                                                                       'mycalendar[]', 'mycalendar', 'saved');
+            echo $content;
         }
 
         /**
