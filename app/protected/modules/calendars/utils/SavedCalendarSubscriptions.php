@@ -80,7 +80,7 @@
                 }
                 foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
-                    self::setMyCalendarColor($mySavedCalendar);
+                    CalendarUtil::setMyCalendarColor($mySavedCalendar);
                     if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))
                     {
                         $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
@@ -117,7 +117,7 @@
                 }
                 foreach ($mySubscribedCalendars as $key => $mySubscribedCalendar)
                 {
-                    self::setSharedCalendarColor($mySubscribedCalendar);
+                    CalendarUtil::setSharedCalendarColor($mySubscribedCalendar);
                     if(in_array($mySubscribedCalendar->id, $subscribedCalendarIdArray))
                     {
                         $savedCalendarSubscriptions->addSubscribedToCalendar($mySubscribedCalendar, true);
@@ -170,48 +170,6 @@
         public function getSubscribedToSavedCalendarsAndSelected()
         {
             return $this->subscribedToSavedCalendarsAndSelected;
-        }
-
-        /**
-         * Sets my calendar color.
-         * @param SavedCalendar $savedCalendar
-         */
-        private static function setMyCalendarColor(SavedCalendar $savedCalendar)
-        {
-            if($savedCalendar->color == null)
-            {
-                $usedColors      = CalendarUtil::getUsedCalendarColorsByUser(Yii::app()->user->userModel, 'SavedCalendar', 'createdByUser');
-                self::processAndSaveColor($savedCalendar, $usedColors);
-            }
-        }
-
-        /**
-         * Sets shared calendar color.
-         * @param SavedCalendarSubscription $sharedCalendar
-         */
-        private static function setSharedCalendarColor(SavedCalendarSubscription $sharedCalendar)
-        {
-            if($sharedCalendar->color == null)
-            {
-                $usedColors      = CalendarUtil::getUsedCalendarColorsByUser(Yii::app()->user->userModel, 'SavedCalendarSubscription', 'user');
-                self::processAndSaveColor($sharedCalendar, $usedColors);
-            }
-        }
-
-        /**
-         * Process and save the color for the model.
-         * @param SavedCalendar|SavedCalendarSubscription $calendar
-         * @param array $usedColors
-         */
-        private static function processAndSaveColor($calendar, $usedColors)
-        {
-            assert('$calendar instanceof SavedCalendar || $calendar instanceof SavedCalendarSubscription');
-            assert('is_array($usedColors)');
-            $availableColors = SavedCalendar::$colorsArray;
-            $filteredColors  = array_diff($availableColors, $usedColors);
-            $color           = array_shift($filteredColors);
-            $calendar->color = $color;
-            $calendar->save();
         }
     }
 ?>

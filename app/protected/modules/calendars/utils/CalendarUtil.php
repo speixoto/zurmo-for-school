@@ -191,6 +191,7 @@
          */
         public static function getFullCalendarFormattedDateTimeElement($dateTime)
         {
+            assert('is_string($dateTime)');
             $dateTimeObject = new DateTime($dateTime);
             return Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',
                         $dateTimeObject->getTimestamp());
@@ -204,7 +205,8 @@
          */
         public static function getUsedCalendarColorsByUser(User $user, $modelClassName, $attributeName)
         {
-            $quote                     = DatabaseCompatibilityUtil::getQuote();
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeName)');
             $selectDistinct            = false;
             $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $selectQueryAdapter        = new RedBeanModelSelectQueryAdapter($selectDistinct);
@@ -311,6 +313,10 @@
          */
         public static function makeCalendarItemsList($data, $field, $itemClass, $type)
         {
+            assert('is_array($data)');
+            assert('is_string($field)');
+            assert('is_string($itemClass)');
+            assert('is_string($type)');
             $itemsContent = null;
             foreach($data as $calendarArray)
             {
@@ -350,15 +356,11 @@
          */
         public static function getSharedCalendarOptions($savedCalendarSubscriptionId)
         {
-            //$elementContent = null;
+            assert('is_int($savedCalendarSubscriptionId)');
             $elementContent = ZurmoHtml::tag('li', array(),
                                             ZurmoHtml::link('Unsubscribe', '#',
                                                     array('data-value'  => $savedCalendarSubscriptionId,
                                                           'class'       => 'shared-cal-unsubscribe')));
-//            $editElement    = new EditLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
-//            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
-//            $deleteElement  = new CalendarDeleteLinkActionElement($this->controllerId, $this->moduleId, $calendarId, array());
-//            $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
             $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
             $content        = ZurmoHtml::tag('li', array('class' => 'parent last'),
                                                    ZurmoHtml::link('<span></span>', 'javascript:void(0);') . $elementContent);
@@ -366,11 +368,18 @@
             return $content;
         }
 
+        /**
+         * Registers calendar unsubscription script.
+         * @param string $startDate
+         * @param string $endDate
+         */
         public static function registerCalendarUnsubscriptionScript($startDate, $endDate)
         {
-            $url    = Yii::app()->createUrl('/calendars/default/unsubscribe');
-            $eventsUrl = Yii::app()->createUrl('calendars/default/getEvents');
-            $script = "$(document).on('click', '.shared-cal-unsubscribe', function(){
+            assert('is_string($startDate)');
+            assert('is_string($endDate)');
+            $url        = Yii::app()->createUrl('/calendars/default/unsubscribe');
+            $eventsUrl  = Yii::app()->createUrl('calendars/default/getEvents');
+            $script     = "$(document).on('click', '.shared-cal-unsubscribe', function(){
                             $.ajax(
                             {
                                 type : 'GET',
@@ -390,7 +399,7 @@
                             );
                             refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
                       })";
-            $cs = Yii::app()->getClientScript();
+            $cs         = Yii::app()->getClientScript();
             if($cs->isScriptRegistered('calunsubscribescript', ClientScript::POS_END) === false)
             {
                 $cs->registerScript('calunsubscribescript', $script, ClientScript::POS_END);
@@ -404,11 +413,16 @@
          */
         public static function getSavedCalendarOptions($calendarId)
         {
+            assert('is_int($calendarId)');
             $elementContent = null;
             $controllerId   = Yii::app()->controller->getId();
             $moduleId       = Yii::app()->controller->getModule()->getId();
-            $editElement    = new CalendarEditLinkActionElement($controllerId, $moduleId, $calendarId, array());
-            $elementContent .= ZurmoHtml::tag('li', array(), $editElement->render());
+            //$editElement    = new CalendarEditLinkActionElement($controllerId, $moduleId, $calendarId, array());
+            $elementContent = ZurmoHtml::tag('li', array(),
+                                            ZurmoHtml::link(Zurmo::t('Core', 'Edit'), '#',
+                                                    array('data-value'  => $calendarId,
+                                                          'class'       => 'my-cal-edit')));
+            //$elementContent .= ZurmoHtml::tag('li', array(), $elementContent);
             $deleteElement  = new CalendarDeleteLinkActionElement($controllerId, $moduleId, $calendarId, array());
             $elementContent .= ZurmoHtml::tag('li', array(), $deleteElement->render());
             $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
@@ -498,6 +512,60 @@
             {
                 $cs->registerScript('mycalendarselectscript', $script);
             }
+        }
+
+        /**
+         * Get already used colors by user.
+         * @param User $user
+         * @return array
+         */
+        public static function getAlreadyUsedColorsByUser(User $user)
+        {
+            $savedCalUsedColors      = CalendarUtil::getUsedCalendarColorsByUser($user, 'SavedCalendar', 'createdByUser');
+            $sharedCalUsedColors     = CalendarUtil::getUsedCalendarColorsByUser($user, 'SavedCalendarSubscription', 'user');
+            return CMap::mergeArray($savedCalUsedColors, $sharedCalUsedColors);
+        }
+
+        /**
+         * Sets my calendar color.
+         * @param SavedCalendar $savedCalendar
+         */
+        public static function setMyCalendarColor(SavedCalendar $savedCalendar)
+        {
+            if($savedCalendar->color == null)
+            {
+                $usedColors      = CalendarUtil::getAlreadyUsedColorsByUser(Yii::app()->user->userModel);
+                self::processAndSaveColor($savedCalendar, $usedColors);
+            }
+        }
+
+        /**
+         * Sets shared calendar color.
+         * @param SavedCalendarSubscription $sharedCalendar
+         */
+        public static function setSharedCalendarColor(SavedCalendarSubscription $sharedCalendar)
+        {
+            if($sharedCalendar->color == null)
+            {
+                $usedColors      = CalendarUtil::getAlreadyUsedColorsByUser(Yii::app()->user->userModel);
+                self::processAndSaveColor($sharedCalendar, $usedColors);
+            }
+        }
+
+        /**
+         * Process and save the color for the model.
+         * @param SavedCalendar|SavedCalendarSubscription $calendar
+         * @param array $usedColors
+         */
+        public static function processAndSaveColor($calendar, $usedColors)
+        {
+            assert('$calendar instanceof SavedCalendar || $calendar instanceof SavedCalendarSubscription');
+            assert('is_array($usedColors)');
+            $availableColors = SavedCalendar::$colorsArray;
+            $filteredColors  = array_diff($availableColors, $usedColors);
+            $color           = array_shift($filteredColors);
+            $calendar->color = $color;
+            $calendar->save();
         }
     }
 ?>

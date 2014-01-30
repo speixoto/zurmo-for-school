@@ -53,21 +53,21 @@
         public function testGetStartDate()
         {
             $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_MONTH);
-            $this->assertEquals(date('Y-m-01') . ' 00:00:00', $startDateTime);
+            $this->assertEquals(date('Y-m-01'), $startDateTime);
             $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_WEEK);
-            $this->assertEquals(date('Y-m-d H:i:s', strtotime('last monday', strtotime('tomorrow'))), $startDateTime);
+            $this->assertEquals(date('Y-m-d', strtotime('last monday', strtotime('tomorrow'))), $startDateTime);
             $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_DAY);
-            $this->assertEquals(date('Y-m-d') . ' 00:00:00', $startDateTime);
+            $this->assertEquals(date('Y-m-d'), $startDateTime);
         }
 
         public function testGetEndDate()
         {
             $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_MONTH);
-            $this->assertEquals(date('Y-m-d', strtotime('first day of next month')) . ' 00:00:00', $endDateTime);
+            $this->assertEquals(date('Y-m-d', strtotime('last day of this month')), $endDateTime);
             $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_WEEK);
-            $this->assertEquals(date('Y-m-d', strtotime('first day of next week')) . ' 00:00:00', $endDateTime);
+            $this->assertEquals(date('Y-m-d', strtotime('last day of this week')), $endDateTime);
             $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_DAY);
-            $this->assertEquals(date('Y-m-d', strtotime('tomorrow')) . ' 00:00:00', $endDateTime);
+            $this->assertEquals(date('Y-m-d', strtotime('today')), $endDateTime);
         }
 
         public function testGetUserSavedCalendars()
@@ -78,6 +78,7 @@
             $savedCalendar->location            = 'Newyork';
             $savedCalendar->moduleClassName     = 'ProductsModule';
             $savedCalendar->startAttributeName  = 'createdDateTime';
+            $savedCalendar->color               = '#315AB0';
             $savedCalendar->save();
             $calendars                          = CalendarUtil::getUserSavedCalendars(Yii::app()->user->userModel);
             $this->assertCount(1, $calendars);
@@ -85,11 +86,50 @@
 
         public function testProcessUserCalendarsAndMakeDataProviderForCombinedView()
         {
+            $this->markTestIncomplete();
             $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView();
             $calendarItems = $dp->getData();
             $this->assertCount(2, $calendarItems);
             $this->assertEquals('First Product', $calendarItems[0]->getTitle());
             $this->assertEquals('Second Product', $calendarItems[1]->getTitle());
+        }
+
+        public function testGetFullCalendarFormattedDateTimeElement()
+        {
+            $startDateTime = CalendarUtil::getFullCalendarFormattedDateTimeElement('2014-01-10');
+            $this->assertEquals('2014-01-10', date('Y-m-d', strtotime($startDateTime)));
+        }
+
+        public function testGetUserSubscribedCalendars()
+        {
+            $savedCalendars                                 = SavedCalendar::getByName('Test Cal');
+            $savedCalendarSubscription                      = new SavedCalendarSubscription();
+            $savedCalendarSubscription->user                = Yii::app()->user->userModel;
+            $savedCalendarSubscription->savedcalendar       = $savedCalendars[0];
+            $savedCalendarSubscription->color               = '#66367b';
+            $savedCalendarSubscription->save();
+            $calendars                          = CalendarUtil::getUserSubscribedCalendars(Yii::app()->user->userModel);
+            $this->assertCount(1, $calendars);
+        }
+
+        public function testGetUsedCalendarColorsByUser()
+        {
+            $colors = CalendarUtil::getAlreadyUsedColorsByUser(Yii::app()->user->userModel);
+            $this->assertContains('#66367b', $colors);
+            $this->assertContains('#315AB0', $colors);
+        }
+
+        public function testMakeCalendarItemsList()
+        {
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel);
+            $content = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getMySavedCalendarsAndSelected(),
+                                                           'mycalendar[]', 'mycalendar', 'saved');
+            print $content;
+            exit;
+            $this->assertTrue(strpos($content, 'Test Cal') > 0);
+            $content = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
+                                                           'mycalendar[]', 'mycalendar', 'saved');
+            $this->assertTrue(strpos($content, 'Test Cal') > 0);
         }
     }
 ?>
