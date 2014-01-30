@@ -135,8 +135,18 @@
                     'operatorType'         => $operatorType,
                     'value'                => $partialNameOrEmailAddress,
                 ),
+                2 => array(
+                    'attributeName'        => 'hideFromSelecting',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                3 => array(
+                    'attributeName'        => 'hideFromSelecting',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                ),
             );
-            $metadata['structure'] = '(1 or partialnamesearch)';
+            $metadata['structure'] = '((1 or partialnamesearch) and (2 or 3))';
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelName);
             if ($stateMetadataAdapterClassName != null)
             {

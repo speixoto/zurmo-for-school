@@ -76,7 +76,7 @@
 
         protected function getWidgetSourceUrl()
         {
-            return  Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete');
+            return  Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsOrUsersForMultiSelectAutoComplete');
         }
 
         protected function getWidgetHintText()
