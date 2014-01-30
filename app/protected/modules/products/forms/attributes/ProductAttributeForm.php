@@ -34,58 +34,21 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailMessageContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
+    class ProductAttributeForm extends HasOneModelAttributeForm
     {
-        /**
-         * Override so it only render if to recipient is a Contact
-         * and the user has the right to access Email Templates
-         * @return string
-         */
-        protected function renderControlEditable()
+        public static function getAttributeTypeDisplayName()
         {
-            if ($this->shouldUseTemplate() &&
-                RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
-            {
-                return parent::renderControlEditable();
-            }
-            return null;
+            return Zurmo::t('ProductsModule', 'Product');
         }
 
-        protected function getModuleId()
+        public static function getAttributeTypeDisplayDescription()
         {
-            return 'CreateEmailMessageForm';
+            return Zurmo::t('ProductsModule', 'A product field');
         }
 
-        protected function getHtmlContentId()
+        public function getAttributeTypeName()
         {
-            $htmlContentId = $this->getModuleId() . '_content';
-            $htmlContentId .= '_';
-            $htmlContentId .= EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME;
-            return $htmlContentId;
-        }
-
-        protected function getContactId()
-        {
-            if ($this->shouldUseTemplate())
-            {
-                $relatedId = Yii::app()->request->getQuery('relatedId');
-                return $relatedId;
-            }
-            return parent::getContactId();
-        }
-
-        /**
-         * If the emailMessage content can be populated from an emailTemplate
-         * @return bool
-         */
-        protected function shouldUseTemplate()
-        {
-            $relatedModelClassName = Yii::app()->request->getQuery('relatedModelClassName');
-            if ($relatedModelClassName == 'Contact')
-            {
-                return true;
-            }
-            return false;
+            return 'Product';
         }
     }
 ?>

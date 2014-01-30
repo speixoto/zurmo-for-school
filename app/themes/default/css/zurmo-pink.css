@@ -8453,6 +8453,12 @@ table.configuration-list tr:last-child td {
 .UserGroupMembershipView th {
   text-align: left !important;
 }
+.UserActionBarAndSecurityDetailsView > div + div {
+  margin-top: 30px;
+}
+.UserActionBarAndSecurityDetailsView > div:first-child + div {
+  margin-top: 0;
+}
 #AuditEventsModalListView tr td:first-child,
 #AuditEventsModalListView tr th:first-child {
   padding-left: 15px;
@@ -9820,7 +9826,7 @@ div.wide.form .errorMessage {
   margin: 0;
   opacity: 0;
   filter: alpha(opacity=0);
-  font-size: 200px;
+  font-size: 25px;
   direction: ltr;
   cursor: pointer;
 }
@@ -13535,7 +13541,7 @@ a.user-link {
 }
 #CreateEmailMessageModalEditView .more-panels-link {
   display: block;
-  margin: 0 0 0 4%;
+  margin: 0 0 0 10%;
   font-size: 11px;
   float: left;
   position: relative;
@@ -13560,12 +13566,17 @@ a.user-link {
 }
 .recipient > label {
   float: left;
-  width: 3%;
+  width: 10%;
   margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .recipient > div {
   float: right;
-  width: 96%;
+  width: 90%;
 }
 #cc-bcc-fields .recipient {
   margin-top: 15px;
@@ -13590,6 +13601,12 @@ a.user-link {
 }
 #NoUserEmailConfigurationYetView p {
   margin-top: 15px;
+}
+#redactor_modal input[type="text"],
+#redactor_modal input[type="password"],
+#redactor_modal input[type="email"],
+#redactor_modal textarea {
+  z-index: 9999 !important;
 }
 .outbound-settings {
   clear: left;
@@ -19038,67 +19055,6 @@ a + .project-stats {
 .spidergraph div {
   overflow: visible !important;
 }
-.turquoise {
-  background: #1abc9c;
-}
-.emerland {
-  background: #2ecc71;
-}
-.peterriver {
-  background: #3498db;
-}
-.amethyst {
-  background: #9b59b6;
-}
-.wetasphalt {
-  background: #34495e;
-}
-.greensea {
-  background: #16a085;
-}
-.nephritis {
-  background: #27ae60;
-}
-.belizehole {
-  background: #2980b9;
-}
-.wisteria {
-  background: #8e44ad;
-}
-.midnightblue {
-  background: #2c3e50;
-}
-.sunflower {
-  background: #f1c40f;
-}
-.carrot {
-  background: #e67e22;
-}
-.alizarin {
-  background: #e74c3c;
-}
-.clouds {
-  background: #ecf0f1;
-  color: #999;
-}
-.concrete {
-  background: #95a5a6;
-}
-.orange {
-  background: #f39c12;
-}
-.pumpkin {
-  background: #d35400;
-}
-.pomegranate {
-  background: #c0392b;
-}
-.silver {
-  background: #bdc3c7;
-}
-.asbestos {
-  background: #7f8c8d;
-}
 .merge-color-1 {
   border: 2px dotted #315AB0;
   color: #315AB0 !important;
@@ -19296,6 +19252,16 @@ a + .project-stats {
   height: 229px;
   background: #fff;
   border-left: 1px solid #dfdfdf;
+}
+#dedupe-spinner {
+  display: block;
+  visibility: visible;
+  position: absolute;
+  top: 1px;
+  right: 20px;
+}
+#dedupe-spinner .z-spinner {
+  display: block;
 }
 #calendar {
   width: 100%;

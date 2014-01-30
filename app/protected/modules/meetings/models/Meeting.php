@@ -108,6 +108,7 @@
                 'elements' => array(
                     'endDateTime'   => 'DateTime',
                     'startDateTime' => 'DateTime',
+                    'description'   => 'TextArea',
                 ),
                 'customFields' => array(
                     'category'     => 'MeetingCategories',

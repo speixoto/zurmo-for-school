@@ -50,6 +50,8 @@
 
         public static $cacheType = 'P:';
 
+        public static $modulePermissionsDataCachePrefix = 'MD:';
+
         /**
          * @param SecurableItem $securableItem
          * @param Permitable $permitable
@@ -212,6 +214,51 @@
                 }
             }
             throw new NotFoundException();
+        }
+
+        /**
+         * @param Permitable $permitable
+         * @return mixed
+         * @throws NotFoundException
+         */
+        public static function getAllModulePermissionsDataByPermitable($permitable)
+        {
+            assert('$permitable instanceof Permitable');
+            if ($permitable->getClassId('Permitable')    == 0)
+            {
+                throw new NotFoundException();
+            }
+            $permitableModelIdentifier = $permitable->getModelIdentifier();
+            if (static::supportsAndAllowsMemcache())
+            {
+                $prefix = static::$modulePermissionsDataCachePrefix . static::getCachePrefix(static::$cacheType);
+                $serializedData = Yii::app()->cache->get($prefix . $permitableModelIdentifier);
+                if ($serializedData !== false)
+                {
+                    return unserialize($serializedData);
+                }
+            }
+            throw new NotFoundException();
+        }
+
+        /**
+         * @param Permitable $permitable
+         * @param array $data
+         */
+        public static function cacheAllModulePermissionsDataByPermitables($permitable, array $data)
+        {
+            assert('$permitable instanceof Permitable');
+            if ($permitable->getClassId('Permitable') == 0)
+            {
+                return;
+            }
+            $permitableModelIdentifier   = $permitable->getModelIdentifier();
+            if (static::supportsAndAllowsMemcache())
+            {
+                $prefix = static::$modulePermissionsDataCachePrefix . static::getCachePrefix(static::$cacheType);
+
+                Yii::app()->cache->set($prefix . $permitableModelIdentifier, serialize($data));
+            }
         }
 
         // The $forgetDbLevel cache is for testing.

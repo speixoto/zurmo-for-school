@@ -398,7 +398,7 @@
             sleep(20);
             $messages = $imap->getMessages();
             $this->assertEquals(1, count($messages));
-            $this->assertEquals(imap_utf8("=?utf-8?B?2KLYstmF2KfbjNi0?="), $messages[0]->subject);
+            $this->assertEquals(imap_utf8("=?utf-8?B?2KLYstmF2KfbjNi0?="), $messages[0]->subject); // Not Coding Standard
         }
 
         public function testGetMessagesWithNonUtf8Charset()
@@ -417,14 +417,14 @@
                                                    null,
                                                    null,
                                                    null,
-                                                   array('CC' => '=?ISO-8859-1?Q?Andr=E9?= <andre@zurmo.org>')
+                                                   array('CC' => '=?ISO-8859-1?Q?Andr=E9?= <andre@zurmo.org>') // Not Coding Standard
             );
             sleep(20);
             $messages = $imap->getMessages();
             $this->assertEquals(1, count($messages));
-            $this->assertEquals(imap_utf8("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?="),
+            $this->assertEquals(imap_utf8("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?="), // Not Coding Standard
                                 $messages[0]->subject);
-            $this->assertEquals(imap_utf8("=?ISO-8859-1?Q?Andr=E9?="),
+            $this->assertEquals(imap_utf8("=?ISO-8859-1?Q?Andr=E9?="), // Not Coding Standard
                                 $messages[0]->cc[0]['name']);
         }
 

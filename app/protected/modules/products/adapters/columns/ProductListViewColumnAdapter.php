@@ -34,58 +34,27 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailMessageContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
+    class ProductListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        /**
-         * Override so it only render if to recipient is a Contact
-         * and the user has the right to access Email Templates
-         * @return string
-         */
-        protected function renderControlEditable()
+        public function renderGridViewData()
         {
-            if ($this->shouldUseTemplate() &&
-                RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
+            if ($this->getIsLink())
             {
-                return parent::renderControlEditable();
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'products'),
+                );
             }
-            return null;
-        }
-
-        protected function getModuleId()
-        {
-            return 'CreateEmailMessageForm';
-        }
-
-        protected function getHtmlContentId()
-        {
-            $htmlContentId = $this->getModuleId() . '_content';
-            $htmlContentId .= '_';
-            $htmlContentId .= EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME;
-            return $htmlContentId;
-        }
-
-        protected function getContactId()
-        {
-            if ($this->shouldUseTemplate())
+            else
             {
-                $relatedId = Yii::app()->request->getQuery('relatedId');
-                return $relatedId;
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
             }
-            return parent::getContactId();
-        }
-
-        /**
-         * If the emailMessage content can be populated from an emailTemplate
-         * @return bool
-         */
-        protected function shouldUseTemplate()
-        {
-            $relatedModelClassName = Yii::app()->request->getQuery('relatedModelClassName');
-            if ($relatedModelClassName == 'Contact')
-            {
-                return true;
-            }
-            return false;
         }
     }
 ?>
