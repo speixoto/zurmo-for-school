@@ -38,6 +38,7 @@
       */
     class CalendarItemsDataProvider extends CDataProvider
     {
+        const MAXIMUM_CALENDAR_ITEMS_COUNT = 200;
         /**
          * @var array
          */
@@ -62,6 +63,10 @@
          * @var string
          */
         protected $dateRangeType;
+        /**
+         * @var array
+         */
+        private $_calendarItemsData;
 
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
@@ -93,15 +98,19 @@
         }
 
         /**
-         * Override so when refresh is true it resets _rowsData
+         * Override so when refresh is true it resets _calendarItemsData
          */
         public function getData($refresh = false)
         {
-           // if ($refresh)
-           // {
-           //     $this->_rowsData = null;
-           // }
-            return parent::getData($refresh);
+            if ($refresh)
+            {
+                $this->_calendarItemsData = null;
+            }
+            if($this->_calendarItemsData === null)
+            {
+                $this->_calendarItemsData = $this->fetchData();
+            }
+            return $this->_calendarItemsData;
         }
 
         /**
@@ -109,16 +118,7 @@
          */
         protected function fetchData()
         {
-            return $this->resolveCalendarItems(); //todo: temporary. probably add back in limit and offiset?
-
-
-            $offset = $this->resolveOffset();
-            $limit  = $this->resolveLimit();
-            if ($this->getTotalItemCount() == 0)
-            {
-                return array();
-            }
-            return $this->runQueryAndGetResolveResultsData($offset, $limit);
+            return $this->resolveCalendarItems();
         }
 
         /**
@@ -141,8 +141,6 @@
          */
         protected function resolveCalendarItems()
         {
-            //todo: check if cached _calendarItems. ?
-
             $calendarItems = array();
             foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarData)
             {
@@ -164,16 +162,27 @@
             return $calendarItems;
         }
 
+        /**
+         * Resolve redbean models by calendar.
+         * @param SavedCalendar $calendar
+         * @return array
+         */
         protected function resolveRedBeanModelsByCalendar(SavedCalendar $calendar)
         {
             $models             = array();
             $report             = $this->makeReportBySavedCalendar($calendar);
             $reportDataProvider = new RowsAndColumnsReportDataProvider($report);
             $reportResultsRows  = $reportDataProvider->getData();
+            $count              = 1;
             foreach($reportResultsRows as $reportResultsRowData)
             {
                 $models[] = $reportResultsRowData->getModel('attribute0'); //todo: even though it is 0 because we only have one displayAttribute, we should
                                                                            //todo: be pulling this from somewhere else instead of statically defining it here. probably...
+                $count++;
+                if($count > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
+                {
+                    break;
+                }
             }
 
             //todo: need to set distinct? or we do we set it somewhere else? we need this otherwise we could have duplicate models...
