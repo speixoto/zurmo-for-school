@@ -561,9 +561,10 @@
                                           {
                                                 $('#my-calendars-list').html(data);
                                                 $(this).makeLargeLoadingSpinner(false, '#my-calendars-list');
+                                                refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
                                           }
                             });
-                            refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
+
                           }
                         );";
              $cs         = Yii::app()->getClientScript();
@@ -599,10 +600,10 @@
                                           {
                                                 $('#shared-calendars-list').html(data);
                                                 $(this).makeLargeLoadingSpinner(false, '#shared-calendars-list');
+                                                refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
                                           }
                             }
                             );
-                            refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
                       })";
             $cs         = Yii::app()->getClientScript();
             if($cs->isScriptRegistered('calunsubscribescript', ClientScript::POS_END) === false)

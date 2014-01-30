@@ -99,7 +99,7 @@
 
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('CalendarsModule', 'Calendars', array(), null, $language);
+            return Zurmo::t('CalendarsModule', 'Calendar', array(), null, $language);
         }
 
         protected static function getPluralModuleLabel($language)
