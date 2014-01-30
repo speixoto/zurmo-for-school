@@ -53,19 +53,27 @@
             }
             $content .= '<br/>';
             $content .= self::renderActivityItemsContentsExcludingContacts($meeting);
-            if (count($meeting->activityItems) > 0)
+            if (count($meeting->activityItems) > 0 || count($meeting->userAttendees) > 0)
             {
-                $contactsContent = null;
+                $attendeesContent = null;
                 $contactLabels = self::getExistingContactRelationsLabels($meeting->activityItems);
                 foreach ($contactLabels as $label)
                 {
-                    if ($contactsContent != null)
+                    if ($attendeesContent != null)
                     {
-                        $contactsContent .= ', ';
+                        $attendeesContent .= ', ';
                     }
-                    $contactsContent .= $label;
+                    $attendeesContent .= $label;
                 }
-                $content .= $contactsContent . '<br/>';
+                foreach ($meeting->userAttendees as $user)
+                {
+                    if ($attendeesContent != null)
+                    {
+                        $attendeesContent .= ', ';
+                    }
+                    $attendeesContent .= strval($user);
+                }
+                $content .= $attendeesContent . '<br/>';
             }
             if ($meeting->location != null)
             {
