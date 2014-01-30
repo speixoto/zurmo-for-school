@@ -1625,6 +1625,7 @@ body > .ui-autocomplete {
   position: relative;
   float: left;
   width: 100%;
+  display: table;
 }
 #MashableInboxActionBarForViews > div,
 #ActionBarSearchAndListView > div {
@@ -2055,6 +2056,8 @@ td {
   border: 1px solid #dfdfdf;
 }
 .items-wrapper {
+  width: 100%;
+  display: table;
   overflow-x: auto;
   background: -webkit-linear-gradient(left,#fff 30%,rgba(255,255,255,0)), -webkit-linear-gradient(left,rgba(255,255,255,0),#fff 70%) 100%, -webkit-radial-gradient(0 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)), -webkit-radial-gradient(100% 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)) 100% 0;
   background-repeat: no-repeat;
@@ -9855,32 +9858,18 @@ div.wide.form .errorMessage {
 .fileupload-buttonbar .toggle {
   margin-bottom: 5px;
 }
-#ui-datepicker-div {
-  max-width: 250px;
-}
 .ui-datepicker {
   z-index: 10000;
-  background-color: #f5f5f5 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  display: table !important;
 }
 .ui-datepicker.ui-datepicker-inline {
   margin: 15px;
 }
 .ui-datepicker .ui-datepicker-header {
-  height: 35px;
-  background: #111 url("../images/datepicker-header.png") left top repeat-x !important;
-  color: #FFF;
+  display: table;
+  height: 36px;
+  width: 100%;
+  color: #7f7f7f;
   font-weight: bold;
 }
 .ui-datepicker .ui-datepicker-header a:hover:before,
@@ -9914,10 +9903,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-next span {
   visibility: hidden;
+  display: none;
 }
 .ui-datepicker .ui-datepicker-next:before {
   content: "▶";
-  margin-left: 10px;
+  margin-right: 10px;
 }
 .ui-datepicker .ui-datepicker-next :hover {
   cursor: pointer !important;
@@ -9929,27 +9919,38 @@ div.wide.form .errorMessage {
   line-height: 35px;
   font-size: 14px;
   font-weight: bold;
-  color: #DFDFDF;
-  -webkit-text-shadow: #000 0 1px 0;
-  -moz-text-shadow: #000 0 1px 0;
-  -ms-text-shadow: #000 0 1px 0;
-  -o-text-shadow: #000 0 1px 0;
-  text-shadow: #000 0 1px 0;
+  color: #7f7f7f;
 }
 .ui-datepicker .ui-datepicker-calendar {
   width: 100%;
-  border-color: #BBB;
-  border-style: solid;
-  border-width: 0 0 1px 1px;
   border-spacing: 0;
-  border-collapse: collapse;
-  background: #fff;
-}
-.ui-datepicker .ui-datepicker-calendar th {
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left -35px repeat-x !important;
+  table-layout: fixed;
+  border: 1px solid #ddd;
+  border-top: none;
 }
 .ui-datepicker .ui-datepicker-calendar th:last-child {
-  border-right: 1px solid #BBB;
+  border-right: none;
+}
+.ui-datepicker .ui-datepicker-calendar td {
+  min-width: 30px;
+  height: 30px;
+  border-color: #ddd;
+  border-style: solid;
+  border-width: 1px 1px 0 0;
+  border-top: 1px solid #ddd !important;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
+  color: #B3B3B3;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
+  background-image: none !important;
+  background: #ffffff !important;
+}
+.ui-datepicker .ui-datepicker-calendar td:hover {
+  background-image: none;
+}
+.ui-datepicker .ui-datepicker-calendar td:last-child {
+  border-right: none;
 }
 .ui-datepicker .ui-datepicker-calendar a {
   font-size: 9px;
@@ -9960,11 +9961,6 @@ div.wide.form .errorMessage {
   width: 100%;
   text-indent: 5px;
   padding-top: 3px;
-  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
   cursor: pointer;
 }
 .ui-datepicker .ui-datepicker-calendar span {
@@ -9977,36 +9973,7 @@ div.wide.form .errorMessage {
   font-size: 9px;
   text-transform: uppercase;
   line-height: 20px;
-  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
   cursor: pointer;
-}
-.ui-datepicker .ui-datepicker-calendar td {
-  min-width: 30px;
-  height: 30px;
-  border-color: #BBB;
-  border-style: solid;
-  border-width: 1px 1px 0 0;
-  border-top: 1px solid #bbb !important;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left top repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month {
-  background-image: none;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
-  color: #B3B3B3;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
-  background-image: none !important;
-  background: #ffffff !important;
-}
-.ui-datepicker .ui-datepicker-calendar td:hover {
-  background-image: none;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   float: left;
@@ -10116,7 +10083,7 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui-timepicker-div {
   float: left;
   padding: 10px 5px 0 5px;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid #ddd;
   line-height: 1;
 }
 .ui-datepicker .ui-timepicker-div dt {
@@ -10215,6 +10182,106 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui_tpicker_millisec,
 .ui-datepicker .ui_tpicker_microsec {
   display: none;
+}
+.juiportlet-widget-content .ui-datepicker,
+#ui-datepicker-div .ui-datepicker {
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+}
+.juiportlet-widget-content .ui-datepicker-header,
+#ui-datepicker-div .ui-datepicker-header {
+  background: #111 url("../images/datepicker-header.png") left top repeat-x !important;
+  color: #FFF;
+}
+.juiportlet-widget-content .ui-datepicker-calendar,
+#ui-datepicker-div .ui-datepicker-calendar {
+  background: #fff;
+  border-color: #BBB;
+}
+.juiportlet-widget-content .ui-datepicker-calendar th,
+#ui-datepicker-div .ui-datepicker-calendar th {
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left -37px repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar th:last-child,
+#ui-datepicker-div .ui-datepicker-calendar th:last-child {
+  border-color: #bbb;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td,
+#ui-datepicker-div .ui-datepicker-calendar td {
+  border-color: #bbb;
+  border-top: 1px solid #bbb !important;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left top repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td.ui-datepicker-other-month,
+#ui-datepicker-div .ui-datepicker-calendar td.ui-datepicker-other-month {
+  background-image: none;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td.ui-datepicker-today,
+#ui-datepicker-div .ui-datepicker-calendar td.ui-datepicker-today {
+  background-image: none !important;
+  background: #ffffff !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td:hover,
+#ui-datepicker-div .ui-datepicker-calendar td:hover {
+  background-image: none;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td:last-child,
+#ui-datepicker-div .ui-datepicker-calendar td:last-child {
+  border-right: none;
+}
+.juiportlet-widget-content .ui-datepicker-calendar a,
+.juiportlet-widget-content .ui-datepicker-calendar span,
+#ui-datepicker-div .ui-datepicker-calendar a,
+#ui-datepicker-div .ui-datepicker-calendar span {
+  color: #656565;
+  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+}
+.juiportlet-widget-content .ui-datepicker-title,
+#ui-datepicker-div .ui-datepicker-title {
+  color: #DFDFDF;
+  -webkit-text-shadow: #000 0 1px 0;
+  -moz-text-shadow: #000 0 1px 0;
+  -ms-text-shadow: #000 0 1px 0;
+  -o-text-shadow: #000 0 1px 0;
+  text-shadow: #000 0 1px 0;
+}
+.juiportlet-widget-content .ui-timepicker-div,
+#ui-datepicker-div .ui-timepicker-div {
+  width: 100%;
+  border-bottom: 1px solid #bbb;
+}
+#ui-datepicker-div {
+  max-width: 250px;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 }
 .token-input-list {
   position: relative;
