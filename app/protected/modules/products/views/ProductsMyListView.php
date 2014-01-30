@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Class used for the dashboard, selectable by users to display a list of their accounts or filtered any way.
+     * Class used for the dashboard, selectable by users to display a list of their products or filtered any way.
      */
     class ProductsMyListView extends SecuredMyListView
     {
