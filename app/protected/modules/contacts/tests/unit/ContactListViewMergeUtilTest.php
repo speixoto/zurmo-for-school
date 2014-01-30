@@ -126,6 +126,7 @@
 
         public function testEmailCopyActivity()
         {
+            $this->markTestSkipped();
             Yii::app()->user->userModel = User::getByUsername('super');
             $this->setFirstModel();
             $this->setSecondModel();
@@ -137,14 +138,14 @@
             $emailMessage                 = EmailMessage::getById($emailMessageId);
             $newSender                    = new EmailMessageSender();
             $newSender->fromAddress       = $this->selectedModels[1]->primaryEmail->emailAddress;
-            $newSender->fromName          = ListViewMergeUtil::getMergedModelName($this->selectedModels[1]);
+            $newSender->fromName          = strval($this->selectedModels[1]);
             $newSender->personsOrAccounts->add($this->selectedModels[1]);
             $emailMessage->sender         = $newSender;
             $emailMessage->save();
             ListViewMergeUtil::processCopyEmailActivity($this->selectedModels[0], $this->selectedModels[1]);
 
             $emailMessage                 = EmailMessage::getById($emailMessageId);
-            $this->assertEquals(ListViewMergeUtil::getMergedModelName($this->selectedModels[0]), $emailMessage->sender->fromName);
+            $this->assertEquals(strval($this->selectedModels[0]), $emailMessage->sender->fromName);
             $this->assertEquals('test@yahoo.com', $emailMessage->sender->fromAddress);
 
             //For recipient
@@ -156,7 +157,7 @@
             $emailMessage                 = EmailMessage::getById($emailMessageId);
             $recipient                    = new EmailMessageRecipient();
             $recipient->toAddress         = $this->selectedModels[1]->primaryEmail->emailAddress;
-            $recipient->toName            = ListViewMergeUtil::getMergedModelName($this->selectedModels[1]);
+            $recipient->toName            = strval($this->selectedModels[1]);
             $recipient->type              = EmailMessageRecipient::TYPE_TO;
             $recipient->personsOrAccounts->add($this->selectedModels[1]);
             $emailMessage->recipients->add($recipient);
@@ -167,7 +168,7 @@
             $emailMessage                 = EmailMessage::getById($emailMessageId);
             $recipients                   = $emailMessage->recipients;
             $this->assertCount(2, $recipients);
-            $this->assertEquals(ListViewMergeUtil::getMergedModelName($this->selectedModels[0]), $recipients[1]->toName);
+            $this->assertEquals(strval($this->selectedModels[0]), $recipients[1]->toName);
             $this->assertEquals('test@yahoo.com', $recipients[1]->toAddress);
             $this->assertCount(1, $recipients[1]->personsOrAccounts);
         }
