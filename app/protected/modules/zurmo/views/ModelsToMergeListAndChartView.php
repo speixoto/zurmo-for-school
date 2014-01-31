@@ -66,7 +66,7 @@
             $leftContainer = ZurmoHtml::tag('div', array('class' => 'left-column clearfix'), $leftContent);
             $rightContent = $this->renderRightSideContent();
             $rightContainer = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightContent);
-            return ZurmoHtml::tag('div', array('class' => 'chosen-entries'), $leftContainer . $rightContainer);
+            return ZurmoHtml::tag('div', array('class' => 'chosen-entries clearfix'), $leftContainer . $rightContainer);
         }
 
         protected function renderSelectedContactsListWithCardView()
