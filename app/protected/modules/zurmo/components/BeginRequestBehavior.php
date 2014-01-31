@@ -135,6 +135,7 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadEmailMessagesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadContactLatestActivityDateTimeObserver'));
@@ -381,7 +382,7 @@
                 $isUrlAllowedToGuests = false;
                 foreach ($allowedGuestUserUrls as $url)
                 {
-                    if (ZurmoUrlManager::getPositionOfPathInUrl($url) !== false)
+                    if (Yii::app()->urlManager->getPositionOfPathInUrl($url) !== false)
                     {
                         $isUrlAllowedToGuests = true;
                         break;
@@ -495,6 +496,12 @@
         {
             $conversationsObserver = new ConversationsObserver();
             $conversationsObserver->init();
+        }
+
+        public function handleLoadEmailMessagesObserver($event)
+        {
+            $emailMessagesObserver = new EmailMessagesObserver();
+            $emailMessagesObserver->init();
         }
 
         public function handleLoadWorkflowsObserver($event)

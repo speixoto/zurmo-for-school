@@ -34,13 +34,21 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoUrlManager extends CUrlManager
+    class ProductAttributeForm extends HasOneModelAttributeForm
     {
-        public function getPositionOfPathInUrl($keyword)
+        public static function getAttributeTypeDisplayName()
         {
-            $requestedUrl = Yii::app()->getRequest()->getUrl();
-            $position = strpos(trim($requestedUrl, '/'), trim($keyword, '/'));
-            return $position;
+            return Zurmo::t('ProductsModule', 'Product');
+        }
+
+        public static function getAttributeTypeDisplayDescription()
+        {
+            return Zurmo::t('ProductsModule', 'A product field');
+        }
+
+        public function getAttributeTypeName()
+        {
+            return 'Product';
         }
     }
 ?>
