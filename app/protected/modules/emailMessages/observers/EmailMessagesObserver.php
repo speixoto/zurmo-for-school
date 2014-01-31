@@ -35,45 +35,36 @@
      ********************************************************************************/
 
     /**
-     * Override begin request behavior used by console applications.  Certain request/http/url specific logic
-     * is not included since it is not applicable when using the console application.
+     * Used to observe when a model that can be a sender or recipient personsOrAccountsItem is deleted so that
+     * the joining _item row can be properly removed.
      */
-    class CommandBeginRequestBehavior extends BeginRequestBehavior
+    class EmailMessagesObserver extends BaseObserver
     {
-        public function attach($owner)
+        public function init()
         {
-            $this->attachNonApiRequestBehaviors($owner);
-            if (Yii::app()->isApplicationInstalled())
-            {
-                $this->attachNonApiRequestBehaviorsForInstalledApplication($owner);
-            }
+            $eventHandler = array($this, 'deletePersonsOrAccountsItems');
+            Contact::model()->attachEventHandler('onAfterDelete', $eventHandler);
+            $this->attachedEventHandlersIndexedByModelClassName['Contact'] = array('onAfterDelete', $eventHandler);
+            User::model()->attachEventHandler('onAfterDelete', $eventHandler);
+            $this->attachedEventHandlersIndexedByModelClassName['User']    = array('onAfterDelete', $eventHandler);
+            Account::model()->attachEventHandler('onAfterDelete', $eventHandler);
+            $this->attachedEventHandlersIndexedByModelClassName['Account'] = array('onAfterDelete', $eventHandler);
+
         }
 
         /**
-         * @param CComponent $owner
+         * Given a event, perform the deletion of conversationItems related to the event sender.
+         * @param CEvent $event
          */
-        protected function attachNonApiRequestBehaviors(CComponent $owner)
+        public function deletePersonsOrAccountsItems(CEvent $event)
         {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
-        }
-
-        /**
-         * @param CComponent $owner
-         */
-        protected function attachNonApiRequestBehaviorsForInstalledApplication(CComponent $owner)
-        {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadEmailMessagesObserver'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountContactAffiliationObserver'));
+            $model                   = $event->sender;
+            assert('$model instanceof Item');
+            $itemId                  = $model->getClassId('Item');
+            $sql                     = 'DELETE from emailmessagerecipient_item where item_id = ' . $itemId;
+            ZurmoRedBean::exec($sql);
+            $sql                     = 'DELETE from emailmessagesender_item where item_id = ' . $itemId;
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>
