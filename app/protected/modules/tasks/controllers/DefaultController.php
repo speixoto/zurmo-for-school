@@ -45,6 +45,7 @@
                                             ModalEdit',
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => 'TaskModalEditView',
+                        'isModal'         => true,
                    ),
                     array(
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalDetails',
