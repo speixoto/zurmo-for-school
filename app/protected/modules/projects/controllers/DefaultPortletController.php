@@ -34,67 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ActiveProjectsPortletView extends MyListView
+    class ProjectsDefaultPortletController extends ZurmoPortletController
     {
-        public static function getDefaultMetadata()
+        public function actionHome($action)
         {
-            $metadata = array(
-                'perUser' => array(
-                    'title' => "eval:Zurmo::t('ProjectsModule', 'Active ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
-                    'searchAttributes' => array('ownedItemsOnly' => false, 'status' => Project::STATUS_ACTIVE),
-                ),
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'DashboardActiveProject'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        /**
-         * @return bool
-         */
-        public static function canUserConfigure()
-        {
-            return false;
-        }
-
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            $title  = Zurmo::t('ProjectsModule', 'Active ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
-            return $title;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'ProjectsModule';
-        }
-
-        public static function getDisplayDescription()
-        {
-            return Zurmo::t('ProjectsModule', 'My ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        protected function getSearchModel()
-        {
-            $modelClassName = $this->modelClassName;
-            return new ProjectsSearchForm(new $modelClassName(false));
+            $this->redirect(array('home/' . $action));
         }
     }
 ?>
