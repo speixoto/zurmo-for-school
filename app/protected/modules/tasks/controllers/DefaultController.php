@@ -41,7 +41,7 @@
             return array_merge(parent::filters(),
                 array(
                     array(
-                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreateFromRelation,
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreateFromRelation, modalCreate,
                                             ModalEdit',
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => 'TaskModalEditView',
