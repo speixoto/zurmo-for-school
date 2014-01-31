@@ -382,7 +382,7 @@
                 $isUrlAllowedToGuests = false;
                 foreach ($allowedGuestUserUrls as $url)
                 {
-                    if (ZurmoUrlManager::getPositionOfPathInUrl($url) !== false)
+                    if (Yii::app()->urlManager->getPositionOfPathInUrl($url) !== false)
                     {
                         $isUrlAllowedToGuests = true;
                         break;
