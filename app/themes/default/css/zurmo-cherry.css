@@ -9860,7 +9860,7 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker {
   z-index: 10000;
-  display: table !important;
+  display: table;
 }
 .ui-datepicker.ui-datepicker-inline {
   margin: 15px;
