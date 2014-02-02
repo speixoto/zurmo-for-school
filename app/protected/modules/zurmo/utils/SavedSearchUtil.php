@@ -179,6 +179,10 @@
             {
                 $stickyData['anyMixedAttributes']      = $anyMixedAttributes['anyMixedAttributes'];
             }
+            else
+            {
+                unset($stickyData['anyMixedAttributes']);
+            }
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
             $dataCollection->resolveKanbanBoardOptionsForSearchModelFromSourceData();
