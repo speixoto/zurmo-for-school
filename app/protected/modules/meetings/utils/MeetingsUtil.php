@@ -65,7 +65,10 @@
                     }
                     $contactsContent .= $label;
                 }
-                $content .= $contactsContent . '<br/>';
+                if ($contactsContent != null )
+                {
+                    $content .= Zurmo::t('MeetingsModule', 'with') . ' ' . $contactsContent . '<br/>';
+                }
             }
             if ($meeting->location != null)
             {
@@ -93,7 +96,11 @@
                     $contact = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($contact) == 'Contact')
                     {
-                        $existingContacts[] = strval($contact);
+                        $params             = array('label' => strval($contact), 'redirectUrl' => null, 'wrapLabel' => false);
+                        $moduleClassName    = $contact->getModuleClassName();
+                        $moduleId           = $moduleClassName::getDirectoryName();
+                        $element            = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
+                        $existingContacts[] = '<em class="'.get_class($contact).'"></em>' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -115,7 +122,11 @@
                     $contact = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($contact) == 'Contact')
                     {
-                        $existingContacts[] = strval($contact);
+                        $params          = array('label' => strval($contact), 'redirectUrl' => null, 'wrapLabel' => false);
+                        $moduleClassName = $contact->getModuleClassName();
+                        $moduleId        = $moduleClassName::getDirectoryName();
+                        $element          = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
+                        $existingContacts[] = '<em class="'.get_class($contact).'"></em>' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -144,7 +155,13 @@
                         {
                             $content .= ', ';
                         }
-                        $content .= strval($castedDownModel);
+                        $params          = array('label' => strval($castedDownModel), 'redirectUrl' => null, 'wrapLabel' => false);
+                        $moduleClassName = $castedDownModel->getModuleClassName();
+                        $moduleId        = $moduleClassName::getDirectoryName();
+                        $element          = new DetailsLinkActionElement('default', $moduleId, $castedDownModel->id, $params);
+                        //Render icon
+                        $content .= '<em class="'.get_class($castedDownModel).'"></em>';
+                        $content .= $element->render();
                         break;
                     }
                     catch (NotFoundException $e)
@@ -154,7 +171,7 @@
             }
             if ($content != null)
             {
-                $content .= '<br/>';
+                $content = Zurmo::t('MeetingsModule', 'for') . ' ' . $content . '<br/>';
             }
             return $content;
         }

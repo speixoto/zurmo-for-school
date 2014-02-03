@@ -155,7 +155,7 @@
             {
                 $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
-            $content .= $this->renderScripts();
+            $this->renderScripts();
             return $content;
         }
 
