@@ -146,17 +146,38 @@
          * @param mixed $myCalendarIds
          * @return CalendarItemsDataProvider
          */
-        public static function processUserCalendarsAndMakeDataProviderForCombinedView($myCalendarIds = null, $mySubscribedCalendarIds = null)
+        public static function processUserCalendarsAndMakeDataProviderForCombinedView($myCalendarIds = null,
+                                                                                      $mySubscribedCalendarIds = null,
+                                                                                      $dateRangeType = null,
+                                                                                      $startDate = null,
+                                                                                      $endDate = null)
         {
             $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel,
                                                                                  $myCalendarIds,
                                                                                  $mySubscribedCalendarIds);
-            $dateRangeType              = CalendarUtil::getDateRangeType();
-            $startDate                  = CalendarUtil::getStartDate($dateRangeType);
-            $endDate                    = CalendarUtil::getEndDate($dateRangeType);
-            $dataProvider               = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
+            if($dateRangeType == null)
+            {
+                $dateRangeType  = CalendarUtil::getDateRangeType();
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarDateRangeType', $dateRangeType);
+            }
+            if($startDate == null)
+            {
+                $startDate      = CalendarUtil::getStartDate($dateRangeType);
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarStartDate', $startDate);
+            }
+            if($endDate == null)
+            {
+                $endDate        = CalendarUtil::getEndDate($dateRangeType);
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarEndDate', $endDate);
+            }
+            return CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
                                                                                                 $startDate, $endDate, $dateRangeType);
-            return $dataProvider;
         }
 
         /**
@@ -403,7 +424,17 @@
                                                                                         'CalendarsModule', 'myCalendarSelections');
             $mySubscribedCalendarIds    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
                                                                                         'CalendarsModule', 'mySubscribedCalendarSelections');
-            return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds, $mySubscribedCalendarIds);
+            $dateRangeType              = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'myCalendarDateRangeType');
+            $startDate                  = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'myCalendarStartDate');
+            $endDate                    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'myCalendarEndDate');
+            return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds,
+                                                                                        $mySubscribedCalendarIds,
+                                                                                        $dateRangeType,
+                                                                                        $startDate,
+                                                                                        $endDate);
         }
 
         /**

@@ -248,12 +248,15 @@
          */
         protected function renderConfigSaveAjax($formName)
         {
+            $url = Yii::app()->createUrl('calendars/default/combinedDetails');
             // Begin Not Coding Standard
             return ZurmoHtml::ajax(array(
                 'type' => 'POST',
                 'data' => 'js:$("#' . $formName . '").serialize()',
                 'url'  =>  $this->getValidateAndSaveUrl(),
-             //   'update' => '#' . $this->uniquePageId,
+                'success' => "function(){
+                                            $(location).attr('href', '{$url}');
+                                        }",
             ));
             // End Not Coding Standard
         }

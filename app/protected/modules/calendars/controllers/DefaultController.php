@@ -259,13 +259,22 @@
         /**
          * Get events for the selected calendars.
          */
-        public function actionGetEvents()
+        public function actionGetEvents($selectedMyCalendarIds = null,
+                                        $selectedSharedCalendarIds = null,
+                                        $startDate = null,
+                                        $endDate = null)
         {
-            $getData                    = GetUtil::getData();
-            $mySavedCalendarIds         = isset($getData['selectedMyCalendarIds'])? $getData['selectedMyCalendarIds']:null;
-            $mySubscribedCalendarIds    = isset($getData['selectedSharedCalendarIds'])? $getData['selectedSharedCalendarIds']:null;
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds,
-                                                                                                               $mySubscribedCalendarIds);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarStartDate', $startDate);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarEndDate', $endDate);
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
+                                                                                                               $selectedSharedCalendarIds,
+                                                                                                               null,
+                                                                                                               $startDate,
+                                                                                                               $endDate);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
             echo CJSON::encode($items);
         }

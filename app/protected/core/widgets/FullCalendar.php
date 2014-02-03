@@ -57,7 +57,8 @@
 
         public function run()
         {
-            $defaultView   = ($this->defaultView == null)? SavedCalendar::DATERANGE_TYPE_MONTH:$this->defaultView;
+            $defaultView   = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'myCalendarDateRangeType');
             $startDate     = $this->startDate;
             $endDate       = $this->endDate;
             $url           = Yii::app()->createUrl('calendars/default/getEvents');
@@ -66,8 +67,7 @@
             $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
             $inputId       = $this->inputId;
-            $cs->registerScript('loadcalendar',
-                                "$(document).on('ready', function() {
+            $script        = "$(document).on('ready', function() {
                                     $('#{$inputId}').fullCalendar({
                                                                     editable: true,
                                                                     header: {
@@ -75,6 +75,11 @@
                                                                                 center: 'title',
                                                                                 right: 'month,agendaWeek,agendaDay'
                                                                             },
+                                                                    /*events: function(start, end, callback) {
+                                                                                        var selectedMyCalendars = getSelectedCalendars('.mycalendar');
+                                                                                        var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
+                                                                                        getCalendarEvents('$url', '{$startDate}', '{$endDate}', callback);
+                                                                                    },*/
                                                                     events:  {
                                                                                 url : '$url',
                                                                                 data :function()
@@ -84,8 +89,8 @@
                                                                                     return {
                                                                                         selectedMyCalendarIds : selectedMyCalendars,
                                                                                         selectedSharedCalendarIds : selectedSharedCalendars,
-                                                                                        start      : '{$startDate}',
-                                                                                        end        : '{$endDate}'
+                                                                                        startDate      : '{$startDate}',
+                                                                                        endDate        : '{$endDate}'
                                                                                         }
                                                                                 }
                                                                             },
@@ -103,10 +108,21 @@
                                                                      defaultView: '{$defaultView}'
                                                                     });
 
-                                        });", ClientScript::POS_END);
-            $publishedUrl    =  Yii::app()->assetManager->publish(
-                                                            Yii::getPathOfAlias('application.modules.calendars.assets'));
-            //$cs->registerCssFile($publishedUrl . '/calendar.css');
+                                        });";
+            $nextPreviousScript = "$('body').on('click', '.fc-button-next span', function(){
+                                                    var startDate = getCalendarStartDate('{$inputId}');
+                                                    var endDate = getCalendarEndDate('{$inputId}');
+                                                    refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}');
+                                                   });
+
+
+                                    $('body').on('click', '.fc-button-prev span', function(){
+                                                    var startDate = getCalendarStartDate('{$inputId}');
+                                                    var endDate = getCalendarEndDate('{$inputId}');
+                                                    refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}');
+                                                   });";
+          $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
+          $cs->registerScript('nextPrevCalendarScript', $nextPreviousScript, ClientScript::POS_END);
         }
     }
 ?>
