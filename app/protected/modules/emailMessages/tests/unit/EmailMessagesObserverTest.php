@@ -83,7 +83,6 @@
             $deleted = $contact->delete();
             $this->assertTrue($deleted);
 
-
             //Now make sure the intermediate join table rows are removed
             $count   = ZurmoRedBean::getRow('select count(*) count from emailmessagerecipient_item');
             $this->assertEquals(0, $count['count']);
