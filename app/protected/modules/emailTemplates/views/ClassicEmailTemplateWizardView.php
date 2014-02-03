@@ -51,7 +51,7 @@
             return $views;
         }
 
-        protected function registerGeneralDataNextPageLinkScript($formName)
+        protected function renderGeneralDataNextPageLinkScript($formName)
         {
             return "
                     if (linkId == '" . GeneralDataForEmailTemplateWizardView::getNextPageLinkId() . "')

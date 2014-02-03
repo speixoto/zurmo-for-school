@@ -227,24 +227,34 @@
         protected function getSaveAjaxString($formName)
         {
             assert('is_string($formName)');
-            return ZurmoHtml::ajax(array(
-                                            'type'     => 'POST',
-                                            'data'     => 'js:$("#' . $formName . '").serialize()',
-                                            'url'      =>  $this->getFormActionUrl(),
-                                            'dataType' => 'json',
-                                            'success'  => 'js:function(data)
+            $ajaxArray              = $this->resolveSaveAjaxArray($formName);
+            return ZurmoHtml::ajax($ajaxArray);
+        }
+
+        /**
+         * @param $formName
+         * @return array
+         */
+        protected function resolveSaveAjaxArray($formName)
+        {
+            $ajaxArray                  = array('type'     => 'POST',
+                                                'data'     => 'js:$("#' . $formName . '").serialize()',
+                                                'url'      =>  'js: $("#' . $formName . '").attr("action")',
+                                                'dataType' => 'json',
+                                            );
+            $ajaxArray['success']  = 'js:function(data)
+                                        {
+                                            if (data.redirectToList)
                                             {
-                                                if (data.redirectToList)
-                                                {
-                                                    url = "' . $this->resolveSaveRedirectToListUrl() . '";
-                                                }
-                                                else
-                                                {
-                                                    url = "' . $this->resolveSaveRedirectToDetailsUrl() . '" + "?id=" + data.id
-                                                }
-                                                window.location.href = url;
-                                            }'
-                                          ));
+                                                url = "' . $this->resolveSaveRedirectToListUrl() . '";
+                                            }
+                                            else
+                                            {
+                                                url = "' . $this->resolveSaveRedirectToDetailsUrl() . '" + "?id=" + data.id
+                                            }
+                                            window.location.href = url;
+                                        }';
+            return $ajaxArray;
         }
 
         /**

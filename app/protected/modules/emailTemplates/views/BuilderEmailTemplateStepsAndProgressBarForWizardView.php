@@ -39,27 +39,12 @@
      */
     class BuilderEmailTemplateStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
-        protected $model;
-
-        public function __construct(EmailTemplate $model, $zeroBasedStepIndex = 0)
-        {
-            $this->model    = $model;
-            parent::__construct($zeroBasedStepIndex);
-        }
-
         protected function getSpanLabels()
         {
             $spanLabels = array(
                             Zurmo::t('Core', 'General'),
-                            Zurmo::t('EmailTemplatesModule', 'Base Template'),
-                            Zurmo::t('EmailTemplates', 'Canvas'),
-                            Zurmo::t('EmailTemplates', 'Preview')
-                            );
-            if ($this->model->id > 0)
-            {
-                // we are on edit screen, do not show the step regarding selecting a base template.
-                unset($spanLabels[1]);
-            }
+                            Zurmo::t('EmailTemplatesModule', 'Select a Base Template'),
+                            Zurmo::t('EmailTemplates', 'Canvas'));
             return $spanLabels;
         }
     }

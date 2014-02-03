@@ -85,5 +85,27 @@
         {
             return 'emailTemplates';
         }
+
+        protected function renderHiddenField(& $hiddenElements, $attributeName, $value = null)
+        {
+            $hiddenElements .= ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->model, $attributeName),
+                $value,
+                array('id' => ZurmoHtml::activeId($this->model, $attributeName)));
+        }
+
+        protected function wrapContentInTableRow(& $content, $htmlOptions = array())
+        {
+            $content = ZurmoHtml::tag('tr', $htmlOptions, $content);
+        }
+
+        protected function wrapContentInTableCell(& $content, $htmlOptions = array())
+        {
+            $content = ZurmoHtml::tag('td', $htmlOptions, $content);
+        }
+
+        protected function wrapContentInDiv(& $content, $htmlOptions = array())
+        {
+            $content = ZurmoHtml::tag('div', $htmlOptions, $content);
+        }
     }
 ?>

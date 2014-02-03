@@ -38,7 +38,8 @@
     {
         protected function validateAttribute($object, $attribute)
         {
-            if (empty($object->$attribute))
+            $trimmedValue = trim($object->$attribute);
+            if (empty($trimmedValue))
             {
                 $object->$attribute = Yii::app()->user->userModel->language;
             }

@@ -34,43 +34,53 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Factory for creating emailTemplate wizard views of
-     * the appropriate type.
-     */
-    class EmailTemplateWizardViewFactory
+    class BuilderCanvasWizardView extends ComponentForEmailTemplateWizardView
     {
         /**
-         * @param EmailTemplate $emailTemplate
-         * @return View
+         * @return string
          */
-        public static function makeViewFromEmailTemplate(EmailTemplate $emailTemplate)
+        public static function getWizardStepTitle()
         {
-            $viewClassName                      = static::getViewFromEmailTemplateBuiltType($emailTemplate->builtType);
-            $emailTemplateToWizardFormAdapter   = new EmailTemplateToWizardFormAdapter($emailTemplate);
-            $form                               = $emailTemplateToWizardFormAdapter->makeFormByBuiltType();
-            return new $viewClassName($form);
+            return Zurmo::t('EmailTemplatesModule', 'Canvas');
         }
 
         /**
-         * @return  BuilderEmailTemplateStepsAndProgressBarForWizardView | NullView
+         * @return string
          */
-        public static function makeStepsAndProgressBarViewFromEmailTemplate(EmailTemplate $emailTemplate)
+        public static function getPreviousPageLinkId()
         {
-            if ($emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
-            {
-                return new BuilderEmailTemplateStepsAndProgressBarForWizardView();
-            }
-            return new NullView();
+            return 'builderCanvasPreviousLink';
         }
 
-        protected static function getViewFromEmailTemplateBuiltType($type)
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
         {
-            if ($type == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
-            {
-                return 'BuilderEmailTemplateWizardView';
-            }
-            return 'ClassicEmailTemplateWizardView';
+            return 'builderCanvasFinishLink';
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderFormContent()
+        {
+            $leftSideContent                            =  '<table><colgroup><col class="col-0"><col class="col-1">' .
+                                                            '</colgroup>';
+            // TODO: @Shoaibi9: Critical: Load left sidebar and canvas here.
+            // TODO: @Shoaibi1: Hidden elements for all serializedData Indexes.
+            $hiddenElements                             = null;
+            $hiddenElements                             = ZurmoHtml::tag('td', array('colspan' => 2), $hiddenElements);
+            $this->wrapContentInTableRow($hiddenElements);
+            $leftSideContent                            .= $hiddenElements;
+            $leftSideContent                            .= '</table>';
+            $this->wrapContentInDiv($leftSideContent, array('class' => 'panel'));
+            $this->wrapContentInDiv($leftSideContent, array('class' => 'left-column'));
+
+            $content                                    = '<div class="attributesContainer">';
+            $content                                    .= $leftSideContent;
+            $content                                    .= '</div>';
+            return $content;
         }
     }
 ?>

@@ -209,7 +209,6 @@
             }
             if ($emailTemplate->save())
             {
-                // TODO: @Shoaibi: Critical2: For classic, redirect to details page.
                 echo CJSON::encode(array('id' => $emailTemplate->id, 'redirectToList' => false));
                 Yii::app()->end(0, false);
             }

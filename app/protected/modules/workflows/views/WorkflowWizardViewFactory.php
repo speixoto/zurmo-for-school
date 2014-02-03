@@ -74,7 +74,7 @@
          *          OnSaveWorkflowStepsAndProgressBarForWizardView
          * @throws NotSupportedException
          */
-        public static function makeStepsAndProgressBarViewFromReport(Workflow $workflow)
+        public static function makeStepsAndProgressBarViewFromWorkflow(Workflow $workflow)
         {
             $type = $workflow->getType();
             if ($type == Workflow::TYPE_BY_TIME)

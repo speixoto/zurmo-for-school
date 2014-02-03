@@ -38,7 +38,7 @@
     {
         abstract protected function resolveContainingViews(WizardActiveForm $form);
 
-        abstract protected function registerGeneralDataNextPageLinkScript($formName);
+        abstract protected function renderGeneralDataNextPageLinkScript($formName);
 
         /**
          * @return string|void
@@ -80,18 +80,18 @@
         {
             assert('is_string($formName)');
             $script     = "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');";
-            $script     .= $this->registerPreGeneralDataNextPageLinkScript($formName);
-            $script     .= $this->registerGeneralDataNextPageLinkScript($formName);
-            $script     .= $this->registerPostGeneralDataNextPageLinkScript($formName);
+            $script     .= $this->renderPreGeneralDataNextPageLinkScript($formName);
+            $script     .= $this->renderGeneralDataNextPageLinkScript($formName);
+            $script     .= $this->renderPostGeneralDataNextPageLinkScript($formName);
             return $script;
         }
 
-        protected function registerPreGeneralDataNextPageLinkScript($formName)
+        protected function renderPreGeneralDataNextPageLinkScript($formName)
         {
             return;
         }
 
-        protected function registerPostGeneralDataNextPageLinkScript($formName)
+        protected function renderPostGeneralDataNextPageLinkScript($formName)
         {
             return;
         }
@@ -104,7 +104,13 @@
 
         protected function registerClickFlowScript()
         {
+            $this->registerPreGeneralDataPreviousPageLinkScript();
             $this->registerGeneralDataPreviousPageLinkScript();
+            $this->registerPostGeneralDataPreviousLinkScript();
+        }
+
+        protected function registerPreGeneralDataPreviousPageLinkScript()
+        {
         }
 
         protected function registerGeneralDataPreviousPageLinkScript()
@@ -119,6 +125,10 @@
                     }
                 );
           ');
+        }
+
+        protected function registerPostGeneralDataPreviousLinkScript()
+        {
         }
 
         protected function resolveSaveRedirectToListUrl()

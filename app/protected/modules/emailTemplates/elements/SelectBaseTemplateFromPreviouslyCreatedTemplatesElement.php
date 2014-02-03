@@ -34,43 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Factory for creating emailTemplate wizard views of
-     * the appropriate type.
-     */
-    class EmailTemplateWizardViewFactory
+    class SelectBaseTemplateFromPreviouslyCreatedTemplatesElement extends SelectBaseTemplateBaseElement
     {
-        /**
-         * @param EmailTemplate $emailTemplate
-         * @return View
-         */
-        public static function makeViewFromEmailTemplate(EmailTemplate $emailTemplate)
+        protected function resolveBaseTemplates()
         {
-            $viewClassName                      = static::getViewFromEmailTemplateBuiltType($emailTemplate->builtType);
-            $emailTemplateToWizardFormAdapter   = new EmailTemplateToWizardFormAdapter($emailTemplate);
-            $form                               = $emailTemplateToWizardFormAdapter->makeFormByBuiltType();
-            return new $viewClassName($form);
-        }
-
-        /**
-         * @return  BuilderEmailTemplateStepsAndProgressBarForWizardView | NullView
-         */
-        public static function makeStepsAndProgressBarViewFromEmailTemplate(EmailTemplate $emailTemplate)
-        {
-            if ($emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
-            {
-                return new BuilderEmailTemplateStepsAndProgressBarForWizardView();
-            }
-            return new NullView();
-        }
-
-        protected static function getViewFromEmailTemplateBuiltType($type)
-        {
-            if ($type == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
-            {
-                return 'BuilderEmailTemplateWizardView';
-            }
-            return 'ClassicEmailTemplateWizardView';
+            return EmailTemplate::getPreviouslyCreatedBuilderTemplates($this->model->modelClassName);
         }
     }
 ?>

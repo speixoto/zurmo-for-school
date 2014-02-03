@@ -166,7 +166,7 @@
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent) && $this->model->builtType != EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
+            if (empty($this->model->textContent) && $this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
             {
                 return 'html';
             }
@@ -175,7 +175,7 @@
 
         protected function renderEditableHtmlContentArea()
         {
-            if ($this->model->builtType != EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
+            if ($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
             {
                 return $this->renderHtmlContentArea();
             }
@@ -184,7 +184,7 @@
 
         protected function renderNonEditableHtmlContentArea()
         {
-            if ($this->model->builtType != EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
+            if ($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
             {
                 $url            = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
                                     array('id' => $this->model->id, 'className' => get_class($this->model)));

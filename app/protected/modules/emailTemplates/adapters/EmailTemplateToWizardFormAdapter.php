@@ -72,11 +72,12 @@
         {
             $formModel       = new $formModelClassName();
             $this->setCommonAttributes($formModel);
+            $this->setUncommonAttributes($formModel);
             return $formModel;
         }
 
         /**
-         * @param WizardForm $formModel
+         * @param EmailTemplateWizardForm $formModel
          */
         protected function setCommonAttributes(EmailTemplateWizardForm $formModel)
         {
@@ -89,7 +90,10 @@
                 {
                     $emailTemplateMemberValue = (bool)$emailTemplateMemberValue;
                 }
-                $formModel->$member = $emailTemplateMemberValue;
+                if (property_exists($formModel, $member))
+                {
+                    $formModel->$member = $emailTemplateMemberValue;
+                }
             }
             if ($this->emailTemplate->owner->id > 0)
             {
@@ -106,6 +110,19 @@
             }
             $explicitReadWritePermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($this->emailTemplate);
             $formModel->setExplicitReadWriteModelPermissions($explicitReadWritePermissions);
+        }
+
+        /**
+         * @param EmailTemplateWizardForm $formModel
+         */
+        protected function setUncommonAttributes(EmailTemplateWizardForm $formModel)
+        {
+            // handle any custom mappings between EmailTemplateWizardForm and EmailTemplate model here.
+            if ($this->emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            {
+                $unserializedData   = unserialize($this->emailTemplate->serializedData);
+                $formModel->baseTemplateId = $unserializedData['baseTemplateId'];
+            }
         }
     }
 ?>

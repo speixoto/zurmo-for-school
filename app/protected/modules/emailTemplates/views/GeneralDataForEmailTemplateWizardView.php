@@ -68,7 +68,7 @@
         protected function renderFormContent()
         {
             static::$defaultTextElementEditableTemplate = '<th>{label}<span class="required">*</span>' .
-                                                            '</th><td colspan="{colspan}">{content}{error}</td>';
+                                                            '</th><td colspan="{colspan}">{content}</td>';
             // TODO: @Shoaibi/@Jason/@Amit: Critical: Everything red, property set on panel, wrong.
             $leftSideContent                            = $this->form->errorSummary($this->model);
             $leftSideContent                            .=  '<table><colgroup><col class="col-0"><col class="col-1">' .
@@ -84,7 +84,7 @@
             $this->renderFiles($leftSideContent);
             $this->renderPlainTextAndHtmlContent($leftSideContent);
 
-            $hiddenElements                             = ZurmoHtml::tag('td', array('colspan' => 2), $hiddenElements);
+            $this->wrapContentInTableCell($hiddenElements, array('colspan' => 2));
             $this->wrapContentInTableRow($hiddenElements);
             $leftSideContent                            .= $hiddenElements;
             $leftSideContent                            .= '</table>';
@@ -177,23 +177,6 @@
         protected function renderLanguage(& $hiddenElements)
         {
             $this->renderHiddenField($hiddenElements, 'language', $this->model->language);
-        }
-
-        protected function renderHiddenField(& $hiddenElements, $attributeName, $value)
-        {
-            $hiddenElements .= ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->model, $attributeName),
-                                                $value,
-                                                array('id' => ZurmoHtml::activeId($this->model, $attributeName)));
-        }
-
-        protected function wrapContentInTableRow(& $content)
-        {
-            $content = '<tr>' . $content . '</tr>';
-        }
-
-        protected function wrapContentInDiv(& $content, $htmlOptions = array())
-        {
-            $content = ZurmoHtml::tag('div', $htmlOptions, $content);
         }
 
         /**

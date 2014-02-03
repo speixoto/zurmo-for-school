@@ -150,8 +150,8 @@
                     array('type',                       'required'),
                     array('type',                       'type',    'type' => 'integer'),
                     array('type',                       'numerical'),
-                    array('isDraft',                    'required'),
                     array('isDraft',                    'type',     'type' => 'boolean'),
+                    array('isDraft',                    'SetToTrueForBuilderTemplateElseFalseValidator'),
                     array('builtType',                  'required'),
                     array('builtType',                  'type',     'type' => 'integer'),
                     array('builtType',                  'numerical'),
@@ -205,9 +205,71 @@
                 ),
             );
             $searchAttributeData['structure'] = '1';
-            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('EmailTemplate');
-            $where = RedBeanModelDataProvider::makeWhere('EmailTemplate', $searchAttributeData, $joinTablesAdapter);
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
+        }
+
+        /**
+         * Returns PredefinedTemplates
+         * @return Array of EmailTemplate models
+         */
+        public static function getPredefinedBuilderTemplates()
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'         => 'builtType',
+                    'operatorType'          => 'equals',
+                    'value'                 => static::BUILT_TYPE_BUILDER_TEMPLATE,
+                ),
+                2 => array(
+                    'attributeName'         => 'modelClassName',
+                    'operatorType'          => 'isNull',
+                    'value'                 => null,
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
+        }
+
+        /**
+         * Returns $limit number of previously created templates
+         * @param null $modelClassName
+         * @param false $includeDrafts
+         * @param null $limit
+         * @return Array of EmailTemplate models
+         */
+        public static function getPreviouslyCreatedBuilderTemplates($modelClassName = null, $includeDrafts = false, $limit = null)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'         => 'builtType',
+                    'operatorType'          => 'equals',
+                    'value'                 => static::BUILT_TYPE_BUILDER_TEMPLATE,
+                ),
+                2 => array(
+                    'attributeName'         => 'isDraft',
+                    'operatorType'          => 'equals',
+                    'value'                 => intval($includeDrafts),
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            if (isset($modelClassName))
+            {
+                $searchAttributeData['clauses'][3] = array(
+                    'attributeName'        => 'modelClassName',
+                    'operatorType'         => 'equals',
+                    'value'                => $modelClassName,
+                );
+                $searchAttributeData['structure'] = '1 and 2 and 3';
+            }
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $limit, $where, 'name');
         }
 
         /**

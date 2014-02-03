@@ -44,7 +44,7 @@
          * @param array $postData
          * @param string$wizardFormClassName
          */
-        public static function resolveEmailTemplateByWizardPostData(EmailTemplate $emailTemplate, $postData, $wizardFormClassName)
+        public static function resolveEmailTemplateByWizardPostData(EmailTemplate $emailTemplate, array $postData, $wizardFormClassName)
         {
             assert('is_array($postData)');
             assert('is_string($wizardFormClassName)');
@@ -53,12 +53,21 @@
             $members                = $metadata['EmailTemplate']['members'];
             foreach ($members as $member)
             {
-                if (isset($data[$member]) && $data[$member] != $emailTemplate->$member)
+                if (isset($data[$member]))
                 {
-                    $postDataValue = $data[$member];
-                    if ($member == 'isDraft')
+                    $postDataValue  = $data[$member];
+                    $originalValue  = $emailTemplate->$member;
+                    if ($member == 'serializedData')
                     {
-                        $postDataValue = (bool)$postDataValue;
+                        static::resolveSerializedDataForTemplateByPostData($data, $emailTemplate);
+                        continue;
+                    }
+                    else if ($postDataValue != $originalValue)
+                    {
+                        if ($member == 'isDraft')
+                        {
+                            $postDataValue = (bool)$postDataValue;
+                        }
                     }
                     $emailTemplate->$member = $postDataValue;
                 }
@@ -73,6 +82,39 @@
                 ExplicitReadWriteModelPermissionsUtil::resolveByPostDataAndModelThenMake($data, $emailTemplate);
             }
             FileModelUtil::resolveModelsHasManyFilesFromPost($emailTemplate, 'files', 'filesIds');
+        }
+
+        protected static function resolveSerializedDataForTemplateByPostData(array $postData, EmailTemplate $emailTemplate)
+        {
+            $unserializedData   = array();
+            $postUnserializedData = $postData['serializedData'];
+            $templateUnserializedData   = unserialize($emailTemplate->serializedData);
+            if (empty($templateUnserializedData))
+            {
+                $templateUnserializedData = array();
+            }
+
+            if ((empty($templateUnserializedData['baseTemplateId']) && !empty($postUnserializedData['baseTemplateId'])) ||
+                    (!empty($postUnserializedData['baseTemplateId']) &&
+                        $templateUnserializedData['baseTemplateId'] != $postUnserializedData['baseTemplateId']))
+            {
+                // baseTemplateId has changed.
+                $baseTemplateModel  = EmailTemplate::getById($postUnserializedData['baseTemplateId']);
+                $unserializedData   = unserialize($baseTemplateModel->serializedData);
+                unset($unserializedData['thumbnailUrl']);
+                $unserializedData['baseTemplateId'] = $postUnserializedData['baseTemplateId'];
+            }
+            else if ($templateUnserializedData != $postUnserializedData)
+            {
+                // baseTemplateId remains same, probably a post from canvas.
+                $unserializedData     = CMap::mergeArray($templateUnserializedData, $postUnserializedData);
+            }
+            if (!empty($unserializedData))
+            {
+                $emailTemplate->serializedData  = serialize($unserializedData);
+            }
+            // we don't need this as we "continue" in the invoker if block but still...
+            unset($postData['serializedData']);
         }
     }
 ?>

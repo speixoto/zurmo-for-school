@@ -36,9 +36,11 @@
 
     abstract class EmailTemplateWizardForm extends WizardForm
     {
-        const GENERAL_DATA_VALIDATION_SCENARIO      = 'ValidateForGeneralData';
+        const GENERAL_DATA_VALIDATION_SCENARIO              = 'ValidateForGeneralData';
 
-        const SERIALIZED_DATA_VALIDATION_SCENARIO      = 'ValidateForSerializedData';
+        const SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO      = 'ValidateForSelectBaseTemplate';
+
+        const SERIALIZED_DATA_VALIDATION_SCENARIO           = 'ValidateForSerializedData';
 
         /**
          * @var integer
@@ -86,11 +88,6 @@
         public $textContent;
 
         /**
-         * @var string
-         */
-        public $serializedData;
-
-        /**
          * @var array
          */
         public $files = array();
@@ -114,58 +111,67 @@
         protected $explicitReadWriteModelPermissions;
 
         /**
+         * @var integer
+         */
+        public $baseTemplateId;
+
+        /**
+         * @var string
+         */
+        public $serializedData;
+
+        /**
          * @return array
          */
         public function rules()
         {
             return array(
                 array('ownerId',            'type',     'type' => 'integer', ),
-                array('ownerId',            'required', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('ownerName',          'required', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('type',               'required', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('ownerId',            'required', 'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('ownerName',          'required', 'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('type',               'required', 'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('type',               'type',     'type' => 'integer'),
                 array('type',               'numerical'),
                 array('isDraft',            'type',     'type' => 'boolean'),
-                array('isDraft',            'setIsDraftDefault', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('builtType',          'required', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('isDraft',            'SetToTrueForBuilderTemplateElseFalseValidator',
+                                                                    'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('builtType',          'required', 'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('builtType',          'type',     'type' => 'integer'),
                 array('builtType',          'numerical'),
-                array('modelClassName',     'required', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('modelClassName',     'required', 'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('modelClassName',     'type',   'type' => 'string'),
                 array('modelClassName',     'length', 'max' => 64),
-                array('modelClassName',     'ModelExistsAndIsReadableValidator', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('name',               'required', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('modelClassName',     'ModelExistsAndIsReadableValidator',
+                                                                    'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('name',               'required', 'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('name',               'type',    'type' => 'string'),
                 array('name',               'length',  'min'  => 1, 'max' => 64),
-                array('subject',            'required', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('subject',            'required', 'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('subject',            'type',    'type' => 'string'),
                 array('subject',            'length',  'min'  => 1, 'max' => 64),
                 array('language',           'type',    'type' => 'string'),
                 array('language',           'length',  'min' => 2, 'max' => 2),
-                array('language',           'SetToUserDefaultLanguageValidator', 'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('language',           'SetToUserDefaultLanguageValidator',
+                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('htmlContent',        'type',    'type' => 'string'),
                 array('textContent',        'type',    'type' => 'string'),
                 array('htmlContent',        'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator',
-                                                                        'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('htmlContent',        'EmailTemplateAtLeastOneContentAreaRequiredValidator',
-                                                                        'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('textContent',        'EmailTemplateAtLeastOneContentAreaRequiredValidator',
-                                                                        'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('htmlContent',        'EmailTemplateMergeTagsValidator',
-                                                                        'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('textContent',        'EmailTemplateMergeTagsValidator',
-                                                                        'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('serializedData',     'required', 'on' => self::SERIALIZED_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('baseTemplateId',     'type',     'type' => 'integer'),
+                array('baseTemplateId',     'required', 'on' => static::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO),
+                array('serializedData',     'required', 'on' => static::SERIALIZED_DATA_VALIDATION_SCENARIO),
                 array('serializedData',     'type', 'type' => 'string'),
                 array('serializedData',     'EmailTemplateSerializedDataValidator',
-                                                                    'on' => self::SERIALIZED_DATA_VALIDATION_SCENARIO),
+                                                                'on' => static::SERIALIZED_DATA_VALIDATION_SCENARIO),
             );
-        }
-
-        public function setIsDraftDefault($attribute, $params)
-        {
-            $this->$attribute = ($this->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE);
-            return true;
         }
 
         /**
