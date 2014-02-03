@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     class CampaignItemsUtilTest extends ZurmoBaseTest
     {
@@ -479,7 +479,12 @@
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertEmpty($campaignItems);
             //Process open campaigns.
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
@@ -544,8 +549,20 @@
                 $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
                 $this->assertEmpty($campaignItems);
             }
-
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(5));
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            //First process 2 so we can show that the job gets queued up to run again
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(2));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]);
+            //Now process 3 more.
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(3));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             foreach ($campaignIds as $index => $campaignId)
             {
                 $campaign           = Campaign::getById($campaignId);

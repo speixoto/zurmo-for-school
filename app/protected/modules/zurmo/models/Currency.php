@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -90,7 +90,7 @@
         public static function getByCode($code)
         {
             assert('is_string($code)');
-            $tableName = self::getTableName('Currency');
+            $tableName = Currency::getTableName();
             $beans = ZurmoRedBean::find($tableName, "code = '$code'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
@@ -223,7 +223,7 @@
             else
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
-                $tableName = self::getTableName($modelClassName);
+                $tableName = $modelClassName::getTableName();
                 $rows = ZurmoRedBean::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
                 static::$currencyIdRowsByCode[$value] = $rows;
             }

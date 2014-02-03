@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,12 +31,12 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     define('MAJOR_VERSION', 2);                           // Update for marketing purposes.
-    define('MINOR_VERSION', 5);                           // Update when functionality changes.
-    define('PATCH_VERSION', 7);                          // Update when fixes are made that does not change functionality.
+    define('MINOR_VERSION', 6);                           // Update when functionality changes.
+    define('PATCH_VERSION', 5);                          // Update when fixes are made that does not change functionality.
     define('REPO_ID',       '$Revision$'); // Updated by Mercurial. Numbers like 3650 have no meaning across
                                                           // clones. This tells us the actual changeset that is universally
                                                           // meaningful.

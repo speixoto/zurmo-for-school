@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     abstract class AutoresponderOrCampaignBaseJob extends BaseJob
@@ -101,6 +101,29 @@
                                                           '{cost}'  => round($costPerModel, 2)));
             $this->getMessageLogger()->addInfoMessage($message);
             $message = Zurmo::t('CampaignsModule', 'Final memory usage: {usage}', array('{usage}' => $endingMemoryUsage));
+            $this->getMessageLogger()->addInfoMessage($message);
+        }
+
+        /**
+         * @param int $modelsProcessedCount
+         * @param int || null $batchSize
+         * @return bool
+         */
+        protected function hasReachedMaximumProcessingCount($modelsProcessedCount, $batchSize)
+        {
+            if ($batchSize !== null && $modelsProcessedCount >= $batchSize)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected function addMaximumMemoryUsageReached()
+        {
+            $message = Zurmo::t('CampaignsModule', 'Remaining autoresponder/campaign messages must be finished on next run because the ' .
+                'maximum memory usage has been reached. Using {usedMemory} Bytes of allocated {allocatedMemory} Bytes.',
+                array('{usedMemory}' => Yii::app()->performance->getMemoryUsage(),
+                      '{allocatedMemory}'  => Yii::app()->performance->getAllocatedMemoryInBytes()));
             $this->getMessageLogger()->addInfoMessage($message);
         }
     }

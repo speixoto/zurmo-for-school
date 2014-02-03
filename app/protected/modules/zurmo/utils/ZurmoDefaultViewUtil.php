@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -169,6 +169,26 @@
             $verticalGridView->setView(static::makeGameCoinContainerView($controller),      4, 0);
             $verticalGridView->setView(static::makeFooterView(),                            5, 0);
 
+            return $verticalGridView;
+        }
+
+        /**
+         * View for rendering Authorization while integration with external apps
+         * @param CController $controller
+         * @param View $containedView
+         * @return GridView
+         */
+        public static function makeAuthorizationViewForCurrentUser(CController $controller, View $containedView)
+        {
+            $horizontalGridView = new GridView(1, 1);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix'));
+            $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent')));
+            $horizontalGridView->setView($containedView, 0, 0);
+
+            $verticalGridView   = new GridView(3, 1);
+            $verticalGridView->setView(static::makeHeaderView($controller),         0, 0);
+            $verticalGridView->setView($horizontalGridView,                         1, 0);
+            $verticalGridView->setView(static::makeFooterView(),                    2, 0);
             return $verticalGridView;
         }
 

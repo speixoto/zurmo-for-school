@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -47,6 +47,12 @@
          * @var int
          */
         protected $totalModelsProcessed = 0;
+
+        /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
 
         /**
          * @returns Translated label that describes this job type.
@@ -70,16 +76,6 @@
         public static function getRecommendedRunFrequencyContent()
         {
             return Zurmo::t('ExportModule', 'Every 2 minutes.');
-        }
-
-        /**
-        * @returns the threshold for how long a job is allowed to run. This is the 'threshold'. If a job
-        * is running longer than the threshold, the monitor job might take action on it since it would be
-        * considered 'stuck'.
-        */
-        public static function getRunTimeThresholdInSeconds()
-        {
-            return 600;
         }
 
         /**
@@ -118,11 +114,20 @@
                     }
                     if ($this->hasReachedMaximumProcessingCount())
                     {
-                        $this->addMaxmimumProcessingCountMessageForAllExportItems();
+                        $this->addMaximumProcessingCountMessageForAllExportItems();
+                        break;
+                    }
+                    if (!Yii::app()->performance->isMemoryUsageSafe())
+                    {
+                        $this->addMaximumMemoryUsageReachedForAllExportItems();
                         break;
                     }
                 }
                 Yii::app()->user->userModel = $originalUser;
+                if ($this->hasReachedMaximumProcessingCount() || !Yii::app()->performance->isMemoryUsageSafe())
+                {
+                    Yii::app()->jobQueue->add('Export', 5);
+                }
             }
             $this->processEndMemoryUsageMessage((int)$startTime);
             return true;
@@ -543,10 +548,19 @@
             $this->getMessageLogger()->addInfoMessage($message);
         }
 
-        protected function addMaxmimumProcessingCountMessageForAllExportItems()
+        protected function addMaximumProcessingCountMessageForAllExportItems()
         {
             $message = Zurmo::t('ExportModule', 'Remaining export items must be finished on next run because the ' .
                 'maximum processing count has been reached.');
+            $this->getMessageLogger()->addInfoMessage($message);
+        }
+
+        protected function addMaximumMemoryUsageReachedForAllExportItems()
+        {
+            $message = Zurmo::t('ExportModule', 'Remaining export jobs must be finished on next run because the ' .
+                'maximum memory usage has been reached. Using {usedMemory} Bytes of allocated {allocatedMemory} Bytes.',
+                array('{usedMemory}' => Yii::app()->performance->getMemoryUsage(),
+                      '{allocatedMemory}'  => Yii::app()->performance->getAllocatedMemoryInBytes()));
             $this->getMessageLogger()->addInfoMessage($message);
         }
 

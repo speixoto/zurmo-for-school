@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,7 +29,7 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 #kanban-holder{
 	#gradient > .vertical(#fafafa, #f0f0f0);
@@ -57,114 +57,116 @@
 }
 
 #kanban-holder.kanban-background-football{
-	background: #fff url(../images/kanban/football.jpg) left bottom no-repeat;
+	background: #fff url("@{path}kanban/football.jpg") left bottom no-repeat;
 }
 
 .kanban-background-football .background-texture-1{
-	background: #fff url(../images/kanban/swatch-football.jpg) left top no-repeat;
+	background: #fff url("@{path}kanban/swatch-football.jpg") left top no-repeat;
 }
 
 #kanban-holder.kanban-background-tennis{
-	background: #fff url(../images/kanban/tennis.jpg) left bottom no-repeat;
+	background: #fff url("@{path}kanban/tennis.jpg") left bottom no-repeat;
 }
 
 .kanban-background-tennis .background-texture-1{
-	background: #fff url(../images/kanban/swatch-tennis.jpg) left top no-repeat;
+	background: #fff url("@{path}kanban/swatch-tennis.jpg") left top no-repeat;
 }
 
 #kanban-holder.kanban-background-motor{
-	background:#fff url(../images/kanban/asphalt.jpg) center bottom no-repeat;
+	background:#fff url("@{path}kanban/asphalt.jpg") center bottom no-repeat;
 }
 
 .kanban-background-motor .background-texture-1{
-	background:#fff url(../images/kanban/swatch-asphalt.jpg) left top no-repeat;
+	background:#fff url("@{path}kanban/swatch-asphalt.jpg") left top no-repeat;
 }
 
 #kanban-holder.kanban-background-yoga{
-	background:#fff url(../images/kanban/yoga.jpg) right top no-repeat;
+	background:#fff url("@{path}kanban/yoga.jpg") right top no-repeat;
 }
 
 .kanban-background-yoga .background-texture-1{
-	background:#fff url(../images/kanban/swatch-yoga.jpg) left top no-repeat;
+	background:#fff url("@{path}kanban/swatch-yoga.jpg") left top no-repeat;
 }
 
 #kanban-holder.kanban-background-blurred-lights,
 .kanban-background-blurred-lights .background-texture-1{
-	background:#fff url(../images/kanban/defocus-light-yellowish-blue.jpg) center center no-repeat;
+	background:#fff url("@{path}kanban/defocus-light-yellowish-blue.jpg") center center no-repeat;
 	background-size: 100% 100% !important;
 }
 
 #kanban-holder.kanban-background-blurred-city,
 .kanban-background-blurred-city .background-texture-1{
-	background:#fff url(../images/kanban/blurred-defocused-lights-on-rainy-city-road-at-night.jpg) center center no-repeat;
+	background:#fff url("@{path}kanban/blurred-defocused-lights-on-rainy-city-road-at-night.jpg") center center no-repeat;
 	background-size: 100% 100% !important;
 }
 
 #kanban-holder.kanban-background-blurred-vera,
 .kanban-background-blurred-vera .background-texture-1{
-	background:#fff url(../images/kanban/blurred-vera.png) center top no-repeat;
+	background:#fff url("@{path}kanban/blurred-vera.png") center top no-repeat;
 	background-size: 100% 100% !important;
 }
 
 #kanban-holder.kanban-background-perfect-beach,
 .kanban-background-perfect-beach .background-texture-1{
-	background:#fff url(../images/kanban/perfect-beach.jpg) center center no-repeat;
+	background:#fff url("@{path}kanban/perfect-beach.jpg") center center no-repeat;
 	background-size: 100% 100% !important;
 }
 
 #kanban-holder.kanban-background-flip-flops,
 .kanban-background-flip-flops .background-texture-1{
-	background:#fff url(../images/kanban/flip-flops-with-blue-decking.jpg) center bottom no-repeat;
+	background:#fff url("@{path}kanban/flip-flops-with-blue-decking.jpg") center bottom no-repeat;
 }
 
 //http://nos.twnsnd.co/
 #kanban-holder.kanban-background-blue-structure,
 .kanban-background-blue-structure .background-texture-1{
-	background:#fff url(../images/kanban/blue-structure.jpg) center bottom no-repeat;
+	background:#fff url("@{path}kanban/blue-structure.jpg") center bottom no-repeat;
 }
 
 #kanban-holder.kanban-background-sepia-sf,
 .kanban-background-sepia-sf .background-texture-1{
-	background:#fff url(../images/kanban/sepia-sf.jpg) center bottom no-repeat;
+	background:#fff url("@{path}kanban/sepia-sf.jpg") center bottom no-repeat;
 }
 
 #kanban-holder.kanban-background-men-on-bridge,
 .kanban-background-men-on-bridge .background-texture-1{
-	background:#fff url(../images/kanban/men-on-bridge.jpg) center bottom no-repeat;
+	background:#fff url("@{path}kanban/men-on-bridge.jpg") center bottom no-repeat;
 }
 
 .background-texture-1{
 	background-size: 100%;
 }
 
-
 #kanban-board{
-	++.clearfix;
-	++.border-box;
+	.clearfix();
+	
 	display: table;
 	vertical-align: top;
 	height: 100%;
 	width: 100%;
-	.drop-zone-container{
-		padding: 37px 2px 2px 2px;
-		++.border-box;
-		position: absolute;
-		left: 0;
-		top: 0;
-		height: 100%;
-		width: 100%;
-	}
-	.drop-zone{
-		++.border-box;
-		position: relative;
-	}
-	.ui-state-active{
+	.ui-state-active{}
+}
 
+.drop-zone-container{
+	padding: 37px 2px 2px 2px;
+	
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	.drop-zone{
+		position: relative;
 	}
 }
 
+.drop-zone{
+	border:2px dashed @themeColor;
+}
+
+
 .kanban-column{
-	++.border-box;
+	
 	white-space: normal;
 	display: table-cell;//inline-block;
 	vertical-align: top;
@@ -191,17 +193,11 @@
 	font-weight: bold !important;
 	height: 35px;
 	line-height: 35px;
-	background:rgba(255, 255, 255, 0.8) url(../images/table-items-header.png) left top repeat-x;
+	background:rgba(255, 255, 255, 0.8) url("@{path}table-items-header.png") left top repeat-x;
 	padding: 0 0 0 5px;
 	white-space: nowrap;
 	border-bottom: 1px solid #dfdfdf;
 }
-/*
-@themeColor        : #282A76;
-    @themeColor2       : #7CB830;
-    @themeColorBtn     : #97c43d;
-    @themeColorBtn2    : darken(@themeColorBtn, 10%);
-    */
 
 .kanban-card{
 	> div{
@@ -212,7 +208,7 @@
 		background: #f0f0f0;
 		.radius(3px);
 		padding:5px;
-		++.border-box;
+		
 		.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
 	}
 	span{
@@ -309,6 +305,13 @@
 	}
 }
 
+#kanban-board-options-link{
+	color: @themeColor;
+	&:hover{
+		color: @themeColor2;
+	}
+}
+
 .icon-kanban-board-view-type,
 .icon-grid-view-type{
 	margin:0 3px !important;
@@ -348,7 +351,7 @@
 	}
 }
 
-//.status-1 .task-status{ color: #545454; }
+//.status-1 .task-status{ color: @textColor; }
 //.status-2 .task-status{ color: #6fa82d; }
 //.status-3 .task-status{ color: #ffb63b; }
 .status-4 .task-status{ color: #a82d31; }
@@ -371,9 +374,6 @@
 			.smaller();
 		}
 	}
-	p{
-
-	}
 }
 
 .task-subscribers{
@@ -381,9 +381,6 @@
 	padding-top: 7px;
 	border-top:1px solid #dfdfdf;
 	.b-shadow(inset 0 1px 0 #fff);
-	a{
-
-	}
 	img{
 		margin-right: 5px;
 	}
@@ -394,7 +391,9 @@
 }
 
 .task-owner{
-
+	.gravatar{
+		background-color: @themeColor;
+	}
 }
 
 .task-action-toolbar{
@@ -418,90 +417,10 @@
 	}
 }
 
-.action-type-accept{
-	@topColor: #97c43d;
-	@bottomColor: #6fa82d;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
-		}
-	}
-}
-
-.action-type-reject{
-	@topColor: #c43d53;
-	@bottomColor: #a82d31;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
-		}
-	}
-}
-
-.action-type-finish{
-	@topColor: #ffcc00;
-	@bottomColor: #e4b600;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
-		}
-	}
-}
-
-.action-type-restart{
-	@topColor: #4e6d87;
-	@bottomColor: #4d6c87;
-	.button-label{
-		color: lighten(@topColor, 80%);
-		&:before{
-			#gradient > .vertical(@topColor, @bottomColor );
-		}
-	}
-	.button-action:hover{
-		.button-label{
-			color: darken(@topColor, 33%);
-			.t-shadow(0px 1px 0 lighten(@topColor, 5%));
-			&:before{
-				#gradient > .vertical(@topColor, darken(@bottomColor, 10%));
-			}
-		}
-	}
-}
-
 .subscribe-task-link,
 .unsubscribe-task-link{
 	background: #DFDFDF;
-	//background: rgba(236, 240, 241, 0.75) url(../images/stripes.png) left top repeat;
+	//background: rgba(236, 240, 241, 0.75) url("@{path}stripes.png") left top repeat;
 	padding: 2px;
 	display: inline-block;
 	width: 20px;
@@ -523,7 +442,7 @@
 .detail-subscribe-task-link,
 .detail-unsubscribe-task-link{
 	background: #DFDFDF;
-	//background: rgba(236, 240, 241, 0.75) url(../images/stripes.png) left top repeat;
+	//background: rgba(236, 240, 241, 0.75) url("@{path}stripes.png") left top repeat;
 	padding: 2px;
 	display: inline-block;
 	width: 36px;
@@ -546,9 +465,5 @@
 	content:'\2122' !important;
 }
 
-
 .detail-unsubscribe-task-link,
-.unsubscribe-task-link{
-	//float: right;
-	//margin: 0 0 0 0;
-}
+.unsubscribe-task-link{}

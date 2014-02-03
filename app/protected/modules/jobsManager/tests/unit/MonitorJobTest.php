@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MonitorJobTest extends ZurmoBaseTest
@@ -57,17 +57,67 @@
 
             $monitorJob = new MonitorJob();
             $this->assertEquals(0, count(JobInProcess::getAll()));
+            $this->assertEquals(0, count(StuckJob::getAll()));
             $this->assertEquals(0, count(Notification::getAll()));
             $jobInProcess = new JobInProcess();
             $jobInProcess->type = 'Test';
             $this->assertTrue($jobInProcess->save());
             //Should make createdDateTime long enough in past to trigger as stuck.
-            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 1000);
+            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
             $sql = "Update item set createddatetime = '" . $createdDateTime . "' where id = " .
                    $jobInProcess->getClassId('Item');
             ZurmoRedBean::exec($sql);
             $jobInProcess->forget();
             $monitorJob->run();
+            $this->assertEquals(0, count(JobInProcess::getAll()));
+            //should still be 0 but the quantity should increase
+            $this->assertEquals(0, count(Notification::getAll()));
+            //There should now be one stuck job with quantity 1
+            $stuckJobs = StuckJob::getAll();
+            $this->assertEquals(1, count($stuckJobs));
+            $this->assertEquals('Test', $stuckJobs[0]->type);
+            $this->assertEquals(1, $stuckJobs[0]->quantity);
+
+            //Now it should increase to 2
+            $jobInProcess = new JobInProcess();
+            $jobInProcess->type = 'Test';
+            $this->assertTrue($jobInProcess->save());
+            //Should make createdDateTime long enough in past to trigger as stuck.
+            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
+            $sql = "Update item set createddatetime = '" . $createdDateTime . "' where id = " .
+                $jobInProcess->getClassId('Item');
+            ZurmoRedBean::exec($sql);
+            $jobInProcess->forget();
+            $monitorJob->run();
+            $this->assertEquals(0, count(JobInProcess::getAll()));
+            //should still be 0 but the quantity should increase
+            $this->assertEquals(0, count(Notification::getAll()));
+            //There should now be one stuck job with quantity 1
+            $stuckJobs = StuckJob::getAll();
+            $this->assertEquals(1, count($stuckJobs));
+            $this->assertEquals('Test', $stuckJobs[0]->type);
+            $this->assertEquals(2, $stuckJobs[0]->quantity);
+
+            //Set quantity to 3, then run monitor again and notification should go out.
+            $stuckJobs[0]->quantity = 3;
+            $this->assertTrue($stuckJobs[0]->save());
+
+            $jobInProcess = new JobInProcess();
+            $jobInProcess->type = 'Test';
+            $this->assertTrue($jobInProcess->save());
+            //Should make createdDateTime long enough in past to trigger as stuck.
+            $createdDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - 10000);
+            $sql = "Update item set createddatetime = '" . $createdDateTime . "' where id = " .
+                $jobInProcess->getClassId('Item');
+            ZurmoRedBean::exec($sql);
+            $jobInProcess->forget();
+
+            //Now the threshold of 4 should be reached and we should send a notification
+            $monitorJob->run();
+            $stuckJobs = StuckJob::getAll();
+            $this->assertEquals(1, count($stuckJobs));
+            $this->assertEquals('Test', $stuckJobs[0]->type);
+            $this->assertEquals(4, $stuckJobs[0]->quantity);
             $this->assertEquals(1, count(Notification::getAll()));
             //Confirm an email was sent
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /*
@@ -81,14 +81,19 @@
          */
         public function getSessionId()
         {
-            if (isset($_SERVER['HTTP_ZURMO_SESSION_ID']))
+            if (isset($_SERVER['HTTP_ZURMO_SESSION_ID']) && $_SERVER['HTTP_ZURMO_SESSION_ID'] != '')
             {
                 return $_SERVER['HTTP_ZURMO_SESSION_ID'];
             }
-            else
+            if (function_exists('getallheaders'))
             {
-                return false;
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_SESSION_ID']))
+                {
+                    return $httpHeaders['ZURMO_SESSION_ID'];
+                }
             }
+            return false;
         }
 
         /**
@@ -96,14 +101,19 @@
          */
         public function getSessionToken()
         {
-            if (isset($_SERVER['HTTP_ZURMO_TOKEN']))
+            if (isset($_SERVER['HTTP_ZURMO_TOKEN']) && $_SERVER['HTTP_ZURMO_TOKEN'] != '')
             {
                 return $_SERVER['HTTP_ZURMO_TOKEN'];
             }
-            else
+            if (function_exists('getallheaders'))
             {
-                return false;
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_TOKEN']))
+                {
+                    return $httpHeaders['ZURMO_TOKEN'];
+                }
             }
+            return false;
         }
 
         /**
@@ -111,14 +121,19 @@
          */
         public function getUsername()
         {
-            if (isset($_SERVER['HTTP_ZURMO_AUTH_USERNAME']))
+            if (isset($_SERVER['HTTP_ZURMO_AUTH_USERNAME']) && $_SERVER['HTTP_ZURMO_AUTH_USERNAME'] != '')
             {
                 return $_SERVER['HTTP_ZURMO_AUTH_USERNAME'];
             }
-            else
+            if (function_exists('getallheaders'))
             {
-                return false;
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_AUTH_USERNAME']))
+                {
+                    return $httpHeaders['ZURMO_AUTH_USERNAME'];
+                }
             }
+            return false;
         }
 
         /**
@@ -126,14 +141,19 @@
          */
         public function getPassword()
         {
-            if (isset($_SERVER['HTTP_ZURMO_AUTH_PASSWORD']))
+            if (isset($_SERVER['HTTP_ZURMO_AUTH_PASSWORD']) && $_SERVER['HTTP_ZURMO_AUTH_PASSWORD'] != '')
             {
                 return $_SERVER['HTTP_ZURMO_AUTH_PASSWORD'];
             }
-            else
+            if (function_exists('getallheaders'))
             {
-                return false;
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_AUTH_PASSWORD']))
+                {
+                    return $httpHeaders['ZURMO_AUTH_PASSWORD'];
+                }
             }
+            return false;
         }
 
         /**
@@ -141,14 +161,19 @@
          */
         public function getLanguage()
         {
-            if (isset($_SERVER['HTTP_ZURMO_LANG']))
+            if (isset($_SERVER['HTTP_ZURMO_LANG']) && $_SERVER['HTTP_ZURMO_LANG'] != '')
             {
                 return $_SERVER['HTTP_ZURMO_LANG'];
             }
-            else
+            if (function_exists('getallheaders'))
             {
-                return false;
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_LANG']))
+                {
+                    return $httpHeaders['ZURMO_LANG'];
+                }
             }
+            return false;
         }
 
         public function isSessionTokenRequired()
@@ -197,17 +222,22 @@
          */
         public function getRequestType()
         {
-            if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']))
+            if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) && $_SERVER['HTTP_ZURMO_API_REQUEST_TYPE'] != '')
             {
                 if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest')
                 {
                     return ApiRequest::REST;
                 }
             }
-            else
+            if (function_exists('getallheaders'))
             {
-                return false;
+                $httpHeaders = getallheaders();
+                if (isset($httpHeaders['ZURMO_API_REQUEST_TYPE']))
+                {
+                    return $httpHeaders['ZURMO_API_REQUEST_TYPE'];
+                }
             }
+            return false;
         }
 
         /**

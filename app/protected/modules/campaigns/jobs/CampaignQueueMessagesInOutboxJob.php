@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -39,6 +39,12 @@
      */
     class CampaignQueueMessagesInOutboxJob extends AutoresponderOrCampaignBaseJob
     {
+        /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -61,13 +67,22 @@
         protected function processRun()
         {
             $batchSize = $this->resolveBatchSize();
+            if ($batchSize != null)
+            {
+                $resolvedBatchSize = $batchSize + 1;
+            }
+            else
+            {
+                $resolvedBatchSize = null;
+            }
             $campaignItemsToProcess    = CampaignItem::getByProcessedAndStatusAndSendOnDateTime(
                                                                                         0,
                                                                                         Campaign::STATUS_PROCESSING,
                                                                                         time(),
-                                                                                        $batchSize);
-            $startingMemoryUsage = memory_get_usage();
-            $modelsProcessedCount = 0;
+                                                                                        $resolvedBatchSize);
+            $startingMemoryUsage    = memory_get_usage();
+            $modelsProcessedCount   = 0;
+            $signalMarkCompletedJob = true;
             foreach ($campaignItemsToProcess as $campaignItem)
             {
                 try
@@ -76,17 +91,37 @@
                 }
                 catch (NotFoundException $e)
                 {
-                    return $campaignItem->delete();
+                    //todo: handle if delete returns false.
+                    $campaignItem->delete();
                 }
                 catch (NotSupportedException $e)
                 {
                     $this->errorMessage = $e->getMessage();
+                    //todo: returning false if using job queueing will cause job to not run again. maybe do something different?
                     return false;
                 }
                 $this->runGarbageCollection($campaignItem);
                 $modelsProcessedCount++;
+
+                if ($this->hasReachedMaximumProcessingCount($modelsProcessedCount, $batchSize))
+                {
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+                    $signalMarkCompletedJob = false;
+                    break;
+                }
+                if (!Yii::app()->performance->isMemoryUsageSafe())
+                {
+                    $this->addMaximumMemoryUsageReached();
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+                    $signalMarkCompletedJob = false;
+                    break;
+                }
             }
             $this->addMaxmimumProcessingCountMessage($modelsProcessedCount, $startingMemoryUsage);
+            if ($signalMarkCompletedJob)
+            {
+                Yii::app()->jobQueue->add('CampaignMarkCompleted', 5);
+            }
             return true;
         }
 

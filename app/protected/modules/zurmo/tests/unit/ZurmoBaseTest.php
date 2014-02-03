@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,12 +31,24 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoBaseTest extends BaseTest
     {
         public static $activateDefaultLanguages = false;
+
+        protected static $activitiesObserver;
+
+        protected static $conversationsObserver;
+
+        protected static $emailMessagesObserver;
+
+        protected static $contactLatestActivityDateTimeObserver;
+
+        protected static $accountLatestActivityDateTimeObserver;
+
+        protected static $accountContactAffiliationObserver;
 
         public static function setUpBeforeClass()
         {
@@ -47,20 +59,41 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             Currency::resetCaches();  //php only cache
-            $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
-            $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
+            Permission::resetCaches(); //php only cache
+            self::$activitiesObserver = new ActivitiesObserver();
+            self::$activitiesObserver->init(); //runs init();
+            self::$conversationsObserver = new ConversationsObserver();
+            self::$conversationsObserver->init(); //runs init();
+            self::$emailMessagesObserver = new EmailMessagesObserver();
+            self::$emailMessagesObserver->init(); //runs init();
+            self::$contactLatestActivityDateTimeObserver = new ContactLatestActivityDateTimeObserver();
+            self::$contactLatestActivityDateTimeObserver->init(); //runs init();
+            self::$accountLatestActivityDateTimeObserver = new AccountLatestActivityDateTimeObserver();
+            self::$accountLatestActivityDateTimeObserver->init(); //runs init();
+            self::$accountContactAffiliationObserver = new AccountContactAffiliationObserver();
+            self::$accountContactAffiliationObserver->init(); //runs init();
             Yii::app()->gameHelper;
             Yii::app()->gamificationObserver; //runs init();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
             Yii::app()->emailHelper->sendEmailThroughTransport = false;
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public function setUp()
         {
             parent::setUp();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
+        }
+
+        public static function tearDownAfterClass()
+        {
+            self::$activitiesObserver->destroy();
+            self::$conversationsObserver->destroy();
+            self::$emailMessagesObserver->destroy();
+            self::$contactLatestActivityDateTimeObserver->destroy();
+            self::$accountLatestActivityDateTimeObserver->destroy();
+            self::$accountContactAffiliationObserver->destroy();
+            parent::tearDownAfterClass();
         }
 
         protected static function startOutputBuffer()

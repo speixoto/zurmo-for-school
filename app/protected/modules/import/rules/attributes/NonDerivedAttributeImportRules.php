@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,6 +40,10 @@
     abstract class NonDerivedAttributeImportRules extends AttributeImportRules
     {
         protected $attributeName;
+
+        protected $penultimateModelClassName;
+
+        protected $penultimateAttributeName;
 
         public function __construct($model, $attributeName)
         {
@@ -90,8 +94,30 @@
                                                     $value,
                                                     $columnName,
                                                     $columnMappingData,
-                                                    $importSanitizeResultsUtil);
+                                                    $importSanitizeResultsUtil,
+                                                    $this->penultimateModelClassName,
+                                                    $this->penultimateAttributeName);
             return array($this->getModelAttributeName() => $value);
+        }
+
+        public function getPenultimateModelClassName()
+        {
+            return $this->penultimateModelClassName;
+        }
+
+        public function setPenultimateModelClassName($penultimateModelClassName)
+        {
+            $this->penultimateModelClassName = $penultimateModelClassName;
+        }
+
+        public function getPenultimateAttributeName()
+        {
+            return $this->penultimateAttributeName;
+        }
+
+        public function setPenultimateAttributeName($penultimateAttributeName)
+        {
+            $this->penultimateAttributeName = $penultimateAttributeName;
         }
     }
 ?>

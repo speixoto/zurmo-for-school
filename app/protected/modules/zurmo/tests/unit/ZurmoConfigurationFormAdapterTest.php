@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoConfigurationFormAdapterTest extends ZurmoBaseTest
@@ -58,13 +58,6 @@
             Yii::app()->pagination->setGlobalValueByType('modalListPageSize',     52);
             Yii::app()->pagination->setGlobalValueByType('dashboardListPageSize', 53);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'demoCompany');
-            $logoFileName = 'testLogo.png';
-            $logoFilePath = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName;
-            ZurmoConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $logoFilePath, null, ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT);
-            $logoFileId   = ZurmoConfigurationFormAdapter::saveLogoFile($logoFileName, $logoFilePath, 'logoFileModelId');
-            ZurmoConfigurationFormAdapter::publishLogo($logoFileName, $logoFilePath);
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', $logoFileId);
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoThumbFileModelId', $logoFileId);
             $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $this->assertEquals('America/New_York',              $form->timeZone);
             $this->assertEquals(50,                              $form->listPageSize);
@@ -72,18 +65,12 @@
             $this->assertEquals(52,                              $form->modalListPageSize);
             $this->assertEquals(53,                              $form->dashboardListPageSize);
             $this->assertEquals('demoCompany',                   $form->applicationName);
-            $this->assertEquals($logoFileName,                   $form->logoFileData['name']);
             $form->timeZone              = 'America/Chicago';
             $form->listPageSize          = 60;
             $form->subListPageSize       = 61;
             $form->modalListPageSize     = 62;
             $form->dashboardListPageSize = 63;
             $form->applicationName       = 'demoCompany2';
-            $logoFileName2               = 'testLogo2.png';
-            $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
-            copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName2);
-            copy($logoFilePath2, sys_get_temp_dir() . DIRECTORY_SEPARATOR . ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $logoFileName2);
-            Yii::app()->user->setState('logoFileName', $logoFileName2);
             ZurmoConfigurationFormAdapter::setConfigurationFromForm($form);
             $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $this->assertEquals('America/Chicago',  $form->timeZone);
@@ -92,7 +79,6 @@
             $this->assertEquals(62,                 $form->modalListPageSize);
             $this->assertEquals(63,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany2',     $form->applicationName);
-            $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,28 +31,63 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
      * Base class to test API functions.
      */
-    class ApiBaseTest extends ZurmoBaseTest
+    abstract class ApiBaseTest extends ZurmoBaseTest
     {
         protected $serverUrl = '';
+
+        protected static $createUsersAndGroups = true;
+
+        protected static $randomNonEveryoneNonAdministratorsGroup = null;
+
+        abstract protected function getApiControllerClassName();
+
+        abstract protected function getModuleBaseApiUrl();
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            if (static::$createUsersAndGroups)
+            {
+                SecurityTestHelper::createUsers();
+                SecurityTestHelper::createGroups();
+            }
+            $everyoneGroup = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            assert($everyoneGroup->save()); // Not Coding Standard
+            static::setRandomNonEveryoneNonAdministratorsGroup();
+        }
+
+        protected final function getBaseApiUrl()
+        {
+            $moduleBaseApiUrl   = $this->getModuleBaseApiUrl();
+            $entryScript        = '/test.php/';
+            $baseApiUrl         = $this->serverUrl . $entryScript . $moduleBaseApiUrl;
+            return $baseApiUrl;
         }
 
         public function setUp()
         {
             parent::setUp();
-            if (strlen(Yii::app()->params['testApiUrl']) > 0)
+            RedBeanModel::forgetAll();
+            $this->setupServerUrl();
+            if (!$this->isApiTestUrlConfigured())
             {
-                $this->serverUrl = Yii::app()->params['testApiUrl'];
+                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
+            }
+        }
+
+        protected function setupServerUrl()
+        {
+            $testApiUrl = Yii::app()->params['testApiUrl'];
+            if (isset($testApiUrl) && strlen($testApiUrl) > 0)
+            {
+                $this->serverUrl = $testApiUrl;
             }
         }
 
@@ -66,13 +101,32 @@
             return $isApiTestUrlConfigured;
         }
 
-        public function testApiServerUrl()
+        protected function getModelToApiDataUtilData(RedBeanModel $model)
         {
-            if (!$this->isApiTestUrlConfigured())
+            $apiControllerClassName = $this->getApiControllerClassName();
+            $method                 = $this->getProtectedMethod($apiControllerClassName, __FUNCTION__);
+            $data                   = $method->invokeArgs(null, array($model));
+            return $data;
+        }
+
+        protected function createApiCallWithRelativeUrl($relativeUrl, $method, $headers, $data = array())
+        {
+            $baseUrl                = $this->getBaseApiUrl();
+            $url                    = $baseUrl . $relativeUrl;
+            return ApiRestTestHelper::createApiCall($url, $method, $headers, $data);
+        }
+
+        protected static function setRandomNonEveryoneNonAdministratorsGroup()
+        {
+            $groups = Group::getAll();
+            foreach ($groups as $group)
             {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
+                if ($group->isDeletable())
+                {
+                    static::$randomNonEveryoneNonAdministratorsGroup = $group;
+                    break;
+                }
             }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
         }
     }
 ?>

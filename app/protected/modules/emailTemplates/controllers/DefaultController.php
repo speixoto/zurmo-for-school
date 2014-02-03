@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class EmailTemplatesDefaultController extends ZurmoModuleController
@@ -277,14 +277,33 @@
             echo $view->render();
         }
 
-        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false)
+        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false, $contactId = null)
         {
+            $contactId     = (int) $contactId;
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             if ($renderJson)
             {
                 header('Content-type: application/json');
-                echo $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+                if ($contactId != null)
+                {
+                    $contact     = Contact::getById($contactId);
+                    $textContent = $emailTemplate->textContent;
+                    $htmlContent = $emailTemplate->htmlContent;
+                    AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+                    $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
+                    $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                            MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+                    $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
+                                               null, $textContent);
+                    $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
+                                               null, $htmlContent);
+                    $emailTemplate->textContent = $textContent;
+                    $emailTemplate->htmlContent = $htmlContent;
+                }
+                $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+                echo $emailTemplate;
                 Yii::app()->end(0, false);
             }
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),

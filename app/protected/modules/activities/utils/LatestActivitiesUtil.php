@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -61,8 +61,8 @@
          * @return array $modelClassNamesAndSearchAttributeData
          */
         public static function getSearchAttributesDataByModelClassNamesAndRelatedItemIds($modelClassNames,
-                                                                                        $relationItemIds,
-                                                                                        $ownedByFilter)
+                                                                                         $relationItemIds,
+                                                                                         $ownedByFilter)
         {
             assert('is_array($modelClassNames)');
             assert('is_array($relationItemIds)');
@@ -90,15 +90,26 @@
                     $searchAttributesData['clauses']   = array();
                     $searchAttributesData['structure'] = null;
                     $searchAttributesData =    // Not Coding Standard
-                        $mashableActivityRules->resolveSearchAttributeDataForLatestActivities($searchAttributesData);
-                    $searchAttributesData =    // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributeDataForAllLatestActivities($searchAttributesData);
                 }
+                static::resolveSearchAttributeDataForLatestActivities($searchAttributesData, $mashableActivityRules);
                 $mashableActivityRules->resolveSearchAttributesDataByOwnedByFilter($searchAttributesData, $ownedByFilter);
 
                 $modelClassNamesAndSearchAttributeData[] = array($modelClassName => $searchAttributesData);
             }
             return $modelClassNamesAndSearchAttributeData;
+        }
+
+        /**
+         * Resolves the $searchAttributesData for each type of MashableActivity based on
+         * @see MashableActivityRules
+         * @param $searchAttributesData
+         * @param $mashableActivityRules
+         */
+        protected static function resolveSearchAttributeDataForLatestActivities(& $searchAttributesData, $mashableActivityRules)
+        {
+            $searchAttributesData =    // Not Coding Standard
+                $mashableActivityRules->resolveSearchAttributeDataForLatestActivities($searchAttributesData);
         }
 
         /**
@@ -141,6 +152,20 @@
                 }
             }
             return array_values($mashableModelClassNames);
+        }
+
+        public static function getCountByModelClassName($modelClassName, $relationItemIds, $ownedByFilter)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_array($relationItemIds)');
+            assert('$ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL ||
+                    $ownedByFilter == LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER ||
+                    is_int($ownedByFilter)');
+            $searchAttributeDataArray = static::getSearchAttributesDataByModelClassNamesAndRelatedItemIds(
+                                            array($modelClassName), $relationItemIds, $ownedByFilter);
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $where = ModelDataProviderUtil::makeWhere($modelClassName, $searchAttributeDataArray[0][$modelClassName], $joinTablesAdapter);
+            return RedBeanModel::getCount($joinTablesAdapter, $where, $modelClassName, true);
         }
     }
 ?>

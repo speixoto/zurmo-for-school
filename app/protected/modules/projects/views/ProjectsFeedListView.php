@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ProjectsFeedListView extends SecuredListView
@@ -91,7 +91,7 @@
                     'nextPageLabel'    => '<span>next</span>',
                     'lastPageLabel'    => '<span>last</span>',
                     'paginationParams' => GetUtil::getData(),
-                    'route'            => $this->getGridViewActionRoute($this->getListActionId(), $this->moduleId),
+                    'route'            => $this->getGridViewActionRoute($this->getListActionId(), 'projects'),
                     'class'            => 'SimpleListLinkPager',
                 );
         }
@@ -130,15 +130,6 @@
         }
 
         /**
-         * @return RedBeanModelDataProvider
-         */
-        protected function getDataProvider()
-        {
-            $dataProvider = new RedBeanModelDataProvider('ProjectAuditEvent', 'dateTime', true);
-            return $dataProvider;
-        }
-
-        /**
          * @return array
          */
         protected function getCGridViewLastColumn()
@@ -152,20 +143,6 @@
         public function getGridViewId()
         {
             return 'projects-feed-list-view';
-        }
-
-        /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'MyList';
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'NonModifiableListView';
         }
     }
 ?>

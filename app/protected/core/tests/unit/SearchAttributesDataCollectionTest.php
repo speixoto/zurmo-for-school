@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class SearchAttributesDataCollectionTest extends BaseTest
@@ -49,6 +49,37 @@
             $this->assertFalse($dataCollection->shouldClearStickyForKanbanBoard());
             $this->assertEquals(array('a', 'b'), $dataCollection->getKanbanBoardGroupByAttributeVisibleValuesFromModel());
             $this->assertEquals('someTheme',     $dataCollection->getKanbanBoardSelectedThemeFromModel());
+        }
+
+        public function testGetFilteredBy()
+        {
+            $searchModel    = new AFilteredBySearchFormTestModel(new A());
+            $dataCollection = new SearchAttributesDataCollection($searchModel);
+            $this->assertEmpty($dataCollection->getFilteredBy());
+            $_GET['AFilteredBySearchFormTestModel']['filteredBy'] = 'all';
+            $this->assertEquals('all', $dataCollection->getFilteredBy());
+            $dataCollection->setSourceData(array());
+            $this->assertEmpty($dataCollection->getFilteredBy());
+            $dataCollection->setSourceData(array('AFilteredBySearchFormTestModel' => array('filteredBy' => 'none')));
+            $this->assertEquals('none', $dataCollection->getFilteredBy());
+        }
+
+        public function testResolveFilteredByFromSourceData()
+        {
+            $searchModel    = new AFilteredBySearchFormTestModel(new A());
+            $dataCollection = new SearchAttributesDataCollection($searchModel);
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEmpty($searchModel->filteredBy);
+            $_GET['AFilteredBySearchFormTestModel']['filteredBy'] = 'all';
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEquals('all', $searchModel->filteredBy);
+            //Since the sourceDate dont have the filteredBy, no new value will be set
+            $dataCollection->setSourceData(array());
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEquals('all', $searchModel->filteredBy);
+            $dataCollection->setSourceData(array('AFilteredBySearchFormTestModel' => array('filteredBy' => 'none')));
+            $dataCollection->resolveFilteredByFromSourceData();
+            $this->assertEquals('none', $searchModel->filteredBy);
         }
     }
 ?>

@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,11 +29,10 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 /*Upload Files Box (in selected account, in Note)*/
 .file-upload-box{
-	.box-sizing();
 	padding-left:0;
 	margin:0 !important;
     width: 100%;
@@ -41,13 +40,13 @@
         width:100%;
     }
 	div{
-		margin-left:0 !important;	
+		margin-left:0 !important;
 	}
 	.fileinput-button{
 		width:100%;
 	}
-	.ui-icon-plusthick{	
-		++.z-button;
+	.ui-icon-plusthick{
+		.z-button();
 		padding:0 5px;
 		&:after{
 			content:"Y";
@@ -66,6 +65,7 @@
     z-index: 5;
     font-weight: normal;
     .smaller();
+	color: @themeColor;
 }
 
 #CommentInlineEditForModelView{
@@ -114,6 +114,7 @@
 .upload-actions{
     float: right;
     .icon-delete{
+	    color: @themeColor;
         background:none;
         border:none;
         cursor: pointer;
@@ -170,7 +171,7 @@
 
 .addfileinput-button {
 	position: relative;
-	overflow: hidden;
+	//overflow: hidden;
 	float: left;
     cursor: pointer;
     display: inline-block;
@@ -178,32 +179,45 @@
     font-weight: normal;
     padding: 2px 0;
     span{
-        cursor: pointer;
-        .zButton;
-        .b-shadow(0 0 2px 0 rgba(153, 153, 153, 0.15));
+	    cursor:pointer;
+	    .radius( 3px );
+	    .clearfix();
+	    overflow: hidden;
+	    display:inline-block;
+	    text-indent:0;
+	    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
         .symbly(36px);
         font-size: 24px;
         padding: 0 6px !important;
         margin:0 5px 0 0 !important;
         position: relative;
         top: 2px;
-        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+	    color:#666;
+	    .t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
+	    background: transparent url("@{path}view-toolbar-gradient.png") left bottom repeat-x;
+	    &:hover{
+		    color: @themeColor2 !important;
+		    background-image: none;
+		    #gradient > .vertical( #fefefe, #ededed ) !important;
+		    .t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
+	    }
     }
     input {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        border: solid red;
-        border-width: 0 0 100px 200px;
-        opacity: 0;
-        filter: alpha(opacity=0);
-        -moz-transform: translate(-300px, 0) scale(4);
-        direction: ltr;
-        cursor: pointer;
-        height: 30px;
-        width: auto;
+	    position: absolute;
+	    top: 0;
+	    right: 0;
+	    margin: 0;
+	    opacity: 0;
+	    filter: alpha(opacity=0);
+	    font-size: 25px;
+	    direction: ltr;
+	    cursor: pointer;
     }
+	&:hover{
+		span{
+			color: @themeColor2;
+		}
+	}
 }
 
 .fileupload-buttonbar{

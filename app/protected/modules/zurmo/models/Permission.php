@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Permission extends OwnedModel
@@ -58,6 +58,12 @@
         const READ_WRITE_CHANGE_PERMISSIONS              = 0xB;
         const READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER = 0x1B;
 
+        /**
+         * PHP Caching array utilized to save calls to get already casted down models
+         * @var array
+         */
+        protected static $cachedCastedDownPermitables = array();
+
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
@@ -76,10 +82,10 @@
                     array('id' => $permitable->getClassId('Permitable')));
         }
 
-        public static function removeAll()
+        public static function deleteAll()
         {
             PermissionsCache::forgetAll();
-            ZurmoRedBean::exec("delete from permission;");
+            parent::deleteAll();
         }
 
         public static function permissionsToString($permissions)
@@ -176,18 +182,30 @@
             return Permission::NONE;
         }
 
-        // See comments on RedBeanModel::castDown() and
-        // RedBeanModel::testDownCast() to see why
-        // this (apparent/actual dodginess) is needed.
+        /**
+         * See comments on RedBeanModel::castDown() and
+         * RedBeanModel::testDownCast() to see why
+         * this (apparent/actual dodginess) is needed.
+         *
+         * Attempts to get from local php cache first.
+         */
         public function castDownPermitable()
         {
-            if (get_class($this->permitable) == 'Permitable')
+            if (get_class($this->permitable) == 'Permitable' &&
+               isset(self::$cachedCastedDownPermitables[$this->permitable->id]))
+            {
+                $permitableId = $this->permitable->id;
+                $this->permitable = null;
+                $this->permitable = self::$cachedCastedDownPermitables[$permitableId];
+            }
+            elseif (get_class($this->permitable) == 'Permitable')
             {
                 //Set the permitable to null first otherwise it will not take the new casted down permitable and
                 //remains uncasted down.
                 $permitable = $this->permitable->castDown(array('Group', 'User'));
                 $this->permitable = null;
                 $this->permitable = $permitable;
+                self::$cachedCastedDownPermitables[$this->permitable->getClassId('Permitable')] = $permitable;
             }
         }
 
@@ -243,6 +261,11 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        public static function resetCaches()
+        {
+            static::$cachedCastedDownPermitables = array();
         }
     }
 ?>

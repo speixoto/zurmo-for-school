@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class AmChartMaker
@@ -40,13 +40,11 @@
 
         public  $data                   = null;
 
-        public  $height                 = 300;
-
         public  $categoryField          = 'displayLabel';
 
         public  $chartIs3d              = false;
 
-        public  $chartIsPie             = false;
+        public  $chartType              = null;
 
         public  $xAxisName              = null;
 
@@ -146,7 +144,7 @@
                 $this->addChartProperties('labelText',              "'[[title]]<br>[[percents]]%'");
                 $this->addChartProperties('pullOutRadius',          "'0%'");
                 $this->addChartProperties('startDuration',          0);
-                $this->chartIsPie = true;
+                $this->chartType = 'pie';
             }
             elseif ($this->type == ChartRules::TYPE_DONUT_3D)
             {
@@ -162,7 +160,7 @@
                 $this->addChartProperties('labelText',              "'[[title]]<br>[[percents]]%'");
                 $this->addChartProperties('pullOutRadius',          "'0%'");
                 $this->addChartProperties('startDuration',          0);
-                $this->chartIsPie = true;
+                $this->chartType = 'pie';
                 $this->makeChart3d();
             }
             elseif ($this->type == ChartRules::TYPE_PIE_2D)
@@ -178,7 +176,7 @@
                 $this->addChartProperties('labelTickColor',         "'#000000'");
                 $this->addChartProperties('pullOutRadius',          "'0%'");
                 $this->addChartProperties('startDuration',          0);
-                $this->chartIsPie = true;
+                $this->chartType = 'pie';
             }
             elseif ($this->type == ChartRules::TYPE_PIE_3D)
             {
@@ -194,7 +192,7 @@
                 $this->addChartProperties('pullOutRadius',          "'0%'");
                 $this->addChartProperties('startDuration',          0);
                 $this->makeChart3d();
-                $this->chartIsPie = true;
+                $this->chartType = 'pie';
             }
             elseif ($this->type == ChartRules::TYPE_STACKED_AREA)
             {
@@ -326,8 +324,44 @@
                 $this->addChartProperties('startDuration',          "'0'");
                 $this->addChartProperties('balloonText',            "''");
                 $this->addChartProperties('pullOutRadius',          "'0%'");
-                $this->chartIsPie = true;
+                $this->chartType = 'pie';
                 $this->addChartProperties('colors', $colorTheme[7]);
+            }
+            elseif ($this->type == ChartRules::TYPE_FUNNEL)
+            {
+                $this->addChartProperties('funnelAlpha',          "0.9");
+                $this->addChartProperties('neckWidth',            "'40%'");
+                $this->addChartProperties('neckHeight',           "'30%'");
+                $this->addChartProperties('marginRight',          "200");
+                $this->addChartProperties('marginLeft',           "15");
+                $this->addChartProperties('labelPosition',        "'right'");
+                $this->addChartProperties('labelText',            "'[[title]]: " . $this->yAxisUnitContent . "[[value]]'");
+                $this->addChartProperties('numberFormatter',
+                                          "{precision: 0,
+                                            decimalSeparator:'" . Yii::app()->locale->getNumberSymbol('decimal') . "',
+                                            thousandsSeparator:'" . Yii::app()->locale->getNumberSymbol('group') . "'}");
+                $this->chartType = 'funnel';
+            }
+            elseif ($this->type == ChartRules::TYPE_PYRAMID)
+            {
+                $this->addChartProperties('rotate',               "true");
+                $this->addChartProperties('marginRight',          "200");
+                $this->addChartProperties('marginLeft',           "15");
+                $this->addChartProperties('labelPosition',        "'right'");
+                $this->addChartProperties('labelText',            "'[[title]]: " . $this->yAxisUnitContent . "[[value]]'");
+                $this->addChartProperties('numberFormatter',
+                                          "{precision: 0,
+                                            decimalSeparator:'" . Yii::app()->locale->getNumberSymbol('decimal') . "',
+                                            thousandsSeparator:'" . Yii::app()->locale->getNumberSymbol('group') . "'}");
+                $this->chartType = 'funnel';
+            }
+            elseif ($this->type == ChartRules::TYPE_RADAR)
+            {
+                $this->chartType = 'radar';
+                $this->addValueAxisProperties('color',           "'#000000'");
+                $this->addValueAxisProperties('axisAlpha',       "'0.15'");
+                $this->addValueAxisProperties('dashLength',      "'3'");
+                $this->addValueAxisProperties('gridCount',       "'5'");
             }
             else
             {
@@ -357,6 +391,7 @@
             {
                 $dataArray = $this->data;
             }
+            $this->resolveDataArraySorting($dataArray);
             return CJavaScript::encode($dataArray);
         }
 
@@ -436,7 +471,7 @@
             $javascript  = "var chartData_{$this->id} = ". $this->convertDataArrayToJavascriptArray() . ";";
             $javascript .=" $(document).ready(function () {     ";
             //Make chart Pie or Serial
-            if ($this->chartIsPie)
+            if ($this->chartType == 'pie')
             {
                 $this->valueField = $this->serial[0]['valueField'];
                 $javascript      .="
@@ -444,6 +479,24 @@
                    chart.dataProvider = chartData_{$this->id};
                    chart.titleField   = '{$this->categoryField}';
                    chart.valueField   = '". $this->valueField . "';";
+            }
+            elseif ($this->chartType == 'funnel')
+            {
+                $this->valueField = $this->serial[0]['valueField'];
+                $javascript      .="
+                   var chart          = new AmCharts.AmFunnelChart();
+                   chart.dataProvider = chartData_{$this->id};
+                   chart.titleField   = '{$this->categoryField}';
+                   chart.valueField   = '". $this->valueField . "';";
+            }
+            elseif ($this->chartType == 'radar')
+            {
+                $this->valueField = $this->serial[0]['valueField'];
+                $javascript      .="
+                   var chart           = new AmCharts.AmRadarChart();
+                   chart.dataProvider  = chartData_{$this->id};
+                   chart.categoryField = '{$this->categoryField}';
+                ";
             }
             else
             {
@@ -460,7 +513,7 @@
                 $javascript .= "chart." . $tag . " = " . $chartProperty . ";";
             }
 
-            if (!$this->chartIsPie)
+            if ($this->chartType == null || $this->chartType == 'radar')
             {
                 //Add serial as graph
                 foreach ($this->serial as $key => $serial)
@@ -573,6 +626,23 @@
                     $('#chartContainer{$this->id}').html('" . $content . "');
                 ";
             return $javascript;
+        }
+
+        /**
+         * Sorts the data by the valueField
+         * @param $dataArray
+         */
+        private function resolveDataArraySorting(& $dataArray)
+        {
+            if ($this->chartType == 'funnel')
+            {
+                $valueField = $this->serial[0]['valueField'];
+                foreach ($dataArray as $key => $row)
+                {
+                    $values[$key]  = $row[$valueField];
+                }
+                array_multisort($values, SORT_DESC, $dataArray);
+            }
         }
     }
 ?>

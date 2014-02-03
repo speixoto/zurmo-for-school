@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ProjectImportTest extends ImportBaseTest
@@ -98,7 +98,7 @@
             $this->assertEquals(1,                         count($projects[0]));
             $this->assertEquals('super',                   $projects[0]->owner->username);
             $this->assertEquals('My first project',        $projects[0]->name);
-            $this->assertEquals(0,                         $projects[0]->status);
+            $this->assertEquals(2,                         $projects[0]->status);
             //todo ask Jason for it
             //$this->assertEquals('My first project Desc',   $projects[0]->description);
             $projects[0]->delete();

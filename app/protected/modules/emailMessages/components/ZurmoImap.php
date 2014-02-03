@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -231,7 +231,7 @@
                 {
                     if (isset($to->personal))
                     {
-                        $imapMessage->to[$key]['name'] = $to->personal;
+                        $imapMessage->to[$key]['name'] = imap_utf8($to->personal);
                     }
                     else
                     {
@@ -246,7 +246,7 @@
                 {
                     if (isset($cc->personal))
                     {
-                        $imapMessage->cc[$key]['name'] = $cc->personal;
+                        $imapMessage->cc[$key]['name'] = imap_utf8($cc->personal);
                     }
                     else
                     {
@@ -258,7 +258,7 @@
 
             if (isset($mailHeaderInfo->from[0]->personal))
             {
-                $imapMessage->fromName = $mailHeaderInfo->from[0]->personal;
+                $imapMessage->fromName = imap_utf8($mailHeaderInfo->from[0]->personal);
             }
             else
             {
@@ -270,7 +270,7 @@
             {
                 if (isset($mailHeaderInfo->sender[0]->personal))
                 {
-                    $imapMessage->senderName = $mailHeaderInfo->sender[0]->personal;
+                    $imapMessage->senderName = imap_utf8($mailHeaderInfo->sender[0]->personal);
                 }
                 $imapMessage->senderEmail = $mailHeaderInfo->sender[0]->mailbox . '@' . $mailHeaderInfo->from[0]->host;
             }
@@ -278,19 +278,18 @@
             {
                 if (isset($imapMessage->fromName))
                 {
-                    $imapMessage->senderName = $imapMessage->fromName;
+                    $imapMessage->senderName = imap_utf8($imapMessage->fromName);
                 }
-                $imapMessage->senderEmail = $imapMessage->fromName;
+                $imapMessage->senderEmail = imap_utf8($imapMessage->fromName);
             }
 
             if (!isset($mailHeaderInfo->subject))
             {
-                $imapMessage->subject       = Zurmo::t('EmailMessages', 'No Subject');
+                $imapMessage->subject = Zurmo::t('EmailMessages', 'No Subject');
             }
             else
             {
-                $subject                    = imap_mime_header_decode($mailHeaderInfo->subject);
-                $imapMessage->subject       = $subject[0]->text;
+                $imapMessage->subject = imap_utf8($mailHeaderInfo->subject);
             }
 
             $imapMessage->textBody      = $this->getPart($messageNumber, 'TEXT/PLAIN', $structure);
@@ -508,7 +507,6 @@
             if ($mimeType == $this->getMimeType($structure))
             {
                 $partNumber = ($partNumber > 0) ? $partNumber : 1;
-
                 return imap_fetchbody($this->imapStream, $msgNumber, $partNumber);
             }
 
@@ -525,7 +523,25 @@
                     $data = $this->getPart($msgNumber, $mimeType, $subStructure, $prefix . ($index + 1));
                     if ($data)
                     {
-                        return quoted_printable_decode($data);
+                        $dataToReturn = $data;
+                        if ($subStructure->encoding == 3)
+                        {
+                            // 3 = BASE64
+                            $dataToReturn = base64_decode($data);
+                        }
+                        elseif ($subStructure->encoding == 4)
+                        {
+                            // 4 = QUOTED-PRINTABLE
+                            $dataToReturn = quoted_printable_decode($data);
+                        }
+                        if (isset($subStructure->parameters[0]->attribute) && $subStructure->parameters[0]->attribute == 'CHARSET')
+                        {
+                            return iconv($subStructure->parameters[0]->value, 'UTF-8', $dataToReturn);
+                        }
+                        else
+                        {
+                            return $dataToReturn;
+                        }
                     }
                 }
             }

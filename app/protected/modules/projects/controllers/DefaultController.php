@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ProjectsDefaultController extends ZurmoModuleController
@@ -211,17 +211,27 @@
          * Copies the project
          * @param int $id
          */
-        public function actionCopy($id)
+        public function actionCopy($id, $redirectUrl = null)
         {
             $copyToProject      = new Project();
             $postVariableName   = get_class($copyToProject);
+            $project            = Project::getById((int)$id);
             if (!isset($_POST[$postVariableName]))
             {
-                $project        = Project::getById((int)$id);
-                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($project);
                 ProjectZurmoCopyModelUtil::copy($project, $copyToProject);
+                $this->processEdit($copyToProject);
             }
-            $this->processEdit($copyToProject);
+            else
+            {
+                $breadCrumbLinks = array(StringUtil::getChoppedStringContent(strval($project), 25));
+                ProjectZurmoCopyModelUtil::processAfterCopy($project, $copyToProject);
+                $view            = new ProjectsPageView(ProjectDefaultViewUtil::
+                                                        makeViewWithBreadcrumbsForCurrentUser($this,
+                                                            $this->makeEditAndDetailsView(
+                                                                $this->attemptToSaveModelFromPost(
+                                                                    $copyToProject, $redirectUrl), 'Edit'), $breadCrumbLinks, 'ProjectBreadCrumbView'));
+                echo $view->render();
+            }
         }
 
         /**
@@ -236,6 +246,80 @@
                             $this->makeEditAndDetailsView(
                                 $this->attemptToSaveModelFromPost($project, $redirectUrl), 'Edit')));
             echo $view->render();
+        }
+
+        /**
+         * Action for displaying a mass edit form and also action when that form is first submitted.
+         * When the form is submitted, in the event that the quantity of models to update is greater
+         * than the pageSize, then once the pageSize quantity has been reached, the user will be
+         * redirected to the makeMassEditProgressView.
+         * In the mass edit progress view, a javascript refresh will take place that will call a refresh
+         * action, usually massEditProgressSave.
+         * If there is no need for a progress view, then a flash message will be added and the user will
+         * be redirected to the list view for the model.  A flash message will appear providing information
+         * on the updated records.
+         * @see Controler->makeMassEditProgressView
+         * @see Controller->processMassEdit
+         * @see
+         */
+        public function actionMassEdit()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massEditProgressPageSize');
+            $project = new Project(false);
+            $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                new ProjectsSearchForm($project),
+                $pageSize,
+                Yii::app()->user->userModel->id,
+                null,
+                'ProjectsSearchView');
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $project = $this->processMassEdit(
+                $pageSize,
+                $activeAttributes,
+                $selectedRecordCount,
+                'ProjectsPageView',
+                $project,
+                ProjectsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                $dataProvider
+            );
+            $massEditView = $this->makeMassEditView(
+                $project,
+                $activeAttributes,
+                $selectedRecordCount,
+                ProjectsModule::getModuleLabelByTypeAndLanguage('Plural')
+            );
+            $view = new ProjectsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $massEditView));
+            echo $view->render();
+        }
+
+        /**
+         * Action called in the event that the mass edit quantity is larger than the pageSize.
+         * This action is called after the pageSize quantity has been updated and continues to be
+         * called until the mass edit action is complete.  For example, if there are 20 records to update
+         * and the pageSize is 5, then this action will be called 3 times.  The first 5 are updated when
+         * the actionMassEdit is called upon the initial form submission.
+         */
+        public function actionMassEditProgressSave()
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'massEditProgressPageSize');
+            $project = new Project(false);
+            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
+                new ProjectsSearchForm($project),
+                $pageSize,
+                Yii::app()->user->userModel->id,
+                null,
+                'ProjectsSearchView'
+            );
+            $this->processMassEditProgressSave(
+                'Project',
+                $pageSize,
+                ProjectsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                $dataProvider
+            );
         }
 
         /**
@@ -504,20 +588,12 @@
         }
 
         /**
-         * Display list view of active projects on dashboard
-         */
-        public function actionShowActiveProjects()
-        {
-            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView($this);
-            echo $listView->render();
-        }
-
-        /**
          * Display list view of feeds for projects on dashboard
          */
         public function actionShowProjectsLatestActivityFeed()
         {
-            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView($this);
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $listView = ProjectZurmoControllerUtil::getProjectsLatestActivityFeedView($this, $pageSize);
             echo $listView->render();
         }
     }

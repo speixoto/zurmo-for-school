@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -98,6 +98,16 @@
         {
             $params = Yii::app()->apiRequest->getParams();
             $result    =  $this->processListAttributes($params);
+            Yii::app()->apiHelper->sendResponse($result);
+        }
+
+        /**
+         * Get array or models and send response
+         */
+        public function actionSearch()
+        {
+            $params = Yii::app()->apiRequest->getParams();
+            $result    =  $this->processSearch($params);
             Yii::app()->apiHelper->sendResponse($result);
         }
 
@@ -210,8 +220,7 @@
 
             try
             {
-                $redBeanModelToApiDataUtil = new RedBeanModelToApiDataUtil($model);
-                $data                      = $redBeanModelToApiDataUtil->getData();
+                $data           = static::getModelToApiDataUtilData($model);
                 $resultClassName = Yii::app()->apiRequest->getResultClassName();
                 $result                    = new $resultClassName(ApiResponse::STATUS_SUCCESS, $data, null, null);
             }
@@ -333,8 +342,7 @@
                     $formattedData = $dataProvider->getData();
                     foreach ($formattedData as $model)
                     {
-                        $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                        $data['items'][] = $redBeanModelToApiDataUtil->getData();
+                        $data['items'][] = static::getModelToApiDataUtilData($model);
                     }
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
@@ -377,6 +385,116 @@
                 throw new ApiException($message);
             }
             return $result;
+        }
+
+        /**
+         * Search and list all models that satisfy provided criteria
+         * @param array $params
+         * @throws ApiException
+         * @return ApiResult
+         */
+        protected function processSearch($params)
+        {
+            try
+            {
+                $filterParams = array();
+                if (strtolower($_SERVER['REQUEST_METHOD']) != 'post')
+                {
+                    if (isset($params['filter']) && $params['filter'] != '')
+                    {
+                        parse_str($params['filter'], $filterParams);
+                    }
+                }
+                else
+                {
+                    $filterParams = $params['data'];
+                }
+                // Check if modelClassName exist and if it is subclass of RedBeanModel
+                if (@class_exists($filterParams['search']['modelClassName']))
+                {
+                    $modelClassName = $filterParams['search']['modelClassName'];
+                    @$modelClass = new $modelClassName();
+                    if (!($modelClass instanceof RedBeanModel))
+                    {
+                        $message = Zurmo::t('ZurmoModule', '{modelClassName} should be subclass of RedBeanModel.',
+                            array('{modelClassName}' => $modelClassName));
+                        throw new NotSupportedException($message);
+                    }
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', "{modelClassName} class does not exist.",
+                        array('{modelClassName}' => $filterParams['search']['modelClassName']));
+                    throw new NotSupportedException($message);
+                }
+                $pageSize    = Yii::app()->pagination->getGlobalValueByType('apiListPageSize');
+                if (isset($filterParams['pagination']['pageSize']))
+                {
+                    $pageSize = (int)$filterParams['pagination']['pageSize'];
+                }
+
+                // Get offset. Please note that API client provide page number, and we need to convert it into offset,
+                // which is parameter of RedBeanModel::getSubset function
+                if (isset($filterParams['pagination']['page']) && (int)$filterParams['pagination']['page'] > 0)
+                {
+                    $currentPage = (int)$filterParams['pagination']['page'];
+                }
+                else
+                {
+                    $currentPage = 1;
+                }
+                $offset = $this->getOffsetFromCurrentPageAndPageSize($currentPage, $pageSize);
+                $sort = null;
+                if (isset($filterParams['sort']))
+                {
+                    $sort = $filterParams['sort'];
+                }
+
+                $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+                $where             = RedBeanModelDataProvider::makeWhere($modelClassName,
+                    $filterParams['search']['searchAttributeData'], $joinTablesAdapter);
+
+                $results = $modelClassName::getSubset($joinTablesAdapter,
+                    $offset, $pageSize, $where, $sort, $modelClassName, true);
+                $totalItems = $modelClassName::getCount($joinTablesAdapter, $where, null, true);
+
+                $data = array();
+                $data['totalCount'] = $totalItems;
+                $data['currentPage'] = $currentPage;
+                if ($totalItems > 0)
+                {
+                    foreach ($results as $model)
+                    {
+                        $data['items'][] = static::getModelToApiDataUtilData($model);
+                    }
+                    $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
+                }
+                else
+                {
+                    $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
+                }
+            }
+            catch (Exception $e)
+            {
+                $message = $e->getMessage();
+                throw new ApiException($message);
+            }
+            return $result;
+        }
+
+        /**
+         * @param $currentPage
+         * @param $pageSize
+         * @return integer || null
+         */
+        protected function getOffsetFromCurrentPageAndPageSize($currentPage, $pageSize)
+        {
+            $offset = (int)(($currentPage - 1) * $pageSize);
+            if ($offset == 0)
+            {
+                $offset = null;
+            }
+            return $offset;
         }
 
         /**
@@ -497,7 +615,8 @@
                     $modelRelations = $data['modelRelations'];
                     unset($data['modelRelations']);
                 }
-                $model = $this->attemptToSaveModelFromData(new $modelClassName, $data, null, false);
+                $model = new $modelClassName();
+                $model = $this->attemptToSaveModelFromData($model, $data, null, false);
                 $id = $model->id;
                 $model->forget();
                 if (!count($model->getErrors()))
@@ -516,9 +635,8 @@
                             throw new ApiException($message);
                         }
                     }
-                    $model = $modelClassName::getById($id);
-                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                    $data  = $redBeanModelToApiDataUtil->getData();
+                    $model  = $modelClassName::getById($id);
+                    $data   = static::getModelToApiDataUtilData($model);
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
                 else
@@ -596,8 +714,7 @@
                     }
 
                     $model = $modelClassName::getById($id);
-                    $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($model);
-                    $data  = $redBeanModelToApiDataUtil->getData();
+                    $data  = static::getModelToApiDataUtilData($model);
                     $result = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
                 }
                 else
@@ -738,15 +855,47 @@
 
             if (isset($data))
             {
+                $this->preAttemptToSaveModelFromDataHook($model, $data);
                 $controllerUtil   = new ZurmoControllerUtil();
                 $model            = $controllerUtil->saveModelFromSanitizedData($data, $model, $savedSucessfully,
-                    $modelToStringValue, false);
+                                                                                            $modelToStringValue, false);
             }
             if ($savedSucessfully && $redirect)
             {
                 $this->actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
             }
             return $model;
+        }
+
+        /**
+         * Hook to alter $model or $data before we attempt to save it.
+         * @param RedBeanModel $model
+         * @param array $data
+         */
+        protected function preAttemptToSaveModelFromDataHook(RedBeanModel $model, array & $data)
+        {
+        }
+
+        /**
+         * Util used to convert model to array
+         * @return string
+         */
+        protected static function getModelToApiDataUtil()
+        {
+            return 'RedBeanModelToApiDataUtil';
+        }
+
+        /**
+         * Returns data array for provided model using getModelToApiDataUtil
+         * @param RedBeanModel $model
+         * @return array
+         */
+        protected static function getModelToApiDataUtilData(RedBeanModel $model)
+        {
+            $dataUtil                   = static::getModelToApiDataUtil();
+            $redBeanModelToApiDataUtil  = new $dataUtil($model);
+            $data                       = $redBeanModelToApiDataUtil->getData();
+            return $data;
         }
     }
 ?>

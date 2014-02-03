@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -237,7 +237,7 @@
             }
             $ids = self::getSubsetIds($joinTablesAdapter, $offset, $count, $where,
                 $orderBy, $modelClassName, $selectDistinct);
-            $tableName = self::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             $beans = ZurmoRedBean::batch ($tableName, $ids);
             return self::makeModels($beans, $modelClassName);
         }
@@ -273,7 +273,7 @@
             {
                 $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             }
-            $tableName = self::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             $sql       = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, $offset, $count, $where,
                 $orderBy, false, $selectDistinct);
             $ids       = ZurmoRedBean::getCol($sql);
@@ -335,7 +335,7 @@
             {
                 $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             }
-            $tableName      = self::getTableName($modelClassName);
+            $tableName      = $modelClassName::getTableName();
             $sql = static::makeSubsetOrCountSqlQuery($tableName, $joinTablesAdapter, null, null, $where, null, true,
                                                      $selectDistinct);
             $count = ZurmoRedBean::getCell($sql);
@@ -365,7 +365,7 @@
             {
                 $modelClassName = get_called_class();
             }
-            $tableName = self::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             $beans = ZurmoRedBean::find($tableName, "id = '$id'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
@@ -416,7 +416,7 @@
                 {
                     if ($modelClassName::getCanHaveBean())
                     {
-                        $tableName = self::getTableName($modelClassName);
+                        $tableName = $modelClassName::getTableName();
                         $newBean = ZurmoRedBean::dispense($tableName);
                         $this->modelClassNameToBean[$modelClassName] = $newBean;
                         $this->mapAndCacheMetadataAndSetHints($modelClassName, $newBean);
@@ -448,7 +448,7 @@
                         }
                         else
                         {
-                            $tableName = self::getTableName($modelClassName);
+                            $tableName = $modelClassName::getTableName();
                             $lastBean = ZurmoRedBeanLinkManager::getBean($lastBean, $tableName);
                             if ($lastBean === null)
                             {
@@ -595,9 +595,11 @@
          * Derived classes can refer directly to the
          * table name.
          */
-        public static function getTableName($modelClassName)
+        public static function getTableName()
         {
-            assert('is_string($modelClassName) && $modelClassName != ""');
+            // You could also call it on objects like: $model::getTableName() or
+            // $model->getTableName() but it would be preferable to keep it accessed through class, statically.
+            $modelClassName = get_called_class();
             $tableName = strtolower($modelClassName);
             if ($modelClassName::mangleTableName())
             {
@@ -616,7 +618,7 @@
             $tableNames = array();
             foreach ($classNames as $className)
             {
-                $tableNames[] = self::getTableName($className);
+                $tableNames[] = $className::getTableName();
             }
             return $tableNames;
         }
@@ -637,7 +639,7 @@
                 {
                     $relatedModelClassName = $metadata[$modelClassName]['relations'][$relationName][1];
                     self::resolveModelClassNameForClassesWithoutBeans($relatedModelClassName);
-                    $relatedModelTableName = self::getTableName($relatedModelClassName);
+                    $relatedModelTableName = $relatedModelClassName::getTableName();
                     $linkType              = null;
                     $relationLinkName      = null;
                     self::resolveLinkTypeAndRelationLinkName($metadata[$modelClassName]['relations'][$relationName],
@@ -648,7 +650,7 @@
                     if ($metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_MANY ||
                        $metadata[$modelClassName]['relations'][$relationName][0] == self::HAS_ONE_BELONGS_TO)
                     {
-                        $columnName = self::getTableName($modelClassName) . '_id';
+                        $columnName = $modelClassName::getTableName() . '_id';
                     }
                     else
                     {
@@ -827,7 +829,7 @@
                                 {
                                     $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                                     $relatedModelClassName = $relationAndOwns[$attributeName][1];
-                                    $relatedModelTableName = self::getTableName($relatedModelClassName);
+                                    $relatedModelTableName = $relatedModelClassName::getTableName();
                                     $columnName = strtolower($attributeName);
                                     if ($columnName != $relatedModelTableName)
                                     {
@@ -1188,12 +1190,15 @@
 
         private static function findNextDerivativeBean($bean, $modelClassName1, $modelClassName2)
         {
-            $key = strtolower($modelClassName1) . '_id';
-            $tableName = self::getTableName($modelClassName2);
-            $beans = ZurmoRedBean::find($tableName, "$key = :id", array('id' => $bean->id));
-            if (count($beans) == 1)
+            if ($bean->id > 0)
             {
-                return reset($beans);
+                $key = strtolower($modelClassName1) . '_id';
+                $tableName = $modelClassName2::getTableName();
+                $beans = ZurmoRedBean::find($tableName, "$key = :id", array('id' => $bean->id));
+                if (count($beans) == 1)
+                {
+                    return reset($beans);
+                }
             }
             return null;
         }
@@ -1290,7 +1295,7 @@
 
                         $tempRelatedModelClassName = $relatedModelClassName;
                         self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
-                        $relatedTableName          = self::getTableName($tempRelatedModelClassName);
+                        $relatedTableName          = $tempRelatedModelClassName::getTableName();
                         switch ($relationType)
                         {
                             case self::HAS_ONE_BELONGS_TO:
@@ -1345,9 +1350,11 @@
 
                             case self::HAS_MANY:
                                 $this->relationNameToRelatedModel[$attributeName] =
-                                    new RedBeanOneToManyRelatedModels($bean,
+                                    new RedBeanOneToManyRelatedModels($this,
+                                                                      $bean,
                                                                       $relatedModelClassName,
                                                                       $attributeModelClassName,
+                                                                      $attributeName,
                                                                       $owns,
                                                                       $linkType,
                                                                       $relationLinkName);
@@ -1438,7 +1445,7 @@
                     $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                     list($relationType, $relatedModelClassName, $owns, $linkType, $relationLinkName) =
                          $relationAndOwns[$attributeName];
-                    $relatedTableName = self::getTableName($relatedModelClassName);
+                    $relatedTableName = $relatedModelClassName::getTableName();
                     switch ($relationType)
                     {
                         case self::HAS_MANY:
@@ -1811,7 +1818,7 @@
             if (!static::isRelation($attributeName))
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
-                $tableName = self::getTableName($modelClassName);
+                $tableName = $modelClassName::getTableName();
                 $rows = ZurmoRedBean::getAll('select id from ' . $tableName . " where $attributeName = ?", array($value));
                 return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;
             }
@@ -1824,7 +1831,7 @@
                 }
                 $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                 $modelClassName = $relationAndOwns[$attributeName][1];
-                $tableName = self::getTableName($modelClassName);
+                $tableName = $modelClassName::getTableName();
                 $rows = ZurmoRedBean::getAll('select id from ' . $tableName . ' where id = ?', array($model->id));
                 return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;
             }
@@ -1867,7 +1874,7 @@
                             $relatedModelClassName     = $relationAndOwns[$relationName][1];
                             $tempRelatedModelClassName = $relatedModelClassName;
                             self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
-                            $relatedTableName          = self::getTableName($tempRelatedModelClassName);
+                            $relatedTableName          = $tempRelatedModelClassName::getTableName();
                             $linkName = strtolower($relationName);
                             if (static::getRelationType($relationName) == self::HAS_ONE &&
                                 static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
@@ -2042,6 +2049,15 @@
         public function onAfterSave($event)
         {
             $this->raiseEvent('onAfterSave', $event);
+        }
+
+        /**
+         * This event is raised on a RedBeanOneToManyRelatedModels change
+         * @param $event
+         */
+        public function onRedBeanOneToManyRelatedModelsChange($event)
+        {
+            $this->raiseEvent('onRedBeanOneToManyRelatedModelsChange', $event);
         }
 
         /**
@@ -2282,7 +2298,7 @@
             {
                 $modelClassName = get_called_class();
             }
-            $tableName = self::getTableName($relatedModelClassName);
+            $tableName = $relatedModelClassName::getTableName();
             $foreignKeyName = strtolower($modelClassName) . '_id';
             $beans = ZurmoRedBean::find($tableName, "$foreignKeyName = $id");
             return self::makeModels($beans, $relatedModelClassName);
@@ -2349,7 +2365,7 @@
         {
             self::forgetBeanModel(get_called_class());
             RedBeanModelsCache::forgetModel($this);
-            RedBeansCache::forgetBean(self::getTableName(get_called_class()) . $this->id);
+            RedBeansCache::forgetBean(static::getTableName() . $this->id);
         }
 
         /**
@@ -3135,6 +3151,67 @@
             {
                 $this->validators[] = CValidator::createValidator($validator, $this, $attribute, $params);
             }
+        }
+
+        public static function getHasManyOpposingRelationName(RedBeanModel $model, $precedingModelClassName, $precedingRelation)
+        {
+            assert('is_string($precedingModelClassName)');
+            assert('is_string($precedingRelation)');
+            foreach ($model->attributeNames() as $attributeName)
+            {
+                if ($model->isRelation($attributeName) &&
+                    ($model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
+                        $model->getRelationType($attributeName) ==  RedBeanModel::HAS_MANY_BELONGS_TO) &&
+                    static::relationLinksToPrecedingRelation(get_class($model), $attributeName,
+                        $precedingModelClassName, $precedingRelation))
+                {
+                    return $attributeName;
+                }
+            }
+        }
+
+        /**
+         * @param string $modelClassName
+         * @param string $relation
+         * @param null|string $precedingModelClassName
+         * @param null|string $precedingRelation
+         * @return bool
+         */
+        public static function relationLinksToPrecedingRelation($modelClassName, $relation,
+                                                                $precedingModelClassName = null,
+                                                                $precedingRelation = null)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($relation)');
+            assert('is_string($precedingModelClassName) || $precedingModelClassName == null');
+            assert('is_string($precedingRelation) || $precedingRelation == null');
+            if ($precedingModelClassName == null || $precedingRelation == null)
+            {
+                return false;
+            }
+            //Check if the relation is a derived relation in which case return false because it is handled by
+            //@see self::inferredRelationLinksToPrecedingRelation
+            if (!$precedingModelClassName::isAnAttribute($precedingRelation))
+            {
+                return false;
+            }
+            if ($precedingModelClassName != $modelClassName::getRelationModelClassName($relation))
+            {
+                return false;
+            }
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
+            {
+                return true;
+            }
+            //Check for LINK_TYPE_SPECIFIC
+            if ( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $precedingModelClassName::getRelationLinkName($precedingRelation) == $modelClassName::getRelationLinkName($relation))
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

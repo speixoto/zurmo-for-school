@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,6 +40,7 @@
     class PermissionsUtil
     {
         /**
+         * @param Permitable $permitable
          * @return array of all module permissions data
          * Example of a return just for the accounts module.
          * Normally all the applicable modules permissions
@@ -80,36 +81,44 @@
         public static function getAllModulePermissionsDataByPermitable(Permitable $permitable)
         {
             $data        = array();
-            $modules     = Module::getModuleObjects();
-            $permissions = PermissionsUtil::getPermissions();
-            foreach ($modules as $module)
+            try
             {
-                if ($module instanceof SecurableModule)
+                $data = PermissionsCache::getAllModulePermissionsDataByPermitable($permitable);
+            }
+            catch (NotFoundException $e)
+            {
+                $modules     = Module::getModuleObjects();
+                $permissions = PermissionsUtil::getPermissions();
+                foreach ($modules as $module)
                 {
-                    $moduleClassName = get_class($module);
-                    $moduleName      = $module->getName();
-                    $item            = NamedSecurableItem::getByName($moduleClassName);
-                    if (!empty($permissions))
+                    if ($module instanceof SecurableModule)
                     {
-                        foreach ($permissions as $permission)
+                        $moduleClassName = get_class($module);
+                        $moduleName      = $module->getName();
+                        $item            = NamedSecurableItem::getByName($moduleClassName);
+                        if (!empty($permissions))
                         {
-                            $explicit  = PermissionsUtil::resolveExplicitOrInheritedPermission(
-                                            $item->getExplicitActualPermissions ($permitable),
-                                            $permission);
-                            $inherited = PermissionsUtil::resolveExplicitOrInheritedPermission(
-                                            $item->getInheritedActualPermissions($permitable),
-                                            $permission);
-                            $actual = PermissionsUtil::resolveActualPermission(
-                                            $item->getActualPermissions         ($permitable),
-                                            $permission);
-                            $data[$moduleClassName][$permission] = array(
-                                'explicit'  => PermissionsUtil::resolvePermissionForData($explicit),
-                                'inherited' => PermissionsUtil::resolvePermissionForData($inherited),
-                                'actual'    => PermissionsUtil::resolvePermissionForData($actual),
-                            );
+                            foreach ($permissions as $permission)
+                            {
+                                $explicit  = PermissionsUtil::resolveExplicitOrInheritedPermission(
+                                    $item->getExplicitActualPermissions ($permitable),
+                                    $permission);
+                                $inherited = PermissionsUtil::resolveExplicitOrInheritedPermission(
+                                    $item->getInheritedActualPermissions($permitable),
+                                    $permission);
+                                $actual = PermissionsUtil::resolveActualPermission(
+                                    $item->getActualPermissions         ($permitable),
+                                    $permission);
+                                $data[$moduleClassName][$permission] = array(
+                                    'explicit'  => PermissionsUtil::resolvePermissionForData($explicit),
+                                    'inherited' => PermissionsUtil::resolvePermissionForData($inherited),
+                                    'actual'    => PermissionsUtil::resolvePermissionForData($actual),
+                                );
+                            }
                         }
                     }
                 }
+                PermissionsCache::cacheAllModulePermissionsDataByPermitables($permitable, $data);
             }
             return $data;
         }

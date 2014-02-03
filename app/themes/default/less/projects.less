@@ -102,6 +102,9 @@
 		right: 0;
 		top: 12px;
 	}
+	.view-toolbar .parent > ul{
+		right: 0;
+	}
 	.wrapper,
 	.details-table{
 		margin: 0;
@@ -123,7 +126,7 @@
 		margin-bottom: 0;
 	}
 	.right-side-edit-view-panel{
-		background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
+		background: rgba(236, 240, 241, 0.25) url("@{path}stripes.png") left top repeat;
 		.radius(3px);
 	}
 }
@@ -198,7 +201,7 @@
 		padding: 8px 8px 4px 8px;
 		.radius(3px);
 		background: #f5f5f5;
-		.box-sizing();
+		
 		.task-check-item-actions{
 			visibility: hidden !important;
 		}
@@ -231,7 +234,7 @@
 }
 
 .editable-task-input{
-	.box-sizing();
+	
 	padding-left: 22px;
 	input{
 		width: 100%;
@@ -243,8 +246,8 @@
 	margin-top: 10px;
 	padding: 8px;
 	.radius(3px);
-	background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
-	.box-sizing();
+	background: rgba(236, 240, 241, 0.25) url("@{path}stripes.png") left top repeat;
+	
 	display:table;
 	width: 100%;
 	input{
@@ -277,8 +280,8 @@
 		margin: 10px 0 0 0;
 		padding: 8px;
 		.radius(3px);
-		background: rgba(236, 240, 241, 0.25) url(../images/stripes.png) left top repeat;
-		.box-sizing();
+		background: rgba(236, 240, 241, 0.25) url("@{path}stripes.png") left top repeat;
+		
 	}
 	#CommentList{
 		margin: 0 0 0 0;
@@ -323,6 +326,7 @@
 }
 
 .edit-project-link{
+	color: @themeColor;
 	font-size: 14px;
 	font-weight: bold;
 	font-style: normal;
@@ -337,7 +341,7 @@
 }
 
 .project-stats{
-	++.border-box;
+	
 	padding-right:5px;
 	width:20%;
 	float: left;

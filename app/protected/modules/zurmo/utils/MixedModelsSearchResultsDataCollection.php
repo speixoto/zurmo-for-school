@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -68,22 +68,23 @@
         public function getListView($moduleName, $forceEmptyResults = false)
         {
             assert('is_string($moduleName)');
-            $pageSize = $this->pageSize;
-            $module = Yii::app()->findModule($moduleName);
-            $searchFormClassName = $module::getGlobalSearchFormClassName();
-            $modelClassName = $module::getPrimaryModelName();
-            $model = new $modelClassName(false);
-            $searchForm = new $searchFormClassName($model);
+            $sourceData                = GetUtil::getData();
+            $pageSize                  = $this->pageSize;
+            $module                    = Yii::app()->findModule($moduleName);
+            $searchFormClassName       = $module::getGlobalSearchFormClassName();
+            $modelClassName            = $module::getPrimaryModelName();
+            $model                     = new $modelClassName(false);
+            $searchForm                = new $searchFormClassName($model);
             $sanitizedSearchAttributes = MixedTermSearchUtil::
                     getGlobalSearchAttributeByModuleAndPartialTerm($module, $this->term);
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+            $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                     $searchForm,
                     $this->user->id,
                     $sanitizedSearchAttributes
                  );
-            $listViewClassName = $module::getPluralCamelCasedName() . 'ForMixedModelsSearchListView';
-            $sortAttribute     = SearchUtil::resolveSortAttributeFromGetArray($modelClassName);
-            $sortDescending    = SearchUtil::resolveSortDescendingFromGetArray($modelClassName);
+            $listViewClassName         = $module::getPluralCamelCasedName() . 'ForMixedModelsSearchListView';
+            $sortAttribute             = SearchUtil::resolveSortAttributeFromArray($modelClassName, $sourceData);
+            $sortDescending            = SearchUtil::resolveSortDescendingFromArray($modelClassName, $sourceData);
             if ($forceEmptyResults)
             {
                 $dataProviderClass = 'EmptyRedBeanModelDataProvider';

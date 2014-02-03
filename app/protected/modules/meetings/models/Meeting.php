@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Meeting extends MashableActivity
@@ -78,6 +78,7 @@
                 'members' => array(
                     'description',
                     'endDateTime',
+                    'processedForLatestActivity',
                     'location',
                     'logged',
                     'name',
@@ -88,6 +89,7 @@
                     array('endDateTime',      'type', 'type' => 'datetime'),
                     array('endDateTime',      'RedBeanModelCompareDateTimeValidator', 'type' => 'after',
                                               'compareAttribute' => 'startDateTime'),
+                    array('processedForLatestActivity', 'boolean'),
                     array('location',         'type',    'type' => 'string'),
                     array('location',         'length',  'min'  => 1, 'max' => 64),
                     array('logged',           'boolean'),
@@ -106,13 +108,15 @@
                 'elements' => array(
                     'endDateTime'   => 'DateTime',
                     'startDateTime' => 'DateTime',
+                    'description'   => 'TextArea',
                 ),
                 'customFields' => array(
                     'category'     => 'MeetingCategories',
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
-                    'description'
+                    'description',
+                    'processedForLatestActivity'
                 ),
             );
             return $metadata;
@@ -125,7 +129,7 @@
                     'category'      => Zurmo::t('MeetingsModule', 'Category',    array(), null, $language),
                     'description'   => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
                     'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
-                    'location'      => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
+                    'location'      => Zurmo::t('ZurmoModule',    'Location',    array(), null, $language),
                     'name'          => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
                     'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
                 )

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoDefaultController extends ZurmoBaseController
@@ -145,6 +145,36 @@
             $editView->setCssClasses( array('AdministrativeArea') );
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
                         $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
+            echo $view->render();
+        }
+
+        public function actionUserInterfaceConfigurationEdit()
+        {
+            $breadCrumbLinks = array(
+                Zurmo::t('ZurmoModule', 'User Interface Configuration'),
+            );
+            $configurationForm = ZurmoUserInterfaceConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $postVariableName   = get_class($configurationForm);
+            if (isset($_POST[$postVariableName]))
+            {
+                $configurationForm->setAttributes($_POST[$postVariableName]);
+                if ($configurationForm->validate())
+                {
+                    ZurmoUserInterfaceConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'User interface configuration saved successfully.')
+                    );
+                    $this->redirect(Yii::app()->createUrl('configuration/default/index'));
+                }
+            }
+            $editView = new ZurmoUserInterfaceConfigurationEditAndDetailsView(
+                'Edit',
+                $this->getId(),
+                $this->getModule()->getId(),
+                $configurationForm);
+            $editView->setCssClasses( array('AdministrativeArea') );
+            $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                $this, $editView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             echo $view->render();
         }
 
@@ -269,8 +299,10 @@
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'search-form' && isset($_POST[$formModelClassName]))
             {
-                $model                     = new $modelClassName(false);
-                $searchForm                = new $formModelClassName($model);
+                $model      = new $modelClassName(false);
+                $model->setScenario('searchModel');
+                $searchForm = new $formModelClassName($model);
+                $sourceData = $_POST;
                 if (isset($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]))
                 {
                     $searchForm->setAnyMixedAttributesScope($_POST[$formModelClassName][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME]);
@@ -295,6 +327,11 @@
                 if (isset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]))
                 {
                     unset($_POST[$formModelClassName][KanbanBoard::SELECTED_THEME]);
+                }
+                if (isset($_POST[$formModelClassName]['filteredBy']))
+                {
+                    $searchForm->filterByStarred = $_POST[$formModelClassName]['filteredBy'];
+                    unset($_POST[$formModelClassName]['filteredBy']);
                 }
                 $sanitizedSearchData = $this->resolveAndSanitizeDynamicSearchAttributesByPostData(
                                                                 $_POST[$formModelClassName], $searchForm);
@@ -323,6 +360,46 @@
                     echo CJSON::encode($errorData);
                     Yii::app()->end(0, false);
                 }
+                $this->setStickyData($searchForm, $viewClassName, true, $sourceData);
+            }
+        }
+
+        protected function setStickyData($searchModel, $stickySearchKey = null, $setSticky = true, $sourceData)
+        {
+            if ($searchModel instanceof SavedDynamicSearchForm)
+            {
+                if ($stickySearchKey != null && isset($sourceData['clearingSearch']) && $sourceData['clearingSearch'])
+                {
+                    StickySearchUtil::clearDataByKey($stickySearchKey);
+                }
+                $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+                if ($stickySearchKey != null && null != $stickySearchData = StickySearchUtil::getDataByKey($stickySearchKey))
+                {
+                    SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickySearchData, $searchModel);
+                    SavedSearchUtil::resolveSearchFormByStickySortData($sourceData, $searchModel, $stickySearchData);
+                    SearchUtil::resolveSearchFormByStickyFilterByStarredData($sourceData, $searchModel, $stickySearchData);
+                    SearchUtil::resolveSearchFormByStickyFilteredByData($sourceData, $searchModel, $stickySearchData);
+                    $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+                }
+                else
+                {
+                    SavedSearchUtil::resolveSearchFormByData($sourceData, $searchModel);
+                    if ($searchModel->savedSearchId != null)
+                    {
+                        $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+                    }
+                }
+                if ($stickySearchKey != null && ($setSticky ||
+                        ($searchModel->getKanbanBoard() != null && $searchModel->getKanbanBoard()->getClearSticky())))
+                {
+                    if ($stickySearchData == null)
+                    {
+                        $stickySearchData = array();
+                    }
+                    $dataCollection->setSourceData($sourceData);
+                    SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection, $stickySearchData);
+                }
+                $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
             }
         }
 
@@ -409,11 +486,11 @@
 
                 $logoFilePath   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $uploadedFile->getName();
                 $thumbFilePath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
-                                                      ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $uploadedFile->getName();
+                                                      ZurmoUserInterfaceConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $uploadedFile->getName();
                 $uploadedFile->saveAs($logoFilePath);
-                ZurmoConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $thumbFilePath,
-                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_WIDTH,
-                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_HEIGHT);
+                ZurmoUserInterfaceConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $thumbFilePath,
+                                                                   ZurmoUserInterfaceConfigurationForm::DEFAULT_LOGO_THUMBNAIL_WIDTH,
+                                                                   ZurmoUserInterfaceConfigurationForm::DEFAULT_LOGO_THUMBNAIL_HEIGHT);
                 Yii::app()->user->setState('logoFileName', $uploadedFile->getName());
                 $logoFileData = array('name'            => $uploadedFile->getName(),
                                       'type'            => $uploadedFile->getType(),

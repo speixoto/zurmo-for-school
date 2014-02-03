@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class SearchUtilTest extends BaseTest
@@ -68,6 +68,15 @@
             $this->assertTrue  ($sortDescending);
         }
 
+        public function testResolveSearchFormByStickyFilteredByData()
+        {
+            $searchModel  = new AFilteredBySearchFormTestModel(new A());
+            SearchUtil::resolveSearchFormByStickyFilteredByData(array(), $searchModel, array());
+            $this->assertEmpty($searchModel->filteredBy);
+            SearchUtil::resolveSearchFormByStickyFilteredByData(array(), $searchModel, array('filteredBy' => 'all'));
+            $this->assertEquals('all', $searchModel->filteredBy);
+        }
+
         public function testGetSorAttributeFromSortArray()
         {
             $sortAttribute = SearchUtil::getSortAttributeFromSortString('name.desc');
@@ -80,16 +89,16 @@
             $this->assertEquals('', $sortAttribute);
 
             $_GET['testing_sort'] = 'name.desc';
-            $sortAttribute = SearchUtil::resolveSortAttributeFromGetArray('testing');
+            $sortAttribute = SearchUtil::resolveSortAttributeFromArray('testing', $_GET);
             $this->assertEquals('name', $sortAttribute);
             $_GET['testing_sort'] = 'name';
-            $sortAttribute = SearchUtil::resolveSortAttributeFromGetArray('testing');
+            $sortAttribute = SearchUtil::resolveSortAttributeFromArray('testing', $_GET);
             $this->assertEquals('name', $sortAttribute);
             $_GET['testing_sort'] = 'name.asc';
-            $sortAttribute = SearchUtil::resolveSortAttributeFromGetArray('testing');
+            $sortAttribute = SearchUtil::resolveSortAttributeFromArray('testing', $_GET);
             $this->assertEquals('name', $sortAttribute);
             $_GET['testing_sort'] = '';
-            $sortAttribute = SearchUtil::resolveSortAttributeFromGetArray('testing');
+            $sortAttribute = SearchUtil::resolveSortAttributeFromArray('testing', $_GET);
             $this->assertEquals('', $sortAttribute);
         }
 
@@ -103,13 +112,13 @@
             $this->assertFalse($sortDescending);
 
             $_GET['testing_sort'] = 'name.desc';
-            $sortDescending = SearchUtil::resolveSortDescendingFromGetArray('testing');
+            $sortDescending = SearchUtil::resolveSortDescendingFromArray('testing', $_GET);
             $this->assertTrue($sortDescending);
             $_GET['testing_sort'] = 'name';
-            $sortDescending = SearchUtil::resolveSortDescendingFromGetArray('testing');
+            $sortDescending = SearchUtil::resolveSortDescendingFromArray('testing', $_GET);
             $this->assertFalse($sortDescending);
             $_GET['testing_sort'] = 'name.asc';
-            $sortDescending = SearchUtil::resolveSortDescendingFromGetArray('testing');
+            $sortDescending = SearchUtil::resolveSortDescendingFromArray('testing', $_GET);
             $this->assertFalse($sortDescending);
         }
 
@@ -130,32 +139,32 @@
                 'a' => 'apple',
                 'b' => '',
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals($testArray, $newArray);
 
             //Now test various empty and 0 combinations
             $_GET['testing'] = array(
                 'a' => null,
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => null), $newArray);
 
             $_GET['testing'] = array(
                 'a' => '',
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => null), $newArray);
 
             $_GET['testing'] = array(
                 'a' => 0,
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => null), $newArray);
 
             $_GET['testing'] = array(
                 'a' => '0',
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => '0'), $newArray);
         }
 
@@ -166,7 +175,7 @@
                 'dynamicClauses' => array(array('b' => '0')),
                 'dynamicStructure' => '1 and 2',
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => '0'), $newArray);
         }
 
@@ -177,7 +186,7 @@
                 SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME => 'something',
                 SearchForm::SELECTED_LIST_ATTRIBUTES        => array('something'),
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => '0'), $newArray);
 
             $_GET['testing'] = array(
@@ -185,7 +194,7 @@
                 SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME => null,
                 SearchForm::SELECTED_LIST_ATTRIBUTES        => null,
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => '0'), $newArray);
 
             $_GET['testing'] = array(
@@ -193,7 +202,7 @@
                 SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME => array(),
                 SearchForm::SELECTED_LIST_ATTRIBUTES        => array(),
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => '0'), $newArray);
 
             $_GET['testing'] = array(
@@ -201,7 +210,7 @@
                 SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME => array('a' => 'b'),
                 SearchForm::SELECTED_LIST_ATTRIBUTES        => array('a' => 'b'),
             );
-            $newArray = SearchUtil::resolveSearchAttributesFromGetArray('testing', 'AAASearchFormTestModel');
+            $newArray = SearchUtil::resolveSearchAttributesFromArray('testing', 'AAASearchFormTestModel', $_GET);
             $this->assertEquals(array('a' => '0'), $newArray);
         }
 
@@ -352,20 +361,20 @@
         {
             $searchModel  = new ASearchFormTestModel(new A());
             $getArrayName = 'someArray';
-            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromArray($searchModel, $getArrayName, $_GET);
             $this->assertNull($searchModel->getAnyMixedAttributesScope());
 
             //Test passing a value in the GET
             $_GET['someArray'][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME] = 'notAnArray';
-            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromArray($searchModel, $getArrayName, $_GET);
             $this->assertNull($searchModel->getAnyMixedAttributesScope());
 
             $_GET['someArray'][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME] = array('All');
-            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromArray($searchModel, $getArrayName, $_GET);
             $this->assertNull($searchModel->getAnyMixedAttributesScope());
 
             $_GET['someArray'][SearchForm::ANY_MIXED_ATTRIBUTES_SCOPE_NAME] = array('A', 'B', 'C');
-            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveAnyMixedAttributesScopeForSearchModelFromArray($searchModel, $getArrayName, $_GET);
             $this->assertEquals(array('A', 'B', 'C'), $searchModel->getAnyMixedAttributesScope());
         }
 
@@ -375,16 +384,16 @@
             $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
             $searchModel->setListAttributesSelector($listAttributesSelector);
             $getArrayName = 'someArray';
-            SearchUtil::resolveSelectedListAttributesForSearchModelFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveSelectedListAttributesForSearchModelFromArray($searchModel, $getArrayName, $_GET);
             $this->assertEquals(array('name'), $searchModel->getListAttributesSelector()->getSelected());
 
             //Test passing a value in the GET
             $_GET['someArray'][SearchForm::SELECTED_LIST_ATTRIBUTES] = array();
-            SearchUtil::resolveSelectedListAttributesForSearchModelFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveSelectedListAttributesForSearchModelFromArray($searchModel, $getArrayName, $_GET);
             $this->assertEquals(array('name'), $searchModel->getListAttributesSelector()->getSelected());
 
             $_GET['someArray'][SearchForm::SELECTED_LIST_ATTRIBUTES] = array('name', 'a');
-            SearchUtil::resolveSelectedListAttributesForSearchModelFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveSelectedListAttributesForSearchModelFromArray($searchModel, $getArrayName, $_GET);
             $this->assertEquals(array('name', 'a'), $searchModel->getListAttributesSelector()->getSelected());
         }
 
@@ -392,16 +401,32 @@
         {
             $searchModel  = new ASearchFormTestModel(new A());
             $getArrayName = 'someArray';
-            SearchUtil::resolveFilterByStarredFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveFilterByStarredFromArray($searchModel, $getArrayName, $_GET);
             $this->assertNull($searchModel->filterByStarred);
 
             $_GET['someArray']['filterByStarred'] = true;
-            SearchUtil::resolveFilterByStarredFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveFilterByStarredFromArray($searchModel, $getArrayName, $_GET);
             $this->assertTrue($searchModel->filterByStarred);
 
             $_GET['someArray']['filterByStarred'] = false;
-            SearchUtil::resolveFilterByStarredFromGetArray($searchModel, $getArrayName);
+            SearchUtil::resolveFilterByStarredFromArray($searchModel, $getArrayName, $_GET);
             $this->assertFalse($searchModel->filterByStarred);
+        }
+
+        public function testResolveFilteredByFromGetArray()
+        {
+            $searchModel  = new AFilteredBySearchFormTestModel(new A());
+            $getArrayName = 'someArray';
+            SearchUtil::resolveFilteredByFromArray($searchModel, $getArrayName, $_GET);
+            $this->assertNull($searchModel->filteredBy);
+
+            $_GET['someArray']['filteredBy'] = 'all';
+            SearchUtil::resolveFilteredByFromArray($searchModel, $getArrayName, $_GET);
+            $this->assertEquals('all', $searchModel->filteredBy);
+
+            $_GET['someArray']['filteredBy'] = 'none';
+            SearchUtil::resolveFilteredByFromArray($searchModel, $getArrayName, $_GET);
+            $this->assertEquals('none', $searchModel->filteredBy);
         }
 
         public function testGetDynamicSearchAttributesFromGetArray()
@@ -410,7 +435,7 @@
             $_GET['testing'] = array(
                 'a' => null,
             );
-            $newArray = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $newArray = SearchUtil::getDynamicSearchAttributesFromArray('testing', $_GET);
             $this->assertNull($newArray);
 
             //Test with dynamic search
@@ -419,7 +444,7 @@
                 'dynamicClauses' => array(array('b' => 'c')),
                 'dynamicStructure' => '1 and 2',
             );
-            $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $newArray    = SearchUtil::getDynamicSearchAttributesFromArray('testing', $_GET);
             $compareData = array(array('b' => 'c'));
             $this->assertEquals($compareData, $newArray);
 
@@ -429,7 +454,7 @@
                 'dynamicClauses' => array(array('b' => 'c'), 'undefined', array('d' => 'simpleDimple')),
                 'dynamicStructure' => '1 and 2',
             );
-            $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $newArray    = SearchUtil::getDynamicSearchAttributesFromArray('testing', $_GET);
             $compareData = array(0 => array('b' => 'c'), 2 => array('d' => 'simpleDimple'));
             $this->assertEquals($compareData, $newArray);
 
@@ -442,7 +467,7 @@
                      ),
                 'dynamicStructure' => '1 and 2',
             );
-            $newArray    = SearchUtil::getDynamicSearchAttributesFromGetArray('testing');
+            $newArray    = SearchUtil::getDynamicSearchAttributesFromArray('testing', $_GET);
             $compareData = array(0 => array('b' => 'c'), 2 => array('d' => null),
                                       array('e' => array('f' => array('g' => null))),
                                       array('e' => array('f' => null)));
@@ -670,13 +695,13 @@
             $_GET['testing'] = array(
                 'a' => '',
             );
-            $newString = SearchUtil::getDynamicSearchStructureFromGetArray('testing');
+            $newString = SearchUtil::getDynamicSearchStructureFromArray('testing', $_GET);
             $this->assertNull($newString);
             $_GET['testing'] = array(
                 'a' => null,
                 'dynamicStructure' => '1 and 2',
             );
-            $newString = SearchUtil::getDynamicSearchStructureFromGetArray('testing');
+            $newString = SearchUtil::getDynamicSearchStructureFromArray('testing', $_GET);
             $this->assertEquals('1 and 2', $newString);
         }
 
@@ -715,6 +740,21 @@
             );
             $newArray = SearchUtil::getSearchAttributesFromSearchArray($searchArray);
             $this->assertEquals($testArray, $newArray);
+        }
+
+        public function testGetFilteredByFromArray()
+        {
+            $getArrayName = 'someArray';
+            $result       = SearchUtil::getFilteredByFromArray($getArrayName, $_GET);
+            $this->assertNull($result);
+
+            $_GET['someArray']['filteredBy'] = 'all';
+            $result       = SearchUtil::getFilteredByFromArray($getArrayName, $_GET);
+            $this->assertEquals('all', $result);
+
+            $_GET['someArray']['filteredBy'] = 'none';
+            $result       = SearchUtil::getFilteredByFromArray($getArrayName, $_GET);
+            $this->assertEquals('none', $result);
         }
     }
 ?>

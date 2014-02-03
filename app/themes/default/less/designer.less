@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,16 +29,13 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 .panel-buffer{
     padding:15px;
 }
 .add-custom-field{
-    .panel-buffer{
-        height:30px;
-    }
-    .panel-buffer > div{
+	.left-column > div{
         width: 100%;
         float:left;
     }
@@ -46,23 +43,20 @@
         margin-right:130px;
         width:auto;
     }
-    .configure-custom-field-button{
-        position: relative;
-        top: 1px;
-        &:before{
-            content: "n";
-            .symbly(16px);
-            margin-right:5px;
-            position:relative;
-            top:0px;
-        }
-    }
 }
 
 #attributeTypeNameButton{
-    margin:0 0 0 -115px;
-    float:right;
-    clear:right;
+    margin:0 0 0 -105px;
+	span{
+		padding: 0 15px;
+	}
+	span:before{
+		content: "n";
+		.symbly(16px);
+		margin-right:5px;
+		position:relative;
+		top:0px;
+	}
 }
 
 
@@ -79,7 +73,7 @@
     .wide.form{
     	padding:15px !important;
     	#gradient > .vertical(#ffffff, #F5F5F5);
-	    .border-box();
+	    //.border-box();
     }
     .hasCheckBox{
     	margin-left:0;
@@ -92,7 +86,7 @@
 .designer-toolbar{
     margin:0;
     input[type="submit"]{
-        ++.z-button;
+        .z-button();
         margin-bottom:15px;
     }
     h3{
@@ -131,7 +125,7 @@
     border:1px solid #ccc;
     #gradient > .vertical(#f6f6f6, #ededed);
     .b-shadow(inset 0 1px 0 0 #ffffff);
-    ++.themeColor;
+    color: @themeColor;
     &.ui-state-disabled{
         color:#dcdcdc;
         #gradient > .vertical(#efefef, #ededed);
@@ -164,7 +158,8 @@
 }
 
 .sortable-panel {
-    .box-sizing();
+    
+	color: @themeColor;
     height:auto;
     display:block;
     float:left;
@@ -184,7 +179,8 @@
 }
 
 .cell-element {
-    .box-sizing();
+	color: @themeColor;
+    
     text-align: center;
     margin: 0px;
     padding: 0px;
@@ -251,7 +247,7 @@
 }
 
 .sortable-row-list{
-    ++.themeColor-important;
+	color: @themeColor !important;
 }
 
 .layout-single-column {
@@ -260,15 +256,15 @@
     line-height:30px;
     float: left;
     width:100%;
-    .box-sizing();
+    
     &.droppable-cell-container{
         width:90%;
-        .box-sizing();
+        
     }
 }
 
 .layout-double-column {
-    .box-sizing();
+    
     margin: 15px 5px;
     line-height:30px;
     width: 45%;
@@ -379,14 +375,14 @@
         position: fixed;
         z-index: 1000;
         margin-top:15px;
-        .b-shadow(0 0 15px 0 #000);
+        .b-shadow(0 0 15px 0 #333);
     }
 }
 
 #layout-container{
     margin:30px 0 15px 0;
 	float:left;
-	width:100%;	
+	width:100%;
 	.ui-draggable-dragging{
 		width:150px;
 		z-index:99999999;
@@ -401,7 +397,7 @@
     .ui-widget-header .ui-state-highlight{
         border:1px solid #fcefa1;
         background:#fbf9ee;
-        color:#363636 ;
+        color:#333;
     }
     .ui-state-highlight{
 	width: 100%;
@@ -412,7 +408,7 @@
     .ui-state-highlight a,
     .ui-widget-content .ui-state-highlight a,
     .ui-widget-header .ui-state-highlight a{
-        color:#363636 ;
+        color:#333 ;
     }
     .droppable-cell-container{
         background:#EFEFEF;
@@ -444,7 +440,8 @@
     .ui-widget-content .ui-state-active,
     .ui-widget-header .ui-state-active{
         z-index:9999;
-        color:#212121;
+        color:#333;
+	    .b-shadow(0 0 1px 1px @themeColor);
     }
 }
 
@@ -468,7 +465,7 @@
         margin-right:3px;
         position:relative;
         top:1px;
-        ++.themeColor2;
+    	color: @themeColor2;
     }
     .sortable{
         list-style: none;
@@ -515,8 +512,8 @@
 #DropDownDependencyMappingData{
     table{
         border-top:none;
-        padding:top:none;
-       
+        padding-top:none;
+
         td{
             padding-right:15px;
             vertical-align: top;
@@ -542,7 +539,7 @@
     margin-bottom:10px;
     th{
         font-weight:bold;
-        background: url(../images/table-items-header.png) left top repeat-x;
+        background: url("@{path}table-items-header.png") left top repeat-x;
     }
     th, td{
         border: 1px solid #DFDFDF;
@@ -574,7 +571,7 @@
 
 #contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton{
-    ++.z-button;
+    .z-button();
     margin:5px 0 0 0 !important;
     float: left;
     clear: both;

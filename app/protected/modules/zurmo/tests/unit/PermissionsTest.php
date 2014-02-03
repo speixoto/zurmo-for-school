@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class PermissionsTest extends ZurmoBaseTest
@@ -765,7 +765,7 @@
             unset($user);
             unset($group);
             RedBeanModel::forgetAll();
-            Permission::removeAll();
+            Permission::deleteAll();
         }
 
         // The key to understanding the following tests is noting who
@@ -921,7 +921,7 @@
                 unset($buddy);
                 unset($pleb);
                 RedBeanModel::forgetAll();
-                Permission::removeAll();
+                Permission::deleteAll();
             }
             catch (AccessDeniedSecurityException $e)
             {
@@ -1007,7 +1007,7 @@
             unset($everyone);
             RedBeanModel::forgetAll();
 
-            Permission::removeAll();
+            Permission::deleteAll();
 
             $account1 = Account::getById($account1Id);
             $account2 = Account::getById($account2Id);
@@ -1107,7 +1107,7 @@
             $this->assertEquals(Permission::READ_WRITE, $account->getEffectivePermissions($userInParentRole));
             $this->assertEquals(Permission::WRITE,      $account->getEffectivePermissions($userInChildChildRole));
 
-            Permission::removeAll();
+            Permission::deleteAll();
             $accountId = $account->id;
             RedBeanModel::forgetAll();
             unset($account);
@@ -1160,7 +1160,7 @@
             unset($user);
             RedBeanModel::forgetAll();
 
-            $this->assertEquals(0, count(Permission::getAll()));
+            $this->assertEquals(0, Permission::getCount());
         }
 
         public function testPermissionsPropagationViaRolesWhenChildRoleHaveNoUsers()
@@ -1178,7 +1178,7 @@
             $userInChildChildRole = $childChildRole->users[0];
             $this->assertEquals(0, count($childRole->users));
 
-            Permission::removeAll();
+            Permission::deleteAll();
 
             $accounts = Account::getAll();
             $account  = $accounts[0];

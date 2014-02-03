@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class EmailMessageTest extends ZurmoBaseTest
@@ -57,7 +57,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $billy                      = User::getByUsername('billy');
-            $this->assertEquals(0, count(EmailMessage::getAll()));
+            $this->assertEquals(0, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = BaseControlUserConfigUtil::getUserToRunAs();
@@ -156,7 +156,7 @@
             $billy                      = User::getByUsername('billy');
             $jane                       = User::getByUsername('jane');
 
-            $this->assertEquals(1, count(EmailMessage::getAll()));
+            $this->assertEquals(1, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $jane;
@@ -277,7 +277,7 @@
             $sally                      = User::getByUsername('sally');
             $jason                      = User::getByUsername('jason');
 
-            $this->assertEquals(3, count(EmailMessage::getAll()));
+            $this->assertEquals(3, EmailMessage::getCount());
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $jane;

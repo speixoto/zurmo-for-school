@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -47,6 +47,8 @@
         public $listPageSize;
 
         public $subListPageSize;
+
+        public $dashboardListPageSize;
 
         public $themeColor;
 
@@ -105,6 +107,9 @@
                 array('subListPageSize',                'required'),
                 array('subListPageSize',                'type',      'type' => 'integer'),
                 array('subListPageSize',                'numerical', 'min' => 1),
+                array('dashboardListPageSize',          'required'),
+                array('dashboardListPageSize',          'type',      'type' => 'integer'),
+                array('dashboardListPageSize',          'numerical', 'min' => 1),
                 array('themeColor',                     'required'),
                 array('themeColor',                     'type',      'type' => 'string'),
                 array('backgroundTexture',              'type',      'type' => 'string'),
@@ -125,6 +130,7 @@
             return array(
                 'listPageSize'                  => Zurmo::t('ZurmoModule', 'List page size'),
                 'subListPageSize'               => Zurmo::t('ZurmoModule', 'Sublist page size'),
+                'dashboardListPageSize'         => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'themeColor'                    => Zurmo::t('Core', 'Theme'),
                 'backgroundTexture'             => Zurmo::t('UsersModule', 'Texture'),
                 'hideWelcomeView'               => Zurmo::t('UsersModule', 'Hide welcome page'),
