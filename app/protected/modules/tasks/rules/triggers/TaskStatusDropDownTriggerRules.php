@@ -35,26 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Workflow rules to be used with the Tasks module.
+     * Class to help evaluate TaskStatusField triggers against model values.
      */
-    class TasksWorkflowRules extends ActivitiesWorkflowRules
+    class TaskStatusDropDownTriggerRules extends StatusDropDownTriggerRules
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'Task' => array(
-                    'cannotTrigger' =>
-                        array('files', 'notificationSubscribers', 'checkListItems', 'comments'),
-                    'availableOperatorsTypes' =>
-                        array('status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'triggerValueElementTypes' =>
-                        array('status' => 'TaskStatusStaticDropDownForWizardModel'),
-                    ),
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
-        }
     }
 ?>
