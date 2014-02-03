@@ -56,7 +56,7 @@
             return array(
                 'username'   => Zurmo::t('ZurmoModule', 'Username'),
                 'password'   => Zurmo::t('ZurmoModule', 'Password'),
-                'rememberMe' => Zurmo::t('ZurmoModule', 'Remember me next time'),
+                'rememberMe' => Zurmo::t('ZurmoModule', 'Keep me logged in'),
             );
         }
 
