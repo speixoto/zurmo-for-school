@@ -57,7 +57,25 @@
          */
         public static function getNextPageLinkId()
         {
+            return 'builderCanvasSaveLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getFinishLinkId()
+        {
             return 'builderCanvasFinishLink';
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            return Zurmo::t('Core', 'Save');
+        }
+
+        protected function renderFinishLinkLabel()
+        {
+            return Zurmo::t('Core', 'Finish');
         }
 
         /**
@@ -81,6 +99,23 @@
             $content                                    .= $leftSideContent;
             $content                                    .= '</div>';
             return $content;
+        }
+
+        protected function renderActionLinksContent()
+        {
+            $content    = parent::renderActionLinksContent();
+            $content    .= $this->renderFinishLinkContent();
+            return $content;
+        }
+
+        protected function renderFinishLinkContent()
+        {
+            $params                = array();
+            $params['label']       = $this->renderFinishLinkLabel();
+            $params['htmlOptions'] = array('id' => static::getFinishLinkId(),
+                'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
         }
     }
 ?>

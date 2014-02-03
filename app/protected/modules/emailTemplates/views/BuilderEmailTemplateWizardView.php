@@ -46,19 +46,23 @@
 
         /**
          * @param $formName
+         * @param bool $redirectAfterSave
          * @return array
          */
-        protected function resolveSaveAjaxArray($formName)
+        protected function resolveSaveAjaxArray($formName, $redirectAfterSave = true)
         {
-            $ajaxArray                  = parent::resolveSaveAjaxArray($formName);
-            $ajaxArray['success']       = "js:function(data)
-                                        {
-                                            // TODO: @Shoaibi/@Jason: Critical0: Where does the validate url come from?
-                                            // update form action url to contain ids to prevent duplicate models
-                                            var actionUrl = $('#" . $formName . "').attr('action');
-                                            actionUrl = actionUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                            $('#" . $formName . "').attr('action',  actionUrl);
-                                        }";
+            $ajaxArray                  = parent::resolveSaveAjaxArray($formName, $redirectAfterSave);
+            if (!$redirectAfterSave)
+            {
+                $ajaxArray['success']       = "js:function(data)
+                                            {
+                                                // TODO: @Shoaibi/@Jason: Critical0: Where does the validate url come from?
+                                                // update form action url to contain ids to prevent duplicate models
+                                                var actionUrl = $('#" . $formName . "').attr('action');
+                                                actionUrl = actionUrl.replace(/id=(\d*)/, 'id=' + data.id);
+                                                $('#" . $formName . "').attr('action',  actionUrl);
+                                            }";
+            }
             return $ajaxArray;
         }
 
@@ -76,7 +80,7 @@
             return "
                     if (linkId == '" . GeneralDataForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName) . "
+                        " . $this->getSaveAjaxString($formName, false) . "
                         $('#" . static::getValidationScenarioInputId() . "').val('" .
                                             BuilderEmailTemplateWizardForm::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO. "');
                         $('#GeneralDataForEmailTemplateWizardView').hide();
@@ -95,7 +99,7 @@
             return "
                     if (linkId == '" . SelectBaseTemplateForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName) . "
+                        " . $this->getSaveAjaxString($formName, false) . "
                         $('#" . static::getValidationScenarioInputId() . "').val('" .
                                             BuilderEmailTemplateWizardForm::SERIALIZED_DATA_VALIDATION_SCENARIO . "');
                         $('#SelectBaseTemplateForEmailTemplateWizardView').hide();
@@ -103,8 +107,15 @@
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                     }
+                    if (linkId == '" . BuilderCanvasWizardView::getNextPageLinkId() . "')
+                    {
+                        " . $this->getSaveAjaxString($formName, false) . "
+                    }
+                    if (linkId == '" . BuilderCanvasWizardView::getFinishLinkId() . "')
+                    {
+                        " . $this->getSaveAjaxString($formName) . "
+                    }
                     ";
-            // TODO: @Shoaibi: Critical5: Canvas: Save? Finish? Next?
         }
 
         protected function registerPostGeneralDataPreviousLinkScript()
