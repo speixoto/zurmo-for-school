@@ -55,12 +55,19 @@
             );
         }
 
+        /**
+         * Redirect to combined details view for calendar.
+         * @param int $id
+         */
         public function actionDetails($id)
         {
             $urlParams = array($this->getId() . '/combinedDetails');
             $this->redirect($urlParams);
         }
 
+        /**
+         * Create the calendar.
+         */
         public function actionCreate()
         {
             $savedCalendar                  = new SavedCalendar();
@@ -73,6 +80,11 @@
             echo $view->render();
         }
 
+        /**
+         * Edit the calendar.
+         * @param int $id
+         * @param string $redirectUrl
+         */
         public function actionEdit($id, $redirectUrl = null)
         {
             $savedCalendar = SavedCalendar::getById(intval($id));
@@ -81,6 +93,11 @@
             $this->processEdit($savedCalendar, $redirectUrl);
         }
 
+        /**
+         * Process edit of the calendar.
+         * @param SavedCalendar $calendar
+         * @param string $redirectUrl
+         */
         protected function processEdit(SavedCalendar $calendar, $redirectUrl = null)
         {
             $view = new CalendarsPageView(ZurmoDefaultViewUtil::
@@ -90,6 +107,9 @@
             echo $view->render();
         }
 
+        /**
+         * Combined details for the calendar.
+         */
         public function actionCombinedDetails()
         {
             $dataProvider               = CalendarUtil::getCalendarItemsDataProvider();
