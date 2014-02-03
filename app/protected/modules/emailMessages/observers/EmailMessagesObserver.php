@@ -49,7 +49,6 @@
             $this->attachedEventHandlersIndexedByModelClassName['User']    = array('onAfterDelete', $eventHandler);
             Account::model()->attachEventHandler('onAfterDelete', $eventHandler);
             $this->attachedEventHandlersIndexedByModelClassName['Account'] = array('onAfterDelete', $eventHandler);
-
         }
 
         /**
