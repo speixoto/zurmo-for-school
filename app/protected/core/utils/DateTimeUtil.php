@@ -605,5 +605,17 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
+
+        /**
+         * Gets tomorrows date.
+         * @return string
+         */
+        public static function getTomorrowsDate()
+        {
+            $dateTime = new DateTime();
+            $dateTime->modify('tomorrow');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
     }
 ?>

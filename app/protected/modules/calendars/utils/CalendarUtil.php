@@ -103,19 +103,19 @@
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_MONTH)
             {
                 $dateTime = new DateTime();
-                $dateTime->modify('last day of this month');
+                $dateTime->modify('first day of next month');
                 return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
             }
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_WEEK)
             {
-                $dateTime       = new DateTime('last day of this week');
+                $dateTime       = new DateTime('Monday next week');
                 return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
             }
             if($dateRangeType == SavedCalendar::DATERANGE_TYPE_DAY)
             {
-                return DateTimeUtil::getTodaysDate();
+                return DateTimeUtil::getTomorrowsDate();
             }
         }
 

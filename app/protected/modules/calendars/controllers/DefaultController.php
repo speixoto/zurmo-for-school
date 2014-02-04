@@ -59,7 +59,7 @@
          * Redirect to combined details view for calendar.
          * @param int $id
          */
-        public function actionDetails($id)
+        public function actionDetails($id = null)
         {
             $urlParams = array($this->getId() . '/combinedDetails');
             $this->redirect($urlParams);
@@ -262,7 +262,8 @@
         public function actionGetEvents($selectedMyCalendarIds = null,
                                         $selectedSharedCalendarIds = null,
                                         $startDate = null,
-                                        $endDate = null)
+                                        $endDate = null,
+                                        $dateRangeType = null)
         {
             ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
                                                                'CalendarsModule',
@@ -270,9 +271,12 @@
             ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
                                                                'CalendarsModule',
                                                                'myCalendarEndDate', $endDate);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarDateRangeType', $dateRangeType);
             $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
                                                                                                                $selectedSharedCalendarIds,
-                                                                                                               null,
+                                                                                                               $dateRangeType,
                                                                                                                $startDate,
                                                                                                                $endDate);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);

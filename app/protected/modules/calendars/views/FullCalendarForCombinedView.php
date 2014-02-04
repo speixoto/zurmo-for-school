@@ -59,8 +59,8 @@
         {
             Yii::app()->controller->widget('FullCalendar',
                                            array('inputId' => 'calendar',
-                                                 'startDate'   => strtotime($this->dataProvider->getStartDate()),
-                                                 'endDate'     => strtotime($this->dataProvider->getEndDate()),
+                                                 'startDate'   => $this->dataProvider->getStartDate(),
+                                                 'endDate'     => $this->dataProvider->getEndDate(),
                                                  'defaultView' => $this->dataProvider->getDateRangeType()));
             $calendar = ZurmoHtml::tag('div', array('id' => 'calendar'), '');
             return $calendar;

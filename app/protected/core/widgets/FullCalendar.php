@@ -57,14 +57,19 @@
 
         public function run()
         {
-            $defaultView   = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
-                                                                                        'CalendarsModule', 'myCalendarDateRangeType');
+            /*$defaultView   = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+                                                                                        'CalendarsModule', 'myCalendarDateRangeType');*/
+            $defaultView   = $this->defaultView;
             $startDate     = $this->startDate;
             $endDate       = $this->endDate;
+            $startDateAttr = explode('-', $startDate);
+            $year          = $startDateAttr[0];
+            $month         = intval($startDateAttr[1]) - 1;
+            $day           = $startDateAttr[2];
             $url           = Yii::app()->createUrl('calendars/default/getEvents');
             $cs            = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
-            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
+            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.js', ClientScript::POS_END);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
             $inputId       = $this->inputId;
             $script        = "$(document).on('ready', function() {
@@ -75,54 +80,21 @@
                                                                                 center: 'title',
                                                                                 right: 'month,agendaWeek,agendaDay'
                                                                             },
-                                                                    /*events: function(start, end, callback) {
-                                                                                        var selectedMyCalendars = getSelectedCalendars('.mycalendar');
-                                                                                        var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-                                                                                        getCalendarEvents('$url', '{$startDate}', '{$endDate}', callback);
-                                                                                    },*/
-                                                                    events:  {
-                                                                                url : '$url',
-                                                                                data :function()
-                                                                                {
-                                                                                    var selectedMyCalendars = getSelectedCalendars('.mycalendar');
-                                                                                    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-                                                                                    return {
-                                                                                        selectedMyCalendarIds : selectedMyCalendars,
-                                                                                        selectedSharedCalendarIds : selectedSharedCalendars,
-                                                                                        startDate      : '{$startDate}',
-                                                                                        endDate        : '{$endDate}'
-                                                                                        }
-                                                                                }
-                                                                            },
-                                                                    loading: function(bool)
-                                                                            {
-                                                                               if (bool)
-                                                                               {
-                                                                                   $(this).makeLargeLoadingSpinner(true, '#calendar');
-                                                                               }
-                                                                               else
-                                                                               {
-                                                                                   $(this).makeLargeLoadingSpinner(false, '#calendar');
-                                                                               }
-                                                                            },
-                                                                     defaultView: '{$defaultView}'
+                                                                     defaultView: '{$defaultView}',
+                                                                     ignoreTimeZone:false
                                                                     });
-
-                                        });";
-            $nextPreviousScript = "$('body').on('click', '.fc-button-next span', function(){
-                                                    var startDate = getCalendarStartDate('{$inputId}');
-                                                    var endDate = getCalendarEndDate('{$inputId}');
-                                                    refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}');
+                                    $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
+                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
+                                    $('body').on('click', '.fc-button-next span, .fc-button-prev span', function(){
+                                                    $('#{$inputId}').fullCalendar('removeEventSources');
+                                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
                                                    });
-
-
-                                    $('body').on('click', '.fc-button-prev span', function(){
-                                                    var startDate = getCalendarStartDate('{$inputId}');
-                                                    var endDate = getCalendarEndDate('{$inputId}');
-                                                    refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}');
-                                                   });";
-          $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
-          $cs->registerScript('nextPrevCalendarScript', $nextPreviousScript, ClientScript::POS_END);
+                                    $('body').on('click', '.fc-button-month,.fc-button-agendaWeek,fc-button-agendaDay', function(){
+                                                    $('#{$inputId}').fullCalendar('removeEventSources');
+                                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
+                                                   });
+                                        });";
+            $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
         }
     }
 ?>

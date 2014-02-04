@@ -79,6 +79,8 @@
             {
                 $this->$key = $value;
             }
+            $this->startDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->startDate));
+            $this->endDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->endDate));
         }
 
         /**

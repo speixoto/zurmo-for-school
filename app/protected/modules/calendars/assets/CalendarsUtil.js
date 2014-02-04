@@ -49,8 +49,10 @@ function addCalendarRowToSharedCalendarListView(calendarId, url, sharedListConta
 
 function refreshCalendarEvents(url, startDate, endDate)
 {
-    var selectedMyCalendars = getSelectedCalendars('.mycalendar');
+    /*var selectedMyCalendars = getSelectedCalendars('.mycalendar');
     var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
+    var startDate = getCalendarStartDate('calendar');
+    var endDate = getCalendarEndDate('calendar');
     var events = {
         url : url,
         data :function()
@@ -74,12 +76,13 @@ function refreshCalendarEvents(url, startDate, endDate)
                     }
                  }
     };
+    return events;*/
     $('#calendar').fullCalendar('removeEventSource', events);
     $('#calendar').fullCalendar('addEventSource', events);
     $('#calendar').fullCalendar('refetchEvents');
 }
 
-function getCalendarEvents(url, startDate, endDate, callback)
+/*function getCalendarEvents(url, startDate, endDate, callback)
 {
     var selectedMyCalendars = getSelectedCalendars('.mycalendar');
     var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
@@ -96,15 +99,15 @@ function getCalendarEvents(url, startDate, endDate, callback)
                 callback(events);
             }
         });
-}
+}*/
 
 function getCalendarStartDate(inputId)
 {
     var view = $('#' + inputId).fullCalendar('getView');
-    var startDate = view.start.getDate();
-    var endDate   = view.end.getDate();
-    var month = startDate.getMonth();
-    var day   = startDate.getDay();
+    var startDate = view.start;
+    console.log(startDate);
+    var month = parseInt(startDate.getMonth()) + 1;
+    var day   = startDate.getDate();
     var year  = startDate.getFullYear();
     return year + '-' + month + '-' + day;
 }
@@ -112,9 +115,43 @@ function getCalendarStartDate(inputId)
 function getCalendarEndDate(inputId)
 {
     var view = $('#' + inputId).fullCalendar('getView');
-    var endDate   = view.end.getDate();
-    var month = endDate.getMonth();
-    var day   = endDate.getDay();
+    var endDate   = view.end;
+    var month = parseInt(endDate.getMonth()) + 1;
+    var day   = endDate.getDate();
     var year  = endDate.getFullYear();
     return year + '-' + month + '-' + day;
+}
+
+function getCalendarEvents(url, inputId)
+{
+    var selectedMyCalendars = getSelectedCalendars('.mycalendar');
+    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
+    var startDate = getCalendarStartDate(inputId);
+    var endDate = getCalendarEndDate(inputId);
+    var view = $('#' + inputId).fullCalendar('getView');
+    var events = {
+        url : url,
+        data :function()
+        {
+            return {
+                selectedMyCalendarIds : selectedMyCalendars,
+                selectedSharedCalendarIds : selectedSharedCalendars,
+                startDate      : startDate,
+                endDate        : endDate,
+                view           : view.name
+                }
+        },
+        loading: function(bool)
+                 {
+                    if (bool)
+                    {
+                        $(this).makeLargeLoadingSpinner(true, '#calendar');
+                    }
+                    else
+                    {
+                        $(this).makeLargeLoadingSpinner(false, '#calendar');
+                    }
+                 }
+    };
+    return events;
 }
