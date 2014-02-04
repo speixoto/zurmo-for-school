@@ -81,8 +81,7 @@
 
         protected function getWidgetHintText()
         {
-            return Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
+            return Zurmo::t('MeetingsModule', 'Type a person: name or email address',
                                             LabelUtil::getTranslationParamsForAllModules());
         }
 
