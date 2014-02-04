@@ -149,10 +149,10 @@
                     if (baseTemplateId == '')
                     {
                         baseTemplateId = $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . " :first').val();
-                        // TODO: @Shoaibi/@Jason/@Nabil: Critical0: we should not need to even call this, there is an even for it.
-                        updateBaseTemplateIdHiddenInputValue(baseTemplateId);
                     }
                     $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "[value=' + baseTemplateId +']').prop('checked', true);
+                    // raise the click event so updateBaseTemplateIdHiddenInputOnSelectionChangeScript can take care of it.
+                    $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "[value=' + baseTemplateId +']').trigger('click');
             ", CClientScript::POS_READY);
         }
 
