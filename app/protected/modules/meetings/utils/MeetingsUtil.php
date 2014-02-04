@@ -100,7 +100,7 @@
                         $moduleClassName    = $contact->getModuleClassName();
                         $moduleId           = $moduleClassName::getDirectoryName();
                         $element            = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
-                        $existingContacts[] = '<em class="'.get_class($contact).'"></em>' . $element->render();
+                        $existingContacts[] = '<i class="icon-'.strtolower(get_class($contact)).'"></i> ' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -126,7 +126,7 @@
                         $moduleClassName = $contact->getModuleClassName();
                         $moduleId        = $moduleClassName::getDirectoryName();
                         $element          = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
-                        $existingContacts[] = '<em class="'.get_class($contact).'"></em>' . $element->render();
+                        $existingContacts[] = '<i class="icon-'.strtolower(get_class($contact)).'"></i> ' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -160,7 +160,7 @@
                         $moduleId        = $moduleClassName::getDirectoryName();
                         $element          = new DetailsLinkActionElement('default', $moduleId, $castedDownModel->id, $params);
                         //Render icon
-                        $content .= '<em class="'.get_class($castedDownModel).'"></em>';
+                        $content .= '<i class="icon-'.strtolower(get_class($castedDownModel)).'"></i> ';
                         $content .= $element->render();
                         break;
                     }
