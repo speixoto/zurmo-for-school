@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Class to help evaluate Project status field triggers against model values.
+     * Class to help evaluate status field triggers against model values.
      */
-    class ProjectStatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
+    class StatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
     {
     }
 ?>

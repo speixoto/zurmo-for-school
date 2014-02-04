@@ -34,10 +34,18 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to help evaluate Project status field triggers against model values.
-     */
-    class ProjectStatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
+    class StatusDropDownElement extends ConstantBasedStaticDropDownFormElement
     {
+        protected static $attributeName = 'status';
+
+        /**
+         * @return array
+         */
+        protected static function resolveDropDownArray()
+        {
+            return array(1 => 'testValue1',
+                         2 => 'testValue2',
+                         3 => 'testValue3');
+        }
     }
 ?>
