@@ -44,14 +44,14 @@
         public static function renderDaySummaryContent(Meeting $meeting, $link)
         {
             $content = null;
-            $title   = '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
-            $date    = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
+            $title       = '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
+            $dateContent = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
             $localEndDateTime = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->endDateTime);
             if ($localEndDateTime != null)
             {
-                $content .= ' - ' . $localEndDateTime;
+                $dateContent .= ' - ' . $localEndDateTime;
             }
-            $content .= '<br/>';
+            $dateContent .= '<br/>';
             $content .= self::renderActivityItemsContentsExcludingContacts($meeting);
             if (count($meeting->activityItems) > 0)
             {
@@ -70,7 +70,7 @@
                     $content .= $contactsContent . '<br/>';
                 }
             }
-            $content = $title . $date . ZurmoHtml::tag('div', array('class' => 'meeting-details'), $content);
+            $content = $title . $dateContent . ZurmoHtml::tag('div', array('class' => 'meeting-details'), $content);
             if ($meeting->location != null)
             {
                 $content .=  ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Location')) . '<br/>';
