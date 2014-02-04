@@ -359,5 +359,29 @@
             }
             echo ZurmoHtml::listOptions('', $data, $htmlOptions);
         }
+
+        public function actionGetNavigationEvents($selectedMyCalendarIds = null,
+                                            $selectedSharedCalendarIds = null,
+                                            $startDate = null,
+                                            $endDate = null,
+                                            $dateRangeType = null)
+        {
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarStartDate', $startDate);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarEndDate', $endDate);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarDateRangeType', $dateRangeType);
+            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
+                                                                                                               $selectedSharedCalendarIds,
+                                                                                                               $dateRangeType,
+                                                                                                               $startDate,
+                                                                                                               $endDate);
+            $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
+            echo CJSON::encode($items);
+        }
     }
 ?>

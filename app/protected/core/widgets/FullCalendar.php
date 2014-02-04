@@ -67,14 +67,16 @@
             $month         = intval($startDateAttr[1]) - 1;
             $day           = $startDateAttr[2];
             $url           = Yii::app()->createUrl('calendars/default/getEvents');
+            $navigationEventUrl    = Yii::app()->createUrl('calendars/default/getNavigationEvents');
             $cs            = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
             $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.js', ClientScript::POS_END);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
             $inputId       = $this->inputId;
             $script        = "$(document).on('ready', function() {
+                                    $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar({
-                                                                    editable: true,
+                                                                    editable: false,
                                                                     header: {
                                                                                 left: 'prev,next today',
                                                                                 center: 'title',
@@ -82,7 +84,7 @@
                                                                             },
                                                                      defaultView: '{$defaultView}',
                                                                      ignoreTimeZone:false,
-                                                                     lazyFetching : false,
+                                                                     lazyFetching : true,
                                                                      loading: function(bool)
                                                                               {
                                                                                 if (bool)
@@ -95,12 +97,7 @@
                                                                                 }
                                                                               }
                                                                     });
-                                    $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
-                                    $('body').on('click', '.fc-button-next span, .fc-button-prev span', function(){
-                                                    $('#{$inputId}').fullCalendar('removeEventSources');
-                                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
-                                                   });
                                     $('body').on('click', '.fc-button-month,.fc-button-agendaWeek,fc-button-agendaDay', function(){
                                                     $('#{$inputId}').fullCalendar('removeEventSources');
                                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));

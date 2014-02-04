@@ -94,35 +94,11 @@ function getModuleDateTimeAttributes(moduleName, url, targetId, attributeName)
         });
 }
 
-function getCalendarStartDate(inputId)
-{
-    var view = $('#' + inputId).fullCalendar('getView');
-    var startDate = view.start;
-    console.log(startDate);
-    var month = parseInt(startDate.getMonth()) + 1;
-    var day   = startDate.getDate();
-    var year  = startDate.getFullYear();
-    return year + '-' + month + '-' + day;
-}
-
-function getCalendarEndDate(inputId)
-{
-    var view = $('#' + inputId).fullCalendar('getView');
-    var endDate   = view.end;
-    console.log(endDate);
-    var month = parseInt(endDate.getMonth()) + 1;
-    var day   = endDate.getDate();
-    var year  = endDate.getFullYear();
-    return year + '-' + month + '-' + day;
-}
-
 function getCalendarEvents(url, inputId)
 {
-    var selectedMyCalendars = getSelectedCalendars('.mycalendar');
+    var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
     var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-    var startDate = getCalendarStartDate(inputId);
-    var endDate = getCalendarEndDate(inputId);
-    var view = $('#' + inputId).fullCalendar('getView');
+    var view                    = $('#' + inputId).fullCalendar('getView');
     var events = {
         url : url,
         data :function()
@@ -130,8 +106,8 @@ function getCalendarEvents(url, inputId)
             return {
                 selectedMyCalendarIds : selectedMyCalendars,
                 selectedSharedCalendarIds : selectedSharedCalendars,
-                startDate      : startDate,
-                endDate        : endDate,
+                startDate      : $.fullCalendar.formatDate(view.start, 'yyyy-MM-dd'),
+                endDate        : $.fullCalendar.formatDate(view.end, 'yyyy-MM-dd'),
                 dateRangeType  : view.name
                 }
         }

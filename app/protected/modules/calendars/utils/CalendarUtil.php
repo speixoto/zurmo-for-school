@@ -496,14 +496,13 @@
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
             $url    = Yii::app()->createUrl('calendars/default/getEvents');
             $script = "$(document).on('click', '.mycalendar,.sharedcalendar',
-                                                      function(){
-                                                        refreshCalendarEvents('{$url}', '{$startDate}', '{$endDate}');
-                                                        });";
+                                        function(){
+                                                    $('#calendar').fullCalendar('removeEventSources');
+                                                    $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$url}', 'calendar'));
+                                                   }
+                                     );";
             $cs = Yii::app()->getClientScript();
-            if($cs->isScriptRegistered('mycalendarselectscript', ClientScript::POS_END) === false)
-            {
-                $cs->registerScript('mycalendarselectscript', $script);
-            }
+            $cs->registerScript('mycalendarselectscript', $script);
         }
 
         /**
@@ -592,7 +591,8 @@
                                           {
                                                 $('#my-calendars-list').html(data);
                                                 $(this).makeLargeLoadingSpinner(false, '#my-calendars-list');
-                                                refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
+                                                $('#calendar').fullCalendar('removeEventSources');
+                                                $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', 'calendar'));
                                           }
                             });
 
@@ -631,16 +631,14 @@
                                           {
                                                 $('#shared-calendars-list').html(data);
                                                 $(this).makeLargeLoadingSpinner(false, '#shared-calendars-list');
-                                                refreshCalendarEvents('{$eventsUrl}', '{$startDate}', '{$endDate}');
+                                                $('#calendar').fullCalendar('removeEventSources');
+                                                $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', 'calendar'));
                                           }
                             }
                             );
                       })";
             $cs         = Yii::app()->getClientScript();
-            if($cs->isScriptRegistered('calunsubscribescript', ClientScript::POS_END) === false)
-            {
-                $cs->registerScript('calunsubscribescript', $script, ClientScript::POS_END);
-            }
+            $cs->registerScript('calunsubscribescript', $script, ClientScript::POS_END);
         }
 
         /**
