@@ -61,25 +61,25 @@
                 {
                     if ($contactsContent != null)
                     {
-                        $contactsContent .= ', ';
+                        $contactsContent .= '<br/>';
                     }
                     $contactsContent .= $label;
                 }
                 if ($contactsContent != null )
                 {
-                    $content .= Zurmo::t('MeetingsModule', 'with') . ' ' . $contactsContent . '<br/>';
+                    $content .= $contactsContent . '<br/>';
                 }
             }
             if ($meeting->location != null)
             {
                 $content .= '<br/>';
-                $content .= Zurmo::t('ZurmoModule', 'Location') . ':<br/>';
+                $content .=  ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Location')) . '<br/>';
                 $content .= $meeting->location;
             }
             if ($meeting->description != null)
             {
                 $content .= '<br/>';
-                $content .= Zurmo::t('ZurmoModule', 'Description') . ':<br/>';
+                $content .= ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Description')) . '<br/>';
                 $content .= $meeting->description;
             }
             return $content;
@@ -153,7 +153,7 @@
                         $castedDownModel           = $item->castDown(array($modelDerivationPathToItem));
                         if ($content != null)
                         {
-                            $content .= ', ';
+                            $content .= '<br/> ';
                         }
                         $params          = array('label' => strval($castedDownModel), 'redirectUrl' => null, 'wrapLabel' => false);
                         $moduleClassName = $castedDownModel->getModuleClassName();
@@ -171,7 +171,7 @@
             }
             if ($content != null)
             {
-                $content = Zurmo::t('MeetingsModule', 'for') . ' ' . $content . '<br/>';
+                $content .= '<br/>';
             }
             return $content;
         }
