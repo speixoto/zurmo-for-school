@@ -44,8 +44,8 @@
         public static function renderDaySummaryContent(Meeting $meeting, $link)
         {
             $content = null;
-            $content .= '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
-            $content .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
+            $title   = '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
+            $date    = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
             $localEndDateTime = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->endDateTime);
             if ($localEndDateTime != null)
             {
@@ -70,19 +70,19 @@
                     $content .= $contactsContent . '<br/>';
                 }
             }
+            $content = $title . $date . ZurmoHtml::tag('div', array('class' => 'meeting-details'), $content);
             if ($meeting->location != null)
             {
-                $content .= '<br/>';
                 $content .=  ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Location')) . '<br/>';
                 $content .= $meeting->location;
+                $content .= '<br/>';
             }
             if ($meeting->description != null)
             {
-                $content .= '<br/>';
                 $content .= ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Description')) . '<br/>';
                 $content .= $meeting->description;
             }
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'meeting-summary'), $content);
         }
 
         protected static function getExistingContactRelationsLabels($activityItems)

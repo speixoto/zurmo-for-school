@@ -33,9 +33,9 @@
 
 .ui-datepicker{
 	z-index:10000;
-	display: table;
 	&.ui-datepicker-inline{
 		margin:15px;
+		display: table !important;
 	}
 	.ui-datepicker-header{
 		display: table;
@@ -220,7 +220,7 @@
 	.calendar-events-5,
 	.calendar-events-6{
 		span{
-			color: @themeColor;
+			color: @themeColor !important;
 			position:relative !important;
 			float:left;
 			width:100%;
