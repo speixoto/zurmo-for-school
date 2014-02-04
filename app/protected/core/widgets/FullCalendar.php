@@ -82,7 +82,18 @@
                                                                             },
                                                                      defaultView: '{$defaultView}',
                                                                      ignoreTimeZone:false,
-                                                                     lazyFetching : false
+                                                                     lazyFetching : false,
+                                                                     loading: function(bool)
+                                                                              {
+                                                                                if (bool)
+                                                                                {
+                                                                                    $(this).makeLargeLoadingSpinner(true, '#{$inputId}');
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    $(this).makeLargeLoadingSpinner(false, '#{$inputId}');
+                                                                                }
+                                                                              }
                                                                     });
                                     $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));

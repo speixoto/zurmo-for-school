@@ -134,18 +134,7 @@ function getCalendarEvents(url, inputId)
                 endDate        : endDate,
                 dateRangeType  : view.name
                 }
-        },
-        loading: function(bool)
-                 {
-                    if (bool)
-                    {
-                        $('#' + inputId).makeLargeLoadingSpinner(true, '#' + inputId);
-                    }
-                    else
-                    {
-                        $('#' + inputId).makeLargeLoadingSpinner(false, '#' + inputId);
-                    }
-                 }
+        }
     };
     return events;
 }
