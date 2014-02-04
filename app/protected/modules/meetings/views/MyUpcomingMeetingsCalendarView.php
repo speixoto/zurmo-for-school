@@ -55,7 +55,8 @@
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('MeetingsModule', 'My Upcoming MeetingsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
+                    'title' => "eval:Zurmo::t('MeetingsModule', 'My Upcoming MeetingsModulePluralLabel Calendar',
+                                               LabelUtil::getTranslationParamsForAllModules())",
                 ),
                 'global' => array(
                     'panels' => array(),
