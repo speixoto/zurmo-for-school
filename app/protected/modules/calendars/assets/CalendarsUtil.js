@@ -82,24 +82,17 @@ function refreshCalendarEvents(url, startDate, endDate)
     $('#calendar').fullCalendar('refetchEvents');
 }
 
-/*function getCalendarEvents(url, startDate, endDate, callback)
+function getModuleDateTimeAttributes(moduleName, url, targetId, attributeName)
 {
-    var selectedMyCalendars = getSelectedCalendars('.mycalendar');
-    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
     $.ajax({
             url: url,
-            dataType: 'json',
-            data: {
-                selectedMyCalendarIds : selectedMyCalendars,
-                selectedSharedCalendarIds : selectedSharedCalendars,
-                start      : startDate,
-                end        : endDate
-            },
-            success: function(events) {
-                callback(events);
+            dataType: 'html',
+            data:{moduleName : moduleName, attribute : attributeName},
+            success: function(data) {
+                $('#' + targetId).html(data);
             }
         });
-}*/
+}
 
 function getCalendarStartDate(inputId)
 {
@@ -116,6 +109,7 @@ function getCalendarEndDate(inputId)
 {
     var view = $('#' + inputId).fullCalendar('getView');
     var endDate   = view.end;
+    console.log(endDate);
     var month = parseInt(endDate.getMonth()) + 1;
     var day   = endDate.getDate();
     var year  = endDate.getFullYear();
@@ -138,18 +132,18 @@ function getCalendarEvents(url, inputId)
                 selectedSharedCalendarIds : selectedSharedCalendars,
                 startDate      : startDate,
                 endDate        : endDate,
-                view           : view.name
+                dateRangeType  : view.name
                 }
         },
         loading: function(bool)
                  {
                     if (bool)
                     {
-                        $(this).makeLargeLoadingSpinner(true, '#calendar');
+                        $('#' + inputId).makeLargeLoadingSpinner(true, '#' + inputId);
                     }
                     else
                     {
-                        $(this).makeLargeLoadingSpinner(false, '#calendar');
+                        $('#' + inputId).makeLargeLoadingSpinner(false, '#' + inputId);
                     }
                  }
     };

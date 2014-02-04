@@ -643,6 +643,35 @@
             }
         }
 
-
+        /**
+         * Gets model attributes for selected module.
+         * @param string $moduleClassName
+         * @return array
+         */
+        public static function getModelAttributesForSelectedModule($moduleClassName)
+        {
+            if($moduleClassName == 'MeetingsModule')
+            {
+                $adapter  = DesignerModelToViewUtil::getModelAttributesAdapter('MeetingEditAndDetailsView', 'Meeting');
+            }
+            if($moduleClassName == 'ProductsModule')
+            {
+                $adapter  = DesignerModelToViewUtil::getModelAttributesAdapter('ProductEditAndDetailsView', 'Product');
+            }
+            if($moduleClassName == 'TasksModule')
+            {
+                $adapter  = DesignerModelToViewUtil::getModelAttributesAdapter('TaskModalEditView', 'Task');
+            }
+            $attributes                     = $adapter->getAttributes();
+            $selectedAttributes             = array();
+            foreach($attributes as $attribute => $value)
+            {
+                if($value['elementType'] == 'DateTime')
+                {
+                    $selectedAttributes[$attribute] = $value['attributeLabel'];
+                }
+            }
+            return $selectedAttributes;
+        }
     }
 ?>

@@ -98,7 +98,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'startAttributeName', 'type' => 'Text'),
+                                                array('attributeName' => 'startAttributeName', 'type' => 'CalendarDateAttributeStaticDropDown'),
                                             ),
                                         ),
                                     )
@@ -107,7 +107,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'endAttributeName', 'type' => 'Text'),
+                                                array('attributeName' => 'endAttributeName', 'type' => 'CalendarDateAttributeStaticDropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
@@ -272,9 +272,12 @@
 
         protected function registerModuleClassNameChangeScript()
         {
-            //todo: add handling for altering the startAttributeName and end AttributeName inputs..
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.calendars.assets')) . '/CalendarsUtil.js',
+                                            CClientScript::POS_END);
             $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
             $filtersForReportWizardViewClassName = static::getFiltersForReportWizardViewClassName();
+            $dateTimeAttributesFetchUrl = Yii::app()->createUrl('calendars/default/getDateTimeAttributes');
             Yii::app()->clientScript->registerScript('moduleForSavedCalendarChangeScript', "
                 $('[name=\"" . $moduleClassNameId . "\"]').live('change', function()
                     {
@@ -284,6 +287,8 @@
                         rebuildReportFiltersAttributeRowNumbersAndStructureInput('" .
                                 $filtersForReportWizardViewClassName . "');
                         loadFiltersTreeView();
+                        getModuleDateTimeAttributes($(this).val(), '{$dateTimeAttributesFetchUrl}', 'SavedCalendar_startAttributeName_value', 'startAttributeName');
+                        getModuleDateTimeAttributes($(this).val(), '{$dateTimeAttributesFetchUrl}', 'SavedCalendar_endAttributeName_value', 'endAttributeName');
                     }
                 );
             ");

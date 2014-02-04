@@ -103,7 +103,7 @@
                 'name'              => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
                 'startAttributeName'=> Zurmo::t('CalendarsModule', 'Start Attribute Name',  array(), null, $language),
                 'timeZone'          => Zurmo::t('ZurmoModule',    'Time Zone',      array(), null, $language),
-                'moduleClassName'   => Zurmo::t('ZurmoModule',    'Module Class Name',      array(), null, $language),
+                'moduleClassName'   => Zurmo::t('CalendarsModule',    'Module',      array(), null, $language),
                 ));
         }
 

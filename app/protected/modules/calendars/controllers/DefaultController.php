@@ -72,6 +72,9 @@
         {
             $savedCalendar                  = new SavedCalendar();
             $savedCalendar->moduleClassName = 'MeetingsModule';
+            $attributes                     = CalendarUtil::getModelAttributesForSelectedModule($savedCalendar->moduleClassName);
+            $attributeKeys                  = array_keys($attributes);
+            $savedCalendar->startAttributeName = $attributeKeys[0];
             $this->attemptToValidateAjaxFromPost($savedCalendar, 'SavedCalendar');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->resolveReportDataAndSaveCalendar($savedCalendar), 'Edit');
@@ -344,6 +347,17 @@
             $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
                                                                                        'sharedcalendar[]', 'sharedcalendar', 'shared');
             echo $content;
+        }
+
+        public function actionGetDateTimeAttributes($moduleName, $attribute)
+        {
+            $data = CalendarUtil::getModelAttributesForSelectedModule($moduleName);
+            $htmlOptions = array();
+            if($attribute == 'endAttributeName')
+            {
+                $htmlOptions['empty'] = Zurmo::t('Core', '(None)');
+            }
+            echo ZurmoHtml::listOptions('', $data, $htmlOptions);
         }
     }
 ?>

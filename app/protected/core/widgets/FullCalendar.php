@@ -81,7 +81,8 @@
                                                                                 right: 'month,agendaWeek,agendaDay'
                                                                             },
                                                                      defaultView: '{$defaultView}',
-                                                                     ignoreTimeZone:false
+                                                                     ignoreTimeZone:false,
+                                                                     lazyFetching : false
                                                                     });
                                     $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
