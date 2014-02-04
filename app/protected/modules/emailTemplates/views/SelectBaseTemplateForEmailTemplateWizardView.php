@@ -162,7 +162,6 @@
                 function updateBaseTemplateIdHiddenInputValue(value)
                 {
                     $('" . $this->resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val(value);
-                    console.log('Updated to ' + value);
                 }
 
                 $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('click');
