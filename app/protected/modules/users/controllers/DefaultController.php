@@ -628,7 +628,8 @@
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
-                $model->setAttributes($_POST[$postVariableName]);
+                $sanitizedPostdata = PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $_POST[$postVariableName]);
+                $model->setAttributes($sanitizedPostdata);
                 $model->validate();
                 $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
                 if ($model instanceof User)
