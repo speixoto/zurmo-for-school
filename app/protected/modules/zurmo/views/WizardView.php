@@ -241,7 +241,7 @@
         {
             $ajaxArray                  = array('type'     => 'POST',
                                                 'data'     => 'js:$("#' . $formName . '").serialize()',
-                                                'url'      =>  'js: $("#' . $formName . '").attr("action")',
+                                                'url'      =>  'js:$("#' . $formName . '").attr("action")',
                                                 'dataType' => 'json',
                                             );
             if ($redirectAfterSave)

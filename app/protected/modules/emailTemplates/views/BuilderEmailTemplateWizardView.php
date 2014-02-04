@@ -56,7 +56,6 @@
             {
                 $ajaxArray['success']       = "js:function(data)
                                             {
-                                                // TODO: @Shoaibi/@Jason: Critical0: Where does the validate url come from?
                                                 // update form action url to contain ids to prevent duplicate models
                                                 var actionUrl = $('#" . $formName . "').attr('action');
                                                 actionUrl = actionUrl.replace(/id=(\d*)/, 'id=' + data.id);

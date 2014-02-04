@@ -165,12 +165,21 @@
                     console.log('Updated to ' + value);
                 }
 
-                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('change');
-                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').bind('change', function()
+                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('click');
+                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').bind('click', function()
                 {
+                    domContent  = $('#BuilderEmailTemplateWizardForm_serializedData_dom').val();
+                    if (domContent != '')
+                    {
+                        if (!confirm('Changing base template could cause a disaster.'))
+                        {
+                            return false;
+                        }
+                    }
                     updateBaseTemplateIdHiddenInputValue($(this).val());
-                }
-                );", CClientScript::POS_END);
+                    return true;
+                });
+                ", CClientScript::POS_END);
         }
 
         protected function resolveBaseTemplateIdIputNameWithoutSerializedData()

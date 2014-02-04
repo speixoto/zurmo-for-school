@@ -154,5 +154,13 @@
             }
             return $action;
         }
+
+        protected function getClientOptions()
+        {
+            $clientOptions = parent::getClientOptions();
+            // TODO: @Shoaibi/@Nabeel/@Sergio: Critical0: Why does this not get updated?
+            $clientOptions['validationUrl']     = 'js:$("#' . static::getFormId() . '").attr("action")';
+            return $clientOptions;
+        }
     }
 ?>
