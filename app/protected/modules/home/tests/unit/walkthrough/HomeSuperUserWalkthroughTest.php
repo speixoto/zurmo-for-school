@@ -348,16 +348,15 @@
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
 
             //Add ContactsMyList Portlet to dashboard
-            
+
             $this->setGetArray(array(
                 'dashboardId'    => $superDashboard1->id,
                 'portletType'    => 'ContactsMyList',
                 'uniqueLayoutId' => $uniqueLayoutId));
             $this->resetPostArray();
             $this->runControllerWithRedirectExceptionAndGetContent('home/defaultPortlet/add');
-            
         }
-        
+
         public function testAddProductsMyListPortletToDashboard()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -409,7 +408,7 @@
                 )
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
-            
+
             //load details view
             $this->setGetArray(array('id' => $superDashboard1->id));
             $this->resetPostArray();

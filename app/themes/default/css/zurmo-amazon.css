@@ -8668,7 +8668,8 @@ table.configuration-list tr:last-child td {
 #ImportWizardMappingView td + td {
   vertical-align: top;
 }
-.column-import-data {
+.column-import-data,
+.column-import-data div {
   margin-top: 5px;
   padding-right: 5px;
   overflow: hidden;
@@ -19122,7 +19123,6 @@ a + .project-stats {
   width: 100%;
   height: 100%;
   text-align: left;
-  overflow: hidden;
 }
 .spidergraph div {
   overflow: visible !important;

@@ -35,35 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Used to observe when a model that can be a sender or recipient personsOrAccountsItem is deleted so that
-     * the joining _item row can be properly removed.
+     * Class to help evaluate TaskStatusField triggers against model values.
      */
-    class EmailMessagesObserver extends BaseObserver
+    class TaskStatusDropDownTriggerRules extends StatusDropDownTriggerRules
     {
-        public function init()
-        {
-            $eventHandler = array($this, 'deletePersonsOrAccountsItems');
-            Contact::model()->attachEventHandler('onAfterDelete', $eventHandler);
-            $this->attachedEventHandlersIndexedByModelClassName['Contact'] = array('onAfterDelete', $eventHandler);
-            User::model()->attachEventHandler('onAfterDelete', $eventHandler);
-            $this->attachedEventHandlersIndexedByModelClassName['User']    = array('onAfterDelete', $eventHandler);
-            Account::model()->attachEventHandler('onAfterDelete', $eventHandler);
-            $this->attachedEventHandlersIndexedByModelClassName['Account'] = array('onAfterDelete', $eventHandler);
-        }
-
-        /**
-         * Given a event, perform the deletion of conversationItems related to the event sender.
-         * @param CEvent $event
-         */
-        public function deletePersonsOrAccountsItems(CEvent $event)
-        {
-            $model                   = $event->sender;
-            assert('$model instanceof Item');
-            $itemId                  = $model->getClassId('Item');
-            $sql                     = 'DELETE from emailmessagerecipient_item where item_id = ' . $itemId;
-            ZurmoRedBean::exec($sql);
-            $sql                     = 'DELETE from emailmessagesender_item where item_id = ' . $itemId;
-            ZurmoRedBean::exec($sql);
-        }
     }
 ?>
