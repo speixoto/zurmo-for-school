@@ -41,7 +41,7 @@
             $trimmedValue = trim($object->$attribute);
             if (empty($trimmedValue))
             {
-                $object->$attribute = Yii::app()->user->userModel->language;
+                $object->$attribute = Yii::app()->languageHelper-> getForCurrentUser();
             }
             return true;
         }
