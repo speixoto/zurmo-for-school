@@ -35,9 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Class to help evaluate Project status field triggers against model values.
+     * Import rules for an attribute that is a product model.
      */
-    class ProjectStatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
+    class ProductAttributeImportRules extends ModelAttributeImportRules
     {
     }
 ?>

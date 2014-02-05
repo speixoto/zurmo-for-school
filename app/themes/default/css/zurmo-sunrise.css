@@ -5239,11 +5239,14 @@ div.radio-input .hasDropDown {
   padding: 10px;
 }
 #days-meetings-list-view td div {
-  line-height: 125%;
+  line-height: 150%;
 }
 #days-meetings-list-view tr:hover {
   background: none;
   color: #545454;
+}
+#days-meetings-list-view tr:first-child td {
+  border-top: none;
 }
 #days-meetings-list-view h3 {
   color: #545454;
@@ -5256,6 +5259,19 @@ div.radio-input .hasDropDown {
 }
 #days-meetings-list-view h3 span a {
   outline: none;
+}
+#DaysMeetingsFromCalendarModalListView .view-toolbar-container {
+  position: absolute;
+  top: 8px;
+  right: 0px;
+  width: auto;
+}
+.meeting-summary {
+  position: relative;
+}
+.meeting-details {
+  background-color: #dfdfdf;
+  float: right;
 }
 #NoteEditAndDetailsView .details-table,
 #TaskEditAndDetailsView .details-table,
@@ -6957,21 +6973,21 @@ input[type="button"].portlet-create-button:focus {
   -moz-opacity: 1;
   opacity: 1;
 }
-.simple-link {
+a.simple-link {
   font-size: 11px;
   color: #34495e;
   border: none !important;
   text-decoration: underline;
   overflow: hidden;
 }
-.simple-link:before,
-.simple-link:after {
+a.simple-link:before,
+a.simple-link:after {
   content: "" !important;
 }
-.simple-link:hover {
+a.simple-link:hover {
   color: #2c3e50 !important;
 }
-.simple-link:hover .z-label {
+a.simple-link:hover .z-label {
   color: #2c3e50 !important;
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
@@ -6979,7 +6995,7 @@ input[type="button"].portlet-create-button:focus {
   -o-text-shadow: none !important;
   text-shadow: none !important;
 }
-.simple-link .z-label {
+a.simple-link .z-label {
   font-weight: normal;
   color: #34495e;
   background: none !important;
@@ -7001,7 +7017,7 @@ input[type="button"].portlet-create-button:focus {
   text-shadow: none !important;
   text-decoration: underline !important;
 }
-.simple-link .icon-x {
+a.simple-link .icon-x {
   font-weight: normal !important;
   font-size: 21px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -9865,10 +9881,10 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker {
   z-index: 10000;
-  display: table;
 }
 .ui-datepicker.ui-datepicker-inline {
   margin: 15px;
+  display: table !important;
 }
 .ui-datepicker .ui-datepicker-header {
   display: table;
@@ -10144,7 +10160,7 @@ div.wide.form .errorMessage {
 .ui-datepicker .calendar-events-4 span,
 .ui-datepicker .calendar-events-5 span,
 .ui-datepicker .calendar-events-6 span {
-  color: #34495e;
+  color: #34495e !important;
   position: relative !important;
   float: left;
   width: 100%;
@@ -19165,6 +19181,36 @@ a + .project-stats {
 }
 .merge-color-10 {
   border: 2px dotted #c05d91;
+  color: #c05d91 !important;
+}
+.chosen-entries .merge-color-1 a {
+  color: #315AB0 !important;
+}
+.chosen-entries .merge-color-2 a {
+  color: #66367b !important;
+}
+.chosen-entries .merge-color-3 a {
+  color: #2c3e50 !important;
+}
+.chosen-entries .merge-color-4 a {
+  color: #269a55 !important;
+}
+.chosen-entries .merge-color-5 a {
+  color: #c0392b !important;
+}
+.chosen-entries .merge-color-6 a {
+  color: #e67e22 !important;
+}
+.chosen-entries .merge-color-7 a {
+  color: #3498db !important;
+}
+.chosen-entries .merge-color-8 a {
+  color: #501a27 !important;
+}
+.chosen-entries .merge-color-9 a {
+  color: #0c5b3f !important;
+}
+.chosen-entries .merge-color-10 a {
   color: #c05d91 !important;
 }
 .chosen-entries .merge-color-1 a:hover,

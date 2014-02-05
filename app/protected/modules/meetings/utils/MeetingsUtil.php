@@ -44,14 +44,14 @@
         public static function renderDaySummaryContent(Meeting $meeting, $link)
         {
             $content = null;
-            $content .= '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
-            $content .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
+            $title       = '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
+            $dateContent = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
             $localEndDateTime = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->endDateTime);
             if ($localEndDateTime != null)
             {
-                $content .= ' - ' . $localEndDateTime;
+                $dateContent .= ' - ' . $localEndDateTime;
             }
-            $content .= '<br/>';
+            $dateContent .= '<br/>';
             $content .= self::renderActivityItemsContentsExcludingContacts($meeting);
             if (count($meeting->activityItems) > 0)
             {
@@ -61,28 +61,28 @@
                 {
                     if ($contactsContent != null)
                     {
-                        $contactsContent .= ', ';
+                        $contactsContent .= '<br/>';
                     }
                     $contactsContent .= $label;
                 }
                 if ($contactsContent != null )
                 {
-                    $content .= Zurmo::t('MeetingsModule', 'with') . ' ' . $contactsContent . '<br/>';
+                    $content .= $contactsContent . '<br/>';
                 }
             }
+            $content = $title . $dateContent . ZurmoHtml::tag('div', array('class' => 'meeting-details'), $content);
             if ($meeting->location != null)
             {
-                $content .= '<br/>';
-                $content .= Zurmo::t('ZurmoModule', 'Location') . ':<br/>';
+                $content .=  ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Location')) . '<br/>';
                 $content .= $meeting->location;
+                $content .= '<br/>';
             }
             if ($meeting->description != null)
             {
-                $content .= '<br/>';
-                $content .= Zurmo::t('ZurmoModule', 'Description') . ':<br/>';
+                $content .= ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Description')) . '<br/>';
                 $content .= $meeting->description;
             }
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'meeting-summary'), $content);
         }
 
         protected static function getExistingContactRelationsLabels($activityItems)
@@ -100,7 +100,7 @@
                         $moduleClassName    = $contact->getModuleClassName();
                         $moduleId           = $moduleClassName::getDirectoryName();
                         $element            = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
-                        $existingContacts[] = '<em class="'.get_class($contact).'"></em>' . $element->render();
+                        $existingContacts[] = '<i class="icon-'.strtolower(get_class($contact)).'"></i> ' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -126,7 +126,7 @@
                         $moduleClassName = $contact->getModuleClassName();
                         $moduleId        = $moduleClassName::getDirectoryName();
                         $element          = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
-                        $existingContacts[] = '<em class="'.get_class($contact).'"></em>' . $element->render();
+                        $existingContacts[] = '<i class="icon-'.strtolower(get_class($contact)).'"></i> ' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -153,14 +153,14 @@
                         $castedDownModel           = $item->castDown(array($modelDerivationPathToItem));
                         if ($content != null)
                         {
-                            $content .= ', ';
+                            $content .= '<br/> ';
                         }
                         $params          = array('label' => strval($castedDownModel), 'redirectUrl' => null, 'wrapLabel' => false);
                         $moduleClassName = $castedDownModel->getModuleClassName();
                         $moduleId        = $moduleClassName::getDirectoryName();
                         $element          = new DetailsLinkActionElement('default', $moduleId, $castedDownModel->id, $params);
                         //Render icon
-                        $content .= '<em class="'.get_class($castedDownModel).'"></em>';
+                        $content .= '<i class="icon-'.strtolower(get_class($castedDownModel)).'"></i> ';
                         $content .= $element->render();
                         break;
                     }
@@ -171,7 +171,7 @@
             }
             if ($content != null)
             {
-                $content = Zurmo::t('MeetingsModule', 'for') . ' ' . $content . '<br/>';
+                $content .= '<br/>';
             }
             return $content;
         }

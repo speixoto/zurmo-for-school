@@ -34,10 +34,16 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to help evaluate Project status field triggers against model values.
-     */
-    class ProjectStatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
+    class UserPasswordFormTest extends ZurmoBaseTest
     {
+        public function testIsAttributeSafe()
+        {
+            $user = UserTestHelper::createBasicUser('Steven');
+
+            $userPasswordForm = new UserPasswordForm($user);
+            $userPasswordForm->setScenario('createUser');
+            $this->assertTrue($userPasswordForm->isAttributeSafe('username'));
+            $this->assertFalse($userPasswordForm->isAttributeSafe('usernameee'));
+        }
     }
 ?>
