@@ -47,41 +47,6 @@ function addCalendarRowToSharedCalendarListView(calendarId, url, sharedListConta
     );
 }
 
-function refreshCalendarEvents(url, startDate, endDate)
-{
-    /*var selectedMyCalendars = getSelectedCalendars('.mycalendar');
-    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-    var startDate = getCalendarStartDate('calendar');
-    var endDate = getCalendarEndDate('calendar');
-    var events = {
-        url : url,
-        data :function()
-        {
-            return {
-                selectedMyCalendarIds : selectedMyCalendars,
-                selectedSharedCalendarIds : selectedSharedCalendars,
-                startDate      : startDate,
-                endDate        : endDate
-                }
-        },
-        loading: function(bool)
-                 {
-                    if (bool)
-                    {
-                        $(this).makeLargeLoadingSpinner(true, '#calendar');
-                    }
-                    else
-                    {
-                        $(this).makeLargeLoadingSpinner(false, '#calendar');
-                    }
-                 }
-    };
-    return events;*/
-    $('#calendar').fullCalendar('removeEventSource', events);
-    $('#calendar').fullCalendar('addEventSource', events);
-    $('#calendar').fullCalendar('refetchEvents');
-}
-
 function getModuleDateTimeAttributes(moduleName, url, targetId, attributeName)
 {
     $.ajax({
@@ -96,13 +61,13 @@ function getModuleDateTimeAttributes(moduleName, url, targetId, attributeName)
 
 function getCalendarEvents(url, inputId)
 {
-    var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
-    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-    var view                    = $('#' + inputId).fullCalendar('getView');
     var events = {
         url : url,
         data :function()
         {
+            var view                    = $('#' + inputId).fullCalendar('getView');
+            var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
+            var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
             return {
                 selectedMyCalendarIds : selectedMyCalendars,
                 selectedSharedCalendarIds : selectedSharedCalendars,

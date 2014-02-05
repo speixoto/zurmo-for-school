@@ -84,7 +84,7 @@
                                                                             },
                                                                      defaultView: '{$defaultView}',
                                                                      ignoreTimeZone:false,
-                                                                     lazyFetching : true,
+                                                                     lazyFetching : false,
                                                                      loading: function(bool)
                                                                               {
                                                                                 if (bool)
@@ -98,10 +98,10 @@
                                                                               }
                                                                     });
                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
-                                    $('body').on('click', '.fc-button-month,.fc-button-agendaWeek,fc-button-agendaDay', function(){
+                                    /*$('body').on('click', '.fc-button-month,.fc-button-agendaWeek,.fc-button-agendaDay', function(){
                                                     $('#{$inputId}').fullCalendar('removeEventSources');
                                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
-                                                   });
+                                                   });*/
                                         });";
             $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
         }
