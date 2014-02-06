@@ -239,11 +239,22 @@
                 $postData   = PostUtil::getData();
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
                 $this->attemptToSaveModelFromPost($savedCalendar, null, false);
-                $report = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
+                $report               = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
                 $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
                 if (!isset($postData[$wizardFormClassName]))
                 {
                     throw new NotSupportedException();
+                }
+                else
+                {
+                    //This would do the filter and filter structure validation
+                    $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
+                    $model                     =  $reportToWizardFormAdapter->makeFormByType();
+                    if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
+                    {
+                        $postData[$wizardFormClassName]['validationScenario'] = $wizardFormClassName::FILTERS_VALIDATION_SCENARIO;
+                        ReportUtil::validateReportWizardForm($postData, $model);
+                    }
                 }
                 DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report, true);
                 $filtersData          = ArrayUtil::getArrayValue($postData[$wizardFormClassName],

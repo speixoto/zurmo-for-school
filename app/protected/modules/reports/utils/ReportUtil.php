@@ -80,5 +80,31 @@
             }
             return $dataAndLabels;
         }
+
+        /**
+         * Validates report wizard form against the post data
+         * @param type $postData
+         * @param ReportWizardForm $model
+         * @throws NotSupportedException
+         */
+        public static function validateReportWizardForm($postData, ReportWizardForm $model)
+        {
+            if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
+            {
+                $model->setScenario($postData['validationScenario']);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            $model->validate();
+            $errorData = array();
+            foreach ($model->getErrors() as $attribute => $errors)
+            {
+                    $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
+            }
+            echo CJSON::encode($errorData);
+            Yii::app()->end(0, false);
+        }
     }
 ?>

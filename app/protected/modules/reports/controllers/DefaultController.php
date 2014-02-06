@@ -185,7 +185,8 @@
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
             {
-                $this->actionValidate($postData, $model);
+                ReportUtil::validateReportWizardForm($postData, $model);
+                //$this->actionValidate($postData, $model);
             }
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveByPostDataAndModelThenMake($postData[get_class($model)], $savedReport);
@@ -533,7 +534,7 @@
             }
         }
 
-        protected function actionValidate($postData, ReportWizardForm $model)
+        /*protected function actionValidate($postData, ReportWizardForm $model)
         {
             if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
             {
@@ -551,7 +552,7 @@
             }
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);
-        }
+        }*/
 
         protected function makeReportDetailsAndRelationsView(SavedReport $savedReport, $redirectUrl,
                                                              ReportBreadCrumbView $breadCrumbView)
