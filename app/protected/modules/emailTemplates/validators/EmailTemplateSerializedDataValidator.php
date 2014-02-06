@@ -39,9 +39,28 @@
         protected function validateAttribute($object, $attribute)
         {
             $serialized = $object->$attribute;
-            $unserialized = unserialize($serialized);
-            // TODO: @Shoaibi: Critical50: Add stricter validation
-            return (is_array($unserialized) && !empty($serialized));
+            if (!empty($serialized))
+            {
+                $unserialized = unserialize($serialized);
+                if (empty($unserialized))
+                {
+                    return true;
+                }
+
+                // TODO: @Shoaibi: Critical5: Disable this once we have predefined templates.
+                return true;
+
+                if (count($unserialized) >= 2 &&
+                        isset($unserialized['baseTemplate'], $unserialized['dom']) &&
+                        is_array($unserialized['dom']) &&
+                        count($unserialized['dom'][0]) == 3 &&
+                        isset($unserialized['dom'][0]['elementType'], $unserialized['dom'][0]['properties'], $unserialized['dom'][0]['content']))
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
     }
 ?>

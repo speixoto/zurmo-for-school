@@ -189,5 +189,30 @@
         {
             $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
+
+        public function isContactTemplate()
+        {
+            return ($this->type == EmailTemplate::TYPE_CONTACT);
+        }
+
+        public function isWorkflowTemplate()
+        {
+            return ($this->type == EmailTemplate::TYPE_WORKFLOW);
+        }
+
+        public function isPlainTextTemplate()
+        {
+            return ($this->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY);
+        }
+
+        public function isPastedHtmlTemplate()
+        {
+            return ($this->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML);
+        }
+
+        public function isBuilderTemplate()
+        {
+            return ($this->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE);
+        }
     }
 ?>

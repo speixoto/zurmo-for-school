@@ -119,8 +119,6 @@
             $this->renderHiddenField($hiddenElements, 'originalBaseTemplateId', $baseTemplateId);
             $dom                = (isset($unserializedData['dom']))? $unserializedData['dom'] : null;
             $this->renderHiddenField($hiddenElements, 'serializedData[dom]', $dom);
-            $properties         = (isset($unserializedData['properties']))? $unserializedData['properties'] : null;
-            $this->renderHiddenField($hiddenElements, 'serializedData[properties]', $properties);
         }
 
         protected function registerScripts()

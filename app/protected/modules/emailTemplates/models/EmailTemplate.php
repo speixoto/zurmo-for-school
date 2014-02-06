@@ -282,8 +282,17 @@
                     'operatorType'         => 'equals',
                     'value'                => $modelClassName,
                 );
-                $searchAttributeData['structure'] .= ' and 3';
             }
+            else
+            {
+                // if moduleClassName isn't give then at least exclude the pre-defined ones.
+                $searchAttributeData['clauses'][3] = array(
+                    'attributeName'         => 'modelClassName',
+                    'operatorType'          => 'isNotNull',
+                    'value'                 => null,
+                );
+            }
+            $searchAttributeData['structure'] .= ' and 3';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, $limit, $where, 'name');
