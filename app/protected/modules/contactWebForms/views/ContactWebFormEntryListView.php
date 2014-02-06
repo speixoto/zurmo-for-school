@@ -73,7 +73,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'contact', 'type' => 'Contact', 'isLink' => true),
+                                                array('attributeName' => 'contact', 'type' => 'ContactOrLead', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -97,7 +97,7 @@
         
         public function resolveRelatedLinkStringForContactOrLead($data, $attributeString, $attributeName)
         {
-            $moduleId = 'ContactWebFormsUtil::getRelatedLinkStringForContactOrLead($data, $this)';
+            $moduleId = 'ContactWebFormsUtil::getRelatedLinkStringForContactOrLead($data)';
             return $this->getRelatedLinkString($attributeString, $attributeName, $moduleId);
         }
 
