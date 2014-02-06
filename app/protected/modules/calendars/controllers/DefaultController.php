@@ -252,7 +252,7 @@
                     $model                     =  $reportToWizardFormAdapter->makeFormByType();
                     if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
                     {
-                        $postData[$wizardFormClassName]['validationScenario'] = $wizardFormClassName::FILTERS_VALIDATION_SCENARIO;
+                        $postData['validationScenario'] = $wizardFormClassName::FILTERS_VALIDATION_SCENARIO;
                         ReportUtil::validateReportWizardForm($postData, $model);
                     }
                 }
