@@ -86,6 +86,18 @@
             return 'emailTemplates';
         }
 
+        protected function renderTextElement(& $content, $attributeName, $template = null)
+        {
+            $element            = new TextElement($this->model, $attributeName, $this->form);
+            if (isset($template))
+            {
+                $element->editableTemplate = $template;
+            }
+            $elementContent    = $element->render();
+            $this->wrapContentInTableRow($elementContent);
+            $content            .= $elementContent;
+        }
+
         protected function renderHiddenField(& $hiddenElements, $attributeName, $value = null)
         {
             $hiddenElements .= ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->model, $attributeName),
@@ -106,6 +118,45 @@
         protected function wrapContentInDiv(& $content, $htmlOptions = array())
         {
             $content = ZurmoHtml::tag('div', $htmlOptions, $content);
+        }
+
+        protected function renderHiddenElements($hiddenElements, & $content)
+        {
+            $this->wrapContentInTableCell($hiddenElements, array('colspan' => 2));
+            $this->wrapContentInTableRow($hiddenElements);
+            $content                .= $hiddenElements;
+        }
+
+        protected function wrapContentForLeftSideBar(& $content, $prefix = null)
+        {
+            $content    = '<table><colgroup><col class="col-0"><col class="col-1"></colgroup>' . $content;
+            $content    .= '</table>';
+            $this->wrapContentInDiv($content, array('class' => 'panel'));
+            $this->wrapContentInDiv($content, array('class' => 'left-column'));
+            $content    = $prefix . $content;
+        }
+
+        protected function wrapContentForRightSideBar(& $content)
+        {
+            $this->wrapContentInDiv($content, array('class' => 'right-side-edit-view-panel'));
+            $this->wrapContentInDiv($content, array('class' => 'right-column'));
+        }
+
+        protected function wrapContentForAttributesContainer(& $content)
+        {
+            $this->wrapContentInDiv($content, array('class' => 'attributesContainer'));
+        }
+
+        protected function renderLeftAndRightSideBarContentWithWrappers($leftSideBarContent, $rightSideBarContent = null, $leftSideBarPrefix = null)
+        {
+            $this->wrapContentForLeftSideBar($leftSideBarContent, $leftSideBarPrefix);
+            if ($rightSideBarContent)
+            {
+                $this->wrapContentForRightSideBar($rightSideBarContent);
+            }
+            $content    = $leftSideBarContent . $rightSideBarContent;
+            $this->wrapContentForAttributesContainer($content);
+            return $content;
         }
     }
 ?>

@@ -41,6 +41,8 @@
         // TODO: @Shoaibi/Amit: Critical: Update this path.
         const GENERIC_THUMBNAIL_PATH = '/default/images/1x1-pixel.png';
 
+        public $editableTemplate = '{content}';
+
         abstract protected function resolveBaseTemplates();
 
         protected function renderControlEditable()

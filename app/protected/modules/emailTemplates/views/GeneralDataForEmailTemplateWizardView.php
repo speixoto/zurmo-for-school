@@ -36,7 +36,7 @@
 
     class GeneralDataForEmailTemplateWizardView extends ComponentForEmailTemplateWizardView
     {
-        protected static $defaultTextElementEditableTemplate;
+        protected $defaultTextAndDropDownElementEditableTemplate    = '<th>{label}<span class="required">*</span></th><td colspan="{colspan}">{content}</td>';
 
         /**
          * @return string
@@ -67,13 +67,11 @@
          */
         protected function renderFormContent()
         {
-            static::$defaultTextElementEditableTemplate = '<th>{label}<span class="required">*</span>' .
-                                                            '</th><td colspan="{colspan}">{content}</td>';
             // TODO: @Shoaibi/@Jason/@Amit: Critical: Everything red, property set on panel, wrong.
-            $leftSideContent                            = $this->form->errorSummary($this->model);
-            $leftSideContent                            .=  '<table><colgroup><col class="col-0"><col class="col-1">' .
-                                                            '</colgroup>';
+            $leftSideContentPrefix                      = $this->form->errorSummary($this->model);
+            $leftSideContent                            = null;
             $hiddenElements                             = null;
+
             $this->renderType($hiddenElements);
             $this->renderBuiltType($hiddenElements);
             $this->renderIsDraft($hiddenElements);
@@ -83,22 +81,14 @@
             $this->renderSubject($leftSideContent);
             $this->renderFiles($leftSideContent);
             $this->renderPlainTextAndHtmlContent($leftSideContent);
-
-            $this->wrapContentInTableCell($hiddenElements, array('colspan' => 2));
-            $this->wrapContentInTableRow($hiddenElements);
-            $leftSideContent                            .= $hiddenElements;
-            $leftSideContent                            .= '</table>';
-            $this->wrapContentInDiv($leftSideContent, array('class' => 'panel'));
-            $this->wrapContentInDiv($leftSideContent, array('class' => 'left-column'));
+            $this->renderHiddenElements($hiddenElements, $leftSideContent);
 
             $rightSideContent                           = $this->renderRightSideFormLayout();
-            $this->wrapContentInDiv($rightSideContent, array('class' => 'right-side-edit-view-panel'));
-            $this->wrapContentInDiv($rightSideContent, array('class' => 'right-column'));
 
-            $content                                    = '<div class="attributesContainer">';
-            $content                                    .= $leftSideContent;
-            $content                                    .= $rightSideContent;
-            $content                                    .= '</div>';
+            $content                                    = $this->renderLeftAndRightSideBarContentWithWrappers(
+                                                                                                $leftSideContent,
+                                                                                                $rightSideContent,
+                                                                                                $leftSideContentPrefix);
             return $content;
         }
 
@@ -109,7 +99,7 @@
                 $element                    = new EmailTemplateModelClassNameElement($this->model,
                                                                                         'modelClassName',
                                                                                         $this->form);
-                $element->editableTemplate  = static::$defaultTextElementEditableTemplate;
+                $element->editableTemplate  = $this->defaultTextAndDropDownElementEditableTemplate;
                 $modelClassNameContent      = $element->render();
                 $this->wrapContentInTableRow($modelClassNameContent);
                 $content                    .= $modelClassNameContent;
@@ -122,21 +112,12 @@
 
         protected function renderName(& $content)
         {
-            $this->renderTextElementWithDefaultTemplate($content, 'name');
+            $this->renderTextElement($content, 'name', $this->defaultTextAndDropDownElementEditableTemplate);
         }
 
         protected function renderSubject(& $content)
         {
-            $this->renderTextElementWithDefaultTemplate($content, 'subject');
-        }
-
-        protected function renderTextElementWithDefaultTemplate(& $content, $attributeName)
-        {
-            $element            = new TextElement($this->model, $attributeName, $this->form);
-            $element->editableTemplate = static::$defaultTextElementEditableTemplate;
-            $elementContent    = $element->render();
-            $this->wrapContentInTableRow($elementContent);
-            $content            .= $elementContent;
+            $this->renderTextElement($content, 'subject', $this->defaultTextAndDropDownElementEditableTemplate);
         }
 
         protected function renderFiles(& $content)

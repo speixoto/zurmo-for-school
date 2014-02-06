@@ -193,7 +193,7 @@
          * @param $type
          * @return Array of EmailTemplate models
          */
-        public static function getByType($type)
+        public static function getByType($type, $includeDrafts = false)
         {
             assert('is_int($type)');
             $searchAttributeData = array();
@@ -203,8 +203,22 @@
                     'operatorType'         => 'equals',
                     'value'                => $type,
                 ),
+                2 => array(
+                    'attributeName'         => 'modelClassName',
+                    'operatorType'          => 'isNotNull',
+                    'value'                 => null,
+                ),
             );
-            $searchAttributeData['structure'] = '1';
+            $searchAttributeData['structure'] = '1 and 2';
+            if (!$includeDrafts)
+            {
+                $searchAttributeData['clauses'][3] = array(
+                'attributeName'         => 'isDraft',
+                'operatorType'          => 'equals',
+                'value'                 => intval($includeDrafts),
+                );
+                $searchAttributeData['structure'] .= ' and 3';
+            }
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
@@ -250,14 +264,17 @@
                     'attributeName'         => 'builtType',
                     'operatorType'          => 'equals',
                     'value'                 => static::BUILT_TYPE_BUILDER_TEMPLATE,
-                ),
-                2 => array(
+                ));
+            $searchAttributeData['structure'] = '1';
+            if (!$includeDrafts)
+            {
+                $searchAttributeData['clauses'][2] = array(
                     'attributeName'         => 'isDraft',
                     'operatorType'          => 'equals',
                     'value'                 => intval($includeDrafts),
-                ),
-            );
-            $searchAttributeData['structure'] = '1 and 2';
+                );
+                $searchAttributeData['structure'] .= ' and 2';
+            }
             if (isset($modelClassName))
             {
                 $searchAttributeData['clauses'][3] = array(
@@ -265,7 +282,7 @@
                     'operatorType'         => 'equals',
                     'value'                => $modelClassName,
                 );
-                $searchAttributeData['structure'] = '1 and 2 and 3';
+                $searchAttributeData['structure'] .= ' and 3';
             }
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);

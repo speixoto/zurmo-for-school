@@ -80,6 +80,7 @@
                     if (linkId == '" . GeneralDataForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
                         " . $this->getSaveAjaxString($formName, false) . "
+                        triggerCanvasRefreshIfBaseTemplateChanged('" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID ."');
                         $('#" . static::getValidationScenarioInputId() . "').val('" .
                                             BuilderEmailTemplateWizardForm::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO. "');
                         $('#GeneralDataForEmailTemplateWizardView').hide();

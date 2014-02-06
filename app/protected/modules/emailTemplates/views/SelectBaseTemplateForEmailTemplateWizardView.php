@@ -36,8 +36,6 @@
 
     class SelectBaseTemplateForEmailTemplateWizardView extends ComponentForEmailTemplateWizardView
     {
-        protected static $defaultRadioElementEditableTemplate;
-
         /**
          * @return string
          */
@@ -67,25 +65,15 @@
          */
         protected function renderFormContent()
         {
-            $this->registerScripts();
-            static::$defaultRadioElementEditableTemplate = '{content}';
-            $leftSideContent                            =  '<table><colgroup><col class="col-0"><col class="col-1">' .
-                                                            '</colgroup>';
+            $leftSideContent                            =  null;
             $hiddenElements                             = null;
             $this->renderSerializedDataHiddenFields($hiddenElements);
-            $this->wrapContentInTableCell($hiddenElements, array('colspan' => 2));
-            $this->wrapContentInTableRow($hiddenElements);
 
             $leftSideContent                            .= $this->renderSelectBaseTemplateFromPredefinedTemplates();
             $leftSideContent                            .= $this->renderSelectBaseTemplateFromPreviouslyCreatedTemplates();
-            $leftSideContent                            .= $hiddenElements;
-            $leftSideContent                            .= '</table>';
-            $this->wrapContentInDiv($leftSideContent, array('class' => 'panel'));
-            $this->wrapContentInDiv($leftSideContent, array('class' => 'left-column'));
+            $this->renderHiddenElements($hiddenElements, $leftSideContent);
 
-            $content                                    = '<div class="attributesContainer">';
-            $content                                    .= $leftSideContent;
-            $content                                    .= '</div>';
+            $content                                    = $this->renderLeftAndRightSideBarContentWithWrappers($leftSideContent);
             return $content;
         }
 
@@ -110,7 +98,6 @@
         protected function renderSelectBaseTemplateByElementName($elementName, $wrapperDivCssId, $heading = null)
         {
             $element                    = new $elementName($this->model, 'baseTemplateId', $this->form);
-            $element->editableTemplate  = static::$defaultRadioElementEditableTemplate;
             $content                    = "<h3>${heading}</h3>";
             $content                    .= $element->render();
             $content                    = ZurmoHtml::tag('ul', array('class' => 'large-block-grid-3 small-block-grid-1 '.
@@ -129,6 +116,7 @@
             $unserializedData   = unserialize($this->model->serializedData);
             $baseTemplateId     = (isset($unserializedData['baseTemplateId']))? $unserializedData['baseTemplateId'] : null;
             $this->renderHiddenField($hiddenElements, 'serializedData[baseTemplateId]', $baseTemplateId);
+            $this->renderHiddenField($hiddenElements, 'originalBaseTemplateId', $baseTemplateId);
             $dom                = (isset($unserializedData['dom']))? $unserializedData['dom'] : null;
             $this->renderHiddenField($hiddenElements, 'serializedData[dom]', $dom);
             $properties         = (isset($unserializedData['properties']))? $unserializedData['properties'] : null;
@@ -140,6 +128,7 @@
             parent::registerScripts();
             $this->registerUpdateBaseTemplateIdHiddenInputOnSelectionChangeScript();
             $this->registerPreSelectBaseTemplateScript();
+            $this->registerTriggerCanvasRefreshIfBaseTemplateChangedTriggerScript();
         }
 
         protected function registerPreSelectBaseTemplateScript()
@@ -167,18 +156,34 @@
                 $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('click');
                 $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').bind('click', function()
                 {
-                    domContent  = $('#BuilderEmailTemplateWizardForm_serializedData_dom').val();
-                    if (domContent != '')
+                    originalBaseTemplateId  = $('#BuilderEmailTemplateWizardForm_originalBaseTemplateId').val();
+                    currentSelectedValue    = $(this).val();
+                    // show warning only on edit when a user has already been to canvas once.
+                    if (originalBaseTemplateId != '' && currentSelectedValue != originalBaseTemplateId)
                     {
-                        if (!confirm('Changing base template could cause a disaster.'))
+                        if (!confirm('" . Zurmo::t('EmailTemplatesModule', 'Changing base template would trash existing design made on canvas.') ."'))
                         {
                             return false;
                         }
                     }
-                    updateBaseTemplateIdHiddenInputValue($(this).val());
+                    updateBaseTemplateIdHiddenInputValue(currentSelectedValue);
                     return true;
                 });
                 ", CClientScript::POS_END);
+        }
+
+        protected function registerTriggerCanvasRefreshIfBaseTemplateChangedTriggerScript()
+        {
+            Yii::app()->clientScript->registerScript('triggerCanvasRefreshIfBaseTemplateChangedTriggerScript', "
+                function triggerCanvasRefreshIfBaseTemplateChanged(refreshCanvasFromSavedTemplateLinkId)
+                {
+                    originalBaseTemplateId  = $('#BuilderEmailTemplateWizardForm_originalBaseTemplateId').val();
+                    selectedBaseTemplateId  = $('" . $this->resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
+                    if (selectedBaseTemplateId != originalBaseTemplateId)
+                    {
+                        $('#' + refreshCanvasFromSavedTemplateLinkId).trigger('click');
+                    }
+                }", CClientScript::POS_HEAD);
         }
 
         protected function resolveBaseTemplateIdIputNameWithoutSerializedData()

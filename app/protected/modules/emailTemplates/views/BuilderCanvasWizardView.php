@@ -36,6 +36,8 @@
 
     class BuilderCanvasWizardView extends ComponentForEmailTemplateWizardView
     {
+        const REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID = 'refresh-canvas-from-saved-template';
+
         /**
          * @return string
          */
@@ -83,22 +85,27 @@
          */
         protected function renderFormContent()
         {
-            $leftSideContent                            =  '<table><colgroup><col class="col-0"><col class="col-1">' .
-                                                            '</colgroup>';
             // TODO: @Shoaibi: Critical1: Load left sidebar and canvas here.
             // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes.
+            $leftSideContent                            =  null;
             $hiddenElements                             = null;
-            $hiddenElements                             = ZurmoHtml::tag('td', array('colspan' => 2), $hiddenElements);
-            $this->wrapContentInTableRow($hiddenElements);
-            $leftSideContent                            .= $hiddenElements;
-            $leftSideContent                            .= '</table>';
-            $this->wrapContentInDiv($leftSideContent, array('class' => 'panel'));
-            $this->wrapContentInDiv($leftSideContent, array('class' => 'left-column'));
 
-            $content                                    = '<div class="attributesContainer">';
-            $content                                    .= $leftSideContent;
-            $content                                    .= '</div>';
+            $this->renderRefreshCanvasLink($leftSideContent);
+            $this->renderHiddenElements($hiddenElements, $leftSideContent);
+
+            $content                                    = $this->renderLeftAndRightSideBarContentWithWrappers($leftSideContent);
             return $content;
+        }
+
+        protected function renderRefreshCanvasLink(& $content)
+        {
+            $linkContent    = ZurmoHtml::link('Reload Canvas', '#', array(
+                                                            'id' => static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID,
+                                                            'style' => 'display:none',
+                                                        ));
+            $this->wrapContentInTableCell($linkContent, array('colspan' => 2));
+            $this->wrapContentInTableRow($linkContent);
+            $content            .= $linkContent;
         }
 
         protected function renderActionLinksContent()
@@ -113,9 +120,27 @@
             $params                = array();
             $params['label']       = $this->renderFinishLinkLabel();
             $params['htmlOptions'] = array('id' => static::getFinishLinkId(),
-                'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
+        }
+
+        protected function registerScripts()
+        {
+            parent::registerScripts();
+            $this->registerRefreshCanvasFromSavedTemplateScript();
+        }
+
+        protected function registerRefreshCanvasFromSavedTemplateScript()
+        {
+            Yii::app()->clientScript->registerScript('refreshCanvasFromSavedTemplateScript', "
+                $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').unbind('click');
+                $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').bind('click', function()
+                {
+                    // TODO: @Shoaibi: Critical2: Implement to refresh canvas div by making ajax to a url with templateId
+                    return false;
+                });
+                ", CClientScript::POS_READY);
         }
     }
 ?>
