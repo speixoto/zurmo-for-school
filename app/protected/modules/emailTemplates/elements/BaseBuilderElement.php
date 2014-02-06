@@ -81,24 +81,24 @@
             return array();
         }
 
-        protected static function getThumbnailBaseUrl()
+        protected static function resolveThumbnailBaseUrl()
         {
             return Yii::app()->themeManager->baseUrl . '/default/email-templates/elements/';
         }
 
-        protected static function getThumbnailName()
+        protected static function resolveThumbnailName()
         {
             return strtolower(get_called_class()) . '.png';
         }
 
-        protected static function getThumbnailUrl()
+        protected static function resolveThumbnailUrl()
         {
-            return static::getThumbnailBaseUrl() . static::getThumbnailName();
+            return static::resolveThumbnailBaseUrl() . static::resolveThumbnailName();
         }
 
         public static function resolveWidget()
         {
-            return ZurmoHtml::image(static::getThumbnailUrl(), get_called_class(), static::resolveThumbnailHtmlOptions());
+            return ZurmoHtml::image(static::resolveThumbnailUrl(), get_called_class(), static::resolveThumbnailHtmlOptions());
         }
 
         protected static function resolveThumbnailHtmlOptions()
