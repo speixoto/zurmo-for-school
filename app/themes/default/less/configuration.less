@@ -125,11 +125,10 @@
 .configuration-list{
 	list-style:none;
 	li{
-		
 		width:100%;
 		position: relative;
 		margin:0;
-		padding:20px 15px;
+		padding:20px 100px 20px 15px;
 		border-top:1px solid #ccc;
 		border-bottom:1px solid #fff;
 		&:last-child{
@@ -153,12 +152,6 @@
 		display:inline-block;
 	}
 	a{
-		//.z-button();
-		//float:right;
-		//position: absolute;
-		//right:15px;
-		//top:14px;
-		//vertical-align: middle;
 		margin:0;
 		.z-label{
 			.z-label-smaller();
@@ -938,9 +931,6 @@ table.configuration-list{
 		padding-left:15px !important;
 		border-bottom:1px solid #DFDFDF;
 	}
-	.column-import-data{
-		margin-top: 5px;
-	}
 	tr td:last-child{
 		padding-right:0;
 		vertical-align: top;
@@ -948,6 +938,15 @@ table.configuration-list{
 	td + td {
 		vertical-align: top;
 	}
+}
+
+.column-import-data,
+.column-import-data div{
+	margin-top: 5px;
+	padding-right:5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 #sample-column-header{

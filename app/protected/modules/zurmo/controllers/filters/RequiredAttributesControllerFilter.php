@@ -44,6 +44,8 @@
 
         public $viewClassName;
 
+        public $isModal = false;
+
         protected function preFilter($filterChain)
         {
             if (null == $messageContent = RequiredAttributesValidViewUtil::
@@ -52,8 +54,15 @@
                 return true;
             }
             $messageView                  = new ViewIsMissingRequiredAttributesView($messageContent);
-            $view                         = new ViewIsMissingRequiredAttributesPageView($messageView);
-            echo $view->render();
+            if (!$this->isModal)
+            {
+                $view = new ViewIsMissingRequiredAttributesPageView($messageView);
+                echo $view->render();
+            }
+            else
+            {
+                echo $messageView->render();
+            }
             Yii::app()->end(0, false);
         }
     }
