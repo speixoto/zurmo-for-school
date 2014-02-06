@@ -146,10 +146,6 @@
                                                           $this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
                                                           'sharedcalendar[]', 'sharedcalendar', 'shared');
             return $mySharedCalendarsListView->render();
-
-            //todo: add the area where you can selecte from other shared calendars. so probably a MODEL type-ahead on
-            //todo: SavedCalendar would work i think... (but need to exclude your ones you own and ones you already have shared?)
-            //todo: then on adding, need to call ajax to refresh the subscribedToDiv... (so maybe this needs to be its own div. this entire method..
         }
 
         /**
@@ -161,35 +157,5 @@
             $view = new FullCalendarForCombinedView($this->dataProvider);
             return $view->render();
         }
-
-        /*protected function renderGoogleCalendar()
-        {
-
-
-            // build feed URL
-            $feedURL = "https://www.google.com/calendar/feeds/ahf2j3f1f0p2cqilvrlmi85mt4%40group.calendar.google.com/public/basic";
-
-            // read feed into SimpleXML object
-            $sxml = simplexml_load_file($feedURL);
-
-            // get number of events
-            $counts = $sxml->children('http://a9.com/-/spec/opensearchrss/1.0/');
-            $total = $counts->totalResults;
-            echo $sxml->title;
-            echo $total . 'event(s) found.';
-            // iterate over entries in category
-            // print each entry's details
-            foreach ($sxml->entry as $entry) {
-              $title = stripslashes($entry->title);
-              $summary = stripslashes($entry->summary);
-              $link = stripslashes($entry->id);
-
-              echo "<li>\n";
-              echo "<h2>$title</h2>\n";
-              echo "$summary <br/>\n";
-              echo "$link <br/>\n";
-              echo "</li>\n";
-            }
-        }*/
     }
 ?>

@@ -57,22 +57,25 @@
 
         public function run()
         {
-            /*$defaultView   = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
-                                                                                        'CalendarsModule', 'myCalendarDateRangeType');*/
             $defaultView   = $this->defaultView;
+            $inputId       = $this->inputId;
+            $eventsUrl           = Yii::app()->createUrl('calendars/default/getEvents');
+
+            //Set the goto date for calendar
             $startDate     = $this->startDate;
-            $endDate       = $this->endDate;
             $startDateAttr = explode('-', $startDate);
             $year          = $startDateAttr[0];
             $month         = intval($startDateAttr[1]) - 1;
             $day           = $startDateAttr[2];
-            $url           = Yii::app()->createUrl('calendars/default/getEvents');
-            $navigationEventUrl    = Yii::app()->createUrl('calendars/default/getNavigationEvents');
+
+            //Register full calendar script and css
+            self::registerFullCalendarCalendarScriptAndCss();
+
+            //Register qtip for event render
+            $qtip = new ZurmoTip();
+            $qtip->addQTip(".fc-event");
+
             $cs            = Yii::app()->getClientScript();
-            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
-            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.js', ClientScript::POS_END);
-            $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
-            $inputId       = $this->inputId;
             $script        = "$(document).on('ready', function() {
                                     $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar({
@@ -95,15 +98,31 @@
                                                                                 {
                                                                                     $(this).makeLargeLoadingSpinner(false, '#{$inputId}');
                                                                                 }
-                                                                              }
+                                                                              },
+                                                                     eventRender: function(event, element) {
+                                                                                        element.qtip({
+                                                                                            content: event.description
+                                                                                        });
+                                                                                    }
                                                                     });
-                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
-                                    /*$('body').on('click', '.fc-button-month,.fc-button-agendaWeek,.fc-button-agendaDay', function(){
+                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', '{$inputId}'));
+                                    $('body').on('click', '.fc-button-month,.fc-button-agendaWeek,.fc-button-agendaDay', function(){
                                                     $('#{$inputId}').fullCalendar('removeEventSources');
-                                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$url}', '{$inputId}'));
-                                                   });*/
+                                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', '{$inputId}'));
+                                                   });
                                         });";
             $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Registers script and css file
+         */
+        protected static function registerFullCalendarCalendarScriptAndCss()
+        {
+            $cs            = Yii::app()->getClientScript();
+            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
+            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.js', ClientScript::POS_END);
+            $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
         }
     }
 ?>

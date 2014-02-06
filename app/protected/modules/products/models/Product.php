@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class Product extends OwnedSecurableItem
+    class Product extends OwnedSecurableItem implements CalendarItemInterface
     {
         const OPEN_STAGE    = 'Open';
 
@@ -198,6 +198,17 @@
         {
             $this->sellPrice->setScenario('positiveValue');
             return parent::beforeValidate();
+        }
+
+        /**
+         * Gets full calendar description.
+         * @return string
+         */
+        public function getCalendarDescription()
+        {
+            $priceFrequency = ProductTemplatePriceFrequencyDropDownElement::renderNonEditableStringContent($this->priceFrequency);
+            $content = ZurmoHtml::tag('span', array(), $priceFrequency);
+            return $content;
         }
     }
 ?>

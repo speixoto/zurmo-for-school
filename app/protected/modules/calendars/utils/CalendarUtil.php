@@ -200,6 +200,16 @@
                     $fullCalendarItem['end'] = self::getFullCalendarFormattedDateTimeElement($calItem->getEndDateTime());
                 }
                 $fullCalendarItem['color'] = $calItem->getColor();
+                $modelClass                = $calItem->getModelClass();
+                $model                     = $modelClass::getById($calItem->getModelId());
+                if($model instanceof CalendarItemInterface)
+                {
+                    $fullCalendarItem['description'] = $model->getCalendarDescription();
+                }
+                else
+                {
+                    $fullCalendarItem['description'] = '';
+                }
                 $fullCalendarItems[] = $fullCalendarItem;
             }
             return $fullCalendarItems;
@@ -648,23 +658,13 @@
          */
         public static function getModelAttributesForSelectedModule($moduleClassName)
         {
-            if($moduleClassName == 'MeetingsModule')
-            {
-                $adapter  = DesignerModelToViewUtil::getModelAttributesAdapter('MeetingEditAndDetailsView', 'Meeting');
-            }
-            if($moduleClassName == 'ProductsModule')
-            {
-                $adapter  = DesignerModelToViewUtil::getModelAttributesAdapter('ProductEditAndDetailsView', 'Product');
-            }
-            if($moduleClassName == 'TasksModule')
-            {
-                $adapter  = DesignerModelToViewUtil::getModelAttributesAdapter('TaskModalEditView', 'Task');
-            }
-            $attributes                     = $adapter->getAttributes();
-            $selectedAttributes             = array();
+            $modelClassName         = $moduleClassName::getPrimaryModelName();
+            $adapter                = new ModelAttributesAdapter(new $modelClassName(false));
+            $attributes             = $adapter->getAttributes();
+            $selectedAttributes     = array();
             foreach($attributes as $attribute => $value)
             {
-                if($value['elementType'] == 'DateTime')
+                if($value['elementType'] == 'DateTime' || $value['elementType'] == 'Date')
                 {
                     $selectedAttributes[$attribute] = $value['attributeLabel'];
                 }
