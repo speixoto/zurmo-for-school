@@ -62,6 +62,20 @@
             return 'generalDataSaveAndRunLink';
         }
 
+        protected function renderNextPageLinkLabel()
+        {
+            if ($this->model->builtType != EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            {
+                return Zurmo::t('Core', 'Save');
+            }
+            return parent::renderNextPageLinkLabel();
+        }
+
+        protected function renderPreviousPageLinkLabel()
+        {
+            return Zurmo::t('Core', 'Cancel');
+        }
+
         /**
          * @return string
          */
@@ -92,24 +106,6 @@
             return $content;
         }
 
-        protected function renderModelClassName(& $content, & $hiddenElements)
-        {
-            if ($this->model->type == EmailTemplate::TYPE_WORKFLOW)
-            {
-                $element                    = new EmailTemplateModelClassNameElement($this->model,
-                                                                                        'modelClassName',
-                                                                                        $this->form);
-                $element->editableTemplate  = $this->defaultTextAndDropDownElementEditableTemplate;
-                $modelClassNameContent      = $element->render();
-                $this->wrapContentInTableRow($modelClassNameContent);
-                $content                    .= $modelClassNameContent;
-            }
-            else
-            {
-                $this->renderHiddenField($hiddenElements, 'modelClassName', 'Contact');
-            }
-        }
-
         protected function renderName(& $content)
         {
             $this->renderTextElement($content, 'name', $this->defaultTextAndDropDownElementEditableTemplate);
@@ -118,26 +114,6 @@
         protected function renderSubject(& $content)
         {
             $this->renderTextElement($content, 'subject', $this->defaultTextAndDropDownElementEditableTemplate);
-        }
-
-        protected function renderFiles(& $content)
-        {
-            $element            = new FilesElement($this->model, null, $this->form);
-            $this->wrapContentInDiv($filesContent);
-            $filesContent       = $element->render();
-            $this->wrapContentInTableRow($filesContent);
-            $content            .= $filesContent;
-        }
-
-        protected function renderPlainTextAndHtmlContent(& $content)
-        {
-            $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form);
-            $element->editableTemplate  = '{label}{content}';
-            $contentAreasContent        = $element->render();
-            $this->wrapContentInDiv($contentAreasContent, array('class' => 'email-template-combined-content'));
-            $contentAreasContent = ZurmoHtml::tag('td', array('colspan' => 2), $contentAreasContent);
-            $this->wrapContentInTableRow($contentAreasContent);
-            $content            .= $contentAreasContent;
         }
 
         protected function renderType(& $hiddenElements)
@@ -160,6 +136,44 @@
             $this->renderHiddenField($hiddenElements, 'language', $this->model->language);
         }
 
+        protected function renderModelClassName(& $content, & $hiddenElements)
+        {
+            if ($this->model->type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $element                    = new EmailTemplateModelClassNameElement($this->model,
+                                                                                        'modelClassName',
+                                                                                        $this->form);
+                $element->editableTemplate  = $this->defaultTextAndDropDownElementEditableTemplate;
+                $modelClassNameContent      = $element->render();
+                $this->wrapContentInTableRow($modelClassNameContent);
+                $content                    .= $modelClassNameContent;
+            }
+            else
+            {
+                $this->renderHiddenField($hiddenElements, 'modelClassName', 'Contact');
+            }
+        }
+
+        protected function renderFiles(& $content)
+        {
+            $element            = new FilesElement($this->model, null, $this->form);
+            $this->wrapContentInDiv($filesContent);
+            $filesContent       = $element->render();
+            $this->wrapContentInTableRow($filesContent);
+            $content            .= $filesContent;
+        }
+
+        protected function renderPlainTextAndHtmlContent(& $content)
+        {
+            $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form);
+            $element->editableTemplate  = '{label}{content}';
+            $contentAreasContent        = $element->render();
+            $this->wrapContentInDiv($contentAreasContent, array('class' => 'email-template-combined-content'));
+            $contentAreasContent = ZurmoHtml::tag('td', array('colspan' => 2), $contentAreasContent);
+            $this->wrapContentInTableRow($contentAreasContent);
+            $content            .= $contentAreasContent;
+        }
+
         /**
          * @return string
          */
@@ -176,18 +190,25 @@
             return $content;
         }
 
-        protected function renderNextPageLinkLabel()
+        protected function registerScripts()
         {
-            if ($this->model->builtType != EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
-            {
-                return Zurmo::t('Core', 'Save');
-            }
-            return parent::renderNextPageLinkLabel();
+            parent::registerScripts();
+            $this->registerSetIsDraftToZeroScript();
         }
 
-        protected function renderPreviousPageLinkLabel()
+        protected function registerSetIsDraftToZeroScript()
         {
-            return Zurmo::t('Core', 'Cancel');
+            Yii::app()->clientScript->registerScript('setIsDraftToZero', "
+                function setIsDraftToZero()
+                {
+                    $('" . $this->resolveIsDraftdHiddenInputJQuerySelector() ."').val(0);
+                }
+                ", CClientScript::POS_END);
+        }
+
+        protected function resolveIsDraftdHiddenInputJQuerySelector()
+        {
+            return '#' . get_class($this->model) .'_isDraft';
         }
     }
 ?>

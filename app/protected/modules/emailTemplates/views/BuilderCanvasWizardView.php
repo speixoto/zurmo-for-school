@@ -129,6 +129,7 @@
         {
             parent::registerScripts();
             $this->registerRefreshCanvasFromSavedTemplateScript();
+            $this->registerSetIsDraftToZeroOnClickingFinishScript();
         }
 
         protected function registerRefreshCanvasFromSavedTemplateScript()
@@ -141,6 +142,17 @@
                     return false;
                 });
                 ", CClientScript::POS_READY);
+        }
+
+        protected function registerSetIsDraftToZeroOnClickingFinishScript()
+        {
+            Yii::app()->clientScript->registerScript('setIsDraftToZeroOnClickingFinishScript', "
+                $('#" . static::getFinishLinkId() . "').unbind('click.setIsDraftToZero');
+                $('#" . static::getFinishLinkId() . "').bind('click.setIsDraftToZero', function()
+                {
+                    setIsDraftToZero();
+                });
+                ", CClientScript::POS_END);
         }
     }
 ?>

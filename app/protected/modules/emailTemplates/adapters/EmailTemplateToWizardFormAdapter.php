@@ -81,25 +81,42 @@
          */
         protected function setCommonAttributes(EmailTemplateWizardForm $formModel)
         {
+            $this->resolveEmailTemplateMembers($formModel);
+            $this->resolveOwnerIdAndName($formModel);
+            $this->resolveIsNew($formModel);
+            $this->resolveExplicitReadWritePermissions($formModel);
+            $this->resolveIsDraftDefault($formModel);
+        }
+
+        protected function resolveEmailTemplateMembers(EmailTemplateWizardForm $formModel)
+        {
             $metadata               = $this->emailTemplate->getMetadata();
             $members                = $metadata['EmailTemplate']['members'];
             foreach ($members as $member)
             {
-                $emailTemplateMemberValue = $this->emailTemplate->$member;
-                if ($member == 'isDraft')
+                if (property_exists($formModel, $member) && isset($this->emailTemplate->$member))
                 {
-                    $emailTemplateMemberValue = (bool)$emailTemplateMemberValue;
-                }
-                if (property_exists($formModel, $member))
-                {
+                    $emailTemplateMemberValue = $this->emailTemplate->$member;
+                    if ($member == 'isDraft')
+                    {
+                        $emailTemplateMemberValue = (bool)$emailTemplateMemberValue;
+                    }
                     $formModel->$member = $emailTemplateMemberValue;
                 }
             }
+        }
+
+        protected function resolveOwnerIdAndName(EmailTemplateWizardForm $formModel)
+        {
             if ($this->emailTemplate->owner->id > 0)
             {
                 $formModel->ownerId      = (int)$this->emailTemplate->owner->id;
                 $formModel->ownerName    = strval($this->emailTemplate->owner);
             }
+        }
+
+        protected function resolveIsNew(EmailTemplateWizardForm $formModel)
+        {
             if ($this->emailTemplate->id < 0)
             {
                 $formModel->setIsNew();
@@ -108,8 +125,20 @@
             {
                 $formModel->id = $this->emailTemplate->id;
             }
+        }
+
+        protected function resolveExplicitReadWritePermissions(EmailTemplateWizardForm $formModel)
+        {
             $explicitReadWritePermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($this->emailTemplate);
             $formModel->setExplicitReadWriteModelPermissions($explicitReadWritePermissions);
+        }
+
+        protected function resolveIsDraftDefault(EmailTemplateWizardForm $formModel)
+        {
+            if (empty($formModel->isDraft))
+            {
+                $formModel->isDraft  = ($this->emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE);
+            }
         }
 
         /**

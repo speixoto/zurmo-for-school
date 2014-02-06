@@ -39,8 +39,12 @@
      */
     class DataToEmailTemplateUtil
     {
+        protected static $data;
+
+        protected static $emailTemplate;
+
         /**
-         * @param EmailTemplate $emailTemplate
+         * @param EmailTemplate static::$emailTemplate
          * @param array $postData
          * @param string$wizardFormClassName
          */
@@ -48,18 +52,27 @@
         {
             assert('is_array($postData)');
             assert('is_string($wizardFormClassName)');
-            $data                   = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
-            $metadata               = $emailTemplate->getMetadata();
+            static::$data                   = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
+            static::$emailTemplate          = $emailTemplate;
+            static::resolveMetadataMembers();
+            static::resolveOwner();
+            static::resolveExplicitReadWritePermissions();
+            static::resolveFileAttachments();
+        }
+
+        protected static function resolveMetadataMembers()
+        {
+            $metadata               = static::$emailTemplate->getMetadata();
             $members                = $metadata['EmailTemplate']['members'];
             foreach ($members as $member)
             {
-                if (isset($data[$member]))
+                if (isset(static::$data[$member]))
                 {
-                    $postDataValue  = $data[$member];
-                    $originalValue  = $emailTemplate->$member;
+                    $postDataValue  = static::$data[$member];
+                    $originalValue  = static::$emailTemplate->$member;
                     if ($member == 'serializedData')
                     {
-                        static::resolveSerializedDataForTemplateByPostData($data, $emailTemplate);
+                        static::resolveSerializedDataForTemplateByPostData(static::$data, static::$emailTemplate);
                         continue;
                     }
                     else if ($postDataValue != $originalValue)
@@ -68,35 +81,23 @@
                         {
                             $postDataValue = (bool)$postDataValue;
                         }
+                        static::$emailTemplate->$member = $postDataValue;
                     }
-                    $emailTemplate->$member = $postDataValue;
                 }
             }
-            if ($data['ownerId'] && $data['ownerId'] != $emailTemplate->owner->id)
-            {
-                $owner                  = User::getById((int)$data['ownerId']);
-                $emailTemplate->owner   = $owner;
-            }
-            if (isset($data['explicitReadWriteModelPermissions']))
-            {
-                ExplicitReadWriteModelPermissionsUtil::resolveByPostDataAndModelThenMake($data, $emailTemplate);
-            }
-            FileModelUtil::resolveModelsHasManyFilesFromPost($emailTemplate, 'files', 'filesIds');
         }
 
-        protected static function resolveSerializedDataForTemplateByPostData(array $postData, EmailTemplate $emailTemplate)
+        protected static function resolveSerializedDataForTemplateByPostData()
         {
             $unserializedData   = array();
-            $postUnserializedData = $postData['serializedData'];
-            $templateUnserializedData   = unserialize($emailTemplate->serializedData);
+            $postUnserializedData = static::$data['serializedData'];
+            $templateUnserializedData   = unserialize(static::$emailTemplate->serializedData);
             if (empty($templateUnserializedData))
             {
-                $templateUnserializedData = array();
+                $templateUnserializedData = array('baseTemplateId' => null);
             }
 
-            if ((empty($templateUnserializedData['baseTemplateId']) && !empty($postUnserializedData['baseTemplateId'])) ||
-                    (!empty($postUnserializedData['baseTemplateId']) &&
-                        $templateUnserializedData['baseTemplateId'] != $postUnserializedData['baseTemplateId']))
+            if (static::hasBaseTemplateIdChanged($postUnserializedData['baseTemplateId'], $templateUnserializedData['baseTemplateId']))
             {
                 // baseTemplateId has changed.
                 $baseTemplateModel  = EmailTemplate::getById($postUnserializedData['baseTemplateId']);
@@ -109,12 +110,41 @@
                 // baseTemplateId remains same, probably a post from canvas.
                 $unserializedData     = CMap::mergeArray($templateUnserializedData, $postUnserializedData);
             }
+
             if (!empty($unserializedData))
             {
-                $emailTemplate->serializedData  = serialize($unserializedData);
+                static::$emailTemplate->serializedData  = serialize($unserializedData);
             }
             // we don't need this as we "continue" in the invoker if block but still...
-            unset($postData['serializedData']);
+            unset(static::$data['serializedData']);
+        }
+
+        protected static function hasBaseTemplateIdChanged($postBaseTemplateId, $savedBaseTemplateId)
+        {
+            return ((empty($savedBaseTemplateId) && !empty($postBaseTemplateId)) ||
+                    (!empty($postBaseTemplateId) && $savedBaseTemplateId != $postBaseTemplateId));
+        }
+
+        protected static function resolveOwner()
+        {
+            if (static::$data['ownerId'] && static::$data['ownerId'] != static::$emailTemplate->owner->id)
+            {
+                $owner                  = User::getById((int)static::$data['ownerId']);
+                static::$emailTemplate->owner   = $owner;
+            }
+        }
+
+        protected static function resolveExplicitReadWritePermissions()
+        {
+            if (isset(static::$data['explicitReadWriteModelPermissions']))
+            {
+                ExplicitReadWriteModelPermissionsUtil::resolveByPostDataAndModelThenMake(static::$data, static::$emailTemplate);
+            }
+        }
+
+        protected static function resolveFileAttachments()
+        {
+            FileModelUtil::resolveModelsHasManyFilesFromPost(static::$emailTemplate, 'files', 'filesIds');
         }
     }
 ?>

@@ -38,7 +38,7 @@
     {
         protected function validateAttribute($object, $attribute)
         {
-            if (empty($object->$attribute))
+            if (!isset($object->$attribute))
             {
                 $object->$attribute = ($object->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE);
             }
