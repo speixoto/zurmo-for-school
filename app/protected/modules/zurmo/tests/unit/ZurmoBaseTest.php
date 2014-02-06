@@ -52,6 +52,7 @@
         {
             parent::setUpBeforeClass();
             ZurmoDatabaseCompatibilityUtil::createActualPermissionsCacheTable();
+            ZurmoDatabaseCompatibilityUtil::createNamedSecurableActualPermissionsCacheTable();
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             PermissionsCache::forgetAll();
             AllPermissionsOptimizationCache::forgetAll();

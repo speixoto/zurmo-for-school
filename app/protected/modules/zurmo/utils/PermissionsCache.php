@@ -115,7 +115,8 @@
          * @param Permitable $permitable
          * @param int $combinedPermissions
          */
-        public static function cacheCombinedPermissions(SecurableItem $securableItem, Permitable $permitable, $combinedPermissions)
+        public static function cacheCombinedPermissions(SecurableItem $securableItem, Permitable $permitable,
+                                                        $combinedPermissions)
         {
             assert('is_int($combinedPermissions) || ' .
                    'is_numeric($combinedPermissions[0]) && is_string($combinedPermissions[0])');
@@ -182,12 +183,25 @@
                 $prefix = static::getCachePrefix($cacheKeyName);
                 Yii::app()->cache->set($prefix . $cacheKeyName, serialize($actualPermissions));
             }
+            if (static::supportsAndAllowsDatabaseCaching())
+            {
+                if($permitable->getClassId('Permitable') > 0)
+                {
+                ZurmoRedBean::exec("insert into named_securable_actual_permissions_cache
+                                 (securableitem_name, permitable_id, allow_permissions, deny_permissions)
+                                 values ('" . $namedSecurableItemName . "', " . $permitable->getClassId('Permitable') . ", " .
+                                              $actualPermissions[0] . ", " . $actualPermissions[1] . ") on duplicate key
+                                 update allow_permissions = " . $actualPermissions[0] . " AND deny_permissions = " .
+                                 $actualPermissions[1]);
+                }
+            }
         }
 
         /**
          * Given the name of a named securable item, return the cached entry if available.
-         * @param string $namedSecurableItemName
-         * @param Permitable $permitable
+         * @param $namedSecurableItemName
+         * @param $permitable
+         * @return mixed
          * @throws NotFoundException
          */
         public static function getNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable)
@@ -211,6 +225,20 @@
                     $actualPermissions = unserialize($serializedData);
                     assert('is_array($actualPermissions)');
                     return $actualPermissions;
+                }
+            }
+            if (static::supportsAndAllowsDatabaseCaching())
+            {
+                if($permitable->getClassId('Permitable') > 0)
+                {
+                    $row = ZurmoRedBean::getRow("select allow_permissions, deny_permissions " .
+                                                "from named_securable_actual_permissions_cache " .
+                                                "where securableitem_name = '" . $namedSecurableItemName. "' and " .
+                                                "permitable_id = '" . $permitable->getClassId('Permitable'). "'");
+                    if($row != null && isset($row['allow_permissions']) && isset($row['deny_permissions']))
+                    {
+                        return array($row['allow_permissions'], $row['deny_permissions']);
+                    }
                 }
             }
             throw new NotFoundException();
@@ -285,7 +313,8 @@
             if (SECURITY_OPTIMIZED && static::supportsAndAllowsDatabaseCaching() && $forgetDbLevelCache)
             {
                 $securableItemId = $securableItem->getClassID('SecurableItem');
-                ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_securableitem_actual_permissions($securableItemId)");
+                ZurmoDatabaseCompatibilityUtil::
+                    callProcedureWithoutOuts("clear_cache_securableitem_actual_permissions($securableItemId)");
             }
         }
 
@@ -302,7 +331,11 @@
             {
                 ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_all_actual_permissions()");
             }
-
+            if (static::supportsAndAllowsDatabaseCaching() && $forgetDbLevelCache)
+            {
+                ZurmoDatabaseCompatibilityUtil::
+                    callProcedureWithoutOuts("clear_cache_named_securable_all_actual_permissions()");
+            }
             if (static::supportsAndAllowsMemcache())
             {
                 static::incrementCacheIncrementValue(static::$cacheType);

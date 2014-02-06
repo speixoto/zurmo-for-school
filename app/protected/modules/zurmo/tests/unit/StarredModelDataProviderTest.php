@@ -43,6 +43,7 @@
         {
             parent::setUpBeforeClass();
             ZurmoDatabaseCompatibilityUtil::createActualPermissionsCacheTable();
+            ZurmoDatabaseCompatibilityUtil::createNamedSecurableActualPermissionsCacheTable();
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');

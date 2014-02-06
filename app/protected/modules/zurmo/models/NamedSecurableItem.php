@@ -142,6 +142,16 @@
         }
 
         /**
+         * When there are many nested roles/groups, it is best to process non-optimized otherwise, the stored procedures
+         * are slow. Eventually need to probably remove stored procedures entirely, but for now this will be utilized.
+         * @return bool
+         */
+        public function processGetActualPermissionsAsNonOptimized()
+        {
+            return (bool)Yii::app()->params['processNamedSecurableActualPermissionsAsOptimized'];
+        }
+
+        /**
          * Override for the 'name' attribute since 'name' can be retrieved regardless of permissions of the user asking
          * for it.
          * @see SecurableItem::__get()

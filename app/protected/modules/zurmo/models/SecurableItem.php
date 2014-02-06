@@ -95,7 +95,7 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-            if (!SECURITY_OPTIMIZED)
+            if (!SECURITY_OPTIMIZED || $this->processGetActualPermissionsAsNonOptimized())
             {
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
@@ -181,6 +181,15 @@
             return array($allowPermissions, $denyPermissions);
         }
 
+        /**
+         * Override if you need to force the permissions to process non-optimized. @see NamedSecurableItem
+         * @return bool
+         */
+        public function processGetActualPermissionsAsNonOptimized()
+        {
+            return false;
+        }
+
         public function getPropagatedActualAllowPermissions(Permitable $permitable)
         {
             if ($permitable instanceof User)
@@ -201,7 +210,7 @@
 
         protected function recursiveGetPropagatedAllowPermissions($role)
         {
-            if (!SECURITY_OPTIMIZED)
+            if (!SECURITY_OPTIMIZED || $this->processGetActualPermissionsAsNonOptimized())
             {
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
