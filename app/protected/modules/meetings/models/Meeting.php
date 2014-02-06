@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class Meeting extends MashableActivity
+    class Meeting extends MashableActivity implements CalendarItemInterface
     {
         public function __toString()
         {
@@ -176,6 +176,15 @@
         public static function hasReadPermissionsSubscriptionOptimization()
         {
             return true;
+        }
+
+        /**
+         * Gets full calendar description.
+         * @return string
+         */
+        public function getCalendarDescription()
+        {
+            return null;
         }
     }
 ?>

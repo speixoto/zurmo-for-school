@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class Task extends MashableActivity
+    class Task extends MashableActivity implements CalendarItemInterface
     {
         /*
          * Constants for task status
@@ -373,6 +373,15 @@
                 }
                 $this->unrestrictedSet('latestDateTime', $this->completedDateTime);
             }
+        }
+
+        /**
+         * Gets full calendar description.
+         * @return string
+         */
+        public function getCalendarDescription()
+        {
+            return null;
         }
     }
 ?>
