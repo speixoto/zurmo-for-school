@@ -117,11 +117,11 @@
             $model->string   = 'someValue';
             $model->status   = 1;
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->status = 6;
+            $model->status   = 6;
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model         = self::saveAndReloadModel($model);
+            $model           = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->status = 1;
+            $model->status   = 1;
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -136,11 +136,11 @@
             $model->string   = 'someValue';
             $model->status   = 2;
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->status = 3;
+            $model->status   = 3;
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model         = self::saveAndReloadModel($model);
+            $model           = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->status = 1;
+            $model->status   = 1;
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
