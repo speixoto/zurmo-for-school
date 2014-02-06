@@ -41,7 +41,7 @@
      * without any exceptions being thrown.
      */
     class UsersSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
-    {
+    {   
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -693,6 +693,47 @@
                 //Proper handling of license key infrastructure
                 $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/login');
             }
+        }
+        
+        public function testAddingCustomDateFieldsToUsersModule()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->resetPostArray();
+            $this->setGetArray(array('moduleClassName' => 'UsersModule'));
+            $extraPostData = array( 'defaultValueCalculationType' => '', 'isAudited' => '1', 'isRequired' => '1');
+            $formName = 'DateAttributeForm';
+            $name = 'dateField';
+            $this->setGetArray(array(   'moduleClassName'       => 'UsersModule',
+                                        'attributeTypeName'     => 'Date',
+                                        'attributeName'         => null));
+            $this->resetPostArray();
+            //Now test going to the user interface edit view.
+            $content = $this->runControllerWithNoExceptionsAndGetContent('designer/default/attributeEdit');
+
+            //Now validate save with failed validation.
+            $this->setPostArray(array(   'ajax'                 => 'edit-form',
+                                        $formName => array_merge(array(
+                                            'attributeLabels' => $this->createAttributeLabelBadValidationPostData($name),
+                                            'attributeName'     => $name,
+                                        ), $extraPostData)));
+            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/attributeEdit');
+            $this->assertTrue(strlen($content) > 50); //approximate, but should definetely be larger than 50.
+            //Now validate save with successful validation.
+            $this->setPostArray(array(   'ajax'                 => 'edit-form',
+                                        $formName => array_merge(array(
+                                            'attributeLabels' => $this->createAttributeLabelGoodValidationPostData($name),
+                                            'attributeName'     => $name,
+                                        ), $extraPostData)));
+            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/attributeEdit');
+            $this->assertEquals('[]', $content);
+
+            //Now save successfully.
+            $this->setPostArray(array(   'save'                 => 'Save',
+                                        $formName => array_merge(array(
+                                            'attributeLabels' => $this->createAttributeLabelGoodValidationPostData($name),
+                                            'attributeName'     => $name,
+                                        ), $extraPostData)));
+            $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
         }
     }
 ?>
