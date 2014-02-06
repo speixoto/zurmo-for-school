@@ -86,6 +86,7 @@
                                                                                 right: 'month,agendaWeek,agendaDay'
                                                                             },
                                                                      defaultView: '{$defaultView}',
+                                                                     firstDay    :1,
                                                                      ignoreTimeZone:false,
                                                                      lazyFetching : false,
                                                                      loading: function(bool)
@@ -106,11 +107,7 @@
                                                                                     }
                                                                     });
                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', '{$inputId}'));
-                                    $('body').on('click', '.fc-button-month,.fc-button-agendaWeek,.fc-button-agendaDay', function(){
-                                                    $('#{$inputId}').fullCalendar('removeEventSources');
-                                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', '{$inputId}'));
-                                                   });
-                                        });";
+                                 });";
             $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
         }
 

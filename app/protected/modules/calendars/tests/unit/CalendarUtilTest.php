@@ -63,11 +63,11 @@
         public function testGetEndDate()
         {
             $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_MONTH);
-            $this->assertEquals(date('Y-m-d', strtotime('last day of this month')), $endDateTime);
+            $this->assertEquals(date('Y-m-d', strtotime('first day of next month')), $endDateTime);
             $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_WEEK);
-            $this->assertEquals(date('Y-m-d', strtotime('last day of this week')), $endDateTime);
+            $this->assertEquals(date('Y-m-d', strtotime('Monday next week')), $endDateTime);
             $endDateTime = CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_DAY);
-            $this->assertEquals(date('Y-m-d', strtotime('today')), $endDateTime);
+            $this->assertEquals(date('Y-m-d', strtotime('tomorrow')), $endDateTime);
         }
 
         public function testGetUserSavedCalendars()
@@ -143,6 +143,13 @@
             $savedCalendarSubscription = CalendarTestHelper::createSavedCalendarSubscription('Color Cal', null, $user);
             CalendarUtil::setSharedCalendarColor($savedCalendarSubscription);
             $this->assertNotEquals('#66367b', $savedCalendarSubscription->color);
+        }
+
+        public function testGetModelAttributesForSelectedModule()
+        {
+            $selectedAttributes = CalendarUtil::getModelAttributesForSelectedModule('ProductsModule');
+            $this->assertContains('Created Date Time', $selectedAttributes);
+            $this->assertContains('Modified Date Time', $selectedAttributes);
         }
     }
 ?>
