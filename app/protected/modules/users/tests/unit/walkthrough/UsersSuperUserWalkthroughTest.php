@@ -698,42 +698,22 @@
         public function testAddingCustomDateFieldsToUsersModule()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            //Test create field list.
             $this->resetPostArray();
             $this->setGetArray(array('moduleClassName' => 'UsersModule'));
-            $extraPostData = array( 'defaultValueCalculationType' => '', 'isAudited' => '1', 'isRequired' => '1');
-            $formName = 'DateAttributeForm';
-            $name = 'dateField';
-            $this->setGetArray(array(   'moduleClassName'       => 'UsersModule',
-                                        'attributeTypeName'     => 'Date',
-                                        'attributeName'         => null));
-            $this->resetPostArray();
-            //Now test going to the user interface edit view.
-            $content = $this->runControllerWithNoExceptionsAndGetContent('designer/default/attributeEdit');
-
-            //Now validate save with failed validation.
-            $this->setPostArray(array(   'ajax'                 => 'edit-form',
-                                        $formName => array_merge(array(
-                                            'attributeLabels' => $this->createAttributeLabelBadValidationPostData($name),
-                                            'attributeName'     => $name,
-                                        ), $extraPostData)));
-            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/attributeEdit');
-            $this->assertTrue(strlen($content) > 50); //approximate, but should definetely be larger than 50.
-            //Now validate save with successful validation.
-            $this->setPostArray(array(   'ajax'                 => 'edit-form',
-                                        $formName => array_merge(array(
-                                            'attributeLabels' => $this->createAttributeLabelGoodValidationPostData($name),
-                                            'attributeName'     => $name,
-                                        ), $extraPostData)));
-            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/attributeEdit');
-            $this->assertEquals('[]', $content);
-
-            //Now save successfully.
-            $this->setPostArray(array(   'save'                 => 'Save',
-                                        $formName => array_merge(array(
-                                            'attributeLabels' => $this->createAttributeLabelGoodValidationPostData($name),
-                                            'attributeName'     => $name,
-                                        ), $extraPostData)));
-            $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
+            $this->createDateCustomFieldByModule ('UsersModule', 'birthday');
+            
+            UserTestHelper::createBasicUser('dateUser');
+            $dateUser = User::getByUsername('dateuser');
+            
+            $this->setGetArray(array('id' => $dateUser->id));
+            $this->setPostArray(array('User' =>
+                array('birthday' => '12/05/2000')));
+            $this->runControllerWithRedirectExceptionAndGetContent('users/default/edit');
+            $dateUser = User::getById($dateUser->id);
+            $this->assertEquals('2000-12-05',  $dateUser->birthdayCstm);
+            
         }
     }
 ?>
