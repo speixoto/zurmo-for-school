@@ -1354,6 +1354,7 @@ body > .ui-autocomplete{
 	//z-index: 9999;
 	float: left;
 	width: 100%;
+	display: table;
 }
 
 #MashableInboxActionBarForViews,
@@ -1722,6 +1723,8 @@ caption, th, td {
 }
 
 .items-wrapper{
+	width: 100%;
+	display: table;
 	overflow-x:auto;
 	background:
 		-webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
@@ -4460,7 +4463,7 @@ div.radio-input{
 	td{
 		padding:10px;
 		div{
-			line-height:125%;
+			line-height:150%;
 		}
 	}
 	tr{
@@ -4468,10 +4471,12 @@ div.radio-input{
 			background:none;
 			color:@textColor;
 		}
+		&:first-child td{
+			border-top:none;
+		}
 	}
 	h3{
 		color:@textColor;
-		//font-size:11px;
 		margin-bottom:4px;
 		span{
 			font-weight:normal;
@@ -4482,6 +4487,24 @@ div.radio-input{
 			}
 		}
 	}
+}
+
+#DaysMeetingsFromCalendarModalListView{
+	.view-toolbar-container{
+		position: absolute;
+		top:8px;
+		right:0px;
+		width: auto;
+	}
+}
+
+.meeting-summary{
+	position: relative;
+}
+
+.meeting-details{
+	background-color: #dfdfdf;
+	float: right;
 }
 
 /*=Meeting/Task Single View*/

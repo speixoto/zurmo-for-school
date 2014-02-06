@@ -198,31 +198,5 @@
                                    $searchForm->getKanbanBoard());
             return $listView;
         }
-
-        /**
-         * Get active projects list view
-         * @return ListView
-         */
-        public static function getActiveProjectsListView($controller, $pageSize)
-        {
-            $project            = new Project(false);
-            $searchForm         = new ProjectsSearchForm($project);
-            $listModelClassName = get_class($searchForm->getModel());
-            $dataCollection     = new SearchAttributesDataCollection($searchForm);
-            $dataProvider       = $controller->makeRedBeanDataProviderByDataCollection($searchForm, $pageSize,
-                                    null, $dataCollection);
-            $_GET['Project_sort'] = 'createdDateTime.desc';
-            $listView           = new ActiveProjectsListView(
-                                   $controller->id,
-                                   $controller->getModule()->getId(),
-                                   get_class($searchForm->getModel()),
-                                   $dataProvider,
-                                   GetUtil::resolveSelectedIdsFromGet(),
-                                   null,
-                                   array(),
-                                   $searchForm->getListAttributesSelector(),
-                                   $searchForm->getKanbanBoard());
-            return $listView;
-        }
     }
 ?>

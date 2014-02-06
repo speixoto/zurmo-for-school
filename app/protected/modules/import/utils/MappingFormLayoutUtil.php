@@ -189,8 +189,7 @@
         {
             assert('is_string($columnName)');
             assert('is_string($sampleValue) || $sampleValue == null');
-            $sampleValueContent = self::renderChoppedStringContent($sampleValue);
-            $content = '<div id="' . self::resolveSampleColumnIdByColumnName($columnName) . '" class="column-import-data">' . $sampleValueContent . '</div>';
+            $content = ZurmoHtml::tag('div', array('class' => 'column-import-data', 'title' => $sampleValue), $sampleValue);
             return $content;
         }
 
