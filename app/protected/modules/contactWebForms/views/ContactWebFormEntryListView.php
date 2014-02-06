@@ -100,22 +100,19 @@
             $moduleId = 'ContactWebFormsUtil::getRelatedLinkStringForContactOrLead($data)';
             return $this->getRelatedLinkString($attributeString, $attributeName, $moduleId);
         }
-
-        public function getRelatedLinkString($attributeString, $attributeName, $moduleId)
-        {
-            $string  = 'ActionSecurityUtil::resolveLinkToModelForCurrentUser("' . $attributeString . '", ';
-            $string .= '$data->' . $attributeName. ', "' . $this->getActionModuleClassName() . '", '; // Not Coding Standard
-            $string .= '"' . $this->getGridViewActionRoute('details', $moduleId) . '")';
-            return $string;
-        }
    
         protected function getGridViewActionRoute($action, $moduleId = null)
         {
+            $controllerId = $this->controllerId;
             if ($moduleId == null)
             {
                 $moduleId = $this->moduleId;
             }
-            return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
+            elseif ($moduleId == 'contacts' || $moduleId == 'leads')
+            {
+                $controllerId = 'default';
+            }
+            return '/' . $moduleId . '/' . $controllerId . '/' . $action;
         }
      
     }
