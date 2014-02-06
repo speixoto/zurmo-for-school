@@ -46,7 +46,7 @@
          */
         public static function makeViewFromEmailTemplate(EmailTemplate $emailTemplate)
         {
-            $viewClassName                      = static::getViewFromEmailTemplateBuiltType($emailTemplate->builtType);
+            $viewClassName                      = static::getViewFromEmailTemplateBuiltType($emailTemplate);
             $emailTemplateToWizardFormAdapter   = new EmailTemplateToWizardFormAdapter($emailTemplate);
             $form                               = $emailTemplateToWizardFormAdapter->makeFormByBuiltType();
             return new $viewClassName($form);
@@ -57,16 +57,16 @@
          */
         public static function makeStepsAndProgressBarViewFromEmailTemplate(EmailTemplate $emailTemplate)
         {
-            if ($emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            if ($emailTemplate->isBuilderTemplate())
             {
                 return new BuilderEmailTemplateStepsAndProgressBarForWizardView();
             }
             return new NullView();
         }
 
-        protected static function getViewFromEmailTemplateBuiltType($type)
+        protected static function getViewFromEmailTemplateBuiltType(EmailTemplate $emailTemplate)
         {
-            if ($type == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            if ($emailTemplate->isBuilderTemplate())
             {
                 return 'BuilderEmailTemplateWizardView';
             }

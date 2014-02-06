@@ -103,7 +103,7 @@
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
             if ($elementInformation['attributeName'] == 'modelClassName' &&
-               $this->model->type == EmailTemplate::TYPE_CONTACT)
+               $this->model->isContactTemplate())
             {
                 $elementInformation['attributeName'] = null;
                 $elementInformation['type']          = 'NoCellNull'; // Not Coding Standard
@@ -146,7 +146,7 @@
 
         protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)
         {
-            if ($this->model->type == EmailTemplate::TYPE_CONTACT)
+            if ($this->model->isContactTemplate())
             {
                 return $form->hiddenField($this->model, 'modelClassName', array());
             }

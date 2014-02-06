@@ -137,7 +137,7 @@
         {
             if (empty($formModel->isDraft))
             {
-                $formModel->isDraft  = ($this->emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE);
+                $formModel->isDraft  = $this->emailTemplate->isBuilderTemplate();
             }
         }
 
@@ -147,7 +147,7 @@
         protected function setUncommonAttributes(EmailTemplateWizardForm $formModel)
         {
             // handle any custom mappings between EmailTemplateWizardForm and EmailTemplate model here.
-            if ($this->emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            if ($this->emailTemplate->isBuilderTemplate())
             {
                 $unserializedData   = unserialize($this->emailTemplate->serializedData);
                 $formModel->baseTemplateId = $unserializedData['baseTemplateId'];

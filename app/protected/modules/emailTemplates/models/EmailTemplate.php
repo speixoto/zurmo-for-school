@@ -334,5 +334,30 @@
                 )
             );
         }
+
+        public function isContactTemplate()
+        {
+            return ($this->type == static::TYPE_CONTACT);
+        }
+
+        public function isWorkflowTemplate()
+        {
+            return ($this->type == static::TYPE_WORKFLOW);
+        }
+
+        public function isPlainTextTemplate()
+        {
+            return ($this->builtType == static::BUILT_TYPE_PLAIN_TEXT_ONLY);
+        }
+
+        public function isPastedHtmlTemplate()
+        {
+            return ($this->builtType == static::BUILT_TYPE_PASTED_HTML);
+        }
+
+        public function isBuilderTemplate()
+        {
+            return ($this->builtType == static::BUILT_TYPE_BUILDER_TEMPLATE);
+        }
     }
 ?>

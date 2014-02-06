@@ -40,13 +40,12 @@
         {
             // TODO: @Shoaibi: Critical99: For builder: how do we validate that at least one content was provided?
             // TODO: @Shoaibi: Critical99: we may have to disable this validator and then validate that user does put something on canvas.
-            if ($object->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            if ($object->isBuilderTemplate())
             {
                 return true;
             }
             $textContent = $this->textContentPropertyName;
-            if ($object->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY &&
-                (empty($object->$textContent) && ($attribute == $textContent)))
+            if ($object->isPlainTextTemplate() && (empty($object->$textContent) && ($attribute == $textContent)))
             {
                 $message = Zurmo::t('EmailTemplatesModule', 'Text Content cannot be blank.');
                 $this->addError($object, $attribute, $message);

@@ -40,7 +40,7 @@
         {
             if (!isset($object->$attribute))
             {
-                $object->$attribute = ($object->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE);
+                $object->$attribute = $object->isBuilderTemplate();
             }
             return true;
         }

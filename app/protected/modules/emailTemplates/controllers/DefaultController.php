@@ -171,7 +171,7 @@
             $emailTemplate->type        = $type;
             $emailTemplate->builtType   = $builtType;
             $progressBarAndStepsView    = EmailTemplateWizardViewFactory::makeStepsAndProgressBarViewFromEmailTemplate($emailTemplate);
-            if ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            if ($emailTemplate->isContactTemplate())
             {
                 $emailTemplate->modelClassName = 'Contact';
             }
@@ -224,7 +224,7 @@
             $emailTemplate       = new EmailTemplate();
             $emailTemplate->type = $type;
             $editAndDetailsView  = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate), 'Edit');
-            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->isWorkflowTemplate())
             {
                 $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
@@ -232,7 +232,7 @@
                     makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                         $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->isContactTemplate())
             {
                 $emailTemplate->modelClassName = 'Contact';
                 $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
@@ -254,7 +254,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
 
             $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate, $redirectUrl), 'Edit');
-            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->isWorkflowTemplate())
             {
                 $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -262,7 +262,7 @@
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->isContactTemplate())
             {
                 $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -311,7 +311,7 @@
             $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
                                                                             $this->getModule()->getId(), $emailTemplate);
 
-            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->isWorkflowTemplate())
             {
                 $breadCrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -319,7 +319,7 @@
                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
                                             $breadCrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->isContactTemplate())
             {
                 $breadCrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -357,17 +357,22 @@
 
         public function actionDelete($id)
         {
-            $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            $emailTemplate      = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailTemplate);
-            $type          = $emailTemplate->type;
-            $emailTemplate->delete();
-            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            $redirectUrl        = null;
+            if ($emailTemplate->isWorkflowTemplate())
             {
-                $this->redirect(array($this->getId() . '/listForWorkflow'));
+                $redirectUrl = $this->getId() . '/listForWorkflow';
             }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->isContactTemplate())
             {
-                $this->redirect(array($this->getId() . '/listForMarketing'));
+                $redirectUrl        = $this->getId() . '/listForMarketing';
+            }
+            $emailTemplate->delete();
+
+            if (isset($redirectUrl))
+            {
+                $this->redirect(array($redirectUrl));
             }
             else
             {

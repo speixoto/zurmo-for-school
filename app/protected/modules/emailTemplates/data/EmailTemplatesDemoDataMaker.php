@@ -86,7 +86,7 @@
                                                                                             'EmailTemplate');
             }
             $modelClassName             = 'Contact';
-            if ($model->type === EmailTemplate::TYPE_WORKFLOW)
+            if ($model->isWorkflowTemplate())
             {
                 $modelClassName         = $this->seedData['modelClassName'][$this->index];
             }

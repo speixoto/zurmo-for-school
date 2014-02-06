@@ -138,7 +138,7 @@
 
         protected function renderModelClassName(& $content, & $hiddenElements)
         {
-            if ($this->model->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($this->model->isWorkflowTemplate())
             {
                 $element                    = new EmailTemplateModelClassNameElement($this->model,
                                                                                         'modelClassName',
