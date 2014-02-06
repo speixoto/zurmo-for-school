@@ -98,7 +98,7 @@
         {
             return 'http://www.shellplus.com/examples/thumbnail-image-handler/img/ex_extractimage_example_thumbnail.gif';
             // TODO: @Shoaibi: Critical5: enable this
-            //return Yii::app()->themeManager->basePath . static::GENERIC_THUMBNAIL_PATH;
+            //return Yii::app()->themeManager->baseUrl . static::GENERIC_THUMBNAIL_PATH;
         }
     }
 ?>
