@@ -63,15 +63,15 @@
         protected function setFirstModel()
         {
             $user                                   = User::getByUsername('steven');
-            $account                                = ContactListViewMergeTestHelper::getFirstModel($user);
-            $this->selectedModels[]                 = $account;
+            $contact                                = ContactListViewMergeTestHelper::getFirstModel($user);
+            $this->selectedModels[]                 = $contact;
         }
 
         protected function setSecondModel()
         {
             $user                                   = User::getByUsername('steven');
-            $account                                = ContactListViewMergeTestHelper::getSecondModel($user);
-            $this->selectedModels[]                 = $account;
+            $contact                                = ContactListViewMergeTestHelper::getSecondModel($user);
+            $this->selectedModels[]                 = $contact;
         }
 
         protected function setRelatedModels()
@@ -122,6 +122,55 @@
 
             $contacts = Contact::getByName('shozin shozinson');
             $this->selectedModels[] = $contacts[0];
+        }
+
+        public function testEmailCopyActivity()
+        {
+            $this->markTestSkipped();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->setFirstModel();
+            $this->setSecondModel();
+            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('Subject 1', Yii::app()->user->userModel);
+            $this->assertTrue($emailMessage->save());
+            $emailMessageId = $emailMessage->id;
+            $emailMessage->forgetAll();
+
+            $emailMessage                 = EmailMessage::getById($emailMessageId);
+            $newSender                    = new EmailMessageSender();
+            $newSender->fromAddress       = $this->selectedModels[1]->primaryEmail->emailAddress;
+            $newSender->fromName          = strval($this->selectedModels[1]);
+            $newSender->personsOrAccounts->add($this->selectedModels[1]);
+            $emailMessage->sender         = $newSender;
+            $emailMessage->save();
+            ListViewMergeUtil::processCopyEmailActivity($this->selectedModels[0], $this->selectedModels[1]);
+
+            $emailMessage                 = EmailMessage::getById($emailMessageId);
+            $this->assertEquals(strval($this->selectedModels[0]), $emailMessage->sender->fromName);
+            $this->assertEquals('test@yahoo.com', $emailMessage->sender->fromAddress);
+
+            //For recipient
+            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('Subject 2', Yii::app()->user->userModel);
+            $this->assertTrue($emailMessage->save());
+            $emailMessageId = $emailMessage->id;
+            $emailMessage->forgetAll();
+
+            $emailMessage                 = EmailMessage::getById($emailMessageId);
+            $recipient                    = new EmailMessageRecipient();
+            $recipient->toAddress         = $this->selectedModels[1]->primaryEmail->emailAddress;
+            $recipient->toName            = strval($this->selectedModels[1]);
+            $recipient->type              = EmailMessageRecipient::TYPE_TO;
+            $recipient->personsOrAccounts->add($this->selectedModels[1]);
+            $emailMessage->recipients->add($recipient);
+            $this->assertTrue($emailMessage->save());
+
+            ListViewMergeUtil::processCopyEmailActivity($this->selectedModels[0], $this->selectedModels[1]);
+
+            $emailMessage                 = EmailMessage::getById($emailMessageId);
+            $recipients                   = $emailMessage->recipients;
+            $this->assertCount(2, $recipients);
+            $this->assertEquals(strval($this->selectedModels[0]), $recipients[1]->toName);
+            $this->assertEquals('test@yahoo.com', $recipients[1]->toAddress);
+            $this->assertCount(1, $recipients[1]->personsOrAccounts);
         }
     }
 ?>

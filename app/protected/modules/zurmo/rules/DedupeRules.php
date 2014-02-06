@@ -133,13 +133,14 @@
                                                 clickOverlay : true,
                                                 showIcon: false,
                                             });
-                                            $('#" . $id . "').next('#" . $spinnerId . "').remove();
+
                                         }
                                         else if (shouldSubmitForm)
                                         {
                                             $('#" . $dedupeViewId . "').closest('form')[0].submit();
                                         }
-                                 }"
+                                 }",
+                'complete'    => "js:function(){ $('#" . $id . "').next('#" . $spinnerId . "').remove(); }"
             ));
             $js = "var shouldSubmitForm = false;
                     $('#{$id}' ).change(function() {

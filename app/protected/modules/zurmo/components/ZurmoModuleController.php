@@ -482,7 +482,16 @@
                                              $redirectUrl)
         {
             $getData                 = GetUtil::getData();
-            $modelsList              = ListViewMergeUtil::getSelectedModelsListForMerge($modelClassName, $getData);
+            try
+            {
+                $modelsList              = ListViewMergeUtil::getSelectedModelsListForMerge($modelClassName, $getData);
+            }
+            catch (NotFoundException $exception)
+            {
+                $message = Zurmo::t('ZurmoModule', 'At least one record you are trying to merge does not exist.');
+                Yii::app()->user->setFlash('notification', $message);
+                $this->redirect('index');
+            }
             $model                   = new $mergedModelFormClassName('listViewMerge');
             $model->selectedModels   = $modelsList;
             ListViewMergeUtil::setPrimaryModelForListViewMerge($model, $getData);

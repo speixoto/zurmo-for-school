@@ -209,7 +209,6 @@
             $accountAccountAffiliation3->secondaryAccount = $account4;
             $this->assertTrue($accountAccountAffiliation3->save());
 
-
             $data = array(
                 'search' => array(
                     'modelClassName' => 'AccountAccountAffiliation',
@@ -247,6 +246,25 @@
             $this->assertEquals($account2->id, $response['data']['items'][0]['secondaryAccount']['id']);
             $this->assertEquals($account3->id, $response['data']['items'][1]['primaryAccount']['id']);
             $this->assertEquals($account->id, $response['data']['items'][1]['secondaryAccount']['id']);
+        }
+
+        public function testListAccountAccountAffiliationAttributes()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new AccountAccountAffiliation());
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
         }
 
         protected function getApiControllerClassName()

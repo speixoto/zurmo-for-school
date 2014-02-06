@@ -56,7 +56,7 @@
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == "null"');
-            assert('$this->model instanceof Person || $this->model instanceof User');
+            assert('$this->model instanceof Meeting');
             return Yii::app()->format->text($this->model);
         }
 

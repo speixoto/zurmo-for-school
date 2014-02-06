@@ -173,6 +173,13 @@
             $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
             $this->assertFalse(strpos($content, 'Layout saved successfully') === false);
 
+            //Edit view dont have all required fields placed
+            $layout = TasksDesignerWalkthroughHelperUtil::getTaskEditAndDetailsViewLayoutWithoutAllRequiredFieldsPlaced();
+            $this->setPostArray(array('save'  => 'Save', 'layout' => $layout,
+                'LayoutPanelsTypeForm' => array('type' => FormLayout::PANELS_DISPLAY_TYPE_ALL)));
+            $content = $this->runControllerWithExitExceptionAndGetContent('designer/default/LayoutEdit');
+            $this->assertFalse(strpos($content, 'All required fields must be placed in this layout.') === false);
+
             //Add all fields to OpenTasksForAccountRelatedListView.
             $this->setGetArray(array('moduleClassName' => 'TasksModule',
                                      'viewClassName'   => 'OpenTasksForAccountRelatedListView'));

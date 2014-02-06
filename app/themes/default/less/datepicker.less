@@ -33,9 +33,9 @@
 
 .ui-datepicker{
 	z-index:10000;
-	display: table !important;
 	&.ui-datepicker-inline{
 		margin:15px;
+		display: table !important;
 	}
 	.ui-datepicker-header{
 		display: table;
@@ -94,9 +94,9 @@
 		color:@themeColor;
 	}
 	.ui-datepicker-calendar{
-        width:100%;
-	    border-spacing: 0;
-	    //border-collapse: collapse;
+		width:100%;
+		border-spacing: 0;
+		//border-collapse: collapse;
 		table-layout: fixed;
 		border:1px solid #ddd;
 		border-top:none;
@@ -131,17 +131,17 @@
 				//border-right:1px solid #ddd;
 			}
 		}
-    	a{
-    		font-size:9px;
-    		font-weight:bold;
-    		color:#656565;
-    		vertical-align:top;
-    		display:inline-block;
-    		width:100%;
-    		text-indent:5px;
-    		padding-top:3px;
-    		cursor:pointer;
-    	}
+		a{
+			font-size:9px;
+			font-weight:bold;
+			color:#656565;
+			vertical-align:top;
+			display:inline-block;
+			width:100%;
+			text-indent:5px;
+			padding-top:3px;
+			cursor:pointer;
+		}
 		span{
 			width:30px;
 			height:20px;
@@ -220,7 +220,7 @@
 	.calendar-events-5,
 	.calendar-events-6{
 		span{
-			color: @themeColor;
+			color: @themeColor !important;
 			position:relative !important;
 			float:left;
 			width:100%;

@@ -58,7 +58,6 @@
             $contact = ContactTestHelper::createContactByNameForOwner('First', Yii::app()->user->userModel);
             $contact2 = ContactTestHelper::createContactByNameForOwner('Second', Yii::app()->user->userModel);
 
-
             $accountContactAffiliation = new AccountContactAffiliation();
             $accountContactAffiliation->account   = $account;
             $accountContactAffiliation->contact   = $contact;
@@ -284,6 +283,25 @@
             $this->assertEquals($contact2->id, $response['data']['items'][0]['contact']['id']);
             $this->assertEquals($account2->id, $response['data']['items'][1]['account']['id']);
             $this->assertEquals($contact2->id, $response['data']['items'][1]['contact']['id']);
+        }
+
+        public function testListAccountContactAffiliationAttributes()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+            $allAttributes      = ApiRestTestHelper::getModelAttributes(new AccountContactAffiliation());
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals($allAttributes, $response['data']['items']);
         }
 
         protected function getApiControllerClassName()

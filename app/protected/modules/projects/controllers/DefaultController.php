@@ -588,16 +588,6 @@
         }
 
         /**
-         * Display list view of active projects on dashboard
-         */
-        public function actionShowActiveProjects()
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
-            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView($this, $pageSize);
-            echo $listView->render();
-        }
-
-        /**
          * Display list view of feeds for projects on dashboard
          */
         public function actionShowProjectsLatestActivityFeed()
