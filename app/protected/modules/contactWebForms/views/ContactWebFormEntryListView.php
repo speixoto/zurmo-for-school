@@ -95,25 +95,37 @@
             return $metadata;
         }
         
-        public function resolveRelatedLinkStringForContactOrLead($data, $attributeString, $attributeName)
+        public function resolveLink()
         {
-            $moduleId = 'ContactWebFormsUtil::getRelatedLinkStringForContactOrLead($data)';
-            return $this->getRelatedLinkString($attributeString, $attributeName, $moduleId);
+            return 'ContactWebFormEntryListView::resolveLinkWithModuleId($data)';
         }
-   
-        protected function getGridViewActionRoute($action, $moduleId = null)
+
+        public static function resolveLinkWithModuleId(ContactWebFormEntry $contactWebFormEntry)
         {
-            $controllerId = $this->controllerId;
-            if ($moduleId == null)
-            {
-                $moduleId = $this->moduleId;
-            }
-            elseif ($moduleId == 'contacts' || $moduleId == 'leads')
-            {
-                $controllerId = 'default';
-            }
-            return '/' . $moduleId . '/' . $controllerId . '/' . $action;
+            $content  = static::resolveModuleIdWithLinkContent($contactWebFormEntry->contact);
+            return $content;
         }
-     
+  
+        /**
+         * @param Contact $contact
+         * @return string
+         */
+        public static function resolveModuleIdWithLinkContent(Contact $contact)
+        {
+            $linkContent = '';
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $contact))
+            {
+                $moduleClassName = $contact->getModuleClassName();
+                $moduleId        = ContactWebFormsUtil::getRelatedLinkStringForContactOrLead($contact);
+                $linkRoute       = '/' . $moduleId . '/default/details';
+                $link            = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
+                                   $moduleClassName, $linkRoute);
+                if ($link != null)
+                {
+                    $linkContent = $link;
+                }
+                return ZurmoHtml::tag('div', array(), $linkContent);
+            }
+        }
     }
 ?>

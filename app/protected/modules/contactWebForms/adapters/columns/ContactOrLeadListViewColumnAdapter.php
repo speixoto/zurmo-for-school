@@ -43,7 +43,7 @@
                 return array(
                     'name' => $this->attribute,
                     'type' => 'raw',
-                    'value' => $this->view->resolveRelatedLinkStringForContactOrLead('$data', '$data->' . $this->attribute, $this->attribute),
+                    'value' => $this->view->resolveLink(),
                 );
             }
             else
