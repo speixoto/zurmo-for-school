@@ -60,17 +60,24 @@
         {
             assert('$projectAuditEvent instanceof ProjectAuditEvent');
             $project           = Project::getById(intval($projectAuditEvent->project->id));
-            $projectName       = ZurmoHtml::link($project->name,
-                                                    Yii::app()->createUrl('projects/default/details',
-                                                                          array('id' => $project->id)));
-            $user              = User::getById($projectAuditEvent->user->id);
-            $unserializedData  = unserialize($projectAuditEvent->serializedData);
             $dateTime          = DateTimeUtil::getTimeSinceDisplayContent($projectAuditEvent->dateTime);
-            $data              = array('{projectname}' => $projectName, '{username}' => $user->getFullName(),
-                                       '{timeSpanLabel}' => $dateTime);
-            if (is_array($unserializedData))
+            $data              = array('{timeSpanLabel}' => $dateTime);
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $project))
             {
-                $data = array_merge($unserializedData, $data);
+                $projectName            = static::resolveProjectName($project);
+                $data['{projectname}']  = $projectName;
+                $user                   = User::getById($projectAuditEvent->user->id);
+                $data['{username}']     = $user->getFullName();
+                $unserializedData       = unserialize($projectAuditEvent->serializedData);
+                if (is_array($unserializedData))
+                {
+                    $data = array_merge($unserializedData, $data);
+                }
+            }
+            else
+            {
+                return Zurmo::t('ProjectsModule', '<strong>Activity on a restricted project
+                                                   </strong> <small>about {timeSpanLabel}</small>', $data);
             }
             return static::getMessageContentByEventAndData($projectAuditEvent->eventName, $data);
         }
@@ -80,7 +87,7 @@
          * @param Project $project
          * @return string
          */
-        protected function resolveProjectName($project)
+        protected static function resolveProjectName($project)
         {
             assert('$project instanceof Project');
             return ZurmoHtml::link($project->name, Yii::app()->createUrl('projects/default/details', array('id' => $project->id)));

@@ -129,7 +129,7 @@
             {
                 $notificationMessage                    = new NotificationMessage();
                 $notificationMessage->textContent       = $textContent;
-                $notificationMessage->htmlContent       = $htmlContent;
+                $notificationMessage->htmlContent       = DataUtil::purifyHtml($htmlContent);
                 $rules                                  = new EmailMessageOwnerNotExistNotificationRules();
                 NotificationsUtil::submit($notificationMessage, $rules);
             }

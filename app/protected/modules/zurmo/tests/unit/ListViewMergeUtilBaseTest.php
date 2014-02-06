@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ListViewMergeUtilBaseTest extends ZurmoBaseTest
+    abstract class ListViewMergeUtilBaseTest extends ZurmoBaseTest
     {
         public $selectedModels          = array();
 
@@ -101,7 +101,7 @@
             $this->assertEquals(0, count($primaryModel->projects));
             $project = ProjectTestHelper::createProjectByNameForOwner($this->modelClass . ' Project', Yii::app()->user->userModel);
             $project->$relatedFieldName->add($this->selectedModels[1]);
-            assert($project->save());
+            assert($project->save()); // Not Coding Standard
         }
 
         protected function validateProject()

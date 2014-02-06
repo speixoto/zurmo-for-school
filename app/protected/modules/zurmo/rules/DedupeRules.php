@@ -97,31 +97,63 @@
             {
                 return null;
             }
-            $id           = $this->getInputIdForDedupe($element);
-            $dedupeViewId = $this->getDedupeViewClassName();
+            $id            = $this->getInputIdForDedupe($element);
+            $dedupeViewId  = $this->getDedupeViewClassName();
+            $link          = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'click here'), '#', array('onclick' => 'js:$("#' . $dedupeViewId . '").closest("form")[0].submit();'));
+            $spanUnderline = ZurmoHtml::tag('span', array('class' => 'underline'), $link);
+            $textMessage   = '<br>' . Zurmo::t('ZurmoModule', 'If you still want to save {link}.', array('{link}' => $spanUnderline));
+            $spinnerId     = 'dedupe-spinner';
             // Begin Not Coding Standard
             $ajaxScript = ZurmoHtml::ajax(array(
                 'type'       => 'GET',
                 'data'       => array('attribute' => $this->getAttributeForDedupe($element),
-                    'value'     => "js:$('#{$id}').val()",
+                                      'value'     => "js:$('#{$id}').val()",
                 ),
                 'url'        => 'searchForDuplicateModels',
+
+                'beforeSend' => "js:function(){
+                                     $('#" . $id . "').after('<div id=\"" . $spinnerId . "\"><span class=\"z-spinner\"></span></div>');
+                                     $(this).makeOrRemoveLoadingSpinner(true, '#" . $spinnerId . "', 'dark');
+                                }",
                 'success'    => "js:function(data, textStatus, jqXHR){
                                         var returnObj = jQuery.parseJSON(data);
+                                        $('#" . $dedupeViewId . "').closest('form').off('submit.dedupe');
                                         if (returnObj != null)
                                         {
+                                            var textMessage = '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();dedupeShouldSubmitFormAfterMessage = false;$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>';
+                                            if (shouldSubmitForm)
+                                            {
+                                                $('#" . $dedupeViewId . "').closest('form').find('a[name=\'save\']').removeClass('loading');
+                                                textMessage += '" . $textMessage . "';
+                                            }
                                             $('#" . $dedupeViewId . "').replaceWith(returnObj.content);
                                             $('#FlashMessageBar').jnotifyAddMessage({
-                                                text: '<a href=\"#\" onclick=\"$(\'#" . $dedupeViewId . "\').show();$(\'.jnotify-item-close\').click(); return false;\">' + returnObj.message + '</a>',
+                                                text: textMessage,
                                                 permanent: true,
                                                 clickOverlay : true,
                                                 showIcon: false,
-                                            })
+                                            });
+
                                         }
-                                 }"
+                                        else if (shouldSubmitForm)
+                                        {
+                                            $('#" . $dedupeViewId . "').closest('form')[0].submit();
+                                        }
+                                 }",
+                'complete'    => "js:function(){ $('#" . $id . "').next('#" . $spinnerId . "').remove(); }"
             ));
-            $js = "$('#{$id}' ).blur(function() {
-                        if ($('#{$id}').val() != ''){ {$ajaxScript} }
+            $js = "var shouldSubmitForm = false;
+                    $('#{$id}' ).change(function() {
+                        if ($('#{$id}').val() != '')
+                        {
+                            {$ajaxScript}
+                            $(this).closest('form').on('submit.dedupe', function(e)
+                            {
+                                shouldSubmitForm = true;
+                                return false;
+                            });
+                        }
+
                    });
             ";
 
@@ -237,7 +269,7 @@
                                          count($matchedModels)
                     );
                 }
-                $clickHere = ZurmoHtml::tag('span', array('class' => 'underline'), Zurmo::t('ZurmoModule', 'Click here'));
+                $clickHere = ZurmoHtml::tag('span', array('class' => 'underline'), Zurmo::t('Core', 'Click here'));
                 $message .= ' ' . $clickHere . ' ' . Zurmo::t('ZurmoModule', 'to view') . '.';
                 return array('message' => $message, 'matchedModels' => $matchedModels);
             }

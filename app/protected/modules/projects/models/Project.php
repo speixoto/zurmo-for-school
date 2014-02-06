@@ -128,7 +128,7 @@
                     array('description',    'type',    'type' => 'string'),
                     array('status',         'type',    'type' => 'integer'),
                     array('status',         'default', 'value' => Project::STATUS_ACTIVE),
-                    array('status',           'required'),
+                    array('status',         'required'),
                 ),
                 'elements' => array(
                     'status' => 'ProjectStatusDropDown',

@@ -76,5 +76,10 @@
                 'id'
             );
         }
+
+        public function requireAllRequiredFieldsInLayout()
+        {
+            return true;
+        }
     }
 ?>

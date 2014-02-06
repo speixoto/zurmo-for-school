@@ -229,7 +229,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 #LoginLogo{
-	//.box-sizing();
+	
 	height:100%;
 	width:50%;
 	padding-right:10px;
@@ -317,7 +317,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	border:1px solid #444;
 	background: #252525;
 	.b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
-	//.box-sizing();
+	
 	li{
 		line-height: 100%;
 	}
@@ -431,7 +431,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	border:1px solid #444;
 	background: #252525;
 	.b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
-	//.box-sizing();
+	
 	.z-spinner{
 		left:50%;
 		top:5px;
@@ -1166,7 +1166,7 @@ body > .ui-autocomplete{
 		em{
 			z-index:9999;
 			position:absolute;
-			//.box-sizing();
+			
 			width:24px;
 			height:24px;
 			line-height:22px;
@@ -1354,6 +1354,7 @@ body > .ui-autocomplete{
 	//z-index: 9999;
 	float: left;
 	width: 100%;
+	display: table;
 }
 
 #MashableInboxActionBarForViews,
@@ -1401,7 +1402,7 @@ body > .ui-autocomplete{
 	height: 40px;
 	display: block;
 	z-index: 10;
-	//.box-sizing();
+	
 	padding: 0 15px 0 15px;
 	margin-bottom: 15px;
 	.view-toolbar-container{
@@ -1634,7 +1635,7 @@ form,
 	}
 	ul{
 		max-width: 50%;
-		//.box-sizing();
+		
 		padding: 10px;
 		line-height: 150%;
 	}
@@ -1693,7 +1694,7 @@ form,
 		vertical-align:middle;
 		padding:0 0 0 0;//3px;
 		position: relative;
-		//.box-sizing();
+		
 	}
 	.active{
 		color:#7CB830;
@@ -1722,6 +1723,8 @@ caption, th, td {
 }
 
 .items-wrapper{
+	width: 100%;
+	display: table;
 	overflow-x:auto;
 	background:
 		-webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
@@ -1737,7 +1740,7 @@ caption, th, td {
 	width:100%;
 	border-collapse: collapse;
 	border-spacing: 1px;
-	//.box-sizing();
+	
 	> tbody,
 	> thead{
 		> tr > td{
@@ -1812,7 +1815,7 @@ caption, th, td {
 			}
 			~ div{
 				padding-left:25px;
-				//.box-sizing();
+				
 			}
 		}
 		> div{
@@ -1973,7 +1976,7 @@ td.empty{
 	margin:0;
 	vertical-align:middle;
 	position:relative;
-	//.box-sizing();
+	
 }
 
 .icon-notice:before{
@@ -2022,7 +2025,7 @@ td.empty{
 	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
 	.ie-shadow(#999999, 1, 15);
 	width:100%;
-	//.box-sizing();
+	
 	&:focus{
 		.b-shadow(0 0 1px 1px @themeColor);
 	}
@@ -2520,7 +2523,7 @@ div.wide.form{
 		float:left;
 		width:65%;
 		margin:45px 0 0 30px;
-		//.box-sizing();
+		
 	}
 	a{
 		margin-left:30px;
@@ -2668,7 +2671,7 @@ div.wide.form{
 	.smaller();
 	float: left;
 	width: 100%;
-	//.box-sizing();
+	
 	.clearfix();
 	.form-toolbar, .z-button{
 		font-size:12px;
@@ -2709,7 +2712,7 @@ div.wide.form{
 	top:7px;
 	background: none !important;
 	.b-shadow(none);
-	//.box-sizing();
+	
 	> div + div{
 		display: inline-block;
 		margin-left: 15px;
@@ -2760,7 +2763,7 @@ div.wide.form{
 		float:left;
 	}
 	input[type="text"]{
-		//.box-sizing();
+		
 		position:relative;
 		left:-1px;
 		width:179px;
@@ -2937,7 +2940,7 @@ div.wide.form{
 		right:-75px;
 		float:right;
 		padding:0 15px;
-		//.box-sizing();
+		
 		width:75px;
 		height:75px;
 		text-align:center;
@@ -3132,7 +3135,7 @@ div.wide.form{
 		padding:8px 10px;
 		background:#F4F4F4;
 		width:100%;
-		//.box-sizing();
+		
 	}
 }
 */
@@ -3178,7 +3181,7 @@ div.wide.form{
 	padding: 15px 15px 15px 15px;
 	float: left;
 	width: 70%;
-	//.box-sizing();
+	
 	&.full-width{
 		width: 100%;
 		float:none;
@@ -3198,14 +3201,14 @@ div.wide.form{
 	float: right;
 	width: 30%;
 	padding:15px 15px 15px 15px;
-	//.box-sizing();
+	
 }
 
 #modal-edit-form,
 #edit-form,
 #delete-form{
 	.clearfix();
-	//.box-sizing();
+	
 	position: relative;
 	.panel{
 		table{
@@ -3307,7 +3310,7 @@ div.wide.form{
 	padding: 8px 10px;
 	background: #F4F4F4;
 	width: 100%;
-	//.box-sizing();
+	
 	.clearfix();
 	p{
 		line-height: 140%;
@@ -3496,7 +3499,7 @@ div.wide.form{
 		width:auto;
 		float:none;
 		width:95%;
-		//.box-sizing();
+		
 	}
 	.hasDropDown{
 		margin-right: 30px;
@@ -3563,7 +3566,7 @@ div.wide.form{
 	}*/
 	td, th{
 		font-weight: bold;
-		//.box-sizing();
+		
 		padding:5px 5px 5px 5px;
 	}
 	th{
@@ -3643,7 +3646,7 @@ div.wide.form{
 	font-style:italic;
 	text-align:center;
 	padding: 0 10px 10px 10px;
-	//.box-sizing();
+	
 	a{
 		//color: @themeColor;
 	}
@@ -3678,7 +3681,7 @@ div.wide.form{
 	border:1px solid #ccc;
 	.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
 	#gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-	//.box-sizing();
+	
 }
 
 .wrapper,
@@ -3874,7 +3877,7 @@ div.wide.form{
 			}
 		}
 		#Note_description{
-			//.box-sizing();
+			
 			height:60px;
 			width:100%;
 			margin-bottom:10px;
@@ -3928,7 +3931,7 @@ div.wide.form{
 	//padding: 15px 15px 15px 0;
 	table + table{
 		float:left;
-		//.box-sizing();
+		
 	}
 	.panel td{
 		padding-bottom: 15px;
@@ -3968,7 +3971,7 @@ div.wide.form{
 	.view-toolbar-container{
 		display: inline-block;
 		padding: 0 15px 15px 15px;
-		//.box-sizing();
+		
 		a{
 			float:right;
 			clear: both;
@@ -4044,7 +4047,7 @@ div.radio-input{
 		margin-top:8px;
 		padding-left:24px;
 		margin-bottom:0;
-		//.box-sizing();
+		
 	}
 }
 
@@ -4167,7 +4170,7 @@ div.radio-input{
 }
 
 .overlay-label-field input{
-	//.box-sizing();
+	
 }
 
 .hasParallelFields,
@@ -4347,7 +4350,7 @@ div.radio-input{
 
 /*Upcoming Meeting Pager*/
 .pager{
-	//.box-sizing();
+	
 	width:100%;
 	text-align:center;
 	background: #fff url("@{path}view-toolbar-gradient.png") left bottom repeat-x;
@@ -4357,7 +4360,7 @@ div.radio-input{
 		display: block;
 		width:50%;
 		margin:0 auto;
-		//.box-sizing();
+		
 		list-style: none;
 		border-left: 1px solid #DFDFDF;
 		.clearfix();
@@ -4381,7 +4384,7 @@ div.radio-input{
 		}
 	}
 	li{
-		//.box-sizing();
+		
 		float:left;
 		width:30%;
 		padding:0;
@@ -4460,7 +4463,7 @@ div.radio-input{
 	td{
 		padding:10px;
 		div{
-			line-height:125%;
+			line-height:150%;
 		}
 	}
 	tr{
@@ -4468,10 +4471,12 @@ div.radio-input{
 			background:none;
 			color:@textColor;
 		}
+		&:first-child td{
+			border-top:none;
+		}
 	}
 	h3{
 		color:@textColor;
-		//font-size:11px;
 		margin-bottom:4px;
 		span{
 			font-weight:normal;
@@ -4482,6 +4487,24 @@ div.radio-input{
 			}
 		}
 	}
+}
+
+#DaysMeetingsFromCalendarModalListView{
+	.view-toolbar-container{
+		position: absolute;
+		top:8px;
+		right:0px;
+		width: auto;
+	}
+}
+
+.meeting-summary{
+	position: relative;
+}
+
+.meeting-details{
+	background-color: #dfdfdf;
+	float: right;
 }
 
 /*=Meeting/Task Single View*/
@@ -4589,7 +4612,7 @@ div.radio-input{
 		width: 100%;
 		padding-left:40px;
 		position: relative;
-		//.box-sizing();
+		
 		span{
 			line-height: 140%;
 			word-break: break-all;
@@ -4638,13 +4661,14 @@ div.radio-input{
 	}
 }
 
+#GameRewardsSearchForm_filteredBy_area,
 #MashableInboxForm_filteredBy_area,
 #MashableInboxForm_optionForModel_area,
 .latest-activity-toolbar,
 .filter-portlet-model-bar{
 	.smaller();
 	padding-left:8px;
-	//.box-sizing();
+	
 	label{
 		cursor:pointer;
 		border:none;
@@ -4673,6 +4697,16 @@ div.radio-input{
 	.ui-button-text{
 		padding:0;
 		margin:0;
+	}
+}
+
+#GameRewardsSearchForm_filteredBy_area{
+	display: inline-block;
+	margin-left: 15px;
+	left: 320px;
+	top: 21px !important;
+	label{
+		float: none;
 	}
 }
 
@@ -4849,7 +4883,7 @@ div.radio-input{
 	padding: 0;
 	position: relative;
 	cursor: pointer;
-	//.box-sizing();
+	
 	span{
 		width: 28px;
 		height: 24px;
@@ -4886,7 +4920,7 @@ div.radio-input{
 		color: #666;
 		text-indent: 6px;
 		vertical-align: middle;
-		//.box-sizing();
+		
 		.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
 		outline: none !important;
 		cursor: pointer;
@@ -5023,7 +5057,7 @@ div.radio-input{
 }
 
 .ui-progressbar{
-	//.box-sizing();
+	
 	padding-left:35px;
 	position: absolute;
 	top:0;
@@ -5074,7 +5108,7 @@ div.radio-input{
 		padding:15px 0 50px 15px;
 		width:65%;
 		float:left;
-		//.box-sizing();
+		
 		> div{
 			margin-bottom:20px;
 		}
@@ -5083,7 +5117,7 @@ div.radio-input{
 		float:right;
 		width:30%;
 		margin:15px 15px 50px 0;
-		//.box-sizing();
+		
 		> div {
 			padding: 8px 10px;
 			background: #F4F4F4;
@@ -5316,5 +5350,6 @@ div.radio-input{
 @import 'game-dashboard.less';
 @import 'projects.less';
 @import 'merging.less';
+@import 'shared-calendar.less';
 @import 'color-scheme.less';
 @import 'media-queries.less';

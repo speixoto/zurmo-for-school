@@ -90,15 +90,26 @@
                     $searchAttributesData['clauses']   = array();
                     $searchAttributesData['structure'] = null;
                     $searchAttributesData =    // Not Coding Standard
-                        $mashableActivityRules->resolveSearchAttributeDataForLatestActivities($searchAttributesData);
-                    $searchAttributesData =    // Not Coding Standard
                         $mashableActivityRules->resolveSearchAttributeDataForAllLatestActivities($searchAttributesData);
                 }
+                static::resolveSearchAttributeDataForLatestActivities($searchAttributesData, $mashableActivityRules);
                 $mashableActivityRules->resolveSearchAttributesDataByOwnedByFilter($searchAttributesData, $ownedByFilter);
 
                 $modelClassNamesAndSearchAttributeData[] = array($modelClassName => $searchAttributesData);
             }
             return $modelClassNamesAndSearchAttributeData;
+        }
+
+        /**
+         * Resolves the $searchAttributesData for each type of MashableActivity based on
+         * @see MashableActivityRules
+         * @param $searchAttributesData
+         * @param $mashableActivityRules
+         */
+        protected static function resolveSearchAttributeDataForLatestActivities(& $searchAttributesData, $mashableActivityRules)
+        {
+            $searchAttributesData =    // Not Coding Standard
+                $mashableActivityRules->resolveSearchAttributeDataForLatestActivities($searchAttributesData);
         }
 
         /**

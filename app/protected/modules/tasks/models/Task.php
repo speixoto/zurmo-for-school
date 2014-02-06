@@ -118,7 +118,7 @@
                     array('description',       'type',    'type' => 'string'),
                     array('name',              'required'),
                     array('name',              'type',    'type' => 'string'),
-                    array('name',              'length',  'min'  => 1, 'max' => 64),
+                    array('name',              'length',  'min'  => 1, 'max' => 128),
                     array('status',            'type', 'type' => 'integer'),
                     array('status',            'default', 'value' => Task::STATUS_NEW),
                     array('status',            'required'),

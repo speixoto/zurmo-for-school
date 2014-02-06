@@ -173,6 +173,26 @@
         }
 
         /**
+         * View for rendering Authorization while integration with external apps
+         * @param CController $controller
+         * @param View $containedView
+         * @return GridView
+         */
+        public static function makeAuthorizationViewForCurrentUser(CController $controller, View $containedView)
+        {
+            $horizontalGridView = new GridView(1, 1);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix'));
+            $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent')));
+            $horizontalGridView->setView($containedView, 0, 0);
+
+            $verticalGridView   = new GridView(3, 1);
+            $verticalGridView->setView(static::makeHeaderView($controller),         0, 0);
+            $verticalGridView->setView($horizontalGridView,                         1, 0);
+            $verticalGridView->setView(static::makeFooterView(),                    2, 0);
+            return $verticalGridView;
+        }
+
+        /**
          * Given a contained view, construct the gridview
          * used by the zurmo page view for errors.
          * @param View $containedView

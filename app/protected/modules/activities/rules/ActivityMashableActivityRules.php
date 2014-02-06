@@ -55,7 +55,7 @@
                 )
             );
             $searchAttributeData['structure'] = '1';
-            return $this->resolveSearchAttributeDataForLatestActivities($searchAttributeData);
+            return $searchAttributeData;
         }
 
         /**
@@ -74,7 +74,7 @@
                 )
             );
             $searchAttributeData['structure'] = '1';
-            return $this->resolveSearchAttributeDataForLatestActivities($searchAttributeData);
+            return $searchAttributeData;
         }
 
         /**

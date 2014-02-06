@@ -1625,6 +1625,7 @@ body > .ui-autocomplete {
   position: relative;
   float: left;
   width: 100%;
+  display: table;
 }
 #MashableInboxActionBarForViews > div,
 #ActionBarSearchAndListView > div {
@@ -2055,6 +2056,8 @@ td {
   border: 1px solid #dfdfdf;
 }
 .items-wrapper {
+  width: 100%;
+  display: table;
   overflow-x: auto;
   background: -webkit-linear-gradient(left,#fff 30%,rgba(255,255,255,0)), -webkit-linear-gradient(left,rgba(255,255,255,0),#fff 70%) 100%, -webkit-radial-gradient(0 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)), -webkit-radial-gradient(100% 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)) 100% 0;
   background-repeat: no-repeat;
@@ -5236,11 +5239,14 @@ div.radio-input .hasDropDown {
   padding: 10px;
 }
 #days-meetings-list-view td div {
-  line-height: 125%;
+  line-height: 150%;
 }
 #days-meetings-list-view tr:hover {
   background: none;
   color: #545454;
+}
+#days-meetings-list-view tr:first-child td {
+  border-top: none;
 }
 #days-meetings-list-view h3 {
   color: #545454;
@@ -5253,6 +5259,19 @@ div.radio-input .hasDropDown {
 }
 #days-meetings-list-view h3 span a {
   outline: none;
+}
+#DaysMeetingsFromCalendarModalListView .view-toolbar-container {
+  position: absolute;
+  top: 8px;
+  right: 0px;
+  width: auto;
+}
+.meeting-summary {
+  position: relative;
+}
+.meeting-details {
+  background-color: #dfdfdf;
+  float: right;
 }
 #NoteEditAndDetailsView .details-table,
 #TaskEditAndDetailsView .details-table,
@@ -5476,6 +5495,7 @@ div.radio-input .hasDropDown {
   font-family: "zurmo_gamification_symbly_rRg";
   line-height: 28px;
 }
+#GameRewardsSearchForm_filteredBy_area,
 #MashableInboxForm_filteredBy_area,
 #MashableInboxForm_optionForModel_area,
 .latest-activity-toolbar,
@@ -5483,6 +5503,7 @@ div.radio-input .hasDropDown {
   font-size: 11px;
   padding-left: 8px;
 }
+#GameRewardsSearchForm_filteredBy_area label,
 #MashableInboxForm_filteredBy_area label,
 #MashableInboxForm_optionForModel_area label,
 .latest-activity-toolbar label,
@@ -5495,6 +5516,7 @@ div.radio-input .hasDropDown {
   margin: 0 3px;
   white-space: nowrap;
 }
+#GameRewardsSearchForm_filteredBy_area label:hover,
 #MashableInboxForm_filteredBy_area label:hover,
 #MashableInboxForm_optionForModel_area label:hover,
 .latest-activity-toolbar label:hover,
@@ -5508,6 +5530,8 @@ div.radio-input .hasDropDown {
   border: none;
   background-color: #323232 !important;
 }
+#GameRewardsSearchForm_filteredBy_area input[type="radio"],
+#GameRewardsSearchForm_filteredBy_area input[type="checkbox"],
 #MashableInboxForm_filteredBy_area input[type="radio"],
 #MashableInboxForm_filteredBy_area input[type="checkbox"],
 #MashableInboxForm_optionForModel_area input[type="radio"],
@@ -5519,6 +5543,7 @@ div.radio-input .hasDropDown {
   visibility: hidden;
   display: none;
 }
+#GameRewardsSearchForm_filteredBy_area .ui-state-active,
 #MashableInboxForm_filteredBy_area .ui-state-active,
 #MashableInboxForm_optionForModel_area .ui-state-active,
 .latest-activity-toolbar .ui-state-active,
@@ -5532,12 +5557,22 @@ div.radio-input .hasDropDown {
   border: none;
   background-color: #323232 !important;
 }
+#GameRewardsSearchForm_filteredBy_area .ui-button-text,
 #MashableInboxForm_filteredBy_area .ui-button-text,
 #MashableInboxForm_optionForModel_area .ui-button-text,
 .latest-activity-toolbar .ui-button-text,
 .filter-portlet-model-bar .ui-button-text {
   padding: 0;
   margin: 0;
+}
+#GameRewardsSearchForm_filteredBy_area {
+  display: inline-block;
+  margin-left: 15px;
+  left: 320px;
+  top: 21px !important;
+}
+#GameRewardsSearchForm_filteredBy_area label {
+  float: none;
 }
 .filter-portlet-model-bar {
   border-bottom: 1px solid #DFDFDF;
@@ -6406,6 +6441,7 @@ i[class^="icon"] {
 .icon-details:after {
   content: 'T';
 }
+.icon-config:after,
 .icon-options:after {
   content: "n";
 }
@@ -6594,6 +6630,9 @@ i[class^="icon"] {
 }
 .icon-x:before {
   content: "•";
+}
+.icon-google:after {
+  content: '\221E';
 }
 .pillbox .icon-projects-list {
   font-size: 22px;
@@ -6934,19 +6973,21 @@ input[type="button"].portlet-create-button:focus {
   -moz-opacity: 1;
   opacity: 1;
 }
-.simple-link {
+a.simple-link {
   font-size: 11px;
   color: #323232;
   border: none !important;
+  text-decoration: underline;
+  overflow: hidden;
 }
-.simple-link:before,
-.simple-link:after {
+a.simple-link:before,
+a.simple-link:after {
   content: "" !important;
 }
-.simple-link:hover {
+a.simple-link:hover {
   color: #565656 !important;
 }
-.simple-link:hover .z-label {
+a.simple-link:hover .z-label {
   color: #565656 !important;
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
@@ -6954,7 +6995,7 @@ input[type="button"].portlet-create-button:focus {
   -o-text-shadow: none !important;
   text-shadow: none !important;
 }
-.simple-link .z-label {
+a.simple-link .z-label {
   font-weight: normal;
   color: #323232;
   background: none !important;
@@ -6976,7 +7017,7 @@ input[type="button"].portlet-create-button:focus {
   text-shadow: none !important;
   text-decoration: underline !important;
 }
-.simple-link .icon-x {
+a.simple-link .icon-x {
   font-weight: normal !important;
   font-size: 21px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -7767,7 +7808,7 @@ input[type="button"].portlet-create-button:focus {
   width: 100%;
   position: relative;
   margin: 0;
-  padding: 20px 15px;
+  padding: 20px 100px 20px 15px;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #fff;
 }
@@ -8431,6 +8472,12 @@ table.configuration-list tr:last-child td {
 .UserGroupMembershipView th {
   text-align: left !important;
 }
+.UserActionBarAndSecurityDetailsView > div + div {
+  margin-top: 30px;
+}
+.UserActionBarAndSecurityDetailsView > div:first-child + div {
+  margin-top: 0;
+}
 #AuditEventsModalListView tr td:first-child,
 #AuditEventsModalListView tr th:first-child {
   padding-left: 15px;
@@ -8630,15 +8677,20 @@ table.configuration-list tr:last-child td {
   padding-left: 15px !important;
   border-bottom: 1px solid #DFDFDF;
 }
-#ImportWizardMappingView .column-import-data {
-  margin-top: 5px;
-}
 #ImportWizardMappingView tr td:last-child {
   padding-right: 0;
   vertical-align: top;
 }
 #ImportWizardMappingView td + td {
   vertical-align: top;
+}
+.column-import-data,
+.column-import-data div {
+  margin-top: 5px;
+  padding-right: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 #sample-column-header {
   position: relative;
@@ -9743,7 +9795,6 @@ div.wide.form .errorMessage {
   border-radius: 3px;
   *zoom: 1;
   overflow: hidden;
-  position: relative;
   display: inline-block;
   text-indent: 0;
   -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
@@ -9757,6 +9808,7 @@ div.wide.form .errorMessage {
   font-size: 24px;
   padding: 0 6px !important;
   margin: 0 5px 0 0 !important;
+  position: relative;
   top: 2px;
   color: #666;
   -webkit-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
@@ -9798,7 +9850,7 @@ div.wide.form .errorMessage {
   margin: 0;
   opacity: 0;
   filter: alpha(opacity=0);
-  font-size: 200px;
+  font-size: 25px;
   direction: ltr;
   cursor: pointer;
 }
@@ -9827,32 +9879,18 @@ div.wide.form .errorMessage {
 .fileupload-buttonbar .toggle {
   margin-bottom: 5px;
 }
-#ui-datepicker-div {
-  max-width: 250px;
-}
 .ui-datepicker {
   z-index: 10000;
-  background-color: #f5f5f5 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 }
 .ui-datepicker.ui-datepicker-inline {
   margin: 15px;
+  display: table !important;
 }
 .ui-datepicker .ui-datepicker-header {
-  height: 35px;
-  background: #111 url("../images/datepicker-header.png") left top repeat-x !important;
-  color: #FFF;
+  display: table;
+  height: 36px;
+  width: 100%;
+  color: #323232;
   font-weight: bold;
 }
 .ui-datepicker .ui-datepicker-header a:hover:before,
@@ -9886,10 +9924,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-next span {
   visibility: hidden;
+  display: none;
 }
 .ui-datepicker .ui-datepicker-next:before {
   content: "▶";
-  margin-left: 10px;
+  margin-right: 10px;
 }
 .ui-datepicker .ui-datepicker-next :hover {
   cursor: pointer !important;
@@ -9901,27 +9940,38 @@ div.wide.form .errorMessage {
   line-height: 35px;
   font-size: 14px;
   font-weight: bold;
-  color: #DFDFDF;
-  -webkit-text-shadow: #000 0 1px 0;
-  -moz-text-shadow: #000 0 1px 0;
-  -ms-text-shadow: #000 0 1px 0;
-  -o-text-shadow: #000 0 1px 0;
-  text-shadow: #000 0 1px 0;
+  color: #323232;
 }
 .ui-datepicker .ui-datepicker-calendar {
   width: 100%;
-  border-color: #BBB;
-  border-style: solid;
-  border-width: 0 0 1px 1px;
   border-spacing: 0;
-  border-collapse: collapse;
-  background: #fff;
-}
-.ui-datepicker .ui-datepicker-calendar th {
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left -35px repeat-x !important;
+  table-layout: fixed;
+  border: 1px solid #ddd;
+  border-top: none;
 }
 .ui-datepicker .ui-datepicker-calendar th:last-child {
-  border-right: 1px solid #BBB;
+  border-right: none;
+}
+.ui-datepicker .ui-datepicker-calendar td {
+  min-width: 30px;
+  height: 30px;
+  border-color: #ddd;
+  border-style: solid;
+  border-width: 1px 1px 0 0;
+  border-top: 1px solid #ddd !important;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
+  color: #B3B3B3;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
+  background-image: none !important;
+  background: #b2b2b2 !important;
+}
+.ui-datepicker .ui-datepicker-calendar td:hover {
+  background-image: none;
+}
+.ui-datepicker .ui-datepicker-calendar td:last-child {
+  border-right: none;
 }
 .ui-datepicker .ui-datepicker-calendar a {
   font-size: 9px;
@@ -9932,11 +9982,6 @@ div.wide.form .errorMessage {
   width: 100%;
   text-indent: 5px;
   padding-top: 3px;
-  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
   cursor: pointer;
 }
 .ui-datepicker .ui-datepicker-calendar span {
@@ -9949,36 +9994,7 @@ div.wide.form .errorMessage {
   font-size: 9px;
   text-transform: uppercase;
   line-height: 20px;
-  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
   cursor: pointer;
-}
-.ui-datepicker .ui-datepicker-calendar td {
-  min-width: 30px;
-  height: 30px;
-  border-color: #BBB;
-  border-style: solid;
-  border-width: 1px 1px 0 0;
-  border-top: 1px solid #bbb !important;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left top repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month {
-  background-image: none;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
-  color: #B3B3B3;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
-  background-image: none !important;
-  background: #b2b2b2 !important;
-}
-.ui-datepicker .ui-datepicker-calendar td:hover {
-  background-image: none;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   float: left;
@@ -10088,7 +10104,7 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui-timepicker-div {
   float: left;
   padding: 10px 5px 0 5px;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid #ddd;
   line-height: 1;
 }
 .ui-datepicker .ui-timepicker-div dt {
@@ -10144,7 +10160,7 @@ div.wide.form .errorMessage {
 .ui-datepicker .calendar-events-4 span,
 .ui-datepicker .calendar-events-5 span,
 .ui-datepicker .calendar-events-6 span {
-  color: #323232;
+  color: #323232 !important;
   position: relative !important;
   float: left;
   width: 100%;
@@ -10187,6 +10203,106 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui_tpicker_millisec,
 .ui-datepicker .ui_tpicker_microsec {
   display: none;
+}
+.juiportlet-widget-content .ui-datepicker,
+#ui-datepicker-div .ui-datepicker {
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+}
+.juiportlet-widget-content .ui-datepicker-header,
+#ui-datepicker-div .ui-datepicker-header {
+  background: #111 url("../images/datepicker-header.png") left top repeat-x !important;
+  color: #FFF;
+}
+.juiportlet-widget-content .ui-datepicker-calendar,
+#ui-datepicker-div .ui-datepicker-calendar {
+  background: #fff;
+  border-color: #BBB;
+}
+.juiportlet-widget-content .ui-datepicker-calendar th,
+#ui-datepicker-div .ui-datepicker-calendar th {
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left -37px repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar th:last-child,
+#ui-datepicker-div .ui-datepicker-calendar th:last-child {
+  border-color: #bbb;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td,
+#ui-datepicker-div .ui-datepicker-calendar td {
+  border-color: #bbb;
+  border-top: 1px solid #bbb !important;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left top repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td.ui-datepicker-other-month,
+#ui-datepicker-div .ui-datepicker-calendar td.ui-datepicker-other-month {
+  background-image: none;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td.ui-datepicker-today,
+#ui-datepicker-div .ui-datepicker-calendar td.ui-datepicker-today {
+  background-image: none !important;
+  background: #b2b2b2 !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td:hover,
+#ui-datepicker-div .ui-datepicker-calendar td:hover {
+  background-image: none;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td:last-child,
+#ui-datepicker-div .ui-datepicker-calendar td:last-child {
+  border-right: none;
+}
+.juiportlet-widget-content .ui-datepicker-calendar a,
+.juiportlet-widget-content .ui-datepicker-calendar span,
+#ui-datepicker-div .ui-datepicker-calendar a,
+#ui-datepicker-div .ui-datepicker-calendar span {
+  color: #656565;
+  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+}
+.juiportlet-widget-content .ui-datepicker-title,
+#ui-datepicker-div .ui-datepicker-title {
+  color: #DFDFDF;
+  -webkit-text-shadow: #000 0 1px 0;
+  -moz-text-shadow: #000 0 1px 0;
+  -ms-text-shadow: #000 0 1px 0;
+  -o-text-shadow: #000 0 1px 0;
+  text-shadow: #000 0 1px 0;
+}
+.juiportlet-widget-content .ui-timepicker-div,
+#ui-datepicker-div .ui-timepicker-div {
+  width: 100%;
+  border-bottom: 1px solid #bbb;
+}
+#ui-datepicker-div {
+  max-width: 250px;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 }
 .token-input-list {
   position: relative;
@@ -13513,7 +13629,7 @@ a.user-link {
 }
 #CreateEmailMessageModalEditView .more-panels-link {
   display: block;
-  margin: 0 0 0 4%;
+  margin: 0 0 0 10%;
   font-size: 11px;
   float: left;
   position: relative;
@@ -13538,12 +13654,17 @@ a.user-link {
 }
 .recipient > label {
   float: left;
-  width: 3%;
+  width: 10%;
   margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .recipient > div {
   float: right;
-  width: 96%;
+  width: 90%;
 }
 #cc-bcc-fields .recipient {
   margin-top: 15px;
@@ -13568,6 +13689,12 @@ a.user-link {
 }
 #NoUserEmailConfigurationYetView p {
   margin-top: 15px;
+}
+#redactor_modal input[type="text"],
+#redactor_modal input[type="password"],
+#redactor_modal input[type="email"],
+#redactor_modal textarea {
+  z-index: 9999 !important;
 }
 .outbound-settings {
   clear: left;
@@ -13878,6 +14005,7 @@ a.user-link {
 .remove-action-row-link {
   position: relative;
   top: -9px;
+  margin-left: 10px;
 }
 .dynamic-row.clone {
   padding: 15px;
@@ -13971,6 +14099,9 @@ a.user-link {
 .value-data {
   float: right;
   width: 80%;
+}
+.value-data .has-model-select {
+  width: 100%;
 }
 .report-runtime-availability {
   min-width: 145px;
@@ -15140,11 +15271,7 @@ a.user-link {
 }
 .marketing-graph {
   float: left;
-  margin-left: 2%;
-  padding-bottom: 15px;
-}
-.marketing-graph:first-child {
-  margin-left: 0;
+  padding: 0 5px 15px 5px;
 }
 .marketing-graph h3 {
   padding-left: 15px;
@@ -15440,6 +15567,7 @@ a + .autoresponder-stats {
   -o-box-shadow: inset 0 0 1px 1px #efefef;
   box-shadow: inset 0 0 1px 1px #efefef;
 }
+.gmail-user-stage-status,
 .import-item-stage-status,
 .email-recipient-stage-status {
   text-align: center;
@@ -15457,6 +15585,7 @@ a + .autoresponder-stats {
   display: inline-block;
   border-left: 1px solid #bababa;
 }
+.gmail-user-stage-status.stage-true i,
 .import-item-stage-status.stage-true i,
 .email-recipient-stage-status.stage-true i {
   color: #97c43d;
@@ -15466,6 +15595,7 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #97c43d;
   text-shadow: 0 0 5px #97c43d;
 }
+.gmail-user-stage-status.stage-false i,
 .import-item-stage-status.stage-false i,
 .email-recipient-stage-status.stage-false i {
   color: #c43d53;
@@ -15475,6 +15605,7 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #c43d53;
   text-shadow: 0 0 5px #c43d53;
 }
+.gmail-user-stage-status i,
 .import-item-stage-status i,
 .email-recipient-stage-status i {
   font-weight: bold;
@@ -15487,10 +15618,12 @@ a + .autoresponder-stats {
   -o-text-shadow: 0 0 5px #ffd900;
   text-shadow: 0 0 5px #ffd900;
 }
+.gmail-user-stage-status:first-child,
 .import-item-stage-status:first-child,
 .email-recipient-stage-status:first-child {
   border-left: none;
 }
+.gmail-user-stage-status span,
 .import-item-stage-status span,
 .email-recipient-stage-status span {
   font-size: 10px;
@@ -15861,8 +15994,10 @@ a + .autoresponder-stats {
   height: 100%;
   width: 100%;
 }
-.drop-zone {
+.drop-zone-container .drop-zone {
   position: relative;
+}
+.drop-zone {
   border: 2px dashed #323232;
 }
 .kanban-column {
@@ -18832,13 +18967,8 @@ a + .project-stats {
   margin-bottom: 0px;
   padding: 15px;
 }
-#CreateModelsToMergeListAndChartView .chosen-entries .right-column {
-  display: none;
-}
-#CreateModelsToMergeListAndChartView .chosen-entries .left-column {
+#CreateModelsToMergeListAndChartView .chosen-entries {
   width: 100%;
-  float: none;
-  padding: 0;
 }
 #CreateModelsToMergeListAndChartView .cards {
   width: 75%;
@@ -18864,9 +18994,11 @@ a + .project-stats {
 #CreateModelsToMergeListAndChartView .possible-matches a {
   display: inline-block;
   border: none !important;
-  border-left: none !important;
   padding: 10px 15px;
   width: 100% !important;
+}
+#CreateModelsToMergeListAndChartView .spidergraph {
+  display: none;
 }
 #CreateModelsToMergeListAndChartView .chosen-entries .merge-color-1 a:hover,
 #CreateModelsToMergeListAndChartView .merge-color-1.selected a,
@@ -18891,12 +19023,15 @@ a + .project-stats {
   background: #565656 !important;
 }
 .merge-title-bar {
-  padding: 15px 15px 10px 15px;
-  border-bottom: 1px solid #dfdfdf;
+  display: table-caption;
+  width: 100%;
 }
 .merge-title-bar h3 {
   margin-bottom: 0 !important;
   line-height: 1;
+  width: 100%;
+  padding: 15px 15px 10px 15px;
+  border-bottom: 1px solid #dfdfdf;
 }
 .merge-title-bar .simple-link {
   margin-left: 15px;
@@ -18924,13 +19059,7 @@ a + .project-stats {
   background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-}
-.chosen-entries .left-column {
-  padding-left: 0;
-  padding-right: 0;
-}
-.chosen-entries .right-column {
-  border-left: 1px solid #fff;
+  display: table;
 }
 .DetailsView .chosen-entries {
   -webkit-box-shadow: none !important;
@@ -18951,9 +19080,11 @@ a + .project-stats {
 }
 .possible-matches {
   width: 35%;
-  display: block;
-  float: left;
   list-style: none;
+  padding-top: 15px;
+  display: table-cell;
+  vertical-align: top;
+  border-right: 1px solid #dfdfdf;
 }
 .possible-matches li {
   font-weight: bold;
@@ -18979,12 +19110,9 @@ a + .project-stats {
 .cards {
   padding: 15px;
   width: 65%;
-  display: block;
-  float: left;
-  height: 279px;
-  margin-top: -15px;
-  margin-left: -1px;
-  border-left: 1px solid #dfdfdf;
+  display: table-cell;
+  vertical-align: top;
+  border-left: 1px solid #fff;
   border-right: 1px solid #dfdfdf;
 }
 .cards > div {
@@ -19001,73 +19129,14 @@ a + .project-stats {
   font-weight: normal !important;
 }
 .spidergraph {
+  padding-left: 10px;
   width: 100%;
   height: 100%;
   text-align: left;
+  border-left: 1px solid #fff;
 }
 .spidergraph div {
   overflow: visible !important;
-}
-.turquoise {
-  background: #1abc9c;
-}
-.emerland {
-  background: #2ecc71;
-}
-.peterriver {
-  background: #3498db;
-}
-.amethyst {
-  background: #9b59b6;
-}
-.wetasphalt {
-  background: #34495e;
-}
-.greensea {
-  background: #16a085;
-}
-.nephritis {
-  background: #27ae60;
-}
-.belizehole {
-  background: #2980b9;
-}
-.wisteria {
-  background: #8e44ad;
-}
-.midnightblue {
-  background: #2c3e50;
-}
-.sunflower {
-  background: #f1c40f;
-}
-.carrot {
-  background: #e67e22;
-}
-.alizarin {
-  background: #e74c3c;
-}
-.clouds {
-  background: #ecf0f1;
-  color: #999;
-}
-.concrete {
-  background: #95a5a6;
-}
-.orange {
-  background: #f39c12;
-}
-.pumpkin {
-  background: #d35400;
-}
-.pomegranate {
-  background: #c0392b;
-}
-.silver {
-  background: #bdc3c7;
-}
-.asbestos {
-  background: #7f8c8d;
 }
 .merge-color-1 {
   border: 2px dotted #315AB0;
@@ -19109,64 +19178,97 @@ a + .project-stats {
   border: 2px dotted #c05d91;
   color: #c05d91 !important;
 }
+.chosen-entries .merge-color-1 a {
+  color: #315AB0 !important;
+}
+.chosen-entries .merge-color-2 a {
+  color: #66367b !important;
+}
+.chosen-entries .merge-color-3 a {
+  color: #2c3e50 !important;
+}
+.chosen-entries .merge-color-4 a {
+  color: #269a55 !important;
+}
+.chosen-entries .merge-color-5 a {
+  color: #c0392b !important;
+}
+.chosen-entries .merge-color-6 a {
+  color: #e67e22 !important;
+}
+.chosen-entries .merge-color-7 a {
+  color: #3498db !important;
+}
+.chosen-entries .merge-color-8 a {
+  color: #501a27 !important;
+}
+.chosen-entries .merge-color-9 a {
+  color: #0c5b3f !important;
+}
+.chosen-entries .merge-color-10 a {
+  color: #c05d91 !important;
+}
 .chosen-entries .merge-color-1 a:hover,
-.merge-color-1.selected a {
+.merge-color-1.selected {
   border: 2px solid #315AB0;
   background: #315AB0;
   color: #fff !important;
 }
 .chosen-entries .merge-color-2 a:hover,
-.merge-color-2.selected a {
+.merge-color-2.selected {
   border: 2px solid #66367b;
   background: #66367b;
   color: #fff !important;
 }
 .chosen-entries .merge-color-3 a:hover,
-.merge-color-3.selected a {
+.merge-color-3.selected {
   border: 2px solid #2c3e50;
   background: #2c3e50;
   color: #fff !important;
 }
 .chosen-entries .merge-color-4 a:hover,
-.merge-color-4.selected a {
+.merge-color-4.selected {
   border: 2px solid #269a55;
   background: #269a55;
   color: #fff !important;
 }
 .chosen-entries .merge-color-5 a:hover,
-.merge-color-5.selected a {
+.merge-color-5.selected {
   border: 2px solid #c0392b;
   background: #c0392b;
   color: #fff !important;
 }
 .chosen-entries .merge-color-6 a:hover,
-.merge-color-6.selected a {
+.merge-color-6.selected {
   border: 2px solid #e67e22;
   background: #e67e22;
   color: #fff !important;
 }
 .chosen-entries .merge-color-7 a:hover,
-.merge-color-7.selected a {
+.merge-color-7.selected {
   border: 2px solid #3498db;
   background: #3498db;
   color: #fff !important;
 }
 .chosen-entries .merge-color-8 a:hover,
-.merge-color-8.selected a {
+.merge-color-8.selected {
   border: 2px solid #501a27;
   background: #501a27;
   color: #fff !important;
 }
 .chosen-entries .merge-color-9 a:hover,
-.merge-color-9.selected a {
+.merge-color-9.selected {
   border: 2px solid #0c5b3f;
   background: #0c5b3f;
   color: #fff !important;
 }
 .chosen-entries .merge-color-10 a:hover,
-.merge-color-10.selected a {
+.merge-color-10.selected {
   border: 2px solid #c05d91;
   background: #c05d91;
+  color: #fff !important;
+}
+.chosen-entries .selected a {
   color: #fff !important;
 }
 .details-item-editable > label {
@@ -19221,9 +19323,9 @@ a + .project-stats {
 }
 .entry-stats {
   border-top: 1px solid #dfdfdf;
-  padding: 4px;
-  position: absolute;
-  bottom: 0;
+  padding: 10px;
+  position: relative;
+  bottom: -15px;
   left: 0;
   width: 100%;
 }
@@ -19263,6 +19365,93 @@ a + .project-stats {
   height: 229px;
   background: #fff;
   border-left: 1px solid #dfdfdf;
+}
+#dedupe-spinner {
+  display: block;
+  visibility: visible;
+  position: absolute;
+  top: 1px;
+  right: 20px;
+}
+#dedupe-spinner .z-spinner {
+  display: block;
+}
+#calendar {
+  width: 100%;
+  margin: 0 auto;
+}
+#calendar td {
+  padding: 0;
+}
+.fc-header {
+  text-transform: capitalize;
+}
+.calendar-view .left-column {
+  width: 25%;
+}
+.calendar-view .right-column {
+  width: 75%;
+}
+.calendars-list {
+  margin-top: 30px;
+}
+.calendars-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.calendars-list > ul > li {
+  display: block;
+  padding: 5px 0;
+  line-height: 1;
+}
+.calendars-list .edit-row-menu > li > a:before {
+  line-height: 12px;
+}
+.calendars-list a {
+  color: #545454 !important;
+}
+.calendars-list + .calendars-list {
+  margin-top: 30px;
+}
+.calendars-list + .calendars-list .cal-color {
+  background: darkgoldenrod;
+}
+.calendars-list + .calendars-list .cal-color.outline {
+  background: none;
+  border: 1px solid rosybrown;
+}
+.cal-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: #3a87ad;
+  margin-right: 4px;
+  position: relative;
+  top: 1px;
+}
+.cal-color.outline {
+  background: none;
+  border: 1px solid salmon;
+}
+.task-subscribers {
+  border-top: none;
+  padding: 0 0 0 16px;
+  margin-top: 5px;
+  box-shadow: none;
+}
+.quick-insert {
+  padding: 0;
+  margin-top: 30px;
+}
+.quick-insert .details-item-editable {
+  padding-left: 0;
+  padding-bottom: 5px;
+}
+.quick-insert .simple-link {
+  margin: 5px 0 0 0;
+  display: block;
 }
 body.flat-cement * {
   box-shadow: none !important;

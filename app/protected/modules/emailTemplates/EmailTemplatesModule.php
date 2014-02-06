@@ -38,7 +38,7 @@
     {
         const RIGHT_CREATE_EMAIL_TEMPLATES = 'Create Email Templates';
         const RIGHT_DELETE_EMAIL_TEMPLATES = 'Delete Email Templates';
-        const RIGHT_ACCESS_EMAIL_TEMPLATES = 'Access Email Templates Tab';
+        const RIGHT_ACCESS_EMAIL_TEMPLATES = 'Access Email Templates';
 
         public function getDependencies()
         {
@@ -57,7 +57,7 @@
             $labels                                     = array();
             $labels[self::RIGHT_CREATE_EMAIL_TEMPLATES] = Zurmo::t('EmailTemplatesModule', 'Create Email Templates');
             $labels[self::RIGHT_DELETE_EMAIL_TEMPLATES] = Zurmo::t('EmailTemplatesModule', 'Delete Email Templates');
-            $labels[self::RIGHT_ACCESS_EMAIL_TEMPLATES] = Zurmo::t('EmailTemplatesModule', 'Access Email Templates Tab');
+            $labels[self::RIGHT_ACCESS_EMAIL_TEMPLATES] = Zurmo::t('EmailTemplatesModule', 'Access Email Templates');
             return $labels;
         }
 

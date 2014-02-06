@@ -792,6 +792,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/searchForDuplicateModels', true);
 
             $contact = LeadTestHelper::createLeadbyNameForOwner('test', $super);
+            TaskTestHelper::createTaskWithOwnerAndRelatedItem('task for test', $super, $contact);
 
             //Test search by lastName
             $this->setGetArray(array('attribute' => 'lastName',
@@ -801,6 +802,17 @@
             $object = json_decode($content);
             $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
+            //The dupe contact has one task
+            $this->assertTag(array(
+                'tag'        => 'span',
+                'attributes' => array('class' => 'total-tasks'),
+                'descendant' => array(
+                    'tag'     => 'strong',
+                    'content' => '1',
+                    )
+                ),
+                $object->content);
+
             //Test search by phone
             $contact->mobilePhone = '123456789';
             $this->assertTrue($contact->save());

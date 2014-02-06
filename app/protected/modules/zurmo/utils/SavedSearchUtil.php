@@ -170,10 +170,18 @@
             {
                 $stickyData['filterByStarred']         = $dataCollection->getFilterByStarred();
             }
+            if ($dataCollection->getFilteredBy() != null)
+            {
+                $stickyData['filteredBy']         = $dataCollection->getFilteredBy();
+            }
             $anyMixedAttributes                    = $dataCollection->resolveSearchAttributesFromSourceData();
             if (isset($anyMixedAttributes['anyMixedAttributes']))
             {
                 $stickyData['anyMixedAttributes']      = $anyMixedAttributes['anyMixedAttributes'];
+            }
+            else
+            {
+                unset($stickyData['anyMixedAttributes']);
             }
             $dataCollection->resolveAnyMixedAttributesScopeForSearchModelFromSourceData();
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
