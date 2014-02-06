@@ -73,7 +73,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'contact', 'type' => 'Contact', 'isLink' => false),
+                                                array('attributeName' => 'contact', 'type' => 'Contact', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -94,5 +94,29 @@
             );
             return $metadata;
         }
+        
+        public function resolveRelatedLinkStringForContactOrLead($data, $attributeString, $attributeName)
+        {
+            $moduleId = 'ContactWebFormsUtil::getRelatedLinkStringForContactOrLead($data, $this)';
+            return $this->getRelatedLinkString($attributeString, $attributeName, $moduleId);
+        }
+
+        public function getRelatedLinkString($attributeString, $attributeName, $moduleId)
+        {
+            $string  = 'ActionSecurityUtil::resolveLinkToModelForCurrentUser("' . $attributeString . '", ';
+            $string .= '$data->' . $attributeName. ', "' . $this->getActionModuleClassName() . '", '; // Not Coding Standard
+            $string .= '"' . $this->getGridViewActionRoute('details', $moduleId) . '")';
+            return $string;
+        }
+   
+        protected function getGridViewActionRoute($action, $moduleId = null)
+        {
+            if ($moduleId == null)
+            {
+                $moduleId = $this->moduleId;
+            }
+            return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
+        }
+     
     }
 ?>

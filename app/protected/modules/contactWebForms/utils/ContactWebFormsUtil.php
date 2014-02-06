@@ -469,5 +469,16 @@
             }
             return DataUtil::purifyHtml($sanitizedAttributeValue);
         }
+        
+        public static function getRelatedLinkStringForContactOrLead(ContactWebFormEntry $data)
+        {
+            $startingStateId = ContactsUtil::getStartingStateId();
+            $source = $data->contact->state->id;
+            if($source < $startingStateId)
+            {
+                return 'leads';
+            }
+            return 'contacts';
+        }
     }
 ?>
