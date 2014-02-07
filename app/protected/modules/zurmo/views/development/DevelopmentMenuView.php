@@ -65,7 +65,7 @@
                                           'descriptionLabel'    => Zurmo::t('ZurmoModule', 'When using complex roles/groups ' .
                                                                             'with many users you can utilize this after ' .
                                                                             'clearing the cache to improve performance'),
-                                          'route'               => 'zurmo/development/compileCss' // Not Coding Standard
+                                          'route'               => 'zurmo/development/rebuildAllNamedSecurableActualPermissions' // Not Coding Standard
             );
             $this->setLinkText(Zurmo::t('ZurmoModule', 'Run'));
             return $categories;
