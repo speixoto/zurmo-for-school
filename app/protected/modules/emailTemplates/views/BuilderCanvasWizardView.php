@@ -90,6 +90,8 @@
             $leftSideContent                            =  null;
             $hiddenElements                             = null;
 
+            $leftSideContent                            .= $this->resolveElementsSidebarContent();
+
             $this->renderRefreshCanvasLink($leftSideContent);
             $this->renderHiddenElements($hiddenElements, $leftSideContent);
 
@@ -153,6 +155,23 @@
                     setIsDraftToZero();
                 });
                 ", CClientScript::POS_END);
+        }
+
+        protected function generateWidgetTagsForUIAccessibleElements($uiAccessibleElements)
+        {
+            $content    = null;
+            foreach ($uiAccessibleElements as $element)
+            {
+                $content .= $element::resolveWidget();
+            }
+            return $content;
+        }
+
+        protected function resolveElementsSidebarContent()
+        {
+            $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
+            $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
+            return $content;
         }
     }
 ?>

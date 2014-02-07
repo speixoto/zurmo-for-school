@@ -46,6 +46,16 @@
 
         abstract protected function resolveDefaultContent();
 
+        public static function isUIAccessible()
+        {
+            return false;
+        }
+
+        public static function resolveWidget()
+        {
+            return ZurmoHtml::image(static::resolveThumbnailUrl(), get_called_class(), static::resolveThumbnailHtmlOptions());
+        }
+
         public function __construct($model, $attribute, $form = null, array $params = array(), $id = null,
                                     $properties = array(), $content = array(), $renderForCanvas = false)
         {
@@ -96,14 +106,12 @@
             return static::resolveThumbnailBaseUrl() . static::resolveThumbnailName();
         }
 
-        public static function resolveWidget()
-        {
-            return ZurmoHtml::image(static::resolveThumbnailUrl(), get_called_class(), static::resolveThumbnailHtmlOptions());
-        }
-
         protected static function resolveThumbnailHtmlOptions()
         {
             return array('class' => 'builder-element-droppable');
         }
+
+        // TODO: @Shoaibi: Critical0: renderEditable
+        // TODO: @Shoaibi: Critical0: renderNonEditable.
     }
 ?>

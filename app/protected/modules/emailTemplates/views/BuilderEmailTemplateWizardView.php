@@ -69,8 +69,8 @@
         {
             $views              = array();
             $views[]            = new GeneralDataForEmailTemplateWizardView($this->model, $form);
-            $views[]            = new SelectBaseTemplateForEmailTemplateWizardView($this->model, $form, true);
-            $views[]            = new BuilderCanvasWizardView($this->model, $form, true);
+            $views[]            = new SelectBaseTemplateForEmailTemplateWizardView($this->model, $form);//, true);
+            $views[]            = new BuilderCanvasWizardView($this->model, $form);//, true);
             return $views;
         }
 

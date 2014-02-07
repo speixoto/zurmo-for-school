@@ -34,33 +34,26 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateSerializedDataValidator extends CValidator
+    class BuilderTextElement extends BaseBuilderElement
     {
-        protected function validateAttribute($object, $attribute)
+        public static function isUIAccessible()
         {
-            $serialized = $object->$attribute;
-            if (!empty($serialized))
-            {
-                $unserialized = unserialize($serialized);
-                if (empty($unserialized))
-                {
-                    return true;
-                }
+            return true;
+        }
 
-                // TODO: @Shoaibi: Critical5: Disable this once we have predefined templates.
-                return true;
+        protected function resolveDefaultContent()
+        {
+            return "This is default dummy content.";
+        }
 
-                if (count($unserialized) == 2 || count($unserialized) == 3 &&
-                        isset($unserialized['baseTemplate'], $unserialized['dom']) &&
-                        is_array($unserialized['dom']) &&
-                        count($unserialized['dom'][0]) == 3 &&
-                        isset($unserialized['dom'][0]['elementType'], $unserialized['dom'][0]['properties'], $unserialized['dom'][0]['content']))
-                {
-                    return true;
-                }
+        protected function renderControlNonEditable()
+        {
 
-            }
-            return false;
+        }
+
+        protected function renderControlEditable()
+        {
+
         }
     }
 ?>
