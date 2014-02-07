@@ -45,7 +45,7 @@
         {
             try
             {
-                return parent::getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION', $cacheDefaultValue);
+                return parent::getEntry($identifier, $default, $cacheDefaultValue);
             }
             catch(NotFoundException $e)
             {
@@ -55,7 +55,7 @@
                                                 "where identifier = '" . $identifier. "'");
                     if($row != null && isset($row['entry']))
                     {
-                        return array($row['entry']);
+                        return $row['entry'];
                     }
                 }
                 if ($default === 'NOT_FOUND_EXCEPTION')
