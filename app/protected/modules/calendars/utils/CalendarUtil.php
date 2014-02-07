@@ -671,5 +671,91 @@
             }
             return $selectedAttributes;
         }
+
+        /**
+         * @param array $componentFormsData
+         * @param Report $report
+         * @param null|string $componentPrefix
+         */
+        public static function makeComponentFormAndPopulateReportFromData($componentFormsData, Report $report, $componentPrefix)
+        {
+            assert('is_string($componentPrefix)');
+            assert('is_array($componentFormsData)');
+            $moduleClassName    = $report->getModuleClassName();
+            $addMethodName      = 'add' . $componentPrefix;
+            $componentClassName = $componentPrefix . 'ForReportForm';
+            $rowKey             = 0;
+            foreach ($componentFormsData as $componentFormData)
+            {
+                $component      = new $componentClassName($moduleClassName,
+                                                          $moduleClassName::getPrimaryModelName(),
+                                                          $report->getType(),
+                                                          $rowKey);
+                $component->setAttributes($componentFormData);
+                $report->{$addMethodName}($component);
+                $rowKey++;
+            }
+        }
+
+        /**
+         * Save calendar with serialized data.
+         * @param Report $report
+         * @param SavedCalendar $savedCalendar
+         * @param array $wizardFormPostData
+         * @throws FailedToSaveModelException
+         */
+        public static function saveCalendarWithSerializedData(Report $report, SavedCalendar $savedCalendar, $wizardFormPostData)
+        {
+            $filtersData          = ArrayUtil::getArrayValue($wizardFormPostData, ComponentForReportForm::TYPE_FILTERS);
+            $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
+                                                                          $report->getType(),
+                                                                          $filtersData);
+            $unserializedData   = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
+                                    'filtersStructure' => $report->getFiltersStructure());
+            $savedCalendar->serializedData = serialize($unserializedData);
+            if(!$savedCalendar->save())
+            {
+                throw new FailedToSaveModelException();
+            }
+            else
+            {
+                echo CJSON::encode(array('redirect' => true));
+                Yii::app()->end(0, false);
+            }
+        }
+
+        /**
+         * Resolve report by saved calendar post data
+         * @param string $type
+         * @param int $id
+         * @return Report
+         */
+        public static function resolveReportBySavedCalendarPostData($type, $id = null)
+        {
+            assert('is_string($type)');
+            $postData = PostUtil::getData();
+            if ($id == null)
+            {
+                $report = new Report();
+                $report->setType($type);
+            }
+            else
+            {
+                $savedCalendar              = SavedCalendar::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
+                $report                     = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
+            }
+            if(isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
+            {
+                $report->setModuleClassName($postData['SavedCalendar']['moduleClassName']);
+            }
+//            else
+//            {
+//                throw new NotSupportedException();
+//            }
+            DataToReportUtil::resolveReportByWizardPostData($report, $postData,
+                                                                ReportToWizardFormAdapter::getFormClassNameByType($type));
+            return $report;
+        }
     }
 ?>

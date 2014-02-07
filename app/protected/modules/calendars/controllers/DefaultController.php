@@ -75,7 +75,6 @@
             $attributes                     = CalendarUtil::getModelAttributesForSelectedModule($savedCalendar->moduleClassName);
             $attributeKeys                  = array_keys($attributes);
             $savedCalendar->startAttributeName = $attributeKeys[0];
-            $this->attemptToValidateAjaxFromPost($savedCalendar, 'SavedCalendar');
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->resolveReportDataAndSaveCalendar($savedCalendar), 'Edit');
             $view               = new CalendarsPageView(ZurmoDefaultViewUtil::
@@ -91,7 +90,6 @@
         public function actionEdit($id, $redirectUrl = null)
         {
             $savedCalendar = SavedCalendar::getById(intval($id));
-            $this->attemptToValidateAjaxFromPost($savedCalendar, 'SavedCalendar');
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
             $this->processEdit($savedCalendar, $redirectUrl);
         }
@@ -122,9 +120,16 @@
             echo $view->render();
         }
 
+        /**
+         * Render relations and attributes tree
+         * @param string $type
+         * @param string $treeType
+         * @param int $id
+         * @param string $nodeId
+         */
         public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
         {
-            $report        = $this->resolveReportBySavedCalendarPostData($type, $id);
+            $report        = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
             if ($nodeId != null)
             {
                 $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
@@ -142,7 +147,7 @@
         public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
                                                    $trackableStructurePosition = false, $id = null)
         {
-            $report                             = $this->resolveReportBySavedCalendarPostData($type, $id);
+            $report                             = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
             $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
                                                      removeTreeTypeFromNodeId($nodeId, $treeType);
             $moduleClassName                    = $report->getModuleClassName();
@@ -174,98 +179,46 @@
             echo $content;
         }
 
-        protected function resolveReportBySavedCalendarPostData($type, $id = null)
-        {
-            $postData = PostUtil::getData();
-            if ($id == null)
-            {
-                $report = new Report();
-                $report->setType($type);
-            }
-            else
-            {
-                $savedCalendar              = SavedCalendar::getById(intval($id));
-                ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
-                $report                     = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
-            }
-            if(isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
-            {
-                $report->setModuleClassName($postData['SavedCalendar']['moduleClassName']);
-            }
-//            else
-//            {
-//                throw new NotSupportedException();
-//            }
-            DataToReportUtil::resolveReportByWizardPostData($report, $postData,
-                ReportToWizardFormAdapter::getFormClassNameByType($type));
-            return $report;
-        }
-
-        protected function attemptToValidateAjaxFromPost($model, $postVariableName)
-        {
-            //todo: refactor - this is the same as used by note controller for saving inline.
-            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
-            {
-                $readyToUsePostData            = ExplicitReadWriteModelPermissionsUtil::
-                                                         removeIfExistsFromPostData($_POST[get_class($model)]);
-                $sanitizedPostData             = PostUtil::
-                                                 sanitizePostByDesignerTypeForSavingModel($model, $readyToUsePostData);
-                $sanitizedOwnerPostData        = PostUtil::
-                                                 sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
-                $sanitizedPostDataWithoutOwner = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
-                $model->setAttributes($sanitizedPostDataWithoutOwner);
-                if ($model->validate())
-                {
-                    $modelToStringValue = strval($model);
-                    if ($sanitizedOwnerPostData != null)
-                    {
-                        $model->setAttributes($sanitizedOwnerPostData);
-                    }
-                    if ($model instanceof OwnedSecurableItem)
-                    {
-                        $model->validate(array('owner'));
-                    }
-                }
-                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
-                echo CJSON::encode($errorData);
-                Yii::app()->end(0, false);
-            }
-        }
-
+        /**
+         * Resolve report data and save calendar.
+         * @param SavedCalendar $savedCalendar
+         * @return \SavedCalendar
+         * @throws NotSupportedException
+         */
         protected function resolveReportDataAndSaveCalendar(SavedCalendar $savedCalendar)
         {
             if (isset($_POST['SavedCalendar']))
             {
                 $postData   = PostUtil::getData();
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
-                $this->attemptToSaveModelFromPost($savedCalendar, null, false);
-                $report               = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
-                $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
-                if (!isset($postData[$wizardFormClassName]))
+                $this->attemptToSaveModelFromPost($savedCalendar, null, false, true);
+                if(count($savedCalendar->getErrors()) == 0)
                 {
-                    throw new NotSupportedException();
-                }
-                else
-                {
+                    $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType(Report::TYPE_ROWS_AND_COLUMNS);
+                    if (!isset($postData[$wizardFormClassName]))
+                    {
+                        throw new NotSupportedException();
+                    }
+                    $report = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
+                    DataToReportUtil::resolveFiltersStructure($postData[$wizardFormClassName], $report);
+                    DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report);
+
                     //This would do the filter and filter structure validation
                     $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
-                    $model                     =  $reportToWizardFormAdapter->makeFormByType();
+                    $model                     = $reportToWizardFormAdapter->makeFormByType();
                     if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
                     {
                         $postData['validationScenario'] = $wizardFormClassName::FILTERS_VALIDATION_SCENARIO;
                         ReportUtil::validateReportWizardForm($postData, $model);
                     }
+                    CalendarUtil::saveCalendarWithSerializedData($report, $savedCalendar, $postData[$wizardFormClassName]);
                 }
-                DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report, true);
-                $filtersData          = ArrayUtil::getArrayValue($postData[$wizardFormClassName],
-                                                                        ComponentForReportForm::TYPE_FILTERS);
-                $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
-                                                                              $report->getType(),
-                                                                              $filtersData);
-                $data   = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
-                                        'filtersStructure' => $report->getFiltersStructure());
-                $savedCalendar->serializedData = serialize($data);
-                $savedCalendar->save();
+                else
+                {
+                    $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($savedCalendar);
+                    echo CJSON::encode($errorData);
+                    Yii::app()->end(0, false);
+                }
             }
             return $savedCalendar;
         }

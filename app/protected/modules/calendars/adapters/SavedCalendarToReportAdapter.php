@@ -70,33 +70,10 @@
                 {
                     $report->setFiltersStructure($unserializedData['filtersStructure']);
                 }
-                self::makeComponentFormAndPopulateReportFromData(
+                CalendarUtil::makeComponentFormAndPopulateReportFromData(
                         $unserializedData[ComponentForReportForm::TYPE_FILTERS], $report, 'Filter');
             }
             return $report;
-        }
-
-        /**
-         * @param array $componentFormsData
-         * @param Report $report
-         * @param null|string $componentPrefix
-         */
-        protected static function makeComponentFormAndPopulateReportFromData($componentFormsData, Report $report, $componentPrefix)
-        {
-            $moduleClassName    = $report->getModuleClassName();
-            $addMethodName      = 'add' . $componentPrefix;
-            $componentClassName = $componentPrefix . 'ForReportForm';
-            $rowKey             = 0;
-            foreach ($componentFormsData as $componentFormData)
-            {
-                $component      = new $componentClassName($moduleClassName,
-                                                          $moduleClassName::getPrimaryModelName(),
-                                                          $report->getType(),
-                                                          $rowKey);
-                $component->setAttributes($componentFormData);
-                $report->{$addMethodName}($component);
-                $rowKey++;
-            }
         }
     }
 ?>
