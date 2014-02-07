@@ -116,7 +116,7 @@
                                                                     array('id' => 'participants-edit-form')
                                                                 )
                                                             );
-            $params   = array('formName' => 'participants-edit-form');
+            $params   = array('formName' => 'participants-edit-form', 'inputPrefix' => 'ConversationParticipantsForm');
             $content  = $formStart;
             $element  = new OnChangeProcessMultiplePeopleForConversationElement($this->model, null, $form, $params);
             $element->editableTemplate = '{content}{error}';

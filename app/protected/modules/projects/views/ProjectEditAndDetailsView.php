@@ -88,7 +88,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleAccountsForProjects'),
+                                                array('attributeName'   => 'null',
+                                                      'type'            => 'MultipleAccountsForProjects',
+                                                      'inputPrefix'     => 'ProjectAccountsForm'),
                                             ),
                                         ),
                                     )
@@ -97,7 +99,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleContactsForProjects'),
+                                                array('attributeName'   => 'null',
+                                                      'type'            => 'MultipleContactsForProjects',
+                                                      'inputPrefix'     => 'ProjectContactsForm'),
                                             ),
                                         ),
                                     )
@@ -106,7 +110,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleOpportunitiesForProjects'),
+                                                array('attributeName'   => 'null',
+                                                      'type'            => 'MultipleOpportunitiesForProjects',
+                                                      'inputPrefix'     => 'ProjectOpportunitiesForm'),
                                             ),
                                         ),
                                     )
