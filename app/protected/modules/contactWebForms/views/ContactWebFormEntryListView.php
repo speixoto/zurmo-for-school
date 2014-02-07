@@ -95,14 +95,14 @@
             return $metadata;
         }
         
-        public function resolveLink()
+        public function resolveLinkStringForContactOrLead()
         {
-            return 'ContactWebFormEntryListView::resolveLinkWithModuleId($data)';
+            return 'ContactWebFormEntryListView::resolveLinkStringWithModuleIdForContactOrLead($data)';
         }
 
-        public static function resolveLinkWithModuleId(ContactWebFormEntry $contactWebFormEntry)
+        public static function resolveLinkStringWithModuleIdForContactOrLead(ContactWebFormEntry $contactWebFormEntry)
         {
-            $content  = static::resolveModuleIdWithLinkContent($contactWebFormEntry->contact);
+            $content  = static::resolveModuleIdWithLinkContentForContactOrLead($contactWebFormEntry->contact);
             return $content;
         }
   
@@ -110,7 +110,7 @@
          * @param Contact $contact
          * @return string
          */
-        public static function resolveModuleIdWithLinkContent(Contact $contact)
+        public static function resolveModuleIdWithLinkContentForContactOrLead(Contact $contact)
         {
             $linkContent = '';
             if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $contact))
