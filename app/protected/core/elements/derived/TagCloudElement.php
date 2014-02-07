@@ -38,11 +38,6 @@
     {
         protected $dataAndLabels = null;
 
-        protected function getFormName()
-        {
-            return get_class($this->model);
-        }
-
         protected function assertModelType()
         {
             assert('$this->model->{$this->attribute} instanceof MultipleValuesCustomField');
@@ -91,8 +86,8 @@
             }
             if ($customFieldValue->value != null)
             {
-                return array('id' => $customFieldValue->value,
-                                  'name' => $this->dataAndLabels[$customFieldValue->value]);
+                return array('id'   => $customFieldValue->value,
+                             'name' => $this->dataAndLabels[$customFieldValue->value]);
             }
         }
 

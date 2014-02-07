@@ -35,77 +35,27 @@
      ********************************************************************************/
 
     /**
-     * User interface element for managing related model relations for projects. This class supports a MANY_MANY
-     * specifically for the 'opportunities' relation. This is utilized by the Project model.
-     *
+     * Form to work with status dropDown attributes
      */
-    class MultipleOpportunitiesForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
+    class StatusDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        /**
-         * @return string
-         */
-        protected function getUnqualifiedNameForIdField()
+        public function getValueElementType()
         {
-            return '[opportunityIds]';
+            return 'StatusDropDown';
         }
 
         /**
-         * @return string
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
          */
-        protected function getUnqualifiedIdForIdField()
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-            return '_Opportunity_ids';
-        }
-
-        /**
-         * @return string
-         */
-        protected function assertModelType()
-        {
-            assert('$this->model instanceof Project');
-        }
-
-        /**
-         * @return string
-         */
-        protected function getWidgetSourceUrl()
-        {
-            return Yii::app()->createUrl('projects/default/autoCompleteAllOpportunitiesForMultiSelectAutoComplete');
-        }
-
-        /**
-         * @return string
-         */
-        protected function getWidgetHintText()
-        {
-            return Zurmo::t('ProjectsModule', 'Type a ' .
-                                                LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName(1, 'Opportunity'),
-                                            LabelUtil::getTranslationParamsForAllModules());
-        }
-
-        /**
-         * @return string
-         */
-        protected function getRelationName()
-        {
-            return 'opportunities';
-        }
-
-        /**
-         * @return string
-         */
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text($this->model->getAttributeLabel('opportunities'));
-        }
-
-        /**
-         * @return string
-         */
-        public static function getDisplayName()
-        {
-            return Zurmo::t('OpportunitiesModule', 'Related OpportunitiesModulePluralLabel',
-                                                    LabelUtil::getTranslationParamsForAllModules());
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>
