@@ -695,7 +695,7 @@
             }
         }
         
-        public function testAddingCustomDateFieldsToUsersModule()
+        public function testDateAttributeIsSanitizedCorrectly()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
@@ -712,13 +712,8 @@
             unset($metadata['Person']);
             User::setMetadata($metadata);
             
-            Yii::app()->gameHelper->muteScoringModelsOnSave();
             $messageLogger = new MessageLogger();
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array('User'), $messageLogger);
-            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
-            if ($messageLogger->isErrorMessagePresent())
-            {
-            }
             
             UserTestHelper::createBasicUser('dateUser');
             $dateUser = User::getByUsername('dateuser');
