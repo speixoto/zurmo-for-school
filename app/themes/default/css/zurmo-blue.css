@@ -7396,16 +7396,6 @@ a.simple-link .icon-x {
   vertical-align: middle;
   position: relative;
 }
-.type-products .icon-empty:before {
-  content: '\00AC';
-  font-weight: normal !important;
-  font-size: 45px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0;
-  margin: 0;
-  vertical-align: middle;
-  position: relative;
-}
 .type-opportunities h3 {
   padding-left: 30px;
   position: relative;
@@ -7483,6 +7473,26 @@ a.simple-link .icon-x {
 }
 .type-accountAccountAffiliations .icon-empty:before {
   content: '\00FB';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-marketingLists .icon-empty:before {
+  content: '\0022';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-maps .icon-empty:before {
+  content: 'L';
   font-weight: normal !important;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -15135,7 +15145,6 @@ a.user-link {
 }
 #marketing-list-member-configuration-form .list-view-items-summary-clone {
   margin-top: 51px;
-  font-weight: bold;
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
