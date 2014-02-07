@@ -6495,6 +6495,7 @@ i[class^="icon"] {
 .icon-layout:after {
   content: "C";
 }
+.icon-user:after,
 .icon-user-details:after {
   content: "e";
 }
