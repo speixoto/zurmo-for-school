@@ -130,5 +130,37 @@
             assert('$user instanceof User');
             return Right::ALLOW == $user->getEffectiveRight($moduleClassName, $rightName);
         }
+
+        /**
+         * Used to cache all rights for a permitable. This can be done by an administrator to cache all user rights
+         * Then when users login, their rights are cached for improved performance
+         * @see DevelopmentController function actionRebuildAllNamedSecurableActualPermissions
+         * @param Permitable $permitable
+         * @throws NotSupportedException
+         */
+        public static function cacheAllRightsByPermitable(Permitable $permitable)
+        {
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                if ($module instanceof SecurableModule)
+                {
+                    $moduleClassName = get_class($module);
+                    $rights          = $moduleClassName::getRightsNames();
+                    $rightLabels     = $moduleClassName::getTranslatedRightsLabels();
+                    if (!empty($rights))
+                    {
+                        foreach ($rights as $right)
+                        {
+                            if (!isset($rightLabels[$right]))
+                            {
+                                throw new NotSupportedException($right);
+                            }
+                            $permitable->getActualRight  ($moduleClassName, $right);
+                        }
+                    }
+                }
+            }
+        }
     }
 ?>

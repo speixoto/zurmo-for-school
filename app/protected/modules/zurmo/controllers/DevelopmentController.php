@@ -114,17 +114,27 @@
             {
                 if(!$user->isSuperAdministrator() && !$user->isSystemUser)
                 {
-                    echo 'Processing for user: ' . strval($user) . "<BR>";
+                    echo 'Processing named securable cache for user: ' . strval($user) . "<BR>";
                     foreach($namedSecurableItems as $namedSecurableItem)
                     {
                         $namedSecurableItem->getActualPermissions($user);
                         //echo '-processing for module: ' . $namedSecurableItem->name . "<BR>";
                     }
-                    echo 'current memory usage: ' . Yii::app()->performance->getMemoryUsage() . "<BR>";
+                    echo 'Current memory usage: ' . Yii::app()->performance->getMemoryUsage() . "<BR>";
                 }
                 else
                 {
-                    echo 'Skipping for user: ' . strval($user) . "<BR>";
+                    echo 'Skipping adding named securable cache for user: ' . strval($user) . "<BR>";
+                }
+                if(!$user->isSystemUser)
+                {
+                    echo 'Processing actual rights cache for user: ' . strval($user) . "<BR>";
+                    RightsUtil::cacheAllRightsByPermitable($user);
+                    echo 'Current memory usage: ' . Yii::app()->performance->getMemoryUsage() . "<BR>";
+                }
+                else
+                {
+                    echo 'Skipping adding actual rights cache for user: ' . strval($user) . "<BR>";
                 }
             }
         }

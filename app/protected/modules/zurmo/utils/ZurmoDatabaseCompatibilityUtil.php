@@ -1193,6 +1193,16 @@
                 delete from named_securable_actual_permissions_cache;
             end;',
 
+            'create procedure clear_cache_actual_rights()
+            READS SQL DATA
+            begin
+                declare continue handler for 1146 # Table doesn\'t exist.
+                    begin
+                        # noop - nothing to clear.
+                    end;
+                delete from actual_rights_cache;
+            end;',
+
             // Read Permissions (Munge)
             #model_table_name can be person in the case of contact since person has ownedsecurableitem_id and not contact
             'create procedure rebuild(
@@ -1606,6 +1616,7 @@
                 self::createStoredFunctionsAndProcedures();
                 self::createActualPermissionsCacheTable();
                 self::createNamedSecurableActualPermissionsCacheTable();
+                self::createActualRightsCacheTable();
                 return ZurmoRedBean::getCell("select $sql;");
             }
         }
@@ -1625,6 +1636,7 @@
                 self::createStoredFunctionsAndProcedures();
                 self::createActualPermissionsCacheTable();
                 self::createNamedSecurableActualPermissionsCacheTable();
+                self::createActualRightsCacheTable();
                 return ZurmoRedBean::getCell("call $sql;");
             }
         }
@@ -1737,6 +1749,18 @@
                      allow_permissions tinyint unsigned not null,
                      deny_permissions  tinyint unsigned not null,
                      primary key (securableitem_name, permitable_id)
+                    ) engine = innodb
+                      default charset = utf8
+                              collate = utf8_unicode_ci');
+        }
+
+        public static function createActualRightsCacheTable()
+        {
+            ZurmoRedBean::exec('
+                create table if not exists actual_rights_cache
+                    (identifier varchar(255) not null,
+                     entry     int(11) unsigned not null,
+                     primary key (identifier)
                     ) engine = innodb
                       default charset = utf8
                               collate = utf8_unicode_ci');
