@@ -41,7 +41,7 @@
      * without any exceptions being thrown.
      */
     class UsersSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
-    {   
+    {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -699,21 +699,34 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Test create field list.
-            $this->resetPostArray();
-            $this->setGetArray(array('moduleClassName' => 'UsersModule'));
-            $this->createDateCustomFieldByModule ('UsersModule', 'birthday');
+            $metadata = User::getMetadata();
+            if(!in_array('birthday', $metadata['User']['members']))
+            {
+                $metadata['User']['members'][]  = 'birthday';
+            }
+            if(!in_array(array('birthday', 'type', 'type' => 'date'), $metadata['User']['rules']))
+            {
+                $metadata['User']['rules'][]    = array('birthday', 'type', 'type' => 'date');
+                $metadata['User']['elements']['birthday'] = 'Date';
+            }
+            unset($metadata['Person']);
+            User::setMetadata($metadata);
+            
+            Yii::app()->gameHelper->muteScoringModelsOnSave();
+            $messageLogger = new MessageLogger();
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array('User'), $messageLogger);
+            Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+            if ($messageLogger->isErrorMessagePresent())
+            {
+            }
             
             UserTestHelper::createBasicUser('dateUser');
             $dateUser = User::getByUsername('dateuser');
-            
             $this->setGetArray(array('id' => $dateUser->id));
-            $this->setPostArray(array('User' =>
-                array('birthday' => '12/05/2000')));
+            $this->setPostArray(array('User' => array('birthday' => '12/05/2000')));
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/edit');
             $dateUser = User::getById($dateUser->id);
-            $this->assertEquals('2000-12-05',  $dateUser->birthdayCstm);
-            
+            $this->assertEquals('2000-12-05',  $dateUser->birthday);
         }
     }
 ?>
