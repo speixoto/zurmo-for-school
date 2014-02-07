@@ -43,11 +43,6 @@
     {
         protected $modelDerivationPathToItemFromContact = null;
 
-        protected function getFormName()
-        {
-            return 'ActivityItemForm';
-        }
-
         protected function getUnqualifiedNameForIdField()
         {
             return '[Contact][ids]';

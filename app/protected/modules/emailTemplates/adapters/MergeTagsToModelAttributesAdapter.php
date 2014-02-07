@@ -124,7 +124,6 @@
                                     if (ucfirst($attributeName) == get_class($castedDownModel))
                                     {
                                         $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
-                                        $attributeAccessorString;
                                         return static::resolveMergeTagToStandardOrRelatedAttribute(
                                             $attributeAccessorString,
                                             $castedDownModel,
