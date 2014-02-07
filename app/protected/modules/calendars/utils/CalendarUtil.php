@@ -757,5 +757,40 @@
                                                                 ReportToWizardFormAdapter::getFormClassNameByType($type));
             return $report;
         }
+
+        /**
+         * Gets module class name and display labels.
+         * @return array
+         */
+        public static function getAvailableModulesForCalendar()
+        {
+            $moduleClassNames = array();
+            foreach (self::getCalendarModulesClassNamesCurrentUserHasAccessTo() as $moduleClassName)
+            {
+                $label                              = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
+                $moduleClassNames[$moduleClassName] = $label;
+            }
+            return $moduleClassNames;
+        }
+
+        /**
+         * @return array of module class names and display labels the current user has access to
+         */
+        public static function getCalendarModulesClassNamesCurrentUserHasAccessTo()
+        {
+            $moduleClassNames = array();
+            $modules = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                if ($module::canShowOnCalendar())
+                {
+                    if (RightsUtil::canUserAccessModule(get_class($module), Yii::app()->user->userModel))
+                    {
+                        $moduleClassNames[] = get_class($module);
+                    }
+                }
+            }
+            return $moduleClassNames;
+        }
     }
 ?>

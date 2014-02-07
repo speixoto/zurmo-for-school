@@ -185,25 +185,5 @@
         {
             return null;
         }
-
-        /**
-         * Gets module class name and display labels.
-         * @return array
-         */
-        public static function getAvailableModulesForCalendar()
-        {
-            $moduleClassNames = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                if ($module::canShowOnCalendar())
-                {
-                    $moduleClassName    = get_class($module);
-                    $label              = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
-                    $moduleClassNames[$moduleClassName] = $label;
-                }
-            }
-            return $moduleClassNames;
-        }
     }
 ?>

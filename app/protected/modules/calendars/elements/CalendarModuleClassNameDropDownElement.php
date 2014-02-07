@@ -54,7 +54,7 @@
          */
         protected function getAvailableModulesForCalendar()
         {
-            $moduleClassNames = SavedCalendar::getAvailableModulesForCalendar();
+            $moduleClassNames = CalendarUtil::getAvailableModulesForCalendar();
             asort($moduleClassNames);
             return $moduleClassNames;
         }
