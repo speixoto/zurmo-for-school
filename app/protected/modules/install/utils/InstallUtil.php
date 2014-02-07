@@ -691,6 +691,8 @@
         public static function autoBuildDatabase(& $messageLogger, $autoBuildTestModels = false)
         {
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
+            ZurmoDatabaseCompatibilityUtil::createActualPermissionsCacheTable();
+            ZurmoDatabaseCompatibilityUtil::createNamedSecurableActualPermissionsCacheTable();
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Searching for models'));
             $rootModels = PathUtil::getAllCanHaveBeanModelClassNames();
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Models catalog built.'));
