@@ -50,11 +50,6 @@
             throw new NotSupportedException();
         }
 
-        protected function getFormName()
-        {
-            return 'ConversationParticipantsForm';
-        }
-
         protected function assertModelType()
         {
             assert('$this->model instanceof Conversation');

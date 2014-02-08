@@ -103,7 +103,7 @@
             if (!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
             {
                 return ZurmoHtml::link(Zurmo::t('Core', 'Continue'), '#',
-                             array('class'   => 'close-ModalGameNotification',
+                             array('class'   => 'close-ModalGameNotification default-btn',
                                     'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
             }
             else
@@ -129,7 +129,7 @@
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
                                               $('#ModalGameNotification" . $index . "').dialog('close');}"),
-                         array('class'     => 'close-ModalGameNotification',
+                         array('class'     => 'close-ModalGameNotification  default-btn',
                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
                                               $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"), "dark");',
                          ));
