@@ -670,6 +670,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/searchForDuplicateModels', true);
 
             $account = AccountTestHelper::createAccountByNameForOwner('testAccount', $super);
+            MeetingTestHelper::createMeetingWithOwnerAndRelatedAccount('test meeting', $super, $account);
 
             //Test search by name
             $this->setGetArray(array('attribute' => 'name',
@@ -689,6 +690,17 @@
             $object = json_decode($content);
             $this->assertEquals  ('There is 1 possible match. <span class="underline">Click here</span> to view.', $object->message);
             $this->assertContains('CreateModelsToMergeListAndChartView',       $object->content);
+            //The dupe account has one meeting
+            $this->assertTag(array(
+                    'tag'        => 'span',
+                    'attributes' => array('class' => 'total-meetings'),
+                    'descendant' => array(
+                        'tag'     => 'strong',
+                        'content' => '1',
+                    )
+                ),
+                $object->content);
+
             //Test search by email
             $account->primaryEmail->emailAddress = 'a@a.a';
             $this->assertTrue($account->save());

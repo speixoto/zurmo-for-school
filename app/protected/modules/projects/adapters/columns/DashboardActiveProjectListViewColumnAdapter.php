@@ -72,16 +72,16 @@
         {
             $tasks = $project->tasks;
             $kanbanItemsArray = array();
-            $totalToDosCount = 0;
-            $completedTodosCount = 0;
+            $totalTasksToDoCount = 0;
+            $completedTasksCount = 0;
             foreach ($tasks as $task)
             {
                 if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($task, Permission::READ))
                 {
-                    $totalToDosCount += count($task->checkListItems);
-                    if (count($task->checkListItems) != 0)
+                    $totalTasksToDoCount++;
+                    if ($task->status == Task::STATUS_COMPLETED)
                     {
-                        $completedTodosCount += TasksUtil::getTaskCompletedCheckListItems($task);
+                        $completedTasksCount++;
                     }
                     $kanbanItem  = KanbanItem::getByTask($task->id);
                     if ($kanbanItem == null)
@@ -107,7 +107,7 @@
                     $stats[$type] = 0;
                 }
             }
-            $stats['completionPercent'] = static::resolveCompletionPercentage($completedTodosCount, $totalToDosCount);
+            $stats['completionPercent'] = static::resolveCompletionPercentage($completedTasksCount, $totalTasksToDoCount);
             return $stats;
         }
 

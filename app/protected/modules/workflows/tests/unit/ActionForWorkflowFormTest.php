@@ -250,7 +250,7 @@
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $form->relation        = 'hasMany2';
             $data = $form->resolveAllActionAttributeFormsAndLabelsAndSort();
-            $this->assertEquals(41, count($data));
+            $this->assertEquals(42, count($data));
         }
 
         /**
@@ -275,7 +275,7 @@
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $form->relation        = 'hasMany2';
             $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
-            $this->assertEquals(38, count($data));
+            $this->assertEquals(39, count($data));
 
             //Test update a derived related model (this is like account's meetings)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
@@ -289,7 +289,7 @@
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $form->relation        = 'WorkflowModelTestItem__workflowItems__Inferred';
             $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
-            $this->assertEquals(38, count($data));
+            $this->assertEquals(39, count($data));
 
             //Test create a related, derived related model (this is like account's meetings)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
@@ -305,7 +305,7 @@
             $form->relation             ='model5';
             $form->relatedModelRelation = 'WorkflowModelTestItem__workflowItems__Inferred';
             $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
-            $this->assertEquals(38, count($data));
+            $this->assertEquals(39, count($data));
         }
     }
 ?>

@@ -135,7 +135,7 @@
                         }
                     }
                 }
-                catch(NotSupportedException $e)
+                catch (NotSupportedException $e)
                 {
                     //Super Administrator group for example doesn't allow right retrieval.
                 }
@@ -289,14 +289,10 @@
             assert('is_string($policyName)');
             assert('$moduleName != ""');
             assert('$policyName != ""');
-            // A permitable gets the default policy until it is saved.
-            if ($this->id > 0)
+            $value = $this->getActualPolicy($moduleName, $policyName);
+            if ($value !== null)
             {
-                $value = $this->getActualPolicy($moduleName, $policyName);
-                if ($value !== null)
-                {
-                    return $value;
-                }
+                return $value;
             }
             return $moduleName::getPolicyDefault($policyName);
         }

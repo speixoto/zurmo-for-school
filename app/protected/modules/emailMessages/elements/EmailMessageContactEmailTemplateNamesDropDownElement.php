@@ -38,11 +38,13 @@
     {
         /**
          * Override so it only render if to recipient is a Contact
+         * and the user has the right to access Email Templates
          * @return string
          */
         protected function renderControlEditable()
         {
-            if ($this->shouldUseTemplate())
+            if ($this->shouldUseTemplate() &&
+                RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
             {
                 return parent::renderControlEditable();
             }

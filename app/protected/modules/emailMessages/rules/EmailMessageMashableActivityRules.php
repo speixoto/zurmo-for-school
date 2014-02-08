@@ -169,38 +169,44 @@
             return $content;
         }
 
-        public static function getSenderContent(EmailMessageSender $emailMessageSender)
+        public static function getSenderContent(EmailMessageSender $emailMessageSender, $additionalParams = array())
         {
-            $existingModels  = array();
+            $modelsStringContent  = array();
             if ($emailMessageSender->personsOrAccounts->count() == 0)
             {
-                $existingModels[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
+                $modelsStringContent[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
             }
             else
             {
                 foreach ($emailMessageSender->personsOrAccounts as $personOrAccount)
                 {
-                    $castedDownModel = self::castDownItem($personOrAccount);
                     try
                     {
+                        $castedDownModel = self::castDownItem($personOrAccount);
                         if (strval($castedDownModel) != null)
                         {
                             $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
                             $moduleClassName = $castedDownModel->getModuleClassName();
                             $moduleId        = $moduleClassName::getDirectoryName();
                             $element         = new DetailsLinkActionElement('default', $moduleId,
-                                $castedDownModel->id, $params);
-                            $existingModels[] = $element->render();
+                                                                            $castedDownModel->id,
+                                                                            array_merge($params, $additionalParams));
+                            $modelsStringContent[] = $element->render();
                         }
                     }
                     catch (AccessDeniedSecurityException $e)
                     {
-                        $existingModels[] = $emailMessageSender->fromAddress;
+                        $modelsStringContent[] = $emailMessageSender->fromAddress;
+                    }
+                    catch (NotSupportedException $e)
+                    {
+                        //If the personOrAccount no longer exists or something else isn't right with the model
+                        $modelsStringContent[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
                     }
                 }
             }
-            $senderString = self::resolveStringValueModelsDataToStringContent($existingModels);
-            if (count($existingModels) > 1)
+            $senderString = self::resolveStringValueModelsDataToStringContent($modelsStringContent);
+            if (count($modelsStringContent) > 1)
             {
                 return $emailMessageSender->fromAddress . '(' . $senderString . ')';
             }

@@ -829,6 +829,28 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
+
+            //Test creating a new user uses the everyone policy
+            $everyone = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $newUser = new User();
+            $this->assertEquals(null, $everyone->getEffectivePolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS));
+            $this->assertEquals(5,    $everyone->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH));
+            $this->assertEquals(3,    $everyone->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+            $this->assertEquals(null, $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS));
+            $this->assertEquals(5,    $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH));
+            $this->assertEquals(3,    $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS, Policy::YES);
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH, 3);
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH, 15);
+            $everyone->save();
+            $this->assertEquals(Policy::YES, $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS));
+            $this->assertEquals(3,           $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH));
+            $this->assertEquals(15,          $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+
+            //Make the permission as the default for next tests
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH, 5);
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH, 3);
+            $everyone->save();
         }
 
         /**
