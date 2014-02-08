@@ -53,21 +53,33 @@
             }
             $dateContent .= '<br/>';
             $content .= self::renderActivityItemsContentsExcludingContacts($meeting);
-            if (count($meeting->activityItems) > 0)
+            if (count($meeting->activityItems) > 0 || count($meeting->userAttendees) > 0)
             {
-                $contactsContent = null;
+                $attendeesContent = null;
                 $contactLabels = self::getExistingContactRelationsLabels($meeting->activityItems);
                 foreach ($contactLabels as $label)
                 {
-                    if ($contactsContent != null)
+                    if ($attendeesContent != null)
                     {
-                        $contactsContent .= '<br/>';
+                        $attendeesContent .= '<br/>';
                     }
-                    $contactsContent .= $label;
+                    $attendeesContent .= $label;
                 }
-                if ($contactsContent != null )
+                foreach ($meeting->userAttendees as $user)
                 {
-                    $content .= $contactsContent . '<br/>';
+                    if ($attendeesContent != null)
+                    {
+                        $attendeesContent .= '<br/>';
+                    }
+                    $params             = array('label' => strval($user), 'redirectUrl' => null, 'wrapLabel' => false);
+                    $moduleClassName    = $user->getModuleClassName();
+                    $moduleId           = $moduleClassName::getDirectoryName();
+                    $element            = new DetailsLinkActionElement('default', $moduleId, $user->id, $params);
+                    $attendeesContent  .= '<i class="icon-'.strtolower(get_class($user)).'"></i> ' . $element->render();
+                }
+                if ($attendeesContent != null )
+                {
+                    $content .= $attendeesContent . '<br/>';
                 }
             }
             $content = $title . $dateContent . ZurmoHtml::tag('div', array('class' => 'meeting-details'), $content);
