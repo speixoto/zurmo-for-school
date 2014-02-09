@@ -34,26 +34,25 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ConversationEditView extends SecuredEditView
+    /**
+     * Class used for the dashboard, selectable by users to display a list of their upcoming meetings.
+     */
+    class MeetingsMyListView extends SecuredMyListView
     {
-        protected $viewContainsFileUploadElement = true;
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
+                'perUser' => array(
+                    'title' => "eval:Zurmo::t('MeetingsModule', 'My Upcoming MeetingsModulePluralLabel List',
+                                LabelUtil::getTranslationParamsForAllModules())",
+                    'searchAttributes' => array('ownedItemsOnly'           => true,
+                                                'startDateTime'  => array('type' =>
+                                                MixedDateTypesSearchFormAttributeMappingRules::TYPE_NEXT_7_DAYS)),
+                ),
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CancelLink'),
-                            array('type'  => 'SaveButton'),
-                        ),
-                    ),
                     'nonPlaceableAttributeNames' => array(
-                        'owner',
                         'latestDateTime',
-                        'ownerHasReadLatest',
                     ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -61,7 +60,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'subject', 'type' => 'Text'),
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -70,29 +69,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'Files'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ConversationItems'),
+                                                array('attributeName' => 'startDateTime', 'type' => 'DateTime'),
                                             ),
                                         ),
                                     )
@@ -105,36 +82,31 @@
             return $metadata;
         }
 
-        /**
-         * @param ZurmoActiveForm $form
-         * @return null|string
-         */
-        protected function renderRightSideFormLayoutForEdit($form)
+        public static function getModuleClassName()
         {
-            assert('$form instanceof ZurmoActiveForm');
-            $content = null;
-            if ($this->getModel() instanceof OwnedSecurableItem)
-            {
-                $content .= '<h3>' . Zurmo::t('ConversationsModule', 'Participants') . '</h3><div id="owner-box">';
-                $element  = new MultiplePeopleForConversationElement($this->getModel(), null, $form,
-                                                                     array('inputPrefix' => 'ConversationParticipantsForm'));
-                $element->editableTemplate = '{content}{error}';
-                $content .= $element->render().'</div>';
-            }
-            return $content;
+            return 'MeetingsModule';
         }
 
-        /**
-         * Override to change the editableTemplate to place the label above the input.
-         * @see DetailsView::resolveElementDuringFormLayoutRender()
-         */
-        protected function resolveElementDuringFormLayoutRender(& $element)
+        public static function getDisplayDescription()
         {
-            if ($element instanceOf FilesElement)
-            {
-                $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' .
-                                             '<div class="file-upload-box">{content}{error}</div></td>';
-            }
+            return Zurmo::t('MeetingsModule', 'My Upcoming MeetingsModulePluralLabel List',
+                            LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function getSearchModel()
+        {
+            $modelClassName = $this->modelClassName;
+            return new MeetingsSearchForm(new $modelClassName(false));
+        }
+
+        protected static function getConfigViewClassName()
+        {
+            return 'MeetingsMyListConfigView';
+        }
+
+        protected function getSortAttributeForDataProvider()
+        {
+            return 'startDateTime';
         }
     }
 ?>

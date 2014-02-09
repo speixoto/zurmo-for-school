@@ -189,7 +189,7 @@
         {
             assert('is_string($columnName)');
             assert('is_string($sampleValue) || $sampleValue == null');
-            $content = ZurmoHtml::tag('div', array('class' => 'column-import-data', 'title' => $sampleValue), $sampleValue);
+            $content = ZurmoHtml::tag('div', array('id' => self::resolveSampleColumnIdByColumnName($columnName), 'class' => 'column-import-data', 'title' => $sampleValue), $sampleValue);
             return $content;
         }
 

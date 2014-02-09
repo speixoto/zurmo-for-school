@@ -3368,7 +3368,13 @@ div.wide.form a {
 #ModalView .search-view-1 label {
   padding-top: 0;
 }
-#ModalView #clear-search-linkmodal {
+#ModalView .items {
+  border: none;
+}
+#ModalView .items thead tr:first-child th {
+  border-top: none;
+}
+#clear-search-linkmodal {
   margin-left: 10px;
   color: #fff;
   padding: 3px;
@@ -3378,12 +3384,7 @@ div.wide.form a {
   -o-border-radius: 3px;
   border-radius: 3px;
   font-size: 11px;
-}
-#ModalView .items {
-  border: none;
-}
-#ModalView .items thead tr:first-child th {
-  border-top: none;
+  background: #7f7f7f;
 }
 .kanban-board-options-view,
 .select-list-attributes-view,
@@ -6495,6 +6496,7 @@ i[class^="icon"] {
 .icon-layout:after {
   content: "C";
 }
+.icon-user:after,
 .icon-user-details:after {
   content: "e";
 }
@@ -7493,6 +7495,16 @@ a.simple-link .icon-x {
 }
 .type-maps .icon-empty:before {
   content: 'L';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-users .icon-empty:before {
+  content: '\0066';
   font-weight: normal !important;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";

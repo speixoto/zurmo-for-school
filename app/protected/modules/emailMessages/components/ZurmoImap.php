@@ -410,7 +410,7 @@
                             if (strtolower($object->attribute) == 'filename')
                             {
                                 $attachment['is_attachment'] = true;
-                                $attachment['filename'] = $object->value;
+                                $attachment['filename'] = imap_utf8($object->value);
                             }
                         }
                     }
@@ -422,7 +422,7 @@
                             if (strtolower($object->attribute) == 'name')
                             {
                                 $attachment['is_attachment'] = true;
-                                $attachment['name'] = $object->value;
+                                $attachment['name'] = imap_utf8($object->value);
                             }
                         }
                     }
