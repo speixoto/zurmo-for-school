@@ -51,9 +51,44 @@
             return false;
         }
 
-        public static function resolveWidget()
+        public static function resolveDroppableWidget($widgetWrapper = 'li')
         {
-            return ZurmoHtml::image(static::resolveThumbnailUrl(), get_called_class(), static::resolveThumbnailHtmlOptions());
+            $label          = static::resolveLabel();
+            $label          = ZurmoHtml::tag('span', array(), $label);
+            $thumbnail      = ZurmoHtml::image(static::resolveThumbnailUrl(),
+                                                get_called_class(),
+                                                static::resolveThumbnailHtmlOptions());
+            $widget         = $thumbnail . $label;
+            $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);;
+            $widget         = ZurmoHtml::tag('li', array('id' => get_called_class(),
+                                                    'class' => 'builder-element builder-element-droppable'), $widget);
+            return $widget;
+
+        }
+
+        protected static function resolveLabel()
+        {
+            throw new NotImplementedException('Children element should specify their own label');
+        }
+
+        protected static function resolveThumbnailBaseUrl()
+        {
+            return Yii::app()->themeManager->baseUrl . '/default/email-templates/elements/';
+        }
+
+        protected static function resolveThumbnailName()
+        {
+            return strtolower(get_called_class()) . '.png';
+        }
+
+        protected static function resolveThumbnailUrl()
+        {
+            return static::resolveThumbnailBaseUrl() . static::resolveThumbnailName();
+        }
+
+        protected static function resolveThumbnailHtmlOptions()
+        {
+            return array('class' => 'builder-element-droppable-thumbnail');
         }
 
         public function __construct($model, $attribute, $form = null, array $params = array(), $id = null,
@@ -90,27 +125,6 @@
         {
             return array();
         }
-
-        protected static function resolveThumbnailBaseUrl()
-        {
-            return Yii::app()->themeManager->baseUrl . '/default/email-templates/elements/';
-        }
-
-        protected static function resolveThumbnailName()
-        {
-            return strtolower(get_called_class()) . '.png';
-        }
-
-        protected static function resolveThumbnailUrl()
-        {
-            return static::resolveThumbnailBaseUrl() . static::resolveThumbnailName();
-        }
-
-        protected static function resolveThumbnailHtmlOptions()
-        {
-            return array('class' => 'builder-element-droppable');
-        }
-
         // TODO: @Shoaibi: Critical0: renderEditable
         // TODO: @Shoaibi: Critical0: renderNonEditable.
     }

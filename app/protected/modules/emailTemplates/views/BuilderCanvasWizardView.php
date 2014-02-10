@@ -87,15 +87,23 @@
         {
             // TODO: @Shoaibi: Critical1: Load left sidebar and canvas here.
             // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes.
-            $leftSideContent                            =  null;
+            $leftSidebarContent                         =  null;
             $hiddenElements                             = null;
 
-            $leftSideContent                            .= $this->resolveElementsSidebarContent();
+            $leftSidebarPrefix                          = ZurmoHtml::tag('h3', array(), 'Elements');
+            $leftSidebarContent                         = $this->resolveElementsSidebarContent();
+            $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
+            $this->renderRefreshCanvasLink($leftSidebarContent);
 
-            $this->renderRefreshCanvasLink($leftSideContent);
-            $this->renderHiddenElements($hiddenElements, $leftSideContent);
+            $rightSidebarContent                        = $this->resolveCanvasContent();
 
-            $content                                    = $this->renderLeftAndRightSideBarContentWithWrappers($leftSideContent);
+            $this->wrapContentForLeftSideBar($leftSidebarContent, $leftSidebarPrefix);
+            $this->wrapContentForRightSideBar($rightSidebarContent);
+            $content                                    = $leftSidebarContent . $rightSidebarContent;
+            $content                                    = ZurmoHtml::tag('section', array('id' => 'builder',
+                                                                                            'class' => 'strong-right'),
+                                                                                        $content);
+            $this->wrapContentForAttributesContainer($content);
             return $content;
         }
 
@@ -162,8 +170,11 @@
             $content    = null;
             foreach ($uiAccessibleElements as $element)
             {
-                $content .= $element::resolveWidget();
+                $content    .=  $element::resolveDroppableWidget();
             }
+            $content        = ZurmoHtml::tag('ul', array('id' => 'building-blocks',
+                                                        'class' => 'clearfix builder-elements builder-elements-droppable'),
+                                            $content);
             return $content;
         }
 
@@ -171,7 +182,15 @@
         {
             $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
             $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
+            $this->wrapContentInTableCell($content, array('colspan' => 2));
+            $this->wrapContentInTableRow($content);
             return $content;
+        }
+
+        protected function resolveCanvasContent()
+        {
+            return '<iframe src="http://zurb.com/ink/downloads/templates/hero.html" id="preview-template"' .
+                    ' seamless="seamless" frameborder="0" width="100%" height="100%"></iframe>';
         }
     }
 ?>

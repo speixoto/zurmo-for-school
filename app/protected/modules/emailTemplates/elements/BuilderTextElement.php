@@ -41,6 +41,11 @@
             return true;
         }
 
+        protected static function resolveLabel()
+        {
+            return Zurmo::t('EmailTemplatesModule', 'Text');
+        }
+
         protected function resolveDefaultContent()
         {
             return "This is default dummy content.";
