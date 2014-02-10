@@ -139,20 +139,82 @@
             }
         }
 
-        public function actionX()
+        public function actionRebuildSecurityCache($User_page = 1, $continue = false)
         {
-            $view = new MassEditProgressView(
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            $pageSize            = 50;
+            $namedSecurableItems = array();
+            $modules             = Module::getModuleObjects();
+            foreach ($modules as $module)
+            {
+                if($module instanceof SecurableModule)
+                {
+                    $namedSecurableItems[] = NamedSecurableItem::getByName(get_class($module));
+                }
+            }
+
+            if($continue)
+            {
+                $page = static::getMassActionProgressStartFromGet('User_page', $pageSize);
+            }
+            else
+            {
+                $page = 1;
+            }
+            $title = Zurmo::t('ZurmoModule', 'Rebuilding Cache');
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'equals',
+                    'value'                => 0,
+                ),
+                2 => array(
+                    'attributeName'        => 'isSystemUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                )
+            );
+            $searchAttributeData['structure'] = '1 or 2';
+            $dataProvider = RedBeanModelDataProviderUtil::
+                                makeDataProvider($searchAttributeData, 'User', 'RedBeanModelDataProvider', null, false, $pageSize);
+            $selectedRecordCount = $dataProvider->getTotalItemCount();
+            $users = $dataProvider->getData();
+            foreach($users as $user)
+            {
+                if(!$user->isSuperAdministrator())
+                {
+                    foreach($namedSecurableItems as $namedSecurableItem)
+                    {
+                        $namedSecurableItem->getActualPermissions($user);
+                    }
+                }
+                RightsUtil::cacheAllRightsByPermitable($user);
+            }
+            $rebuildView = new RebuildSecurityCacheProgressView(
                             $this->getId(),
                             $this->getModule()->getId(),
-                            $model,
+                            new User(),
                             $selectedRecordCount,
-                            $start,
-                            $pageSize,
                             $page,
-                            'massEditProgressSave',
+                            $pageSize,
+                            $User_page,
+                            'rebuildSecurityCache',
                             $title
             );
-            echo $view->renderRefreshJSONScript();
+            if(!$continue)
+            {
+                $view = new ZurmoPageView(ZurmoDefaultAdminViewUtil::
+                    makeStandardViewForCurrentUser($this, $rebuildView));
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            else
+            {
+                echo $rebuildView->renderRefreshJSONScript();
+            }
         }
     }
 ?>

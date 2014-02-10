@@ -134,7 +134,7 @@
         /**
          * Used to cache all rights for a permitable. This can be done by an administrator to cache all user rights
          * Then when users login, their rights are cached for improved performance
-         * @see DevelopmentController function actionRebuildAllNamedSecurableActualPermissions
+         * @see DevelopmentController function actionRebuildSecurityCache
          * @param Permitable $permitable
          * @throws NotSupportedException
          */

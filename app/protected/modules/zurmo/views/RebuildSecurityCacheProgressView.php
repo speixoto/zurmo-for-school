@@ -41,17 +41,17 @@
     {
         protected function getMessagePrefix()
         {
-            return Zurmo::t('Core', 'Updating');
+            return Zurmo::t('Core', 'Rebuilding');
         }
 
         protected function getCompleteMessageSuffix()
         {
-            return Zurmo::t('Core', 'updated successfully');
+            return Zurmo::t('Core', 'rebuilt successfully');
         }
 
         protected function headerLabelPrefixContent()
         {
-            return Zurmo::t('Core', 'Mass Update');
+            return Zurmo::t('ZurmoModule', 'Rebuild Security Cache');
         }
 
         protected function getMessage()
@@ -64,23 +64,9 @@
 
         protected function getCompleteMessage()
         {
-            $successfulCount    = $this->callInsufficientPermissionSkipSavingUtilFunction('resolveSuccessfulCountAgainstSkipCount',
-                                                                array($this->totalRecordCount, $this->skipCount));
-            $content            = $successfulCount . '&#160;' . LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
-                                                                . '&#160;' . $this->getCompleteMessageSuffix() . '.';
-            if ($this->skipCount > 0)
-            {
-                $content        .= ZurmoHtml::tag('br') .
-                                    $this->callInsufficientPermissionSkipSavingUtilFunction(
-                                                                'getSkipCountMessageContentByModelClassName',
-                                                                array($this->skipCount, get_class($this->model)));
-            }
+            $content = $this->totalRecordCount . '&#160;' . LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount)
+                                                          . '&#160;' . $this->getCompleteMessageSuffix() . '.';
             return $content;
-        }
-
-        protected function onProgressComplete()
-        {
-            $this->callInsufficientPermissionSkipSavingUtilFunction('clear', array(get_class($this->model)));
         }
 
         protected function renderFormLinks()
@@ -99,38 +85,29 @@
 
         protected function renderReturnUrl()
         {
-            $returnUrl = ArrayUtil::getArrayValue($this->params, 'returnUrl');
-            if (!$returnUrl)
-            {
-                $returnUrl = Yii::app()->createUrl($this->moduleId);
-            }
-            return $returnUrl;
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/');
         }
 
         protected function renderReturnMessage()
         {
-            $returnMessage = ArrayUtil::getArrayValue($this->params, 'returnMessage');
-            if (!$returnMessage)
-            {
-                $returnMessage = Zurmo::t('Core', 'Return to List');
-            }
-            return $returnMessage;
+            return Zurmo::t('ZurmoModule', 'Return to Development Tools');
         }
 
-        protected function getDefaultInsufficientPermissionSkipSavingUtil()
+        protected function getCreateProgressBarAjax($progressBarId)
         {
-            $util = ArrayUtil::getArrayValue($this->params, 'insufficientPermissionSkipSavingUtil');
-            if (!$util)
-            {
-                $util = $this->getInsufficientPermissionSkipSavingUtil();
-            }
-            return $util;
-        }
-
-        protected function callInsufficientPermissionSkipSavingUtilFunction($function, $parameters = array())
-        {
-            $util               = $this->getDefaultInsufficientPermissionSkipSavingUtil();
-            return call_user_func_array(array($util, $function), $parameters);
+            return ZurmoHtml::ajax(array(
+                'type' => 'GET',
+                'dataType' => 'json',
+                'url'  => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $this->refreshActionId,
+                        array_merge($_GET, array( get_class($this->model) . '_page' => ($this->page + 1), 'continue' => true))
+                    ),
+                'success' => 'function(data)
+                    {
+                        $(\'#' . $progressBarId . '-msg\').html(data.message);
+                        $(\'#' . $progressBarId . '\').progressbar({value: data.value});
+                        eval(data.callback);
+                    }',
+            ));
         }
     }
 ?>
