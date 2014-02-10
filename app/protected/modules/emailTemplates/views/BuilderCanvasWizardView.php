@@ -189,8 +189,10 @@
 
         protected function resolveCanvasContent()
         {
-            return '<iframe src="http://zurb.com/ink/downloads/templates/hero.html" id="preview-template"' .
-                    ' seamless="seamless" frameborder="0" width="100%" height="100%"></iframe>';
+            $canvasContent = '<iframe src="http://zurb.com/ink/downloads/templates/hero.html" id="preview-template"' .
+                                ' seamless="seamless" frameborder="0" width="100%" height="100%"></iframe>';
+            $this->wrapContentInDiv($canvasContent, array('id' => 'canvas'));
+            return $canvasContent;
         }
     }
 ?>

@@ -60,7 +60,7 @@
                                                 static::resolveThumbnailHtmlOptions());
             $widget         = $thumbnail . $label;
             $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);;
-            $widget         = ZurmoHtml::tag('li', array('id' => get_called_class(),
+            $widget         = ZurmoHtml::tag($widgetWrapper, array('id' => get_called_class(),
                                                     'class' => 'builder-element builder-element-droppable'), $widget);
             return $widget;
 
