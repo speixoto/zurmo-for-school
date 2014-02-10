@@ -99,6 +99,49 @@
             echo CJSON::encode($autoCompleteResults);
         }
 
+        /**
+         * Given a partial name or e-mail address, search for all contacts or users regardless of contact state unless
+         * the current user has security restrictions on some states. If the adapter resolver returns false, then the
+         * user does not have access to the Leads or Contacts module.
+         * JSON encode the resulting array of contacts.
+         */
+        public function actionAutoCompleteAllContactsOrUsersForMultiSelectAutoComplete($term,
+                                                                                       $autoCompleteOptions = null)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                        'autoCompleteListPageSize', get_class($this->getModule()));
+            $adapterName  = ContactsUtil::resolveContactStateAdapterByModulesUserHasAccessTo('LeadsModule',
+                            'ContactsModule', Yii::app()->user->userModel);
+            if ($adapterName === false)
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $contacts = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, $adapterName,
+                        null, $autoCompleteOptions);
+            $autoCompleteResults  = array();
+            foreach ($contacts as $contact)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => Meeting::CONTACT_ATTENDEE_PREFIX . $contact->id,
+                    'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromContactAndKeyword($contact,
+                                                                                                             $term)
+                );
+            }
+            $users = UserSearch::getUsersByPartialFullNameOrAnyEmailAddress($term, $pageSize, $adapterName,
+                     null, $autoCompleteOptions);
+            foreach ($users as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => Meeting::USER_ATTENDEE_PREFIX . $user->id,
+                    'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromUserAndKeyword($user, $term)
+                );
+            }
+            echo CJSON::encode($autoCompleteResults);
+        }
+
         public function actionModalListAllContacts()
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(

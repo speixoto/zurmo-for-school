@@ -34,34 +34,34 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ConversationEditView extends SecuredEditView
+    /**
+     * View for showing the configuration parameters for the @see MeetingssMyListView.
+     */
+    class MeetingsMyListConfigView extends MyListConfigView
     {
-        protected $viewContainsFileUploadElement = true;
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink'),
-                            array('type'  => 'SaveButton'),
+                            array('type' => 'SaveButton'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
-                        'owner',
                         'latestDateTime',
-                        'ownerHasReadLatest',
                     ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
+                            'title' => 'List Filters',
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'subject', 'type' => 'Text'),
+                                                array('attributeName' => 'startDateTime__DateTime',
+                                                      'type' => 'MixedDateTypesForSearch'),
                                             ),
                                         ),
                                     )
@@ -70,29 +70,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'Files'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ConversationItems'),
+                                                array('attributeName' => 'ownedItemsOnly', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -105,36 +83,15 @@
             return $metadata;
         }
 
-        /**
-         * @param ZurmoActiveForm $form
-         * @return null|string
-         */
-        protected function renderRightSideFormLayoutForEdit($form)
+        public static function getDisplayDescription()
         {
-            assert('$form instanceof ZurmoActiveForm');
-            $content = null;
-            if ($this->getModel() instanceof OwnedSecurableItem)
-            {
-                $content .= '<h3>' . Zurmo::t('ConversationsModule', 'Participants') . '</h3><div id="owner-box">';
-                $element  = new MultiplePeopleForConversationElement($this->getModel(), null, $form,
-                                                                     array('inputPrefix' => 'ConversationParticipantsForm'));
-                $element->editableTemplate = '{content}{error}';
-                $content .= $element->render().'</div>';
-            }
-            return $content;
+            return Zurmo::t('MeetingsModule', 'My Upcoming MeetingsModulePluralLabel List',
+                            LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * Override to change the editableTemplate to place the label above the input.
-         * @see DetailsView::resolveElementDuringFormLayoutRender()
-         */
-        protected function resolveElementDuringFormLayoutRender(& $element)
+        public static function getModelForMetadataClassName()
         {
-            if ($element instanceOf FilesElement)
-            {
-                $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">' .
-                                             '<div class="file-upload-box">{content}{error}</div></td>';
-            }
+            return 'MeetingsSearchForm';
         }
     }
 ?>

@@ -184,7 +184,10 @@
         {
             $recipient                 = new EmailMessageRecipient();
             $recipient->toAddress      = $recipientInfo['email'];
-            $recipient->toName         = $recipientInfo['name'];
+            if (isset($recipientInfo['name']))
+            {
+                $recipient->toName = $recipientInfo['name'];
+            }
             $recipient->type           = $recipientInfo['type'];
 
             $personsOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
