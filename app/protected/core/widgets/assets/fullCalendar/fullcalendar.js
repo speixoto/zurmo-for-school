@@ -908,10 +908,7 @@ function EventManager(options, _sources) {
 	t.clientEvents = clientEvents;
 	t.normalizeEvent = normalizeEvent;
 
-    //Added by Mayank, refer to https://code.google.com/p/fullcalendar/issues/detail?id=678
-    t.removeEventSources = removeEventSources;
-
-	// imports
+    // imports
 	var trigger = t.trigger;
 	var getView = t.getView;
 	var reportEvents = t.reportEvents;
@@ -1112,13 +1109,6 @@ function EventManager(options, _sources) {
 		});
 		reportEvents(cache);
 	}
-    //Added by Mayank, refer to https://code.google.com/p/fullcalendar/issues/detail?id=678
-    function removeEventSources() {
-                sources = [];
-                // remove all client events from all sources
-                cache = [];
-                reportEvents(cache);
-    }
 
 	/* Manipulation
 	-----------------------------------------------------------------------------*/

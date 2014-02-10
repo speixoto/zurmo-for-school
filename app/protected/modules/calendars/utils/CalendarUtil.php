@@ -507,7 +507,7 @@
             $url    = Yii::app()->createUrl('calendars/default/getEvents');
             $script = "$(document).on('click', '.mycalendar,.sharedcalendar',
                                         function(){
-                                                    $('#calendar').fullCalendar('removeEventSources');
+                                                    $('#calendar').fullCalendar('removeEventSource', getCalendarEvents('{$url}', 'calendar'));
                                                     $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$url}', 'calendar'));
                                                    }
                                      );";
@@ -601,7 +601,7 @@
                                           {
                                                 $('#my-calendars-list').html(data);
                                                 $(this).makeLargeLoadingSpinner(false, '#my-calendars-list');
-                                                $('#calendar').fullCalendar('removeEventSources');
+                                                $('#calendar').fullCalendar('removeEventSource', getCalendarEvents('{$eventsUrl}', 'calendar'));
                                                 $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', 'calendar'));
                                           }
                             });
@@ -641,7 +641,7 @@
                                           {
                                                 $('#shared-calendars-list').html(data);
                                                 $(this).makeLargeLoadingSpinner(false, '#shared-calendars-list');
-                                                $('#calendar').fullCalendar('removeEventSources');
+                                                $('#calendar').fullCalendar('removeEventSource', getCalendarEvents('{$eventsUrl}', 'calendar'));
                                                 $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', 'calendar'));
                                           }
                             }
@@ -707,12 +707,15 @@
         public static function saveCalendarWithSerializedData(Report $report, SavedCalendar $savedCalendar, $wizardFormPostData)
         {
             $filtersData          = ArrayUtil::getArrayValue($wizardFormPostData, ComponentForReportForm::TYPE_FILTERS);
-            $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
-                                                                          $report->getType(),
-                                                                          $filtersData);
-            $unserializedData   = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
-                                    'filtersStructure' => $report->getFiltersStructure());
-            $savedCalendar->serializedData = serialize($unserializedData);
+            if($filtersData != null)
+            {
+                $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
+                                                                              $report->getType(),
+                                                                              $filtersData);
+                $unserializedData   = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
+                                        'filtersStructure' => $report->getFiltersStructure());
+                $savedCalendar->serializedData = serialize($unserializedData);
+            }
             if(!$savedCalendar->save())
             {
                 throw new FailedToSaveModelException();

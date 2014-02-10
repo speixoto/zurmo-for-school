@@ -191,7 +191,7 @@
             {
                 $postData   = PostUtil::getData();
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
-                $this->attemptToSaveModelFromPost($savedCalendar, null, false, true);
+                $this->attemptToSaveModelFromPost($savedCalendar, null, false, false);
                 if(count($savedCalendar->getErrors()) == 0)
                 {
                     $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType(Report::TYPE_ROWS_AND_COLUMNS);
