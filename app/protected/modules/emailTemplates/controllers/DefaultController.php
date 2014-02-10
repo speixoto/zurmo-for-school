@@ -202,6 +202,12 @@
             echo $view->render();
         }
 
+        public function actionGetNewElement($className)
+        {
+            //TODO: @sergio: Is this the real action needed or are we using another one? @see EmailTemplateEditor
+            echo ZurmoHtml::tag('div', array(), $className);
+        }
+
         public function actionEdit($id, $redirectUrl = null)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));

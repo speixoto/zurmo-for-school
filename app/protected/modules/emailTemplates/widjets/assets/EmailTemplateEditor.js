@@ -36,16 +36,22 @@
 var emailTemplateEditor = {
     jQuery : $,
     settings : {
-        rowWrapper: ''
+        rowWrapper: '',
+        getNewElementUrl: '',
+        elementsToPlaceClassSelector: '.elementToPlace',
+        sortableRowsSelector: '.sortable-rows',
+        sortableElementsSelector: '.sortable-elements'
     },
-    init : function (rowWrapper) {
-        this.settings.rowWrapper = rowWrapper;
+    init : function (rowWrapper, getNewElementUrl) {
+        this.settings.rowWrapper    = rowWrapper;
+        this.settings.getNewElementUrl = getNewElementUrl;
         this.setupLayout();
     },
     setupLayout : function() {
-        this.initDraggableElements(".elementToPlace", ".sortable-elements, .sortable-rows");
-        this.initSortableElements(".sortable-elements", ".sortable-elements");
-        this.initSortableRows(".sortable-rows");
+        emailTemplateEditor = this;
+        this.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceClassSelector, emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector);
+        this.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector, emailTemplateEditor.settings.sortableElementsSelector);
+        this.initSortableRows(emailTemplateEditor.settings.sortableRowsSelector);
     },
     initDraggableElements: function ( selector , connectToSelector) {
         $( selector ).each(function(){
@@ -70,8 +76,10 @@ var emailTemplateEditor = {
         $( selector ).sortable({
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
-            receive: function( event, ui ) {
-                console.log("Great... i've one more element!");
+            stop: function( event, ui ) {
+                if (ui.item.hasClass('elementToPlace')) {
+                    emailTemplateEditor.placeNewElement(ui.item.children("img").attr("alt"), ui.item);
+                }
             },
             remove: function ( event, ui ) {
                  if ($(this).sortable("toArray").length < 1)
@@ -98,13 +106,22 @@ var emailTemplateEditor = {
             placeholder: "ui-state-highlight",
             handle: "table",
             stop: function( event, ui ) {
-                if (ui.item.is('p')) {
+                if (ui.item.is('div')) {
                     ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
-                    emailTemplateEditor.initSortableElements(ui.item.closest(".sortable-elements"), ".sortable-elements");
+                    emailTemplateEditor.placeNewElement(ui.item.children("img").attr("alt"), ui.item);
+                    emailTemplateEditor.initSortableElements(ui.item.closest(emailTemplateEditor.settings.sortableElementsSelector), emailTemplateEditor.settings.sortableElementsSelector);
                 }
             },
             cursor: 'move'
         });
+    },
+    placeNewElement: function ( elementClass, item ) {
+        $.ajax({
+            url: emailTemplateEditor.settings.getNewElementUrl,
+            data: {'className': elementClass},
+            success: function (html) {
+                item.replaceWith(html);
+            }
+        });
     }
-
 }

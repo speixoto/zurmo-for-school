@@ -63,12 +63,12 @@
             $content .= ZurmoHtml::openTag('table');
             $content .= ZurmoHtml::openTag('tr');
             //Put here all element to be draggable
-            $image = ZurmoHtml::image('http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png');
-            $content .= ZurmoHtml::tag('p', array('class' => 'elementToPlace'), $image);
-            $image = ZurmoHtml::image('http://storage9.static.itmages.com/i/14/0128/h_1390936148_2296154_06ea86ccdc.png');
-            $content .= ZurmoHtml::tag('p', array('class' => 'elementToPlace'), $image);
-            $image = ZurmoHtml::image('http://storage8.static.itmages.com/i/14/0128/h_1390936248_7631312_22db602519.png');
-            $content .= ZurmoHtml::tag('p', array('class' => 'elementToPlace'), $image);
+            $image = ZurmoHtml::image('http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png', 'TextElement');
+            $content .= ZurmoHtml::tag('div', array('class' => 'elementToPlace'), $image);
+            $image = ZurmoHtml::image('http://storage9.static.itmages.com/i/14/0128/h_1390936148_2296154_06ea86ccdc.png', 'ImageElement');
+            $content .= ZurmoHtml::tag('div', array('class' => 'elementToPlace'), $image);
+            $image = ZurmoHtml::image('http://storage8.static.itmages.com/i/14/0128/h_1390936248_7631312_22db602519.png', 'SocialItemsElement');
+            $content .= ZurmoHtml::tag('div', array('class' => 'elementToPlace'), $image);
             $content .= ZurmoHtml::closeTag('tr');
             $content .= ZurmoHtml::closeTag('table');
             $content .= ZurmoHtml::closeTag('div');
@@ -90,7 +90,7 @@
                                                         <table class="twelve columns">
                                                             <tr>
                                                                 <td  class="sortable-elements">
-                                                                    <p><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></p>
+                                                                    <div><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></div>
                                                                 </td>
                                                                 <td class="expander"></td>
                                                             </tr>
@@ -113,7 +113,7 @@
                                                 <table class="six columns" data-column-id="1">
                                                   <tr>
                                                     <td class="sortable-elements">
-                                                        <p><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></p>
+                                                        <div><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></div>
                                                     </td>
                                                     <td class="expander"></td>
                                                   </tr>
@@ -126,7 +126,7 @@
                                                 <table class="six columns" data-column-id="2">
                                                   <tr>
                                                     <td class="sortable-elements">
-                                                        <p><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></p>
+                                                        <div><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></div>
                                                     </td>
                                                     <td class="expander"></td>
                                                   </tr>
@@ -156,7 +156,8 @@
         {
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id,
                 "emailTemplateEditor.init(
-                    '{$this->getRowWrapper()}'
+                    '{$this->getRowWrapper()}',
+                    '{$this->getNewElementUrl()}'
                 );
                 ");
             echo ZurmoHtml::openTag('div', array('id' => 'email-template-editor-container'));
@@ -171,6 +172,11 @@
                    '<td class="wrapper last"><table class="twelve columns" data-column-id="new"><tr>' .
                    '<td class="sortable-elements"></td><td class="expander"></td></tr></table></td>' .
                    '</tr></table></td></tr></table>';
+        }
+
+        protected function getNewElementUrl()
+        {
+            return Yii::app()->createUrl('emailTemplates/default/getNewElement');
         }
     }
 ?>
