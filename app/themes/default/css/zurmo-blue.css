@@ -611,6 +611,7 @@ section {
 }
 #user-header-menu,
 #settings-header-menu,
+#header-calendar-link-wrapper,
 #header-game-dashboard-link-wrapper {
   position: relative;
   z-index: 100;
@@ -619,17 +620,20 @@ section {
 }
 #user-header-menu:hover > li > a,
 #settings-header-menu:hover > li > a,
+#header-calendar-link-wrapper:hover > li > a,
 #header-game-dashboard-link-wrapper:hover > li > a {
   color: #fff;
   background: rgba(255,255,255,0.05);
 }
 #user-header-menu:hover > li > a:after,
 #settings-header-menu:hover > li > a:after,
+#header-calendar-link-wrapper:hover > li > a:after,
 #header-game-dashboard-link-wrapper:hover > li > a:after {
   color: #fff;
 }
 #user-header-menu.nav-open > li > a,
 #settings-header-menu.nav-open > li > a,
+#header-calendar-link-wrapper.nav-open > li > a,
 #header-game-dashboard-link-wrapper.nav-open > li > a {
   color: #fff;
   border-left: 1px solid #444 !important;
@@ -645,16 +649,19 @@ section {
 }
 #user-header-menu.nav-open > li > a:after,
 #settings-header-menu.nav-open > li > a:after,
+#header-calendar-link-wrapper.nav-open > li > a:after,
 #header-game-dashboard-link-wrapper.nav-open > li > a:after {
   color: #fff;
 }
 #user-header-menu.nav-open ul,
 #settings-header-menu.nav-open ul,
+#header-calendar-link-wrapper.nav-open ul,
 #header-game-dashboard-link-wrapper.nav-open ul {
   display: block;
 }
 #user-header-menu > li > a,
 #settings-header-menu > li > a,
+#header-calendar-link-wrapper > li > a,
 #header-game-dashboard-link-wrapper > li > a {
   position: relative;
   z-index: 5;
@@ -668,6 +675,7 @@ section {
 }
 #user-header-menu > li > a:hover,
 #settings-header-menu > li > a:hover,
+#header-calendar-link-wrapper > li > a:hover,
 #header-game-dashboard-link-wrapper > li > a:hover {
   color: #fff;
   border-left: 1px solid #1b1c50;
@@ -675,6 +683,7 @@ section {
 }
 #user-header-menu ul,
 #settings-header-menu ul,
+#header-calendar-link-wrapper ul,
 #header-game-dashboard-link-wrapper ul {
   display: block;
   width: 110px;
@@ -739,6 +748,7 @@ section {
   right: 0;
   display: none;
 }
+#header-calendar-link,
 #header-game-dashboard-link {
   font-weight: normal !important;
   font-size: 28px;
@@ -748,7 +758,7 @@ section {
   line-height: 18px;
   display: block;
   height: 20px;
-  width: 20px;
+  padding: 0 8px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -758,6 +768,7 @@ section {
   position: relative;
   top: 10px;
 }
+#header-calendar-link.highlighted,
 #header-game-dashboard-link.highlighted {
   color: #fff;
   -webkit-box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
@@ -766,9 +777,11 @@ section {
   -o-box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
   box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
 }
+#header-calendar-link-wrapper a,
 #header-game-dashboard-link-wrapper a {
   color: #ddd;
 }
+#header-calendar-link-wrapper a:hover,
 #header-game-dashboard-link-wrapper a:hover {
   color: #fff;
 }

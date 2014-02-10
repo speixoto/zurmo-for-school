@@ -314,7 +314,7 @@
         protected static function renderHeaderCalendarContent()
         {
             $url     = Yii::app()->createUrl('calendars/default/details/');
-            $content = ZurmoHtml::link('∂', $url, array('class' => 'user-menu-item'));
+            $content = ZurmoHtml::link('U', $url, array('id' => 'header-calendar-link'));
             return ZurmoHtml::tag('div', array('id' => static::USER_CALENDAR_WRAPPER_ID,
                 'class' => 'user-menu-item'), $content);
         }
