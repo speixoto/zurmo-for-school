@@ -138,5 +138,21 @@
                 }
             }
         }
+
+        public function actionX()
+        {
+            $view = new MassEditProgressView(
+                            $this->getId(),
+                            $this->getModule()->getId(),
+                            $model,
+                            $selectedRecordCount,
+                            $start,
+                            $pageSize,
+                            $page,
+                            'massEditProgressSave',
+                            $title
+            );
+            echo $view->renderRefreshJSONScript();
+        }
     }
 ?>
