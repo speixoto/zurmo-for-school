@@ -35,55 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Helper class for streaming output to the browser prior to the completion of a page request.
+     * Class to help evaluate Project status field triggers against model values.
      */
-    class JobManagerFileLogRouteMessageStreamer
+    class ProjectStatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
     {
-        /**
-         * The wrapping template for the flushed message.  Can replace this with javascript if you want the message
-         * to populate somewhere else on the page.
-         * @var string
-         */
-        protected $template = "{message}";
-
-        protected $jobManagerFileLogger;
-
-        public function __construct($template = null, $jobManagerFileLogger)
-        {
-            assert('is_string($template) || $template == null');
-            assert('$jobManagerFileLogger instanceof JobManagerFileLogger');
-            if ($template != null)
-            {
-                $this->template = $template;
-            }
-            $this->jobManagerFileLogger = $jobManagerFileLogger;
-        }
-
-        /**
-         * Add a message to be streamed.
-         * @param string $message
-         */
-        public function add($message)
-        {
-            assert('is_string($message) && $message !=""');
-            $message = strtr($this->template, array('{message}' => $message));
-            $this->jobManagerFileLogger->log($message);
-        }
-
-        /**
-         * Given a message, output the message to the message stream ignoring the template. Used to output a . for example
-         * if you want a stream of dots to indicate progress.
-         * @param string $message
-         */
-        public function addIgnoringTemplate($message)
-        {
-            assert('is_string($message) && $message !=""');
-            $this->jobManagerFileLogger->log($message);
-        }
-
-        public function setEmptyTemplate()
-        {
-            $this->template = "";
-        }
     }
 ?>

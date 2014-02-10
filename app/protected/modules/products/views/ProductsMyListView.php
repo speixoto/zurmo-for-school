@@ -91,11 +91,10 @@
             $modelClassName = $this->modelClassName;
             return new ProductsSearchForm(new $modelClassName(false));
         }
-        
+
         protected static function getConfigViewClassName()
         {
             return 'ProductsMyListConfigView';
         }
-        
     }
 ?>
