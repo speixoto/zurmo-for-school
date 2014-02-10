@@ -70,6 +70,7 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadEmailMessagesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadAccountContactAffiliationObserver'));

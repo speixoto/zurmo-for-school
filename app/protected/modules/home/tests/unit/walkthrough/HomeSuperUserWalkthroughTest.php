@@ -348,12 +348,71 @@
             $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
 
             //Add ContactsMyList Portlet to dashboard
+
             $this->setGetArray(array(
                 'dashboardId'    => $superDashboard1->id,
                 'portletType'    => 'ContactsMyList',
                 'uniqueLayoutId' => $uniqueLayoutId));
             $this->resetPostArray();
             $this->runControllerWithRedirectExceptionAndGetContent('home/defaultPortlet/add');
+        }
+
+        public function testAddProductsMyListPortletToDashboard()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $superDashboard1 = Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
+            //load details view
+            $this->setGetArray(array('id' => $superDashboard1->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/default/dashboardDetails');
+
+            //Portlet Controller Actions
+            $uniqueLayoutId = 'HomeDashboard' . $superDashboard1->layoutId;
+            $this->setGetArray(array(
+                'dashboardId'    => $superDashboard1->id,
+                'uniqueLayoutId' => $uniqueLayoutId));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/addList');
+
+            //Add ProductsMyList Portlet to dashboard
+            $this->setGetArray(array(
+                'dashboardId'    => $superDashboard1->id,
+                'portletType'    => 'ProductsMyList',
+                'uniqueLayoutId' => $uniqueLayoutId));
+            $this->resetPostArray();
+            $this->runControllerWithRedirectExceptionAndGetContent('home/defaultPortlet/add');
+            $portlets = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId, $super->id, array());
+            $this->assertEquals(9, count($portlets[1]));
+            $this->assertEquals(2, count($portlets[2]));
+            $portletPostData = array();
+            $portletCount = 0;
+            foreach ($portlets as $column => $columnPortlets)
+            {
+                foreach ($columnPortlets as $position => $portlet)
+                {
+                    $portletPostData['HomeDashboard1_' . $portlet->id] = array(
+                        'collapsed' => 'true',
+                        'column'    => 0,
+                        'id'        => 'HomeDashboard1_' . $portlet->id,
+                        'position'  => $portletCount,
+                    );
+                    $portletCount++;
+                }
+            }
+            $this->assertEquals(11, $portletCount);
+            $this->resetGetArray();
+            $this->setPostArray(array(
+                'portletLayoutConfiguration' => array(
+                    'portlets' => $portletPostData,
+                    'uniqueLayoutId' => $uniqueLayoutId,
+                )
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/saveLayout', true);
+
+            //load details view
+            $this->setGetArray(array('id' => $superDashboard1->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/default/dashboardDetails');
         }
     }
 ?>

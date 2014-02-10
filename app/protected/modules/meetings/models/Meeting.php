@@ -36,6 +36,10 @@
 
     class Meeting extends MashableActivity
     {
+        const CONTACT_ATTENDEE_PREFIX = 'Contact_';
+
+        const USER_ATTENDEE_PREFIX    = 'User_';
+
         public function __toString()
         {
             try
@@ -104,6 +108,7 @@
                 'relations' => array(
                     'category'             => array(static::HAS_ONE, 'OwnedCustomField', static::OWNED,
                                                     static::LINK_TYPE_SPECIFIC, 'category'),
+                    'userAttendees'        => array(static::MANY_MANY, 'User'),
                 ),
                 'elements' => array(
                     'endDateTime'   => 'DateTime',

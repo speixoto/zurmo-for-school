@@ -1625,6 +1625,7 @@ body > .ui-autocomplete {
   position: relative;
   float: left;
   width: 100%;
+  display: table;
 }
 #MashableInboxActionBarForViews > div,
 #ActionBarSearchAndListView > div {
@@ -2055,6 +2056,8 @@ td {
   border: 1px solid #dfdfdf;
 }
 .items-wrapper {
+  width: 100%;
+  display: table;
   overflow-x: auto;
   background: -webkit-linear-gradient(left,#fff 30%,rgba(255,255,255,0)), -webkit-linear-gradient(left,rgba(255,255,255,0),#fff 70%) 100%, -webkit-radial-gradient(0 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)), -webkit-radial-gradient(100% 50%,farthest-side,rgba(0,0,0,0.1),rgba(0,0,0,0)) 100% 0;
   background-repeat: no-repeat;
@@ -3365,7 +3368,13 @@ div.wide.form a {
 #ModalView .search-view-1 label {
   padding-top: 0;
 }
-#ModalView #clear-search-linkmodal {
+#ModalView .items {
+  border: none;
+}
+#ModalView .items thead tr:first-child th {
+  border-top: none;
+}
+#clear-search-linkmodal {
   margin-left: 10px;
   color: #fff;
   padding: 3px;
@@ -3375,12 +3384,7 @@ div.wide.form a {
   -o-border-radius: 3px;
   border-radius: 3px;
   font-size: 11px;
-}
-#ModalView .items {
-  border: none;
-}
-#ModalView .items thead tr:first-child th {
-  border-top: none;
+  background: #034C8C;
 }
 .kanban-board-options-view,
 .select-list-attributes-view,
@@ -5236,11 +5240,14 @@ div.radio-input .hasDropDown {
   padding: 10px;
 }
 #days-meetings-list-view td div {
-  line-height: 125%;
+  line-height: 150%;
 }
 #days-meetings-list-view tr:hover {
   background: none;
   color: #545454;
+}
+#days-meetings-list-view tr:first-child td {
+  border-top: none;
 }
 #days-meetings-list-view h3 {
   color: #545454;
@@ -5253,6 +5260,19 @@ div.radio-input .hasDropDown {
 }
 #days-meetings-list-view h3 span a {
   outline: none;
+}
+#DaysMeetingsFromCalendarModalListView .view-toolbar-container {
+  position: absolute;
+  top: 8px;
+  right: 0px;
+  width: auto;
+}
+.meeting-summary {
+  position: relative;
+}
+.meeting-details {
+  background-color: #dfdfdf;
+  float: right;
 }
 #NoteEditAndDetailsView .details-table,
 #TaskEditAndDetailsView .details-table,
@@ -6476,6 +6496,7 @@ i[class^="icon"] {
 .icon-layout:after {
   content: "C";
 }
+.icon-user:after,
 .icon-user-details:after {
   content: "e";
 }
@@ -6954,21 +6975,21 @@ input[type="button"].portlet-create-button:focus {
   -moz-opacity: 1;
   opacity: 1;
 }
-.simple-link {
+a.simple-link {
   font-size: 11px;
   color: #034C8C;
   border: none !important;
   text-decoration: underline;
   overflow: hidden;
 }
-.simple-link:before,
-.simple-link:after {
+a.simple-link:before,
+a.simple-link:after {
   content: "" !important;
 }
-.simple-link:hover {
+a.simple-link:hover {
   color: #024873 !important;
 }
-.simple-link:hover .z-label {
+a.simple-link:hover .z-label {
   color: #024873 !important;
   -webkit-text-shadow: none !important;
   -moz-text-shadow: none !important;
@@ -6976,7 +6997,7 @@ input[type="button"].portlet-create-button:focus {
   -o-text-shadow: none !important;
   text-shadow: none !important;
 }
-.simple-link .z-label {
+a.simple-link .z-label {
   font-weight: normal;
   color: #034C8C;
   background: none !important;
@@ -6998,7 +7019,7 @@ input[type="button"].portlet-create-button:focus {
   text-shadow: none !important;
   text-decoration: underline !important;
 }
-.simple-link .icon-x {
+a.simple-link .icon-x {
   font-weight: normal !important;
   font-size: 21px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -7377,16 +7398,6 @@ input[type="button"].portlet-create-button:focus {
   vertical-align: middle;
   position: relative;
 }
-.type-products .icon-empty:before {
-  content: '\00AC';
-  font-weight: normal !important;
-  font-size: 45px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0;
-  margin: 0;
-  vertical-align: middle;
-  position: relative;
-}
 .type-opportunities h3 {
   padding-left: 30px;
   position: relative;
@@ -7464,6 +7475,36 @@ input[type="button"].portlet-create-button:focus {
 }
 .type-accountAccountAffiliations .icon-empty:before {
   content: '\00FB';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-marketingLists .icon-empty:before {
+  content: '\0022';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-maps .icon-empty:before {
+  content: 'L';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-users .icon-empty:before {
+  content: '\0066';
   font-weight: normal !important;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -7789,7 +7830,7 @@ input[type="button"].portlet-create-button:focus {
   width: 100%;
   position: relative;
   margin: 0;
-  padding: 20px 15px;
+  padding: 20px 100px 20px 15px;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #fff;
 }
@@ -8658,15 +8699,20 @@ table.configuration-list tr:last-child td {
   padding-left: 15px !important;
   border-bottom: 1px solid #DFDFDF;
 }
-#ImportWizardMappingView .column-import-data {
-  margin-top: 5px;
-}
 #ImportWizardMappingView tr td:last-child {
   padding-right: 0;
   vertical-align: top;
 }
 #ImportWizardMappingView td + td {
   vertical-align: top;
+}
+.column-import-data,
+.column-import-data div {
+  margin-top: 5px;
+  padding-right: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 #sample-column-header {
   position: relative;
@@ -9771,7 +9817,6 @@ div.wide.form .errorMessage {
   border-radius: 3px;
   *zoom: 1;
   overflow: hidden;
-  position: relative;
   display: inline-block;
   text-indent: 0;
   -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
@@ -9785,6 +9830,7 @@ div.wide.form .errorMessage {
   font-size: 24px;
   padding: 0 6px !important;
   margin: 0 5px 0 0 !important;
+  position: relative;
   top: 2px;
   color: #666;
   -webkit-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
@@ -9855,32 +9901,18 @@ div.wide.form .errorMessage {
 .fileupload-buttonbar .toggle {
   margin-bottom: 5px;
 }
-#ui-datepicker-div {
-  max-width: 250px;
-}
 .ui-datepicker {
   z-index: 10000;
-  background-color: #f5f5f5 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
-  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 }
 .ui-datepicker.ui-datepicker-inline {
   margin: 15px;
+  display: table !important;
 }
 .ui-datepicker .ui-datepicker-header {
-  height: 35px;
-  background: #111 url("../images/datepicker-header.png") left top repeat-x !important;
-  color: #FFF;
+  display: table;
+  height: 36px;
+  width: 100%;
+  color: #034C8C;
   font-weight: bold;
 }
 .ui-datepicker .ui-datepicker-header a:hover:before,
@@ -9914,10 +9946,11 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-next span {
   visibility: hidden;
+  display: none;
 }
 .ui-datepicker .ui-datepicker-next:before {
   content: "▶";
-  margin-left: 10px;
+  margin-right: 10px;
 }
 .ui-datepicker .ui-datepicker-next :hover {
   cursor: pointer !important;
@@ -9929,27 +9962,38 @@ div.wide.form .errorMessage {
   line-height: 35px;
   font-size: 14px;
   font-weight: bold;
-  color: #DFDFDF;
-  -webkit-text-shadow: #000 0 1px 0;
-  -moz-text-shadow: #000 0 1px 0;
-  -ms-text-shadow: #000 0 1px 0;
-  -o-text-shadow: #000 0 1px 0;
-  text-shadow: #000 0 1px 0;
+  color: #034C8C;
 }
 .ui-datepicker .ui-datepicker-calendar {
   width: 100%;
-  border-color: #BBB;
-  border-style: solid;
-  border-width: 0 0 1px 1px;
   border-spacing: 0;
-  border-collapse: collapse;
-  background: #fff;
-}
-.ui-datepicker .ui-datepicker-calendar th {
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left -35px repeat-x !important;
+  table-layout: fixed;
+  border: 1px solid #ddd;
+  border-top: none;
 }
 .ui-datepicker .ui-datepicker-calendar th:last-child {
-  border-right: 1px solid #BBB;
+  border-right: none;
+}
+.ui-datepicker .ui-datepicker-calendar td {
+  min-width: 30px;
+  height: 30px;
+  border-color: #ddd;
+  border-style: solid;
+  border-width: 1px 1px 0 0;
+  border-top: 1px solid #ddd !important;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
+  color: #B3B3B3;
+}
+.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
+  background-image: none !important;
+  background: #91cbfd !important;
+}
+.ui-datepicker .ui-datepicker-calendar td:hover {
+  background-image: none;
+}
+.ui-datepicker .ui-datepicker-calendar td:last-child {
+  border-right: none;
 }
 .ui-datepicker .ui-datepicker-calendar a {
   font-size: 9px;
@@ -9960,11 +10004,6 @@ div.wide.form .errorMessage {
   width: 100%;
   text-indent: 5px;
   padding-top: 3px;
-  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
   cursor: pointer;
 }
 .ui-datepicker .ui-datepicker-calendar span {
@@ -9977,36 +10016,7 @@ div.wide.form .errorMessage {
   font-size: 9px;
   text-transform: uppercase;
   line-height: 20px;
-  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
   cursor: pointer;
-}
-.ui-datepicker .ui-datepicker-calendar td {
-  min-width: 30px;
-  height: 30px;
-  border-color: #BBB;
-  border-style: solid;
-  border-width: 1px 1px 0 0;
-  border-top: 1px solid #bbb !important;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left top repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month {
-  background-image: none;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-other-month span {
-  color: #B3B3B3;
-}
-.ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today {
-  background-image: none !important;
-  background: #91cbfd !important;
-}
-.ui-datepicker .ui-datepicker-calendar td:hover {
-  background-image: none;
-  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   float: left;
@@ -10116,7 +10126,7 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui-timepicker-div {
   float: left;
   padding: 10px 5px 0 5px;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid #ddd;
   line-height: 1;
 }
 .ui-datepicker .ui-timepicker-div dt {
@@ -10172,7 +10182,7 @@ div.wide.form .errorMessage {
 .ui-datepicker .calendar-events-4 span,
 .ui-datepicker .calendar-events-5 span,
 .ui-datepicker .calendar-events-6 span {
-  color: #034C8C;
+  color: #034C8C !important;
   position: relative !important;
   float: left;
   width: 100%;
@@ -10215,6 +10225,106 @@ div.wide.form .errorMessage {
 .ui-datepicker .ui_tpicker_millisec,
 .ui-datepicker .ui_tpicker_microsec {
   display: none;
+}
+.juiportlet-widget-content .ui-datepicker,
+#ui-datepicker-div .ui-datepicker {
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+}
+.juiportlet-widget-content .ui-datepicker-header,
+#ui-datepicker-div .ui-datepicker-header {
+  background: #111 url("../images/datepicker-header.png") left top repeat-x !important;
+  color: #FFF;
+}
+.juiportlet-widget-content .ui-datepicker-calendar,
+#ui-datepicker-div .ui-datepicker-calendar {
+  background: #fff;
+  border-color: #BBB;
+}
+.juiportlet-widget-content .ui-datepicker-calendar th,
+#ui-datepicker-div .ui-datepicker-calendar th {
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left -37px repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar th:last-child,
+#ui-datepicker-div .ui-datepicker-calendar th:last-child {
+  border-color: #bbb;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td,
+#ui-datepicker-div .ui-datepicker-calendar td {
+  border-color: #bbb;
+  border-top: 1px solid #bbb !important;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left top repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td.ui-datepicker-other-month,
+#ui-datepicker-div .ui-datepicker-calendar td.ui-datepicker-other-month {
+  background-image: none;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td.ui-datepicker-today,
+#ui-datepicker-div .ui-datepicker-calendar td.ui-datepicker-today {
+  background-image: none !important;
+  background: #91cbfd !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td:hover,
+#ui-datepicker-div .ui-datepicker-calendar td:hover {
+  background-image: none;
+  background: #f5f5f5 url("../images/datepicker-sprite-ie.png") left bottom repeat-x !important;
+}
+.juiportlet-widget-content .ui-datepicker-calendar td:last-child,
+#ui-datepicker-div .ui-datepicker-calendar td:last-child {
+  border-right: none;
+}
+.juiportlet-widget-content .ui-datepicker-calendar a,
+.juiportlet-widget-content .ui-datepicker-calendar span,
+#ui-datepicker-div .ui-datepicker-calendar a,
+#ui-datepicker-div .ui-datepicker-calendar span {
+  color: #656565;
+  -webkit-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -moz-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -ms-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  -o-text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+  text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+}
+.juiportlet-widget-content .ui-datepicker-title,
+#ui-datepicker-div .ui-datepicker-title {
+  color: #DFDFDF;
+  -webkit-text-shadow: #000 0 1px 0;
+  -moz-text-shadow: #000 0 1px 0;
+  -ms-text-shadow: #000 0 1px 0;
+  -o-text-shadow: #000 0 1px 0;
+  text-shadow: #000 0 1px 0;
+}
+.juiportlet-widget-content .ui-timepicker-div,
+#ui-datepicker-div .ui-timepicker-div {
+  width: 100%;
+  border-bottom: 1px solid #bbb;
+}
+#ui-datepicker-div {
+  max-width: 250px;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#ffffff),color-stop(80%,#f5f5f5),to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -ms-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  -o-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 }
 .token-input-list {
   position: relative;
@@ -15047,7 +15157,6 @@ a.user-link {
 }
 #marketing-list-member-configuration-form .list-view-items-summary-clone {
   margin-top: 51px;
-  font-weight: bold;
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
@@ -18879,13 +18988,8 @@ a + .project-stats {
   margin-bottom: 0px;
   padding: 15px;
 }
-#CreateModelsToMergeListAndChartView .chosen-entries .right-column {
-  display: none;
-}
-#CreateModelsToMergeListAndChartView .chosen-entries .left-column {
+#CreateModelsToMergeListAndChartView .chosen-entries {
   width: 100%;
-  float: none;
-  padding: 0;
 }
 #CreateModelsToMergeListAndChartView .cards {
   width: 75%;
@@ -18911,9 +19015,11 @@ a + .project-stats {
 #CreateModelsToMergeListAndChartView .possible-matches a {
   display: inline-block;
   border: none !important;
-  border-left: none !important;
   padding: 10px 15px;
   width: 100% !important;
+}
+#CreateModelsToMergeListAndChartView .spidergraph {
+  display: none;
 }
 #CreateModelsToMergeListAndChartView .chosen-entries .merge-color-1 a:hover,
 #CreateModelsToMergeListAndChartView .merge-color-1.selected a,
@@ -18938,12 +19044,15 @@ a + .project-stats {
   background: #024873 !important;
 }
 .merge-title-bar {
-  padding: 15px 15px 10px 15px;
-  border-bottom: 1px solid #dfdfdf;
+  display: table-caption;
+  width: 100%;
 }
 .merge-title-bar h3 {
   margin-bottom: 0 !important;
   line-height: 1;
+  width: 100%;
+  padding: 15px 15px 10px 15px;
+  border-bottom: 1px solid #dfdfdf;
 }
 .merge-title-bar .simple-link {
   margin-left: 15px;
@@ -18971,13 +19080,7 @@ a + .project-stats {
   background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-}
-.chosen-entries .left-column {
-  padding-left: 0;
-  padding-right: 0;
-}
-.chosen-entries .right-column {
-  border-left: 1px solid #fff;
+  display: table;
 }
 .DetailsView .chosen-entries {
   -webkit-box-shadow: none !important;
@@ -18998,9 +19101,11 @@ a + .project-stats {
 }
 .possible-matches {
   width: 35%;
-  display: block;
-  float: left;
   list-style: none;
+  padding-top: 15px;
+  display: table-cell;
+  vertical-align: top;
+  border-right: 1px solid #dfdfdf;
 }
 .possible-matches li {
   font-weight: bold;
@@ -19026,12 +19131,9 @@ a + .project-stats {
 .cards {
   padding: 15px;
   width: 65%;
-  display: block;
-  float: left;
-  height: 279px;
-  margin-top: -15px;
-  margin-left: -1px;
-  border-left: 1px solid #dfdfdf;
+  display: table-cell;
+  vertical-align: top;
+  border-left: 1px solid #fff;
   border-right: 1px solid #dfdfdf;
 }
 .cards > div {
@@ -19048,9 +19150,11 @@ a + .project-stats {
   font-weight: normal !important;
 }
 .spidergraph {
+  padding-left: 10px;
   width: 100%;
   height: 100%;
   text-align: left;
+  border-left: 1px solid #fff;
 }
 .spidergraph div {
   overflow: visible !important;
@@ -19093,6 +19197,36 @@ a + .project-stats {
 }
 .merge-color-10 {
   border: 2px dotted #c05d91;
+  color: #c05d91 !important;
+}
+.chosen-entries .merge-color-1 a {
+  color: #315AB0 !important;
+}
+.chosen-entries .merge-color-2 a {
+  color: #66367b !important;
+}
+.chosen-entries .merge-color-3 a {
+  color: #2c3e50 !important;
+}
+.chosen-entries .merge-color-4 a {
+  color: #269a55 !important;
+}
+.chosen-entries .merge-color-5 a {
+  color: #c0392b !important;
+}
+.chosen-entries .merge-color-6 a {
+  color: #e67e22 !important;
+}
+.chosen-entries .merge-color-7 a {
+  color: #3498db !important;
+}
+.chosen-entries .merge-color-8 a {
+  color: #501a27 !important;
+}
+.chosen-entries .merge-color-9 a {
+  color: #0c5b3f !important;
+}
+.chosen-entries .merge-color-10 a {
   color: #c05d91 !important;
 }
 .chosen-entries .merge-color-1 a:hover,
@@ -19210,9 +19344,9 @@ a + .project-stats {
 }
 .entry-stats {
   border-top: 1px solid #dfdfdf;
-  padding: 4px;
-  position: absolute;
-  bottom: 0;
+  padding: 10px;
+  position: relative;
+  bottom: -15px;
   left: 0;
   width: 100%;
 }

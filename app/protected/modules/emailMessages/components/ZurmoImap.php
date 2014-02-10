@@ -233,11 +233,14 @@
                     {
                         $imapMessage->to[$key]['name'] = imap_utf8($to->personal);
                     }
-                    else
+                    elseif (isset($to->mailbox))
                     {
                         $imapMessage->to[$key]['name'] = $to->mailbox;
                     }
-                    $imapMessage->to[$key]['email'] = $to->mailbox . '@' . $to->host;
+                    if (isset($to->mailbox) && isset($to->host))
+                    {
+                        $imapMessage->to[$key]['email'] = $to->mailbox . '@' . $to->host;
+                    }
                 }
             }
             if (isset($mailHeaderInfo->cc))
@@ -248,11 +251,14 @@
                     {
                         $imapMessage->cc[$key]['name'] = imap_utf8($cc->personal);
                     }
-                    else
+                    elseif (isset($cc->mailbox) && !isset($cc->host))
                     {
                         $imapMessage->cc[$key]['name'] = $cc->mailbox;
                     }
-                    $imapMessage->cc[$key]['email'] = $cc->mailbox . '@' . $cc->host;
+                    if (isset($cc->mailbox) && isset($cc->host))
+                    {
+                        $imapMessage->cc[$key]['email'] = $cc->mailbox . '@' . $cc->host;
+                    }
                 }
             }
 
@@ -404,7 +410,7 @@
                             if (strtolower($object->attribute) == 'filename')
                             {
                                 $attachment['is_attachment'] = true;
-                                $attachment['filename'] = $object->value;
+                                $attachment['filename'] = imap_utf8($object->value);
                             }
                         }
                     }
@@ -416,7 +422,7 @@
                             if (strtolower($object->attribute) == 'name')
                             {
                                 $attachment['is_attachment'] = true;
-                                $attachment['name'] = $object->value;
+                                $attachment['name'] = imap_utf8($object->value);
                             }
                         }
                     }

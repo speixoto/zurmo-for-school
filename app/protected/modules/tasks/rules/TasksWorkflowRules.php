@@ -47,7 +47,11 @@
             $metadata = array(
                 'Task' => array(
                     'cannotTrigger' =>
-                        array('files', 'notificationSubscribers', 'checkListItems', 'comments')
+                        array('files', 'notificationSubscribers', 'checkListItems', 'comments'),
+                    'availableOperatorsTypes' =>
+                        array('status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'triggerValueElementTypes' =>
+                        array('status' => 'TaskStatusStaticDropDownForWizardModel'),
                     ),
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
