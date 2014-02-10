@@ -1,0 +1,63 @@
+//should add this to zurmo.less where i define right/left columns
+.strong-right{
+	.left-column{
+		width: 30%;
+	}
+	.right-column{
+		width: 70%;
+	}
+}
+
+#builder{
+	.view-toolbar-container{
+		border-top:none;
+	}
+}
+
+#preview-template{
+	border: 1px solid #efefef;
+	min-height: 800px;
+	background: url("@{path}psd-light.png") left top repeat;
+	padding: 15px;
+}
+
+
+#building-blocks{
+	list-style: none;
+	li{
+		float: left;
+		width: 105px;
+		height: 105px;
+		margin:0 15px 15px 0;
+		//padding: 10px;
+		display: block;
+		div{
+			border: 3px solid #efefef;
+			.radius(2px);
+			text-align: center;
+			display: block;
+			height: 100%;
+			width: 100%;
+			position: relative;
+		}
+		i{
+			display: block;
+			text-align: center;
+			font-size: 80px;
+			line-height: 1px;
+			margin-top: 30px;
+			color: #ddd;
+		}
+		span{
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			padding: 10px 0;
+			background: #efefef;
+			color: #acacac;
+			font-size: 13px;
+			font-weight: bold;
+		}
+	}
+}
