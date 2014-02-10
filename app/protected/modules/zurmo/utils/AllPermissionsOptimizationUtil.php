@@ -151,9 +151,7 @@
             }
             elseif($permission == Permission::DENY)
             {
-                //Means owner only, and this also means this should have already been processed out before calling
-                //into static::checkPermissionsHasAnyOf
-                throw new NotSupportedException();
+                throw new AccessDeniedSecurityException($user, $requiredPermissions, Permission::DENY);
             }
             else
             {

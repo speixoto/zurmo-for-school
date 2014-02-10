@@ -55,6 +55,8 @@
                                                 "where identifier = '" . $identifier. "'");
                     if($row != null && isset($row['entry']))
                     {
+                        //Calling parent because we don't need to re-cache the db cache item
+                        parent::cacheEntry($identifier, $row['entry']);
                         return $row['entry'];
                     }
                 }

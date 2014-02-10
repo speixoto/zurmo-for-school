@@ -167,12 +167,15 @@
          * @param string $namedSecurableItemName
          * @param object $permitable
          * @param array $actualPermissions
+         * @param $cacheToDatabase
          */
-        public static function cacheNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable, $actualPermissions)
+        public static function cacheNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable, $actualPermissions,
+                                                                        $cacheToDatabase = true)
         {
             assert('is_string($namedSecurableItemName)');
             assert('$permitable instanceof Permitable');
             assert('is_array($actualPermissions)');
+            assert('is_bool($cacheToDatabase)');
             $cacheKeyName = $namedSecurableItemName . get_class($permitable) . $permitable->id . 'ActualPermissions';
             if (static::supportsAndAllowsPhpCaching())
             {
@@ -183,16 +186,16 @@
                 $prefix = static::getCachePrefix($cacheKeyName);
                 Yii::app()->cache->set($prefix . $cacheKeyName, serialize($actualPermissions));
             }
-            if (static::supportsAndAllowsDatabaseCaching())
+            if (static::supportsAndAllowsDatabaseCaching() && $cacheToDatabase)
             {
                 if($permitable->getClassId('Permitable') > 0)
                 {
-                ZurmoRedBean::exec("insert into named_securable_actual_permissions_cache
-                                 (securableitem_name, permitable_id, allow_permissions, deny_permissions)
-                                 values ('" . $namedSecurableItemName . "', " . $permitable->getClassId('Permitable') . ", " .
-                                              $actualPermissions[0] . ", " . $actualPermissions[1] . ") on duplicate key
-                                 update allow_permissions = " . $actualPermissions[0] . " AND deny_permissions = " .
-                                 $actualPermissions[1]);
+                    ZurmoRedBean::exec("insert into named_securable_actual_permissions_cache
+                                     (securableitem_name, permitable_id, allow_permissions, deny_permissions)
+                                     values ('" . $namedSecurableItemName . "', " . $permitable->getClassId('Permitable') . ", " .
+                                                  $actualPermissions[0] . ", " . $actualPermissions[1] . ") on duplicate key
+                                     update allow_permissions = " . $actualPermissions[0] . " AND deny_permissions = " .
+                                     $actualPermissions[1]);
                 }
             }
         }
@@ -237,6 +240,8 @@
                                                 "permitable_id = '" . $permitable->getClassId('Permitable'). "'");
                     if($row != null && isset($row['allow_permissions']) && isset($row['deny_permissions']))
                     {
+                        static::cacheNamedSecurableItemActualPermissions($namedSecurableItemName, $permitable,
+                                    array($row['allow_permissions'], $row['deny_permissions']), false);
                         return array($row['allow_permissions'], $row['deny_permissions']);
                     }
                 }

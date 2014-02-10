@@ -151,9 +151,6 @@
                 'controllerId'     => $this->getId(),
                 'relationModuleId' => $this->getModule()->getId(),
                 'relationModel'    => $user,
-                'rankingData'      => GamePointUtil::getUserRankingData($user),
-                'statisticsData'   => GameLevelUtil::getUserStatisticsData($user),
-                'badgeData'        => GameBadge::getAllByPersonIndexedByType($user)
             );
             $detailsAndRelationsView = new UserDetailsAndRelationsView($this->getId(),
                                                                        $this->getModule()->getId(),
