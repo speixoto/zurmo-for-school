@@ -145,7 +145,16 @@
             {
                 throw new NotSupportedException();
             }
-            $pageSize            = 50;
+            if($User_page == 1)
+            {
+                //to more quickly show the view to the user. To give a better indication of what is happening.
+                $pageSize = 1;
+            }
+            else
+            {
+                $pageSize = 50;
+            }
+
             $namedSecurableItems = array();
             $modules             = Module::getModuleObjects();
             foreach ($modules as $module)

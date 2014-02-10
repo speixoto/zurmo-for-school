@@ -59,13 +59,14 @@
             return $this->getMessagePrefix() . "&#160;" . $this->start . "&#160;-&#160;" . $this->getEndSize() .
                         "&#160;" . Zurmo::t('Core', 'of') . "&#160;" . $this->totalRecordCount . "&#160;" .
                         Zurmo::t('Core', 'total') . "&#160;" .
-                        Zurmo::t('Core', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
+                        Zurmo::t('Core', LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName($this->totalRecordCount, 'User'));
         }
 
         protected function getCompleteMessage()
         {
-            $content = $this->totalRecordCount . '&#160;' . LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount)
-                                                          . '&#160;' . $this->getCompleteMessageSuffix() . '.';
+            $content = $this->totalRecordCount . '&#160;' .
+                       LabelUtil::getUncapitalizedModelLabelByCountAndModelClassName($this->totalRecordCount, 'User')
+                       . '&#160;' . $this->getCompleteMessageSuffix() . '.';
             return $content;
         }
 
