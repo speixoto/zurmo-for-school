@@ -54,7 +54,8 @@
 
         public static function getFormClassNameByBuiltType($builtType)
         {
-            assert('is_string($builtType)');
+            assert('is_string($builtType) || is_int($builtType)');
+            $builtType = intval($builtType);
             if ($builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
             {
                 return 'BuilderEmailTemplateWizardForm';

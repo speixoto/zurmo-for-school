@@ -48,18 +48,25 @@
 
         protected function resolveDefaultContent()
         {
+            // TODO: @Shoaibi: Critical5: Better default content.
             return array('text' => '<u>This is default dummy content.</u>');
         }
 
-        protected function renderControlNonEditable()
+        protected function renderControlContentNonEditable()
         {
             return $this->content['text'];
         }
 
-        protected static function resolveThumbnailUrl()
+        protected function renderContentTab(ZurmoActiveForm $form)
         {
-            // TODO: @Shoaibi: Critical5: get rid of this dummy url.
-            return 'https://www.devexpress.com/Products/HTML-JS/i/widget-icons/textarea.png';
+            // TODO: @Shoaibi: Critical0: Implement.
+            return 'Content Edit form goes here';
+        }
+
+        protected function renderSettingsTab(ZurmoActiveForm $form)
+        {
+            // TODO: @Shoaibi: Critical0: Implement.
+            return 'Settings Edit form goes here';
         }
     }
 ?>

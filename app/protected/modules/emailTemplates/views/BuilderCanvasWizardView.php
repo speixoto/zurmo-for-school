@@ -182,6 +182,8 @@
                                                                                 "background-color" => "#ccc"),
                                                                             'some-non-style-property' => 3));
             $canvasContent  = $element->renderNonEditable();
+            $canvasContent  .= '<br/>';
+            $canvasContent  .= $element->renderEditable();
             $this->wrapContentInDiv($canvasContent, array('id' => 'canvas'));
             return $canvasContent;
         }

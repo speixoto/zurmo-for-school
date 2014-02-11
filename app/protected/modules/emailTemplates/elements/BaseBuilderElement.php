@@ -36,30 +36,84 @@
 
     abstract class BaseBuilderElement
     {
+        /**
+         * class nae for move action link
+         */
         const OVERLAY_ACTION_MOVE   = 'action-move';
 
+        /**
+         * class nae for edit action link
+         */
         const OVERLY_ACTION_EDIT    = 'action-edit';
 
+        /**
+         * class nae for delete action link
+         */
         const OVERLY_ACTION_DELETE  = 'action-delete';
 
+        /**
+         * @var int Id of current element, unique.
+         */
         protected $id;
 
+        /**
+         * @var array properties such as style
+         */
         protected $properties;
 
+        /**
+         * @var array actual content.
+         */
         protected $content;
 
+        /**
+         * @var bool if this element is being rendered for canvas or not.
+         * Non-editable rendering behavior varies depending on this.
+         * @see resolveCustomDataAttributesNonEditable()
+         * @see resolveNonEditableActions()
+         */
         protected $renderForCanvas = false;
 
+        /**
+         * Returns the default content for current element.
+         * @return array
+         */
         abstract protected function resolveDefaultContent();
 
-        abstract protected function renderControlNonEditable();
+        /**
+         * Returns the non-editable output for current element.
+         * @return string
+         */
+        abstract protected function renderControlContentNonEditable();
 
+        /**
+         * Rendering and return content for Content tab.
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
+        abstract protected function renderContentTab(ZurmoActiveForm $form);
+
+        /**
+         * Render and Return content for Settings Tab. Returning null hides settings tab from appearing.
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
+        abstract protected function renderSettingsTab(ZurmoActiveForm $form);
+
+        /**
+         * @return bool If this element should be shown on the drag-n-drop sidebar.
+         */
         public static function isUIAccessible()
         {
             return false;
         }
 
-        public static function resolveDroppableWidget($widgetWrapper = 'li')
+        /**
+         * Generate the widget html definition to be put on the left sidebar of drag-n-drop elements.
+         * @param string $widgetWrapper the html wrapper tag to use for widget html. Defauls to li.
+         * @return string
+         */
+        public static final function resolveDroppableWidget($widgetWrapper = 'li')
         {
             $label          = static::resolveLabel();
             $label          = ZurmoHtml::tag('span', array(), $label);
@@ -72,36 +126,66 @@
             return $widget;
         }
 
+        /**
+         * Return translated label for current Element.
+         * @throws NotImplementedException
+         */
         protected static function resolveLabel()
         {
             throw new NotImplementedException('Children element should specify their own label');
         }
 
-        protected static function resolveThumbnailBaseUrl()
+        /**
+         * Returns the relative url to the directory containing element thumbnails.
+         * @return string
+         */
+        protected static final function resolveThumbnailBaseUrl()
         {
             return Yii::app()->themeManager->baseUrl . '/default/email-templates/elements/';
         }
 
-        protected static function resolveThumbnailName()
+        /**
+         * Returns the element thumbnail name.
+         * @return string
+         */
+        protected static final function resolveThumbnailName()
         {
             return strtolower(get_called_class()) . '.png';
         }
 
-        protected static function resolveThumbnailUrl()
+        /**
+         * Returns the relative thumbnail url
+         * @return string
+         */
+        protected static final function resolveThumbnailUrl()
         {
             return static::resolveThumbnailBaseUrl() . static::resolveThumbnailName();
         }
 
+        /**
+         * Returns html options to be applied to element thumbnail
+         * @return array
+         */
         protected static function resolveThumbnailHtmlOptions()
         {
             return array('class' => 'builder-element-droppable-thumbnail');
         }
 
+        /**
+         * Returns html options to be applied to element's widget html.
+         * @return array
+         */
         protected static function resolveWidgetHtmlOptions()
         {
             return  array('id' => get_called_class(), 'class' => 'builder-element builder-element-droppable');
         }
 
+        /**
+         * @param bool $renderForCanvas whether element is being rendered for canvas or not.
+         * @param null $id the html dom id.
+         * @param null $properties properties for this element, style and such.
+         * @param null $content content for this element.
+         */
         public function __construct($renderForCanvas = false, $id = null, $properties = null, $content = null)
         {
             $this->renderForCanvas  = $renderForCanvas;
@@ -110,26 +194,33 @@
             $this->initContent($content);
         }
 
-        public function renderNonEditable()
+        /**
+         * Render current element as nonEditable with all the bells and whistles
+         * @return string
+         */
+        public final function renderNonEditable()
         {
-            $elementContent = $this->renderWrappedControlNonEditableContent();
+            $elementContent = $this->renderControlContentNonEditable();
+            $elementContent = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), $elementContent);
             $wrappedContent = $this->renderControlWrapperNonEditable($elementContent);
             return $wrappedContent;
         }
 
-        protected function renderWrappedControlNonEditableContent()
-        {
-            $elementContent = $this->renderControlNonEditable();
-            $content        = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), $elementContent);
-            return $content;
-        }
-
+        /**
+         * Return html options for the nonEditable representation wrapper.
+         * @return array
+         */
         protected function resolveControlNonEditableContentHtmlOptions()
         {
             return array('class' => 'builder-element-content');
         }
 
-        protected function renderControlWrapperNonEditable($elementContent = '{{dummyContent}}')
+        /**
+         * Render current element nonEditable with its wrapper including custom data attributes, properties and overlay actions.
+         * @param string $elementContent
+         * @return string
+         */
+        protected final function renderControlWrapperNonEditable($elementContent = '{{dummyContent}}')
         {
             $customDataAttributes   = $this->resolveCustomDataAttributesNonEditable();
             $properties             = $this->resolvePropertiesNonEditable();
@@ -138,6 +229,14 @@
             return $content;
         }
 
+        /**
+         * Render the actual wrapper for nonEditable representation bundling provided information.
+         * @param $elementContent
+         * @param $properties
+         * @param $customDataAttributes
+         * @param $actionsOverlay
+         * @return string
+         */
         protected function resolveWrapperNonEditable($elementContent, $properties, $customDataAttributes, $actionsOverlay)
         {
             $content        = '<table id="' . $this->id . '" ';
@@ -153,7 +252,11 @@
             return $content;
         }
 
-        protected function resolvePropertiesNonEditable()
+        /**
+         * Resolve element's properties for nonEditable representation.
+         * @return string
+         */
+        protected final function resolvePropertiesNonEditable()
         {
             $mergedProperties   = CMap::mergeArray($this->resolveNonEditableWrapperHtmlOptions(), $this->properties);
             $styleProperties    = $this->resolveStylePropertiesNonEditable($mergedProperties);
@@ -162,7 +265,12 @@
             return $properties;
         }
 
-        protected function resolveStylePropertiesNonEditable(array & $mergedProperties)
+        /**
+         * Resolve style properties to be applied to nonEditable representation's wrapper as inline style
+         * @param array $mergedProperties
+         * @return null|string
+         */
+        protected final function resolveStylePropertiesNonEditable(array & $mergedProperties)
         {
             if (isset($mergedProperties['style']))
             {
@@ -175,22 +283,45 @@
             }
         }
 
-        protected function resolveNonStylePropertiesNonEditable(array $mergedProperties)
+        /**
+         * Resolve non-style properties to be applied to nonEditable representation's wrapper inline.
+         * @param array $mergedProperties
+         * @return string
+         */
+        protected final function resolveNonStylePropertiesNonEditable(array $mergedProperties)
         {
             $nonStyleProperties = ' ';
             $nonStyleProperties .= $this->stringifyProperties($mergedProperties, null, '=', "'", "' ");
             return $nonStyleProperties;
         }
 
-        protected function stringifyProperties(array $properties, $keyPrefix = null, $keySuffix = null,
-                                                    $valuePrefix = null, $valueSuffix = null)
+        /**
+         * Stringify properties by combing keys and values using a set of prefixes and suffices.
+         * @param array $properties
+         * @param null $keyPrefix
+         * @param null $keySuffix
+         * @param null $valuePrefix
+         * @param null $valueSuffix
+         * @return null|string
+         */
+        protected final function stringifyProperties(array $properties, $keyPrefix = null, $keySuffix = null,
+                                                        $valuePrefix = null, $valueSuffix = null)
         {
             $content    = $this->stringifyArray($properties, $keyPrefix, $keySuffix, $valuePrefix, $valueSuffix);
             return $content;
         }
 
-        protected function stringifyArray(array $array, $keyPrefix = null, $keySuffix = null,
-                                          $valuePrefix = null, $valueSuffix = null)
+        /**
+         * Stringify an array by combining keys and value using a set of prefixes and suffices.
+         * @param array $array
+         * @param null $keyPrefix
+         * @param null $keySuffix
+         * @param null $valuePrefix
+         * @param null $valueSuffix
+         * @return null|string
+         */
+        protected final function stringifyArray(array $array, $keyPrefix = null, $keySuffix = null,
+                                                    $valuePrefix = null, $valueSuffix = null)
         {
             $content    = null;
             foreach ($array as $key => $value)
@@ -200,7 +331,11 @@
             return $content;
         }
 
-        protected function resolveCustomDataAttributesNonEditable()
+        /**
+         * Resolve the custom data attributes for nonEditable representation wrapper.
+         * @return null|string
+         */
+        protected final function resolveCustomDataAttributesNonEditable()
         {
             if (!$this->renderForCanvas)
             {
@@ -212,7 +347,11 @@
             return $cda;
         }
 
-        protected function resolveNonEditableActions()
+        /**
+         * Resolve the nonEditable representation's overlay actions for wrapper.
+         * @return null|string
+         */
+        protected final function resolveNonEditableActions()
         {
             if (!$this->renderForCanvas)
             {
@@ -221,16 +360,23 @@
             $overlayLinksContent    = $this->resolveAvailableNonEditableActionLinkContent();
             $overlayContent         = ZurmoHtml::tag('div', $this->resolveNonEditableActionsHtmlOptions(), $overlayLinksContent);
             return $overlayContent;
-
         }
 
+        /**
+         * Resolve html options for the nonEditable representation's overlay actions container.
+         * @return array
+         */
         protected function resolveNonEditableActionsHtmlOptions()
         {
             return array('class' => 'builder-element-toolbar',
                             'id' => 'element-actions-' . $this->id);
         }
 
-        protected function resolveAvailableNonEditableActionLinkContent()
+        /**
+         * Resolve the nonEditable representation's overlay action items combined together.
+         * @return null|string
+         */
+        protected final function resolveAvailableNonEditableActionLinkContent()
         {
             $availableActions   = $this->resolveAvailableNonEditableActionsArray();
             $overlayLinkContent = null;
@@ -243,32 +389,412 @@
             return $overlayLinkContent;
         }
 
+        /**
+         * Return the available overlay actions for nonEditable representation
+         * @return array
+         */
         protected function resolveAvailableNonEditableActionsArray()
         {
             return array(static::OVERLAY_ACTION_MOVE, static::OVERLY_ACTION_EDIT, static::OVERLY_ACTION_DELETE);
         }
 
+        /**
+         * Resolve html options for nonEditable representation's wrapper
+         * @return array
+         */
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             return array('class' => 'builder-element-non-editable element-data');
         }
 
+        /**
+         * Rending current element's editable representation
+         * @return string
+         */
+        public final function renderEditable()
+        {
+            $formTitle                  = $this->resolveFormatterFormTitle();
+            $formContent                = $this->renderFormContent();
+            $content                    = $formTitle . $formContent;
+            $content                    = ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
+            return $content;
+        }
 
-        public function renderEditable()
+        /**
+         * Render Editable representation's Form content.
+         * @return string
+         */
+        protected final function renderFormContent()
+        {
+            $this->registerActiveFormScripts();
+            $clipWidget             = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget($this->resolveActiveFormClassName(),
+                                                                        $this->resolveActiveFormOptions());
+            $formStart              .= $this->renderBeforeFormLayout();
+            $formEnd                = $this->renderAfterFormLayout();
+            $formEnd                .= $this->renderFormActionLinks();
+            $formEnd                .= $clipWidget->renderEndWidget();
+
+            $contentTabContent      = $this->renderContentTab($form);
+            $settingsTabContent     = $this->renderSettingsTab($form);
+            $formContent            = $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
+            $formContent            .= $this->renderHiddenFields($form);
+
+            $content                = $formStart . $formContent . $formEnd;
+            $content                = ZurmoHtml::tag('div', array('class' => 'wide form'), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve form title.
+         */
+        protected function resolveFormTitle()
+        {
+            return $this->resolveLabel();
+        }
+
+        /**
+         * Resolve form title with some formatting.
+         * @return string
+         */
+        protected function resolveFormatterFormTitle()
+        {
+            $formTitle                  = ZurmoHtml::tag('h2', array(), $this->resolveFormTitle());
+            $formTitle                  = ZurmoHtml::tag('center', array(), $formTitle);
+            return $formTitle;
+        }
+
+        /**
+         * Resolve Class name for Active Form
+         * @return string
+         */
+        protected function resolveActiveFormClassName()
+        {
+            return 'ZurmoActiveForm';
+        }
+
+        /**
+         * Resolve Active form options array
+         * @return array
+         */
+        protected final function resolveActiveFormOptions()
+        {
+            $options = array('id'                       => $this->resolveFormId(),
+                            'action'                    => $this->resolveFormActionUrl(),
+                            'enableAjaxValidation'      => $this->resolveEnableAjaxValidation(),
+                            'clientOptions'             => $this->resolveFormClientOptions(),
+                            'htmlOptions'               => $this->resolveFormHtmlOptions());
+            $customActiveFormOptions    = $this->resolveActiveFormCustomOptions();
+            $options    = CMap::mergeArray($options, $customActiveFormOptions);
+            return $options;
+        }
+
+        /**
+         * Resolve form id
+         * @return string
+         */
+        protected function resolveFormId()
+        {
+            $formId = $this->id . '-edit-form';
+            return $formId;
+        }
+
+        /**
+         * Resolve form action url. This url is also used by the ajax post.
+         * @return mixed
+         */
+        protected function resolveFormActionUrl()
+        {
+            $params = array('elementClassName' => get_class($this), 'elementId' => $this->id);
+            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditableByPost', $params);
+        }
+
+        /**
+         * Render and return any special hidden fields.
+         * @param $form
+         */
+        protected function renderHiddenFields($form)
+        {
+            // render any specific hidden forms here. Ideally we should not even need this.
+        }
+
+        /**
+         * Wrap content and settings tab into a tab container and return output.
+         * @param $contentTab
+         * @param null $settingsTab
+         * @return string
+         */
+        protected final function renderWrappedContentAndSettingsTab($contentTab, $settingsTab = null)
+        {
+            $contentTabClass        = 'active-tab';
+            $settingsTabClass       = null;
+            $settingsTabHyperLink   = null;
+            $settingsTabContentDiv  = null;
+            $contentTabHyperLink    = ZurmoHtml::link($this->renderContentTabLabel(), '#tab1',
+                                                        array('class' => $contentTabClass));
+            $contentTabDiv          = ZurmoHtml::tag('div', array('id' => 'tab1',
+                                                                    'class' => $contentTabClass .
+                                                                                ' tab element-edit-form-content-tab'),
+                                                            $contentTab);
+            if (isset($settingsTab))
+            {
+                $this->registerTabbedContentScripts();
+                $settingsTabHyperLink   = ZurmoHtml::link($this->renderSettingsTabLabel(), '#tab2',
+                                                            array('class' => $settingsTabClass));
+                $settingsTabContentDiv  = ZurmoHtml::tag('div', array('id' => 'tab2',
+                                                                    'class' => $settingsTabClass .
+                                                                                ' tab element-edit-form-settings-tab'),
+                                                                $settingsTab);
+            }
+            $tabContent             = ZurmoHtml::tag('div', array('class' => 'tabs-nav'),
+                                                            $contentTabHyperLink . $settingsTabHyperLink);
+            $content                = ZurmoHtml::tag('div', array('class' => 'edit-form-tab-content'),
+                                                            $tabContent . $contentTabDiv . $settingsTabContentDiv);
+            return $content;
+        }
+
+        /**
+         * Render Content Tab Label
+         * @return string
+         */
+        protected function renderContentTabLabel()
+        {
+            return Zurmo::t('Core', 'Content');
+        }
+
+        /**
+         * Render Settings Tab Label
+         * @return string
+         */
+        protected function renderSettingsTabLabel()
+        {
+            return Zurmo::t('Core', 'Settings');
+        }
+
+        /**
+         * Register Javascript to handle tab switches
+         */
+        protected function registerTabbedContentScripts()
+        {
+            // TODO: @Shoaibi/@Amit: Critical0: There is bug with tab switch script/css.
+            $scriptName = 'element-edit-form-tab-switch-handler';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('.tabs-nav a:not(.simple-link)').click( function()
+                        {
+                            //the menu items
+                            $('.active-tab', $(this).parent()).removeClass('active-tab');
+                            $(this).addClass('active-tab');
+                            //the sections
+                            var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                            _old.fadeToggle();
+                            var _new = $( $(this).attr('href') );
+                            _new.fadeToggle(150, 'linear', function()
+                            {
+                                    _old.removeClass('active-tab');
+                                    _new.addClass('active-tab');
+                            });
+                            return false;
+                        });
+                    ");
+            }
+        }
+
+        /**
+         * Render form action buttons.
+         * @return string
+         */
+        protected function renderFormActionLinks()
+        {
+            $content    = $this->renderCancelLink();
+            $content   .= $this->renderApplyLink();
+            $content    = ZurmoHtml::tag('div', array('class' => 'form-toolbar'), $content);
+            return $content;
+        }
+
+        /**
+         * Render Cancel Action Link
+         * @return string
+         */
+        protected function renderCancelLink()
+        {
+            $this->registerCancelScript();
+            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $this->renderCancelLinkLabel());
+            $link   = ZurmoHtml::link($label, '#', $this->resolveCancelLinkHtmlOptions());
+            return $link;
+        }
+
+        /**
+         * Resolve Cancel Link html options
+         * @return array
+         */
+        protected function resolveCancelLinkHtmlOptions()
+        {
+            return array('id' => $this->resolveCancelLinkId(), 'class' => 'cancel-button');
+        }
+
+        /**
+         * Resolve link id for Cancel Link
+         * @return string
+         */
+        protected function resolveCancelLinkId()
+        {
+            return 'elementEditFormCancelLink';
+        }
+
+        /**
+         * Render Label for Cancel Link
+         * @return string
+         */
+        protected function renderCancelLinkLabel()
+        {
+            return Zurmo::t('Core', 'Cancel');
+        }
+
+        /**
+         * Render Apply Action Link
+         * @return string
+         */
+        protected function renderApplyLink()
+        {
+            $this->registerAjaxPostForApplyClickScript();
+            $params                = array();
+            $params['label']       = $this->renderApplyLinkLabel();
+            $params['htmlOptions'] = $this->resolveApplyLinkHtmlOptions();
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
+        }
+
+        /**
+         * Resolve html options for Apply link
+         * @return array
+         */
+        protected function resolveApplyLinkHtmlOptions()
+        {
+            return array('id' => $this->resolveApplyLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+        }
+
+        /**
+         * Resolve link id for apply link
+         * @return string
+         */
+        protected function resolveApplyLinkId()
+        {
+            return 'elementEditFormApplyLink';
+        }
+
+        /**
+         * Render label for for Apply Link
+         * @return string
+         */
+        protected function renderApplyLinkLabel()
+        {
+            return Zurmo::t('Core', 'Apply');
+        }
+
+        /**
+         * Register any additional Javascript snippets
+         */
+        protected function registerActiveFormScripts()
         {
 
         }
 
+        /**
+         * Register javascript snippet to handle clicking apply link
+         */
+        protected function registerAjaxPostForApplyClickScript()
+        {
+            // TODO: @Shoaibi: Critical0: Implement.
+        }
+
+        /**
+         * Register javascript snippet to handle clicking cancel link
+         */
+        protected function registerCancelScript()
+        {
+            // TODO: @Shoaibi: Critical0: Implement.
+        }
+
+        /**
+         * If form should allow ajax validation or not.
+         * @return bool
+         */
+        protected function resolveEnableAjaxValidation()
+        {
+            return false;
+        }
+
+        /**
+         * Resolve any special client options
+         * @return array
+         */
+        protected function resolveFormClientOptions()
+        {
+            return array();
+        }
+
+        /**
+         * Resolve html options for form.
+         * @return array
+         */
+        protected function resolveFormHtmlOptions()
+        {
+            return array();
+        }
+
+        /**
+         * Resolve custom options for form
+         * @return array
+         */
+        protected function resolveActiveFormCustomOptions()
+        {
+            return array();
+        }
+
+        /**
+         * Render and return content that should be part of form but added before any input are rendered.
+         */
+        protected function renderBeforeFormLayout()
+        {
+
+        }
+
+        /**
+         * Render and return content that should be part of form but added before action links are rendered.
+         */
+        protected function renderAfterFormLayout()
+        {
+
+        }
+
+        /**
+         * Generate a unique id
+         * @return string
+         */
         protected function generateId()
         {
             return (strtolower(get_class($this)) . '_' . uniqid(time() . '_'));
         }
 
+        /**
+         * Resolve default properties
+         * @return array
+         */
         protected function resolveDefaultProperties()
         {
             return array();
         }
 
+        /**
+         * Initialize Id. Generate a new one if parameter is not set,
+         * @param null $id
+         */
         protected function initId($id = null)
         {
             if (!isset($id))
@@ -278,6 +804,10 @@
             $this->id   = $id;
         }
 
+        /**
+         * Initialize properties. Set to default one if parameter is not set,
+         * @param null $properties
+         */
         protected function initProperties($properties = null)
         {
             if (!isset($properties))
@@ -287,6 +817,10 @@
             $this->properties   = $properties;
         }
 
+        /**
+         * Initialize content. Set to default one if parameter is not set,
+         * @param null $content
+         */
         protected function initContent($content = null)
         {
             if (!isset($content))

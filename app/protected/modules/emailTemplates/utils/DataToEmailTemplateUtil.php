@@ -100,7 +100,7 @@
             if (static::hasBaseTemplateIdChanged($postUnserializedData['baseTemplateId'], $templateUnserializedData['baseTemplateId']))
             {
                 // baseTemplateId has changed.
-                $baseTemplateModel  = EmailTemplate::getById($postUnserializedData['baseTemplateId']);
+                $baseTemplateModel  = EmailTemplate::getById(intval($postUnserializedData['baseTemplateId']));
                 $unserializedData   = unserialize($baseTemplateModel->serializedData);
                 unset($unserializedData['thumbnailUrl']);
                 $unserializedData['baseTemplateId'] = $postUnserializedData['baseTemplateId'];
