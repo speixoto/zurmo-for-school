@@ -205,7 +205,10 @@
         public function actionGetNewElement($className)
         {
             //TODO: @sergio: Is this the real action needed or are we using another one? @see EmailTemplateEditor
-            echo ZurmoHtml::tag('div', array(), $className);
+            $handleSpan   = ZurmoHtml::tag('span', array('class' => 'handle-element ui-icon-arrow-4'), '');
+            $settingsSpan = ZurmoHtml::tag('span', array('class' => 'ui-icon-wrench'), '');
+            $removeSpan   = ZurmoHtml::tag('span', array('class' => 'ui-icon-trash'), '');
+            echo ZurmoHtml::tag('div', array(), $handleSpan . $settingsSpan . $removeSpan . $className);
         }
 
         public function actionEdit($id, $redirectUrl = null)

@@ -81,16 +81,25 @@
                 <table class="body">
                     <tr>
                         <td class="sortable-rows" align="center" valign="top">
+
                                 <table class="row header">
                                     <tr>
                                         <td>
+                                            <span class="ui-icon-arrow-4"></span>
+                                            <span class="ui-icon-wrench"></span >
+                                            <span class="ui-icon-trash"></span>
                                             <table class="container" data-row-id="1">
                                                 <tr>
                                                     <td class="wrapper last">
                                                         <table class="twelve columns">
                                                             <tr>
                                                                 <td  class="sortable-elements">
-                                                                    <div><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></div>
+                                                                    <div>
+                                                                        <span class="ui-icon-arrow-4"></span>
+                                                                        <span class="ui-icon-wrench"></span >
+                                                                        <span class="ui-icon-trash"></span>
+                                                                        <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                                    </div>
                                                                 </td>
                                                                 <td class="expander"></td>
                                                             </tr>
@@ -105,6 +114,9 @@
                                 <table class="container">
                                       <tr>
                                          <td>
+                                          <span class="ui-icon-arrow-4"></span>
+                                          <span class="ui-icon-wrench"></span >
+                                          <span class="ui-icon-trash"></span>
                                           <table class="row" data-row-id="2">
                                             <tr>
 
@@ -113,7 +125,12 @@
                                                 <table class="six columns" data-column-id="1">
                                                   <tr>
                                                     <td class="sortable-elements">
-                                                        <div><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></div>
+                                                        <div>
+                                                            <span class="ui-icon-arrow-4"></span>
+                                                            <span class="ui-icon-wrench"></span >
+                                                            <span class="ui-icon-trash"></span>
+                                                            <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                        </div>
                                                     </td>
                                                     <td class="expander"></td>
                                                   </tr>
@@ -126,7 +143,12 @@
                                                 <table class="six columns" data-column-id="2">
                                                   <tr>
                                                     <td class="sortable-elements">
-                                                        <div><img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png"></div>
+                                                        <div>
+                                                            <span class="ui-icon-arrow-4"></span>
+                                                            <span class="ui-icon-wrench"></span >
+                                                            <span class="ui-icon-trash"></span>
+                                                            <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                        </div>
                                                     </td>
                                                     <td class="expander"></td>
                                                   </tr>

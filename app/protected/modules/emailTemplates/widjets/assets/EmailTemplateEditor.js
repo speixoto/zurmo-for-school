@@ -104,7 +104,7 @@ var emailTemplateEditor = {
         $( selector ).sortable({
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
-            handle: "table",
+            handle: "span.ui-icon-arrow-4",
             stop: function( event, ui ) {
                 if (ui.item.is('div')) {
                     ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
