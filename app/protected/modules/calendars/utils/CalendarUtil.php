@@ -720,11 +720,7 @@
             {
                 throw new FailedToSaveModelException();
             }
-            else
-            {
-                echo CJSON::encode(array('redirect' => true));
-                Yii::app()->end(0, false);
-            }
+            return true;
         }
 
         /**

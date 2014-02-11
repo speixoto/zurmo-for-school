@@ -257,7 +257,7 @@
                 'url'      =>  $this->getValidateAndSaveUrl(),
                 'success'  => "function(data)
                               {
-                                  if(data.hasOwnProperty('redirect'))
+                                  if(data.hasOwnProperty('redirecttodetails'))
                                   {
                                      $(location).attr('href', '{$url}');
                                   }

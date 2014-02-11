@@ -70,10 +70,10 @@
          */
         public function actionCreate()
         {
-            $savedCalendar                  = new SavedCalendar();
-            $savedCalendar->moduleClassName = 'MeetingsModule';
-            $attributes                     = CalendarUtil::getModelAttributesForSelectedModule($savedCalendar->moduleClassName);
-            $attributeKeys                  = array_keys($attributes);
+            $savedCalendar                     = new SavedCalendar();
+            $savedCalendar->moduleClassName    = 'MeetingsModule';
+            $attributes                        = CalendarUtil::getModelAttributesForSelectedModule($savedCalendar->moduleClassName);
+            $attributeKeys                     = array_keys($attributes);
             $savedCalendar->startAttributeName = $attributeKeys[0];
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->resolveReportDataAndSaveCalendar($savedCalendar), 'Edit');
@@ -202,16 +202,31 @@
                     $report = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
                     DataToReportUtil::resolveFiltersStructure($postData[$wizardFormClassName], $report);
                     DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report);
-
                     //This would do the filter and filter structure validation
                     $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
                     $model                     = $reportToWizardFormAdapter->makeFormByType();
                     if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
                     {
                         $postData['validationScenario'] = $wizardFormClassName::FILTERS_VALIDATION_SCENARIO;
-                        ReportUtil::validateReportWizardForm($postData, $model);
+                        $errorData = ReportUtil::validateReportWizardForm($postData, $model);
+                        if(count($errorData) > 0)
+                        {
+                            echo CJSON::encode($errorData);
+                            Yii::app()->end(0, false);
+                        }
+                        else
+                        {
+                            if(CalendarUtil::saveCalendarWithSerializedData($report,
+                                                                            $savedCalendar,
+                                                                            $postData[$wizardFormClassName]))
+                            {
+                                /*header('Content-Type: application/json');
+                                echo CJSON::encode(array('redirecttodetails' => true));
+                                Yii::app()->end(0, true);*/
+                             $this->redirect(Yii::app()->createUrl('calendars/default/details'));
+                            }
+                        }
                     }
-                    CalendarUtil::saveCalendarWithSerializedData($report, $savedCalendar, $postData[$wizardFormClassName]);
                 }
                 else
                 {

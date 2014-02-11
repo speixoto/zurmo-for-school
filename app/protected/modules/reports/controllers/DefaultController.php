@@ -185,7 +185,9 @@
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
             {
-                ReportUtil::validateReportWizardForm($postData, $model);
+                $errorData = ReportUtil::validateReportWizardForm($postData, $model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
             }
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveByPostDataAndModelThenMake($postData[get_class($model)], $savedReport);
