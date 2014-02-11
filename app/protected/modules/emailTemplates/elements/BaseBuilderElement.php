@@ -112,7 +112,7 @@
 
         public function renderNonEditable()
         {
-            $elementContent = $this->renderControlNonEditable();
+            $elementContent = $this->renderWrappedControlNonEditableContent();
             $wrappedContent = $this->renderControlWrapperNonEditable($elementContent);
             return $wrappedContent;
         }
@@ -248,7 +248,6 @@
             return array(static::OVERLAY_ACTION_MOVE, static::OVERLY_ACTION_EDIT, static::OVERLY_ACTION_DELETE);
         }
 
-
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             return array('class' => 'builder-element-non-editable element-data');
@@ -256,11 +255,6 @@
 
 
         public function renderEditable()
-        {
-
-        }
-
-        protected function resolveEditableWrappedHtmlOptions()
         {
 
         }
