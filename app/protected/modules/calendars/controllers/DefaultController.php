@@ -95,21 +95,19 @@
         /**
          * Edit the calendar.
          * @param int $id
-         * @param string $redirectUrl
          */
-        public function actionEdit($id, $redirectUrl = null)
+        public function actionEdit($id)
         {
             $savedCalendar = SavedCalendar::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
-            $this->processEdit($savedCalendar, $redirectUrl);
+            $this->processEdit($savedCalendar);
         }
 
         /**
          * Process edit of the calendar.
          * @param SavedCalendar $calendar
-         * @param string $redirectUrl
          */
-        protected function processEdit(SavedCalendar $calendar, $redirectUrl = null)
+        protected function processEdit(SavedCalendar $calendar)
         {
             $this->attemptToValidateAjaxFromPost($calendar, 'SavedCalendar');
             if (isset($_POST['SavedCalendar']))
