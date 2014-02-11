@@ -38,6 +38,12 @@
     {
         protected $dataAndLabels = null;
 
+        //Not used, we override getEditableInputId and getEditableInputName
+        protected function getFormName()
+        {
+            return null;
+        }
+
         protected function assertModelType()
         {
             assert('$this->model->{$this->attribute} instanceof MultipleValuesCustomField');
@@ -94,6 +100,18 @@
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text($this->model->getAttributeLabel($this->attribute));
+        }
+
+        protected function getEditableInputId($attributeName = null, $relationAttributeName = null)
+        {
+            $inputPrefix = $this->resolveInputIdPrefix();
+            return $inputPrefix . $this->getUnqualifiedIdForIdField();
+        }
+
+        protected function getEditableInputName($attributeName = null, $relationAttributeName = null)
+        {
+            $inputPrefix = $this->resolveInputNamePrefix();
+            return $inputPrefix . $this->getUnqualifiedNameForIdField();
         }
     }
 ?>

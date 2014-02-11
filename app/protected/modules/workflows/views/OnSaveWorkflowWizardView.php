@@ -154,7 +154,7 @@
                 $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        url = '" . Yii::app()->createUrl('workflows/default/index') . "';
+                        url = '" . Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/index') . "';
                         window.location.href = url;
                         return false;
                     }

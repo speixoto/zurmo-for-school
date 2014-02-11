@@ -36,6 +36,7 @@
 
     class EmailTemplateEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        // TODO: @Shoaibi: Critical; We don't need edit part of this at least.
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -102,7 +103,7 @@
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
             if ($elementInformation['attributeName'] == 'modelClassName' &&
-               $this->model->type == EmailTemplate::TYPE_CONTACT)
+               $this->model->isContactTemplate())
             {
                 $elementInformation['attributeName'] = null;
                 $elementInformation['type']          = 'NoCellNull'; // Not Coding Standard
@@ -111,6 +112,7 @@
 
         protected function renderAfterFormLayout($form)
         {
+            // TODO: @Shoaibi/@Jason: Critical: Do we even need this js?
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
                         $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
@@ -144,7 +146,7 @@
 
         protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)
         {
-            if ($this->model->type == EmailTemplate::TYPE_CONTACT)
+            if ($this->model->isContactTemplate())
             {
                 return $form->hiddenField($this->model, 'modelClassName', array());
             }
@@ -169,7 +171,8 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            $content = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            return $content;
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)

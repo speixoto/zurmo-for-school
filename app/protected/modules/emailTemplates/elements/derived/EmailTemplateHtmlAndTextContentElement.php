@@ -76,9 +76,10 @@
 
         protected function resolveTabbedContent($plainTextContent, $htmlContent, $activeTab = 'text')
         {
-            $this->registerTabbedContentScripts();
             $textClass = 'active-tab';
             $htmlClass = null;
+            $htmlTabHyperLink = null;
+            $htmlContentDiv = null;
             if ($activeTab == 'html')
             {
                 $textClass = null;
@@ -87,9 +88,19 @@
             $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(),
                                                   '#tab1',
                                                   array('class' => $textClass));
-            $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(),
-                                                  '#tab2',
-                                                  array('class' => $htmlClass));
+            $plainTextDiv       = ZurmoHtml::tag('div', array('id' => 'tab1',
+                                                        'class' => $textClass . ' tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
+                                                    $plainTextContent);
+            if (isset($htmlContent))
+            {
+                $this->registerTabbedContentScripts();
+                $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(),
+                                                          '#tab2',
+                                                          array('class' => $htmlClass));
+                $htmlContentDiv     = ZurmoHtml::tag('div', array('id' => 'tab2',
+                                                        'class' => $htmlClass . ' tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
+                                                    $htmlContent);
+            }
             $tagsGuideLink      = null;
             if ($this->form)
             {
@@ -100,16 +111,8 @@
                 $tagsGuideLink          = $tagsGuideLinkElement->render();
             }
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
-
-            $plainTextDiv       = ZurmoHtml::tag('div',
-                                                array('id' => 'tab1',
-                                                      'class' => $textClass . ' tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
-                                                $plainTextContent);
-            $htmlContentDiv     = ZurmoHtml::tag('div',
-                                                array('id' => 'tab2',
-                                                      'class' => $htmlClass . ' tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
-                                                $htmlContent);
-            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+            $content = ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+            return $content;
         }
 
         protected function registerTabbedContentScripts()
@@ -145,26 +148,49 @@
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == null');
-            $activeTab = $this->getActiveTab();
-            $url = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
-                                    array('id' => $this->model->id, 'className' => get_class($this->model)));
-            $htmlContent = "<iframe src='{$url}' class='redactor-iframe' width='100%' height='100%' frameborder='0' seamless></iframe>";
-            return $this->resolveTabbedContent($this->model->textContent, $htmlContent, $activeTab);
+            $textContent    = $this->model->textContent;
+            $activeTab      = $this->getActiveTab();
+            $htmlContent    = $this->renderNonEditableHtmlContentArea();
+            $content        = $this->resolveTabbedContent($textContent, $htmlContent, $activeTab);
+            return $content;
         }
 
         protected function renderControlEditable()
         {
-            $activeTab = $this->getActiveTab();
-            return $this->resolveTabbedContent($this->renderTextContentArea(), $this->renderHtmlContentArea(), $activeTab);
+            $textContent    = $this->renderTextContentArea();
+            $activeTab      = $this->getActiveTab();
+            $htmlContent    = $this->renderEditableHtmlContentArea();
+            $content        = $this->resolveTabbedContent($textContent, $htmlContent, $activeTab);
+            return $content;
         }
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent))
+            if (empty($this->model->textContent) && $this->model->isPastedHtmlTemplate())
             {
                 return 'html';
             }
             return 'text';
+        }
+
+        protected function renderEditableHtmlContentArea()
+        {
+            if ($this->model->isPastedHtmlTemplate())
+            {
+                return $this->renderHtmlContentArea();
+            }
+            return null;
+        }
+
+        protected function renderNonEditableHtmlContentArea()
+        {
+            if ($this->model->isPastedHtmlTemplate())
+            {
+                $url            = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
+                                    array('id' => $this->model->id, 'className' => get_class($this->model)));
+                return "<iframe src='{$url}' class='redactor-iframe' width='100%' height='100%' frameborder='0' seamless></iframe>";
+            }
+            return null;
         }
 
         // REVIEW : @Shoaibi Create a HTML element out of it.
@@ -227,6 +253,11 @@
         protected function getModuleId()
         {
             return 'emailTemplates';
+        }
+
+        protected function renderPlainTextOnly()
+        {
+            return ($this->model->isPlainTextTemplate() || $this->model->isBuilderTemplate());
         }
     }
 ?>

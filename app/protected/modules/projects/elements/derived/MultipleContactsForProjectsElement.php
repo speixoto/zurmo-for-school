@@ -41,6 +41,11 @@
      */
     class MultipleContactsForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
+        protected function getFormName()
+        {
+            return 'ProjectContactsForm';
+        }
+
         protected function getUnqualifiedNameForIdField()
         {
             return '[contactIds]';
