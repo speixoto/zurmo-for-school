@@ -96,18 +96,22 @@
                 $content = "<!-- Start of $templateName -->$content<!-- End of $templateName -->";
             }
             $classes = RuntimeUtil::getClassHierarchy(get_class($this), 'View');
-            if ($this->isUniqueToAPage())
+            if ($this->isUniqueToAPage() && $this->renderContainerWrapperId())
             {
                 $id = " id=\"$name\"";
                 unset($classes[0]);
             }
-            else
+            elseif($this->renderContainerWrapperId())
             {
                 $id = $this->getId();
                 if ($id != null)
                 {
                     $id = " id=\"$id\"";
                 }
+            }
+            else
+            {
+                $id = null;
             }
             $classes = join(' ', array_merge($this->getCssClasses(), $classes));
             if ($classes != '')
@@ -119,12 +123,22 @@
             {
                 $reflection = new ReflectionClass( $calledClass );
                 $classFile = $reflection->getFileName();
-                return "<!--Called in: $classFile--><div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return "<!--Called in: $classFile--><" . $this->getContainerWrapperTag() . $id . $classes . $this->getViewStyle() . ">$content</div>";
             }
             else
             {
-                return "<div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return "<" . $this->getContainerWrapperTag() . $id . $classes . $this->getViewStyle() . ">$content</div>";
             }
+        }
+
+        protected function renderContainerWrapperId()
+        {
+            return true;
+        }
+
+        protected function getContainerWrapperTag()
+        {
+            return 'div';
         }
 
         /**

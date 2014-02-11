@@ -81,7 +81,12 @@
         protected function renderContent()
         {
             $this->renderLoginRequiredAjaxResponse();
-            return $this->verticalGridView->render();
+
+            $content  = ZurmoHtml::tag('div', array('class' => 'logo-and-search'), 'LOGO AND SEARCH');
+            $content .= ZurmoHtml::tag('div', array('class' => 'user-actions clearfix'), 'USER ACTIONS');
+            $content  = ZurmoHtml::tag('div', array('class' => 'container clearfix'), $content);
+            $content .=  $this->verticalGridView->render();
+            return $content;
         }
 
         protected function renderLoginRequiredAjaxResponse()
@@ -106,6 +111,16 @@
                     );
                 ');
             }
+        }
+
+        protected function renderContainerWrapperId()
+        {
+            return false;
+        }
+
+        protected function getContainerWrapperTag()
+        {
+            return 'header';
         }
     }
 ?>
