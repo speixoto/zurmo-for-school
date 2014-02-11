@@ -49,9 +49,14 @@
          */
         protected function renderPreviousPageLinkContent()
         {
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                   $this->renderPreviousPageLinkLabel() ), '#',
-                   array('id' => static::getPreviousPageLinkId(), 'class' => 'cancel-button'));
+            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $this->renderPreviousPageLinkLabel());
+            $link   = ZurmoHtml::link($label, '#', $this->resolvePreviousPageLinkHtmlOptions());
+            return $link;
+        }
+
+        protected function resolvePreviousPageLinkHtmlOptions()
+        {
+            return array('id' => static::getPreviousPageLinkId(), 'class' => 'cancel-button');
         }
 
         protected function renderPreviousPageLinkLabel()
@@ -66,10 +71,14 @@
         {
             $params                = array();
             $params['label']       = $this->renderNextPageLinkLabel();
-            $params['htmlOptions'] = array('id' => static::getNextPageLinkId(),
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $params['htmlOptions'] = $this->resolveNextPageLinkHtmlOptions();
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
+        }
+
+        protected function resolveNextPageLinkHtmlOptions()
+        {
+            return array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
         }
 
         protected function renderNextPageLinkLabel()
@@ -102,8 +111,8 @@
         protected function renderHiddenField(& $hiddenElements, $attributeName, $value = null)
         {
             $hiddenElements .= ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->model, $attributeName),
-                $value,
-                array('id' => ZurmoHtml::activeId($this->model, $attributeName)));
+                                                    $value,
+                                                    array('id' => ZurmoHtml::activeId($this->model, $attributeName)));
         }
 
         protected function wrapContentInTableRow(& $content, $htmlOptions = array())
@@ -148,7 +157,8 @@
             $this->wrapContentInDiv($content, array('class' => 'attributesContainer'));
         }
 
-        protected function renderLeftAndRightSideBarContentWithWrappers($leftSideBarContent, $rightSideBarContent = null, $leftSideBarPrefix = null)
+        protected function renderLeftAndRightSideBarContentWithWrappers($leftSideBarContent, $rightSideBarContent = null,
+                                                                            $leftSideBarPrefix = null)
         {
             $this->wrapContentForLeftSideBar($leftSideBarContent, $leftSideBarPrefix);
             if ($rightSideBarContent)
