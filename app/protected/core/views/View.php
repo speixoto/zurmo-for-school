@@ -51,6 +51,11 @@
         protected $title;
 
         /**
+         * @var bool
+         */
+        protected $makeDefaultClassesFromClassHeirarchy;
+
+        /**
          * Tells View that it can render the extending class' divs with
          * and id matching their name. Must be overridden to return
          * false in extending classes that can be rendered multiple times
@@ -95,7 +100,7 @@
                 }
                 $content = "<!-- Start of $templateName -->$content<!-- End of $templateName -->";
             }
-            $classes = RuntimeUtil::getClassHierarchy(get_class($this), 'View');
+            $classes = $this->resolveDefaultClasses();
             if ($this->isUniqueToAPage() && $this->renderContainerWrapperId())
             {
                 $id = " id=\"$name\"";
@@ -118,17 +123,24 @@
             {
                 $classes = " class=\"$classes\"";
             }
-            $calledClass = get_called_class();
-            if (YII_DEBUG)
+            $containerWrapperTag = $this->getContainerWrapperTag();
+            if($containerWrapperTag == null)
             {
-                $reflection = new ReflectionClass( $calledClass );
-                $classFile = $reflection->getFileName();
-                return "<!--Called in: $classFile--><" . $this->getContainerWrapperTag() . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return $content;
             }
             else
             {
-                return "<" . $this->getContainerWrapperTag() . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return "<" . $this->getContainerWrapperTag() . $id . $classes . $this->getViewStyle() . ">$content</" . $this->getContainerWrapperTag() . ">";
             }
+        }
+
+        protected function resolveDefaultClasses()
+        {
+            if($this->makeDefaultClassesFromClassHeirarchy)
+            {
+                return RuntimeUtil::getClassHierarchy(get_class($this), 'View');
+            }
+            return array();
         }
 
         protected function renderContainerWrapperId()

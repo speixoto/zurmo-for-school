@@ -131,6 +131,7 @@
          * used by the zurmo page view.
          * @param CController $controller
          * @param View $containedView
+         * @return View
          */
         public static function makeStandardViewForCurrentUser(CController $controller, View $containedView)
         {
@@ -143,17 +144,16 @@
             {
                 $verticalColumns = 1;
             }
-            $aVerticalGridView   = new GridView($verticalColumns, 1);
-
-            $aVerticalGridView->setCssClasses( array('AppNavigation', 'clearfix')); //navigation left column
+            $aVerticalGridView   = new GridView($verticalColumns, 1,'nav', false);
+            $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
             $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
             if (static::$showRecentlyViewed)
             {
                 $aVerticalGridView->setView(static::makeRecentlyViewedView(), 1, 0);
             }
 
-            $horizontalGridView = new GridView(1, 3);
-            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix')); //teh conatiner for the floated items
+            $horizontalGridView = new GridView(1, 3, 'section', false);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'container', 'clearfix')); //teh conatiner for the floated items
             $horizontalGridView->setView($aVerticalGridView, 0, 0);
 
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent'))); //the app itself to the right
@@ -161,7 +161,7 @@
             $horizontalGridView->setView($containedView, 0, 1);
             $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $cotainedView
 
-            $verticalGridView   = new GridView(6, 1);
+            $verticalGridView   = new GridView(6, 1, null);
             $verticalGridView->setView(static::makeHeaderView($controller),                 0, 0);
             $verticalGridView->setView($horizontalGridView,                                 1, 0);
             $verticalGridView->setView(static::makeModalContainerView(),                    2, 0);
