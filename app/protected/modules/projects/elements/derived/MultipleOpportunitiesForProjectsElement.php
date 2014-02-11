@@ -44,6 +44,14 @@
         /**
          * @return string
          */
+         protected function getFormName()
+         {
+             return 'ProjectOpportunitiesForm';
+         }
+
+        /**
+         * @return string
+         */
         protected function getUnqualifiedNameForIdField()
         {
             return '[opportunityIds]';
