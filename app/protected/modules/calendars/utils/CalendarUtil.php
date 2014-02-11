@@ -720,7 +720,6 @@
             {
                 throw new FailedToSaveModelException();
             }
-            return true;
         }
 
         /**
