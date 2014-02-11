@@ -37,19 +37,19 @@
     abstract class BaseBuilderElement
     {
         /**
-         * class nae for move action link
+         * class name for move action link
          */
         const OVERLAY_ACTION_MOVE   = 'action-move';
 
         /**
-         * class nae for edit action link
+         * class name for edit action link
          */
-        const OVERLY_ACTION_EDIT    = 'action-edit';
+        const OVERLAY_ACTION_EDIT    = 'action-edit';
 
         /**
-         * class nae for delete action link
+         * class name for delete action link
          */
-        const OVERLY_ACTION_DELETE  = 'action-delete';
+        const OVERLAY_ACTION_DELETE  = 'action-delete';
 
         /**
          * @var int Id of current element, unique.
@@ -395,7 +395,7 @@
          */
         protected function resolveAvailableNonEditableActionsArray()
         {
-            return array(static::OVERLAY_ACTION_MOVE, static::OVERLY_ACTION_EDIT, static::OVERLY_ACTION_DELETE);
+            return array(static::OVERLAY_ACTION_MOVE, static::OVERLAY_ACTION_EDIT, static::OVERLAY_ACTION_DELETE);
         }
 
         /**
