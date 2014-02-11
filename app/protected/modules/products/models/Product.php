@@ -201,14 +201,25 @@
         }
 
         /**
-         * Gets full calendar description.
+         * Gets full calendar item data.
          * @return string
          */
-        public function getCalendarDescription()
+        public function getCalendarItemData()
         {
-            $priceFrequency = ProductTemplatePriceFrequencyDropDownElement::renderNonEditableStringContent($this->priceFrequency);
-            $content = ZurmoHtml::tag('span', array(), $priceFrequency);
-            return $content;
+            $name                      = $this->name;
+            $quantity                  = $this->quantity;
+            $priceFrequency            = ProductTemplatePriceFrequencyDropDownElement
+                                                    ::renderNonEditableStringContent($this->priceFrequency);
+            $currencyValueModel        = $this->sellPrice;
+            $sellPrice                 = Yii::app()->numberFormatter->formatCurrency((float)$currencyValueModel->value,
+                                                                $currencyValueModel->currency->code);
+            $language                  = Yii::app()->languageHelper->getForCurrentUser();
+            $translatedAttributeLabels = self::translatedAttributeLabels($language);
+            return array(Zurmo::t('ZurmoModule', 'Name', array(), null, $language)          => $name,
+                         Zurmo::t('ProductsModule', 'Quantity', array(), null, $language)   => $quantity,
+                         $translatedAttributeLabels['priceFrequency']                       => $priceFrequency,
+                         $translatedAttributeLabels['sellPrice']                            => $sellPrice);
+
         }
     }
 ?>

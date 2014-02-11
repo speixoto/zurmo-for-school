@@ -376,12 +376,21 @@
         }
 
         /**
-         * Gets full calendar description.
+         * Gets full calendar item data.
          * @return string
          */
-        public function getCalendarDescription()
+        public function getCalendarItemData()
         {
-            return null;
+            $name                      = $this->name;
+            $status                    = self::getStatusDisplayName($this->status);
+            $requestedByUser           = $this->requestedByUser->getFullName();
+            $owner                     = $this->owner->getFullName();
+            $language                  = Yii::app()->languageHelper->getForCurrentUser();
+            $translatedAttributeLabels = self::translatedAttributeLabels($language);
+            return array(Zurmo::t('ZurmoModule', 'Name', array(), null, $language)          => $name,
+                         Zurmo::t('ZurmoModule', 'Status',  array(), null, $language)       => $status,
+                         $translatedAttributeLabels['requestedByUser']                      => $requestedByUser,
+                         $translatedAttributeLabels['owner']                                => $owner);
         }
     }
 ?>

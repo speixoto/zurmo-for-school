@@ -220,10 +220,9 @@
                                                                             $savedCalendar,
                                                                             $postData[$wizardFormClassName]))
                             {
-                                /*header('Content-Type: application/json');
+                                header('Content-Type: application/json');
                                 echo CJSON::encode(array('redirecttodetails' => true));
-                                Yii::app()->end(0, true);*/
-                             $this->redirect(Yii::app()->createUrl('calendars/default/details'));
+                                Yii::app()->end(0, true);
                             }
                         }
                     }

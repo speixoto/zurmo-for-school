@@ -204,7 +204,7 @@
                 $model                     = $modelClass::getById($calItem->getModelId());
                 if($model instanceof CalendarItemInterface)
                 {
-                    $fullCalendarItem['description'] = $model->getCalendarDescription();
+                    $fullCalendarItem['description'] = self::renderFullCalendarItems($model);
                 }
                 else
                 {
@@ -790,6 +790,23 @@
                 }
             }
             return $moduleClassNames;
+        }
+
+        /**
+         * Render full calendar items for a model.
+         * @param Object $model
+         * @return string
+         */
+        public static function renderFullCalendarItems($model)
+        {
+            assert('$model instanceof CalendarItemInterface');
+            $descriptionArray = $model->getCalendarItemData();
+            $content          = ZurmoHtml::tag('div', array('class' => 'itemDescription'), '');
+            foreach($descriptionArray as $key => $value)
+            {
+                $content .= ZurmoHtml::tag('span', array(), $key . ':' . $value) . "<br/>";
+            }
+            return $content;
         }
     }
 ?>

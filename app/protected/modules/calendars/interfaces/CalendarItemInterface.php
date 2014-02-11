@@ -39,6 +39,6 @@
      */
     interface CalendarItemInterface
     {
-        public function getCalendarDescription();
+        public function getCalendarItemData();
     }
 ?>
