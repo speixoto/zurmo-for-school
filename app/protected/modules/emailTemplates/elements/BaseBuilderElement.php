@@ -34,8 +34,14 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class BaseBuilderElement extends Element
+    abstract class BaseBuilderElement
     {
+        const OVERLAY_ACTION_MOVE   = 'action-move';
+
+        const OVERLY_ACTION_EDIT    = 'action-edit';
+
+        const OVERLY_ACTION_DELETE  = 'action-delete';
+
         protected $id;
 
         protected $properties;
@@ -45,6 +51,8 @@
         protected $renderForCanvas = false;
 
         abstract protected function resolveDefaultContent();
+
+        abstract protected function renderControlNonEditable();
 
         public static function isUIAccessible()
         {
@@ -60,10 +68,8 @@
                                                 static::resolveThumbnailHtmlOptions());
             $widget         = $thumbnail . $label;
             $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);;
-            $widget         = ZurmoHtml::tag($widgetWrapper, array('id' => get_called_class(),
-                                                    'class' => 'builder-element builder-element-droppable'), $widget);
+            $widget         = ZurmoHtml::tag($widgetWrapper, static::resolveWidgetHtmlOptions(), $widget);
             return $widget;
-
         }
 
         protected static function resolveLabel()
@@ -91,29 +97,172 @@
             return array('class' => 'builder-element-droppable-thumbnail');
         }
 
-        public function __construct($model, $attribute, $form = null, array $params = array(), $id = null,
-                                    $properties = array(), $content = array(), $renderForCanvas = false)
+        protected static function resolveWidgetHtmlOptions()
         {
-            parent::__construct($model, $attribute, $form, $params);
+            return  array('id' => get_called_class(), 'class' => 'builder-element builder-element-droppable');
+        }
+
+        public function __construct($renderForCanvas = false, $id = null, $properties = null, $content = null)
+        {
             $this->renderForCanvas  = $renderForCanvas;
+            $this->initId($id);
+            $this->initproperties($properties);
+            $this->initContent($content);
+        }
 
-            if (empty($id))
-            {
-                $id = $this->generateId();
-            }
-            $this->id               = $id;
+        public function renderNonEditable()
+        {
+            $elementContent = $this->renderControlNonEditable();
+            $wrappedContent = $this->renderControlWrapperNonEditable($elementContent);
+            return $wrappedContent;
+        }
 
-            if (empty($properties))
-            {
-                $properties   = $this->resolveDefaultProperties();
-            }
-            $this->properties       = $properties;
+        protected function renderWrappedControlNonEditableContent()
+        {
+            $elementContent = $this->renderControlNonEditable();
+            $content        = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), $elementContent);
+            return $content;
+        }
 
-            if (empty($content))
+        protected function resolveControlNonEditableContentHtmlOptions()
+        {
+            return array('class' => 'builder-element-content');
+        }
+
+        protected function renderControlWrapperNonEditable($elementContent = '{{dummyContent}}')
+        {
+            $customDataAttributes   = $this->resolveCustomDataAttributesNonEditable();
+            $properties             = $this->resolvePropertiesNonEditable();
+            $actionsOverlay         = $this->resolveNonEditableActions();
+            $content                = $this->resolveWrapperNonEditable($elementContent, $properties, $customDataAttributes, $actionsOverlay);
+            return $content;
+        }
+
+        protected function resolveWrapperNonEditable($elementContent, $properties, $customDataAttributes, $actionsOverlay)
+        {
+            $content        = '<table id="' . $this->id . '" ';
+            $content        .= $properties;
+            $content        .= $customDataAttributes;
+            $content        .= '>';
+            $content        .= '<tr><td>' . $elementContent;
+            if (!empty($actionsOverlay))
             {
-                $content        = $this->resolveDefaultContent();
+                $content    .= $actionsOverlay;
             }
-            $this->content      = $content;
+            $content        .= '</td></tr></table>';
+            return $content;
+        }
+
+        protected function resolvePropertiesNonEditable()
+        {
+            $mergedProperties   = CMap::mergeArray($this->resolveNonEditableWrapperHtmlOptions(), $this->properties);
+            $styleProperties    = $this->resolveStylePropertiesNonEditable($mergedProperties);
+            $nonStyleProperties = $this->resolveNonStylePropertiesNonEditable($mergedProperties);
+            $properties         = $styleProperties . ' ' . $nonStyleProperties;
+            return $properties;
+        }
+
+        protected function resolveStylePropertiesNonEditable(array & $mergedProperties)
+        {
+            if (isset($mergedProperties['style']))
+            {
+                $style  = $mergedProperties['style'];
+                unset($mergedProperties['style']);
+
+                $styleStringified       = $this->stringifyProperties($style, null, null, ':', ';');
+                $styleStringified       = " style='${styleStringified}' ";
+                return $styleStringified;
+            }
+        }
+
+        protected function resolveNonStylePropertiesNonEditable(array $mergedProperties)
+        {
+            $nonStyleProperties = ' ';
+            $nonStyleProperties .= $this->stringifyProperties($mergedProperties, null, '=', "'", "' ");
+            return $nonStyleProperties;
+        }
+
+        protected function stringifyProperties(array $properties, $keyPrefix = null, $keySuffix = null,
+                                                    $valuePrefix = null, $valueSuffix = null)
+        {
+            $content    = $this->stringifyArray($properties, $keyPrefix, $keySuffix, $valuePrefix, $valueSuffix);
+            return $content;
+        }
+
+        protected function stringifyArray(array $array, $keyPrefix = null, $keySuffix = null,
+                                          $valuePrefix = null, $valueSuffix = null)
+        {
+            $content    = null;
+            foreach ($array as $key => $value)
+            {
+                $content .= $keyPrefix . $key . $keySuffix . $valuePrefix . $value . $valueSuffix;
+            }
+            return $content;
+        }
+
+        protected function resolveCustomDataAttributesNonEditable()
+        {
+            if (!$this->renderForCanvas)
+            {
+                return null;
+            }
+            $cda    = " data-class='" . get_class($this) . "'";
+            $cda    .= " data-properties='" . serialize($this->properties) . "'";
+            $cda    .= " data-content='" . serialize($this->content) . "' ";
+            return $cda;
+        }
+
+        protected function resolveNonEditableActions()
+        {
+            if (!$this->renderForCanvas)
+            {
+                return null;
+            }
+            $overlayLinksContent    = $this->resolveAvailableNonEditableActionLinkContent();
+            $overlayContent         = ZurmoHtml::tag('div', $this->resolveNonEditableActionsHtmlOptions(), $overlayLinksContent);
+            return $overlayContent;
+
+        }
+
+        protected function resolveNonEditableActionsHtmlOptions()
+        {
+            return array('class' => 'builder-element-toolbar',
+                            'id' => 'element-actions-' . $this->id);
+        }
+
+        protected function resolveAvailableNonEditableActionLinkContent()
+        {
+            $availableActions   = $this->resolveAvailableNonEditableActionsArray();
+            $overlayLinkContent = null;
+            foreach ($availableActions as $action)
+            {
+                $linkContent        = ZurmoHtml::tag('i', array('class' => $action), '');
+                $linkContent        = ZurmoHtml::link($linkContent, '#', array('class' => "${action}-link"));
+                $overlayLinkContent .= $linkContent;
+            }
+            return $overlayLinkContent;
+        }
+
+        protected function resolveAvailableNonEditableActionsArray()
+        {
+            return array(static::OVERLAY_ACTION_MOVE, static::OVERLY_ACTION_EDIT, static::OVERLY_ACTION_DELETE);
+        }
+
+
+        protected function resolveNonEditableWrapperHtmlOptions()
+        {
+            return array('class' => 'builder-element-non-editable element-data');
+        }
+
+
+        public function renderEditable()
+        {
+
+        }
+
+        protected function resolveEditableWrappedHtmlOptions()
+        {
+
         }
 
         protected function generateId()
@@ -125,7 +274,32 @@
         {
             return array();
         }
-        // TODO: @Shoaibi: Critical0: renderEditable
-        // TODO: @Shoaibi: Critical0: renderNonEditable.
+
+        protected function initId($id = null)
+        {
+            if (!isset($id))
+            {
+                $id     = $this->generateId();
+            }
+            $this->id   = $id;
+        }
+
+        protected function initProperties($properties = null)
+        {
+            if (!isset($properties))
+            {
+                $properties   = $this->resolveDefaultProperties();
+            }
+            $this->properties   = $properties;
+        }
+
+        protected function initContent($content = null)
+        {
+            if (!isset($content))
+            {
+                $content        = $this->resolveDefaultContent();
+            }
+            $this->content      = $content;
+        }
     }
 ?>

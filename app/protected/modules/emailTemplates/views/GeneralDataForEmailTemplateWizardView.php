@@ -179,14 +179,18 @@
          */
         protected function renderRightSideFormLayout()
         {
-            $content  = '<h3>' . Zurmo::t('ZurmoModule', 'Rights and Permissions') . '</h3><div id="owner-box">';
-            $element  = new OwnerNameIdElement($this->model, 'null', $this->form);
-            $element->editableTemplate = '{label}{content}{error}';
-            $content .= $element->render().'</div>';
-            $element  = new EmailTemplateExplicitReadWriteModelPermissionsElement($this->model,
+            $elementEditableTemplate        = '{label}{content}{error}';
+            $ownerElement                   = new OwnerNameIdElement($this->model, 'null', $this->form);
+            $ownerElement->editableTemplate = $elementEditableTemplate;
+            $ownerElementContent            = $ownerElement->render();
+            $ownerElementContent            = ZurmoHtml::tag('div', array('id' => 'owner-box'), $ownerElementContent);
+
+            $permissionsElement             = new EmailTemplateExplicitReadWriteModelPermissionsElement($this->model,
                                                                     'explicitReadWriteModelPermissions', $this->form);
-            $element->editableTemplate = '{label}{content}{error}';
-            $content .= $element->render();
+            $permissionsElement->editableTemplate = $elementEditableTemplate;
+            $permissionsElementContent      = $permissionsElement->render();
+            $content                        = ZurmoHtml::tag('h3', array(), Zurmo::t('ZurmoModule', 'Rights and Permissions'));
+            $content                        .= $ownerElementContent . $permissionsElementContent;
             return $content;
         }
 

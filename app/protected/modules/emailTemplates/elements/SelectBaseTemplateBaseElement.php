@@ -66,7 +66,9 @@
         {
             $htmlOptions              = array();
             $htmlOptions['separator'] = '';
-            $htmlOptions['template']  = '<li class="radio-input base-template-selection {value}">{input}{label}</li>';
+            $htmlOptions['template']  = ZurmoHtml::tag('li',
+                                                        array('class' => 'radio-input base-template-selection {value}'),
+                                                        '{input}{label}');
             return $htmlOptions;
         }
 
@@ -77,9 +79,10 @@
             foreach ($templates as $template)
             {
                 $thumbnailUrl           = $this->resolveThumbnailUrl($template);
-                $label                  = "<img src='${thumbnailUrl}' class='thumb' />" .
-                                                "<h6 class='name'><span>" . $template->name . "</span></h6>";
-                $data[$template->id]    = $label;
+                $thumbnail              = ZurmoHtml::image($thumbnailUrl, null, array('class' => 'thumb'));
+                $label                  = ZurmoHtml::tag('span', array(), $template->name);
+                $label                  = ZurmoHtml::tag('h6', array('class' => 'name'), $label);
+                $data[$template->id]    = $thumbnail . $label;
             }
             return $data;
         }
@@ -96,7 +99,7 @@
 
         protected function resolveGenericThumbnailUrl()
         {
-            return 'http://www.shellplus.com/examples/thumbnail-image-handler/img/ex_extractimage_example_thumbnail.gif';
+            return 'http://upload.wikimedia.org/wikipedia/commons/1/1c/Nuvola_mimetypes_template_source.png';
             // TODO: @Shoaibi: Critical5: enable this
             //return Yii::app()->themeManager->baseUrl . static::GENERIC_THUMBNAIL_PATH;
         }

@@ -48,17 +48,12 @@
 
         protected function resolveDefaultContent()
         {
-            return "This is default dummy content.";
+            return array('text' => '<u>This is default dummy content.</u>');
         }
 
         protected function renderControlNonEditable()
         {
-
-        }
-
-        protected function renderControlEditable()
-        {
-
+            return $this->content['text'];
         }
     }
 ?>

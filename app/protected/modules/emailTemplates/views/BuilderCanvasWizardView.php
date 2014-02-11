@@ -87,35 +87,40 @@
         {
             // TODO: @Shoaibi: Critical1: Load left sidebar and canvas here.
             // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes.
-            $leftSidebarContent                         =  null;
             $hiddenElements                             = null;
 
-            $leftSidebarPrefix                          = ZurmoHtml::tag('h3', array(), 'Elements');
-            $leftSidebarContent                         = $this->resolveElementsSidebarContent();
+            $leftSidebarContent                         = ZurmoHtml::tag('h3', array(), 'Elements');
+            $leftSidebarContent                         .= $this->resolveElementsSidebarContent();
             $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
             $this->renderRefreshCanvasLink($leftSidebarContent);
 
             $rightSidebarContent                        = $this->resolveCanvasContent();
 
-            $this->wrapContentForLeftSideBar($leftSidebarContent, $leftSidebarPrefix);
+            $this->wrapContentForLeftSideBar($leftSidebarContent);
             $this->wrapContentForRightSideBar($rightSidebarContent);
             $content                                    = $leftSidebarContent . $rightSidebarContent;
-            $content                                    = ZurmoHtml::tag('section', array('id' => 'builder',
-                                                                                            'class' => 'strong-right'),
-                                                                                        $content);
+            $content                                    = ZurmoHtml::tag('section', $this->resolveContentHtmlOptions(),
+                                                                                    $content);
             $this->wrapContentForAttributesContainer($content);
             return $content;
         }
 
+        protected function resolveContentHtmlOptions()
+        {
+            return array('id' => 'builder', 'class' => 'strong-right');
+        }
+
         protected function renderRefreshCanvasLink(& $content)
         {
-            $linkContent    = ZurmoHtml::link('Reload Canvas', '#', array(
-                                                            'id' => static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID,
-                                                            'style' => 'display:none',
-                                                        ));
+            $linkContent    = ZurmoHtml::link('Reload Canvas', '#', $this->resolveRefreshCanvasLinkHtmlOptions());
             $this->wrapContentInTableCell($linkContent, array('colspan' => 2));
             $this->wrapContentInTableRow($linkContent);
             $content            .= $linkContent;
+        }
+
+        protected function resolveRefreshCanvasLinkHtmlOptions()
+        {
+            return array('id' => static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID, 'style' => 'display:none');
         }
 
         protected function renderActionLinksContent()
@@ -129,17 +134,70 @@
         {
             $params                = array();
             $params['label']       = $this->renderFinishLinkLabel();
-            $params['htmlOptions'] = array('id' => static::getFinishLinkId(),
-                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $params['htmlOptions'] = $this->resolveFinishLinkHtmlOptions();
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
         }
 
+        protected function resolveFinishLinkHtmlOptions()
+        {
+            return array('id' => static::getFinishLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+        }
+
+        protected function generateWidgetTagsForUIAccessibleElements($uiAccessibleElements)
+        {
+            $content    = null;
+            foreach ($uiAccessibleElements as $element)
+            {
+                $content    .=  $element::resolveDroppableWidget('li');
+            }
+            $content        = ZurmoHtml::tag('ul', $this->resolveWidgetTagsWrapperHtmlOptions(), $content);
+            return $content;
+        }
+
+        protected function resolveWidgetTagsWrapperHtmlOptions()
+        {
+            return array('id' => 'building-blocks', 'class' => 'clearfix builder-elements builder-elements-droppable');
+        }
+
+        protected function resolveElementsSidebarContent()
+        {
+            $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
+            $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
+            $this->wrapContentInTableCell($content, array('colspan' => 2));
+            $this->wrapContentInTableRow($content);
+            return $content;
+        }
+
+        protected function resolveCanvasContent()
+        {
+            // TODO: @Shoaibi: Critical2: This is just dummy content to see how things will look so we can hook-in css and js.
+            /*
+            $canvasContent = '<iframe src="http://zurb.com/ink/downloads/templates/hero.html" id="preview-template"' .
+                                ' seamless="seamless" frameborder="0" width="100%" height="100%"></iframe>';
+            */
+            $element        = new BuilderTextElement(true, 'dummyId', array("style" => array(
+                                                                                "font-size" => "20px",
+                                                                                "color" => "red",
+                                                                                "background-color" => "#ccc"),
+                                                                            'some-non-style-property' => 3));
+            $canvasContent  = $element->renderNonEditable();
+            $this->wrapContentInDiv($canvasContent, array('id' => 'canvas'));
+            return $canvasContent;
+        }
+
         protected function registerScripts()
         {
+            // TODO: @Shoaibi/@Sergio: Critical5: Did i miss any JS here?
             parent::registerScripts();
             $this->registerRefreshCanvasFromSavedTemplateScript();
             $this->registerSetIsDraftToZeroOnClickingFinishScript();
+            $this->registerBindElementNonEditableActionsOverlayScript();
+            $this->registerElementDragAndDropScript();
+            $this->registerPreviewModalScript();
+            $this->registerSerializedDataCompilationFunctionsScript();
+            $this->registerCanvasSaveScript();
+            $this->registerCanvasFinishScript();
         }
 
         protected function registerRefreshCanvasFromSavedTemplateScript()
@@ -165,34 +223,48 @@
                 ", CClientScript::POS_END);
         }
 
-        protected function generateWidgetTagsForUIAccessibleElements($uiAccessibleElements)
+        protected function registerBindElementNonEditableActionsOverlayScript()
         {
-            $content    = null;
-            foreach ($uiAccessibleElements as $element)
-            {
-                $content    .=  $element::resolveDroppableWidget();
-            }
-            $content        = ZurmoHtml::tag('ul', array('id' => 'building-blocks',
-                                                        'class' => 'clearfix builder-elements builder-elements-droppable'),
-                                            $content);
-            return $content;
+            Yii::app()->clientScript->registerScript('bindElementNonEditableActionsOverlayScript', "
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                ", CClientScript::POS_READY);
         }
 
-        protected function resolveElementsSidebarContent()
+        protected function registerElementDragAndDropScript()
         {
-            $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
-            $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
-            $this->wrapContentInTableCell($content, array('colspan' => 2));
-            $this->wrapContentInTableRow($content);
-            return $content;
+            Yii::app()->clientScript->registerScript('elementDragAndDropScript', "
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                ", CClientScript::POS_READY);
         }
 
-        protected function resolveCanvasContent()
+        protected function registerCanvasSaveScript()
         {
-            $canvasContent = '<iframe src="http://zurb.com/ink/downloads/templates/hero.html" id="preview-template"' .
-                                ' seamless="seamless" frameborder="0" width="100%" height="100%"></iframe>';
-            $this->wrapContentInDiv($canvasContent, array('id' => 'canvas'));
-            return $canvasContent;
+            Yii::app()->clientScript->registerScript('canvasSaveScript', "
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:111
+                ");
+        }
+
+        protected function registerCanvasFinishScript()
+        {
+            Yii::app()->clientScript->registerScript('canvasFinishScript', "
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:115
+                ");
+        }
+
+        protected function registerSerializedDataCompilationFunctionsScript()
+        {
+            Yii::app()->clientScript->registerScript('serializedDataCompilationFunctionsScript', "
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                ", CClientScript::POS_END);
+        }
+
+        protected function registerPreviewModalScript()
+        {
+            Yii::app()->clientScript->registerScript('previewModalScript', "
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                ");
         }
     }
 ?>

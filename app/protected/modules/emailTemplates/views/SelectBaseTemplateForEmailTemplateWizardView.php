@@ -100,13 +100,18 @@
             $element                    = new $elementName($this->model, 'baseTemplateId', $this->form);
             $content                    = "<h3>${heading}</h3>";
             $content                    .= $element->render();
-            $content                    = ZurmoHtml::tag('ul', array('class' => 'large-block-grid-3 small-block-grid-1 '.
-                                                                    'template-thumbs select-base-template-selection'),
+            $content                    = ZurmoHtml::tag('ul', $this->resolveSelectBaseTemplateElementWrapperHtmlOptions(),
                                                         $content);
             $this->wrapContentInDiv($content, array('id' => $wrapperDivCssId));
             $this->wrapContentInTableCell($content, array('colspan' => 2));
             $this->wrapContentInTableRow($content);
             return $content;
+        }
+
+        protected function resolveSelectBaseTemplateElementWrapperHtmlOptions()
+        {
+            return array('class' => 'large-block-grid-3 small-block-grid-1 '.
+                            'template-thumbs select-base-template-selection');
         }
 
         protected function renderSerializedDataHiddenFields(& $hiddenElements)
@@ -159,7 +164,7 @@
                     // show warning only on edit when a user has already been to canvas once.
                     if (originalBaseTemplateId != '' && currentSelectedValue != originalBaseTemplateId)
                     {
-                        if (!confirm('" . Zurmo::t('EmailTemplatesModule', 'Changing base template would trash existing design made on canvas.') ."'))
+                        if (!confirm('" . Zurmo::t('EmailTemplatesModule', 'Changing base template would trash any existing design made on canvas.') ."'))
                         {
                             return false;
                         }
