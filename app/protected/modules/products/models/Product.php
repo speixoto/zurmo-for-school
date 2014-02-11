@@ -206,9 +206,15 @@
          */
         public function getCalendarDescription()
         {
-            $priceFrequency = ProductTemplatePriceFrequencyDropDownElement::renderNonEditableStringContent($this->priceFrequency);
-            $content = ZurmoHtml::tag('span', array(), $priceFrequency);
-            return $content;
+            $name                      = $this->name;
+            $quantity                  = $this->quantity;
+            $priceFrequency            = ProductTemplatePriceFrequencyDropDownElement
+                                                    ::renderNonEditableStringContent($this->priceFrequency);
+            $currencyValueModel        = $this->sellPrice;
+            $sellPrice                 = Yii::app()->numberFormatter->formatCurrency((float)$currencyValueModel->value,
+                                                                $currencyValueModel->currency->code);
+            $translatedAttributeLabels = self::translatedAttributeLabels(Yii::app()->language);
+             return array();
         }
     }
 ?>
