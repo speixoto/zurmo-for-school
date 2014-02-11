@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class Product extends OwnedSecurableItem implements CalendarItemInterface
+    class Product extends OwnedSecurableItem
     {
         const OPEN_STAGE    = 'Open';
 
@@ -198,28 +198,6 @@
         {
             $this->sellPrice->setScenario('positiveValue');
             return parent::beforeValidate();
-        }
-
-        /**
-         * Gets full calendar item data.
-         * @return string
-         */
-        public function getCalendarItemData()
-        {
-            $name                      = $this->name;
-            $quantity                  = $this->quantity;
-            $priceFrequency            = ProductTemplatePriceFrequencyDropDownElement
-                                                    ::renderNonEditableStringContent($this->priceFrequency);
-            $currencyValueModel        = $this->sellPrice;
-            $sellPrice                 = Yii::app()->numberFormatter->formatCurrency((float)$currencyValueModel->value,
-                                                                $currencyValueModel->currency->code);
-            $language                  = Yii::app()->languageHelper->getForCurrentUser();
-            $translatedAttributeLabels = self::translatedAttributeLabels($language);
-            return array(Zurmo::t('ZurmoModule', 'Name', array(), null, $language)          => $name,
-                         Zurmo::t('ProductsModule', 'Quantity', array(), null, $language)   => $quantity,
-                         $translatedAttributeLabels['priceFrequency']                       => $priceFrequency,
-                         $translatedAttributeLabels['sellPrice']                            => $sellPrice);
-
         }
     }
 ?>

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class Meeting extends MashableActivity implements CalendarItemInterface
+    class Meeting extends MashableActivity
     {
         public function __toString()
         {
@@ -176,32 +176,6 @@
         public static function hasReadPermissionsSubscriptionOptimization()
         {
             return true;
-        }
-
-        /**
-         * Gets full calendar item data.
-         * @return string
-         */
-        public function getCalendarItemData()
-        {
-            $name             = $this->name;
-            $location         = $this->location;
-            $startDateTime    = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                    $this->startDateTime,
-                                    DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
-                                    DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
-                                    true);
-            $endDateTime      = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
-                                    $this->endDateTime,
-                                    DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
-                                    DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
-                                    true);
-            $language         = Yii::app()->languageHelper->getForCurrentUser();
-            $translatedAttributeLabels = self::translatedAttributeLabels($language);
-            return array($translatedAttributeLabels['name']            => $name,
-                         $translatedAttributeLabels['location']        => $location,
-                         $translatedAttributeLabels['startDateTime']   => $startDateTime,
-                         $translatedAttributeLabels['endDateTime']     => $endDateTime);
         }
     }
 ?>
