@@ -50,7 +50,8 @@
         protected function renderPreviousPageLinkContent()
         {
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                  $this->renderPreviousPageLinkLabel() ), '#', array('id' => static::getPreviousPageLinkId()));
+                   $this->renderPreviousPageLinkLabel() ), '#',
+                   array('id' => static::getPreviousPageLinkId(), 'class' => 'cancel-button'));
         }
 
         protected function renderPreviousPageLinkLabel()
@@ -129,7 +130,7 @@
 
         protected function wrapContentForLeftSideBar(& $content, $prefix = null)
         {
-            $content    = '<table><colgroup><col class="col-0"><col class="col-1"></colgroup>' . $content;
+            $content    = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>' . $content;
             $content    .= '</table>';
             $this->wrapContentInDiv($content, array('class' => 'panel'));
             $this->wrapContentInDiv($content, array('class' => 'left-column'));
