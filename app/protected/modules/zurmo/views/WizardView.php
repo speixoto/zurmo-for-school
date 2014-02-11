@@ -85,6 +85,42 @@
         }
 
         /**
+         * @param string $formName
+         * @param string $componentViewClassName
+         * @param string $reportType
+         * @return string
+         */
+        public static function renderTreeViewAjaxScriptContent($formName, $componentViewClassName, $reportType)
+        {
+            assert('is_string($formName)');
+            assert('is_string($componentViewClassName)');
+            assert('is_string($reportType)');
+            $url    =  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTree',
+                array_merge($_GET, array('type' => $reportType,
+                    'treeType' => $componentViewClassName::getTreeType())));
+            // Begin Not Coding Standard
+            $script = "
+                $('#" . $componentViewClassName::getTreeDivId() . "').addClass('loading');
+                $(this).makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
+                $.ajax({
+                    url : '" . $url . "',
+                    type : 'POST',
+                    data : $('#" . $formName . "').serialize(),
+                    success : function(data)
+                    {
+                        $('#" . $componentViewClassName::getTreeDivId() . "').html(data);
+                    },
+                    error : function()
+                    {
+                        //todo: error call
+                    }
+                });
+            ";
+            // End Not Coding Standard
+            return $script;
+        }
+
+        /**
          * @param WizardForm $model
          * @param bool $isBeingCopied
          */
@@ -238,40 +274,6 @@
                                                 window.location.href = url;
                                             }'
                                           ));
-        }
-
-        /**
-         * @param string $formName
-         * @param string $componentViewClassName
-         * @return string
-         */
-        protected function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
-        {
-            assert('is_string($formName)');
-            assert('is_string($componentViewClassName)');
-            $url    =  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTree',
-                       array_merge($_GET, array('type' => $this->model->type,
-                                                'treeType' => $componentViewClassName::getTreeType())));
-            // Begin Not Coding Standard
-            $script = "
-                $('#" . $componentViewClassName::getTreeDivId() . "').addClass('loading');
-                $(this).makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
-                $.ajax({
-                    url : '" . $url . "',
-                    type : 'POST',
-                    data : $('#" . $formName . "').serialize(),
-                    success : function(data)
-                    {
-                        $('#" . $componentViewClassName::getTreeDivId() . "').html(data);
-                    },
-                    error : function()
-                    {
-                        //todo: error call
-                    }
-                });
-            ";
-            // End Not Coding Standard
-            return $script;
         }
 
         protected function registerOperatorOnLoadAndOnChangeScript()

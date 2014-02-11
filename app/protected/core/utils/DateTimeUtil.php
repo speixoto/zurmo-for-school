@@ -554,5 +554,68 @@
             }
             return $monthsData;
         }
+
+        /**
+         * Gets first day of week.
+         * @param string|null $stringTime
+         * @return string
+         */
+        public static function getFirstDayOfAWeek($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('Monday this week');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        /**
+         * Gets last day of week.
+         * @param string|null $stringTime
+         * @return string
+         */
+        public static function getLastDayOfAWeek($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('Sunday this week');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        /**
+         * Gets todays date.
+         * @return string
+         */
+        public static function getTodaysDate()
+        {
+            $dateTime = new DateTime();
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        /**
+         * Get first day of next week.
+         * @return string
+         */
+        public static function getFirstDayOfNextWeek()
+        {
+            $dateTime = new DateTime();
+            $dateTime->modify('next monday');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        /**
+         * Gets tomorrows date.
+         * @return string
+         */
+        public static function getTomorrowsDate()
+        {
+            $dateTime = new DateTime();
+            $dateTime->modify('tomorrow');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
     }
 ?>

@@ -162,5 +162,10 @@
         {
             return true;
         }
+
+        public static function canShowOnCalendar()
+        {
+            return true;
+        }
     }
 ?>

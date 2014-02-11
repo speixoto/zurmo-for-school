@@ -60,6 +60,8 @@
 
         const CLAIM_ITEM_LINK_ID                        = 'claim-item-link';
 
+        const USER_CALENDAR_WRAPPER_ID                  = 'header-calendar-link-wrapper';
+
         /**
          * @param array $settingsMenuItems
          * @param array $userMenuItems
@@ -127,6 +129,7 @@
             {
                 $content .= static::renderHeaderGameDashboardContent();
             }
+            $content     .= static::renderHeaderCalendarContent();
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
             $content     .= static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
             return $content;
@@ -301,6 +304,19 @@
                            }";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('closeGamificationScript', $script, CClientScript::POS_END);
+        }
+
+        /**
+         * Renders header calendar content.
+         *
+         * @return string
+         */
+        protected static function renderHeaderCalendarContent()
+        {
+            $url     = Yii::app()->createUrl('calendars/default/details/');
+            $content = ZurmoHtml::link('U', $url, array('id' => 'header-calendar-link'));
+            return ZurmoHtml::tag('div', array('id' => static::USER_CALENDAR_WRAPPER_ID,
+                'class' => 'user-menu-item'), $content);
         }
     }
 ?>

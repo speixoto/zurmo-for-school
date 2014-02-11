@@ -494,6 +494,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 #user-header-menu,
 #settings-header-menu,
+#header-calendar-link-wrapper,
 #header-game-dashboard-link-wrapper{
 	position: relative;
 	z-index: 100;
@@ -593,7 +594,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		display: none;
 	}
 }
-
+#header-calendar-link,
 #header-game-dashboard-link{
 	.symbly(28px);
 	text-align: center;
@@ -601,7 +602,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	line-height: 18px;
 	display: block;
 	height: 20px;
-	width: 20px;
+	//width: 20px;
+	padding: 0 8px;
 	.radius(50%);
 	background: transparent;
 	position: relative;
@@ -612,6 +614,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	}
 }
 
+#header-calendar-link-wrapper,
 #header-game-dashboard-link-wrapper{
 	a{
 		color: #ddd;
@@ -619,6 +622,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 			color: #fff;
 		}
 	}
+}
+
+#header-calendar-link-wrapper{
 }
 
 #GlobalSearchAndShortcutsCreateMenuView{
