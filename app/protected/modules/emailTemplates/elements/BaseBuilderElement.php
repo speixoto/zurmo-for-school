@@ -548,7 +548,7 @@
             }
             $tabContent             = ZurmoHtml::tag('div', array('class' => 'tabs-nav'),
                                                             $contentTabHyperLink . $settingsTabHyperLink);
-            $content                = ZurmoHtml::tag('div', array('class' => 'edit-form-tab-content'),
+            $content                = ZurmoHtml::tag('div', array('class' => 'edit-form-tab-content tabs-container'),
                                                             $tabContent . $contentTabDiv . $settingsTabContentDiv);
             return $content;
         }
@@ -585,8 +585,8 @@
             else
             {
                 Yii::app()->clientScript->registerScript($scriptName, "
-                        $('.tabs-nav a:not(.simple-link)').click( function()
-                        {
+                        $('.tabs-nav a:not(.simple-link)').click( function(event){
+                            event.preventDefault();
                             //the menu items
                             $('.active-tab', $(this).parent()).removeClass('active-tab');
                             $(this).addClass('active-tab');
@@ -594,12 +594,10 @@
                             var _old = $('.tab.active-tab'); //maybe add context here for tab-container
                             _old.fadeToggle();
                             var _new = $( $(this).attr('href') );
-                            _new.fadeToggle(150, 'linear', function()
-                            {
-                                    _old.removeClass('active-tab');
-                                    _new.addClass('active-tab');
+                            _new.fadeToggle(150, 'linear', function(){
+                                _old.removeClass('active-tab');
+                                _new.addClass('active-tab');
                             });
-                            return false;
                         });
                     ");
             }
