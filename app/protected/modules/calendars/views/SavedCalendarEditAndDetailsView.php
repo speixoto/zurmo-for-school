@@ -164,12 +164,6 @@
             assert('$form instanceof ZurmoActiveForm');
             $content = null;
             $report  = SavedCalendarToReportAdapter::makeReportBySavedCalendar($this->model);
-
-            //todo: if CREATE - then we don't have the moduleClassName....
-            //todo: need to figure out how to deal with this and default it. i think if moduleclassname is not selected, we shouldn't show 'filters' link
-            //todo: anyways. so we need to get taht working correctly.
-            //todo: maybe default moduleClassName on new saved cal to Meetings since we won't have an empty anyways.
-
             $adapter = new ReportToWizardFormAdapter($report);
             $reportWizardForm = $adapter->makeRowsAndColumnsWizardForm();
             $filtersForReportWizardViewClassName = static::getFiltersForReportWizardViewClassName();
