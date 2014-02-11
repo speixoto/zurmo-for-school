@@ -55,5 +55,11 @@
         {
             return $this->content['text'];
         }
+
+        protected static function resolveThumbnailUrl()
+        {
+            // TODO: @Shoaibi: Critical5: get rid of this dummy url.
+            return 'https://www.devexpress.com/Products/HTML-JS/i/widget-icons/textarea.png';
+        }
     }
 ?>
