@@ -123,7 +123,7 @@
             $model->dateTime   = '2020-07-03 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             //This date is 5 days in the future, it should not fire
-            $model->dateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + (86400 * 5));
+            $model->dateTime   = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + (86400 * 5 + 2));
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 

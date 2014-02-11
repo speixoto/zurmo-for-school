@@ -88,7 +88,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleAccountsForProjects'),
+                                                array('attributeName'   => 'null',
+                                                      'type'            => 'MultipleAccountsForProjects',
+                                                ),
                                             ),
                                         ),
                                     )
@@ -97,7 +99,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleContactsForProjects'),
+                                                array('attributeName'   => 'null',
+                                                      'type'            => 'MultipleContactsForProjects',
+                                                ),
                                             ),
                                         ),
                                     )
@@ -106,7 +110,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleOpportunitiesForProjects'),
+                                                array('attributeName'   => 'null',
+                                                      'type'            => 'MultipleOpportunitiesForProjects',
+                                                ),
                                             ),
                                         ),
                                     )

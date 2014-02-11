@@ -44,10 +44,10 @@
         /**
          * @return string
          */
-        protected function getFormName()
-        {
-            return 'ProjectOpportunitiesForm';
-        }
+         protected function getFormName()
+         {
+             return 'ProjectOpportunitiesForm';
+         }
 
         /**
          * @return string

@@ -34,52 +34,28 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class TaskModalEditViewDesignerRules extends EditViewDesignerRules
+    /**
+     * Form to work with status dropDown attributes
+     */
+    class StatusDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        public function allowEditInLayoutTool()
+        public function getValueElementType()
         {
-            return true;
+            return 'StatusDropDown';
         }
 
-        public function getDisplayName()
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
+         */
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-            return Zurmo::t('TasksModule', 'Modal Edit View');
-        }
-
-        public function maxCellsPerRow()
-        {
-            return 1;
-        }
-
-        public function canMergeAndSplitCells()
-        {
-            return false;
-        }
-
-        public function canConfigureLayoutPanelsType()
-        {
-            return true;
-        }
-
-        public function getSavableMetadataRules()
-        {
-            return array('AddBlankForDropDown');
-        }
-
-        public function getNonPlaceableLayoutAttributeNames()
-        {
-            return array(
-                'createdDateTime',
-                'modifiedDateTime',
-                'createdByUser',
-                'modifiedByUser',
-                'id'
-            );
-        }
-
-        public function requireAllRequiredFieldsInLayout()
-        {
-            return true;
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
+            return $data;
         }
     }
 ?>
