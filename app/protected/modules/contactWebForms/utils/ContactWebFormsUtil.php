@@ -469,8 +469,8 @@
             }
             return DataUtil::purifyHtml($sanitizedAttributeValue);
         }
-        
-        public static function getResolvedModuleNameForContactWebFormEntry(Contact $contact)
+
+        public static function getResolvedModuleIdForContactWebFormEntry(Contact $contact)
         {
             $startingStateId = ContactsUtil::getStartingStateId();
             $source = $contact->state->id;

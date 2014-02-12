@@ -94,7 +94,7 @@
             );
             return $metadata;
         }
-        
+
         public function resolveLinkStringForContactOrLead()
         {
             return 'ContactWebFormEntryListView::resolveLinkStringWithModuleIdForContactOrLead($data)';
@@ -105,18 +105,18 @@
             $content  = static::resolveModuleIdWithLinkContentForContactOrLead($contactWebFormEntry->contact);
             return $content;
         }
-  
+
         /**
          * @param Contact $contact
          * @return string
          */
         public static function resolveModuleIdWithLinkContentForContactOrLead(Contact $contact)
         {
-            $linkContent = '';
+            $linkContent = null;
             if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $contact))
             {
                 $moduleClassName = $contact->getModuleClassName();
-                $moduleId        = ContactWebFormsUtil::getResolvedModuleNameForContactWebFormEntry($contact);
+                $moduleId        = ContactWebFormsUtil::getResolvedModuleIdForContactWebFormEntry($contact);
                 $linkRoute       = '/' . $moduleId . '/default/details';
                 $link            = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                    $moduleClassName, $linkRoute);
