@@ -228,7 +228,16 @@
         protected function resolveLabelContent(array $item)
         {
             $label      = $item['label'] . $this->resolveAndGetSpanAndDynamicLabelContent($item);
-            $content    = $this->renderLabelPrefix() . ZurmoHtml::tag('span', array(),  $label);
+            if(isset($item['labelSpanHtmlOptions']))
+            {
+                $labelSpanHtmlOptions = $item['labelSpanHtmlOptions'];
+            }
+            else
+            {
+                $labelSpanHtmlOptions = array();
+            }
+            $avatarImageContent = '<img id="avatar" src="http://zurmo.com/img/amit.png">';
+            $content    = $this->renderLabelPrefix() . ZurmoHtml::tag('span', $labelSpanHtmlOptions,  $label);
             return $content;
         }
 

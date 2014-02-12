@@ -34,28 +34,48 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FooterView extends View
+    class UserInterfaceChooserView extends View
     {
         protected function renderContent()
         {
-            //Do not remove the Zurmo logo or Zurmo Copyright notice.
-            //The interactive user interfaces in original and modified versions
-            //of this program must display Appropriate Legal Notices, as required under
-            //Section 5 of the GNU Affero General Public License version 3.
-            //In accordance with Section 7(b) of the GNU Affero General Public License version 3,
-            //these Appropriate Legal Notices must retain the display of the Zurmo
-            //logo and Zurmo copyright notice. If the display of the logo is not reasonably
-            //feasible for technical reasons, the Appropriate Legal Notices must display the words
-            //"Copyright Zurmo Inc. 2014. All rights reserved".
-            $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
-                             'Copyright &#169; Zurmo Inc., 2014. All rights reserved.</span></a>';
-            $content = ZurmoHtml::tag('div', array('class' => 'container'), $copyrightHtml);
+            return $this->renderUserInterfaceTypeSelector();
+        }
+
+        /**
+         * Render section for selection user interface type.
+         * Show only if user is using mobile and tablet devices.
+         */
+        protected function renderUserInterfaceTypeSelector()
+        {
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $mobileActive  = ' active';
+                $desktopActive = null;
+            }
+            else
+            {
+                $mobileActive  = null;
+                $desktopActive = ' active';
+            }
+            $content = ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Mobile')),
+                            Yii::app()->createUrl('zurmo/default/userInterface',
+                            array('userInterface' => UserInterface::MOBILE)),
+                            array('class' => 'icon-mobile' . $mobileActive));
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Full')),
+                            Yii::app()->createUrl('zurmo/default/userInterface',
+                                array('userInterface' => UserInterface::DESKTOP)),
+                            array('class' => 'icon-desktop' . $desktopActive));
             return $content;
         }
 
-        protected function getContainerWrapperTag()
+        protected function renderContainerWrapperId()
         {
-            return 'footer';
+            return false;
+        }
+
+        protected function resolveDefaultClasses()
+        {
+            return array('ui-chooser');
         }
     }
 ?>

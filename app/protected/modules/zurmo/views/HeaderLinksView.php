@@ -121,7 +121,10 @@
 
         protected static function getUserMenuTopLevelItem()
         {
-            return array(array('label' => Yii::app()->user->userModel->username, 'url' => null));
+            return array(array('dynamicLabelContent'  => Yii::app()->user->userModel->getAvatarImage(25),
+                               'labelSpanHtmlOptions' => array('class' => 'avatar-holder'),
+                               'label'                => Yii::app()->user->userModel->username,
+                               'url'                  => null));
         }
 
         protected static function getSettingsMenuTopLevel()

@@ -138,11 +138,11 @@
             // in case of mobile we render it as part of menu.
             if (static::$showRecentlyViewed && !Yii::app()->userInterface->isMobile())
             {
-                $verticalColumns = 2;
+                $verticalColumns = 3;
             }
             else
             {
-                $verticalColumns = 1;
+                $verticalColumns = 2;
             }
             $aVerticalGridView   = new GridView($verticalColumns, 1,'nav', false);
             $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
@@ -151,6 +151,7 @@
             {
                 $aVerticalGridView->setView(static::makeRecentlyViewedView(), 1, 0);
             }
+            $aVerticalGridView->setView(new UserInterfaceChooserView(), ($verticalColumns - 1), 0);
 
             $horizontalGridView = new GridView(1, 3, 'section', false);
             $horizontalGridView->setCssClasses(array('AppContainer', 'container', 'clearfix')); //teh conatiner for the floated items
