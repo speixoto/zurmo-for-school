@@ -41,16 +41,19 @@
          * @var CalendarItemsDataProvider
          */
         protected $dataProvider;
+
         /**
          * Saved calendar subscriptions.
          * @var savedCalendarSubscriptions
          */
         protected $savedCalendarSubscriptions;
+
         /**
          * Controller id associated with the view.
          * @var string
          */
         protected $controllerId;
+
         /**
          * Module id associated with the view.
          * @var string

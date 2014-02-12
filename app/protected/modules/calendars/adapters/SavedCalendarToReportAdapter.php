@@ -51,11 +51,11 @@
                 $report->setId((int)$savedCalendar->id);
             }
             $report->setDescription($savedCalendar->description);
-            if($savedCalendar->moduleClassName != null)
+            if ($savedCalendar->moduleClassName != null)
             {
                 $report->setModuleClassName($savedCalendar->moduleClassName);
             }
-            if($savedCalendar->name != null)
+            if ($savedCalendar->name != null)
             {
                 $report->setName($savedCalendar->name);
             }

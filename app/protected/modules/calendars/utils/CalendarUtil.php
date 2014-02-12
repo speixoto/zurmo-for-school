@@ -49,7 +49,7 @@
             $endAttribute   = $savedCalendar->endAttributeName;
             $calendarItem->setTitle($model->name);
             $calendarItem->setStartDateTime($model->$startAttribute);
-            if($endAttribute != null)
+            if ($endAttribute != null)
             {
                 $calendarItem->setEndDateTime($model->$endAttribute);
             }
@@ -580,7 +580,9 @@
             $eventsUrl  = Yii::app()->createUrl('calendars/default/getEvents');
             $params = LabelUtil::getTranslationParamsForAllModules();
             $confirmTitle  = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
-                                                        array('{modelLabel}' => Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params)));
+            array('{modelLabel}' => Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params)));
+            // Begin Not Coding Standard
+            
             $script = "$(document).on('click', '.my-cal-delete', function()
                          {
                             if (!confirm('{$confirmTitle}'))
@@ -608,6 +610,8 @@
 
                           }
                         );";
+                        
+             // End Not Coding Standard
              $cs         = Yii::app()->getClientScript();
              if($cs->isScriptRegistered('calDeleteScript', ClientScript::POS_END) === false)
              {
@@ -626,6 +630,8 @@
             assert('is_string($endDate)');
             $url        = Yii::app()->createUrl('/calendars/default/unsubscribe');
             $eventsUrl  = Yii::app()->createUrl('calendars/default/getEvents');
+            // Begin Not Coding Standard
+            
             $script     = "$(document).on('click', '.shared-cal-unsubscribe', function(){
                             $.ajax(
                             {
@@ -647,6 +653,8 @@
                             }
                             );
                       })";
+                      
+            // End Not Coding Standard
             $cs         = Yii::app()->getClientScript();
             $cs->registerScript('calunsubscribescript', $script, ClientScript::POS_END);
         }
@@ -662,9 +670,9 @@
             $adapter                = new ModelAttributesAdapter(new $modelClassName(false));
             $attributes             = $adapter->getAttributes();
             $selectedAttributes     = array();
-            foreach($attributes as $attribute => $value)
+            foreach ($attributes as $attribute => $value)
             {
-                if($value['elementType'] == 'DateTime' || $value['elementType'] == 'Date')
+                if ($value['elementType'] == 'DateTime' || $value['elementType'] == 'Date')
                 {
                     $selectedAttributes[$attribute] = $value['attributeLabel'];
                 }
@@ -707,7 +715,7 @@
         public static function saveCalendarWithSerializedData(Report $report, SavedCalendar $savedCalendar, $wizardFormPostData)
         {
             $filtersData          = ArrayUtil::getArrayValue($wizardFormPostData, ComponentForReportForm::TYPE_FILTERS);
-            if($filtersData != null)
+            if ($filtersData != null)
             {
                 $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
                                                                               $report->getType(),
@@ -716,7 +724,7 @@
                                         'filtersStructure' => $report->getFiltersStructure());
                 $savedCalendar->serializedData = serialize($unserializedData);
             }
-            if(!$savedCalendar->save())
+            if (!$savedCalendar->save())
             {
                 throw new FailedToSaveModelException();
             }
@@ -743,7 +751,7 @@
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
                 $report                     = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
             }
-            if(isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
+            if (isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
             {
                 $report->setModuleClassName($postData['SavedCalendar']['moduleClassName']);
             }
@@ -801,7 +809,7 @@
             assert('$model instanceof CalendarItemInterface');
             $descriptionArray = $model->getCalendarItemData();
             $content          = ZurmoHtml::tag('div', array('class' => 'itemDescription'), '');
-            foreach($descriptionArray as $key => $value)
+            foreach ($descriptionArray as $key => $value)
             {
                 $content .= ZurmoHtml::tag('span', array(), $key . ':' . $value) . "<br/>";
             }

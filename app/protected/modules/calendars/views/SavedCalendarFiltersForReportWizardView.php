@@ -64,7 +64,6 @@
             return $content;
         }
 
-
         protected function renderPreviousPageLinkContent()
         {
         }

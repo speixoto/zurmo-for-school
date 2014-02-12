@@ -45,7 +45,7 @@
             $savedCalendar->moduleClassName     = 'ProductsModule';
             $savedCalendar->startAttributeName  = 'createdDateTime';
             $savedCalendar->color               = $color;
-            assert($savedCalendar->save());
+            assert($savedCalendar->save()); // Not Coding Standard
             return $savedCalendar;
         }
 
@@ -56,7 +56,7 @@
             $savedCalendarSubscription->user                = $user;
             $savedCalendarSubscription->savedcalendar       = $savedCalendars[0];
             $savedCalendarSubscription->color               = $color;
-            assert($savedCalendarSubscription->save());
+            assert($savedCalendarSubscription->save()); // Not Coding Standard
             return $savedCalendarSubscription;
         }
     }

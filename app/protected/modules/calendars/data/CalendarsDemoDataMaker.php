@@ -60,7 +60,6 @@
          */
         public function populateModel(& $model)
         {
-
         }
     }
 ?>
