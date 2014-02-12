@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,46 +31,40 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTextElement extends BaseBuilderElement
+    /**
+     * Form to edit the user avatar
+     */
+    class BuilderElementEditableModelForm extends ModelForm
     {
-        public static function isUIAccessible()
+        public $content;
+        public $properties;
+
+        protected static function getRedBeanModelClassName()
         {
-            return true;
+            return 'EmailTemplate';
         }
 
-        protected static function resolveLabel()
+        public function __construct(EmailTemplate $model, array $content, array $properties)
         {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
+            // TODO: @Shoaibi/#Jason: Critical0: this seems so wrong. Model is never used, we don't need validation.
+            $this->model        = $model;
+            $this->content      = $content;
+            $this->properties   = $properties;
         }
 
-        protected function resolveDefaultContent()
-        {
-            // TODO: @Shoaibi: Critical5: Better default content.
-            return array('text' => '<u>This is default dummy content.</u>');
-        }
 
-        protected function renderSettingsTab(ZurmoActiveForm $form)
+        // TODO: @Shoaibi: Critical5: Enable if we need this, but i don't think we will.
+        /*
+        public function rules()
         {
-            // TODO: @Shoaibi: Critical0: Implement.
-            return 'Settings Edit form goes here';
+            return array(
+                array('content',        'safe'),
+                array('properties',     'safe'),
+            );
         }
-
-        protected function resolveContentElementClassName()
-        {
-            return 'RedactorElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            return 'content[text]';
-        }
-
-        protected function renderContentControlNonEditable()
-        {
-
-        }
+        */
     }
 ?>
