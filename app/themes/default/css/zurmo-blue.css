@@ -55,7 +55,7 @@
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -611,6 +611,7 @@ section {
 }
 #user-header-menu,
 #settings-header-menu,
+#header-calendar-link-wrapper,
 #header-game-dashboard-link-wrapper {
   position: relative;
   z-index: 100;
@@ -619,17 +620,20 @@ section {
 }
 #user-header-menu:hover > li > a,
 #settings-header-menu:hover > li > a,
+#header-calendar-link-wrapper:hover > li > a,
 #header-game-dashboard-link-wrapper:hover > li > a {
   color: #fff;
   background: rgba(255,255,255,0.05);
 }
 #user-header-menu:hover > li > a:after,
 #settings-header-menu:hover > li > a:after,
+#header-calendar-link-wrapper:hover > li > a:after,
 #header-game-dashboard-link-wrapper:hover > li > a:after {
   color: #fff;
 }
 #user-header-menu.nav-open > li > a,
 #settings-header-menu.nav-open > li > a,
+#header-calendar-link-wrapper.nav-open > li > a,
 #header-game-dashboard-link-wrapper.nav-open > li > a {
   color: #fff;
   border-left: 1px solid #444 !important;
@@ -645,16 +649,19 @@ section {
 }
 #user-header-menu.nav-open > li > a:after,
 #settings-header-menu.nav-open > li > a:after,
+#header-calendar-link-wrapper.nav-open > li > a:after,
 #header-game-dashboard-link-wrapper.nav-open > li > a:after {
   color: #fff;
 }
 #user-header-menu.nav-open ul,
 #settings-header-menu.nav-open ul,
+#header-calendar-link-wrapper.nav-open ul,
 #header-game-dashboard-link-wrapper.nav-open ul {
   display: block;
 }
 #user-header-menu > li > a,
 #settings-header-menu > li > a,
+#header-calendar-link-wrapper > li > a,
 #header-game-dashboard-link-wrapper > li > a {
   position: relative;
   z-index: 5;
@@ -668,6 +675,7 @@ section {
 }
 #user-header-menu > li > a:hover,
 #settings-header-menu > li > a:hover,
+#header-calendar-link-wrapper > li > a:hover,
 #header-game-dashboard-link-wrapper > li > a:hover {
   color: #fff;
   border-left: 1px solid #1b1c50;
@@ -675,6 +683,7 @@ section {
 }
 #user-header-menu ul,
 #settings-header-menu ul,
+#header-calendar-link-wrapper ul,
 #header-game-dashboard-link-wrapper ul {
   display: block;
   width: 110px;
@@ -739,6 +748,7 @@ section {
   right: 0;
   display: none;
 }
+#header-calendar-link,
 #header-game-dashboard-link {
   font-weight: normal !important;
   font-size: 28px;
@@ -748,7 +758,7 @@ section {
   line-height: 18px;
   display: block;
   height: 20px;
-  width: 20px;
+  padding: 0 8px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -758,6 +768,7 @@ section {
   position: relative;
   top: 10px;
 }
+#header-calendar-link.highlighted,
 #header-game-dashboard-link.highlighted {
   color: #fff;
   -webkit-box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
@@ -766,9 +777,11 @@ section {
   -o-box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
   box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
 }
+#header-calendar-link-wrapper a,
 #header-game-dashboard-link-wrapper a {
   color: #ddd;
 }
+#header-calendar-link-wrapper a:hover,
 #header-game-dashboard-link-wrapper a:hover {
   color: #fff;
 }
@@ -1050,7 +1063,7 @@ body > .ui-autocomplete {
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -1830,7 +1843,7 @@ form .view-toolbar-container,
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -3368,7 +3381,13 @@ div.wide.form a {
 #ModalView .search-view-1 label {
   padding-top: 0;
 }
-#ModalView #clear-search-linkmodal {
+#ModalView .items {
+  border: none;
+}
+#ModalView .items thead tr:first-child th {
+  border-top: none;
+}
+#clear-search-linkmodal {
   margin-left: 10px;
   color: #fff;
   padding: 3px;
@@ -3378,12 +3397,7 @@ div.wide.form a {
   -o-border-radius: 3px;
   border-radius: 3px;
   font-size: 11px;
-}
-#ModalView .items {
-  border: none;
-}
-#ModalView .items thead tr:first-child th {
-  border-top: none;
+  background: #282A76;
 }
 .kanban-board-options-view,
 .select-list-attributes-view,
@@ -5008,7 +5022,7 @@ div.radio-input .hasDropDown {
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   display: none;
   position: absolute;
   left: 0;
@@ -6495,6 +6509,7 @@ i[class^="icon"] {
 .icon-layout:after {
   content: "C";
 }
+.icon-user:after,
 .icon-user-details:after {
   content: "e";
 }
@@ -7396,16 +7411,6 @@ a.simple-link .icon-x {
   vertical-align: middle;
   position: relative;
 }
-.type-products .icon-empty:before {
-  content: '\00AC';
-  font-weight: normal !important;
-  font-size: 45px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0;
-  margin: 0;
-  vertical-align: middle;
-  position: relative;
-}
 .type-opportunities h3 {
   padding-left: 30px;
   position: relative;
@@ -7483,6 +7488,36 @@ a.simple-link .icon-x {
 }
 .type-accountAccountAffiliations .icon-empty:before {
   content: '\00FB';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-marketingLists .icon-empty:before {
+  content: '\0022';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-maps .icon-empty:before {
+  content: 'L';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-users .icon-empty:before {
+  content: '\0066';
   font-weight: normal !important;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -15135,7 +15170,6 @@ a.user-link {
 }
 #marketing-list-member-configuration-form .list-view-items-summary-clone {
   margin-top: 51px;
-  font-weight: bold;
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
@@ -18967,13 +19001,8 @@ a + .project-stats {
   margin-bottom: 0px;
   padding: 15px;
 }
-#CreateModelsToMergeListAndChartView .chosen-entries .right-column {
-  display: none;
-}
-#CreateModelsToMergeListAndChartView .chosen-entries .left-column {
+#CreateModelsToMergeListAndChartView .chosen-entries {
   width: 100%;
-  float: none;
-  padding: 0;
 }
 #CreateModelsToMergeListAndChartView .cards {
   width: 75%;
@@ -18999,9 +19028,11 @@ a + .project-stats {
 #CreateModelsToMergeListAndChartView .possible-matches a {
   display: inline-block;
   border: none !important;
-  border-left: none !important;
   padding: 10px 15px;
   width: 100% !important;
+}
+#CreateModelsToMergeListAndChartView .spidergraph {
+  display: none;
 }
 #CreateModelsToMergeListAndChartView .chosen-entries .merge-color-1 a:hover,
 #CreateModelsToMergeListAndChartView .merge-color-1.selected a,
@@ -19026,12 +19057,15 @@ a + .project-stats {
   background: #7CB830 !important;
 }
 .merge-title-bar {
-  padding: 15px 15px 10px 15px;
-  border-bottom: 1px solid #dfdfdf;
+  display: table-caption;
+  width: 100%;
 }
 .merge-title-bar h3 {
   margin-bottom: 0 !important;
   line-height: 1;
+  width: 100%;
+  padding: 15px 15px 10px 15px;
+  border-bottom: 1px solid #dfdfdf;
 }
 .merge-title-bar .simple-link {
   margin-left: 15px;
@@ -19059,14 +19093,7 @@ a + .project-stats {
   background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-}
-.chosen-entries .left-column {
-  padding-left: 0;
-  padding-right: 0;
-  padding-bottom: 0;
-}
-.chosen-entries .right-column {
-  border-left: 1px solid #fff;
+  display: table;
 }
 .DetailsView .chosen-entries {
   -webkit-box-shadow: none !important;
@@ -19087,9 +19114,11 @@ a + .project-stats {
 }
 .possible-matches {
   width: 35%;
-  display: block;
-  float: left;
   list-style: none;
+  padding-top: 15px;
+  display: table-cell;
+  vertical-align: top;
+  border-right: 1px solid #dfdfdf;
 }
 .possible-matches li {
   font-weight: bold;
@@ -19115,11 +19144,9 @@ a + .project-stats {
 .cards {
   padding: 15px;
   width: 65%;
-  display: block;
-  float: left;
-  margin-top: -15px;
-  margin-left: -1px;
-  border-left: 1px solid #dfdfdf;
+  display: table-cell;
+  vertical-align: top;
+  border-left: 1px solid #fff;
   border-right: 1px solid #dfdfdf;
 }
 .cards > div {
@@ -19136,9 +19163,11 @@ a + .project-stats {
   font-weight: normal !important;
 }
 .spidergraph {
+  padding-left: 10px;
   width: 100%;
   height: 100%;
   text-align: left;
+  border-left: 1px solid #fff;
 }
 .spidergraph div {
   overflow: visible !important;
@@ -19384,9 +19413,44 @@ a + .project-stats {
 #calendar {
   width: 100%;
   margin: 0 auto;
+  position: relative;
 }
 #calendar td {
   padding: 0;
+}
+#calendar .big-spinner {
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+}
+#calendar .fc-state-default {
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  background: url("../images/view-toolbar-gradient.png") left bottom repeat-x;
+  color: #656565 !important;
+  text-shadow: 0 1px 0 #fff;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 700;
+}
+#calendar .fc-state-default:hover {
+  color: #7CB830 !important;
+}
+#calendar .fc-state-active {
+  color: #656565;
+  box-shadow: inset 0 10px 10px 4px rgba(153,153,153,0.4), 0 1px 0 0 #FFF;
+}
+#calendar .fc-button {
+  height: auto;
+  padding: 0 6px;
+  line-height: 24px;
+  cursor: pointer;
 }
 .fc-header {
   text-transform: capitalize;
@@ -19397,44 +19461,58 @@ a + .project-stats {
 .calendar-view .right-column {
   width: 75%;
 }
-.calendars-list {
+.calendars-list-container {
   margin-top: 30px;
 }
-.calendars-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.calendars-list-container + .calendars-list-container {
+  margin-top: 30px;
 }
-.calendars-list > ul > li {
+.calendars-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: block;
-  padding: 5px 0;
   line-height: 1;
 }
-.calendars-list .edit-row-menu > li > a:before {
-  line-height: 12px;
+.calendars-list > li {
+  padding: 0;
+  margin-bottom: 5px;
 }
-.calendars-list a {
-  color: #545454 !important;
+.calendars-list .hasCheckBox {
+  display: inline-block;
+  line-height: 1;
 }
-.calendars-list + .calendars-list {
-  margin-top: 30px;
+.calendars-list .edit-row-menu {
+  margin-right: 0;
 }
-.calendars-list + .calendars-list .cal-color {
-  background: darkgoldenrod;
+.cal-list-header {
+  margin-bottom: 10px;
 }
-.calendars-list + .calendars-list .cal-color.outline {
-  background: none;
-  border: 1px solid rosybrown;
+.cal-list-header h3 {
+  display: inline-block;
+}
+.cal-list-header a {
+  float: right;
+  font-weight: normal !important;
+  font-size: 16px;
+  font-family: "zurmo_gamification_symbly_rRg";
+}
+.cal-list-header .z-label {
+  padding: 0 2px 0 4px;
+  line-height: 16px;
+}
+.cal-name {
+  position: relative;
+  top: -3px;
 }
 .cal-color {
   display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 3px;
-  background: #3a87ad;
-  margin-right: 4px;
+  margin: 0 6px 0 3px;
   position: relative;
-  top: 1px;
+  top: -2px;
 }
 .cal-color.outline {
   background: none;
@@ -19457,6 +19535,29 @@ a + .project-stats {
 .quick-insert .simple-link {
   margin: 5px 0 0 0;
   display: block;
+}
+#smallcalendar .ui-datepicker.ui-datepicker-inline {
+  margin: 0;
+}
+#smallcalendar .ui-datepicker-header {
+  background-color: #ededed !important;
+  background-repeat: repeat-x !important;
+  background-image: -ms-linear-gradient(top,#f6f6f6,#ededed) !important;
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f6f6f6),color-stop(100%,#ededed)) !important;
+  background-image: -webkit-linear-gradient(top,#f6f6f6,#ededed) !important;
+  background-image: -o-linear-gradient(top,#f6f6f6,#ededed) !important;
+  background-image: -moz-linear-gradient(top,#f6f6f6,#ededed) !important;
+  background-image: linear-gradient(top,#f6f6f6,#ededed) !important;
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+  border: 1px solid #ddd !important;
+}
+#SavedCalendarFiltersForReportWizardView .dynamic-droppable-area {
+  width: 70%;
+  padding-left: 0;
 }
 body.flat-cement * {
   box-shadow: none !important;

@@ -185,7 +185,9 @@
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
             {
-                $this->actionValidate($postData, $model);
+                $errorData = ReportUtil::validateReportWizardForm($postData, $model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
             }
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveByPostDataAndModelThenMake($postData[get_class($model)], $savedReport);
@@ -531,26 +533,6 @@
                 Yii::app()->user->setFlash('notification', $notificationContent);
                 return true;
             }
-        }
-
-        protected function actionValidate($postData, ReportWizardForm $model)
-        {
-            if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
-            {
-                $model->setScenario($postData['validationScenario']);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $model->validate();
-            $errorData = array();
-            foreach ($model->getErrors() as $attribute => $errors)
-            {
-                    $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
-            }
-            echo CJSON::encode($errorData);
-            Yii::app()->end(0, false);
         }
 
         protected function makeReportDetailsAndRelationsView(SavedReport $savedReport, $redirectUrl,

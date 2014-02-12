@@ -53,21 +53,33 @@
             }
             $dateContent .= '<br/>';
             $content .= self::renderActivityItemsContentsExcludingContacts($meeting);
-            if (count($meeting->activityItems) > 0)
+            if (count($meeting->activityItems) > 0 || count($meeting->userAttendees) > 0)
             {
-                $contactsContent = null;
+                $attendeesContent = null;
                 $contactLabels = self::getExistingContactRelationsLabels($meeting->activityItems);
                 foreach ($contactLabels as $label)
                 {
-                    if ($contactsContent != null)
+                    if ($attendeesContent != null)
                     {
-                        $contactsContent .= '<br/>';
+                        $attendeesContent .= '<br/>';
                     }
-                    $contactsContent .= $label;
+                    $attendeesContent .= $label;
                 }
-                if ($contactsContent != null )
+                foreach ($meeting->userAttendees as $user)
                 {
-                    $content .= $contactsContent . '<br/>';
+                    if ($attendeesContent != null)
+                    {
+                        $attendeesContent .= '<br/>';
+                    }
+                    $params             = array('label' => strval($user), 'redirectUrl' => null, 'wrapLabel' => false);
+                    $moduleClassName    = $user->getModuleClassName();
+                    $moduleId           = $moduleClassName::getDirectoryName();
+                    $element            = new DetailsLinkActionElement('default', $moduleId, $user->id, $params);
+                    $attendeesContent  .= '<i class="icon-'.strtolower(get_class($user)).'"></i> ' . $element->render();
+                }
+                if ($attendeesContent != null )
+                {
+                    $content .= $attendeesContent . '<br/>';
                 }
             }
             $content = $title . $dateContent . ZurmoHtml::tag('div', array('class' => 'meeting-details'), $content);
@@ -174,6 +186,32 @@
                 $content .= '<br/>';
             }
             return $content;
+        }
+
+        /**
+         * Gets full calendar item data.
+         * @return string
+         */
+        public function getCalendarItemData()
+        {
+            $name             = $this->name;
+            $location         = $this->location;
+            $startDateTime    = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                    $this->startDateTime,
+                                    DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
+                                    DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
+                                    true);
+            $endDateTime      = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                    $this->endDateTime,
+                                    DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
+                                    DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
+                                    true);
+            $language         = Yii::app()->languageHelper->getForCurrentUser();
+            $translatedAttributeLabels = self::translatedAttributeLabels($language);
+            return array($translatedAttributeLabels['name']            => $name,
+                         $translatedAttributeLabels['location']        => $location,
+                         $translatedAttributeLabels['startDateTime']   => $startDateTime,
+                         $translatedAttributeLabels['endDateTime']     => $endDateTime);
         }
     }
 ?>

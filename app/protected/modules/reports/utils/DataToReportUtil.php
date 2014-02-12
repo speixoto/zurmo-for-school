@@ -61,10 +61,7 @@
             {
                 $report->setName($data['name']);
             }
-            if (isset($data['filtersStructure']))
-            {
-                $report->setFiltersStructure($data['filtersStructure']);
-            }
+            self::resolveFiltersStructure($data, $report);
             if (null != ArrayUtil::getArrayValue($data, 'ownerId'))
             {
                 $owner = User::getById((int)$data['ownerId']);
@@ -311,6 +308,19 @@
                 $chart->setAttributes($chartData);
             }
             $report->setChart($chart);
+        }
+
+        /**
+         * Resolve filters structure
+         * @param array $data
+         * @param Report $report
+         */
+        public static function resolveFiltersStructure($data, Report $report)
+        {
+            if (isset($data['filtersStructure']))
+            {
+                $report->setFiltersStructure($data['filtersStructure']);
+            }
         }
     }
 ?>

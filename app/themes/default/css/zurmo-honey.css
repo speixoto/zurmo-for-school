@@ -55,7 +55,7 @@
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -1050,7 +1050,7 @@ body > .ui-autocomplete {
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -1830,7 +1830,7 @@ form .view-toolbar-container,
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -3368,7 +3368,13 @@ div.wide.form a {
 #ModalView .search-view-1 label {
   padding-top: 0;
 }
-#ModalView #clear-search-linkmodal {
+#ModalView .items {
+  border: none;
+}
+#ModalView .items thead tr:first-child th {
+  border-top: none;
+}
+#clear-search-linkmodal {
   margin-left: 10px;
   color: #fff;
   padding: 3px;
@@ -3378,12 +3384,7 @@ div.wide.form a {
   -o-border-radius: 3px;
   border-radius: 3px;
   font-size: 11px;
-}
-#ModalView .items {
-  border: none;
-}
-#ModalView .items thead tr:first-child th {
-  border-top: none;
+  background: #46201C;
 }
 .kanban-board-options-view,
 .select-list-attributes-view,
@@ -5008,7 +5009,7 @@ div.radio-input .hasDropDown {
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   display: none;
   position: absolute;
   left: 0;
@@ -6495,6 +6496,7 @@ i[class^="icon"] {
 .icon-layout:after {
   content: "C";
 }
+.icon-user:after,
 .icon-user-details:after {
   content: "e";
 }
@@ -7396,16 +7398,6 @@ a.simple-link .icon-x {
   vertical-align: middle;
   position: relative;
 }
-.type-products .icon-empty:before {
-  content: '\00AC';
-  font-weight: normal !important;
-  font-size: 45px;
-  font-family: "zurmo_gamification_symbly_rRg";
-  padding: 0;
-  margin: 0;
-  vertical-align: middle;
-  position: relative;
-}
 .type-opportunities h3 {
   padding-left: 30px;
   position: relative;
@@ -7483,6 +7475,36 @@ a.simple-link .icon-x {
 }
 .type-accountAccountAffiliations .icon-empty:before {
   content: '\00FB';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-marketingLists .icon-empty:before {
+  content: '\0022';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-maps .icon-empty:before {
+  content: 'L';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-users .icon-empty:before {
+  content: '\0066';
   font-weight: normal !important;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
@@ -15135,7 +15157,6 @@ a.user-link {
 }
 #marketing-list-member-configuration-form .list-view-items-summary-clone {
   margin-top: 51px;
-  font-weight: bold;
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
@@ -18967,13 +18988,8 @@ a + .project-stats {
   margin-bottom: 0px;
   padding: 15px;
 }
-#CreateModelsToMergeListAndChartView .chosen-entries .right-column {
-  display: none;
-}
-#CreateModelsToMergeListAndChartView .chosen-entries .left-column {
+#CreateModelsToMergeListAndChartView .chosen-entries {
   width: 100%;
-  float: none;
-  padding: 0;
 }
 #CreateModelsToMergeListAndChartView .cards {
   width: 75%;
@@ -18999,9 +19015,11 @@ a + .project-stats {
 #CreateModelsToMergeListAndChartView .possible-matches a {
   display: inline-block;
   border: none !important;
-  border-left: none !important;
   padding: 10px 15px;
   width: 100% !important;
+}
+#CreateModelsToMergeListAndChartView .spidergraph {
+  display: none;
 }
 #CreateModelsToMergeListAndChartView .chosen-entries .merge-color-1 a:hover,
 #CreateModelsToMergeListAndChartView .merge-color-1.selected a,
@@ -19026,12 +19044,15 @@ a + .project-stats {
   background: #ABBC42 !important;
 }
 .merge-title-bar {
-  padding: 15px 15px 10px 15px;
-  border-bottom: 1px solid #dfdfdf;
+  display: table-caption;
+  width: 100%;
 }
 .merge-title-bar h3 {
   margin-bottom: 0 !important;
   line-height: 1;
+  width: 100%;
+  padding: 15px 15px 10px 15px;
+  border-bottom: 1px solid #dfdfdf;
 }
 .merge-title-bar .simple-link {
   margin-left: 15px;
@@ -19059,14 +19080,7 @@ a + .project-stats {
   background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
-}
-.chosen-entries .left-column {
-  padding-left: 0;
-  padding-right: 0;
-  padding-bottom: 0;
-}
-.chosen-entries .right-column {
-  border-left: 1px solid #fff;
+  display: table;
 }
 .DetailsView .chosen-entries {
   -webkit-box-shadow: none !important;
@@ -19087,9 +19101,11 @@ a + .project-stats {
 }
 .possible-matches {
   width: 35%;
-  display: block;
-  float: left;
   list-style: none;
+  padding-top: 15px;
+  display: table-cell;
+  vertical-align: top;
+  border-right: 1px solid #dfdfdf;
 }
 .possible-matches li {
   font-weight: bold;
@@ -19115,11 +19131,9 @@ a + .project-stats {
 .cards {
   padding: 15px;
   width: 65%;
-  display: block;
-  float: left;
-  margin-top: -15px;
-  margin-left: -1px;
-  border-left: 1px solid #dfdfdf;
+  display: table-cell;
+  vertical-align: top;
+  border-left: 1px solid #fff;
   border-right: 1px solid #dfdfdf;
 }
 .cards > div {
@@ -19136,9 +19150,11 @@ a + .project-stats {
   font-weight: normal !important;
 }
 .spidergraph {
+  padding-left: 10px;
   width: 100%;
   height: 100%;
   text-align: left;
+  border-left: 1px solid #fff;
 }
 .spidergraph div {
   overflow: visible !important;
