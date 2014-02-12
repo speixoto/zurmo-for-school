@@ -53,7 +53,7 @@
         /**
          * @var bool
          */
-        protected $makeDefaultClassesFromClassHeirarchy;
+        protected $makeDefaultClassesFromClassHeirarchy = true;
 
         /**
          * Tells View that it can render the extending class' divs with
