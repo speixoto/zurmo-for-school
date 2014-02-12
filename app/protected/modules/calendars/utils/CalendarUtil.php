@@ -202,14 +202,7 @@
                 $fullCalendarItem['color'] = $calItem->getColor();
                 $modelClass                = $calItem->getModelClass();
                 $model                     = $modelClass::getById($calItem->getModelId());
-//                if($model instanceof CalendarItemInterface)
-//                {
-//                    $fullCalendarItem['description'] = self::renderFullCalendarItems($model);
-//                }
-//                else
-//                {
-                    $fullCalendarItem['description'] = '';
-                //}
+                $fullCalendarItem['model'] = $model;
                 $fullCalendarItems[] = $fullCalendarItem;
             }
             return $fullCalendarItems;

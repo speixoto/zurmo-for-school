@@ -262,6 +262,14 @@
                                                                                                $endDate,
                                                                                                $dateRangeType);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
+            foreach ($items as $index => $item)
+            {
+                $itemDetailViewClassName = get_class($item['model']) . 'ForCalendarItemDetailsView';
+                $itemDetailViewInstance  = new $itemDetailViewClassName($this->getId(), $this->getModule()->getId(), $item['model']);
+                $item['description']     = $itemDetailViewInstance->render();
+                unset($item['model']);
+                $items[$index]           = $item;
+            }
             echo CJSON::encode($items);
         }
 
