@@ -49,10 +49,9 @@
             $canvasContent = '
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
-                <head>
-                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                    <meta name="viewport" content="width=device-width"/>
-
+                      <head>
+                        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                        <meta name="viewport" content="width=device-width"/>
                         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
                         <style type="text/css">
                              /*{ margin: 0; padding: 0; }*/
@@ -70,9 +69,9 @@
                                         <table class="row header">
                                             <tr>
                                                 <td>
-                                                    <span class="ui-icon-arrow-4"></span>
-                                                    <span class="ui-icon-wrench"></span >
-                                                    <span class="ui-icon-trash"></span>
+                                                    <span><i class="ui-icon-arrow-4"></i></span>
+                                                    <span><i class="ui-icon-wrench"></i></span>
+                                                    <span><i class="ui-icon-trash"></i></span>
                                                     <table class="container" data-row-id="1">
                                                         <tr>
                                                             <td class="wrapper last">
@@ -80,9 +79,9 @@
                                                                     <tr>
                                                                         <td  class="sortable-elements">
                                                                             <div>
-                                                                                <span class="ui-icon-arrow-4"></span>
-                                                                                <span class="ui-icon-wrench"></span >
-                                                                                <span class="ui-icon-trash"></span>
+                                                                                <span><i class="ui-icon-arrow-4"></i></span>
+                                                                                <span><i class="ui-icon-wrench"></i></span>
+                                                                                <span><i class="ui-icon-trash"></i></span>
                                                                                 <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
                                                                             </div>
                                                                         </td>
@@ -99,9 +98,9 @@
                                         <table class="container">
                                               <tr>
                                                  <td>
-                                                  <span class="ui-icon-arrow-4"></span>
-                                                  <span class="ui-icon-wrench"></span >
-                                                  <span class="ui-icon-trash"></span>
+                                                  <span><i class="ui-icon-arrow-4"></i></span>
+                                                  <span><i class="ui-icon-wrench"></i></span>
+                                                  <span><i class="ui-icon-trash"></i></span>
                                                   <table class="row" data-row-id="2">
                                                     <tr>
 
@@ -111,9 +110,9 @@
                                                           <tr>
                                                             <td class="sortable-elements">
                                                                 <div>
-                                                                    <span class="ui-icon-arrow-4"></span>
-                                                                    <span class="ui-icon-wrench"></span >
-                                                                    <span class="ui-icon-trash"></span>
+                                                                    <span><i class="ui-icon-arrow-4"></i></span>
+                                                                    <span><i class="ui-icon-wrench"></i></span>
+                                                                    <span><i class="ui-icon-trash"></i></span>
                                                                     <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
                                                                 </div>
                                                             </td>
@@ -129,9 +128,9 @@
                                                           <tr>
                                                             <td class="sortable-elements">
                                                                 <div>
-                                                                    <span class="ui-icon-arrow-4"></span>
-                                                                    <span class="ui-icon-wrench"></span >
-                                                                    <span class="ui-icon-trash"></span>
+                                                                    <span><i class="ui-icon-arrow-4"></i></span>
+                                                                    <span><i class="ui-icon-wrench"></i></span>
+                                                                    <span><i class="ui-icon-trash"></i></span>
                                                                     <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
                                                                 </div>
                                                             </td>
@@ -159,6 +158,80 @@
         {
             Yii::app()->clientScript->registerCoreScript('jquery');
             Yii::app()->clientScript->registerCoreScript('jquery.ui');
+            static::registerScriptForSortables();
+        }
+
+        protected static function getSortableElementsSelector()
+        {
+            return ".sortable-elements";
+        }
+
+        protected static function getSortableRowsSelector()
+        {
+            return ".sortable-rows";
+        }
+
+        protected static function registerScriptForSortables()
+        {
+            $sortableElementsSelector = static::getSortableElementsSelector();
+            $sortableRowsSelector     = static::getSortableRowsSelector();
+            Yii::app()->getClientScript()->registerScript(__CLASS__, "
+
+                        $('{$sortableElementsSelector}').each(function(){
+                            if ($(this).data('sortable'))
+                            {
+                                $(this).sortable('destroy');
+                            }
+                        });
+                        $('{$sortableElementsSelector}').sortable({
+//                            stop: function( event, ui ) {
+//                                if (ui.item.is('li')) {
+//                                    emailTemplateEditor.placeNewElement(ui.item.data('class'), ui.item);
+//                                }
+//                            },
+//                            remove: function ( event, ui ) {
+//                                if ($(this).sortable('toArray').length < 1)
+//                                {
+//                                    //TODO: @sergio: What should we the sortable-elements became empty?
+//                                    // We should not have that problem , we need to be able to drag item in an empty sortable
+//                                    //$(this).remove();
+//                                }
+//                            },
+                            cursor: 'move',
+                            revert: true,
+                            cursorAt: { top: 0, left: 0 },
+                            connectWith: '{$sortableElementsSelector}'
+                        });
+
+
+                        $('{$sortableRowsSelector}').each(function(){
+                            if ($(this).data('sortable'))
+                            {
+                                $(this).sortable('destroy');
+                            }
+                        });
+                        $('{$sortableRowsSelector}').sortable({
+//                            handle: 'span.ui-icon-arrow-4',
+//                            stop: function( event, ui ) {
+//                                if (ui.item.is('li')) {
+//                                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
+//                                    emailTemplateEditor.placeNewElement(ui.item.data('class'), ui.item);
+//                                    emailTemplateEditor.initSortableElements(ui.item.closest(emailTemplateEditor.settings.sortableElementsSelector), emailTemplateEditor.settings.sortableElementsSelector);
+//                                }
+//                            },
+                            cursor: 'move',
+                            revert: true,
+                            cursorAt: { top: 0, left: 0 }
+                        });
+//                        placeNewElement: function ( elementClass, item ) {
+//                            $.ajax({
+//                            url: emailTemplateEditor.settings.getNewElementUrl,
+//                            data: {'className': elementClass},
+//                            success: function (html) {
+//                                item.replaceWith(html);
+//                            }
+//                        });
+            ");
         }
     }
 ?>
