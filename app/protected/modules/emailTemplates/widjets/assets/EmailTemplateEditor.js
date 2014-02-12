@@ -65,13 +65,15 @@ var emailTemplateEditor = {
 
             contents = $(this).contents();
             emailTemplateEditor.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceSelector,
-                contents.find(emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector));
-            emailTemplateEditor.initSortableElements(contents.find(emailTemplateEditor.settings.sortableElementsSelector),
-                contents.find(emailTemplateEditor.settings.sortableElementsSelector));
-            emailTemplateEditor.initSortableRows(contents.find(emailTemplateEditor.settings.sortableRowsSelector));
+                emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector,
+                contents);
+            emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
+                emailTemplateEditor.settings.sortableElementsSelector,
+                contents);
+            emailTemplateEditor.initSortableRows(emailTemplateEditor.settings.sortableRowsSelector, contents);
         });
     },
-    initDraggableElements: function ( selector , connectToSelector) {
+    initDraggableElements: function ( selector , connectToSelector, iframeContents) {
         $( selector ).each(function(){
             if ($(this).data('draggable'))
             {
@@ -79,23 +81,23 @@ var emailTemplateEditor = {
             }
         });
         $('li', selector ).draggable({
-            appendTo: 'body',
+            appendTo: iframeContents.find('body'),
             zIndex: 9999999,
             helper: "clone",
             cursor: 'move',
             iframeFix: true,
             revert: 'invalid',
-            connectToSortable: connectToSelector
+            connectToSortable: iframeContents.find(connectToSelector)
         });
     },
-    initSortableElements: function ( selector , connectToSelector) {
-        $( selector ).each(function(){
+    initSortableElements: function ( selector , connectToSelector, iframeContents) {
+        $( iframeContents.find(selector) ).each(function(){
             if ($(this).data('sortable'))
             {
                 $(this).sortable("destroy");
             }
         });
-        $( selector ).sortable({
+        $( iframeContents.find(selector) ).sortable({
 //            hoverClass: "ui-state-hover",
 //            placeholder: "ui-state-highlight",
             iframeFix: true,
@@ -114,18 +116,18 @@ var emailTemplateEditor = {
             },
             cursorAt: { top: 0, left: 0 },
             cursor: 'move',
-            connectWith: connectToSelector
+            connectWith: iframeContents.find(connectToSelector)
         });
     },
-    initSortableRows: function ( selector ) {
+    initSortableRows: function ( selector , iframeContents) {
         emailTemplateEditor = this;
-        $( selector ).each(function(){
+        $( iframeContents.find(selector) ).each(function(){
             if ($(this).data('sortable'))
             {
                 $(this).sortable("destroy");
             }
         });
-        $( selector ).sortable({
+        $( iframeContents.find(selector) ).sortable({
 //            hoverClass: "ui-state-hover",
 //            placeholder: "ui-state-highlight",
 //            handle: "span.ui-icon-arrow-4",
@@ -134,7 +136,9 @@ var emailTemplateEditor = {
                 if (ui.item.is('li')) {
                     ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
                     emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item);
-                    emailTemplateEditor.initSortableElements(ui.item.closest(emailTemplateEditor.settings.sortableElementsSelector), emailTemplateEditor.settings.sortableElementsSelector);
+                    emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
+                        emailTemplateEditor.settings.sortableElementsSelector,
+                        iframeContents);
                 }
             },
             cursorAt: { top: 0, left: 0 },

@@ -39,6 +39,7 @@
         public function render()
         {
             static::registerScripts();
+//            static::registerCss();
             $content = $this->renderCanvasContent();
             Yii::app()->getClientScript()->render($content);
             return $content;
@@ -158,6 +159,13 @@
         {
             Yii::app()->clientScript->registerCoreScript('jquery');
             Yii::app()->clientScript->registerCoreScript('jquery.ui');
+        }
+
+        public static function registerCss()
+        {
+            $baseScriptUrl = Yii::app()->getAssetManager()->publish(
+                Yii::getPathOfAlias('application.modules.emailTemplates.widjets.assets'));
+            Yii::app()->getClientScript()->registerCssFile($baseScriptUrl . '/EmailTemplateEditor.css');
         }
     }
 ?>
