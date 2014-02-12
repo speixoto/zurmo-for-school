@@ -150,7 +150,7 @@
             $report        = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
             if ($nodeId != null)
             {
-                $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
+                $reportToTreeAdapter = new CalendarReportRelationsAndAttributesToTreeAdapter($report, $treeType);
                 echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
                 Yii::app()->end(0, false);
             }
