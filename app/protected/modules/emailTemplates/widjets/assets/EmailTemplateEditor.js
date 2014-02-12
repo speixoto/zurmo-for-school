@@ -38,18 +38,20 @@ var emailTemplateEditor = {
     settings : {
         rowWrapper: '',
         getNewElementUrl: '',
-        elementsToPlaceClassSelector: '.elementToPlace',
+        elementsToPlaceSelector: '#building-blocks',
         sortableRowsSelector: '.sortable-rows',
         sortableElementsSelector: '.sortable-elements'
     },
-    init : function (rowWrapper, getNewElementUrl) {
+    init : function (elementsToPlaceSelector, rowWrapper, getNewElementUrl) {
+        this.settings.elementsToPlaceSelector = elementsToPlaceSelector + '>li' ;
         this.settings.rowWrapper    = rowWrapper;
         this.settings.getNewElementUrl = getNewElementUrl;
-        this.setupLayout();
+//        this.setupLayout();
+//        emailTemplateEditor = this;
     },
     setupLayout : function() {
         emailTemplateEditor = this;
-        this.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceClassSelector, emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector);
+        this.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceSelector, emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector);
         this.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector, emailTemplateEditor.settings.sortableElementsSelector);
         this.initSortableRows(emailTemplateEditor.settings.sortableRowsSelector);
     },
@@ -63,6 +65,7 @@ var emailTemplateEditor = {
         $( selector ).draggable({
             helper: "clone",
             cursor: 'move',
+            iframeFix: true,
             connectToSortable: connectToSelector
         });
     },
@@ -76,9 +79,10 @@ var emailTemplateEditor = {
         $( selector ).sortable({
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
+            iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.hasClass('elementToPlace')) {
-                    emailTemplateEditor.placeNewElement(ui.item.children("img").attr("alt"), ui.item);
+                if (ui.item.is('li')) {
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item);
                 }
             },
             remove: function ( event, ui ) {
@@ -105,10 +109,11 @@ var emailTemplateEditor = {
             hoverClass: "ui-state-hover",
             placeholder: "ui-state-highlight",
             handle: "span.ui-icon-arrow-4",
+            iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.is('div')) {
+                if (ui.item.is('li')) {
                     ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
-                    emailTemplateEditor.placeNewElement(ui.item.children("img").attr("alt"), ui.item);
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item);
                     emailTemplateEditor.initSortableElements(ui.item.closest(emailTemplateEditor.settings.sortableElementsSelector), emailTemplateEditor.settings.sortableElementsSelector);
                 }
             },

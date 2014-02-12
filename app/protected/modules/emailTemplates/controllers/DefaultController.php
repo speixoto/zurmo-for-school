@@ -140,7 +140,7 @@
 
         public function actionSelectBuiltType($type)
         {
-            assert('is_string($type)');
+//            assert('is_string($type)');
             $viewUtil           = static::getViewUtilByType($type);
             $breadCrumbView     = static::getBreadCrumbViewByType($type);
             $breadCrumbLinks    = static::getBreadCrumbLinksByType($type);
@@ -283,13 +283,59 @@
             echo $view->render();
         }
 
-        public function actionGetNewElement($className)
+        public function actionRenderElementNonEditable($className)
         {
             //TODO: @sergio: Is this the real action needed or are we using another one? @see EmailTemplateEditor
             $handleSpan   = ZurmoHtml::tag('span', array('class' => 'handle-element ui-icon-arrow-4'), '');
             $settingsSpan = ZurmoHtml::tag('span', array('class' => 'ui-icon-wrench'), '');
             $removeSpan   = ZurmoHtml::tag('span', array('class' => 'ui-icon-trash'), '');
             echo ZurmoHtml::tag('div', array(), $handleSpan . $settingsSpan . $removeSpan . $className);
+        }
+
+        public function actionRenderCanvas()
+        {
+            //TODO: @sergio: Where shoudl we put this
+            $content = '
+                <!DOCTYPE html>
+                <html><head>
+                      <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+
+                      <script src="//code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+                      <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
+                      <link href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet">
+                      <style type="text/css">
+                        .idle {
+                        border: 1px solid orange;}
+                      </style>
+                        <script type="text/javascript">
+                        $(function(){
+                        var containers = $(".sortable");
+                        containers.sortable({
+                            connectWith: containers,
+                            cursor: "move",
+                            revert: true,
+                            cursorAt: { top: 0, left: 0 }
+                        });
+                        });
+                        </script>
+
+
+                      </head>
+                      <body>
+                          <ul class="sortable idle ui-sortable" style="margin-top:100px">
+                            <li>Sortable</li>
+                            <li>Sortable 2</li>
+                            <li>Sortable 3</li>
+                        </ul>
+
+                        <ul class="sortable idle ui-sortable">
+                            <li>Sortable</li>
+                            <li>Sortable 2</li>
+                            <li>Sortable 3</li>
+                        </ul>
+                      </body></html>
+            ';
+            echo $content;
         }
 
         public function actionEdit($id, $redirectUrl = null)

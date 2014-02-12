@@ -56,7 +56,7 @@
                 )
             );
             $content .= $formStart;
-            $content .= ZurmoHtml::openTag('div', array('class' => 'create-email-template-toolbar'));
+            $content .= ZurmoHtml::openTag('div', array('class' => 'attributesContainer'));
             $content .= $this->renderDesignerLayoutEditorWidget();
             $content .= ZurmoHtml::closeTag('div');
             $formEnd  = $clipWidget->renderEndWidget();

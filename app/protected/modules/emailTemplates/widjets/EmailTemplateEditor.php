@@ -59,114 +59,27 @@
 
         protected function renderElementsToolbar()
         {
-            $content  = ZurmoHtml::openTag('div', array('class' => 'draggable-elements-toolbar'));
-            $content .= ZurmoHtml::openTag('table');
-            $content .= ZurmoHtml::openTag('tr');
+            $content  = ZurmoHtml::openTag('ul', array('id' => 'building-blocks', 'class' => 'clearfix'));
             //Put here all element to be draggable
-            $image = ZurmoHtml::image('http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png', 'TextElement');
-            $content .= ZurmoHtml::tag('div', array('class' => 'elementToPlace'), $image);
-            $image = ZurmoHtml::image('http://storage9.static.itmages.com/i/14/0128/h_1390936148_2296154_06ea86ccdc.png', 'ImageElement');
-            $content .= ZurmoHtml::tag('div', array('class' => 'elementToPlace'), $image);
-            $image = ZurmoHtml::image('http://storage8.static.itmages.com/i/14/0128/h_1390936248_7631312_22db602519.png', 'SocialItemsElement');
-            $content .= ZurmoHtml::tag('div', array('class' => 'elementToPlace'), $image);
-            $content .= ZurmoHtml::closeTag('tr');
-            $content .= ZurmoHtml::closeTag('table');
-            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::tag('li', array('data-class' => 'TextElement'), $this->renderPlacebleElement('Text Element', 'z'));
+            $content .= ZurmoHtml::tag('li', array('data-class' => 'ImageElement'), $this->renderPlacebleElement('Image Element', '¿'));
+            $content .= ZurmoHtml::tag('li', array('data-class' => 'SocialItemsElement'), $this->renderPlacebleElement('Social Items Element', '“'));
+            $content .= ZurmoHtml::closeTag('ul');
             return $content;
+        }
+
+        protected function renderPlacebleElement($captionName, $icon)
+        {
+            $span = ZurmoHtml::tag('span', array(), $captionName);
+            $icon = ZurmoHtml::tag('i', array('class' => 'icon-z'), $icon);
+            return ZurmoHtml::tag('div', array('class' => 'clearfix'), $icon . $span);
         }
 
         protected function renderLayout()
         {
-            $content = '
-                <table class="body">
-                    <tr>
-                        <td class="sortable-rows" align="center" valign="top">
-
-                                <table class="row header">
-                                    <tr>
-                                        <td>
-                                            <span class="ui-icon-arrow-4"></span>
-                                            <span class="ui-icon-wrench"></span >
-                                            <span class="ui-icon-trash"></span>
-                                            <table class="container" data-row-id="1">
-                                                <tr>
-                                                    <td class="wrapper last">
-                                                        <table class="twelve columns">
-                                                            <tr>
-                                                                <td  class="sortable-elements">
-                                                                    <div>
-                                                                        <span class="ui-icon-arrow-4"></span>
-                                                                        <span class="ui-icon-wrench"></span >
-                                                                        <span class="ui-icon-trash"></span>
-                                                                        <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
-                                                                    </div>
-                                                                </td>
-                                                                <td class="expander"></td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-
-                                <table class="container">
-                                      <tr>
-                                         <td>
-                                          <span class="ui-icon-arrow-4"></span>
-                                          <span class="ui-icon-wrench"></span >
-                                          <span class="ui-icon-trash"></span>
-                                          <table class="row" data-row-id="2">
-                                            <tr>
-
-                                              <td class="wrapper">
-
-                                                <table class="six columns" data-column-id="1">
-                                                  <tr>
-                                                    <td class="sortable-elements">
-                                                        <div>
-                                                            <span class="ui-icon-arrow-4"></span>
-                                                            <span class="ui-icon-wrench"></span >
-                                                            <span class="ui-icon-trash"></span>
-                                                            <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
-                                                        </div>
-                                                    </td>
-                                                    <td class="expander"></td>
-                                                  </tr>
-                                                </table>
-
-                                              </td>
-
-                                              <td class="wrapper last">
-
-                                                <table class="six columns" data-column-id="2">
-                                                  <tr>
-                                                    <td class="sortable-elements">
-                                                        <div>
-                                                            <span class="ui-icon-arrow-4"></span>
-                                                            <span class="ui-icon-wrench"></span >
-                                                            <span class="ui-icon-trash"></span>
-                                                            <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
-                                                        </div>
-                                                    </td>
-                                                    <td class="expander"></td>
-                                                  </tr>
-                                                </table>
-
-                                              </td>
-
-                                            </tr>
-                                          </table>
-
-                                        </td>
-                                      </tr>
-                                </table>
-
-                        </td>
-                    </tr>
-                </table>
-            ';
+            $iframeUrl = Yii::app()->createUrl('emailTemplates/default/renderCanvas');
+            $content   = "<iframe id='preview-template' width='100%' height='100%' frameborder='0' seamless='seamless' src='{$iframeUrl}'>";
+            $content  .= "</iframe>";
             return $content;
         }
 
@@ -177,14 +90,46 @@
         public function run()
         {
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id,
-                "emailTemplateEditor.init(
-                    '{$this->getRowWrapper()}',
-                    '{$this->getNewElementUrl()}'
-                );
+                "
+//                emailTemplateEditor.init(
+//                    '#building-blocks',
+//                    '{$this->getRowWrapper()}',
+//                    '{$this->getNewElementUrl()}'
+//                );
+
+        $('#preview-template').load(function () {
+            $('#building-blocks>li').draggable({
+//                appendTo: 'body',
+                helper: 'clone',
+                iframeFix: true,
+                revert: 'invalid',
+                connectToSortable: $('#preview-template').contents().find('.sortable'),
+                cursorAt: { top: 0, left: 0 }
+            });
+
+            $('#preview-template').contents().find('.sortable').sortable({
+                iframeFix: true,
+                cursorAt: { top: 0, left: 0 }
+            });
+        });
+
+        $('#building-blocks>li').on('dragstop',autoResize);
+
+
+        function autoResize(){
+            var newheight;
+            if(document.getElementById){
+                newheight=document.getElementById('preview-template').contentWindow.document .body.scrollHeight;
+            }
+            newheight=newheight+100;
+            $('#preview-template').css('height',newheight);
+        }
+
+
                 ");
-            echo ZurmoHtml::openTag('div', array('id' => 'email-template-editor-container'));
-            echo $this->renderElementsToolbar();
-            echo $this->renderLayout();
+            echo ZurmoHtml::openTag('section', array('id' => 'builder', 'class' => 'strong-right'));
+            echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderElementsToolbar());
+            echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderLayout());
             echo ZurmoHtml::closeTag('div');
         }
 
@@ -198,7 +143,7 @@
 
         protected function getNewElementUrl()
         {
-            return Yii::app()->createUrl('emailTemplates/default/getNewElement');
+            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditable');
         }
     }
 ?>
