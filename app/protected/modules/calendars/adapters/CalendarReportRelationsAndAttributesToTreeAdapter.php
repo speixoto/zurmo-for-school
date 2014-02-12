@@ -35,43 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Helper class for managing adapting model relations and attributes into a rows and columns report
+     * Helper class for adapting relation and attribute data into tree data for calendar
      */
-    class CalendarModelRelationsAndAttributesToRowsAndColumnsReportAdapter extends ModelRelationsAndAttributesToRowsAndColumnsReportAdapter
+    class CalendarReportRelationsAndAttributesToTreeAdapter extends ReportRelationsAndAttributesToTreeAdapter
     {
         /**
-         * Returns the array of selectable relations for creating a report.  Does not include relations that are
-         * marked as nonReportable in the rules and also excludes relations that are marked as relations
-         * reportedAsAttributes by the rules.  Includes relations marked as derivedRelationsViaCastedUpModel.
-         *
-         * Public for testing only
-         * @param RedBeanModel $precedingModel
-         * @param null $precedingRelation
-         * @return array
-         * @throws NotSupportedException
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @return ModelRelationsAndAttributesToReportAdapter based object
          */
-        public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        protected function makeModelRelationsAndAttributesToReportAdapter($moduleClassName, $modelClassName)
         {
-            if (($precedingModel != null && $precedingRelation == null) ||
-               ($precedingModel == null && $precedingRelation != null))
-            {
-                throw new NotSupportedException();
-            }
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ($this->model->isRelation($attribute) &&
-                    !$this->rules->relationIsReportedAsAttribute($this->model, $attribute) &&
-                    $this->rules->attributeIsReportable($this->model, $attribute) &&
-                    !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
-                    $this->model->isOwnedRelation($attribute)
-                    )
-                {
-                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
-                }
-            }
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            $rules   = ReportRules::makeByModuleClassName($moduleClassName);
+            $model   = new $modelClassName(false);
+            return new CalendarModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model,
+                                                                                        $rules,
+                                                                                        $this->report->getType(),
+                                                                                        $moduleClassName);
         }
     }
 ?>
