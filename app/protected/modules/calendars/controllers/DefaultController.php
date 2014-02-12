@@ -256,22 +256,38 @@
                                         $endDate = null,
                                         $dateRangeType = null)
         {
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarStartDate', $startDate);
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarEndDate', $endDate);
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarDateRangeType', $dateRangeType);
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
-                                                                                                               $selectedSharedCalendarIds,
-                                                                                                               $dateRangeType,
-                                                                                                               $startDate,
-                                                                                                               $endDate);
+            $dataProvider               = CalendarUtil::processAndGetDataProviderForEventsData($selectedMyCalendarIds,
+                                                                                               $selectedSharedCalendarIds,
+                                                                                               $startDate,
+                                                                                               $endDate,
+                                                                                               $dateRangeType);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
             echo CJSON::encode($items);
+        }
+
+        /**
+         * Get events for the selected calendars.
+         */
+        public function actionGetEventsCount($selectedMyCalendarIds = null,
+                                            $selectedSharedCalendarIds = null,
+                                            $startDate = null,
+                                            $endDate = null,
+                                            $dateRangeType = null)
+        {
+            $dataProvider               = CalendarUtil::processAndGetDataProviderForEventsData($selectedMyCalendarIds,
+                                                                                               $selectedSharedCalendarIds,
+                                                                                               $startDate,
+                                                                                               $endDate,
+                                                                                               $dateRangeType);
+            $calendarItems = $dataProvider->getData(true);
+            if($dataProvider->getIsMaxCountReached())
+            {
+                echo CJSON::encode(array('limitReached' => true));
+            }
+            else
+            {
+                echo CJSON::encode(array('limitReached' => false));
+            }
         }
 
         /**

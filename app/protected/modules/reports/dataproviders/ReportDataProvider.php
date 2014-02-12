@@ -126,7 +126,7 @@
          */
         public function calculateTotalItemCount()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
             $count = ZurmoRedBean::getCell($sql);
             if ($count === null || empty($count))
@@ -141,7 +141,7 @@
          */
         public function makeTotalCountSqlQueryForDisplay()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             return $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
         }
 
@@ -152,7 +152,7 @@
         {
             $offset                 = $this->resolveOffset();
             $limit                  = $this->resolveLimit();
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             return $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
         }
 
@@ -326,7 +326,7 @@
         {
             assert('is_int($offset) || $offset == null');
             assert('is_int($limit) || $limit == null');
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
             $rows         = $this->getRowsData($sql);
             $resultsData  = array();
@@ -459,7 +459,7 @@
                 {
                     throw new NotSupportedException();
                 }
-                $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
+                $selectQueryAdapter     = $this->makeSelectQueryAdapter($selectQueryAdapter->isDistinct());
                 $selectQueryAdapter->addNonSpecificCountClause();
             }
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
@@ -486,7 +486,7 @@
         {
             try
             {
-                $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+                $selectQueryAdapter     = $this->makeSelectQueryAdapter();
                 $moduleClassName        = $this->report->getModuleClassName();
                 $modelClassName         = $moduleClassName::getPrimaryModelName();
                 $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
@@ -693,6 +693,16 @@
                     return $key;
                 }
             }
+        }
+
+        /**
+         * Makes sql query adapter.
+         *
+         * @param bool $isDistinct
+         */
+        protected function makeSelectQueryAdapter($isDistinct = false)
+        {
+            return new RedBeanModelSelectQueryAdapter($isDistinct);
         }
     }
 ?>

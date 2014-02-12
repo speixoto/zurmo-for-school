@@ -582,7 +582,7 @@
             $confirmTitle  = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
             array('{modelLabel}' => Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params)));
             // Begin Not Coding Standard
-            
+
             $script = "$(document).on('click', '.my-cal-delete', function()
                          {
                             if (!confirm('{$confirmTitle}'))
@@ -610,7 +610,7 @@
 
                           }
                         );";
-                        
+
              // End Not Coding Standard
              $cs         = Yii::app()->getClientScript();
              if($cs->isScriptRegistered('calDeleteScript', ClientScript::POS_END) === false)
@@ -631,7 +631,7 @@
             $url        = Yii::app()->createUrl('/calendars/default/unsubscribe');
             $eventsUrl  = Yii::app()->createUrl('calendars/default/getEvents');
             // Begin Not Coding Standard
-            
+
             $script     = "$(document).on('click', '.shared-cal-unsubscribe', function(){
                             $.ajax(
                             {
@@ -653,7 +653,7 @@
                             }
                             );
                       })";
-                      
+
             // End Not Coding Standard
             $cs         = Yii::app()->getClientScript();
             $cs->registerScript('calunsubscribescript', $script, ClientScript::POS_END);
@@ -814,6 +814,33 @@
                 $content .= ZurmoHtml::tag('span', array(), $key . ':' . $value) . "<br/>";
             }
             return $content;
+        }
+
+        /**
+         * Process and get data provider for events data.
+         *
+         * @return CalendarItemsDataProvider
+         */
+        public static function processAndGetDataProviderForEventsData($selectedMyCalendarIds = null,
+                                                                        $selectedSharedCalendarIds = null,
+                                                                        $startDate = null,
+                                                                        $endDate = null,
+                                                                        $dateRangeType = null)
+        {
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarStartDate', $startDate);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarEndDate', $endDate);
+            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                               'CalendarsModule',
+                                                               'myCalendarDateRangeType', $dateRangeType);
+            return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
+                                                                                        $selectedSharedCalendarIds,
+                                                                                        $dateRangeType,
+                                                                                        $startDate,
+                                                                                        $endDate);
         }
     }
 ?>
