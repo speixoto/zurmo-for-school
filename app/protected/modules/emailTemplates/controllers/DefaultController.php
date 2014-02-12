@@ -296,44 +296,82 @@
         {
             //TODO: @sergio: Where shoudl we put this
             $content = '
-                <!DOCTYPE html>
-                <html><head>
-                      <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+                <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+                <html xmlns="http://www.w3.org/1999/xhtml">
+                <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                    <meta name="viewport" content="width=device-width"/>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
-                      <script src="//code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
-                      <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
-                      <link href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet">
-                      <style type="text/css">
-                        .idle {
-                        border: 1px solid orange;}
-                      </style>
+                        <script src="//code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
+                        <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
+
+                        <style type="text/css">
+                          .idle { border: 1px solid orange;}
+                          .ui-draggable{
+                            display: block;
+                            width: 100px;
+                            height: 100px;
+                            margin: 0;
+                            border: 1px solid green;
+                          }
+                          .ui-sortable-placeholder{
+                            visibility: visible !important;
+                            background: azure;
+                          }
+                          li{
+                          display: block;
+                          background: #d3d3d3;
+                          padding: 5px;
+                          margin: 0;
+
+                          }
+                          .sortable{
+                          position: relative;
+                          top: 75px;
+                          margin: 0 30px 30px 30px;
+                          padding: 0;
+                          }
+                          .dropzone{
+                          height: 50px;
+                          width: 100%;
+                          display: block;
+                          margin: 10px;
+                          border: 1px solid pink;
+                          }
+                          *{
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+
+                          }
+                        </style>
+
                         <script type="text/javascript">
-                        $(function(){
-                        var containers = $(".sortable");
-                        containers.sortable({
-                            connectWith: containers,
-                            cursor: "move",
-                            revert: true,
-                            cursorAt: { top: 0, left: 0 }
-                        });
-                        });
+                            $(document).ready(function(){
+                                var containers = $(".sortable");
+                                containers.sortable({
+                                    connectWith: containers,
+                                    cursor: "move",
+                                    revert: true,
+                                    cursorAt: { top: 1, left: 1 }
+                                });
+                            });
                         </script>
-
-
                       </head>
                       <body>
-                          <ul class="sortable idle ui-sortable" style="margin-top:100px">
+                        <ul class="sortable idle">
                             <li>Sortable</li>
                             <li>Sortable 2</li>
                             <li>Sortable 3</li>
                         </ul>
-
-                        <ul class="sortable idle ui-sortable">
+                        <ul class="sortable idle">
                             <li>Sortable</li>
                             <li>Sortable 2</li>
                             <li>Sortable 3</li>
                         </ul>
-                      </body></html>
+                      </body>
+                    </html>
             ';
             echo $content;
         }
