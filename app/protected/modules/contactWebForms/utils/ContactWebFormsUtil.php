@@ -474,7 +474,7 @@
         {
             $startingStateId = ContactsUtil::getStartingStateId();
             $source = $contact->state->id;
-            if($source < $startingStateId)
+            if ($source < $startingStateId)
             {
                 return 'leads';
             }
