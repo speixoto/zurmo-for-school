@@ -566,5 +566,13 @@
             $value = (bool) ZurmoConfigurationUtil::getForCurrentUserByModuleName($moduleName, $panelId);
             ZurmoConfigurationUtil::setForCurrentUserByModuleName($moduleName, $panelId, !$value);
         }
+
+        public function actionImageUpload()
+        {
+            $array = array(
+                'filelink' => 'http://www.small-world.net/_borders/small_world_logo.gif'
+            );
+            echo stripslashes(json_encode($array));
+        }
     }
 ?>

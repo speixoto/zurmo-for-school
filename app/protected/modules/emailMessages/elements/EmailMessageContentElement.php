@@ -67,6 +67,7 @@
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $emailMessageContent->$attribute,
+                                        'imageUpload' => Yii::app()->createUrl('zurmo/default/imageUpload'),
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];

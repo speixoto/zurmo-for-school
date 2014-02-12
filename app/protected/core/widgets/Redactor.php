@@ -47,7 +47,7 @@
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
                                    'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                                   'horizontalrule']";
+                                   'horizontalrule', '|', 'image']";
 
         public $source          = "false";
 
@@ -68,6 +68,8 @@
         public $wym             = "false";
 
         public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
+
+        public $imageUpload     = "false";
 
         public function run()
         {
@@ -90,6 +92,7 @@
                                 source:         {$this->source},
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
+                                imageUpload:    '{$this->imageUpload}',
                             });
                         }
                     );";
