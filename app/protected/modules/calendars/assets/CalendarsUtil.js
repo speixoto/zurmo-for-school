@@ -79,3 +79,31 @@ function getCalendarEvents(url, inputId)
     };
     return events;
 }
+
+function getEventsCount(url, inputId, flashElement)
+{
+    var view                    = $('#' + inputId).fullCalendar('getView');
+    var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
+    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
+    $.ajax({
+            url: url,
+            dataType: 'json',
+            beforeSend: function(xhr)
+                       {
+                           $('#calItemCountResult').hide();
+                       },
+            data:{
+                selectedMyCalendarIds : selectedMyCalendars,
+                selectedSharedCalendarIds : selectedSharedCalendars,
+                startDate      : $.fullCalendar.formatDate(view.start, 'yyyy-MM-dd'),
+                endDate        : $.fullCalendar.formatDate(view.end, 'yyyy-MM-dd'),
+                dateRangeType  : view.name
+            },
+            success: function(data) {
+                if(data.limitReached == true)
+                {
+                    $('#calItemCountResult').show();
+                }
+            }
+        });
+}

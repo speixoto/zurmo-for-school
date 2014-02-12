@@ -75,6 +75,8 @@
          */
         private $_calendarItemsData;
 
+        private $_isMaxCountReached = false;
+
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param array $config
@@ -184,19 +186,14 @@
             $count              = 1;
             foreach ($reportResultsRows as $reportResultsRowData)
             {
-                $models[] = $reportResultsRowData->getModel('attribute0'); //todo: even though it is 0 because we only have one displayAttribute, we should
-                                                                           //todo: be pulling this from somewhere else instead of statically defining it here. probably...
+                $models[] = $reportResultsRowData->getModel('attribute0');
                 $count++;
                 if ($count > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
                 {
+                    $this->setIsMaxCountReached(true);
                     break;
                 }
             }
-
-            //todo: need to set distinct? or we do we set it somewhere else? we need this otherwise we could have duplicate models...
-            //todo: we don't want duplicate models in the results from the report data provider.we might have to just block has-many filtering?
-            //todo: that might force it to always be distinct
-
             return $models;
         }
 
@@ -319,6 +316,16 @@
         public function setDateRangeType($dateRangeType)
         {
             $this->dateRangeType = $dateRangeType;
+        }
+
+        public function getIsMaxCountReached()
+        {
+            return $this->_isMaxCountReached;
+        }
+
+        public function setIsMaxCountReached($isMaxCountReached)
+        {
+            $this->_isMaxCountReached = $isMaxCountReached;
         }
     }
 ?>

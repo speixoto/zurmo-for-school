@@ -57,9 +57,10 @@
 
         public function run()
         {
-            $defaultView   = $this->defaultView;
-            $inputId       = $this->inputId;
-            $eventsUrl           = Yii::app()->createUrl('calendars/default/getEvents');
+            $defaultView     = $this->defaultView;
+            $inputId         = $this->inputId;
+            $eventsUrl       = Yii::app()->createUrl('calendars/default/getEvents');
+            $eventsCountUrl  = Yii::app()->createUrl('calendars/default/getEventsCount');
 
             //Set the goto date for calendar
             $startDate     = $this->startDate;
@@ -77,7 +78,7 @@
 
             $cs            = Yii::app()->getClientScript();
             // Begin Not Coding Standard
-            
+
             $script        = "$(document).on('ready', function() {
                                     $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar({
@@ -102,15 +103,21 @@
                                                                                     $(this).makeLargeLoadingSpinner(false, '#{$inputId}');
                                                                                 }
                                                                               },
+                                                                     eventSources: [
+                                                                                      getCalendarEvents('{$eventsUrl}', '{$inputId}')
+                                                                                   ],
                                                                      eventRender: function(event, element) {
                                                                                         element.qtip({
                                                                                             content: event.description
                                                                                         });
-                                                                                    }
+                                                                                    },
+                                                                     eventAfterAllRender: function(view)
+                                                                                          {
+                                                                                             getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
+                                                                                          }
                                                                     });
-                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', '{$inputId}'));
                                  });";
-                                 
+
             // End Not Coding Standard
             $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
         }
