@@ -2,12 +2,12 @@
 .strong-right{
 	.left-column{
 		width: 30%;
-		z-index: 100;
+		//z-index: 100;
 		position: relative;
 	}
 	.right-column{
 		width: 70%;
-		z-index: 1;
+		//z-index: 1;
 		position: relative;
 	}
 }
@@ -39,6 +39,10 @@
 		margin:0 15px 15px 0;
 		//padding: 10px;
 		display: block;
+		cursor: pointer;
+		&:active{
+			cursor: move;
+		}
 		div{
 			border: 3px solid #efefef;
 			.radius(2px);
@@ -76,4 +80,9 @@
 		float: none;
 		margin: 0;
 	}
+}
+
+.ui-draggable.ui-draggable-dragging.ui-sortable-helper{
+	border: 1px solid red;
+	opacity: 1 !important;
 }

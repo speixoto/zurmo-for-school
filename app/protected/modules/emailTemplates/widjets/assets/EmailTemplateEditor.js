@@ -69,6 +69,8 @@ var emailTemplateEditor = {
             }
         });
         $('li', selector ).draggable({
+            appendTo: 'body',
+            zIndex: 9999999,
             helper: "clone",
             cursor: 'move',
             iframeFix: true,

@@ -301,51 +301,16 @@
                 <head>
                     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                     <meta name="viewport" content="width=device-width"/>
-                        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
+                        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
                         <script src="//code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
                         <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
-
                         <style type="text/css">
-                          .idle { border: 1px solid orange;}
-                          .ui-draggable{
-                            display: block;
-                            width: 100px;
-                            height: 100px;
-                            margin: 0;
-                            border: 1px solid green;
-                          }
-                          .ui-sortable-placeholder{
-                            visibility: visible !important;
-                            background: azure;
-                          }
-                          li{
-                          display: block;
-                          background: #d3d3d3;
-                          padding: 5px;
-                          margin: 0;
-
-                          }
-                          .sortable-row
-                          .sortable-elements{
-                          position: relative;
-                          top: 75px;
-                          margin: 0 30px 30px 30px;
-                          padding: 0;
-                          }
-                          .dropzone{
-                          height: 50px;
-                          width: 100%;
-                          display: block;
-                          margin: 10px;
-                          border: 1px solid pink;
-                          }
-                          *{
-                            margin: 0;
-                            padding: 0;
-                            box-sizing: border-box;
-
-                          }
+                             /*{ margin: 0; padding: 0; }*/
+                             .sortable-rows > table{ background: pink }
+                             .sortable-elements{ background: gold }
+                             table{ border:1px solid black; width: 100%}
+                             .ui-state-hover{border: 2px solid blue}
                         </style>
                       </head>
                       <body>

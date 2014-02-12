@@ -91,14 +91,15 @@
         {
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id,
                 "
+                $(document).ready(function(){
                 emailTemplateEditor.init(
                     '#building-blocks',
                     '{$this->getRowWrapper()}',
                     '{$this->getNewElementUrl()}'
                 );
-
+                });
                 ");
-            echo ZurmoHtml::openTag('section', array('id' => 'builder', 'class' => 'strong-right clearfix'));
+            echo ZurmoHtml::openTag('div', array('id' => 'builder', 'class' => 'strong-right clearfix'));
             echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderElementsToolbar());
             echo ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderLayout());
             echo ZurmoHtml::closeTag('div');
