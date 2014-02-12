@@ -92,5 +92,10 @@
             $content .= '</div>';
             return $content;
         }
+
+        protected function getContainerWrapperTag()
+        {
+            return 'footer';
+        }
     }
 ?>

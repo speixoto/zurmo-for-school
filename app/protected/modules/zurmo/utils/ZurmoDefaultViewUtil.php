@@ -243,6 +243,7 @@
                                                             $sourceUrl,
                                                             $applicationName);
             }
+            $headerView->setCssClasses(array('HeaderView'));
             return $headerView;
         }
 

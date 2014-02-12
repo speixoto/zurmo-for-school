@@ -197,11 +197,6 @@
             }
         }
 
-        protected function renderContainerWrapperId()
-        {
-            return false;
-        }
-
         protected function getContainerWrapperTag()
         {
             return 'header';
