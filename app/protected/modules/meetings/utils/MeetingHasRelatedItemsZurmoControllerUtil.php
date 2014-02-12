@@ -49,6 +49,7 @@
                 !empty($_POST[$this->relatedItemsFormName]['Contact']['ids']))
             {
                 $contactActivityItems = array();
+                $userAttendees        = array();
                 $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
                 $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
                 $attendees = explode(',', $_POST[$this->relatedItemsFormName]['Contact']['ids']);
@@ -57,20 +58,50 @@
                     if (strpos($item, $contactItemPrefix) !== false)
                     {
                         $contactActivityItems[] = substr($item,
-                            strpos($item, $contactItemPrefix) + strlen($contactItemPrefix), strlen($item));
+                        strpos($item, $contactItemPrefix) + strlen($contactItemPrefix), strlen($item));
                     }
                     elseif (strpos($item, $userItemPrefix) !== false)
                     {
-                        $userId = intval(substr($item,
-                            strpos($item, $userItemPrefix) + strlen($userItemPrefix), strlen($item)));
-                        $user   = User::getById($userId);
-                        $model->userAttendees->add($user);
-                        //todO: look at parent class, and how it handles removing/adding/changing for userAttendees. i dont think you are handlign this..
+                        $userAttendees[] = intval(substr($item,
+                        strpos($item, $userItemPrefix) + strlen($userItemPrefix), strlen($item)));
                     }
                 }
+                $this->resolveUserAttendees($model, $userAttendees);
                 $_POST[$this->relatedItemsFormName]['Contact']['ids'] = implode(',', $contactActivityItems);
             }
             parent::resolveModelsRelatedItemsFromPost($model);
+        }
+
+        /**
+         * @param $model Meetings Model
+         * @param $reformedUserAttendees User Ids
+         * Remove user attendees that are not provided. Add additional. Do not re-add already added ones.
+         */
+        protected function resolveUserAttendees(& $model, $reformedUserAttendees)
+        {
+            $usersAlreadyAdded  = array();
+            if ($model->userAttendees->count() > 0)
+            {
+                foreach ($model->userAttendees as $user)
+                {
+                    if (!in_array($user->id, $reformedUserAttendees))
+                    {
+                        $model->userAttendees->remove($user);
+                    }
+                    else
+                    {
+                        $usersAlreadyAdded[] = $user->id;
+                    }
+                }
+            }
+            foreach ($reformedUserAttendees as $userId)
+            {
+                if ($userId != null && $userId > 0 && !in_array($userId, $usersAlreadyAdded))
+                {
+                    $user = User::getById($userId);
+                    $model->userAttendees->add($user);
+                }
+            }
         }
     }
 ?>
