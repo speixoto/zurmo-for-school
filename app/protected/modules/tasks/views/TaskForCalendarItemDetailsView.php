@@ -107,5 +107,13 @@
             );
             return $metadata;
         }
+
+        /**
+         * @return string
+         */
+        public static function getDesignerRulesType()
+        {
+            return 'TaskForCalendarItemDetailsView';
+        }
     }
 ?>
