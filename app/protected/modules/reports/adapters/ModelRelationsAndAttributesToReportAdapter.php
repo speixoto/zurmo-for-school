@@ -118,7 +118,7 @@
                 $model                     = new $modelClassName(false);
                 if ($reportType == Report::TYPE_ROWS_AND_COLUMNS)
                 {
-                    if($modelClassName == 'SavedCalendar')
+                    if ($modelClassName == 'SavedCalendar')
                     {
                         $adapterClassName = 'CalendarModelRelationsAndAttributesToRowsAndColumnsReportAdapter';
                     }
@@ -127,7 +127,6 @@
                         $adapterClassName = 'ModelRelationsAndAttributesToRowsAndColumnsReportAdapter';
                     }
                     $adapter       = new $adapterClassName($model, $rules, $reportType, $moduleClassName);
-
                 }
                 elseif ($reportType == Report::TYPE_SUMMATION)
                 {

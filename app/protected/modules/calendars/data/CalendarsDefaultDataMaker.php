@@ -41,7 +41,6 @@
     {
         public function make()
         {
-            
         }
     }
 ?>

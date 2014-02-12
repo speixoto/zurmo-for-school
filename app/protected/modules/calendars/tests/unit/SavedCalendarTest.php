@@ -141,6 +141,5 @@
             $savedCalendars           = SavedCalendar::getAll();
             $this->assertEquals(0, count($savedCalendars));
         }
-
     }
 ?>

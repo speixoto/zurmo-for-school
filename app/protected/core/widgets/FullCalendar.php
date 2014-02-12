@@ -76,6 +76,8 @@
             $qtip->addQTip(".fc-event");
 
             $cs            = Yii::app()->getClientScript();
+            // Begin Not Coding Standard
+            
             $script        = "$(document).on('ready', function() {
                                     $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar({
@@ -108,6 +110,8 @@
                                                                     });
                                     $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', '{$inputId}'));
                                  });";
+                                 
+            // End Not Coding Standard
             $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
         }
 

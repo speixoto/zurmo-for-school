@@ -134,7 +134,7 @@
             $dataProvider               = CalendarUtil::getCalendarItemsDataProvider();
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $this->getId(), $this->getModule()->getId());
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
-                                                  makeStandardViewForCurrentUser($this,$interactiveCalendarView));
+                                                  makeStandardViewForCurrentUser($this, $interactiveCalendarView));
             echo $view->render();
         }
 
@@ -348,7 +348,7 @@
             assert('is_string($moduleName)');
             $data = CalendarUtil::getModelAttributesForSelectedModule($moduleName);
             $htmlOptions = array();
-            if($attribute == 'endAttributeName')
+            if ($attribute == 'endAttributeName')
             {
                 $htmlOptions['empty'] = Zurmo::t('Core', '(None)');
             }

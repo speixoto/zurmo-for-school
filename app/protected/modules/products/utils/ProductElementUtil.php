@@ -91,7 +91,6 @@
                          Zurmo::t('ProductsModule', 'Quantity', array(), null, $language)   => $quantity,
                          $translatedAttributeLabels['priceFrequency']                       => $priceFrequency,
                          $translatedAttributeLabels['sellPrice']                            => $sellPrice);
-
         }
     }
 ?>

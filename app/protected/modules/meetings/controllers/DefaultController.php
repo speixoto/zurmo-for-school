@@ -110,7 +110,7 @@
                 $contactActivityItems = array();
                 $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
                 $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
-                $attendees = explode(',', $postData['ActivityItemForm']['Contact']['ids']);
+                $attendees = explode(',', $postData['ActivityItemForm']['Contact']['ids']); // Not Coding Standard
                 foreach ($attendees as $item)
                 {
                     if (strpos($item, $contactItemPrefix) !== false)
@@ -126,7 +126,7 @@
                         $meeting->userAttendees->add($user);
                     }
                 }
-                $_POST['ActivityItemForm']['Contact']['ids'] = implode(',', $contactActivityItems);
+                $_POST['ActivityItemForm']['Contact']['ids'] = implode(',', $contactActivityItems); // Not Coding Standard
             }
             $this->actionCreateByModel($meeting, $redirectUrl);
         }
@@ -142,7 +142,7 @@
                 $contactActivityItems = array();
                 $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
                 $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
-                $attendees = explode(',', $postData['ActivityItemForm']['Contact']['ids']);
+                $attendees = explode(',', $postData['ActivityItemForm']['Contact']['ids']); // Not Coding Standard
                 foreach ($attendees as $item)
                 {
                     if (strpos($item, $contactItemPrefix) !== false)
@@ -158,7 +158,7 @@
                         $meeting->userAttendees->add($user);
                     }
                 }
-                $_POST['ActivityItemForm']['Contact']['ids'] = implode(',', $contactActivityItems);
+                $_POST['ActivityItemForm']['Contact']['ids'] = implode(',', $contactActivityItems); // Not Coding Standard
             }
             $this->processEdit($meeting, $redirectUrl);
         }

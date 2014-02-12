@@ -49,8 +49,8 @@
          */
         public static function makeByUser(User $user, $selectedCalendarIds = null, $subscribedCalendarIds = null)
         {
-            assert('is_string($subscribedCalendarIds) || is_null($subscribedCalendarIds)');
-            assert('is_string($selectedCalendarIds) || is_null($selectedCalendarIds)');
+            assert('is_string($subscribedCalendarIds) || ($subscribedCalendarIds === null)');
+            assert('is_string($selectedCalendarIds) || ($selectedCalendarIds === null)');
             $savedCalendarSubscriptions = new SavedCalendarSubscriptions();
             self::addMySavedCalendars($savedCalendarSubscriptions, $user, $selectedCalendarIds);
             self::addMySubscribedCalendars($savedCalendarSubscriptions, $user, $subscribedCalendarIds);
@@ -68,20 +68,20 @@
                                                     User $user, $selectedCalendarIds)
         {
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
-            if(count($mySavedCalendars) > 0)
+            if (count($mySavedCalendars) > 0)
             {
                 ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
                                                                'CalendarsModule',
                                                                'myCalendarSelections', $selectedCalendarIds);
                 $selectedCalendarIdArray = array();
-                if($selectedCalendarIds != null)
+                if ($selectedCalendarIds != null)
                 {
-                    $selectedCalendarIdArray = explode(',', $selectedCalendarIds);
+                    $selectedCalendarIdArray = explode(',', $selectedCalendarIds); // Not Coding Standard
                 }
                 foreach ($mySavedCalendars as $key => $mySavedCalendar)
                 {
                     CalendarUtil::setMyCalendarColor($mySavedCalendar);
-                    if(in_array($mySavedCalendar->id, $selectedCalendarIdArray))
+                    if (in_array($mySavedCalendar->id, $selectedCalendarIdArray))
                     {
                         $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
                     }
@@ -105,20 +105,20 @@
                                                   $subscribedCalendarIds)
         {
             $mySubscribedCalendars           = CalendarUtil::getUserSubscribedCalendars($user);
-            if(count($mySubscribedCalendars) > 0)
+            if (count($mySubscribedCalendars) > 0)
             {
                 ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
                                                                'CalendarsModule',
                                                                'mySubscribedCalendarSelections', $subscribedCalendarIds);
                 $subscribedCalendarIdArray = array();
-                if($subscribedCalendarIds != null)
+                if ($subscribedCalendarIds != null)
                 {
-                    $subscribedCalendarIdArray = explode(',', $subscribedCalendarIds);
+                    $subscribedCalendarIdArray = explode(',', $subscribedCalendarIds); // Not Coding Standard
                 }
                 foreach ($mySubscribedCalendars as $key => $mySubscribedCalendar)
                 {
                     CalendarUtil::setSharedCalendarColor($mySubscribedCalendar);
-                    if(in_array($mySubscribedCalendar->id, $subscribedCalendarIdArray))
+                    if (in_array($mySubscribedCalendar->id, $subscribedCalendarIdArray))
                     {
                         $savedCalendarSubscriptions->addSubscribedToCalendar($mySubscribedCalendar, true);
                     }
@@ -137,7 +137,7 @@
         public function addMySavedCalendar(SavedCalendar $savedCalendar, $selected)
         {
             assert('is_bool($selected)');
-            if(!isset($this->mySavedCalendarsAndSelected[$savedCalendar->id]))
+            if (!isset($this->mySavedCalendarsAndSelected[$savedCalendar->id]))
             {
                 $this->mySavedCalendarsAndSelected[$savedCalendar->id] = array($savedCalendar, $selected);
             }
@@ -150,7 +150,7 @@
         public function addSubscribedToCalendar(SavedCalendarSubscription $subscribedCalendar, $selected)
         {
             assert('is_bool($selected)');
-            if(!isset($this->subscribedToSavedCalendarsAndSelected[$subscribedCalendar->id]))
+            if (!isset($this->subscribedToSavedCalendarsAndSelected[$subscribedCalendar->id]))
             {
                 $this->subscribedToSavedCalendarsAndSelected[$subscribedCalendar->id] = array($subscribedCalendar, $selected);
             }

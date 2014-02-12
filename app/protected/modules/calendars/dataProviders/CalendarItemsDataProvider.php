@@ -39,30 +39,37 @@
     class CalendarItemsDataProvider extends CDataProvider
     {
         const MAXIMUM_CALENDAR_ITEMS_COUNT = 200;
+
         /**
          * @var array
          */
         protected $savedCalendarSubscriptions;
+
         /**
          * @var string
          */
         protected $moduleClassName;
+
         /**
          * @var SavedCalendar
          */
         protected $savedCalendar;
+
         /**
          * @var string
          */
         protected $startDate;
+
         /**
          * @var string
          */
         protected $endDate;
+
         /**
          * @var string
          */
         protected $dateRangeType;
+
         /**
          * @var array
          */
@@ -108,7 +115,7 @@
             {
                 $this->_calendarItemsData = null;
             }
-            if($this->_calendarItemsData === null)
+            if ($this->_calendarItemsData === null)
             {
                 $this->_calendarItemsData = $this->fetchData();
             }
@@ -144,18 +151,17 @@
         protected function resolveCalendarItems()
         {
             $calendarItems = array();
-            foreach($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarData)
+            foreach ($this->savedCalendarSubscriptions->getMySavedCalendarsAndSelected() as $savedCalendarData)
             {
-                if($savedCalendarData[1])
+                if ($savedCalendarData[1])
                 {
                     $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]);
                     $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendarData[0]);
                 }
-
             }
-            foreach($this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected() as $savedCalendarData)
+            foreach ($this->savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected() as $savedCalendarData)
             {
-                if($savedCalendarData[1])
+                if ($savedCalendarData[1])
                 {
                     $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]->savedcalendar);
                     $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendarData[0]->savedcalendar);
@@ -176,12 +182,12 @@
             $reportDataProvider = new RowsAndColumnsReportDataProvider($report);
             $reportResultsRows  = $reportDataProvider->getData();
             $count              = 1;
-            foreach($reportResultsRows as $reportResultsRowData)
+            foreach ($reportResultsRows as $reportResultsRowData)
             {
                 $models[] = $reportResultsRowData->getModel('attribute0'); //todo: even though it is 0 because we only have one displayAttribute, we should
                                                                            //todo: be pulling this from somewhere else instead of statically defining it here. probably...
                 $count++;
-                if($count > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
+                if ($count > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
                 {
                     break;
                 }
@@ -210,7 +216,7 @@
             $startFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER;
             $report->addFilter($startFilter);
             $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
-            if($savedCalendar->endAttributeName != null)
+            if ($savedCalendar->endAttributeName != null)
             {
                 $endFilter->attributeIndexOrDerivedType = $savedCalendar->endAttributeName;
             }
@@ -221,7 +227,7 @@
             $endFilter->value                       = $this->endDate;
             $endFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE;
             $report->addFilter($endFilter);
-//            if(count($existingFilters) > 0)
+//            if (count($existingFilters) > 0)
 //            {
 //                $report->setFiltersStructure($report->getFiltersStructure() .
 //                                             '(' . (count($existingFilters) + 1) . ' AND ' . ($existingFilters + 2) . ')');
@@ -245,7 +251,7 @@
          */
         protected function resolveRedBeanModelsToCalendarItems(& $calendarItems, array $models, SavedCalendar $savedCalendar)
         {
-            foreach($models as $model)
+            foreach ($models as $model)
             {
                 $calendarItems[] = CalendarUtil::makeCalendarItemByModel($model, $savedCalendar);
             }

@@ -40,30 +40,37 @@
          * @var string
          */
         protected $title;
+
         /**
          * @var string
          */
         protected $startDateTime;
+
         /**
          * @var string
          */
         protected $endDateTime;
+
         /**
          * @var int
          */
         protected $calendarId;
+
         /**
          * @var string
          */
         protected $modelClass;
+
         /**
          * @var int
          */
         protected $modelId;
+
         /**
          * @var string
          */
         protected $moduleClassName;
+
         /**
          * @var string
          */
