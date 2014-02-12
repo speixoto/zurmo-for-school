@@ -59,9 +59,11 @@
             if ($this->showUserInterfaceTypeSelector)
             {
                 $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
-                return $copyrightHtml . $userInterfaceTypeSelectorHtml;
+                $content = ZurmoHtml::tag('div', array('class' => 'container'), $copyrightHtml . $userInterfaceTypeSelectorHtml);
+                return $content;
             }
-            return $copyrightHtml;
+            $content = ZurmoHtml::tag('div', array('class' => 'container'), $copyrightHtml);
+            return $content;
         }
 
         /**
