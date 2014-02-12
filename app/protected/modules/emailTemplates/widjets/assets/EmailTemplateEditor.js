@@ -53,16 +53,25 @@ var emailTemplateEditor = {
     setupLayout : function() {
         emailTemplateEditor = this;
         $(emailTemplateEditor.settings.iframeSelector).load(function () {
-            contents = $(emailTemplateEditor.settings.iframeSelector).contents();
+
+            $(this).contents().find(emailTemplateEditor.settings.sortableElementsSelector + ', ' + emailTemplateEditor.settings.sortableRowsSelector).on({
+                mousemove: function(event) {
+                    $(parent.document).trigger(event);
+                },
+                mouseup: function(event) {
+                    $(parent.document).trigger(event);
+                }
+            });
+
+            contents = $(this).contents();
             emailTemplateEditor.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceSelector,
-                contents.find(emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector),
-                contents.find('body'));
+                contents.find(emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector));
             emailTemplateEditor.initSortableElements(contents.find(emailTemplateEditor.settings.sortableElementsSelector),
                 contents.find(emailTemplateEditor.settings.sortableElementsSelector));
             emailTemplateEditor.initSortableRows(contents.find(emailTemplateEditor.settings.sortableRowsSelector));
         });
     },
-    initDraggableElements: function ( selector , connectToSelector, appendTo) {
+    initDraggableElements: function ( selector , connectToSelector) {
         $( selector ).each(function(){
             if ($(this).data('draggable'))
             {
@@ -70,13 +79,12 @@ var emailTemplateEditor = {
             }
         });
         $('li', selector ).draggable({
-            appendTo: appendTo,
+            appendTo: 'body',
             zIndex: 9999999,
             helper: "clone",
             cursor: 'move',
             iframeFix: true,
             revert: 'invalid',
-            cursorAt: { top: 0, left: 0 },
             connectToSortable: connectToSelector
         });
     },
@@ -88,8 +96,25 @@ var emailTemplateEditor = {
             }
         });
         $( selector ).sortable({
+//            hoverClass: "ui-state-hover",
+//            placeholder: "ui-state-highlight",
             iframeFix: true,
-            cursorAt: { top: 0, left: 0 }
+            stop: function( event, ui ) {
+                if (ui.item.is('li')) {
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item);
+                }
+            },
+            remove: function ( event, ui ) {
+                 if ($(this).sortable("toArray").length < 1)
+                 {
+                     //TODO: @sergio: What should we the sortable-elements became empty?
+                     // We should not have that problem , we need to be able to drag item in an empty sortable
+                     //$(this).remove();
+                 }
+            },
+            cursorAt: { top: 0, left: 0 },
+            cursor: 'move',
+            connectWith: connectToSelector
         });
     },
     initSortableRows: function ( selector ) {
@@ -101,8 +126,28 @@ var emailTemplateEditor = {
             }
         });
         $( selector ).sortable({
+//            hoverClass: "ui-state-hover",
+//            placeholder: "ui-state-highlight",
+//            handle: "span.ui-icon-arrow-4",
             iframeFix: true,
-            cursorAt: { top: 0, left: 0 }
+            stop: function( event, ui ) {
+                if (ui.item.is('li')) {
+                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item);
+                    emailTemplateEditor.initSortableElements(ui.item.closest(emailTemplateEditor.settings.sortableElementsSelector), emailTemplateEditor.settings.sortableElementsSelector);
+                }
+            },
+            cursorAt: { top: 0, left: 0 },
+            cursor: 'move'
         });
     },
+    placeNewElement: function ( elementClass, item ) {
+        $.ajax({
+            url: emailTemplateEditor.settings.getNewElementUrl,
+            data: {'className': elementClass},
+            success: function (html) {
+                item.replaceWith(html);
+            }
+        });
+    }
 }
