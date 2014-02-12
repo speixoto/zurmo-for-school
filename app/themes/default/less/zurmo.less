@@ -578,6 +578,21 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	}
 }
 
+.avatar-holder{
+	.gravatar{
+		width: 25px;
+		height: 25px;
+		margin-right: 10px;
+		position: relative;
+		top: 8px;
+		.radius(50%);
+		.b-shadow(~"inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0px 1px 1px 1px rgba(0,0,0,0.2)");
+		border: none !important;
+		background:none;
+	}
+}
+
+
 #settings-header-menu{
 	margin-left:-1px;
 	> li{
@@ -1042,165 +1057,7 @@ body > .ui-autocomplete{
 	}
 }
 
-#MenuView{
-	//padding:20px 0 0 0;
-	border-bottom:1px solid #cccccc;
-	padding-top: 70px !important;
-	#gradient > .vertical(#f6f6f6, #f4f4f4) !important;
-	.hideme{
-		text-indent: 30px;
-	}
-	em{
-		background:none !important;
-	}
-	ul ul li a:hover{
-		//#gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
-	}
-	i{
-		font-style:normal;
-		.symbly(@recentlyViewedIconSize);
-		.t-shadow(~"none !important");
-	}
-}
 
-#MenuView .parent{
-	position:relative;
-}
-
-#MenuView .parent ul{
-	display:none;
-	position:absolute;
-	left:170px;
-	top:0;
-	padding:5px 5px;
-	background:#fefefe url("@{path}sidebar-gradient.png") left top repeat-x;
-	//background-size:100% ;
-	border:1px solid #ccc;
-	min-width:160px;
-	.b-shadow(0 0 5px 5px rgba(153, 153, 153, 0.25));
-	z-index:9999;
-	a{
-		height:35px;
-		width:100%;
-		display:block;
-		float:left;
-		position:relative;
-		z-index: 1;
-		span, em{
-			display: none;
-		}
-		em + span{
-			display: block;
-		}
-		span{
-			margin-left:0;
-			white-space: nowrap;
-			.t-shadow(rgba(255, 255, 255, 0.8) 0px 1px);
-			font-weight:bold;
-			font-size:12px;
-			color:@textColor;
-			text-decoration:none;
-			line-height: 33px;
-			text-indent:16px;
-			padding-right: 16px;
-			display:block;
-			.radius(4px);
-			z-index:100;
-		}
-		&:hover span{
-			background-image: none;
-			background-color: @themeColor2;
-			color: #fff;
-			.b-shadow(inset 0 0 20px 0 #444);
-		}
-	}
-}
-
-/*#MenuView .parent > a*/
-#MenuView .nav{
-	li{
-		.clearfix();
-	}
-}
-
-#MenuView > ul > li > a{
-	height:35px;
-	width:100%;
-	display:block;
-	float:left;
-	position:relative;
-	z-index: 1;
-	> span{
-		//font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-		.t-shadow(rgba(255, 255, 255, 0.8) 0px 1px);
-		font-weight:bold;
-		font-size:12px;
-		color:@textColor;
-		text-decoration:none;
-		min-width:160px;
-		line-height: 33px;
-		text-indent:16px;
-		display:block;
-		.radius(4px);
-		margin-left:5px;
-		z-index:100;
-		position: absolute;
-		top:0;
-		left:0;
-		/*Conversation button*/
-		> span{
-			position: relative;
-			top:-2px;
-			margin-left:10px;
-			width:18px;
-			height:16px;
-			background: url("@{path}notifications-bubble.png") center top no-repeat;
-			line-height:11px;
-			text-align:center;
-			text-indent:0;
-			font-size: 10px;
-			display:inline-block;
-			background-color:none !important;
-			padding-top:1px;
-			&.unread{
-				#notifications-link.tooltip{
-					color:#ff0000 !important;
-				}
-			}
-			&.all-read{
-				#notifications-link.tooltip{
-					color:#7bb730 !important;
-				}
-			}
-		}
-	}
-}
-
-/*
-#MenuView li.active > a > span,
-#MenuView a:hover > span{
-	background-image: url("@{path}main-nav-selected.png");
-	background-repeat: no-repeat;
-	background-position-x: 0;
-	background-position-y: 0;
-	background-color: @themeColor2;
-	.t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
-	> span{
-		color:@textColor !important;
-	}
-}
-
-#MenuView li.active > a > span{
-	color:#fff;
-}
-*/
-
-#MenuView.hasNoHiddenItems{
-	padding-bottom: 20px;
-	.toggle-hidden-nav-items{
-		display: none;
-	}
-}
 
 .hidden-nav-item{
 	display: none;
@@ -1229,6 +1086,7 @@ body > .ui-autocomplete{
 	//content:'\00A1'; //A1
 }
 
+/*
 #search i:before{ content:  "k"; } 
 #shortcuts i:before{ content:  "Y"; }
 #home i:before{ content:  "A"; }
@@ -1241,14 +1099,27 @@ body > .ui-autocomplete{
 #mashableInbox i:before{ content:  "g"; }
 #marketing i:before{ content:  '\00B6'; }
 #reports i:before{ content:  "V"; }
+*/
 
+/*=Menu+Recently Viewed*/
 
-/*=Recently Viewed*/
+#MenuView{
+	border-bottom:1px solid #cccccc;
+	padding-top: 70px !important;
+	#gradient > .vertical(#f6f6f6, #f4f4f4) !important;
+	&.hasNoHiddenItems{
+		padding-bottom: 20px;
+		.toggle-hidden-nav-items{
+			display: none;
+		}
+	}
+}
+
 #MenuView,
 #RecentlyViewedView{
 	#gradient > .vertical(#dcdcdc, #e3e3e3);
 	border-top:1px solid #F9F9FA;
-	padding:20px 5px;
+	padding:20px 0;
 	//width:168px;
 	h3{
 		color:#666;
@@ -1260,74 +1131,52 @@ body > .ui-autocomplete{
 		font-weight: bold;
 		color:#555;
 		margin:0 0 1px 0;
-		padding:0;
-		a{
-			width:160px;
-			.text-overflow;
-			line-height: 33px;
-			vertical-align:middle;
-			display:block;
-			position: relative;
-			.radius( 4px );
-			.t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-			span{
-				position: absolute;
-				top:0;
-				left:0;
-				width:160px;
-				height:33px;
-				z-index: 0;
-				text-indent:35px;
-				.text-overflow();
-			}
-			span:first-child{
-				position: absolute;
-				top:0;
-				left:0;
-				width:160px;
-				height:33px;
-				.radius(4px);
-				.opacity(0);
-				z-index: 0;
-				text-indent:0;
-				background-color: @themeColor2;
-				.t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
-			}
+		padding:0 5px;
+	}
+	a{
+		padding: 6px 0;
+		.text-overflow;
+		display:block;
+		position: relative;
+		.radius( 4px );
+		.t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
+		span{
+			display: inline-block;
+			text-indent:10px;
+			.text-overflow();
 		}
-		/*
-		a:hover{
-			span{
-				//.t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
-				background-image: url("@{path}main-nav-selected.png");
-				background-repeat: no-repeat;
-				background-position-x: 0;
-				background-position-y: 0;
-				.t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
-			}
-			em{
-				color:@themeColor !important;
-				.t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
-			}
-		}*/
-		em{
-			z-index:9999;
-			position:absolute;
-			width:24px;
-			height:24px;
-			line-height:22px;
-			vertical-align:top;
-			background:#FFF;
-			border-radius: 4px;
-			display:inline-block;
-			text-align:center;
-			margin-left:4px;
-			margin-right:8px;
-			position:relative;
-			top:4px;
-			font-style:normal;
-			.symbly(@recentlyViewedIconSize);
-			.t-shadow(~"none !important");
+		&:hover{
+			color: #fff;
+			background-color: @themeColor2;
+			.b-shadow(inset 0 0 25px 5px rgba(0, 0, 0, 0.4));
+			.t-shadow( 0px 1px 0 darken(@themeColorBtnDefault, 15%) ) !important;
 		}
+	}
+	i{
+		font-style:normal;
+		.symbly(28px);
+		//.t-shadow(~"none !important");
+		//margin-left: 8px;
+
+		//position:absolute;
+		width:24px;
+		height:24px;
+		line-height:22px;
+		vertical-align:top;
+		background:#FFF;
+		.radius(4px);
+		display:inline-block;
+		text-align:center;
+		//margin-left:4px;
+		//margin-right:8px;
+		position:relative;
+		top:-4px;
+	}
+}
+
+#RecentlyViewedView {
+	i{
+		.symbly(@recentlyViewedIconSize);
 	}
 }
 
@@ -1336,125 +1185,138 @@ body > .ui-autocomplete{
 #RecentlyViewedView {
 	/*deafult for if an icon doesnt exist*/
 	li{
-		em:before{
+		i:before{
 			content: "z";
 		}
 	}
-	li.type-ConversationsModule{
-		em{
+	.type-search          i:before{ content:  "k"; }
+	.type-shortcuts       i:before{ content:  "Y"; }
+	.type-home            i:before{ content:  "A"; }
+	.type-accounts        i:before{ content:  "P"; }
+	.type-leads           i:before{ content:  "."; }
+	.type-contacts        i:before{ content:  "y"; }
+	.type-opportunities   i:before{ content:  "9"; }
+	.type-conversations   i:before{ content:  "b"; }
+	.type-recently-viewed i:before{ content:  "{"; }
+	.type-mashableInbox   i:before{ content:  "g"; }
+	.type-marketing       i:before{ content:  '\00B6'; }
+	.type-reports         i:before{ content:  "V"; }
+
+	.type-ConversationsModule{
+		i{
 			padding-top:3px;
 			padding-right:3px;
 		}
-		em:before{
+		i:before{
 			content: "b";
 		}
 	}
-	li.type-UsersModule{
-		em:before{
+	.type-UsersModule{
+		i:before{
 			content: "e";
 		}
 	}
-	li.type-AccountsModule{
-		em:before{
+	.type-AccountsModule{
+		i:before{
 			content: "P";
 		}
 	}
-	li.type-ContactsModule{
-		em:before{
+	.type-ContactsModule{
+		i:before{
 			content: "y";
 		}
 	}
-	li.type-OpportunitiesModule{
-		em{
+	.type-OpportunitiesModule{
+		i{
 			padding-top:2px;
 		}
-		em:before{
+		i:before{
 			content: "9";
 		}
 	}
-	li.type-LeadsModule{
-		em:before{
+	.type-LeadsModule{
+		i:before{
 			content: ".";
 		}
 	}
-	li.type-TasksModule{
-		em:before{
+	.type-TasksModule{
+		i:before{
 			content: "4";
 		}
 	}
-	li.type-MeetingsModule{
-		em:before{
+	.type-MeetingsModule{
+		i:before{
 			content: "U";
 		}
 	}
-	li.type-NotesModule{
-		em{
+	.type-NotesModule{
+		i{
 			padding-left:4px;
 			padding-top:1px;
 		}
-		em:before{
+		i:before{
 			content: "3";
 		}
 	}
-	li.type-EmailMessageModule{
-		em:before{
+	.type-iailMessagiodule{
+		i:before{
 			content: "g";
 		}
 	}
-	li.type-MissionsModule{
-		em:before{
+	.type-MissionsModule{
+		i:before{
 			content: "Q";
 		}
 	}
-	li.type-ReportsModule{
-		em:before{
+	.type-ReportsModule{
+		i:before{
 			content: "V";
 		}
 	}
-	li.type-EmailTemplatesModule{
-		em:before{
+	.type-iailTiplatesModule{
+		i:before{
 			content:'\00B6';
 		}
 	}
-	li.type-MarketingListsModule{
-		em:before{
+	.type-MarketingListsModule{
+		i:before{
 			content: '\0022';
 		}
 	}
-	li.type-WorkflowsModule{
-		em:before{
+	.type-WorkflowsModule{
+		i:before{
 			content: '\20AC';
 		}
 	}
-	li.type-ProductsModule{
-		em:before{
+	.type-ProductsModule{
+		i:before{
 			content: '\003E';
 		}
 	}
-	li.type-ProductTemplatesModule{
-		em:before{
+	.type-ProductTiplatesModule{
+		i:before{
 			content: '\00AC';
 		}
 	}
-	li.type-ProductsCategoryModule{
-		em:before{
+	.type-ProductsCategoryModule{
+		i:before{
 			content: '\00D7';
 		}
 	}
-	li.type-CampaignsModule{
-		em:before{
+	.type-CampaignsModule{
+		i:before{
 			content: '\002C';
 			font-size: 26px;
 		}
 	}
-	li.type-GameRewardsModule{
-		em:before{
+	.type-GameRewardsModule{
+		i:before{
 			content: '\2205';
 			font-size: 30px;
 		}
 	}
-	li.type-ProjectsModule{
-		em:before{
+	.type-ProjectsModule{
+		i:before{
 			content: '\02C7';
 			font-size: 22px;
 		}

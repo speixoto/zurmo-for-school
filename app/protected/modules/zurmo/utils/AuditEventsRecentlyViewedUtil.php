@@ -84,11 +84,7 @@
         public static function getRecentlyViewedItemsByUser(User $user, $count)
         {
             assert('is_int($count)');
-            $itemLinkPrefix = null;
-            if (!Yii::app()->userInterface->isMobile())
-            {
-                $itemLinkPrefix = ZurmoHtml::tag('span', array(), '') . ZurmoHtml::tag('em', array(), '');
-            }
+            $itemLinkPrefix = ZurmoHtml::tag('i', array(), '');
             $recentlyViewedItems = array();
             $recentlyViewedData = self::getRecentlyViewedByUser($user, $count);
             if (count($recentlyViewedData) > 0)
