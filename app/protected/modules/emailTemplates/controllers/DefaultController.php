@@ -301,7 +301,7 @@
                 <head>
                     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                     <meta name="viewport" content="width=device-width"/>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+                        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 
                         <script src="//code.jquery.com/jquery-1.10.2.js" type="text/javascript"></script>
                         <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
@@ -326,7 +326,8 @@
                           margin: 0;
 
                           }
-                          .sortable{
+                          .sortable-row
+                          .sortable-elements{
                           position: relative;
                           top: 75px;
                           margin: 0 30px 30px 30px;
@@ -346,31 +347,95 @@
 
                           }
                         </style>
-
-                        <script type="text/javascript">
-                            $(document).ready(function(){
-                                var containers = $(".sortable");
-                                containers.sortable({
-                                    connectWith: containers,
-                                    cursor: "move",
-                                    revert: true,
-                                    cursorAt: { top: 1, left: 1 }
-                                });
-                            });
-                        </script>
                       </head>
                       <body>
-                        <ul class="sortable idle">
-                            <li>Sortable</li>
-                            <li>Sortable 2</li>
-                            <li>Sortable 3</li>
-                        </ul>
-                        <ul class="sortable idle">
-                            <li>Sortable</li>
-                            <li>Sortable 2</li>
-                            <li>Sortable 3</li>
-                        </ul>
-                      </body>
+                        <table class="body">
+                            <tr>
+                                <td class="sortable-rows" align="center" valign="top">
+
+                                        <table class="row header">
+                                            <tr>
+                                                <td>
+                                                    <span class="ui-icon-arrow-4"></span>
+                                                    <span class="ui-icon-wrench"></span >
+                                                    <span class="ui-icon-trash"></span>
+                                                    <table class="container" data-row-id="1">
+                                                        <tr>
+                                                            <td class="wrapper last">
+                                                                <table class="twelve columns">
+                                                                    <tr>
+                                                                        <td  class="sortable-elements">
+                                                                            <div>
+                                                                                <span class="ui-icon-arrow-4"></span>
+                                                                                <span class="ui-icon-wrench"></span >
+                                                                                <span class="ui-icon-trash"></span>
+                                                                                <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="expander"></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <table class="container">
+                                              <tr>
+                                                 <td>
+                                                  <span class="ui-icon-arrow-4"></span>
+                                                  <span class="ui-icon-wrench"></span >
+                                                  <span class="ui-icon-trash"></span>
+                                                  <table class="row" data-row-id="2">
+                                                    <tr>
+
+                                                      <td class="wrapper">
+
+                                                        <table class="six columns" data-column-id="1">
+                                                          <tr>
+                                                            <td class="sortable-elements">
+                                                                <div>
+                                                                    <span class="ui-icon-arrow-4"></span>
+                                                                    <span class="ui-icon-wrench"></span >
+                                                                    <span class="ui-icon-trash"></span>
+                                                                    <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                                </div>
+                                                            </td>
+                                                            <td class="expander"></td>
+                                                          </tr>
+                                                        </table>
+
+                                                      </td>
+
+                                                      <td class="wrapper last">
+
+                                                        <table class="six columns" data-column-id="2">
+                                                          <tr>
+                                                            <td class="sortable-elements">
+                                                                <div>
+                                                                    <span class="ui-icon-arrow-4"></span>
+                                                                    <span class="ui-icon-wrench"></span >
+                                                                    <span class="ui-icon-trash"></span>
+                                                                    <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                                </div>
+                                                            </td>
+                                                            <td class="expander"></td>
+                                                          </tr>
+                                                        </table>
+
+                                                      </td>
+
+                                                    </tr>
+                                                  </table>
+
+                                                </td>
+                                              </tr>
+                                        </table>
+                                </td>
+                            </tr>
+                        </table>
                     </html>
             ';
             echo $content;

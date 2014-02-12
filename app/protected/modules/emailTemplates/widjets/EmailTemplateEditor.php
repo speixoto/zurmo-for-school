@@ -91,43 +91,11 @@
         {
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id,
                 "
-//                emailTemplateEditor.init(
-//                    '#building-blocks',
-//                    '{$this->getRowWrapper()}',
-//                    '{$this->getNewElementUrl()}'
-//                );
-
-
-
-                    $('#preview-template').load(function () {
-                        $('li', '#building-blocks').draggable({
-                            //appendTo: $('#preview-template').contents().find('body'),
-                            helper: 'clone',
-                            iframeFix: true,
-                            revert: 'invalid',
-                            connectToSortable: $('#preview-template').contents().find('.sortable')
-                            //cursorAt:  $('#building-blocks').offset(),
-                            //iframeOffset: $('#preview-template').offset()
-                        });
-
-                        $('#preview-template').contents().find('.sortable').sortable({
-                            iframeFix: true,
-                            cursorAt: { top: 0, left: 0 },
-                            //iframeOffset: $('#preview-template').offset()
-                        });
-                    });
-
-                    //$('.draggable').on('dragstop',autoResize);
-
-
-                    function autoResize(){
-                        var newheight;
-                        if(document.getElementById){
-                            newheight = document.getElementById('preview-template').contentWindow.document.body.scrollHeight;
-                        }
-                        newheight = newheight+100;
-                        $('#preview-template').css('height',newheight);
-                    }
+                emailTemplateEditor.init(
+                    '#building-blocks',
+                    '{$this->getRowWrapper()}',
+                    '{$this->getNewElementUrl()}'
+                );
 
                 ");
             echo ZurmoHtml::openTag('section', array('id' => 'builder', 'class' => 'strong-right clearfix'));

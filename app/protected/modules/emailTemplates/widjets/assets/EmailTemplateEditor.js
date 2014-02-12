@@ -40,20 +40,26 @@ var emailTemplateEditor = {
         getNewElementUrl: '',
         elementsToPlaceSelector: '#building-blocks',
         sortableRowsSelector: '.sortable-rows',
-        sortableElementsSelector: '.sortable-elements'
+        sortableElementsSelector: '.sortable-elements',
+        iframeSelector: '#preview-template'
     },
     init : function (elementsToPlaceSelector, rowWrapper, getNewElementUrl) {
-        this.settings.elementsToPlaceSelector = elementsToPlaceSelector + '>li' ;
+        this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
         this.settings.rowWrapper    = rowWrapper;
         this.settings.getNewElementUrl = getNewElementUrl;
-//        this.setupLayout();
-//        emailTemplateEditor = this;
+        this.setupLayout();
+        emailTemplateEditor = this;
     },
     setupLayout : function() {
         emailTemplateEditor = this;
-        this.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceSelector, emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector);
-        this.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector, emailTemplateEditor.settings.sortableElementsSelector);
-        this.initSortableRows(emailTemplateEditor.settings.sortableRowsSelector);
+        $(emailTemplateEditor.settings.iframeSelector).load(function () {
+            contents = $(emailTemplateEditor.settings.iframeSelector).contents();
+            emailTemplateEditor.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceSelector,
+                contents.find(emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector));
+            emailTemplateEditor.initSortableElements(contents.find(emailTemplateEditor.settings.sortableElementsSelector),
+                contents.find(emailTemplateEditor.settings.sortableElementsSelector));
+            emailTemplateEditor.initSortableRows(contents.find(emailTemplateEditor.settings.sortableRowsSelector));
+        });
     },
     initDraggableElements: function ( selector , connectToSelector) {
         $( selector ).each(function(){
@@ -62,10 +68,11 @@ var emailTemplateEditor = {
                 $(this).draggable("destroy");
             }
         });
-        $( selector ).draggable({
+        $('li', selector ).draggable({
             helper: "clone",
             cursor: 'move',
             iframeFix: true,
+            revert: 'invalid',
             connectToSortable: connectToSelector
         });
     },
@@ -77,8 +84,8 @@ var emailTemplateEditor = {
             }
         });
         $( selector ).sortable({
-            hoverClass: "ui-state-hover",
-            placeholder: "ui-state-highlight",
+//            hoverClass: "ui-state-hover",
+//            placeholder: "ui-state-highlight",
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
@@ -106,9 +113,9 @@ var emailTemplateEditor = {
             }
         });
         $( selector ).sortable({
-            hoverClass: "ui-state-hover",
-            placeholder: "ui-state-highlight",
-            handle: "span.ui-icon-arrow-4",
+//            hoverClass: "ui-state-hover",
+//            placeholder: "ui-state-highlight",
+//            handle: "span.ui-icon-arrow-4",
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
