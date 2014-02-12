@@ -116,7 +116,7 @@
             if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $contact))
             {
                 $moduleClassName = $contact->getModuleClassName();
-                $moduleId        = ContactWebFormsUtil::getRelatedLinkStringForContactOrLead($contact);
+                $moduleId        = ContactWebFormsUtil::getResolvedModuleNameForContactWebFormEntry($contact);
                 $linkRoute       = '/' . $moduleId . '/default/details';
                 $link            = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
                                    $moduleClassName, $linkRoute);

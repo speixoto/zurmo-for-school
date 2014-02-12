@@ -470,7 +470,7 @@
             return DataUtil::purifyHtml($sanitizedAttributeValue);
         }
         
-        public static function getRelatedLinkStringForContactOrLead(Contact $contact)
+        public static function getResolvedModuleNameForContactWebFormEntry(Contact $contact)
         {
             $startingStateId = ContactsUtil::getStartingStateId();
             $source = $contact->state->id;

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ContactOrLeadListViewColumnAdapter extends TextListViewColumnAdapter
+    class ContactOrLeadListViewColumnAdapter extends ContactListViewColumnAdapter
     {
         public function renderGridViewData()
         {
