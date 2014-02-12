@@ -121,7 +121,7 @@
                                                 get_called_class(),
                                                 static::resolveThumbnailHtmlOptions());
             $widget         = $thumbnail . $label;
-            $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);;
+            $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);
             $widget         = ZurmoHtml::tag($widgetWrapper, static::resolveWidgetHtmlOptions(), $widget);
             return $widget;
         }

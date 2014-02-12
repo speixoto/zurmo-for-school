@@ -140,7 +140,8 @@
 
         public function actionSelectBuiltType($type)
         {
-            assert('is_string($type)');
+            assert('is_int($type) || is_string($type)');
+            $type               = intval($type);
             $viewUtil           = static::getViewUtilByType($type);
             $breadCrumbView     = static::getBreadCrumbViewByType($type);
             $breadCrumbLinks    = static::getBreadCrumbLinksByType($type);
@@ -155,15 +156,15 @@
 
         public function actionCreate($type, $builtType = null)
         {
-            assert('is_string($type)');
-            $type                       = (int)$type;
+            assert('is_int($type) || is_string($type)');
+            $type                       = intval($type);
             if ($builtType == null)
             {
                 $this->actionSelectBuiltType($type);
                 Yii::app()->end(0, false);
             }
-            assert('is_string($builtType)');
-            $builtType                  = (int)$builtType;
+            assert('is_int($builtType) || is_string($builtType)');
+            $builtType                  = intval($builtType);
             $viewUtil                   = static::getViewUtilByType($type);
             $breadCrumbView             = static::getBreadCrumbViewByType($type);
             $breadCrumbLinks            = static::getBreadCrumbLinksByType($type);
