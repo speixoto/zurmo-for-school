@@ -65,6 +65,8 @@
 
         public $labelPrefix        = null;
 
+        public $labelPrefixOptions = array();
+
         public $linkPrefix         = null;
 
         /**
@@ -355,7 +357,7 @@
         {
             if ($this->labelPrefix)
             {
-                return ZurmoHtml::tag($this->labelPrefix, array(), '');
+                return ZurmoHtml::tag($this->labelPrefix, $this->labelPrefixOptions, '');
             }
         }
 

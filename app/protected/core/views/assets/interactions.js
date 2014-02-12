@@ -680,7 +680,7 @@ $(window).ready(function(){
     );
 
     //Main nav hover
-     $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
+     /*$('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
             $('> span:first-child', this).stop(true, true).fadeTo( 50, 1, 'linear' );
             $('> span:last-child', this).stop(true, true).animate({ color : '#555', color: '#fff' }, 50, 'linear');
@@ -691,7 +691,7 @@ $(window).ready(function(){
                 $('> span:last-child', this).stop(true, true).animate({ color : '#fff', color: '#555' }, 100, 'linear');
             }
         }
-    );
+    );*/
 
     //Main nav toggle hidden items
     $('.toggle-hidden-nav-items').click(

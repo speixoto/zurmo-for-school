@@ -1056,6 +1056,11 @@ body > .ui-autocomplete{
 	ul ul li a:hover{
 		//#gradient > .vertical( @themeColor2, darken(@themeColor2, 15%) );
 	}
+	i{
+		font-style:normal;
+		.symbly(@recentlyViewedIconSize);
+		.t-shadow(~"none !important");
+	}
 }
 
 #MenuView .parent{
@@ -1171,6 +1176,7 @@ body > .ui-autocomplete{
 	}
 }
 
+/*
 #MenuView li.active > a > span,
 #MenuView a:hover > span{
 	background-image: url("@{path}main-nav-selected.png");
@@ -1187,6 +1193,7 @@ body > .ui-autocomplete{
 #MenuView li.active > a > span{
 	color:#fff;
 }
+*/
 
 #MenuView.hasNoHiddenItems{
 	padding-bottom: 20px;
@@ -1221,6 +1228,20 @@ body > .ui-autocomplete{
 .toggle-hidden-nav-items.point-up:after{
 	//content:'\00A1'; //A1
 }
+
+#search i:before{ content:  "k"; } 
+#shortcuts i:before{ content:  "Y"; }
+#home i:before{ content:  "A"; }
+#accounts i:before{ content:  "P"; }
+#leads i:before{ content:  "."; }
+#contacts i:before{ content:  "y"; }
+#opportunities i:before{ content:  "9"; }
+#conversations i:before{ content:  "b"; }
+#recently-viewed i:before{ content:  "{"; }
+#mashableInbox i:before{ content:  "g"; }
+#marketing i:before{ content:  '\00B6'; }
+#reports i:before{ content:  "V"; }
+
 
 /*=Recently Viewed*/
 #MenuView,
@@ -1273,6 +1294,7 @@ body > .ui-autocomplete{
 				.t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
 			}
 		}
+		/*
 		a:hover{
 			span{
 				//.t-shadow(rgba(156, 156, 156, 0.8) 0px 1px);
@@ -1286,7 +1308,7 @@ body > .ui-autocomplete{
 				color:@themeColor !important;
 				.t-shadow( 0px 1px 0 lighten(@themeColorBtn, 10%) );
 			}
-		}
+		}*/
 		em{
 			z-index:9999;
 			position:absolute;
@@ -1839,10 +1861,6 @@ caption, th, td {
 #list-view{
 	overflow-x:hidden;
 	position:relative;
-
-	float: left;
-	width: 100%;
-
 	.items-wrapper{
 		border: 1px solid #dfdfdf;
 		//border-bottom: 1px solid #dfdfdf;
