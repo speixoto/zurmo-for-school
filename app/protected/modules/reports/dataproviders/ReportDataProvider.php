@@ -127,7 +127,6 @@
         public function calculateTotalItemCount()
         {
             $selectQueryAdapter     = $this->makeSelectQueryAdapter();
-            $this->resolveSqlQueryAdapterForCountQuery($selectQueryAdapter);
             $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
             $count = ZurmoRedBean::getCell($sql);
             if ($count === null || empty($count))
@@ -143,7 +142,6 @@
         public function makeTotalCountSqlQueryForDisplay()
         {
             $selectQueryAdapter     = $this->makeSelectQueryAdapter();
-            $this->resolveSqlQueryAdapterForCountQuery($selectQueryAdapter);
             return $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
         }
 
@@ -457,11 +455,7 @@
             {
                 //Currently this is always expected as false. If it is true, we need to add support for SpecificCountClauses
                 //so we know which table/id the count is on.
-                if ($selectQueryAdapter->isDistinct())
-                {
-                    throw new NotSupportedException();
-                }
-                $selectQueryAdapter     = $this->makeSelectQueryAdapter($selectQueryAdapter->isDistinct());
+                $this->resolveSqlQueryAdapterForCount($selectQueryAdapter);
                 $selectQueryAdapter->addNonSpecificCountClause();
             }
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
@@ -712,9 +706,13 @@
          *
          * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
          */
-        protected function resolveSqlQueryAdapterForCountQuery(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
-            $selectQueryAdapter->setDistinct(false);
+            if ($selectQueryAdapter->isDistinct())
+            {
+                throw new NotSupportedException();
+            }
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter($selectQueryAdapter->isDistinct());
         }
     }
 ?>
