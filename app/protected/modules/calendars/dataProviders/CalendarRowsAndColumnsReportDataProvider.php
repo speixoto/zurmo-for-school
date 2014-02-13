@@ -35,43 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Helper class for managing adapting model relations and attributes into a rows and columns report
+     * Data provider a report that is a rows and columns report
      */
-    class CalendarModelRelationsAndAttributesToRowsAndColumnsReportAdapter extends ModelRelationsAndAttributesToRowsAndColumnsReportAdapter
+    class CalendarRowsAndColumnsReportDataProvider extends RowsAndColumnsReportDataProvider
     {
         /**
-         * Returns the array of selectable relations for creating a report.  Does not include relations that are
-         * marked as nonReportable in the rules and also excludes relations that are marked as relations
-         * reportedAsAttributes by the rules.  Includes relations marked as derivedRelationsViaCastedUpModel.
+         * Makes sql query adapter.
          *
-         * Public for testing only
-         * @param RedBeanModel $precedingModel
-         * @param null $precedingRelation
-         * @return array
-         * @throws NotSupportedException
+         * @param bool $isDistinct
          */
-        public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        protected function makeSelectQueryAdapter($isDistinct = false)
         {
-            if (($precedingModel != null && $precedingRelation == null) ||
-               ($precedingModel == null && $precedingRelation != null))
-            {
-                throw new NotSupportedException();
-            }
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ($this->model->isRelation($attribute) &&
-                    !$this->rules->relationIsReportedAsAttribute($this->model, $attribute) &&
-                    $this->rules->attributeIsReportable($this->model, $attribute) &&
-                    !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
-                    $this->model->isOwnedRelation($attribute)
-                    )
-                {
-                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
-                }
-            }
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
+            return new RedBeanModelSelectQueryAdapter(true);
         }
     }
 ?>

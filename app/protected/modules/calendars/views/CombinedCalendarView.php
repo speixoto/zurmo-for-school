@@ -104,7 +104,8 @@
             $content  .= $this->renderMyCalendarsContent();
             $content  .= $this->renderSubscribedToCalendarsContent();
             $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
-            $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
+            $rightSideContent = $this->renderOverMaxCountText() . $this->renderFullCalendarContent();
+            $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightSideContent);
             $params   = LabelUtil::getTranslationParamsForAllModules();
             $title    = ZurmoHtml::tag('h1', array(), Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params));
             $view     = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
@@ -159,6 +160,18 @@
         {
             $view = new FullCalendarForCombinedView($this->dataProvider);
             return $view->render();
+        }
+
+        /**
+         * Renders the message when the count of records is more than the limit.
+         */
+        public function renderOverMaxCountText()
+        {
+            $label = Zurmo::t('CalendarsModule', 'There are too many results to display.');
+            $content  = '<div class="general-issue-notice" id="calItemCountResult" style="display:none"><span class="icon-notice"></span><p>';
+            $content .= $label;
+            $content .= '</p></div>';
+            return $content;
         }
     }
 ?>

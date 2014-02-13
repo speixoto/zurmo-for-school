@@ -35,43 +35,42 @@
      ********************************************************************************/
 
     /**
-     * Helper class for managing adapting model relations and attributes into a rows and columns report
+     * Extended class to support models that have related items such as activities or conversations.
      */
-    class CalendarModelRelationsAndAttributesToRowsAndColumnsReportAdapter extends ModelRelationsAndAttributesToRowsAndColumnsReportAdapter
+    class MeetingHasRelatedItemsZurmoControllerUtil extends ModelHasRelatedItemsZurmoControllerUtil
     {
         /**
-         * Returns the array of selectable relations for creating a report.  Does not include relations that are
-         * marked as nonReportable in the rules and also excludes relations that are marked as relations
-         * reportedAsAttributes by the rules.  Includes relations marked as derivedRelationsViaCastedUpModel.
-         *
-         * Public for testing only
-         * @param RedBeanModel $precedingModel
-         * @param null $precedingRelation
-         * @return array
-         * @throws NotSupportedException
+         * Passing in a $model, process any relatedItems that have to be removed, added, or changed.
          */
-        public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        protected function resolveModelsRelatedItemsFromPost(& $model)
         {
-            if (($precedingModel != null && $precedingRelation == null) ||
-               ($precedingModel == null && $precedingRelation != null))
+            if (isset($_POST[$this->relatedItemsFormName]) &&
+                isset($_POST[$this->relatedItemsFormName]['Contact']) &&
+                !empty($_POST[$this->relatedItemsFormName]['Contact']['ids']))
             {
-                throw new NotSupportedException();
-            }
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ($this->model->isRelation($attribute) &&
-                    !$this->rules->relationIsReportedAsAttribute($this->model, $attribute) &&
-                    $this->rules->attributeIsReportable($this->model, $attribute) &&
-                    !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
-                    $this->model->isOwnedRelation($attribute)
-                    )
+                $contactActivityItems = array();
+                $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
+                $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
+                $attendees = explode(',', $_POST[$this->relatedItemsFormName]['Contact']['ids']);
+                foreach ($attendees as $item)
                 {
-                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
+                    if (strpos($item, $contactItemPrefix) !== false)
+                    {
+                        $contactActivityItems[] = substr($item,
+                            strpos($item, $contactItemPrefix) + strlen($contactItemPrefix), strlen($item));
+                    }
+                    elseif (strpos($item, $userItemPrefix) !== false)
+                    {
+                        $userId = intval(substr($item,
+                            strpos($item, $userItemPrefix) + strlen($userItemPrefix), strlen($item)));
+                        $user   = User::getById($userId);
+                        $model->userAttendees->add($user);
+                        //todO: look at parent class, and how it handles removing/adding/changing for userAttendees. i dont think you are handlign this..
+                    }
                 }
+                $_POST[$this->relatedItemsFormName]['Contact']['ids'] = implode(',', $contactActivityItems);
             }
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
+            parent::resolveModelsRelatedItemsFromPost($model);
         }
     }
 ?>

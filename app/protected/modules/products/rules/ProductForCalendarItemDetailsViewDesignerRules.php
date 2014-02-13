@@ -34,44 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for managing adapting model relations and attributes into a rows and columns report
-     */
-    class CalendarModelRelationsAndAttributesToRowsAndColumnsReportAdapter extends ModelRelationsAndAttributesToRowsAndColumnsReportAdapter
+    class ProductForCalendarItemDetailsViewDesignerRules extends CalendarItemDetailsViewDesignerRules
     {
-        /**
-         * Returns the array of selectable relations for creating a report.  Does not include relations that are
-         * marked as nonReportable in the rules and also excludes relations that are marked as relations
-         * reportedAsAttributes by the rules.  Includes relations marked as derivedRelationsViaCastedUpModel.
-         *
-         * Public for testing only
-         * @param RedBeanModel $precedingModel
-         * @param null $precedingRelation
-         * @return array
-         * @throws NotSupportedException
-         */
-        public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        public function getDisplayName()
         {
-            if (($precedingModel != null && $precedingRelation == null) ||
-               ($precedingModel == null && $precedingRelation != null))
-            {
-                throw new NotSupportedException();
-            }
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ($this->model->isRelation($attribute) &&
-                    !$this->rules->relationIsReportedAsAttribute($this->model, $attribute) &&
-                    $this->rules->attributeIsReportable($this->model, $attribute) &&
-                    !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
-                    $this->model->isOwnedRelation($attribute)
-                    )
-                {
-                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
-                }
-            }
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
+            return Zurmo::t('CalendarsModule', 'Product Calendar Item Detail View');
         }
     }
 ?>
