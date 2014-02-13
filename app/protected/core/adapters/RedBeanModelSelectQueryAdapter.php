@@ -494,5 +494,12 @@
             }
             return $clause;
         }
+
+        public function setDistinct($distinct)
+        {
+            $this->distinct = $distinct;
+        }
+
+
     }
 ?>

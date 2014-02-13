@@ -181,7 +181,7 @@
         {
             $models             = array();
             $report             = $this->makeReportBySavedCalendar($calendar);
-            $reportDataProvider = new RowsAndColumnsReportDataProvider($report);
+            $reportDataProvider = new CalendarRowsAndColumnsReportDataProvider($report);
             $reportResultsRows  = $reportDataProvider->getData();
             $count              = 1;
             foreach ($reportResultsRows as $reportResultsRowData)

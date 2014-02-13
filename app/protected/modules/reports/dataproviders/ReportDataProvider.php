@@ -127,6 +127,7 @@
         public function calculateTotalItemCount()
         {
             $selectQueryAdapter     = $this->makeSelectQueryAdapter();
+            $this->resolveSqlQueryAdapterForCountQuery($selectQueryAdapter);
             $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
             $count = ZurmoRedBean::getCell($sql);
             if ($count === null || empty($count))
@@ -142,6 +143,7 @@
         public function makeTotalCountSqlQueryForDisplay()
         {
             $selectQueryAdapter     = $this->makeSelectQueryAdapter();
+            $this->resolveSqlQueryAdapterForCountQuery($selectQueryAdapter);
             return $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
         }
 
@@ -703,6 +705,16 @@
         protected function makeSelectQueryAdapter($isDistinct = false)
         {
             return new RedBeanModelSelectQueryAdapter($isDistinct);
+        }
+
+        /**
+         * Resolve sql query adapter for count query.
+         *
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         */
+        protected function resolveSqlQueryAdapterForCountQuery(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            $selectQueryAdapter->setDistinct(false);
         }
     }
 ?>

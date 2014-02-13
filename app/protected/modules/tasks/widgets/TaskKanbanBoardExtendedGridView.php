@@ -52,7 +52,7 @@
         {
             $this->makeColumnsDataAndStructure();
             $kanbanItemsArray = array();
-            foreach ($this->dataProvider->data as $notUsed => $data)
+            foreach ($this->dataProvider->getData() as $notUsed => $data)
             {
                 $kanbanItem  = KanbanItem::getByTask($data->id);
                 if ($kanbanItem == null)
