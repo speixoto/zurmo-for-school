@@ -472,9 +472,7 @@
 
         public static function getResolvedModuleIdForContactWebFormEntry(Contact $contact)
         {
-            $startingStateId = ContactsUtil::getStartingStateId();
-            $source = $contact->state->id;
-            if ($source < $startingStateId)
+            if (LeadsUtil::isStateALead($contact->state))
             {
                 return 'leads';
             }
