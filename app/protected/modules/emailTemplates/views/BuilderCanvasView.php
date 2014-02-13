@@ -39,7 +39,7 @@
         public function render()
         {
             static::registerScripts();
-//            static::registerCss();
+            static::registerCss();
             $content = $this->renderCanvasContent();
             Yii::app()->getClientScript()->render($content);
             return $content;
@@ -53,14 +53,19 @@
                       <head>
                         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                         <meta name="viewport" content="width=device-width"/>
-                        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+                        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">' .
+                        $this->renderIconFont() .
+                        $this->renderLess() .
+                        '
+
                         <style type="text/css">
-                             /*{ margin: 0; padding: 0; }*/
+                             /*{ margin: 0; padding: 0; }
                              .sortable-rows > table{ background: pink }
                              .sortable-elements{ background: gold }
                              table{ border:1px solid black; width: 100%}
-                             .ui-state-hover{border: 2px solid blue}
+                             .state-hover{border: 2px solid blue}*/
                         </style>
+
                       </head>
                       <body>
                         <table class="body">
@@ -70,9 +75,11 @@
                                         <table class="row header">
                                             <tr>
                                                 <td>
-                                                    <span><i class="ui-icon-arrow-4"></i></span>
-                                                    <span><i class="ui-icon-wrench"></i></span>
-                                                    <span><i class="ui-icon-trash"></i></span>
+                                                    <div class="email-template-container-tools">
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
                                                     <table class="container" data-row-id="1">
                                                         <tr>
                                                             <td class="wrapper last">
@@ -80,9 +87,11 @@
                                                                     <tr>
                                                                         <td  class="sortable-elements">
                                                                             <div>
-                                                                                <span><i class="ui-icon-arrow-4"></i></span>
-                                                                                <span><i class="ui-icon-wrench"></i></span>
-                                                                                <span><i class="ui-icon-trash"></i></span>
+                                                                                <div class="email-template-container-tools">
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
                                                                                 <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
                                                                             </div>
                                                                         </td>
@@ -99,9 +108,11 @@
                                         <table class="container">
                                               <tr>
                                                  <td>
-                                                  <span><i class="ui-icon-arrow-4"></i></span>
-                                                  <span><i class="ui-icon-wrench"></i></span>
-                                                  <span><i class="ui-icon-trash"></i></span>
+                                                  <div class="email-template-container-tools">
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
                                                   <table class="row" data-row-id="2">
                                                     <tr>
 
@@ -111,9 +122,11 @@
                                                           <tr>
                                                             <td class="sortable-elements">
                                                                 <div>
-                                                                    <span><i class="ui-icon-arrow-4"></i></span>
-                                                                    <span><i class="ui-icon-wrench"></i></span>
-                                                                    <span><i class="ui-icon-trash"></i></span>
+                                                                    <div class="email-template-container-tools">
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
                                                                     <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
                                                                 </div>
                                                             </td>
@@ -129,9 +142,11 @@
                                                           <tr>
                                                             <td class="sortable-elements">
                                                                 <div>
-                                                                    <span><i class="ui-icon-arrow-4"></i></span>
-                                                                    <span><i class="ui-icon-wrench"></i></span>
-                                                                    <span><i class="ui-icon-trash"></i></span>
+                                                                   <div class="email-template-container-tools">
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
                                                                     <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
                                                                 </div>
                                                             </td>
@@ -167,5 +182,32 @@
                 Yii::getPathOfAlias('application.modules.emailTemplates.widjets.assets'));
             Yii::app()->getClientScript()->registerCssFile($baseScriptUrl . '/EmailTemplateEditor.css');
         }
+
+        protected function renderIconFont(){
+            $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets.fonts"));
+            $iconsFont = "<style>" .
+                "@font-face" .
+                "{" .
+                "font-family: 'zurmo_gamification_symbly_rRg';" .
+                "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot');" .
+                "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), " .
+                "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), " .
+                "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), " .
+                "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.svg#zurmo_gamification_symbly_rRg') format('svg');" .
+                "font-weight: normal;" .
+                "font-style: normal;" .
+                "unicode-range: U+00-FFFF;" . // Not Coding Standard
+                "}" .
+                "</style>";
+            return $iconsFont;
+        }
+
+        protected function renderLess(){
+            $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets"));
+            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="/Zurmo/app/themes/default/less/builder-iframe-tools.less"/>
+                     <script type="text/javascript" src="' . $publishedAssetsPath . '/less-1.2.0.min.js"></script>';
+            return $less;
+        }
+
     }
 ?>
