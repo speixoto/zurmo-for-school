@@ -483,5 +483,50 @@
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);
         }
+
+        public function actionCanvas($id)
+        {
+            assert('is_int($id) || is_string($id)');
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
+        }
+
+        public function actionPreview()
+        {
+            // this would be actually unserialized and an array. Bad naming convention as we need to preserve
+            // form names.
+            $serializedDataArray    = Yii::app()->request->getPost('serializedData');
+            if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
+            {
+                Yii::app()->end(0, false);
+            }
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedDataArray, false);
+        }
+
+        public function actionRenderElementEditable($className, $id = null, $properties = null, $content = null)
+        {
+            echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
+        }
+
+        public function actionRenderElementNonEditable($className, $renderForCanvas = false, $id = null,
+                                                        $properties = null, $content = null)
+        {
+            // TODO: @Shoaibi/@Sergio: Critical0: $wrapElementInRow = false?
+            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $id, $properties, $content);
+        }
+
+        public function actionRenderElementNonEditableByPost()
+        {
+            $renderForCanvas    = true;
+            $id                 = Yii::app()->request->getPost('id');
+            $className          = Yii::app()->request->getPost('className');
+            $content            = Yii::app()->request->getPost('content');
+            $properties         = Yii::app()->request->getPost('properties');
+            // at bare minimum we should have id and classname. Without these it does not make sense.
+            if (!Yii::app()->request->isPostRequest || !isset($id, $className))
+            {
+                Yii::app()->end(0, false);
+            }
+            $this->actionRenderElementNonEditable($className, $renderForCanvas, $id, $properties, $content);
+        }
     }
 ?>
