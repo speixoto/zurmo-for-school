@@ -1102,87 +1102,65 @@ body > .ui-autocomplete{
 */
 
 /*=Menu+Recently Viewed*/
-
-#MenuView{
-	border-bottom:1px solid #cccccc;
-	padding-top: 70px !important;
-	#gradient > .vertical(#f6f6f6, #f4f4f4) !important;
-	&.hasNoHiddenItems{
-		padding-bottom: 20px;
-		.toggle-hidden-nav-items{
-			display: none;
-		}
-	}
-}
-
 #MenuView,
 #RecentlyViewedView{
 	#gradient > .vertical(#dcdcdc, #e3e3e3);
 	border-top:1px solid #F9F9FA;
 	padding:20px 0;
-	//width:168px;
 	h3{
 		color:#666;
 		font-size:10px;
 		margin-bottom:20px;
+		text-indent: 10px;
 	}
 	li{
 		font-size:12px;
 		font-weight: bold;
 		color:#555;
-		margin:0 0 1px 0;
+		margin:0;
 		padding:0 5px;
 	}
 	a{
-		padding: 6px 0;
-		.text-overflow;
+		line-height: 33px;
 		display:block;
 		position: relative;
 		.radius( 4px );
 		.t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
+		width: 100%;
+		.text-overflow();
 		span{
 			display: inline-block;
-			text-indent:10px;
-			.text-overflow();
+			//.text-overflow();
+			line-height: 1;
+			position: relative;
+			top: 0px;
+			left: 15px;
 		}
 		&:hover{
-			color: #fff;
+			color: #fff !important;
 			background-color: @themeColor2;
 			.b-shadow(inset 0 0 25px 5px rgba(0, 0, 0, 0.4));
 			.t-shadow( 0px 1px 0 darken(@themeColorBtnDefault, 15%) ) !important;
+			i{
+				color: darken(@themeColorBtnDefault, 35%) !important;
+				.t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
+			}
 		}
 	}
 	i{
 		font-style:normal;
 		.symbly(28px);
-		//.t-shadow(~"none !important");
-		//margin-left: 8px;
-
-		//position:absolute;
 		width:24px;
 		height:24px;
 		line-height:22px;
-		vertical-align:top;
 		background:#FFF;
 		.radius(4px);
 		display:inline-block;
 		text-align:center;
-		//margin-left:4px;
-		//margin-right:8px;
 		position:relative;
-		top:-4px;
+		top:2px;
+		left: 5px;
 	}
-}
-
-#RecentlyViewedView {
-	i{
-		.symbly(@recentlyViewedIconSize);
-	}
-}
-
-@recentlyViewedIconSize : 24px;
-#MenuView,
-#RecentlyViewedView {
 	/*deafult for if an icon doesnt exist*/
 	li{
 		i:before{
@@ -1201,7 +1179,26 @@ body > .ui-autocomplete{
 	.type-mashableInbox   i:before{ content:  "g"; }
 	.type-marketing       i:before{ content:  '\00B6'; }
 	.type-reports         i:before{ content:  "V"; }
-
+	.type-UsersModule            i:before{ content: "e"; }
+	.type-AccountsModule         i:before{ content: "P"; }
+	.type-ContactsModule         i:before{ content: "y"; }
+	.type-LeadsModule            i:before{ content: "."; }
+	.type-TasksModule            i:before{ content: "4"; }
+	.type-MeetingsModule         i:before{ content: "U"; }
+	.type-iailMessagiodule       i:before{ content: "g"; }
+	.type-MissionsModule         i:before{ content: "Q"; }
+	.type-ReportsModule          i:before{ content: "V"; }
+	.type-iailTiplatesModule     i:before{ content:'\00B6'; }
+	.type-MarketingListsModule   i:before{ content: '\0022'; }
+	.type-WorkflowsModule        i:before{ content: '\20AC'; }
+	.type-products               i:before{ content: '\003E'; }
+	.type-ProductsModule         i:before{ content: '\003E'; }
+	.type-ProductTiplatesModule  i:before{ content: '\00AC'; }
+	.type-ProductsCategoryModule i:before{ content: '\00D7' }
+	.type-CampaignsModule        i:before{ content: '\002C'; font-size: 26px; }
+	.type-GameRewardsModule      i:before{ content: '\2205'; font-size: 30px; }
+	.type-projects               i:before{ content: '\02C7'; font-size: 22px; }
+	.type-ProjectsModule         i:before{ content: '\02C7'; font-size: 22px; }
 	.type-ConversationsModule{
 		i{
 			padding-top:3px;
@@ -1211,42 +1208,12 @@ body > .ui-autocomplete{
 			content: "b";
 		}
 	}
-	.type-UsersModule{
-		i:before{
-			content: "e";
-		}
-	}
-	.type-AccountsModule{
-		i:before{
-			content: "P";
-		}
-	}
-	.type-ContactsModule{
-		i:before{
-			content: "y";
-		}
-	}
 	.type-OpportunitiesModule{
 		i{
 			padding-top:2px;
 		}
 		i:before{
 			content: "9";
-		}
-	}
-	.type-LeadsModule{
-		i:before{
-			content: ".";
-		}
-	}
-	.type-TasksModule{
-		i:before{
-			content: "4";
-		}
-	}
-	.type-MeetingsModule{
-		i:before{
-			content: "U";
 		}
 	}
 	.type-NotesModule{
@@ -1258,70 +1225,32 @@ body > .ui-autocomplete{
 			content: "3";
 		}
 	}
-	.type-iailMessagiodule{
-		i:before{
-			content: "g";
+
+}
+
+#MenuView{
+	border-bottom:1px solid #cccccc;
+	padding-top: 65px !important;
+	#gradient > .vertical(#f6f6f6, #f4f4f4) !important;
+	&.hasNoHiddenItems{
+		padding-bottom: 20px;
+		.toggle-hidden-nav-items{
+			display: none;
 		}
 	}
-	.type-MissionsModule{
-		i:before{
-			content: "Q";
-		}
-	}
-	.type-ReportsModule{
-		i:before{
-			content: "V";
-		}
-	}
-	.type-iailTiplatesModule{
-		i:before{
-			content:'\00B6';
-		}
-	}
-	.type-MarketingListsModule{
-		i:before{
-			content: '\0022';
-		}
-	}
-	.type-WorkflowsModule{
-		i:before{
-			content: '\20AC';
-		}
-	}
-	.type-ProductsModule{
-		i:before{
-			content: '\003E';
-		}
-	}
-	.type-ProductTiplatesModule{
-		i:before{
-			content: '\00AC';
-		}
-	}
-	.type-ProductsCategoryModule{
-		i:before{
-			content: '\00D7';
-		}
-	}
-	.type-CampaignsModule{
-		i:before{
-			content: '\002C';
-			font-size: 26px;
-		}
-	}
-	.type-GameRewardsModule{
-		i:before{
-			content: '\2205';
-			font-size: 30px;
-		}
-	}
-	.type-ProjectsModule{
-		i:before{
-			content: '\02C7';
-			font-size: 22px;
-		}
+	i{
+		background: none;
+		color: #999;
 	}
 }
+
+#RecentlyViewedView {
+	i{
+		.symbly(@recentlyViewedIconSize);
+	}
+}
+
+@recentlyViewedIconSize : 24px;
 
 /*=Content*/
 @speed : 0.28s;
@@ -1332,8 +1261,8 @@ body > .ui-autocomplete{
 	margin-left:@navWidth;
 	.animateAll(0.28s);
 
-	margin-bottom:20px;
-	#gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #ffffff );
+	#gradient > .vertical-three-colors( #f6f6f6, #ffffff, 50%, #ffffff );
+	background-attachment: fixed;
 	.clearfix();
 	.single-column{
 		padding-right:0 !important;
@@ -1654,8 +1583,8 @@ form,
 
 /*=Footer*/
 #FooterView{
-	margin:20px 0 0 @navWidth;
-	padding-bottom: 20px;
+	margin:0 0 0 @navWidth;
+	padding:0 0 10px 20px;
 	.animateAll(0.28s);
 }
 
@@ -1672,7 +1601,6 @@ form,
 	background:url("@{path}Zurmo.png") left top no-repeat;
 	line-height: 19px;
 	display:inline-block;
-	margin-left:10px;
 	.smaller();
 	span{
 		margin-left:70px;
