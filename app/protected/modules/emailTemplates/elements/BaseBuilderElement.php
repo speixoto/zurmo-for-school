@@ -461,7 +461,7 @@
             $settingsTabContent     = $this->renderSettingsTab($form);
             $content                = $this->renderBeforeFormLayout($form);
             $content                .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
-            $content                .= $this->renderHiddenFields($form);
+            $content                .= '<tr><td colspan="2">' . $this->renderHiddenFields($form) . '</td></tr>';
             $content                .= $this->renderAfterFormLayout($form);
             $content                = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>' . $content;
             $content                .= '</table>';
@@ -542,8 +542,7 @@
          */
         protected function resolveFormActionUrl()
         {
-            $params = array('elementClassName' => get_class($this), 'elementId' => $this->id);
-            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditableByPost', $params);
+            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditableByPost');
         }
 
         /**
@@ -552,8 +551,24 @@
          */
         protected function renderHiddenFields($form)
         {
-            // render any specific hidden forms here. Ideally we should not even need this.
+            $idHiddenInput          = $this->renderHiddenField('id', $this->id);
+            $classNameHiddenInput   = $this->renderHiddenField('className', get_class($this));
+            $hiddenFields           = $idHiddenInput . $classNameHiddenInput;
+            return $hiddenFields;
         }
+
+        /**
+         * Render and return a hiddenField.
+         * @param $attributeName
+         * @param $value
+         * @return string
+         */
+        protected final function renderHiddenField($attributeName, $value)
+        {
+            return ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->getModel(), $attributeName),
+                                                $value,
+                                                array('id' => ZurmoHtml::activeId($this->getModel(), $attributeName)));
+         }
 
         /**
          * Wrap content and settings tab into a tab container and return output.
@@ -782,7 +797,7 @@
          */
         protected function resolveFormHtmlOptions()
         {
-            return array();
+            return array('class' => 'element-edit-form');
         }
 
         /**
