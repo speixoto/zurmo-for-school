@@ -35,47 +35,42 @@
      ********************************************************************************/
 
     /**
-     * Extending MixedNumberTypesElement to add a currencyId dropdown.
+     * Extended class to support models that have related items such as activities or conversations.
      */
-    class MixedCurrencyValueTypesElement extends MixedNumberTypesElement
+    class MeetingHasRelatedItemsZurmoControllerUtil extends ModelHasRelatedItemsZurmoControllerUtil
     {
-        public static function getValueAreasCount()
+        /**
+         * Passing in a $model, process any relatedItems that have to be removed, added, or changed.
+         */
+        protected function resolveModelsRelatedItemsFromPost(& $model)
         {
-            return 2;
-        }
-
-        protected function renderEditableFirstValueContent()
-        {
-            $content = parent::renderEditableFirstValueContent();
-            $htmlOptions = array(
-                'id'              => $this->getCurrencyIdForValueEditableInputId(),
-                'empty'           => Zurmo::t('Core', '(None)'),
-            );
-            $data         = Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(
-                (int)$this->model->currencyIdForValue);
-            $content     .= ZurmoHtml::dropDownList($this->getCurrencyIdForValueEditableInputName(),
-                $this->model->currencyIdForValue,
-                $data,
-                $htmlOptions
-            );
-            $error        = $this->form->error($this->model, 'currencyIdForValue',
-                array('inputID' => $this->getCurrencyIdForValueEditableInputId()));
-            return $content . $error;
-        }
-
-        protected function getCurrencyIdForValueEditableInputId()
-        {
-            return $this->getEditableInputId('currencyIdForValue');
-        }
-
-        protected function getCurrencyIdForValueEditableInputName()
-        {
-            return $this->getEditableInputName('currencyIdForValue');
-        }
-
-        protected function getExtraFirstValueAreaClassName()
-        {
-            return ' currency-input';
+            if (isset($_POST[$this->relatedItemsFormName]) &&
+                isset($_POST[$this->relatedItemsFormName]['Contact']) &&
+                !empty($_POST[$this->relatedItemsFormName]['Contact']['ids']))
+            {
+                $contactActivityItems = array();
+                $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
+                $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
+                $attendees = explode(',', $_POST[$this->relatedItemsFormName]['Contact']['ids']);
+                foreach ($attendees as $item)
+                {
+                    if (strpos($item, $contactItemPrefix) !== false)
+                    {
+                        $contactActivityItems[] = substr($item,
+                            strpos($item, $contactItemPrefix) + strlen($contactItemPrefix), strlen($item));
+                    }
+                    elseif (strpos($item, $userItemPrefix) !== false)
+                    {
+                        $userId = intval(substr($item,
+                            strpos($item, $userItemPrefix) + strlen($userItemPrefix), strlen($item)));
+                        $user   = User::getById($userId);
+                        $model->userAttendees->add($user);
+                        //todO: look at parent class, and how it handles removing/adding/changing for userAttendees. i dont think you are handlign this..
+                    }
+                }
+                $_POST[$this->relatedItemsFormName]['Contact']['ids'] = implode(',', $contactActivityItems);
+            }
+            parent::resolveModelsRelatedItemsFromPost($model);
         }
     }
 ?>

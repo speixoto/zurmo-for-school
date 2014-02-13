@@ -46,22 +46,45 @@
         public $columnsData;
 
         /**
+         * Heals sortOrder for kanbanItems if they are wrong.  It can be wrong if tasks are created from workflow actions
+         * because during that task creation, it doesn't know what project or other activityItem it is part of.
+         * This will at least heal the sortOrder for display. Then upon subsequent saves of the board, it will properly
+         * set the sortOrder in the database
          * @return array
          */
         protected function resolveDataIntoKanbanColumns()
         {
             $this->makeColumnsDataAndStructure();
-            $kanbanItemsArray = array();
-            foreach ($this->dataProvider->getData() as $notUsed => $data)
+            $kanbanItemsArray           = array();
+            $kanbanItems                = array();
+            $maximumKanbanItemSortOrder = 0;
+            foreach ($this->dataProvider->getData() as $notUsed => $task)
             {
-                $kanbanItem  = KanbanItem::getByTask($data->id);
+                $kanbanItem  = KanbanItem::getByTask($task->id);
                 if ($kanbanItem == null)
                 {
                     //Create KanbanItem here
-                    $kanbanItem = TasksUtil::createKanbanItemFromTask($data);
+                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
                 }
-
-                $kanbanItemsArray[$kanbanItem->type][intval($kanbanItem->sortOrder)] = $kanbanItem->task;
+                $kanbanItems[] = $kanbanItem;
+                if($kanbanItem->sortOrder > $maximumKanbanItemSortOrder)
+                {
+                    $maximumKanbanItemSortOrder = $kanbanItem->sortOrder;
+                }
+            }
+            foreach ($kanbanItems as $kanbanItem)
+            {
+                if(isset($kanbanItemsArray[$kanbanItem->type]) &&
+                   isset($kanbanItemsArray[$kanbanItem->type][intval($kanbanItem->sortOrder)]))
+                {
+                    $sortOrder                  = $maximumKanbanItemSortOrder + 1;
+                    $maximumKanbanItemSortOrder = $sortOrder;
+                }
+                else
+                {
+                    $sortOrder = intval($kanbanItem->sortOrder);
+                }
+                $kanbanItemsArray[$kanbanItem->type][$sortOrder] = $kanbanItem->task;
             }
             foreach ($kanbanItemsArray as $type => $kanbanData)
             {
