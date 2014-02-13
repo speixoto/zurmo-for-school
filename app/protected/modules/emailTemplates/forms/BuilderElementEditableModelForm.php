@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,50 +31,45 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTextElement extends BaseBuilderElement
+    /**
+     * Form to edit the user avatar
+     */
+    class BuilderElementEditableModelForm extends ModelForm
     {
-        public static function isUIAccessible()
+        public $content;
+        public $properties;
+
+        public function __construct(array $content, array $properties)
         {
-            return true;
+            $this->content      = $content;
+            $this->properties   = $properties;
         }
 
-        protected static function resolveLabel()
+        public function __get($name)
         {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
+            if (strpos($name, '['))
+            {
+                $basePropertyName   = substr($name, 0, strpos($name, '['));
+                $index              = substr($name, strpos($name, '[') + 1, -1);
+                if (property_exists($this, $basePropertyName))
+                {
+                    return $this->{$basePropertyName}[$index];
+                }
+            }
+            return parent::__get($name);
         }
 
-        protected function resolveDefaultContent()
+        public function isAttributeRequired($attribute)
         {
-            // TODO: @Shoaibi: Critical5: Better default content.
-            return array('text' => '<u>This is default dummy content.</u>');
+            return false;
         }
 
-        protected function renderSettingsTab(ZurmoActiveForm $form)
+        public function getValidators($attribute = null)
         {
-            // TODO: @Shoaibi: Critical0: Implement settings interface
-            return 'Settings Edit form goes here';
-        }
-
-        protected function resolveContentElementClassName()
-        {
-            return 'RedactorElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
-            // it would give an error saying we are trying to convert an array to string.
-            return 'content[text]';
-        }
-
-        protected function resolveContentElementParams()
-        {
-            $params                     = parent::resolveContentElementParams();
-            $params['labelHtmlOptions'] = array('label' => 'Text');
-            return $params;
+            return array();
         }
     }
 ?>

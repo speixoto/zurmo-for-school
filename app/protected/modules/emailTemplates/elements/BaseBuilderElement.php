@@ -81,24 +81,23 @@
         abstract protected function resolveDefaultContent();
 
         /**
-         * Returns the non-editable output for current element.
-         * @return string
-         */
-        abstract protected function renderControlContentNonEditable();
-
-        /**
-         * Rendering and return content for Content tab.
-         * @param ZurmoActiveForm $form
-         * @return string
-         */
-        abstract protected function renderContentTab(ZurmoActiveForm $form);
-
-        /**
          * Render and Return content for Settings Tab. Returning null hides settings tab from appearing.
          * @param ZurmoActiveForm $form
          * @return string
          */
         abstract protected function renderSettingsTab(ZurmoActiveForm $form);
+
+        /**
+         * Resolve the class name of the element to use to render content for editable and non editable representation
+         * @return string
+         */
+        abstract protected function resolveContentElementClassName();
+
+        /**
+         * Resolve the attribute name to use to render editable and non-editable representation of content element
+         * @return string
+         */
+        abstract protected function resolveContentElementAttributeName();
 
         /**
          * @return bool If this element should be shown on the drag-n-drop sidebar.
@@ -121,7 +120,7 @@
                                                 get_called_class(),
                                                 static::resolveThumbnailHtmlOptions());
             $widget         = $thumbnail . $label;
-            $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);;
+            $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);
             $widget         = ZurmoHtml::tag($widgetWrapper, static::resolveWidgetHtmlOptions(), $widget);
             return $widget;
         }
@@ -204,6 +203,29 @@
             $elementContent = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), $elementContent);
             $wrappedContent = $this->renderControlWrapperNonEditable($elementContent);
             return $wrappedContent;
+        }
+
+        /**
+         * Rending current element's editable representation
+         * @return string
+         */
+        public final function renderEditable()
+        {
+            $formTitle                  = $this->resolveFormatterFormTitle();
+            $formContent                = $this->renderFormContent();
+            $content                    = $formTitle . $formContent;
+            $content                    = ZurmoHtml::tag('div', array('class' => 'element-edit-form-overlay'), $content);
+            return $content;
+        }
+
+        /**
+         * Returns the non-editable output for current element.
+         * @return string
+         */
+        protected function renderControlContentNonEditable()
+        {
+            $content    = $this->renderContentElement(null);
+            return $content;
         }
 
         /**
@@ -408,19 +430,6 @@
         }
 
         /**
-         * Rending current element's editable representation
-         * @return string
-         */
-        public final function renderEditable()
-        {
-            $formTitle                  = $this->resolveFormatterFormTitle();
-            $formContent                = $this->renderFormContent();
-            $content                    = $formTitle . $formContent;
-            $content                    = ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
-            return $content;
-        }
-
-        /**
          * Render Editable representation's Form content.
          * @return string
          */
@@ -430,18 +439,46 @@
             $clipWidget             = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget($this->resolveActiveFormClassName(),
                                                                         $this->resolveActiveFormOptions());
-            $formStart              .= $this->renderBeforeFormLayout();
-            $formEnd                = $this->renderAfterFormLayout();
-            $formEnd                .= $this->renderFormActionLinks();
+            $formInputContent       = $this->renderFormInputsContent($form);
+            $formEnd                = $this->renderFormActionLinks();
             $formEnd                .= $clipWidget->renderEndWidget();
 
+            $content                = $formStart . $formInputContent. $formEnd;
+            $content                = ZurmoHtml::tag('div', array('class' => 'wide form'), $content);
+            $content                = ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
+            return $content;
+        }
+
+
+        /**
+         * Returns string containing all form input fields properly wrapped in containers.
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
+        protected function renderFormInputsContent(ZurmoActiveForm $form)
+        {
             $contentTabContent      = $this->renderContentTab($form);
             $settingsTabContent     = $this->renderSettingsTab($form);
-            $formContent            = $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
-            $formContent            .= $this->renderHiddenFields($form);
+            $content                = $this->renderBeforeFormLayout($form);
+            $content                .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
+            $content                .= $this->renderHiddenFields($form);
+            $content                .= $this->renderAfterFormLayout($form);
+            $content                = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>' . $content;
+            $content                .= '</table>';
+            $content                = ZurmoHtml::tag('div', array('class' => 'panel'), $content);
+            $content                = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
+            $content                = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
+            return $content;
+        }
 
-            $content                = $formStart . $formContent . $formEnd;
-            $content                = ZurmoHtml::tag('div', array('class' => 'wide form'), $content);
+        /**
+         * Rendering and return content for Content tab.
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
+        protected function renderContentTab(ZurmoActiveForm $form)
+        {
+            $content    = $this->renderContentElement($form);
             return $content;
         }
 
@@ -548,7 +585,7 @@
             }
             $tabContent             = ZurmoHtml::tag('div', array('class' => 'tabs-nav'),
                                                             $contentTabHyperLink . $settingsTabHyperLink);
-            $content                = ZurmoHtml::tag('div', array('class' => 'edit-form-tab-content'),
+            $content                = ZurmoHtml::tag('div', array('class' => 'edit-form-tab-content tabs-container'),
                                                             $tabContent . $contentTabDiv . $settingsTabContentDiv);
             return $content;
         }
@@ -585,8 +622,8 @@
             else
             {
                 Yii::app()->clientScript->registerScript($scriptName, "
-                        $('.tabs-nav a:not(.simple-link)').click( function()
-                        {
+                        $('.tabs-nav a:not(.simple-link)').click( function(event){
+                            event.preventDefault();
                             //the menu items
                             $('.active-tab', $(this).parent()).removeClass('active-tab');
                             $(this).addClass('active-tab');
@@ -594,12 +631,10 @@
                             var _old = $('.tab.active-tab'); //maybe add context here for tab-container
                             _old.fadeToggle();
                             var _new = $( $(this).attr('href') );
-                            _new.fadeToggle(150, 'linear', function()
-                            {
-                                    _old.removeClass('active-tab');
-                                    _new.addClass('active-tab');
+                            _new.fadeToggle(150, 'linear', function(){
+                                _old.removeClass('active-tab');
+                                _new.addClass('active-tab');
                             });
-                            return false;
                         });
                     ");
             }
@@ -614,6 +649,8 @@
             $content    = $this->renderCancelLink();
             $content   .= $this->renderApplyLink();
             $content    = ZurmoHtml::tag('div', array('class' => 'form-toolbar'), $content);
+            $content    = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix dock'), $content);
+            $content    = ZurmoHtml::tag('div', array('class' => 'float-bar'), $content);
             return $content;
         }
 
@@ -710,7 +747,7 @@
          */
         protected function registerAjaxPostForApplyClickScript()
         {
-            // TODO: @Shoaibi: Critical0: Implement.
+            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
         }
 
         /**
@@ -718,7 +755,7 @@
          */
         protected function registerCancelScript()
         {
-            // TODO: @Shoaibi: Critical0: Implement.
+            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
         }
 
         /**
@@ -759,16 +796,18 @@
 
         /**
          * Render and return content that should be part of form but added before any input are rendered.
+         * @param ZurmoActiveForm $form
          */
-        protected function renderBeforeFormLayout()
+        protected function renderBeforeFormLayout(ZurmoActiveForm $form)
         {
 
         }
 
         /**
          * Render and return content that should be part of form but added before action links are rendered.
+         * @param ZurmoActiveForm $form
          */
-        protected function renderAfterFormLayout()
+        protected function renderAfterFormLayout(ZurmoActiveForm $form)
         {
 
         }
@@ -828,6 +867,72 @@
                 $content        = $this->resolveDefaultContent();
             }
             $this->content      = $content;
+        }
+
+        /**
+         * Return a model to be used on forms
+         * @return BuilderElementEditableModelForm
+         */
+        protected function getModel()
+        {
+            return new BuilderElementEditableModelForm($this->content, $this->properties);
+        }
+
+        /**
+         * Render the content element using provided form
+         * @param ZurmoActiveForm $form
+         * @return string
+         */
+        protected final function renderContentElement(ZurmoActiveForm $form = null)
+        {
+            $elementClassName   = $this->resolveContentElementClassName();
+            $attributeName      = $this->resolveContentElementAttributeName();
+            $params             = $this->resolveContentElementParams();
+            $element            = new $elementClassName($this->getModel(), $attributeName, $form, $params);
+            if (isset($form))
+            {
+                $this->resolveContentElementEditableTemplate($element);
+            }
+            else
+            {
+                $this->resolveContentElementNonEditableTemplate($element);
+            }
+            $content            = $element->render();
+            return $content;
+        }
+
+        /**
+         * Resolve editable template for content element.
+         * @param Element $element
+         */
+        protected function resolveContentElementEditableTemplate(Element $element)
+        {
+            $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
+        }
+
+        /**
+         * Resolve non editable template for content element.
+         * @param Element $element
+         */
+        protected function resolveContentElementNonEditableTemplate(Element $element)
+        {
+            $element->nonEditableTemplate = str_replace(array('{label}', '{error}'), '', $element->nonEditableTemplate);
+        }
+
+        /**
+         * Resolve params to send to Content element's construct
+         */
+        protected function resolveContentElementParams()
+        {
+            $params = array();
+            // we set label to an empty string as a default value.
+            // we already hide label in non-editable representation of content element.
+            // it is only shown in editable representation, which can also be overriden to hide it.
+            // setting it to empty string here isn't to hide it.
+            // it is rather to avoid Element trying to do ask ModelForm's model for a label.
+            // BuilderElementEditableModelForm does not set a model so we would see an error there.
+            $params['labelHtmlOptions'] = array('label' => '');
+            return $params;
         }
     }
 ?>

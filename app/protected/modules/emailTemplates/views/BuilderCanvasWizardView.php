@@ -235,14 +235,14 @@
         protected function registerElementDragAndDropScript()
         {
             Yii::app()->clientScript->registerScript('elementDragAndDropScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
                 ", CClientScript::POS_READY);
         }
 
         protected function registerCanvasSaveScript()
         {
             Yii::app()->clientScript->registerScript('canvasSaveScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
                 // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:111
                 ");
         }
@@ -250,7 +250,7 @@
         protected function registerCanvasFinishScript()
         {
             Yii::app()->clientScript->registerScript('canvasFinishScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
                 // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:115
                 ");
         }
@@ -258,14 +258,14 @@
         protected function registerSerializedDataCompilationFunctionsScript()
         {
             Yii::app()->clientScript->registerScript('serializedDataCompilationFunctionsScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
                 ", CClientScript::POS_END);
         }
 
         protected function registerPreviewModalScript()
         {
             Yii::app()->clientScript->registerScript('previewModalScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
+                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
                 ");
         }
     }
