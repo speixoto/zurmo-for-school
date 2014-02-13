@@ -40,6 +40,12 @@
 
         const CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME         = 'cachedSerializedData';
 
+        const CANVAS_IFRAME_ID                              = 'canvas-iframne';
+
+        const PREVIEW_IFRAME_ID                             = 'preview-iframe';
+
+        const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-contaier';
+
         /**
          * @return string
          */
@@ -177,9 +183,16 @@
         {
             $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
             $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
+            $this->wrapContentInDiv($content, $this->resolveElementsSidebarHtmlOptions());
+            $content                .= ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
             $this->wrapContentInTableCell($content, array('colspan' => 2));
             $this->wrapContentInTableRow($content);
             return $content;
+        }
+
+        protected function resolveElementsSidebarHtmlOptions()
+        {
+            return array('id' => 'droppable-element-sidebar');
         }
 
         protected function resolveCanvasContent()
@@ -201,6 +214,21 @@
             return $canvasContent;
         }
 
+        protected function resolveElementEditableActionUrl()
+        {
+            return $this->resolveRelativeUrl('renderElementEditable');
+        }
+
+        protected function resolveElementNonEditableActionUrl()
+        {
+            return $this->resolveRelativeUrl('renderElementNonEditable');
+        }
+
+        protected function resolveRelativeUrl($action)
+        {
+            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action);
+        }
+
         protected function registerScripts()
         {
             // TODO: @Shoaibi/@Sergio: Critical5: Did i miss any JS here?
@@ -213,6 +241,7 @@
             $this->registerSerializedDataCompilationFunctionsScript();
             $this->registerCanvasSaveScript();
             $this->registerCanvasFinishScript();
+            $this->registerCanvasChangedScript();
         }
 
         protected function registerRefreshCanvasFromSavedTemplateScript()
@@ -279,6 +308,13 @@
         {
             Yii::app()->clientScript->registerScript('previewModalScript', "
                 // TODO: @Sergio/@Shoaibi: Critical2: Add JS
+                ");
+        }
+
+        protected function registerCanvasChangedScript()
+        {
+            Yii::app()->clientScript->registerScript('canvasChangedScript', "
+                // TODO: @Sergio/@Shoaibi: Critical2: Attach an event(canvasChanged) to window object. register event handler that clears the cached serialized data from hidden input
                 ");
         }
     }
