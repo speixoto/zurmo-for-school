@@ -51,7 +51,6 @@ var emailTemplateEditor = {
         emailTemplateEditor = this;
     },
     setupLayout : function() {
-        emailTemplateEditor = this;
         $(emailTemplateEditor.settings.iframeSelector).load(function () {
 
             $(this).contents().find(emailTemplateEditor.settings.sortableElementsSelector + ', ' + emailTemplateEditor.settings.sortableRowsSelector).on({
@@ -109,13 +108,13 @@ var emailTemplateEditor = {
             }
         });
         $( iframeContents.find(selector) ).sortable({
-//            hoverClass: "ui-state-hover",
-//            placeholder: "ui-state-highlight",
+            handle: "span>i.icon-move",
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
                     emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, false);
                 }
+
             },
             remove: function ( event, ui ) {
                  if ($(this).sortable("toArray").length < 1)
@@ -131,7 +130,6 @@ var emailTemplateEditor = {
         });
     },
     initSortableRows: function ( selector , iframeContents) {
-        emailTemplateEditor = this;
         $( iframeContents.find(selector) ).each(function(){
             if ($(this).data('sortable'))
             {
@@ -139,13 +137,11 @@ var emailTemplateEditor = {
             }
         });
         $( iframeContents.find(selector) ).sortable({
-//            hoverClass: "ui-state-hover",
-//            placeholder: "ui-state-highlight",
-//            handle: "span.ui-icon-arrow-4",
+            handle: "span>i.icon-move",
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
-//                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
+                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
                     emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, true);
                     emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
                         emailTemplateEditor.settings.sortableElementsSelector,
@@ -167,5 +163,8 @@ var emailTemplateEditor = {
                 item.replaceWith(html);
             }
         });
+    },
+    canvasChanged: function () {
+        console.log('The canvas has change');
     }
 }

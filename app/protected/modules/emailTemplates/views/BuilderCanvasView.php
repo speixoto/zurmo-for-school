@@ -86,11 +86,11 @@
                                                                         <td  class="sortable-elements">
                                                                             <div>
                                                                                 <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
-                                                    </div>
-                                                                                <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                                                    <span><i class="icon-move"></i></span>
+                                                                                    <span><i class="icon-gear"></i></span>
+                                                                                    <span><i class="icon-trash"></i></span>
+                                                                                </div>
+                                                                                Text Element
                                                                             </div>
                                                                         </td>
                                                                         <td class="expander"></td>
@@ -106,7 +106,7 @@
                                         <table class="container">
                                               <tr>
                                                  <td>
-                                                  <div class="email-template-container-tools">
+                                                    <div class="email-template-container-tools">
                                                         <span><i class="icon-move"></i></span>
                                                         <span><i class="icon-gear"></i></span>
                                                         <span><i class="icon-trash"></i></span>
@@ -121,11 +121,11 @@
                                                             <td class="sortable-elements">
                                                                 <div>
                                                                     <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
-                                                    </div>
-                                                                    <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                                        <span><i class="icon-move"></i></span>
+                                                                        <span><i class="icon-gear"></i></span>
+                                                                        <span><i class="icon-trash"></i></span>
+                                                                    </div>
+                                                                    Text Element
                                                                 </div>
                                                             </td>
                                                             <td class="expander"></td>
@@ -141,11 +141,11 @@
                                                             <td class="sortable-elements">
                                                                 <div>
                                                                    <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
-                                                    </div>
-                                                                    <img alt="" src="http://storage7.static.itmages.com/i/14/0128/h_1390936062_8252966_876506e8ff.png">
+                                                                       <span><i class="icon-move"></i></span>
+                                                                       <span><i class="icon-gear"></i></span>
+                                                                       <span><i class="icon-trash"></i></span>
+                                                                   </div>
+                                                                   Text Element
                                                                 </div>
                                                             </td>
                                                             <td class="expander"></td>
@@ -201,8 +201,9 @@
         }
 
         protected function renderLess(){
+            $themeBaseUrl   = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
             $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets"));
-            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="/Zurmo/app/themes/default/less/builder-iframe-tools.less"/>
+            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' . $themeBaseUrl . '/less/builder-iframe-tools.less"/>
                      <script type="text/javascript" src="' . $publishedAssetsPath . '/less-1.2.0.min.js"></script>';
             return $less;
         }

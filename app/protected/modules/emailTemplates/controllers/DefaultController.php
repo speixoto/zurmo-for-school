@@ -552,7 +552,12 @@
                                                         $properties = null, $content = null)
         {
             // TODO: @Shoaibi/@Sergio: Critical0: $wrapElementInRow = false?
-            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $id, $properties, $content);
+            $handleSpan   = ZurmoHtml::tag('span', array(), ZurmoHtml::tag('i', array('class' => 'icon-move'), ''));
+            $settingsSpan = ZurmoHtml::tag('span', array(), ZurmoHtml::tag('i', array('class' => 'icon-gear'), ''));
+            $removeSpan   = ZurmoHtml::tag('span', array(), ZurmoHtml::tag('i', array('class' => 'icon-trash'), ''));
+            $tools        = ZurmoHtml::tag('div', array('class' => 'email-template-container-tools'), $handleSpan . $settingsSpan . $removeSpan);
+            echo ZurmoHtml::tag('div', array(), $tools . $className);
+//            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $id, $properties, $content);
         }
 
         public function actionRenderElementNonEditableByPost()
