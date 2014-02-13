@@ -218,15 +218,12 @@
             return $content;
         }
 
-
         /**
          * Returns the non-editable output for current element.
          * @return string
          */
         protected function renderControlContentNonEditable()
         {
-            // TODO: @Shoaibi/@Jason: Critical0: This fails as there is no attribute on the actual model when non-editable tries to get label?
-            // extend element? override noneditable render? even if we exclude label fron template it is still requested.
             $content    = $this->renderContentElement(null);
             return $content;
         }
@@ -750,7 +747,7 @@
          */
         protected function registerAjaxPostForApplyClickScript()
         {
-            // TODO: @Shoaibi: Critical0: Implement.
+            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
         }
 
         /**
@@ -758,7 +755,7 @@
          */
         protected function registerCancelScript()
         {
-            // TODO: @Shoaibi: Critical0: Implement.
+            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
         }
 
         /**

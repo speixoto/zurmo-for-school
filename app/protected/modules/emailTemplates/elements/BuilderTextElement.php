@@ -54,7 +54,7 @@
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            // TODO: @Shoaibi: Critical0: Implement.
+            // TODO: @Shoaibi: Critical0: Implement settings interface
             return 'Settings Edit form goes here';
         }
 
@@ -65,7 +65,7 @@
 
         protected function resolveContentElementAttributeName()
         {
-            // no we can't use array here. Element classes use $this->model{$this->attribute} a lot.
+            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
             // it would give an error saying we are trying to convert an array to string.
             return 'content[text]';
         }
