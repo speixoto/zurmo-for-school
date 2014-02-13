@@ -67,10 +67,10 @@
             $startDateAttr = explode('-', $startDate);
             $year          = $startDateAttr[0];
             $month         = intval($startDateAttr[1]) - 1;
-            $day           = $startDateAttr[2];
+            $day           = intval($startDateAttr[2]);
 
             //Register full calendar script and css
-            self::registerFullCalendarCalendarScriptAndCss();
+            self::registerFullCalendarScriptAndCss();
 
             //Register qtip for event render
             $qtip = new ZurmoTip();
@@ -80,7 +80,6 @@
             // Begin Not Coding Standard
 
             $script        = "$(document).on('ready', function() {
-                                    $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar({
                                                                     editable: false,
                                                                     header: {
@@ -90,7 +89,7 @@
                                                                             },
                                                                      defaultView: '{$defaultView}',
                                                                      firstDay    :1,
-                                                                     ignoreTimeZone:false,
+                                                                     ignoreTimeZone:true,
                                                                      lazyFetching : false,
                                                                      loading: function(bool)
                                                                               {
@@ -106,7 +105,11 @@
                                                                      eventSources: [
                                                                                       getCalendarEvents('{$eventsUrl}', '{$inputId}')
                                                                                    ],
-                                                                     eventRender: function(event, element) {
+                                                                     eventRender: function(event, element, view) {
+                                                                                        if(view=='agendaDay')
+                                                                                        {
+                                                                                            $('.fc-event').css('height', '100px');
+                                                                                        }
                                                                                         element.qtip({
                                                                                             content: event.description
                                                                                         });
@@ -116,6 +119,7 @@
                                                                                              getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
                                                                                           }
                                                                     });
+                                         $('#{$inputId}').fullCalendar('gotoDate', {$year}, {$month}, {$day});
                                  });";
 
             // End Not Coding Standard
@@ -125,11 +129,11 @@
         /**
          * Registers script and css file
          */
-        protected static function registerFullCalendarCalendarScriptAndCss()
+        protected static function registerFullCalendarScriptAndCss()
         {
             $cs            = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
-            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
+            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.js', ClientScript::POS_HEAD);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
         }
     }

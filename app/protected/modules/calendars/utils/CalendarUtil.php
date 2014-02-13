@@ -203,6 +203,10 @@
                 $modelClass                = $calItem->getModelClass();
                 $model                     = $modelClass::getById($calItem->getModelId());
                 $fullCalendarItem['model'] = $model;
+                if($modelClass == 'Meeting')
+                {
+                    $fullCalendarItem['allDay'] = false;
+                }
                 $fullCalendarItems[] = $fullCalendarItem;
             }
             return $fullCalendarItems;
