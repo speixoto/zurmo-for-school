@@ -116,9 +116,7 @@
         {
             $label          = static::resolveLabel();
             $label          = ZurmoHtml::tag('span', array(), $label);
-            $thumbnail      = ZurmoHtml::image(static::resolveThumbnailUrl(),
-                                                get_called_class(),
-                                                static::resolveThumbnailHtmlOptions());
+            $thumbnail      = ZurmoHtml::image(static::resolveThumbnailUrl(), '', static::resolveThumbnailHtmlOptions());
             $widget         = $thumbnail . $label;
             $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);
             $widget         = ZurmoHtml::tag($widgetWrapper, static::resolveWidgetHtmlOptions(), $widget);
@@ -176,7 +174,7 @@
          */
         protected static function resolveWidgetHtmlOptions()
         {
-            return  array('id' => get_called_class(), 'class' => 'builder-element builder-element-droppable');
+            return  array('data-class' => get_called_class(), 'class' => 'builder-element builder-element-droppable');
         }
 
         /**
@@ -261,16 +259,15 @@
          */
         protected function resolveWrapperNonEditable($elementContent, $properties, $customDataAttributes, $actionsOverlay)
         {
-            $content        = '<table id="' . $this->id . '" ';
-            $content        .= $properties;
-            $content        .= $customDataAttributes;
-            $content        .= '>';
-            $content        .= '<tr><td>' . $elementContent;
+            $htmlOptions    = CMap::mergeArray($properties, $customDataAttributes);
+            $content        = $elementContent;
             if (!empty($actionsOverlay))
             {
                 $content    .= $actionsOverlay;
             }
-            $content        .= '</td></tr></table>';
+            $content        = ZurmoHtml::tag('td', array(), $content);
+            $content        = ZurmoHtml::tag('tr', array(), $content);
+            $content        = ZurmoHtml::tag('table', $htmlOptions, $content);
             return $content;
         }
 
@@ -281,40 +278,20 @@
         protected final function resolvePropertiesNonEditable()
         {
             $mergedProperties   = CMap::mergeArray($this->resolveNonEditableWrapperHtmlOptions(), $this->properties);
-            $styleProperties    = $this->resolveStylePropertiesNonEditable($mergedProperties);
-            $nonStyleProperties = $this->resolveNonStylePropertiesNonEditable($mergedProperties);
-            $properties         = $styleProperties . ' ' . $nonStyleProperties;
-            return $properties;
+            $this->resolveStylePropertiesNonEditable($mergedProperties);
+            return $mergedProperties;
         }
 
         /**
          * Resolve style properties to be applied to nonEditable representation's wrapper as inline style
          * @param array $mergedProperties
-         * @return null|string
          */
         protected final function resolveStylePropertiesNonEditable(array & $mergedProperties)
         {
             if (isset($mergedProperties['style']))
             {
-                $style  = $mergedProperties['style'];
-                unset($mergedProperties['style']);
-
-                $styleStringified       = $this->stringifyProperties($style, null, null, ':', ';');
-                $styleStringified       = " style='${styleStringified}' ";
-                return $styleStringified;
+                $mergedProperties['style']  = $this->stringifyProperties($mergedProperties['style'], null, null, ':', ';');
             }
-        }
-
-        /**
-         * Resolve non-style properties to be applied to nonEditable representation's wrapper inline.
-         * @param array $mergedProperties
-         * @return string
-         */
-        protected final function resolveNonStylePropertiesNonEditable(array $mergedProperties)
-        {
-            $nonStyleProperties = ' ';
-            $nonStyleProperties .= $this->stringifyProperties($mergedProperties, null, '=', "'", "' ");
-            return $nonStyleProperties;
         }
 
         /**
@@ -361,11 +338,11 @@
         {
             if (!$this->renderForCanvas)
             {
-                return null;
+                return array();
             }
-            $cda    = " data-class='" . get_class($this) . "'";
-            $cda    .= " data-properties='" . serialize($this->properties) . "'";
-            $cda    .= " data-content='" . serialize($this->content) . "' ";
+            $cda['data-class']      = get_class($this);
+            $cda['data-properties'] = serialize($this->properties);
+            $cda['data-content']    = serialize($this->content);
             return $cda;
         }
 
@@ -426,7 +403,7 @@
          */
         protected function resolveNonEditableWrapperHtmlOptions()
         {
-            return array('class' => 'builder-element-non-editable element-data');
+            return array('id' => $this->id, 'class' => 'builder-element-non-editable element-data');
         }
 
         /**
@@ -461,7 +438,7 @@
             $settingsTabContent     = $this->renderSettingsTab($form);
             $content                = $this->renderBeforeFormLayout($form);
             $content                .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
-            $content                .= $this->renderHiddenFields($form);
+            $content                .= '<tr><td colspan="2">' . $this->renderHiddenFields($form) . '</td></tr>';
             $content                .= $this->renderAfterFormLayout($form);
             $content                = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>' . $content;
             $content                .= '</table>';
@@ -542,8 +519,7 @@
          */
         protected function resolveFormActionUrl()
         {
-            $params = array('elementClassName' => get_class($this), 'elementId' => $this->id);
-            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditableByPost', $params);
+            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditableByPost');
         }
 
         /**
@@ -552,8 +528,24 @@
          */
         protected function renderHiddenFields($form)
         {
-            // render any specific hidden forms here. Ideally we should not even need this.
+            $idHiddenInput          = $this->renderHiddenField('id', $this->id);
+            $classNameHiddenInput   = $this->renderHiddenField('className', get_class($this));
+            $hiddenFields           = $idHiddenInput . $classNameHiddenInput;
+            return $hiddenFields;
         }
+
+        /**
+         * Render and return a hiddenField.
+         * @param $attributeName
+         * @param $value
+         * @return string
+         */
+        protected final function renderHiddenField($attributeName, $value)
+        {
+            return ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->getModel(), $attributeName),
+                                                $value,
+                                                array('id' => ZurmoHtml::activeId($this->getModel(), $attributeName)));
+         }
 
         /**
          * Wrap content and settings tab into a tab container and return output.
@@ -782,7 +774,7 @@
          */
         protected function resolveFormHtmlOptions()
         {
-            return array();
+            return array('class' => 'element-edit-form');
         }
 
         /**

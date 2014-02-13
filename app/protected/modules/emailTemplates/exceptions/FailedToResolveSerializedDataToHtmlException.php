@@ -34,6 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
+    // TODO: @Shoaibi: Critical0: This might not be even used.
     class FailedToResolveSerializedDataToHtmlException extends CException
     {
     }
