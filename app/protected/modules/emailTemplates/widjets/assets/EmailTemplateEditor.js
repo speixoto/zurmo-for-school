@@ -82,14 +82,21 @@ var emailTemplateEditor = {
         });
         console.log( $(emailTemplateEditor.settings.iframeSelector).offset() );
         $('li', selector ).draggable({
-            appendTo: iframeContents.find('body'),
+            appendTo:  iframeContents.find('body'),
             helper: "clone",
             cursor: 'move',
             iframeFix: true,
             revert: 'invalid',
             cursorAt: {
-                left: $(emailTemplateEditor.settings.iframeSelector).offset().left,
+                left:  $(emailTemplateEditor.settings.iframeSelector).offset().left,
                 top: $(emailTemplateEditor.settings.iframeSelector).offset().top
+            },
+            helper: function(event, ui){
+                var label = $(event.currentTarget).html();
+                var clone = $('<div class="blox">' + label + '</div>');
+                //clone.animate({ width : width}, 250);
+                //$('body').append(clone);
+                return clone;
             },
             connectToSortable: iframeContents.find(connectToSelector)
         });

@@ -57,7 +57,6 @@
                         $this->renderIconFont() .
                         $this->renderLess() .
                         '
-
                         <style type="text/css">
                              /*{ margin: 0; padding: 0; }
                              .sortable-rows > table{ background: pink }
@@ -65,7 +64,6 @@
                              table{ border:1px solid black; width: 100%}
                              .state-hover{border: 2px solid blue}*/
                         </style>
-
                       </head>
                       <body>
                         <table class="body">
