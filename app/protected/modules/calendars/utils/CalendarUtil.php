@@ -216,10 +216,9 @@
         public static function getFullCalendarFormattedDateTimeElement($dateTime)
         {
             assert('is_string($dateTime)');
-            //$dateTimeObject = new DateTime($dateTime);
-            //return Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',
-                        //$dateTimeObject->getTimestamp());
-            return DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay(strtotime($dateTime));
+            $dateTimeObject = new DateTime($dateTime);
+            return Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',
+                        $dateTimeObject->getTimestamp());
         }
 
         /**
