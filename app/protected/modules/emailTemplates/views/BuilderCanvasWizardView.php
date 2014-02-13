@@ -36,7 +36,9 @@
 
     class BuilderCanvasWizardView extends ComponentForEmailTemplateWizardView
     {
-        const REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID = 'refresh-canvas-from-saved-template';
+        const REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID    = 'refresh-canvas-from-saved-template';
+
+        const CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME         = 'cachedSerializedData';
 
         /**
          * @return string
@@ -91,6 +93,7 @@
 
             $leftSidebarContent                         = ZurmoHtml::tag('h3', array(), 'Elements');
             $leftSidebarContent                         .= $this->resolveElementsSidebarContent();
+            $this->renderCachedSerializedDataHiddenField($hiddenElements);
             $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
             $this->renderRefreshCanvasLink($leftSidebarContent);
 
@@ -103,6 +106,16 @@
                                                                                     $content);
             $this->wrapContentForAttributesContainer($content);
             return $content;
+        }
+
+        protected function renderCachedSerializedDataHiddenField(& $hiddenElements)
+        {
+            $this->renderHiddenField($hiddenElements, static::CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME, null);
+        }
+
+        protected function resolveCachedSerializedDataHiddenInputJQuerySelector()
+        {
+            return '#' . get_class($this->model) . '_' . static::CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME;
         }
 
         protected function resolveContentHtmlOptions()
