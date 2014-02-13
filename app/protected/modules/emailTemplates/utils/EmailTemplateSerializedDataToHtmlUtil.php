@@ -36,33 +36,45 @@
 
     class EmailTemplateSerializedDataToHtmlUtil
     {
-        public static function resolveHtmlByEmailTemplateId($emailTemplateId, OwnedSecurableItem $attachedMergeTagModel = null)
+        public static function resolveHtmlByEmailTemplateId($emailTemplateId, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($emailTemplateId));
-            $resolvedHtml   = static::resolveHtmlByEmailTemplateModel($emailTemplate, $attachedMergeTagModel);
+            $resolvedHtml   = static::resolveHtmlByEmailTemplateModel($emailTemplate, $renderForCanvas, $attachedMergeTagModel);
             return $resolvedHtml;
         }
 
-        public static function resolveHtmlByEmailTemplateModel(EmailTemplate $emailTemplate, OwnedSecurableItem $attachedMergeTagModel = null)
+        public static function resolveHtmlByEmailTemplateModel(EmailTemplate $emailTemplate, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null)
         {
             $serializedData = $emailTemplate->serializedData;
-            $resolvedHtml   = static::resolveHtmlBySerializedData($serializedData, $attachedMergeTagModel, $emailTemplate->type, $emailTemplate->language);
+            $resolvedHtml   = static::resolveHtmlBySerializedData($serializedData, $renderForCanvas, $attachedMergeTagModel, $emailTemplate->type, $emailTemplate->language);
             return $resolvedHtml;
         }
 
-        public static function resolveHtmlBySerializedData($serializedData, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
+        public static function resolveHtmlBySerializedData($serializedData, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
         {
             $unserializedData   = unserialize($serializedData);
-            $resolvedHtml       = static::resolveHtmlByUnserializedData($unserializedData, $attachedMergeTagModel, $type, $language);
+            $resolvedHtml       = static::resolveHtmlByUnserializedData($unserializedData, $renderForCanvas, $attachedMergeTagModel, $type, $language);
             return $resolvedHtml;
         }
 
-        public static function resolveHtmlByUnserializedData(array $unserializedData, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
+        public static function resolveHtmlByUnserializedData(array $unserializedData, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
         {
             $resolvedHtml   = null;
-            // TODO: @Shoaibi: Critical3: Implement.
-            // uses BuilderElementUtil and resolves HTML for provided serializedData.
-            //throw new FailedToResolveSerializedDataToHtmlException();
+            if (empty($unserializedData['dom']))
+            {
+                return null;
+            }
+            $class          = null;
+            $properties     = null;
+            $content        = null;
+            $canvasData     = reset($unserializedData['dom']);
+            extract($canvasData);
+            $id             = key($unserializedData['dom']);
+            $resolvedHtml   = BuilderElementRenderUtil::renderNonEditable($class, $renderForCanvas, $id, $properties, $content);
+            if (empty($resolvedHtml))
+            {
+                return null;
+            }
             if (isset($attachedMergeTagModel))
             {
                 $resolvedHtml   = static::resolveMergeTagsByModel($resolvedHtml, $attachedMergeTagModel, $type, $language);

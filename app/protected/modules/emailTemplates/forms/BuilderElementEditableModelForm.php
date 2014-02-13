@@ -34,9 +34,6 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Form to edit the user avatar
-     */
     class BuilderElementEditableModelForm extends ModelForm
     {
         public $content;

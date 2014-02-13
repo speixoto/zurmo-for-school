@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,36 +31,33 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateSerializedDataValidator extends CValidator
+    class BuilderElementRenderUtil
     {
-        protected function validateAttribute($object, $attribute)
+        public static function renderEditable($className, $renderForCanvas = false, $id = null,
+                                              $properties = null, $content = null)
         {
-            $serialized = $object->$attribute;
-            if (!empty($serialized))
-            {
-                $unserialized = unserialize($serialized);
-                if (empty($unserialized))
-                {
-                    return true;
-                }
+            $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content);
+            $content    = $element->renderEditable();
+            return $content;
+        }
 
-                // TODO: @Shoaibi: Critical5: Disable this once we have predefined templates.
-                return true;
+        public static function renderNonEditable($className, $renderForCanvas = false, $id = null,
+                                                 $properties = null, $content = null)
+        {
+            // TODO: @Shoaibi/@Sergio: Critical0: $wrapElementInRow = false?
+            $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content);
+            $content    = $element->renderNonEditable();
+            return $content;
+        }
 
-                if (count($unserialized) == 2 || count($unserialized) == 3 &&
-                        isset($unserialized['baseTemplate'], $unserialized['dom']) &&
-                        is_array($unserialized['dom']) &&
-                        count($unserialized['dom'][0]) == 3 &&
-                        isset($unserialized['dom'][0]['class'], $unserialized['dom'][0]['properties'], $unserialized['dom'][0]['content']))
-                {
-                    return true;
-                }
-
-            }
-            return false;
+        protected static function resolveElement($className, $renderForCanvas = false, $id = null,
+                                                 $properties = null, $content = null)
+        {
+            $element    = new $className($renderForCanvas, $id, $properties, $content);
+            return $element;
         }
     }
 ?>
