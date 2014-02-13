@@ -73,11 +73,11 @@
         }
 
         /**
-         * @param $model Meetings Model
-         * @param $reformedUserAttendees User Ids
+         * @param $model
+         * @param array $reformedUserAttendees array of User Ids
          * Remove user attendees that are not provided. Add additional. Do not re-add already added ones.
          */
-        protected function resolveUserAttendees(& $model, $reformedUserAttendees)
+        protected function resolveUserAttendees(& $model, $reformedUserAttendees = array())
         {
             $usersAlreadyAdded  = array();
             if ($model->userAttendees->count() > 0)
