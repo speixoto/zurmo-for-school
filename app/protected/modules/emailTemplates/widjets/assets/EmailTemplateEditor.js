@@ -80,13 +80,17 @@ var emailTemplateEditor = {
                 $(this).draggable("destroy");
             }
         });
+        console.log( $(emailTemplateEditor.settings.iframeSelector).offset() );
         $('li', selector ).draggable({
             appendTo: iframeContents.find('body'),
-            zIndex: 9999999,
             helper: "clone",
             cursor: 'move',
             iframeFix: true,
             revert: 'invalid',
+            cursorAt: {
+                left: $(emailTemplateEditor.settings.iframeSelector).offset().left,
+                top: $(emailTemplateEditor.settings.iframeSelector).offset().top
+            },
             connectToSortable: iframeContents.find(connectToSelector)
         });
     },
