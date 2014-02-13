@@ -793,23 +793,6 @@
         }
 
         /**
-         * Render full calendar items for a model.
-         * @param Object $model
-         * @return string
-         */
-        public static function renderFullCalendarItems($model)
-        {
-            assert('$model instanceof CalendarItemInterface');
-            $descriptionArray = $model->getCalendarItemData();
-            $content          = ZurmoHtml::tag('div', array('class' => 'itemDescription'), '');
-            foreach ($descriptionArray as $key => $value)
-            {
-                $content .= ZurmoHtml::tag('span', array(), $key . ':' . $value) . "<br/>";
-            }
-            return $content;
-        }
-
-        /**
          * Process and get data provider for events data.
          *
          * @return CalendarItemsDataProvider

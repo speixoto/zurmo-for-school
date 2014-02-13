@@ -494,5 +494,11 @@
             }
             return $clause;
         }
+
+        public function setDistinct($distinct)
+        {
+            assert('is_bool($distinct)');
+            $this->distinct = $distinct;
+        }
     }
 ?>

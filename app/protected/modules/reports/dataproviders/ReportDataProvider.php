@@ -455,11 +455,7 @@
             {
                 //Currently this is always expected as false. If it is true, we need to add support for SpecificCountClauses
                 //so we know which table/id the count is on.
-                if ($selectQueryAdapter->isDistinct())
-                {
-                    throw new NotSupportedException();
-                }
-                $selectQueryAdapter     = $this->makeSelectQueryAdapter($selectQueryAdapter->isDistinct());
+                $this->resolveSqlQueryAdapterForCount($selectQueryAdapter);
                 $selectQueryAdapter->addNonSpecificCountClause();
             }
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
@@ -703,6 +699,20 @@
         protected function makeSelectQueryAdapter($isDistinct = false)
         {
             return new RedBeanModelSelectQueryAdapter($isDistinct);
+        }
+
+        /**
+         * Resolve sql query adapter for count query.
+         *
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         */
+        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            if ($selectQueryAdapter->isDistinct())
+            {
+                throw new NotSupportedException();
+            }
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter($selectQueryAdapter->isDistinct());
         }
     }
 ?>

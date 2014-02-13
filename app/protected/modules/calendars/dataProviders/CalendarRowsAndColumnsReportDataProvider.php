@@ -40,13 +40,13 @@
     class CalendarRowsAndColumnsReportDataProvider extends RowsAndColumnsReportDataProvider
     {
         /**
-         * Makes sql query adapter.
+         * Resolve sql query adapter for count query.
          *
-         * @param bool $isDistinct
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
          */
-        protected function makeSelectQueryAdapter($isDistinct = false)
+        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
-            return new RedBeanModelSelectQueryAdapter(true);
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter(false);
         }
     }
 ?>

@@ -58,7 +58,7 @@
             $kanbanItemsArray           = array();
             $kanbanItems                = array();
             $maximumKanbanItemSortOrder = 0;
-            foreach ($this->dataProvider->data as $notUsed => $task)
+            foreach ($this->dataProvider->getData() as $notUsed => $task)
             {
                 $kanbanItem  = KanbanItem::getByTask($task->id);
                 if ($kanbanItem == null)
