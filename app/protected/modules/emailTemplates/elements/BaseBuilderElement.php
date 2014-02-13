@@ -878,7 +878,7 @@
          */
         protected function getModel()
         {
-            return new BuilderElementEditableModelForm(new EmailTemplate(), $this->content, $this->properties);
+            return new BuilderElementEditableModelForm($this->content, $this->properties);
         }
 
         /**
@@ -890,22 +890,15 @@
         {
             $elementClassName   = $this->resolveContentElementClassName();
             $attributeName      = $this->resolveContentElementAttributeName();
-            $element            = new $elementClassName($this->getModel(), $attributeName, $form);
+            $params             = $this->resolveContentElementParams();
+            $element            = new $elementClassName($this->getModel(), $attributeName, $form, $params);
             if (isset($form))
             {
-                $editableTemplate               = $this->resolveContentElementEditableTemplate();
-                if (isset($editableTemplate))
-                {
-                    $element->editableTemplate      = $this->resolveContentElementEditableTemplate();
-                }
+                $this->resolveContentElementEditableTemplate($element);
             }
             else
             {
-                $nonEditableTemplate            = $this->resolveContentElementNonEditableTemplate();
-                if (isset($nonEditableTemplate))
-                {
-                    $element->nonEditableTemplate   = $nonEditableTemplate;
-                }
+                $this->resolveContentElementNonEditableTemplate($element);
             }
             $content            = $element->render();
             return $content;
@@ -913,20 +906,36 @@
 
         /**
          * Resolve editable template for content element.
-         * @return null|string
+         * @param Element $element
          */
-        protected function resolveContentElementEditableTemplate()
+        protected function resolveContentElementEditableTemplate(Element $element)
         {
-
+            $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
         }
 
         /**
          * Resolve non editable template for content element.
-         * @return null|string
+         * @param Element $element
          */
-        protected function resolveContentElementNonEditableTemplate()
+        protected function resolveContentElementNonEditableTemplate(Element $element)
         {
+            $element->nonEditableTemplate = str_replace(array('{label}', '{error}'), '', $element->nonEditableTemplate);
+        }
 
+        /**
+         * Resolve params to send to Content element's construct
+         */
+        protected function resolveContentElementParams()
+        {
+            $params = array();
+            // we set label to an empty string as a default value.
+            // we already hide label in non-editable representation of content element.
+            // it is only shown in editable representation, which can also be overriden to hide it.
+            // setting it to empty string here isn't to hide it.
+            // it is rather to avoid Element trying to do ask ModelForm's model for a label.
+            // BuilderElementEditableModelForm does not set a model so we would see an error there.
+            $params['labelHtmlOptions'] = array('label' => '');
+            return $params;
         }
     }
 ?>

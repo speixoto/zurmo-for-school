@@ -97,12 +97,25 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            return $this->form->labelEx($this->model, $this->attribute, array('for' => $this->getEditableInputId()));
+            $htmlOptions    = array('for' => $this->getEditableInputId());
+            if (isset($this->params['labelHtmlOptions']))
+            {
+                $htmlOptions    = CMap::mergeArray($htmlOptions, $this->params['labelHtmlOptions']);
+            }
+            return $this->form->labelEx($this->model, $this->attribute, $htmlOptions);
         }
 
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text($this->model->getAttributeLabel($this->attribute));
+            if (isset($this->params['labelHtmlOptions']['label']))
+            {
+                $label = $this->params['labelHtmlOptions']['label'];
+            }
+            else
+            {
+                $label  = $this->model->getAttributeLabel($this->attribute);
+            }
+            return Yii::app()->format->text($label);
         }
 
         protected function resolveNonActiveFormFormattedLabel($label)

@@ -42,29 +42,34 @@
         public $content;
         public $properties;
 
-        protected static function getRedBeanModelClassName()
+        public function __construct(array $content, array $properties)
         {
-            return 'EmailTemplate';
-        }
-
-        public function __construct(EmailTemplate $model, array $content, array $properties)
-        {
-            // TODO: @Shoaibi/#Jason: Critical0: this seems so wrong. Model is never used, we don't need validation.
-            $this->model        = $model;
             $this->content      = $content;
             $this->properties   = $properties;
         }
 
-
-        // TODO: @Shoaibi: Critical5: Enable if we need this, but i don't think we will.
-        /*
-        public function rules()
+        public function __get($name)
         {
-            return array(
-                array('content',        'safe'),
-                array('properties',     'safe'),
-            );
+            if (strpos($name, '['))
+            {
+                $basePropertyName   = substr($name, 0, strpos($name, '['));
+                $index              = substr($name, strpos($name, '[') + 1, -1);
+                if (property_exists($this, $basePropertyName))
+                {
+                    return $this->{$basePropertyName}[$index];
+                }
+            }
+            return parent::__get($name);
         }
-        */
+
+        public function isAttributeRequired($attribute)
+        {
+            return false;
+        }
+
+        public function getValidators($attribute = null)
+        {
+            return array();
+        }
     }
 ?>

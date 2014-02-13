@@ -65,12 +65,16 @@
 
         protected function resolveContentElementAttributeName()
         {
+            // no we can't use array here. Element classes use $this->model{$this->attribute} a lot.
+            // it would give an error saying we are trying to convert an array to string.
             return 'content[text]';
         }
 
-        protected function renderContentControlNonEditable()
+        protected function resolveContentElementParams()
         {
-
+            $params                     = parent::resolveContentElementParams();
+            $params['labelHtmlOptions'] = array('label' => 'Text');
+            return $params;
         }
     }
 ?>
