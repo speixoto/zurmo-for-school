@@ -103,7 +103,7 @@ var emailTemplateEditor = {
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item);
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, false);
                 }
             },
             remove: function ( event, ui ) {
@@ -134,8 +134,8 @@ var emailTemplateEditor = {
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
-                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item);
+//                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, true);
                     emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
                         emailTemplateEditor.settings.sortableElementsSelector,
                         iframeContents);
@@ -145,10 +145,13 @@ var emailTemplateEditor = {
             cursor: 'move'
         });
     },
-    placeNewElement: function ( elementClass, item ) {
+    placeNewElement: function ( elementClass, item , wrapElement) {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
-            data: {'className': elementClass},
+            data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement},
+            beforeSend: function() {
+                    $(this).makeOrRemoveLoadingSpinner(true, "#builder");
+            },
             success: function (html) {
                 item.replaceWith(html);
             }

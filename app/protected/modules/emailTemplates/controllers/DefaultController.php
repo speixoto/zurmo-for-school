@@ -284,15 +284,6 @@
             echo $view->render();
         }
 
-        public function actionRenderElementNonEditable($className)
-        {
-            //TODO: @sergio: Is this the real action needed or are we using another one? @see EmailTemplateEditor
-            $handleSpan   = ZurmoHtml::tag('span', array('class' => 'handle-element ui-icon-arrow-4'), '');
-            $settingsSpan = ZurmoHtml::tag('span', array('class' => 'ui-icon-wrench'), '');
-            $removeSpan   = ZurmoHtml::tag('span', array('class' => 'ui-icon-trash'), '');
-            echo ZurmoHtml::tag('div', array(), $handleSpan . $settingsSpan . $removeSpan . $className);
-        }
-
         public function actionRenderCanvas()
         {
             $view = new BuilderCanvasView();

@@ -100,6 +100,7 @@
                 });
                 ");
             echo ZurmoHtml::openTag('div', array('id' => 'builder', 'class' => 'strong-right clearfix'));
+            echo ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
             echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderElementsToolbar());
             echo ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderLayout());
             echo ZurmoHtml::closeTag('div');
