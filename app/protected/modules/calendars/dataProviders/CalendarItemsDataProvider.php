@@ -38,7 +38,7 @@
       */
     class CalendarItemsDataProvider extends CDataProvider
     {
-        const MAXIMUM_CALENDAR_ITEMS_COUNT = 10;
+        const MAXIMUM_CALENDAR_ITEMS_COUNT = 200;
 
         /**
          * @var array
