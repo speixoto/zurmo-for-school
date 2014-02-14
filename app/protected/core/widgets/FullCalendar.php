@@ -106,10 +106,6 @@
                                                                                       getCalendarEvents('{$eventsUrl}', '{$inputId}')
                                                                                    ],
                                                                      eventRender: function(event, element, view) {
-                                                                                        if(view=='agendaDay')
-                                                                                        {
-                                                                                            $('.fc-event').css('height', '100px');
-                                                                                        }
                                                                                         element.qtip({
                                                                                             content: event.description
                                                                                         });
@@ -117,7 +113,12 @@
                                                                      eventAfterAllRender: function(view)
                                                                                           {
                                                                                              getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
-                                                                                          }
+                                                                                          },
+                                                                     timeFormat: {
+                                                                                    'month'    : '',
+                                                                                    'agendaDay': 'h:mm-{h:mm}tt',
+                                                                                    'agendaWeek': 'h:mm-{h:mm}tt'
+                                                                                 },
                                                                     });
                                          $('#{$inputId}').fullCalendar('gotoDate', {$year}, {$month}, {$day});
                                  });";
@@ -133,7 +134,7 @@
         {
             $cs            = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
-            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.js', ClientScript::POS_HEAD);
+            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_HEAD);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
         }
     }
