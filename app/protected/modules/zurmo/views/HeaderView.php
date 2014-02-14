@@ -52,23 +52,11 @@
         protected $sourceUrl;
 
         /**
-         * @var string
-         */
-        protected $controllerId;
-
-        /**
-         * @var string
-         */
-        protected $moduleId;
-
-        /**
          * @var array
          */
         protected $shortcutsCreateMenuItems;
 
         /**
-         * @param string $controllerId
-         * @param string $moduleId
          * @param array $settingsMenuItems
          * @param array $userMenuItems
          * @param array $shortcutsCreateMenuItems
@@ -76,12 +64,10 @@
          * @param string $sourceUrl
          * @param string $applicationName
          */
-        public function __construct($controllerId, $moduleId, $settingsMenuItems, $userMenuItems,
+        public function __construct($settingsMenuItems, $userMenuItems,
                                     $shortcutsCreateMenuItems,
                                     $moduleNamesAndLabels, $sourceUrl, $applicationName)
         {
-            assert('is_string($controllerId)');
-            assert('is_string($moduleId)');
             assert('is_array($settingsMenuItems)');
             assert('is_array($userMenuItems)');
             assert('is_array($shortcutsCreateMenuItems)');
@@ -91,8 +77,6 @@
             $this->applicationName          = $applicationName;
             $this->moduleNamesAndLabels     = $moduleNamesAndLabels;
             $this->sourceUrl                = $sourceUrl;
-            $this->controllerId             = $controllerId;
-            $this->moduleId                 = $moduleId;
             $this->shortcutsCreateMenuItems = $shortcutsCreateMenuItems;
             $this->settingsMenuItems        = $settingsMenuItems;
             $this->userMenuItems            = $userMenuItems;
@@ -166,8 +150,8 @@
         protected function resolveAndRenderShortcutsContent()
         {
             $shortcutsCreateMenuView = new ShortcutsCreateMenuView(
-                $this->controllerId,
-                $this->moduleId,
+                Yii::app()->controller->getId(),
+                Yii::app()->controller->getModule()->getId(),
                 $this->shortcutsCreateMenuItems
             );
             return $shortcutsCreateMenuView->render();

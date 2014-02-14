@@ -181,12 +181,12 @@
          */
         public static function makeAuthorizationViewForCurrentUser(CController $controller, View $containedView)
         {
-            $horizontalGridView = new GridView(1, 1);
-            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix'));
+            $horizontalGridView = new GridView(1, 1, 'section', false);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'container', 'clearfix'));
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent')));
             $horizontalGridView->setView($containedView, 0, 0);
 
-            $verticalGridView   = new GridView(3, 1);
+            $verticalGridView   = new GridView(3, 1, null);
             $verticalGridView->setView(static::makeHeaderView($controller),         0, 0);
             $verticalGridView->setView($horizontalGridView,                         1, 0);
             $verticalGridView->setView(static::makeFooterView(),                    2, 0);
@@ -200,17 +200,17 @@
          */
         public static function makeErrorViewForCurrentUser(CController $controller, View $containedView)
         {
-            $aVerticalGridView   = new GridView(1, 1);
-            $aVerticalGridView->setCssClasses( array('AppNavigation', 'clearfix')); //navigation left column
+            $aVerticalGridView   = new GridView(1, 1,'nav', false);
+            $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
             $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
 
-            $horizontalGridView = new GridView(2, 1);
-            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix'));
+            $horizontalGridView = new GridView(2, 1, 'section', false);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'container', 'clearfix')); //teh conatiner for the floated items
             $horizontalGridView->setView($aVerticalGridView, 0, 0);
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent', 'ErrorView'))); //the app itself to the right
             $horizontalGridView->setView($containedView, 1, 0);
 
-            $verticalGridView   = new GridView(3, 1);
+            $verticalGridView   = new GridView(3, 1, null);
             $verticalGridView->setView(static::makeHeaderView($controller),         0, 0);
             $verticalGridView->setView($horizontalGridView,                         1, 0);
             $verticalGridView->setView(static::makeFooterView(),                    2, 0);
@@ -235,14 +235,12 @@
                                                 getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
                 $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
                 GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption($moduleNamesAndLabels);
-                $headerView               = new HeaderView($controller->getId(),
-                                                            $controller->getModule()->getId(),
-                                                            $settingsMenuItems,
-                                                            $userMenuItems,
-                                                            $shortcutsCreateMenuItems,
-                                                            $moduleNamesAndLabels,
-                                                            $sourceUrl,
-                                                            $applicationName);
+                $headerView               = new HeaderView($settingsMenuItems,
+                                                           $userMenuItems,
+                                                           $shortcutsCreateMenuItems,
+                                                           $moduleNamesAndLabels,
+                                                           $sourceUrl,
+                                                           $applicationName);
             }
             $headerView->setCssClasses(array('HeaderView'));
             return $headerView;
