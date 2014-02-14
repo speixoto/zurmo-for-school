@@ -75,7 +75,15 @@
          */
         private $_calendarItemsData;
 
+        /**
+         * @var boolean
+         */
         private $_isMaxCountReached = false;
+
+        /**
+         * @var int
+         */
+        private $_itemCount;
 
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
@@ -88,8 +96,9 @@
             {
                 $this->$key = $value;
             }
-            $this->startDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->startDate));
-            $this->endDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->endDate));
+            $this->startDate  = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->startDate));
+            $this->endDate    = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->endDate));
+            $this->_itemCount = 0;
         }
 
         /**
@@ -183,12 +192,11 @@
             $report             = $this->makeReportBySavedCalendar($calendar);
             $reportDataProvider = new CalendarRowsAndColumnsReportDataProvider($report);
             $reportResultsRows  = $reportDataProvider->getData();
-            $count              = 1;
             foreach ($reportResultsRows as $reportResultsRowData)
             {
                 $models[] = $reportResultsRowData->getModel('attribute0');
-                $count++;
-                if ($count > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
+                $this->_itemCount++;
+                if ($this->_itemCount > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
                 {
                     $this->setIsMaxCountReached(true);
                     break;
@@ -318,13 +326,21 @@
             $this->dateRangeType = $dateRangeType;
         }
 
+        /**
+         * @return bool
+         */
         public function getIsMaxCountReached()
         {
             return $this->_isMaxCountReached;
         }
 
+        /**
+         * Sets is max count reached
+         * @param bool $isMaxCountReached
+         */
         public function setIsMaxCountReached($isMaxCountReached)
         {
+            assert('is_bool($isMaxCountReached)');
             $this->_isMaxCountReached = $isMaxCountReached;
         }
     }
