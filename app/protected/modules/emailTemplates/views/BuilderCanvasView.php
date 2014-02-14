@@ -70,13 +70,13 @@
                             <tr>
                                 <td class="sortable-rows" align="center" valign="top">
 
-                                        <table class="row header">
+                                        <table class="row header builder-element-non-editable">
                                             <tr>
                                                 <td>
                                                     <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
+                                                        <span class="handle"><i class="icon-move"></i></span>
+                                                        <span class="edit"><i class="icon-gear"></i></span>
+                                                        <span class="delete"><i class="icon-trash"></i></span>
                                                     </div>
                                                     <table class="container" data-row-id="1">
                                                         <tr>
@@ -84,12 +84,12 @@
                                                                 <table class="twelve columns">
                                                                     <tr>
                                                                         <td  class="sortable-elements">
-                                                                            <div>
+                                                                            <div class="builder-element-non-editable">
                                                                                 <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
-                                                    </div>
+                                                                                    <span class="handle"><i class="icon-move"></i></span>
+                                                                                    <span class="edit"><i class="icon-gear"></i></span>
+                                                                                    <span class="delete"><i class="icon-trash"></i></span>
+                                                                                </div>
                                                                                 <img alt="" src="'.$image.'">
                                                                             </div>
                                                                         </td>
@@ -103,14 +103,14 @@
                                             </tr>
                                         </table>
 
-                                        <table class="container">
+                                        <table class="container builder-element-non-editable">
                                               <tr>
                                                  <td>
                                                   <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
-                                                    </div>
+                                                        <span class="handle"><i class="icon-move"></i></span>
+                                                        <span class="edit"><i class="icon-gear"></i></span>
+                                                        <span class="delete"><i class="icon-trash"></i></span>
+                                                  </div>
                                                   <table class="row" data-row-id="2">
                                                     <tr>
 
@@ -119,12 +119,12 @@
                                                         <table class="six columns" data-column-id="1">
                                                           <tr>
                                                             <td class="sortable-elements">
-                                                                <div>
+                                                                <div class="builder-element-non-editable">
                                                                     <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
-                                                    </div>
+                                                                        <span class="handle"><i class="icon-move"></i></span>
+                                                                        <span class="edit"><i class="icon-gear"></i></span>
+                                                                        <span class="delete"><i class="icon-trash"></i></span>
+                                                                    </div>
                                                                     <img alt="" src="'.$image.'">
                                                                 </div>
                                                             </td>
@@ -139,12 +139,12 @@
                                                         <table class="six columns" data-column-id="2">
                                                           <tr>
                                                             <td class="sortable-elements">
-                                                                <div>
+                                                                <div class="builder-element-non-editable">
                                                                    <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
-                                                    </div>
+                                                                        <span class="handle"><i class="icon-move"></i></span>
+                                                                        <span class="edit"><i class="icon-gear"></i></span>
+                                                                        <span class="delete"><i class="icon-trash"></i></span>
+                                                                    </div>
                                                                     <img alt="" src="'.$image.'">
                                                                 </div>
                                                             </td>

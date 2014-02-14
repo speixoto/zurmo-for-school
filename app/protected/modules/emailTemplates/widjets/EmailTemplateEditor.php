@@ -98,14 +98,17 @@
                 "$(document).ready(function(){
                     emailTemplateEditor.init(
                         '#building-blocks',
+                        'div.element-edit-form-overlay',
                         '{$this->getRowWrapper()}',
-                        '{$this->getNewElementUrl()}'
+                        '{$this->resolveElementEditableActionUrl()}',
+                        '{$this->resolveElementNonEditableActionUrl()}'
                     );
                 });");
             echo ZurmoHtml::openTag('div', array('id' => 'builder', 'class' => 'strong-right clearfix'));
             echo ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
             echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderElementsToolbar());
             echo ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderLayout());
+            echo $this->renderEditableArea();
             echo $this->renderSerializedDataCacheInput();
             echo ZurmoHtml::closeTag('div');
         }
@@ -118,9 +121,19 @@
                    '</tr></table></td></tr></table>';
         }
 
-        protected function getNewElementUrl()
+        protected function resolveElementNonEditableActionUrl()
         {
             return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditable');
+        }
+
+        protected function resolveElementEditableActionUrl()
+        {
+            return Yii::app()->createUrl('emailTemplates/default/renderElementEditable');
+        }
+
+        protected function renderEditableArea()
+        {
+            return ZurmoHtml::tag('div', array('class' => 'element-edit-form-overlay', 'style' => 'display:none'), '');
         }
     }
 ?>
