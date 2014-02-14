@@ -87,6 +87,9 @@ var emailTemplateEditor = {
             }
         });
 
+        var clone = '';
+        var label = '';
+
         $('li', selector ).draggable({
             appendTo: 'body',
             helper: "clone",
@@ -95,8 +98,8 @@ var emailTemplateEditor = {
             revert: 'invalid',
             cursorAt: { left:  -20, top: -20 },
             helper: function(event, ui){
-                var label = $(event.currentTarget).html();
-                var clone = $('<div class="blox">' + label + '</div>');
+                label = $(event.currentTarget).html();
+                clone = $('<div class="blox">' + label + '</div>');
                 return clone;
             }
             //,connectToSortable: iframeContents.find(connectToSelector)
@@ -111,8 +114,8 @@ var emailTemplateEditor = {
         $('body').on('mousedown', function(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             containers = $(emailTemplateEditor.settings.iframeSelector).contents().find(
-                           emailTemplateEditor.settings.sortableElementsSelector +
-                           ', ' + emailTemplateEditor.settings.sortableRowsSelector);
+                            emailTemplateEditor.settings.sortableElementsSelector + ', ' +
+                            emailTemplateEditor.settings.sortableRowsSelector);
         });
 
         $('body').on('mousemove', function(event){
@@ -124,7 +127,7 @@ var emailTemplateEditor = {
                     point.left < rect.right &&
                     point.top > rect.top &&
                     point.top < rect.bottom ){
-                    $(containers[i]).addClass('hover');
+                        $(containers[i]).addClass('hover');
                 } else {
                     $(containers[i]).removeClass('hover');
                 }
@@ -140,8 +143,9 @@ var emailTemplateEditor = {
                     point.left < rect.right &&
                     point.top > rect.top &&
                     point.top < rect.bottom ){
-                    $(containers[i]).addClass('on');
-                    alert('Sergio, implement me please..');
+                        $(containers[i]).addClass('on');
+                        $(containers[i]).prepend('<strong>inserted: '+label+'</strong>');
+                        alert('Sergio, implement me please..');
                 } else {
                     $(containers[i]).removeClass('on');
                 }
