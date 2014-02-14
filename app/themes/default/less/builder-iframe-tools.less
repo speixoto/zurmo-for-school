@@ -1,16 +1,14 @@
 body{
 	//background: url("@{path}psd-light.png") left top repeat;
-	padding-left: 30% !important;
 }
 
 table.body{
-	width: 70%  !important;;
-	border-left: 1px solid red;
 }
 
 .email-template-container-tools{
 	float: right;
 	display: block;
+	visibility: hidden;
 	span{
 		width: 20px;
 		height: 20px;
@@ -31,8 +29,14 @@ table.body{
 	}
 }
 
+.row,
 .sortable-elements{
-	border: 1px dotted #ccc;
+	&:hover{
+		border: 1px dotted #ccc;
+		.email-template-container-tools{
+			visibility: visible;
+		}
+	}
 }
 
 .icon-move:before  { content: ")"; }
@@ -44,6 +48,7 @@ table.body{
 	visibility: visible !important;
 	background:azure;
 	border: 1px dotted gold;
+	min-height: 60px;
 }
 
 .blox{
@@ -53,4 +58,13 @@ table.body{
 	float: none;
 	margin: 0;
 	z-index: 99999;
+}
+
+.on{
+	background:rgba(255, 0, 0, 0.1);
+}
+
+.hover{
+	//box-shadow: 0 0 0 3px hotpink;
+	border: 1px dotted #ccc;
 }

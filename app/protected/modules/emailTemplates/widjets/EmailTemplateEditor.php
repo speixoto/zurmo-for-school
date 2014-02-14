@@ -75,11 +75,6 @@
             return ZurmoHtml::tag('div', array('class' => 'clearfix'), $icon . $span);
         }
 
-        protected function renderEditableArea()
-        {
-            return ZurmoHtml::tag('div', array('class' => 'element-edit-form-overlay', 'style' => 'display:none'), '');
-        }
-
         protected function renderLayout()
         {
             $iframeUrl = Yii::app()->createUrl('emailTemplates/default/renderCanvas');
@@ -95,22 +90,17 @@
         public function run()
         {
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id,
-                "
-                $(document).ready(function(){
-                emailTemplateEditor.init(
-                    '#building-blocks',
-                    'div.element-edit-form-overlay',
-                    '{$this->getRowWrapper()}',
-                    '{$this->resolveElementEditableActionUrl()}',
-                    '{$this->resolveElementNonEditableActionUrl()}'
-                );
-                });
-                ");
+                "$(document).ready(function(){
+                    emailTemplateEditor.init(
+                        '#building-blocks',
+                        '{$this->getRowWrapper()}',
+                        '{$this->getNewElementUrl()}'
+                    );
+                });");
             echo ZurmoHtml::openTag('div', array('id' => 'builder', 'class' => 'strong-right clearfix'));
             echo ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
             echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderElementsToolbar());
             echo ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderLayout());
-            echo $this->renderEditableArea();
             echo ZurmoHtml::closeTag('div');
         }
 
@@ -122,14 +112,9 @@
                    '</tr></table></td></tr></table>';
         }
 
-        protected function resolveElementNonEditableActionUrl()
+        protected function getNewElementUrl()
         {
             return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditable');
-        }
-
-        protected function resolveElementEditableActionUrl()
-        {
-            return Yii::app()->createUrl('emailTemplates/default/renderElementEditable');
         }
     }
 ?>

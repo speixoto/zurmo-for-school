@@ -47,6 +47,7 @@
 
         protected function renderCanvasContent()
         {
+            $image = Yii::app()->themeManager->baseUrl . '/default/images/zurmo-zapier.png';
             $canvasContent = '
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,8 +57,7 @@
                         <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">' .
                         $this->renderIconFont() .
                         $this->renderLess() .
-                        '
-                        <style type="text/css">
+                        '<style type="text/css">
                              /*{ margin: 0; padding: 0; }
                              .sortable-rows > table{ background: pink }
                              .sortable-elements{ background: gold }
@@ -70,13 +70,13 @@
                             <tr>
                                 <td class="sortable-rows" align="center" valign="top">
 
-                                        <table id="element1" class="row header builder-element-non-editable">
+                                        <table class="row header">
                                             <tr>
                                                 <td>
                                                     <div class="email-template-container-tools">
-                                                        <span class="handle"><i class="icon-move"></i></span>
-                                                        <span class="edit"><i class="icon-gear"></i></span>
-                                                        <span class="delete"><i class="icon-trash"></i></span>
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
                                                     </div>
                                                     <table class="container" data-row-id="1">
                                                         <tr>
@@ -84,13 +84,13 @@
                                                                 <table class="twelve columns">
                                                                     <tr>
                                                                         <td  class="sortable-elements">
-                                                                            <div id="element12" class="builder-element-non-editable">
+                                                                            <div>
                                                                                 <div class="email-template-container-tools">
-                                                                                    <span class="handle"><i class="icon-move"></i></span>
-                                                                                    <span class="edit"><i class="icon-gear"></i></span>
-                                                                                    <span class="delete"><i class="icon-trash"></i></span>
-                                                                                </div>
-                                                                                Text Element
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
+                                                                                <img alt="" src="'.$image.'">
                                                                             </div>
                                                                         </td>
                                                                         <td class="expander"></td>
@@ -103,13 +103,13 @@
                                             </tr>
                                         </table>
 
-                                        <table id="element2" class="container builder-element-non-editable">
+                                        <table class="container">
                                               <tr>
                                                  <td>
-                                                    <div class="email-template-container-tools">
-                                                        <span class="handle"><i class="icon-move"></i></span>
-                                                        <span class="edit"><i class="icon-gear"></i></span>
-                                                        <span class="delete"><i class="icon-trash"></i></span>
+                                                  <div class="email-template-container-tools">
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
                                                     </div>
                                                   <table class="row" data-row-id="2">
                                                     <tr>
@@ -119,13 +119,13 @@
                                                         <table class="six columns" data-column-id="1">
                                                           <tr>
                                                             <td class="sortable-elements">
-                                                                <div id="element123" class="builder-element-non-editable">
+                                                                <div>
                                                                     <div class="email-template-container-tools">
-                                                                        <span class="handle"><i class="icon-move"></i></span>
-                                                                        <span class="edit"><i class="icon-gear"></i></span>
-                                                                        <span class="delete"><i class="icon-trash"></i></span>
-                                                                    </div>
-                                                                    Text Element
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
+                                                                    <img alt="" src="'.$image.'">
                                                                 </div>
                                                             </td>
                                                             <td class="expander"></td>
@@ -139,13 +139,13 @@
                                                         <table class="six columns" data-column-id="2">
                                                           <tr>
                                                             <td class="sortable-elements">
-                                                                <div class="builder-element-non-editable">
-                                                                   <div id="element1234" class="email-template-container-tools">
-                                                                       <span class="handle"><i class="icon-move"></i></span>
-                                                                       <span class="edit"><i class="icon-gear"></i></span>
-                                                                       <span class="delete"><i class="icon-trash"></i></span>
-                                                                   </div>
-                                                                   Text Element
+                                                                <div>
+                                                                   <div class="email-template-container-tools">
+                                                        <span><i class="icon-move"></i></span>
+                                                        <span><i class="icon-gear"></i></span>
+                                                        <span><i class="icon-trash"></i></span>
+                                                    </div>
+                                                                    <img alt="" src="'.$image.'">
                                                                 </div>
                                                             </td>
                                                             <td class="expander"></td>
@@ -176,8 +176,7 @@
 
         public static function registerCss()
         {
-            $baseScriptUrl = Yii::app()->getAssetManager()->publish(
-                Yii::getPathOfAlias('application.modules.emailTemplates.widjets.assets'));
+            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.emailTemplates.widjets.assets'));
             Yii::app()->getClientScript()->registerCssFile($baseScriptUrl . '/EmailTemplateEditor.css');
         }
 
@@ -201,9 +200,9 @@
         }
 
         protected function renderLess(){
-            $themeBaseUrl   = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
+            $baseUrl = Yii::app()->themeManager->baseUrl . '/default';
             $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets"));
-            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' . $themeBaseUrl . '/less/builder-iframe-tools.less"/>
+            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' . $baseUrl . '/less/builder-iframe-tools.less"/>
                      <script type="text/javascript" src="' . $publishedAssetsPath . '/less-1.2.0.min.js"></script>';
             return $less;
         }
