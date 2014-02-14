@@ -594,8 +594,10 @@
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
             $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true, $autoCompleteOptions);
-            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains', $autoCompleteOptions);
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true,
+                                      $autoCompleteOptions, $pageSize);
+            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress(
+                                      $term, $pageSize, null, 'contains', $autoCompleteOptions);
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
             {
