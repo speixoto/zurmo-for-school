@@ -124,6 +124,15 @@
         }
 
         /**
+         * Return true for container type elements
+         * @return bool
+         */
+        public static function isContainerType()
+        {
+            return false;
+        }
+
+        /**
          * Return translated label for current Element.
          * @throws NotImplementedException
          */
