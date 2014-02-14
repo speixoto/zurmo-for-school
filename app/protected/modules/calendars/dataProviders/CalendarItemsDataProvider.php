@@ -38,7 +38,7 @@
       */
     class CalendarItemsDataProvider extends CDataProvider
     {
-        const MAXIMUM_CALENDAR_ITEMS_COUNT = 200;
+        const MAXIMUM_CALENDAR_ITEMS_COUNT = 10;
 
         /**
          * @var array
@@ -77,6 +77,8 @@
 
         private $_isMaxCountReached = false;
 
+        private $_itemCount;
+
         /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param array $config
@@ -88,8 +90,9 @@
             {
                 $this->$key = $value;
             }
-            $this->startDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->startDate));
-            $this->endDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->endDate));
+            $this->startDate  = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->startDate));
+            $this->endDate    = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->endDate));
+            $this->_itemCount = 0;
         }
 
         /**
@@ -183,12 +186,11 @@
             $report             = $this->makeReportBySavedCalendar($calendar);
             $reportDataProvider = new CalendarRowsAndColumnsReportDataProvider($report);
             $reportResultsRows  = $reportDataProvider->getData();
-            $count              = 1;
             foreach ($reportResultsRows as $reportResultsRowData)
             {
                 $models[] = $reportResultsRowData->getModel('attribute0');
-                $count++;
-                if ($count > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
+                $this->_itemCount++;
+                if ($this->_itemCount > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
                 {
                     $this->setIsMaxCountReached(true);
                     break;
