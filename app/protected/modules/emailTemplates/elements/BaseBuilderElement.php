@@ -67,6 +67,11 @@
         protected $content;
 
         /**
+         * @var array extra parameters
+         */
+        protected $params;
+
+        /**
          * @var bool if this element is being rendered for canvas or not.
          * Non-editable rendering behavior varies depending on this.
          * @see resolveCustomDataAttributesNonEditable()
@@ -191,13 +196,15 @@
          * @param null $id the html dom id.
          * @param null $properties properties for this element, style and such.
          * @param null $content content for this element.
+         * @param null $params
          */
-        public function __construct($renderForCanvas = false, $id = null, $properties = null, $content = null)
+        public function __construct($renderForCanvas = false, $id = null, $properties = null, $content = null, $params = null)
         {
             $this->renderForCanvas  = $renderForCanvas;
             $this->initId($id);
             $this->initproperties($properties);
             $this->initContent($content);
+            $this->initParams($params);
         }
 
         /**
@@ -832,6 +839,15 @@
         }
 
         /**
+         * Resolve default parameters
+         * @return array
+         */
+        protected function resolveDefaultParams()
+        {
+            return array();
+        }
+
+        /**
          * Initialize Id. Generate a new one if parameter is not set,
          * @param null $id
          */
@@ -868,6 +884,20 @@
                 $content        = $this->resolveDefaultContent();
             }
             $this->content      = $content;
+        }
+
+        protected function initParams($params = null)
+        {
+            $defaultParams  = $this->resolveDefaultParams();
+            if (!isset($params))
+            {
+                $params     = $defaultParams;
+            }
+            else if (isset($params['mergeDefault']) && $params['mergeDefault'] === true)
+            {
+                $params     = CMap::mergeArray($defaultParams, $params);
+            }
+            return $params;
         }
 
         /**
