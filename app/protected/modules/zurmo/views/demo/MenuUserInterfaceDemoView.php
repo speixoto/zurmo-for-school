@@ -67,6 +67,18 @@
          */
         const CONTACT_FORM_EXTERNAL_VIEW = 'contactFormExternalView';
 
+        /**
+         * @see MarketingListsExternalActionsPageView
+         */
+        const MARKETING_LISTS_EXTERNAL_PREVIEW_VIEW = 'marketingListsExternalPreviewView';
+
+        const MARKETING_LISTS_MANAGE_SUBSCRIPTIONS_VIEW  = 'marketingListsManageSubscriptionsView';
+
+        /**
+         * @see MobileHeaderView
+         */
+        const MOBILE_HEADER_VIEW         = 'mobileHeaderView';
+
         protected function renderContent()
         {
             $route = Yii::app()->controller->getModule()->getId() . '/' . Yii::app()->controller->getId() . '/' .
@@ -75,25 +87,26 @@
             $standardBreadcrumbsViewUrl = Yii::app()->createUrl($route, array('type' => static::STANDARD_BREADCRUMBS_VIEW));
             $gracefulErrorViewUrl       = Yii::app()->createUrl($route, array('type' => static::GRACEFUL_ERROR_VIEW));
             $unexpectedErrorViewUrl     = Yii::app()->createUrl($route, array('type' => static::UNEXPECTED_ERROR_VIEW));
-            $authorizationViewUrl     = Yii::app()->createUrl($route, array('type' => static::AUTHORIZATION_VIEW));
-            $contactFormExternalViewUrl     = Yii::app()->createUrl($route, array('type' => static::CONTACT_FORM_EXTERNAL_VIEW));
+            $authorizationViewUrl       = Yii::app()->createUrl($route, array('type' => static::AUTHORIZATION_VIEW));
+            $contactFormExternalViewUrl = Yii::app()->createUrl($route, array('type' => static::CONTACT_FORM_EXTERNAL_VIEW));
+            $marketingListsExternalPreviewViewUrl = Yii::app()->createUrl($route, array('type' => static::MARKETING_LISTS_EXTERNAL_PREVIEW_VIEW));
+            $marketingListsSubscriptionsViewUrl = Yii::app()->createUrl($route, array('type' => static::MARKETING_LISTS_MANAGE_SUBSCRIPTIONS_VIEW));
+            $mobileHeaderViewUrl        = Yii::app()->createUrl($route, array('type' => static::MOBILE_HEADER_VIEW));
 
             //ZurmoDefaultViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
             //ZurmoDefaultViewUtil::makeTwoStandardViewsForCurrentUser(
             //ZurmoDefaultAdminViewUtil::makeViewWithBreadcrumbsForCurrentUser(
-            //MarketingListsExternalActionsPageView
-            //MobileHeaderView
 
             $content  = null;
-            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Standard View',             $standardViewUrl));
-            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Standard Breadcrumbs View', $standardBreadcrumbsViewUrl));
-
-
-
-            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Graceful Error View',   $gracefulErrorViewUrl));
-            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Unexpected Error View', $unexpectedErrorViewUrl));
-            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Authorization View',    $authorizationViewUrl));
-            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Contact Web Form External View',    $contactFormExternalViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Standard View',              $standardViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Standard Breadcrumbs View',  $standardBreadcrumbsViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Graceful Error View',        $gracefulErrorViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Unexpected Error View',      $unexpectedErrorViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Authorization View',         $authorizationViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Contact Web Form External View',         $contactFormExternalViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Marketing Lists External Preview View',  $marketingListsExternalPreviewViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Marketing Lists Manage Subscriptions View',  $marketingListsSubscriptionsViewUrl));
+            $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Mobile Header View',                     $mobileHeaderViewUrl));
 
 
             return ZurmoHtml::tag('ul', array(), $content);

@@ -224,23 +224,28 @@
             $settingsMenuItems        = static::resolveHeaderMenuItemsForMobile($settingsMenuItems);
             $userMenuItems            = static::getAndResolveUserMenuItemsForHeader();
             $applicationName          = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            $shortcutsCreateMenuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
+            $moduleNamesAndLabels     = GlobalSearchUtil::
+                                        getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
+            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
+            GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption($moduleNamesAndLabels);
             if (Yii::app()->userInterface->isMobile())
             {
-                $headerView               = new MobileHeaderView($settingsMenuItems, $userMenuItems, $applicationName);
+                $headerView = new MobileHeaderView( $settingsMenuItems,
+                                                    $userMenuItems,
+                                                    $shortcutsCreateMenuItems,
+                                                    $moduleNamesAndLabels,
+                                                    $sourceUrl,
+                                                    $applicationName);
             }
             else
             {
-                $shortcutsCreateMenuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-                $moduleNamesAndLabels     = GlobalSearchUtil::
-                                                getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
-                $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
-                GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption($moduleNamesAndLabels);
-                $headerView               = new HeaderView($settingsMenuItems,
-                                                           $userMenuItems,
-                                                           $shortcutsCreateMenuItems,
-                                                           $moduleNamesAndLabels,
-                                                           $sourceUrl,
-                                                           $applicationName);
+                $headerView = new HeaderView(  $settingsMenuItems,
+                                               $userMenuItems,
+                                               $shortcutsCreateMenuItems,
+                                               $moduleNamesAndLabels,
+                                               $sourceUrl,
+                                               $applicationName);
             }
             $headerView->setCssClasses(array('HeaderView'));
             return $headerView;

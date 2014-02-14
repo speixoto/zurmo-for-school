@@ -68,6 +68,16 @@
         }
 
         /**
+         * Used for demo and test purposes only!
+         * @param $selectedUserInterfaceType
+         */
+        public function setSelectedUserInterfaceType($selectedUserInterfaceType)
+        {
+            assert('is_string($selectedUserInterfaceType) || $selectedUserInterfaceType === null');
+            $this->selectedUserInterfaceType = $selectedUserInterfaceType;
+        }
+
+        /**
          * Get default user interface type
          */
         public function getDefaultUserInterfaceType()

@@ -124,6 +124,35 @@
                                         makeExternalViewForCurrentUser($containedView));
                 echo $view->render();
             }
+            elseif($type == MenuUserInterfaceDemoView::MARKETING_LISTS_EXTERNAL_PREVIEW_VIEW)
+            {
+                $splashView = new MarketingListsExternalActionsPreviewView();
+                $view       = new MarketingListsExternalActionsPageView($this, $splashView);
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::MARKETING_LISTS_MANAGE_SUBSCRIPTIONS_VIEW)
+            {
+                $marketingListMember = MarketingListMember::getSubset(null, 0, 1);
+                $marketingLists      = MarketingList::getByUnsubscribedAndAnyoneCanSubscribe($marketingListMember[0]->contact->id);
+                $listView = new MarketingListsManageSubscriptionsListView($this->getId(),
+                                    $this->getModule()->getId(),
+                                    $marketingLists,
+                                    -100,
+                                    -100,
+                                    -100,
+                                    'notUsed');
+                $view = new MarketingListsManageSubscriptionsPageView($this, $listView);
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::MOBILE_HEADER_VIEW)
+            {
+                Yii::app()->userInterface->setSelectedUserInterfaceType(UserInterface::MOBILE);
+                $demoView          = new StandardUserInterfaceDemoView();
+                $demoView->message = 'Standard View';
+                $view              = new ZurmoConfigurationPageView(ZurmoDefaultViewUtil::
+                                            makeStandardViewForCurrentUser($this, $demoView));
+                echo $view->render();
+            }
             else
             {
                 throw new NotSupportedException();

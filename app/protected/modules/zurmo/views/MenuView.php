@@ -92,12 +92,15 @@
             $count = 1;
             foreach ($this->items as $key => $item)
             {
-                $items[$key]['itemOptions']['class'] = 'type-' . $item['moduleId'];
-                if ($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
+                if(isset($item['moduleId']))
                 {
-                    $items[$key]['itemOptions']['class'] = 'hidden-nav-item type-' . $item['moduleId'];
+                    $items[$key]['itemOptions']['class'] = 'type-' . $item['moduleId'];
+                    if ($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
+                    {
+                        $items[$key]['itemOptions']['class'] = 'hidden-nav-item type-' . $item['moduleId'];
+                    }
+                    $count++;
                 }
-                $count++;
             }
             return $items;
         }
