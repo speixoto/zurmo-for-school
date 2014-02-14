@@ -85,7 +85,7 @@
                                                                     header: {
                                                                                 left: 'prev,next today',
                                                                                 center: 'title',
-                                                                                right: 'month,agendaWeek,agendaDay'
+                                                                                right: 'month,basicWeek,basicDay'
                                                                             },
                                                                      defaultView: '{$defaultView}',
                                                                      firstDay    :1,
@@ -116,8 +116,8 @@
                                                                                           },
                                                                      timeFormat: {
                                                                                     'month'    : '',
-                                                                                    'agendaDay': 'h:mm-{h:mm}tt',
-                                                                                    'agendaWeek': 'h:mm-{h:mm}tt'
+                                                                                    'basicDay': 'h:mm-{h:mm}tt',
+                                                                                    'basicWeek': 'h:mm-{h:mm}tt'
                                                                                  },
                                                                     });
                                          $('#{$inputId}').fullCalendar('gotoDate', {$year}, {$month}, {$day});

@@ -38,9 +38,9 @@
     {
         const DATERANGE_TYPE_MONTH = 'month';
 
-        const DATERANGE_TYPE_DAY   = 'agendaDay';
+        const DATERANGE_TYPE_DAY   = 'basicDay';
 
-        const DATERANGE_TYPE_WEEK  = 'agendaWeek';
+        const DATERANGE_TYPE_WEEK  = 'basicWeek';
 
         public static $colorsArray = array('#315AB0', '#66367b', '#2c3e50', '#269a55', '#c0392b',
                                        '#e67e22', '#3498db', '#501a27', '#0c5b3f', '#c05d91');
