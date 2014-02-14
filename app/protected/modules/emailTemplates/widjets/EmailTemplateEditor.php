@@ -77,9 +77,9 @@
 
         protected function renderLayout()
         {
+            $content   = ZurmoHtml::tag('div', array('id' => 'iframe-overlay'), '<span class="big-spinner"></span>');
             $iframeUrl = Yii::app()->createUrl('emailTemplates/default/renderCanvas');
-            $content   = "<iframe id='preview-template' width='100%' height='100%' frameborder='0' src='{$iframeUrl}'>";
-            $content  .= "</iframe>";
+            $content  .= "<iframe id='preview-template' width='100%' height='100%' frameborder='0' src='{$iframeUrl}'></iframe>";
             return $content;
         }
 
@@ -105,7 +105,6 @@
                     );
                 });");
             echo ZurmoHtml::openTag('div', array('id' => 'builder', 'class' => 'strong-right clearfix'));
-            echo ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
             echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderElementsToolbar());
             echo ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderLayout());
             echo $this->renderEditableArea();

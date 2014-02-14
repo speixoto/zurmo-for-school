@@ -91,14 +91,16 @@ var emailTemplateEditor = {
         var clone = '';
         var label = '';
 
+        var whoIsDragged;
+
         $('li', selector ).draggable({
             appendTo: 'body',
-            helper: "clone",
             cursor: 'move',
             iframeFix: true,
             revert: 'invalid',
             cursorAt: { left:  -20, top: -20 },
             helper: function(event, ui){
+                whoIsDragged = $(event.currentTarget);
                 label = $(event.currentTarget).html();
                 clone = $('<div class="blox">' + label + '</div>');
                 return clone;
@@ -146,7 +148,7 @@ var emailTemplateEditor = {
                     point.top < rect.bottom ){
                         $(containers[i]).addClass('on');
                         $(containers[i]).prepend('<strong>inserted: '+label+'</strong>');
-                        alert('Sergio, implement me please..');
+                        console.log( whoIsDragged );
                 } else {
                     $(containers[i]).removeClass('on');
                 }
@@ -216,10 +218,12 @@ var emailTemplateEditor = {
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val('');
     },
     freezeLayoutEditor: function () {
-        $(this).makeOrRemoveLoadingSpinner(true, "#builder", 'dark');
+        $('#iframe-overlay').addClass('freeze');
+        $(this).makeLargeLoadingSpinner(true, "#iframe-overlay");
     },
     unfreezeLayoutEditor: function () {
-        $(this).makeOrRemoveLoadingSpinner(true, "#builder", 'dark');
+        $('#iframe-overlay').removeClass('freeze');
+        $(this).makeLargeLoadingSpinner(false, "#iframe-overlay");
     },
     onClickEditEvent: function () {
         emailTemplateEditor.freezeLayoutEditor();
