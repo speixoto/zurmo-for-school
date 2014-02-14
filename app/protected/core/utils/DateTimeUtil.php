@@ -428,7 +428,7 @@
 
         public static function resolveDateTimeAsDate($dateTime)
         {
-            assert('is_string($date)');
+            assert('is_string($dateTime)');
             if ($dateTime == '0000-00-00 00:00:00')
             {
                 return '0000-00-00';
