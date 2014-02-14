@@ -70,13 +70,13 @@
                             <tr>
                                 <td class="sortable-rows" align="center" valign="top">
 
-                                        <table class="row header">
+                                        <table id="element1" class="row header builder-element-non-editable">
                                             <tr>
                                                 <td>
                                                     <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
+                                                        <span class="handle"><i class="icon-move"></i></span>
+                                                        <span class="edit"><i class="icon-gear"></i></span>
+                                                        <span class="delete"><i class="icon-trash"></i></span>
                                                     </div>
                                                     <table class="container" data-row-id="1">
                                                         <tr>
@@ -84,11 +84,11 @@
                                                                 <table class="twelve columns">
                                                                     <tr>
                                                                         <td  class="sortable-elements">
-                                                                            <div>
+                                                                            <div id="element12" class="builder-element-non-editable">
                                                                                 <div class="email-template-container-tools">
-                                                                                    <span><i class="icon-move"></i></span>
-                                                                                    <span><i class="icon-gear"></i></span>
-                                                                                    <span><i class="icon-trash"></i></span>
+                                                                                    <span class="handle"><i class="icon-move"></i></span>
+                                                                                    <span class="edit"><i class="icon-gear"></i></span>
+                                                                                    <span class="delete"><i class="icon-trash"></i></span>
                                                                                 </div>
                                                                                 Text Element
                                                                             </div>
@@ -103,13 +103,13 @@
                                             </tr>
                                         </table>
 
-                                        <table class="container">
+                                        <table id="element2" class="container builder-element-non-editable">
                                               <tr>
                                                  <td>
                                                     <div class="email-template-container-tools">
-                                                        <span><i class="icon-move"></i></span>
-                                                        <span><i class="icon-gear"></i></span>
-                                                        <span><i class="icon-trash"></i></span>
+                                                        <span class="handle"><i class="icon-move"></i></span>
+                                                        <span class="edit"><i class="icon-gear"></i></span>
+                                                        <span class="delete"><i class="icon-trash"></i></span>
                                                     </div>
                                                   <table class="row" data-row-id="2">
                                                     <tr>
@@ -119,11 +119,11 @@
                                                         <table class="six columns" data-column-id="1">
                                                           <tr>
                                                             <td class="sortable-elements">
-                                                                <div>
+                                                                <div id="element123" class="builder-element-non-editable">
                                                                     <div class="email-template-container-tools">
-                                                                        <span><i class="icon-move"></i></span>
-                                                                        <span><i class="icon-gear"></i></span>
-                                                                        <span><i class="icon-trash"></i></span>
+                                                                        <span class="handle"><i class="icon-move"></i></span>
+                                                                        <span class="edit"><i class="icon-gear"></i></span>
+                                                                        <span class="delete"><i class="icon-trash"></i></span>
                                                                     </div>
                                                                     Text Element
                                                                 </div>
@@ -139,11 +139,11 @@
                                                         <table class="six columns" data-column-id="2">
                                                           <tr>
                                                             <td class="sortable-elements">
-                                                                <div>
-                                                                   <div class="email-template-container-tools">
-                                                                       <span><i class="icon-move"></i></span>
-                                                                       <span><i class="icon-gear"></i></span>
-                                                                       <span><i class="icon-trash"></i></span>
+                                                                <div class="builder-element-non-editable">
+                                                                   <div id="element1234" class="email-template-container-tools">
+                                                                       <span class="handle"><i class="icon-move"></i></span>
+                                                                       <span class="edit"><i class="icon-gear"></i></span>
+                                                                       <span class="delete"><i class="icon-trash"></i></span>
                                                                    </div>
                                                                    Text Element
                                                                 </div>

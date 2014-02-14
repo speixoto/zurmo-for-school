@@ -545,18 +545,19 @@
 
         public function actionRenderElementEditable($className, $id = null, $properties = null, $content = null)
         {
-            echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
+//            echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
+            echo $className . $id;
         }
 
         public function actionRenderElementNonEditable($className, $renderForCanvas = false, $id = null,
                                                         $properties = null, $content = null)
         {
             // TODO: @Shoaibi/@Sergio: Critical0: $wrapElementInRow = false?
-            $handleSpan   = ZurmoHtml::tag('span', array(), ZurmoHtml::tag('i', array('class' => 'icon-move'), ''));
-            $settingsSpan = ZurmoHtml::tag('span', array(), ZurmoHtml::tag('i', array('class' => 'icon-gear'), ''));
-            $removeSpan   = ZurmoHtml::tag('span', array(), ZurmoHtml::tag('i', array('class' => 'icon-trash'), ''));
+            $handleSpan   = ZurmoHtml::tag('span', array('class' => 'handle'), ZurmoHtml::tag('i', array('class' => 'icon-move'), ''));
+            $settingsSpan = ZurmoHtml::tag('span', array('class' => 'edit'), ZurmoHtml::tag('i', array('class' => 'icon-gear'), ''));
+            $removeSpan   = ZurmoHtml::tag('span', array('class' => 'delete'), ZurmoHtml::tag('i', array('class' => 'icon-trash'), ''));
             $tools        = ZurmoHtml::tag('div', array('class' => 'email-template-container-tools'), $handleSpan . $settingsSpan . $removeSpan);
-            echo ZurmoHtml::tag('div', array(), $tools . $className);
+            echo ZurmoHtml::tag('div', array('id' => time(), 'class' => 'builder-element-non-editable'), $tools . $className);
 //            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $id, $properties, $content);
         }
 

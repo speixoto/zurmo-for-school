@@ -38,22 +38,30 @@ var emailTemplateEditor = {
     settings : {
         rowWrapper: '',
         getNewElementUrl: '',
+        editElementUrl: '',
+        iframeSelector: '#preview-template',
+        editSelector: '#edit-element',
         elementsToPlaceSelector: '#building-blocks',
         sortableRowsSelector: '.sortable-rows',
-        sortableElementsSelector: '.sortable-elements',
-        iframeSelector: '#preview-template'
+        sortableElementsSelector: '.sortable-elements'
     },
-    init : function (elementsToPlaceSelector, rowWrapper, getNewElementUrl) {
+    init : function (elementsToPlaceSelector, editSelector, rowWrapper, editElementUrl, getNewElementUrl) {
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
-        this.settings.rowWrapper    = rowWrapper;
-        this.settings.getNewElementUrl = getNewElementUrl;
+        this.settings.editSelector            = editSelector;
+        this.settings.rowWrapper              = rowWrapper;
+        this.settings.editElementUrl          = editElementUrl;
+        this.settings.getNewElementUrl        = getNewElementUrl;
         this.setupLayout();
         emailTemplateEditor = this;
     },
     setupLayout : function() {
         $(emailTemplateEditor.settings.iframeSelector).load(function () {
+            contents = $(this).contents();
 
-            $(this).contents().find(emailTemplateEditor.settings.sortableElementsSelector + ', ' + emailTemplateEditor.settings.sortableRowsSelector).on({
+            $( contents.find('body') ).on( "click", "span.edit", emailTemplateEditor.onClickEditEvent);
+            $( contents.find('body') ).on( "click", "span.delete", emailTemplateEditor.onClickDeleteEvent);
+
+            contents.find(emailTemplateEditor.settings.sortableElementsSelector + ', ' + emailTemplateEditor.settings.sortableRowsSelector).on({
                 mousemove: function(event) {
                     $(parent.document).trigger(event);
                 },
@@ -62,7 +70,6 @@ var emailTemplateEditor = {
                 }
             });
 
-            contents = $(this).contents();
             emailTemplateEditor.initDraggableElements(emailTemplateEditor.settings.elementsToPlaceSelector,
                 emailTemplateEditor.settings.sortableElementsSelector + ", " + emailTemplateEditor.settings.sortableRowsSelector,
                 contents);
@@ -108,21 +115,13 @@ var emailTemplateEditor = {
             }
         });
         $( iframeContents.find(selector) ).sortable({
-            handle: "span>i.icon-move",
+            handle: '.handle',
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
                     emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, false);
                 }
-
-            },
-            remove: function ( event, ui ) {
-                 if ($(this).sortable("toArray").length < 1)
-                 {
-                     //TODO: @sergio: What should we the sortable-elements became empty?
-                     // We should not have that problem , we need to be able to drag item in an empty sortable
-                     //$(this).remove();
-                 }
+                emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
             cursor: 'move',
@@ -137,7 +136,7 @@ var emailTemplateEditor = {
             }
         });
         $( iframeContents.find(selector) ).sortable({
-            handle: "span>i.icon-move",
+            handle: '.handle',
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
@@ -147,6 +146,7 @@ var emailTemplateEditor = {
                         emailTemplateEditor.settings.sortableElementsSelector,
                         iframeContents);
                 }
+                emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
             cursor: 'move'
@@ -157,7 +157,7 @@ var emailTemplateEditor = {
             url: emailTemplateEditor.settings.getNewElementUrl,
             data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement},
             beforeSend: function() {
-                    $(this).makeOrRemoveLoadingSpinner(true, "#builder");
+                    emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
                 item.replaceWith(html);
@@ -165,6 +165,30 @@ var emailTemplateEditor = {
         });
     },
     canvasChanged: function () {
-        console.log('The canvas has change');
+        console.log('The canvas has changed');
+    },
+    freezeLayoutEditor: function () {
+        $(this).makeOrRemoveLoadingSpinner(true, "#builder", 'dark');
+    },
+    unfreezeLayoutEditor: function () {
+        $(this).makeOrRemoveLoadingSpinner(true, "#builder", 'dark');
+    },
+    onClickEditEvent: function () {
+        emailTemplateEditor.freezeLayoutEditor();
+        var element = $(this).closest('.builder-element-non-editable');
+        id           = element.attr('id');
+        elementClass = element.data("class") + 'removeThisWhenImplemented';
+        $.ajax({
+            url: emailTemplateEditor.settings.editElementUrl,
+            data: {id: id, className: elementClass, renderForCanvas: 1},
+            success: function (html) {
+                $(emailTemplateEditor.settings.editSelector).html(html);
+            }
+        });
+        $(emailTemplateEditor.settings.editSelector).show();
+        emailTemplateEditor.unfreezeLayoutEditor();
+    },
+    onClickDeleteEvent: function () {
+        $(this).closest(".builder-element-non-editable").remove();
     }
 }
