@@ -43,7 +43,8 @@ var emailTemplateEditor = {
         editSelector: '#edit-element',
         elementsToPlaceSelector: '#building-blocks',
         sortableRowsSelector: '.sortable-rows',
-        sortableElementsSelector: '.sortable-elements'
+        sortableElementsSelector: '.sortable-elements',
+        cachedSerializedDataSelector: '#serialized-data-cache'
     },
     init : function (elementsToPlaceSelector, editSelector, rowWrapper, editElementUrl, getNewElementUrl) {
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
@@ -212,7 +213,7 @@ var emailTemplateEditor = {
         });
     },
     canvasChanged: function () {
-        console.log('The canvas has changed');
+        $(emailTemplateEditor.settings.cachedSerializedDataSelector).val('');
     },
     freezeLayoutEditor: function () {
         $(this).makeOrRemoveLoadingSpinner(true, "#builder", 'dark');
@@ -237,5 +238,19 @@ var emailTemplateEditor = {
     },
     onClickDeleteEvent: function () {
         $(this).closest(".builder-element-non-editable").remove();
+    },
+    reloadCanvas: function () {
+        $(emailTemplateEditor.settings.iframeSelector).attr( 'src', function ( i, val ) { return val; });
+        emailTemplateEditor.canvasChanged();
+    },
+    compileSerializedData: function () {
+        var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
+        if (value != '') {
+            return value;
+        };
+        console.log($('.element-data'));
+        value = '123';
+        $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
+        return value;
     }
 }

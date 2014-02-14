@@ -83,6 +83,11 @@
             return $content;
         }
 
+        protected function renderSerializedDataCacheInput()
+        {
+            return ZurmoHtml::hiddenField('serialized-data-cache', '', array('id' => 'serialized-data-cache'));
+        }
+
         /**
          * Run this widget.
          * This method registers necessary javascript and renders the needed HTML code.
@@ -101,6 +106,7 @@
             echo ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
             echo ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderElementsToolbar());
             echo ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderLayout());
+            echo $this->renderSerializedDataCacheInput();
             echo ZurmoHtml::closeTag('div');
         }
 
