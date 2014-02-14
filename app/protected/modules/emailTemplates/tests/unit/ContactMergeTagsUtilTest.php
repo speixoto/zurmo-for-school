@@ -63,6 +63,10 @@
             {
                 throw new NotSupportedException();
             }
+            $emailSignature = new EmailSignature();
+            $emailSignature->htmlContent = 'my email signature';
+            self::$super->emailSignatures->add($emailSignature);
+            self::$super->save();
 
             $currencies                                     = Currency::getAll();
             $currencyValue                                  = new CurrencyValue();
@@ -773,6 +777,74 @@
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertTrue(strpos($resolvedContent, 'localhost') === 0);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testBaseUrlMergeTag
+         */
+        public function testOwnersAvatarSmallMergeTag()
+        {
+            $content                        = '[[OWNERS^AVATAR^SMALL]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedAvatarImage = '<img class="gravatar" width="32" height="32" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />';
+            $this->assertEquals($expectedAvatarImage, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnersAvatarSmallMergeTag
+         */
+        public function testOwnersAvatarMediumMergeTag()
+        {
+            $content                        = '[[OWNERS^AVATAR^MEDIUM]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />';
+            $this->assertEquals($expectedAvatarImage, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnersAvatarMediumMergeTag
+         */
+        public function testOwnersAvatarLargeMergeTag()
+        {
+            $content                        = '[[OWNERS^AVATAR^LARGE]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />';
+            $this->assertEquals($expectedAvatarImage, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnersAvatarLargeMergeTag
+         */
+        public function testOwnersEmailSignatureMergeTag()
+        {
+            $content                        = '[[OWNERS^EMAIL^SIGNATURE]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedEmailSignature = 'my email signature';
+            $this->assertEquals($expectedEmailSignature, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }
     }
