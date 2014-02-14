@@ -91,8 +91,6 @@ var emailTemplateEditor = {
         var clone = '';
         var label = '';
 
-        var whoIsDragged;
-
         $('li', selector ).draggable({
             appendTo: 'body',
             cursor: 'move',
@@ -100,7 +98,6 @@ var emailTemplateEditor = {
             revert: 'invalid',
             cursorAt: { left:  -20, top: -20 },
             helper: function(event, ui){
-                whoIsDragged = $(event.currentTarget);
                 label = $(event.currentTarget).html();
                 clone = $('<div class="blox">' + label + '</div>');
                 return clone;
@@ -148,7 +145,6 @@ var emailTemplateEditor = {
                     point.top < rect.bottom ){
                         $(containers[i]).addClass('on');
                         $(containers[i]).prepend('<strong>inserted: '+label+'</strong>');
-                        console.log( whoIsDragged );
                 } else {
                     $(containers[i]).removeClass('on');
                 }
