@@ -214,6 +214,16 @@
             return $canvasContent;
         }
 
+        protected function resolveUiAccessibleContainerTypeElementClassNames($jsonEncoded = false)
+        {
+            $elements   = PathUtil::getAllUIAccessibleContainerTypeBuilderElementClassNames();
+            if ($jsonEncoded)
+            {
+                return CJSON::encode($elements);
+            }
+            return $elements;
+        }
+
         protected function resolveElementEditableActionUrl()
         {
             return $this->resolveRelativeUrl('renderElementEditable');

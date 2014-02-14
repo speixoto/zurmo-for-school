@@ -160,8 +160,16 @@
 
         public static function getAllUIAccessibleBuilderElementClassNames()
         {
-            return static::getAllEmailTemplateElementClassNamesWithFilterFromCache('uiAccessibleBuilderElementClassNames',
-                'static::filterUIAccessibleBuilderElementClassNames');
+            return static::getAllEmailTemplateElementClassNamesWithFilterFromCache(
+                                                                'uiAccessibleBuilderElementClassNames',
+                                                                'static::filterUIAccessibleBuilderElementClassNames');
+        }
+
+        public static function getAllUIAccessibleContainerTypeBuilderElementClassNames()
+        {
+            return static::getAllEmailTemplateElementClassNamesWithFilterFromCache(
+                                                    'uiAccessibleContainerTypeBuilderElementClassNames',
+                                                    'static::filterUIAccessibleContainerTypeBuilderElementClassNames');
         }
 
         protected static function getAllModelClassNamesWithFilterFromCache($identifier, $filter)
@@ -210,6 +218,11 @@
         protected static function filterUIAccessibleBuilderElementClassNames($className)
         {
             return (is_subclass_of($className, 'BaseBuilderElement') && $className::isUIAccessible());
+        }
+
+        protected static function filterUIAccessibleContainerTypeBuilderElementClassNames($className)
+        {
+            return (static::filterUIAccessibleBuilderElementClassNames($className) && $className::isContainerType());
         }
     }
 ?>
