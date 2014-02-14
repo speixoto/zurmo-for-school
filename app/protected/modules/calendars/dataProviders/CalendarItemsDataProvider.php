@@ -75,8 +75,14 @@
          */
         private $_calendarItemsData;
 
+        /**
+         * @var boolean
+         */
         private $_isMaxCountReached = false;
 
+        /**
+         * @var int
+         */
         private $_itemCount;
 
         /**
@@ -320,13 +326,21 @@
             $this->dateRangeType = $dateRangeType;
         }
 
+        /**
+         * @return bool
+         */
         public function getIsMaxCountReached()
         {
             return $this->_isMaxCountReached;
         }
 
+        /**
+         * Sets is max count reached
+         * @param bool $isMaxCountReached
+         */
         public function setIsMaxCountReached($isMaxCountReached)
         {
+            assert('is_bool($isMaxCountReached)');
             $this->_isMaxCountReached = $isMaxCountReached;
         }
     }
