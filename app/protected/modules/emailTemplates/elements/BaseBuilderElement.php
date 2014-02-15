@@ -214,7 +214,6 @@
         public final function renderNonEditable()
         {
             $elementContent = $this->renderControlContentNonEditable();
-            $elementContent = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), $elementContent);
             $wrappedContent = $this->renderControlWrapperNonEditable($elementContent);
             return $wrappedContent;
         }
@@ -947,7 +946,11 @@
          */
         protected function resolveContentElementNonEditableTemplate(Element $element)
         {
-            $element->nonEditableTemplate = str_replace(array('{label}', '{error}'), '', $element->nonEditableTemplate);
+            // we need to put wrapper div inside td else it breaks the table layout output.
+            $wrappedElementContent          = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), '{content}');
+            $element->nonEditableTemplate   = str_replace(array('{label}', '{error}', '{content}'),
+                                                            array('', '', $wrappedElementContent),
+                                                            $element->nonEditableTemplate);
         }
 
         /**

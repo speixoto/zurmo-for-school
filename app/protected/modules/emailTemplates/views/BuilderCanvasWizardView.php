@@ -40,11 +40,11 @@
 
         const CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME         = 'cachedSerializedData';
 
-        const CANVAS_IFRAME_ID                              = 'canvas-iframne';
+        const CANVAS_IFRAME_ID                              = 'canvas-iframe';
 
         const PREVIEW_IFRAME_ID                             = 'preview-iframe';
 
-        const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-contaier';
+        const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-container';
 
         /**
          * @return string
