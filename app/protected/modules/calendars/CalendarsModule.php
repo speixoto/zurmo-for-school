@@ -144,7 +144,7 @@
 
         public static function isReportable()
         {
-            return true;
+            return false;
         }
 
         public static function modelsAreNeverGloballySearched()

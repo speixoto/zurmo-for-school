@@ -113,7 +113,8 @@
         {
             $savedCalendars = SavedCalendar::getByName('Test Cal');
             $subscribedCalendars = CalendarUtil::getUserSubscribedCalendars(Yii::app()->user->userModel);
-            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($savedCalendars[0]->id, $subscribedCalendars[0]->savedcalendar->id);
+            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView(strval($savedCalendars[0]->id),
+                                strval($subscribedCalendars[0]->savedcalendar->id));
             $calendarItems = $dp->getData();
             $this->assertCount(2, $calendarItems);
             $this->assertEquals('First Product', $calendarItems[0]->getTitle());
