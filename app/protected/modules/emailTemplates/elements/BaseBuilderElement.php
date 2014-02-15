@@ -946,6 +946,7 @@
          */
         protected function resolveContentElementNonEditableTemplate(Element $element)
         {
+            // we need to put wrapper div inside td else it breaks the table layout output.
             $wrappedElementContent          = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), '{content}');
             $element->nonEditableTemplate   = str_replace(array('{label}', '{error}', '{content}'),
                                                             array('', '', $wrappedElementContent),
