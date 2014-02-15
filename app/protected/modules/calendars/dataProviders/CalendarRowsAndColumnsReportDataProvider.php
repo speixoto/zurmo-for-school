@@ -56,7 +56,7 @@
          */
         protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter(false);
+            return new RedBeanModelSelectQueryAdapter(false);
         }
     }
 ?>
