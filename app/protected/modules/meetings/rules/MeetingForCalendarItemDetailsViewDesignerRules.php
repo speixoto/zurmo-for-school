@@ -38,7 +38,7 @@
     {
         public function getDisplayName()
         {
-            return Zurmo::t('CalendarsModule', 'Meeting Calendar Item Detail View');
+            return Zurmo::t('CalendarsModule', 'Calendar Item Detail View');
         }
     }
 ?>
