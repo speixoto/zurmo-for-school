@@ -98,6 +98,9 @@
                     emailTemplateEditor.init(
                         '#building-blocks',
                         'div.element-edit-form-overlay',
+                        'span.action-edit',
+                        'span.action-move',
+                        'span.action-delete',
                         '{$this->getRowWrapper()}',
                         '{$this->resolveElementEditableActionUrl()}',
                         '{$this->resolveElementNonEditableActionUrl()}'

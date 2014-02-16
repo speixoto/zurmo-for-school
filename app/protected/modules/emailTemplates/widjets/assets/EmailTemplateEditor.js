@@ -36,20 +36,27 @@
 var emailTemplateEditor = {
     jQuery : $,
     settings : {
-        rowWrapper: '',
         getNewElementUrl: '',
         editElementUrl: '',
         iframeSelector: '#preview-template',
-        editSelector: '#edit-element',
+        editSelector: '',
+        iframeOverlaySelector: '#iframe-overlay',
         elementsToPlaceSelector: '#building-blocks',
         sortableRowsSelector: '.sortable-rows',
         sortableElementsSelector: '.sortable-elements',
+        editActionSelector: 'span.action-edit',
+        moveActionSelector: 'span.action-move',
+        deleteActionSelector: 'span.action-delete',
         cachedSerializedDataSelector: '#serialized-data-cache'
     },
-    init : function (elementsToPlaceSelector, editSelector, rowWrapper, editElementUrl, getNewElementUrl) {
+    init : function (elementsToPlaceSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
+                     iframeOverlaySelector, editElementUrl, getNewElementUrl) {
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
         this.settings.editSelector            = editSelector;
-        this.settings.rowWrapper              = rowWrapper;
+        this.settings.editActionSelector      = editActionSelector;
+        this.settings.moveActionSelector      = moveActionSelector;
+        this.settings.deleteActionSelector    = deleteActionSelector;
+        this.settings.iframeOverlaySelector   = iframeOverlaySelector;
         this.settings.editElementUrl          = editElementUrl;
         this.settings.getNewElementUrl        = getNewElementUrl;
         this.setupLayout();
@@ -59,8 +66,8 @@ var emailTemplateEditor = {
         $(emailTemplateEditor.settings.iframeSelector).load(function () {
             contents = $(this).contents();
 
-            $( contents.find('body') ).on( "click", "span.edit", emailTemplateEditor.onClickEditEvent);
-            $( contents.find('body') ).on( "click", "span.delete", emailTemplateEditor.onClickDeleteEvent);
+            $( contents.find('body') ).on( "click", emailTemplateEditor.settings.editActionSelector, emailTemplateEditor.onClickEditEvent);
+            $( contents.find('body') ).on( "click", emailTemplateEditor.settings.deleteActionSelector, emailTemplateEditor.onClickDeleteEvent);
 
             contents.find(emailTemplateEditor.settings.sortableElementsSelector + ', ' + emailTemplateEditor.settings.sortableRowsSelector).on({
                 mousemove: function(event) {
@@ -161,7 +168,7 @@ var emailTemplateEditor = {
             }
         });
         $( iframeContents.find(selector) ).sortable({
-            handle: '.handle',
+            handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
@@ -182,7 +189,7 @@ var emailTemplateEditor = {
             }
         });
         $( iframeContents.find(selector) ).sortable({
-            handle: '.handle',
+            handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
                 if (ui.item.is('li')) {
@@ -214,12 +221,12 @@ var emailTemplateEditor = {
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val('');
     },
     freezeLayoutEditor: function () {
-        $('#iframe-overlay').addClass('freeze');
-        $(this).makeLargeLoadingSpinner(true, "#iframe-overlay");
+        $(emailTemplateEditor.settings.iframeOverlaySelector).addClass('freeze');
+        $(this).makeLargeLoadingSpinner(true, emailTemplateEditor.settings.iframeOverlaySelector);
     },
     unfreezeLayoutEditor: function () {
-        $('#iframe-overlay').removeClass('freeze');
-        $(this).makeLargeLoadingSpinner(false, "#iframe-overlay");
+        $(emailTemplateEditor.settings.iframeOverlaySelector).removeClass('freeze');
+        $(this).makeLargeLoadingSpinner(false, emailTemplateEditor.settings.iframeOverlaySelector);
     },
     onClickEditEvent: function () {
         emailTemplateEditor.freezeLayoutEditor();
