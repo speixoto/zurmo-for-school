@@ -49,9 +49,10 @@ var emailTemplateEditor = {
         deleteActionSelector: 'span.action-delete',
         cachedSerializedDataSelector: '#serialized-data-cache'
     },
-    init : function (elementsToPlaceSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
+    init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, editElementUrl, getNewElementUrl) {
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
+        this.settings.iframeSelector          = iframeSelector;
         this.settings.editSelector            = editSelector;
         this.settings.editActionSelector      = editActionSelector;
         this.settings.moveActionSelector      = moveActionSelector;

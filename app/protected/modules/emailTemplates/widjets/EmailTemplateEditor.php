@@ -97,6 +97,7 @@
                 "$(document).ready(function(){
                     emailTemplateEditor.init(
                         '#building-blocks',
+                        '#preview-template',
                         'div.element-edit-form-overlay',
                         'span.action-edit',
                         'span.action-move',

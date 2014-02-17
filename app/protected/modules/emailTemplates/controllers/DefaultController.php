@@ -284,12 +284,6 @@
             echo $view->render();
         }
 
-        public function actionRenderCanvas()
-        {
-            $view = new BuilderCanvasView();
-            echo $view->render();
-        }
-
         public function actionEdit($id, $redirectUrl = null)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
@@ -527,6 +521,8 @@
 
         public function actionRenderCanvas($id = null)
         {
+            $view = new BuilderCanvasView();
+            echo $view->render();
             // TODO: @Shoaibi: Critical0: get rid of this.
             $serializedData['dom'] = array(
                 'canvas1'     => array(
@@ -625,16 +621,16 @@
                 ),
             );
 
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedData, true);
-            Yii::app()->end(0, false);
-
-            // it would be empty for the first time during create so we just end the request here.
-            if (empty($id))
-            {
-                Yii::app()->end(0, false);
-            }
-            assert('is_int($id) || is_string($id)');
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
+//            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedData, true);
+//            Yii::app()->end(0, false);
+//
+//            // it would be empty for the first time during create so we just end the request here.
+//            if (empty($id))
+//            {
+//                Yii::app()->end(0, false);
+//            }
+//            assert('is_int($id) || is_string($id)');
+//            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
         }
 
         public function actionRenderPreview()

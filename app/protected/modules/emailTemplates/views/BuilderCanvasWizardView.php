@@ -277,6 +277,7 @@
         protected function registerInitializeEmailTemplateEditor()
         {
             $elementsToPlaceSelector = '#' . static::UL_ELEMENT_TO_PLACE_ID;
+            $iframeSelector          = '#' . static::CANVAS_IFRAME_ID;
             $editSelector            = '#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID;
             $editActionSelector      = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
             $moveActionSelector      = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
@@ -286,6 +287,7 @@
                 $(document).ready(function(){
                     emailTemplateEditor.init(
                         '{$elementsToPlaceSelector}',
+                        '{$iframeSelector}',
                         '{$editSelector}',
                         '{$editActionSelector}',
                         '{$moveActionSelector}',

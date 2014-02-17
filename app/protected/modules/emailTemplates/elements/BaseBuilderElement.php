@@ -1118,6 +1118,13 @@
         protected function resolveContentElementAttributeName()
         {
             throw new NotImplementedException('Children elements should override it, or remove all calls made to it.');
+        }
+
+        /**
+         * Return a mapped array where keys are the actions and values the icon class
+         */
+        protected function getActionIconsMappedByActions()
+        {
             return array(
                 static::OVERLAY_ACTION_DELETE => 'icon-trash',
                 static::OVERLAY_ACTION_EDIT => 'icon-gear',
