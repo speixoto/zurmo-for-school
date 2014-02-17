@@ -296,6 +296,7 @@
                 if ($this->appendActionsOverlayToContentElementsContent())
                 {
                     $content        .= $actionsOverlay;
+                    $content    = ZurmoHtml::tag('div', array('class' => 'element-wrapper'), $content);
                 }
                 else
                 {
@@ -303,7 +304,11 @@
                 }
             }
             $content    = $this->resolveWrapperNonEditableByContentAndHtmlOptions($content, $htmlOptions);
-            $content    .= $contentSuffix;
+            if ($contentSuffix !== null)
+            {
+                $content    .= $contentSuffix;
+                $content    = ZurmoHtml::tag('div', array('class' => 'element-wrapper'), $content);
+            }
             return $content;
         }
 
