@@ -96,7 +96,8 @@ var emailTemplateEditor = {
         });
 
         var clone = '';
-        var label = '';
+        var elementDraggedClass = '';
+        var elementDragged;
 
         $('li', selector ).draggable({
             appendTo: 'body',
@@ -105,11 +106,11 @@ var emailTemplateEditor = {
             revert: 'invalid',
             cursorAt: { left:  -20, top: -20 },
             helper: function(event, ui){
-                label = $(event.currentTarget).html();
-                clone = $('<div class="blox">' + label + '</div>');
+                elementDragged      = $(event.currentTarget),
+                elementDraggedClass = $(event.currentTarget).data('class');
+                clone = $('<div class="blox">' + $(event.currentTarget).html() + '</div>');
                 return clone;
             }
-            //,connectToSortable: iframeContents.find(connectToSelector)
         });
 
         var containers = [];
@@ -144,6 +145,7 @@ var emailTemplateEditor = {
         $('body').on('mouseup', function(event){
             point.left = event.pageX - offset.left;
             point.top = event.pageY - offset.top;
+            var containerToPlace;
             for (i = 0; i < containers.length; i++){
                 rect = containers[i].getBoundingClientRect();
                 if( point.left > rect.left &&
@@ -151,10 +153,14 @@ var emailTemplateEditor = {
                     point.top > rect.top &&
                     point.top < rect.bottom ){
                         $(containers[i]).addClass('on');
-                        $(containers[i]).prepend('<strong>inserted: '+label+'</strong>');
+                        containerToPlace = $(containers[i]);
                 } else {
                     $(containers[i]).removeClass('on');
                 }
+            }
+            if (elementDragged.is('li'))
+            {
+                emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, false);
             }
         });
 
@@ -213,7 +219,7 @@ var emailTemplateEditor = {
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
-                item.replaceWith(html);
+                item.prepend(html);
             }
         });
     },
