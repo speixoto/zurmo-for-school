@@ -296,7 +296,7 @@
                 if ($this->appendActionsOverlayToContentElementsContent())
                 {
                     $content        .= $actionsOverlay;
-                    $content    = ZurmoHtml::tag('div', array('class' => 'element-wrapper'), $content);
+                    $content        = $this->wrapNonEditableElementContent($content);
                 }
                 else
                 {
@@ -307,9 +307,29 @@
             if ($contentSuffix !== null)
             {
                 $content    .= $contentSuffix;
-                $content    = ZurmoHtml::tag('div', array('class' => 'element-wrapper'), $content);
+                $content    = $this->wrapNonEditableElementContent($content);
             }
             return $content;
+        }
+
+        /**
+         * Wrap non-editable content of element into a wrapper
+         * @param $content
+         * @return string
+         */
+        protected function wrapNonEditableElementContent($content)
+        {
+            $content    = ZurmoHtml::tag('div', array('class' => 'element-wrapper'), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve and return html options of Element wrapper.
+         * @return array
+         */
+        protected function resolveNonEditableElementWrapperHtmlOptions()
+        {
+            return array('class' => 'element-wrapper');
         }
 
         /**
