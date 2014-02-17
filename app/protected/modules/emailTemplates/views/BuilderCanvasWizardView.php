@@ -93,8 +93,7 @@
          */
         protected function renderFormContent()
         {
-            // TODO: @Shoaibi: Critical1: Load left sidebar and canvas here.
-            // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes.
+            // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes?
             $hiddenElements                             = null;
 
             $leftSidebarContent                         = ZurmoHtml::tag('h3', array(), 'Elements');
@@ -197,21 +196,17 @@
 
         protected function resolveCanvasContent()
         {
-            // TODO: @Shoaibi: Critical2: This is just dummy content to see how things will look so we can hook-in css and js.
-            /*
-            $canvasContent = '<iframe src="http://zurb.com/ink/downloads/templates/hero.html" id="preview-template"' .
-                                ' seamless="seamless" frameborder="0" width="100%" height="100%"></iframe>';
-            */
-            $element        = new BuilderTextElement(true, 'dummyId', array("style" => array(
-                                                                                "font-size" => "20px",
-                                                                                "color" => "red",
-                                                                                "background-color" => "#ccc"),
-                                                                            'some-non-style-property' => 3));
-            $canvasContent  = $element->renderNonEditable();
-            $canvasContent  .= '<br/>';
-            $canvasContent  .= $element->renderEditable();
-            $this->wrapContentInDiv($canvasContent, array('id' => 'canvas'));
+            $canvasContent  = ZurmoHtml::tag('iframe', $this->resolveCanvasIFrameHtmlOptions(), '');
             return $canvasContent;
+        }
+
+        protected function resolveCanvasIFrameHtmlOptions()
+        {
+            return array('id' => static::CANVAS_IFRAME_ID,
+                            'src' => $this->resolveCanvasActionUrl(),
+                            'width' => '100%',
+                            'height'    => '100%',
+                            'frameborder' => 0);
         }
 
         protected function resolveUiAccessibleContainerTypeElementClassNames($jsonEncoded = false)
@@ -224,6 +219,16 @@
             return $elements;
         }
 
+        protected function resolveCanvasActionUrl()
+        {
+            return $this->resolveRelativeUrl('renderCanvas', array('id' => $this->model->id));
+        }
+
+        protected function resolvePreviewActionUrl()
+        {
+            return $this->resolveRelativeUrl('renderPreview');
+        }
+
         protected function resolveElementEditableActionUrl()
         {
             return $this->resolveRelativeUrl('renderElementEditable');
@@ -234,9 +239,9 @@
             return $this->resolveRelativeUrl('renderElementNonEditable');
         }
 
-        protected function resolveRelativeUrl($action)
+        protected function resolveRelativeUrl($action, $params = array())
         {
-            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action);
+            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action, $params);
         }
 
         protected function registerScripts()

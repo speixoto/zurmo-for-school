@@ -80,31 +80,6 @@
         protected $renderForCanvas = false;
 
         /**
-         * Returns the default content for current element.
-         * @return array
-         */
-        abstract protected function resolveDefaultContent();
-
-        /**
-         * Render and Return content for Settings Tab. Returning null hides settings tab from appearing.
-         * @param ZurmoActiveForm $form
-         * @return string
-         */
-        abstract protected function renderSettingsTab(ZurmoActiveForm $form);
-
-        /**
-         * Resolve the class name of the element to use to render content for editable and non editable representation
-         * @return string
-         */
-        abstract protected function resolveContentElementClassName();
-
-        /**
-         * Resolve the attribute name to use to render editable and non-editable representation of content element
-         * @return string
-         */
-        abstract protected function resolveContentElementAttributeName();
-
-        /**
          * @return bool If this element should be shown on the drag-n-drop sidebar.
          */
         public static function isUIAccessible()
@@ -213,6 +188,7 @@
          */
         public final function renderNonEditable()
         {
+            $this->registerNonEditableSnippets();
             $elementContent = $this->renderControlContentNonEditable();
             $wrappedContent = $this->renderControlWrapperNonEditable($elementContent);
             return $wrappedContent;
@@ -224,11 +200,49 @@
          */
         public final function renderEditable()
         {
+            if ($this->doesNotSupportEditable())
+            {
+                throw new NotSupportedException('This element does not support editable representation');
+            }
             $formTitle                  = $this->resolveFormatterFormTitle();
             $formContent                = $this->renderFormContent();
             $content                    = $formTitle . $formContent;
             $content                    = ZurmoHtml::tag('div', array('class' => 'element-edit-form-overlay'), $content);
             return $content;
+        }
+
+        /**
+         * If this element should ever be rendered editable
+         * @return bool
+         */
+        protected function doesNotSupportEditable()
+        {
+            return false;
+        }
+
+        /**
+         * Register snippets(javascript, css, etc) required for non-editable view of this element.
+         */
+        protected function registerNonEditableSnippets()
+        {
+            $this->registerNonEditableScripts();
+            $this->registerNonEditableCss();
+        }
+
+        /**
+         * Register javascript snippets required for non-editable view of this element.
+         */
+        protected function registerNonEditableScripts()
+        {
+
+        }
+
+        /**
+         * Register css snippets required for non-editable view of this element.
+         */
+        protected function registerNonEditableCss()
+        {
+
         }
 
         /**
@@ -274,14 +288,81 @@
          */
         protected function resolveWrapperNonEditable($elementContent, $properties, $customDataAttributes, $actionsOverlay)
         {
+            $contentSuffix  = null;
             $htmlOptions    = CMap::mergeArray($properties, $customDataAttributes);
             $content        = $elementContent;
             if (!empty($actionsOverlay))
             {
-                $content    .= $actionsOverlay;
+                if ($this->appendActionsOverlayToContentElementsContent())
+                {
+                    $content        .= $actionsOverlay;
+                }
+                else
+                {
+                    $contentSuffix  .= $actionsOverlay;
+                }
             }
-            $content        = ZurmoHtml::tag('td', array(), $content);
+            $content    = $this->resolveWrapperNonEditableByContentAndHtmlOptions($content, $htmlOptions);
+            $content    .= $contentSuffix;
+            return $content;
+        }
+
+        /**
+         * Resolve and return wrapper using provided content and html options for non-editable representation
+         * @param $content
+         * @param array $htmlOptions
+         * @return string
+         */
+        protected function resolveWrapperNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
+        {
+            $content        = $this->resolveWrapperTdNonEditableByContent($content);
+            $content        = $this->resolveWrapperTrNonEditableByContent($content);
+            $content        = $this->resolveWrapperTBodyNonEditableByContent($content);
+            $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $htmlOptions);
+            return $content;
+        }
+
+        /**
+         * Resolve and return td(s) by using provided content for non-editable representation
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperTdNonEditableByContent($content)
+        {
+            $content        = ZurmoHtml::tag('td', $this->resolveNonEditableContentWrappingTdHtmlOptions(), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve and return tr(s) by using provided content for non-editable representation
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperTrNonEditableByContent($content)
+        {
             $content        = ZurmoHtml::tag('tr', array(), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve and return tbody by using provided content for non-editable representation
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperTBodyNonEditableByContent($content)
+        {
+            $content        = ZurmoHtml::tag('tbody', array(), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve and return table by using provided content and htmloptions for non-editable representation
+         * @param $content
+         * @param array $htmlOptions
+         * @return string
+         */
+        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
+        {
             $content        = ZurmoHtml::tag('table', $htmlOptions, $content);
             return $content;
         }
@@ -292,9 +373,38 @@
          */
         protected final function resolvePropertiesNonEditable()
         {
-            $mergedProperties   = CMap::mergeArray($this->resolveNonEditableWrapperHtmlOptions(), $this->properties);
+            $properties = array();
+            if (isset($this->properties['frontend']))
+            {
+                // we are not on canvas, may be preview or just generating final newsletter.
+                // do not render backend properties.
+                $properties = $this->properties['frontend'];
+            }
+            if ($this->renderForCanvas && isset($this->properties['backend']))
+            {
+                $properties = CMap::mergeArray($properties, $this->properties['backend']);
+            }
+            $mergedProperties   = CMap::mergeArray($this->resolveNonEditableWrapperHtmlOptions(), $properties);
             $this->resolveStylePropertiesNonEditable($mergedProperties);
             return $mergedProperties;
+        }
+
+        /**
+         * Resolve wrapper's column html options
+         * @return array
+         */
+        protected function resolveNonEditableContentWrappingTdHtmlOptions()
+        {
+            return array();
+        }
+
+        /**
+         * Whether actions overlay content should be appended to element content or at the end of output.
+         * @return bool
+         */
+        protected function appendActionsOverlayToContentElementsContent()
+        {
+            return true;
         }
 
         /**
@@ -357,7 +467,12 @@
             }
             $cda['data-class']      = get_class($this);
             $cda['data-properties'] = serialize($this->properties);
-            $cda['data-content']    = serialize($this->content);
+            $cda['data-content']    = serialize(array());
+            if (!$this->isContainerType())
+            {
+                // we don't want to bloat container type's data-content as it would be recompiled anyway.
+                $cda['data-content']    = serialize($this->content);
+            }
             return $cda;
         }
 
@@ -479,7 +594,7 @@
          */
         protected function resolveFormTitle()
         {
-            return $this->resolveLabel();
+            return static::resolveLabel();
         }
 
         /**
@@ -570,6 +685,7 @@
          */
         protected final function renderWrappedContentAndSettingsTab($contentTab, $settingsTab = null)
         {
+            // TODO: @Shoaibi: Critical1: Content tab can be null too.
             $contentTabClass        = 'active-tab';
             $settingsTabClass       = null;
             $settingsTabHyperLink   = null;
@@ -896,7 +1012,7 @@
             {
                 $params     = CMap::mergeArray($defaultParams, $params);
             }
-            return $params;
+            $this->params   = $params;
         }
 
         /**
@@ -947,10 +1063,7 @@
         protected function resolveContentElementNonEditableTemplate(Element $element)
         {
             // we need to put wrapper div inside td else it breaks the table layout output.
-            $wrappedElementContent          = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), '{content}');
-            $element->nonEditableTemplate   = str_replace(array('{label}', '{error}', '{content}'),
-                                                            array('', '', $wrappedElementContent),
-                                                            $element->nonEditableTemplate);
+            $element->nonEditableTemplate   = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), '{content}');
         }
 
         /**
@@ -967,6 +1080,43 @@
             // BuilderElementEditableModelForm does not set a model so we would see an error there.
             $params['labelHtmlOptions'] = array('label' => '');
             return $params;
+        }
+
+        /**
+         * Returns the default content for current element.
+         * @return array
+         */
+        protected function resolveDefaultContent()
+        {
+            return array();
+        }
+
+        /**
+         * Render and Return content for Settings Tab. Returning null hides settings tab from appearing.
+         * @param ZurmoActiveForm $form
+         * @throws NotImplementedException
+         */
+        protected function renderSettingsTab(ZurmoActiveForm $form)
+        {
+            throw new NotImplementedException('Children elements should override it, or remove all calls made to it.');
+        }
+
+        /**
+         * Resolve the class name of the element to use to render content for editable and non editable representation
+         * @throws NotImplementedException
+         */
+        protected function resolveContentElementClassName()
+        {
+            throw new NotImplementedException('Children elements should override it, or remove all calls made to it.');
+        }
+
+        /**
+         * Resolve the attribute name to use to render editable and non-editable representation of content element
+         * @throws NotImplementedException
+         */
+        protected function resolveContentElementAttributeName()
+        {
+            throw new NotImplementedException('Children elements should override it, or remove all calls made to it.');
         }
     }
 ?>

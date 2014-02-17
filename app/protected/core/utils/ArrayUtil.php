@@ -226,5 +226,19 @@
         {
             return (bool)count(array_filter(array_keys($array), 'is_string'));
         }
+
+        /**
+         * Find the last key in an array
+         * @param array $array
+         * @return mixed
+         */
+        public static function findLastKey(array & $array)
+        {
+            end($array);
+            $lastKey    = key($array);
+            // reset point back to start for any code that follows.
+            reset($array);
+            return $lastKey;
+        }
     }
 ?>
