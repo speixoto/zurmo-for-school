@@ -528,7 +528,7 @@
                             ),
                             'row2'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 2, 'header'  => 1, 'row-property' => 5)),
+                                'properties'    =>  array('backend' => array('configuration' => '1:2', 'header'  => 1, 'row-property' => 5)),
                                 'content'       => array(
                                     'column2'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -584,7 +584,7 @@
                 ),
             );
 
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedData);
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedData, true);
             Yii::app()->end(0, false);
 
             // it would be empty for the first time during create so we just end the request here.
