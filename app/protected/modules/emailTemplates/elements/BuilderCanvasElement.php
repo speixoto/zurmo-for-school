@@ -50,8 +50,7 @@
 
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
-            return CMap::mergeArray(parent::resolveSortableEntityHtmlOptions(),
-                array('align' => 'center', 'valign' => 'top'));
+            return array('class' => 'sortable-rows ui-sortable', 'align' => 'center', 'valign' => 'top');
         }
 
         protected function resolveAvailableNonEditableActionsArray()
