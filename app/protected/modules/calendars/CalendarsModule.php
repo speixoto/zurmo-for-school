@@ -67,12 +67,6 @@
         {
             $metadata = array();
             $metadata['global'] = array(
-                'designerMenuItems' => array(
-                    'showFieldsLink' => true,
-                    'showGeneralLink' => true,
-                    'showLayoutsLink' => true,
-                    'showMenusLink' => true,
-                ),
                 'globalSearchAttributeNames' => array(
                     'name'
                 ),
@@ -124,7 +118,7 @@
 
         public static function getDefaultDataMakerClassName()
         {
-            return 'CalendarsDefaultDataMaker';
+            return null;
         }
 
         public static function getDemoDataMakerClassNames()

@@ -105,5 +105,47 @@
             }
             return $errorData;
         }
+
+        /**
+         * Process attribute addition from tree and than renders it.
+         *
+         * @param string $nodeId
+         * @param string $treeType
+         * @param Report $report
+         * @param int $rowNumber
+         * @param bool $trackableStructurePosition
+         */
+        public static function processAttributeAdditionFromTree($nodeId, $treeType, Report $report, $rowNumber, $trackableStructurePosition)
+        {
+            $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
+                                                     removeTreeTypeFromNodeId($nodeId, $treeType);
+            $moduleClassName                    = $report->getModuleClassName();
+            $modelClassName                     = $moduleClassName::getPrimaryModelName();
+            $form                               = new WizardActiveForm();
+            $form->id                           = 'edit-form';
+            $form->enableAjaxValidation         = true; //ensures error validation populates correctly
+
+            $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
+            $model                              = ComponentForReportFormFactory::makeByComponentType($moduleClassName,
+                                                      $modelClassName, $report->getType(), $treeType);
+            $form->modelClassNameForError       = $wizardFormClassName;
+            $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
+            $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
+            $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
+                                                      resolveInputPrefixData($wizardFormClassName,
+                                                      $treeType, (int)$rowNumber);
+            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
+                                                      $form, $treeType);
+            $view                               = new AttributeRowForReportComponentView($adapter,
+                                                      (int)$rowNumber, $inputPrefixData, $attribute,
+                                                      (bool)$trackableStructurePosition, true, $treeType);
+            $content                            = $view->render();
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
     }
 ?>

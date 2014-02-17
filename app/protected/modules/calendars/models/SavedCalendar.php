@@ -98,10 +98,10 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
                 'description'        => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
-                'endAttributeName'   => Zurmo::t('CalendarsModule', 'End Attribute Name',    array(), null, $language),
+                'endAttributeName'   => Zurmo::t('CalendarsModule', 'End Attribute Field',    array(), null, $language),
                 'location'           => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
                 'name'               => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
-                'startAttributeName' => Zurmo::t('CalendarsModule', 'Start Attribute Name',  array(), null, $language),
+                'startAttributeName' => Zurmo::t('CalendarsModule', 'Start Attribute Field',  array(), null, $language),
                 'timeZone'           => Zurmo::t('ZurmoModule',    'Time Zone',      array(), null, $language),
                 'moduleClassName'    => Zurmo::t('CalendarsModule',    'Module',      array(), null, $language),
                 ));

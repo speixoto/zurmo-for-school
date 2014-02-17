@@ -36,6 +36,9 @@
 
     class CalendarsDefaultController extends ZurmoModuleController
     {
+        /**
+         * @return array
+         */
         public function filters()
         {
             $modelClassName   = $this->getModule()->getPrimaryModelName();
@@ -161,40 +164,21 @@
             echo $content;
         }
 
-        //todO: refactor to reuse same code in controller for reporting? do if it makes sense after done.
+        /**
+         * Add attribute from tree.
+         *
+         * @param string $type
+         * @param string $treeType
+         * @param string $nodeId
+         * @param int $rowNumber
+         * @param boolean $trackableStructurePosition
+         * @param int $id
+         */
         public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
                                                    $trackableStructurePosition = false, $id = null)
         {
             $report                             = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
-            $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
-                                                     removeTreeTypeFromNodeId($nodeId, $treeType);
-            $moduleClassName                    = $report->getModuleClassName();
-            $modelClassName                     = $moduleClassName::getPrimaryModelName();
-            $form                               = new WizardActiveForm();
-            $form->id                           = 'edit-form';
-            $form->enableAjaxValidation         = true; //ensures error validation populates correctly
-
-            $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
-            $model                              = ComponentForReportFormFactory::makeByComponentType($moduleClassName,
-                                                      $modelClassName, $report->getType(), $treeType);
-            $form->modelClassNameForError       = $wizardFormClassName;
-            $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveInputPrefixData($wizardFormClassName,
-                                                      $treeType, (int)$rowNumber);
-            $adapter                            = new ReportAttributeForSavedCalendarToElementAdapter($inputPrefixData, $model,
-                                                      $form, $treeType);
-            $view                               = new AttributeRowForReportComponentView($adapter,
-                                                      (int)$rowNumber, $inputPrefixData, $attribute,
-                                                      (bool)$trackableStructurePosition, true, $treeType);
-            $content               = $view->render();
-            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
-            Yii::app()->getClientScript()->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
-            echo $content;
+            ReportUtil::processAttributeAdditionFromTree($nodeId, $treeType, $report, $rowNumber, $trackableStructurePosition);
         }
 
         /**
@@ -249,6 +233,11 @@
 
         /**
          * Get events for the selected calendars.
+         * @param string $selectedMyCalendarIds
+         * @param string $selectedSharedCalendarIds
+         * @param string $startDate
+         * @param string $endDate
+         * @param string $dateRangeType
          */
         public function actionGetEvents($selectedMyCalendarIds = null,
                                         $selectedSharedCalendarIds = null,
@@ -274,7 +263,12 @@
         }
 
         /**
-         * Get events for the selected calendars.
+         * Get events count for the selected calendars.
+         * @param string $selectedMyCalendarIds
+         * @param string $selectedSharedCalendarIds
+         * @param string $startDate
+         * @param string $endDate
+         * @param string $dateRangeType
          */
         public function actionGetEventsCount($selectedMyCalendarIds = null,
                                             $selectedSharedCalendarIds = null,

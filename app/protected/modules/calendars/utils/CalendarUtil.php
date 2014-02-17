@@ -187,7 +187,7 @@
          */
         public static function getFullCalendarItems(CalendarItemsDataProvider $dataProvider)
         {
-            $calendarItems = $dataProvider->getData();
+            $calendarItems = $dataProvider->getData(false);
             $fullCalendarItems = array();
             for($k = 0; $k < count($calendarItems); $k++)
             {
@@ -766,10 +766,10 @@
             {
                 $report->setModuleClassName($postData['SavedCalendar']['moduleClassName']);
             }
-//            else
-//            {
-//                throw new NotSupportedException();
-//            }
+            else
+            {
+                throw new NotSupportedException();
+            }
             DataToReportUtil::resolveReportByWizardPostData($report, $postData,
                                                                 ReportToWizardFormAdapter::getFormClassNameByType($type));
             return $report;

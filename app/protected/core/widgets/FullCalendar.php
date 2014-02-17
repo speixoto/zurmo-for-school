@@ -69,6 +69,10 @@
             $month         = intval($startDateAttr[1]) - 1;
             $day           = intval($startDateAttr[2]);
 
+            $currentYear   = date('Y');
+            $currentMonth  = intval(date('m')) - 1;
+            $currentDay    = date('d');
+
             //Register full calendar script and css
             self::registerFullCalendarScriptAndCss();
 
@@ -121,6 +125,10 @@
                                                                                  },
                                                                     });
                                          $('#{$inputId}').fullCalendar('gotoDate', {$year}, {$month}, {$day});
+                                         $('.fc-button-today').click(function() {
+                                                                                    $('#{$inputId}').fullCalendar('changeView', 'basicDay');
+                                                                                    $('#{$inputId}').fullCalendar('gotoDate', {$currentYear}, {$currentMonth}, {$currentDay});
+                                                                                });
                                  });";
 
             // End Not Coding Standard

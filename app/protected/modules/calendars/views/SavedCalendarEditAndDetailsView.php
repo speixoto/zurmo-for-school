@@ -165,7 +165,7 @@
             $adapter = new ReportToWizardFormAdapter($report);
             $reportWizardForm = $adapter->makeRowsAndColumnsWizardForm();
             $filtersForReportWizardViewClassName = static::getFiltersForReportWizardViewClassName();
-            $filtersForReportWizardView = new $filtersForReportWizardViewClassName($reportWizardForm, $form, false); //todo: maybe hide view by default or not?
+            $filtersForReportWizardView = new $filtersForReportWizardViewClassName($reportWizardForm, $form, false);
             $content .= $filtersForReportWizardView->render();
             $this->registerFiltersScripts();
             $this->registerModuleClassNameChangeScript();
@@ -217,7 +217,6 @@
         protected function resolveActiveFormAjaxValidationOptions()
         {
             return array('enableAjaxValidation' => true,
-                //todo: add ? 'modelClassNameForError'  => get_class($this->model like in WizardView?
                          'clientOptions'        => $this->getClientOptions());
         }
 
@@ -267,6 +266,9 @@
                                          Yii::app()->controller->action->id, $_GET);
         }
 
+        /**
+         * Registers module class name change script.
+         */
         protected function registerModuleClassNameChangeScript()
         {
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
