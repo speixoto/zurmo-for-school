@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Returns rows and columns report data for the calendar.
+     * Data provider for rows and columns report for a calendar.
      */
     class CalendarRowsAndColumnsReportDataProvider extends RowsAndColumnsReportDataProvider
     {
