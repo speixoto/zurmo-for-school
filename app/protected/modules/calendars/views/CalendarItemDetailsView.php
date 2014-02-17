@@ -33,9 +33,14 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Base class for calendar item detail view.
+      */
     abstract class CalendarItemDetailsView extends SecuredDetailsView
     {
+        /**
+         * @return null
+         */
         public function getTitle()
         {
             return null;

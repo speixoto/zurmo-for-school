@@ -35,12 +35,12 @@
      ********************************************************************************/
 
     /**
-     * Class CalendarItemsDataProviderFactory
      * Helper class to make CalendarItemsDataProvider objects
      */
     class CalendarItemsDataProviderFactory
     {
         /**
+         * Get data provider based on date range type.
          * @param array $savedCalendarSubscriptions
          * @param string $startDate
          * @param string $endDate

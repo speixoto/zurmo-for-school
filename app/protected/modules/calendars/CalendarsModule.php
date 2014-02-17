@@ -40,6 +40,10 @@
         const RIGHT_DELETE_CALENDAR = 'Delete Calendar';
         const RIGHT_ACCESS_CALENDAR = 'Access Calandar Tab';
 
+        /**
+         * Get dependencies.
+         * @return array
+         */
         public function getDependencies()
         {
             return array(
@@ -47,12 +51,17 @@
                 'zurmo',
             );
         }
-
+        /**
+         * @return array
+         */
         public function getRootModelNames()
         {
             return array('SavedCalendar');
         }
 
+        /**
+         * @return array
+         */
         public static function getTranslatedRightsLabels()
         {
             $params                              = LabelUtil::getTranslationParamsForAllModules();
@@ -63,16 +72,13 @@
             return $labels;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();
             $metadata['global'] = array(
-                'designerMenuItems' => array(
-                    'showFieldsLink' => true,
-                    'showGeneralLink' => true,
-                    'showLayoutsLink' => true,
-                    'showMenusLink' => true,
-                ),
                 'globalSearchAttributeNames' => array(
                     'name'
                 ),
@@ -87,76 +93,121 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getPrimaryModelName()
         {
             return 'SavedCalendar';
         }
 
+        /**
+         * @return string
+         */
         public static function getSingularCamelCasedName()
         {
             return 'Calendars';
         }
 
+        /**
+         * @return string
+         */
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('CalendarsModule', 'Calendar', array(), null, $language);
         }
 
+        /**
+         * @return string
+         */
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('CalendarsModule', 'Calendars', array(), null, $language);
         }
 
+        /**
+         * @return string
+         */
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_CALENDAR;
         }
 
+        /**
+         * @return string
+         */
         public static function getCreateRight()
         {
             return self::RIGHT_CREATE_CALENDAR;
         }
 
+        /**
+         * @return string
+         */
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_CALENDAR;
         }
 
+        /**
+         * @return null
+         */
         public static function getDefaultDataMakerClassName()
         {
-            return 'CalendarsDefaultDataMaker';
+            return null;
         }
 
+        /**
+         * @return array
+         */
         public static function getDemoDataMakerClassNames()
         {
             return array('CalendarsDemoDataMaker');
         }
 
+        /**
+         * @return string
+         */
         public static function getGlobalSearchFormClassName()
         {
             return 'CalendarsSearchForm';
         }
 
+        /**
+         * @return boolean
+         */
         public static function hasPermissions()
         {
             return true;
         }
 
+        /**
+         * @return boolean
+         */
         public static function isReportable()
         {
             return false;
         }
 
+        /**
+         * @return boolean
+         */
         public static function modelsAreNeverGloballySearched()
         {
             return true;
         }
 
+        /**
+         * @return boolean
+         */
         public static function canHaveWorkflow()
         {
             return false;
         }
 
+        /**
+         * @return boolean
+         */
         public static function canHaveContentTemplates()
         {
             return true;

@@ -122,7 +122,14 @@
          */
         protected function renderSmallCalendarContent()
         {
-            Yii::app()->clientScript->registerScript('smallcalendarscript', '$( "#smallcalendar" ).datepicker();', ClientScript::POS_END);
+            $script = "$( '#smallcalendar' ).datepicker({onSelect: function (date) {
+                                                                    var dateArray = date.split('/');
+                                                                    var month     = parseInt(dateArray[0]) - 1;
+                                                                    $('#calendar').fullCalendar('changeView', 'basicDay');
+                                                                    $('#calendar').fullCalendar('gotoDate', dateArray[2], month, dateArray[1]);
+                                                                 }
+                        });";
+            Yii::app()->clientScript->registerScript('smallcalendarscript', $script, ClientScript::POS_END);
             return ZurmoHtml::tag('div', array('id' => 'smallcalendar'), '');
         }
 

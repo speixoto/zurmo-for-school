@@ -102,19 +102,13 @@
         }
 
         /**
-         * See the yii documentation. This function is made public for unit testing.
-         * @return int|string
+         * Calculates total item count.
+         *
+         * @return int
          */
         public function calculateTotalItemCount()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
-            $count = ZurmoRedBean::getCell($sql);
-            if ($count === null || empty($count))
-            {
-                $count = 0;
-            }
-            return $count;
+            return 0;
         }
 
         /**
@@ -134,6 +128,8 @@
         }
 
         /**
+         * Fetches data.
+         *
          * @return array
          */
         protected function fetchData()
@@ -142,7 +138,7 @@
         }
 
         /**
-         * See the yii documentation.
+         * Fetches keys for data items.
          * @return array
          */
         protected function fetchKeys()
@@ -232,15 +228,16 @@
             $endFilter->value                       = $this->endDate;
             $endFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE;
             $report->addFilter($endFilter);
-//            if (count($existingFilters) > 0)
-//            {
-//                $report->setFiltersStructure($report->getFiltersStructure() .
-//                                             '(' . (count($existingFilters) + 1) . ' AND ' . ($existingFilters + 2) . ')');
-//            }
-//            else
-//            {
+            if (count($existingFilters) > 0)
+            {
+                $filtersCount = count($existingFilters);
+                $report->setFiltersStructure($report->getFiltersStructure() .
+                                             ' AND ' . ($filtersCount + 1) . ' AND ' . ($filtersCount + 2));
+            }
+            else
+            {
                 $report->setFiltersStructure('1 AND 2');
-            //}
+            }
             $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                     $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'id';

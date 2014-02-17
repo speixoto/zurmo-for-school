@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Display a module drop down for calendar module.
+     * Displays a module drop down for calendar module.
      */
     class CalendarModuleClassNameDropDownElement extends StaticDropDownFormElement
     {

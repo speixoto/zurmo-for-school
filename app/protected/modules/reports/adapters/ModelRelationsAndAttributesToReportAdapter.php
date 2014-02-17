@@ -1035,7 +1035,7 @@
          * @param array $attributes
          * @param string $attribute
          */
-        private function resolveRelationToSelectableRelationData(& $attributes, $attribute)
+        protected function resolveRelationToSelectableRelationData(& $attributes, $attribute)
         {
             assert('is_array($attributes)');
             assert('is_string($attribute)');

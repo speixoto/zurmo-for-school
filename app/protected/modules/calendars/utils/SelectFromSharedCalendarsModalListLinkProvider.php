@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Link provider in the modal list view of shared calendars.
+      */
     class SelectFromSharedCalendarsModalListLinkProvider extends ModalListLinkProvider
     {
         /**

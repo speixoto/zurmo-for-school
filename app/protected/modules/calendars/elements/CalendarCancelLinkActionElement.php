@@ -33,9 +33,14 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Renders cancel button on saved calendar form.
+      */
     class CalendarCancelLinkActionElement extends CancelLinkActionElement
     {
+        /**
+         * @return string
+         */
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details');

@@ -62,6 +62,7 @@
          *
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param User $user
+         * @param string $selectedCalendarIds
          * @return \SavedCalendarSubscriptions
          */
         private static function addMySavedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions,
