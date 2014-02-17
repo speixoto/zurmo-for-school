@@ -90,7 +90,6 @@
         protected function registerCanvasGlobalCss()
         {
             Yii::app()->clientScript->registerCss('canvasCss', $this->resolveCanvasGlobalCssContent());
-
         }
         protected function resolveCanvasGlobalCssPath()
         {
