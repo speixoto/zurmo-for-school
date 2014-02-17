@@ -33,9 +33,14 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Model for saved calendar in the system.
+      */
     class SavedCalendar extends OwnedSecurableItem
     {
+        /**
+         * Constants mapping the date range type in FullCalendar widget
+         */
         const DATERANGE_TYPE_MONTH = 'month';
 
         const DATERANGE_TYPE_DAY   = 'basicDay';

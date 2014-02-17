@@ -143,7 +143,11 @@
 
         /**
          * Process user calendars and get data provider.
-         * @param mixed $myCalendarIds
+         * @param null|string $myCalendarIds
+         * @param null|string $mySubscribedCalendarIds
+         * @param null|string $dateRangeType
+         * @param null|string $startDate
+         * @param null|string $endDate
          * @return CalendarItemsDataProvider
          */
         public static function processUserCalendarsAndMakeDataProviderForCombinedView($myCalendarIds = null,
@@ -241,8 +245,9 @@
 
         /**
          * Gets used color by user.
-         *
          * @param User $user
+         * @param string $modelClassName
+         * @param string $attributeName
          * @return array
          */
         public static function getUsedCalendarColorsByUser(User $user, $modelClassName, $attributeName)
@@ -296,7 +301,7 @@
         }
 
         /**
-         * Get task modal script
+         * Register shared calendar modal script
          * @param string $url
          * @param string $selector
          * @return string
@@ -323,7 +328,7 @@
         }
 
         /**
-         * Get the items by user
+         * Get the calendars user has subscribed for.
          * @param User $user
          * @return integer
          */
@@ -487,8 +492,8 @@
         }
 
         /**
-         * Get shared calendar subscriber data
-         * @param Task $task
+         * Get shared calendar subscriber data.
+         * @param SavedCalendar $subscribedCalendar
          * @return string
          */
         public static function getCalendarSubscriberData(SavedCalendar $subscribedCalendar)
@@ -581,7 +586,9 @@
         }
 
         /**
-         * Register my calendar delete script
+         * Register saved calendar delete script
+         * @param string $startDate
+         * @param string $endDate
          */
         public static function registerSavedCalendarDeleteScript($startDate, $endDate)
         {
@@ -692,6 +699,7 @@
         }
 
         /**
+         * Makes component form and populate report from the data.
          * @param array $componentFormsData
          * @param Report $report
          * @param null|string $componentPrefix
@@ -742,7 +750,7 @@
         }
 
         /**
-         * Resolve report by saved calendar post data
+         * Resolve report by saved calendar post data.
          * @param string $type
          * @param int $id
          * @return Report
@@ -812,14 +820,18 @@
 
         /**
          * Process and get data provider for events data.
-         *
+         * @param null|string $myCalendarIds
+         * @param null|string $mySubscribedCalendarIds
+         * @param null|string $dateRangeType
+         * @param null|string $startDate
+         * @param null|string $endDate
          * @return CalendarItemsDataProvider
          */
         public static function processAndGetDataProviderForEventsData($selectedMyCalendarIds = null,
-                                                                        $selectedSharedCalendarIds = null,
-                                                                        $startDate = null,
-                                                                        $endDate = null,
-                                                                        $dateRangeType = null)
+                                                                      $selectedSharedCalendarIds = null,
+                                                                      $startDate = null,
+                                                                      $endDate = null,
+                                                                      $dateRangeType = null)
         {
             ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
                                                                'CalendarsModule',

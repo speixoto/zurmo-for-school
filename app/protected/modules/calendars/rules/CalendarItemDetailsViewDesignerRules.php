@@ -33,46 +33,66 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Base class for calendar item detail view designer rules. This would be extended by
+      * model specific designer rules classes.
+      */
     abstract class CalendarItemDetailsViewDesignerRules extends DetailsViewDesignerRules
     {
+        /**
+         * @return boolean
+         */
         public function allowEditInLayoutTool()
         {
             return true;
         }
-
+        /**
+         * @return int
+         */
         public function maxCellsPerRow()
         {
             return 1;
         }
-
+        /**
+         * @return boolean
+         */
         public function canMergeAndSplitCells()
         {
             return false;
         }
-
+        /**
+         * @return boolean
+         */
         public function canConfigureLayoutPanelsType()
         {
             return false;
         }
-
+        /**
+         * @return array
+         */
         public function getNonPlaceableLayoutAttributeNames()
         {
             return array(
                 'id'
             );
         }
-
+        /**
+         * @return boolean
+         */
         public function canAddPanels()
         {
             return false;
         }
-
+        /**
+         * @return boolean
+         */
         public function canMovePanels()
         {
             return false;
         }
-
+        /**
+         * @return boolean
+         */
         public function canRemovePanels()
         {
             return false;
