@@ -137,14 +137,5 @@
         {
             return array();
         }
-
-        /**
-         * Additional html options we would like to add to sortable entities.
-         * @return array
-         */
-        protected function resolveSortableEntityHtmlOptions()
-        {
-            return array('class' => 'sortable-rows ui-sortable');
-        }
     }
 ?>

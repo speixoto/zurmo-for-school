@@ -68,7 +68,7 @@
 
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
-            return $this->resolveSortableEntityHtmlOptions();
+            return array('class' => 'sortable-elements');
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()
