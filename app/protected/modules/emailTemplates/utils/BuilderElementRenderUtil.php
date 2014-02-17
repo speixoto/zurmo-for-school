@@ -37,26 +37,26 @@
     class BuilderElementRenderUtil
     {
         public static function renderEditable($className, $renderForCanvas = false, $id = null,
-                                              $properties = null, $content = null)
+                                              $properties = null, $content = null, $params = null)
         {
-            $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content);
+            $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content, $params);
             $content    = $element->renderEditable();
             return $content;
         }
 
-        public static function renderNonEditable($className, $renderForCanvas = false, $id = null,
-                                                 $properties = null, $content = null)
+        public static function renderNonEditable($className, $renderForCanvas = false, $wrapElementInRow = false,
+                                                 $id = null, $properties = null, $content = null, $params = null)
         {
-            // TODO: @Shoaibi/@Sergio: Critical0: $wrapElementInRow = false?
-            $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content);
+            // TODO: @Shoaibi: Critical0: $wrapElementInRow = false?
+            $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content, $params);
             $content    = $element->renderNonEditable();
             return $content;
         }
 
         protected static function resolveElement($className, $renderForCanvas = false, $id = null,
-                                                 $properties = null, $content = null)
+                                                 $properties = null, $content = null, $params = null)
         {
-            $element    = new $className($renderForCanvas, $id, $properties, $content);
+            $element    = new $className($renderForCanvas, $id, $properties, $content, $params);
             return $element;
         }
     }

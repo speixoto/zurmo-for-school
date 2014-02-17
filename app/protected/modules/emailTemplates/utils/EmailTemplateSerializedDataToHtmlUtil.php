@@ -70,7 +70,7 @@
             $canvasData     = reset($unserializedData['dom']);
             extract($canvasData);
             $id             = key($unserializedData['dom']);
-            $resolvedHtml   = BuilderElementRenderUtil::renderNonEditable($class, $renderForCanvas, $id, $properties, $content);
+            $resolvedHtml   = BuilderElementRenderUtil::renderNonEditable($class, $renderForCanvas, false, $id, $properties, $content);
             if (empty($resolvedHtml))
             {
                 return null;

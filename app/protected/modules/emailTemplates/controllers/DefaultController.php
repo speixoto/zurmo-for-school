@@ -525,13 +525,119 @@
             Yii::app()->end(0, false);
         }
 
-        public function actionCanvas($id)
+        public function actionRenderCanvas($id = null)
         {
+            // TODO: @Shoaibi: Critical0: get rid of this.
+            $serializedData['dom'] = array(
+                'canvas1'     => array(
+                    'class'       => 'BuilderCanvasElement',
+                    'properties'  => array('backend' => array('canvas-property' => 5)),
+                    'content'     => array(
+                            'row1'    => array(
+                                'class'         => 'BuilderRowElement',
+                                'properties'    =>  array('backend' => array('configuration' => 1, 'row-property' => 5)),
+                                'content'       => array(
+                                        'column1'   => array(
+                                            'class'         => 'BuilderColumnElement',
+                                            'properties'    => array('backend' => array('column-property' => 5)),
+                                            'content'       => array(
+                                                    'text1'     => array(
+                                                        'class'         => 'BuilderTextElement',
+                                                        'properties'    => array('frontend' => array('style' => array(
+                                                                                                'font-size' => '20px',
+                                                                                                'color' => 'red',
+                                                                                                'background-color' => '#ccc')),
+                                                                                    'backend' => array('text-property' => 5)),
+                                                        'content'       => array(
+                                                                'text'      => '<u><i><b>This is cool</b></i></u>',
+                                                        ),
+                                                    ),
+                                                    'text2'     => array(
+                                                        'class'         => 'BuilderTextElement',
+                                                        'properties'    => array('frontend' => array('style' => array(
+                                                                                    'font-size' => '18px',
+                                                                                    'color' => 'blue',
+                                                                                    'background-color' => '#aaa')),
+                                                                                'backend' => array('text-property' => 5)),
+                                                        'content'       => array(
+                                                            'text'      => '<u>This is cool too!</u>',
+                                                        ),
+                                                    ),
+                                            ),
+                                        ),
+                                ),
+                            ),
+                            'row2'    => array(
+                                'class'         => 'BuilderRowElement',
+                                'properties'    =>  array('backend' => array('configuration' => '1:2', 'header'  => 1, 'row-property' => 5)),
+                                'content'       => array(
+                                    'column2'   => array(
+                                        'class'         => 'BuilderColumnElement',
+                                        'properties'    => array('backend' => array('column-property' => 5)),
+                                        'content'       => array(
+                                            'text3'     => array(
+                                                'class'         => 'BuilderTextElement',
+                                                'properties'    => array('backend' => array('text-property' => 5)),
+                                                'content'       => array(
+                                                    'text'      => '2nd row col 1 text 1',
+                                                ),
+                                            ),
+                                            'text4'     => array(
+                                                'class'         => 'BuilderTextElement',
+                                                'properties'    => array('frontend' => array('style' => array(
+                                                                                                'font-size' => '16px',
+                                                                                                'color' => 'green',
+                                                                                                'background-color' => '#ddd')),
+                                                                        'backend' => array('text-property' => 5)),
+                                                'content'       => array(
+                                                    'text'      => '<u>2nd row col 1 text 2</u>',
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                    'column3'   => array(
+                                        'class'         => 'BuilderColumnElement',
+                                        'properties'    => array('backend' => array('column-property' => 5)),
+                                        'content'       => array(
+                                            'text5'     => array(
+                                                'class'         => 'BuilderTextElement',
+                                                'properties'    => array('backend' => array('text-property' => 5)),
+                                                'content'       => array(
+                                                    'text'      => '2nd row col 2 text 3',
+                                                ),
+                                            ),
+                                            'text6'     => array(
+                                                'class'         => 'BuilderTextElement',
+                                                'properties'    => array('frontend' => array('style' => array(
+                                                                                            'font-size' => '14px',
+                                                                                            'color' => 'white',
+                                                                                            'background-color' => 'black')),
+                                                                            'backend' => array('text-property' => 5)),
+                                                'content'       => array(
+                                                    'text'      => '<u>2nd row col 2 text 4</u>',
+                                                ),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                    ),
+                ),
+            );
+
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedData, true);
+            Yii::app()->end(0, false);
+
+            // it would be empty for the first time during create so we just end the request here.
+            if (empty($id))
+            {
+                Yii::app()->end(0, false);
+            }
             assert('is_int($id) || is_string($id)');
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
         }
 
-        public function actionPreview()
+        public function actionRenderPreview()
         {
             // this would be actually unserialized and an array. Bad naming convention as we need to preserve
             // form names.
@@ -549,21 +655,16 @@
             echo $className . $id;
         }
 
-        public function actionRenderElementNonEditable($className, $renderForCanvas = false, $id = null,
-                                                        $properties = null, $content = null)
+        public function actionRenderElementNonEditable($className, $renderForCanvas = false, $wrapElementInRow = false,
+                                                       $id = null, $properties = null, $content = null)
         {
-            // TODO: @Shoaibi/@Sergio: Critical0: $wrapElementInRow = false?
-            $handleSpan   = ZurmoHtml::tag('span', array('class' => 'handle'), ZurmoHtml::tag('i', array('class' => 'icon-move'), ''));
-            $settingsSpan = ZurmoHtml::tag('span', array('class' => 'edit'), ZurmoHtml::tag('i', array('class' => 'icon-gear'), ''));
-            $removeSpan   = ZurmoHtml::tag('span', array('class' => 'delete'), ZurmoHtml::tag('i', array('class' => 'icon-trash'), ''));
-            $tools        = ZurmoHtml::tag('div', array('class' => 'email-template-container-tools'), $handleSpan . $settingsSpan . $removeSpan);
-            echo ZurmoHtml::tag('div', array('id' => time(), 'class' => 'builder-element-non-editable'), $tools . $className);
-//            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $id, $properties, $content);
+            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
         }
 
         public function actionRenderElementNonEditableByPost()
         {
             $renderForCanvas    = true;
+            $wrapElementInRow   = false;
             $id                 = Yii::app()->request->getPost('id');
             $className          = Yii::app()->request->getPost('className');
             $content            = Yii::app()->request->getPost('content');
