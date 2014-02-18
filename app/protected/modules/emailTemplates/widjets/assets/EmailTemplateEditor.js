@@ -48,10 +48,11 @@ var emailTemplateEditor = {
         moveActionSelector: 'span.action-move',
         deleteActionSelector: 'span.action-delete',
         cachedSerializedDataSelector: '#serialized-data-cache',
-        ghost : ''
+        ghost : '',
+        alertErrorOnDelete: 'You cannot delete last row'
     },
     init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
-                     iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl) {
+                     iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete) {
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
         this.settings.iframeSelector          = iframeSelector;
         this.settings.editSelector            = editSelector;
@@ -62,6 +63,7 @@ var emailTemplateEditor = {
         this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
         this.settings.editElementUrl          = editElementUrl;
         this.settings.getNewElementUrl        = getNewElementUrl;
+        this.settings.alertErrorOnDelete      = alertErrorOnDelete;
         this.setupLayout();
         emailTemplateEditor = this;
     },
@@ -275,7 +277,12 @@ var emailTemplateEditor = {
         emailTemplateEditor.unfreezeLayoutEditor();
     },
     onClickDeleteEvent: function () {
-        $(this).closest(".element-wrapper").remove();
+        if ($(this).closest('.sortable-rows').children('.element-wrapper').length > 1 ||
+            $(this).parents('.sortable-elements').length > 0) {
+                $(this).closest(".element-wrapper").remove();
+        } else {
+            alert(emailTemplateEditor.settings.alertErrorOnDelete);
+        }
     },
     reloadCanvas: function () {
         $(emailTemplateEditor.settings.iframeSelector).attr( 'src', function ( i, val ) { return val; });
@@ -308,7 +315,6 @@ var emailTemplateEditor = {
         //Gets the cachedSerializedData and if its set return it
         var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
         if (value != '') {
-            console.log(jQuery.parseJSON(value));
             return jQuery.parseJSON(value);
         };
 
@@ -318,7 +324,7 @@ var emailTemplateEditor = {
             var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
             if (parentsElementData.length == 0)
             {
-                //Its the first element, the canvas one
+                //Its the first element, the canvas
                 data[$(elementDataArray[i]).attr('id')] = getSerializedData(elementDataArray[i]);
             }
             else
