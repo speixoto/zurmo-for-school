@@ -1,4 +1,10 @@
 //should add this to zurmo.less where i define right/left columns
+
+#GeneralDataForEmailTemplateWizardView,
+#SelectBaseTemplateForEmailTemplateWizardView{
+	display: none;
+}
+
 .strong-right{
 	position: relative;
 	.left-column{
@@ -10,6 +16,7 @@
 		width: 70%;
 		z-index: 1;
 		position: relative;
+		overflow: hidden;
 	}
 }
 
@@ -19,7 +26,7 @@
 	}
 }
 
-#preview-template{
+#canvas-iframe{
 	border: 1px solid #efefef;
 	min-height: 800px;
 	width: 100%;
@@ -102,9 +109,10 @@
 .blox{
 	display: block;
 	width: 105px !important;
-	height: 105px !impotant;
+	height: 105px !important;
 	border: 1px solid red;
 	float: none;
 	margin: 0;
 	z-index: 999999;
 }
+

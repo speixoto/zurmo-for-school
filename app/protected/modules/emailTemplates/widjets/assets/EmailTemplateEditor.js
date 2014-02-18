@@ -47,20 +47,21 @@ var emailTemplateEditor = {
         editActionSelector: 'span.action-edit',
         moveActionSelector: 'span.action-move',
         deleteActionSelector: 'span.action-delete',
-        cachedSerializedDataSelector: '#serialized-data-cache'
+        cachedSerializedDataSelector: '#serialized-data-cache',
+        ghost : ''
     },
     init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl) {
-        this.settings.elementsToPlaceSelector       = elementsToPlaceSelector;
-        this.settings.iframeSelector                = iframeSelector;
-        this.settings.editSelector                  = editSelector;
-        this.settings.editActionSelector            = editActionSelector;
-        this.settings.moveActionSelector            = moveActionSelector;
-        this.settings.deleteActionSelector          = deleteActionSelector;
-        this.settings.iframeOverlaySelector         = iframeOverlaySelector;
+        this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
+        this.settings.iframeSelector          = iframeSelector;
+        this.settings.editSelector            = editSelector;
+        this.settings.editActionSelector      = editActionSelector;
+        this.settings.moveActionSelector      = moveActionSelector;
+        this.settings.deleteActionSelector    = deleteActionSelector;
+        this.settings.iframeOverlaySelector   = iframeOverlaySelector;
         this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
-        this.settings.editElementUrl                = editElementUrl;
-        this.settings.getNewElementUrl              = getNewElementUrl;
+        this.settings.editElementUrl          = editElementUrl;
+        this.settings.getNewElementUrl        = getNewElementUrl;
         this.setupLayout();
         emailTemplateEditor = this;
     },
@@ -118,14 +119,20 @@ var emailTemplateEditor = {
         var containers = [];
         var offset = {};
         var rect = {};
+        var innerElementRect = {};
+        var innerElements = [];
         var point = {};
         var i = 0;
+        var n = 0;
+        var iframeContent = $(emailTemplateEditor.settings.iframeSelector).contents();
+        emailTemplateEditor.settings.ghost = $('<div class="ghost">drop here</div>');
 
         $('body').on('mousedown', function(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             containers = $(emailTemplateEditor.settings.iframeSelector).contents().find(
                             emailTemplateEditor.settings.sortableElementsSelector + ', ' +
                             emailTemplateEditor.settings.sortableRowsSelector);
+            innerElements = [];
         });
 
         $('body').on('mousemove', function(event){
@@ -133,11 +140,24 @@ var emailTemplateEditor = {
             point.top = event.pageY - offset.top;
             for (i = 0; i < containers.length; i++){
                 rect = containers[i].getBoundingClientRect();
-                if( point.left > rect.left &&
-                    point.left < rect.right &&
-                    point.top > rect.top &&
-                    point.top < rect.bottom ){
+                if( point.left > rect.left && point.left < rect.right &&
+                    point.top > rect.top && point.top < rect.bottom ){
                         $(containers[i]).addClass('hover');
+                        innerElements = $(containers[i]).find('.sortable-rows, .sortable-elements').children().not('.ghost');
+                        for(n = 0; n < innerElements.length; n++){
+                            innerElementRect = innerElements[n].getBoundingClientRect();
+                            if( event.offsetX > innerElementRect.left && event.offsetX < innerElementRect.right &&
+                                event.offsetY > innerElementRect.top && event.offsetY < innerElementRect.bottom ){
+                                $(innerElements[n]).addClass('hoverz');
+                                if( event.offsetY < $(innerElements[n]).height() / 2 ){
+                                    $(innerElements[n]).before(emailTemplateEditor.settings.ghost);
+                                } else {
+                                    $(innerElements[n]).after(emailTemplateEditor.settings.ghost);
+                                }
+                            } else {
+                                iframeContent.find('.hoverz').removeClass('hoverz');
+                            }
+                        }
                 } else {
                     $(containers[i]).removeClass('hover');
                 }
@@ -159,9 +179,9 @@ var emailTemplateEditor = {
                 } else {
                     $(containers[i]).removeClass('on');
                 }
+                $(containers[i]).removeClass('hover');
             }
-            if (elementDragged.is('li') && containerToPlace != undefined)
-            {
+            if (elementDragged.is('li') && containerToPlace != undefined){
                 emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, false);
             }
         });
@@ -170,8 +190,7 @@ var emailTemplateEditor = {
     },
     initSortableElements: function ( selector , connectToSelector, iframeContents) {
         $( iframeContents.find(selector) ).each(function(){
-            if ($(this).data('sortable'))
-            {
+            if ($(this).data('sortable')) {
                 $(this).sortable("destroy");
             }
         });
@@ -191,8 +210,7 @@ var emailTemplateEditor = {
     },
     initSortableRows: function ( selector , iframeContents) {
         $( iframeContents.find(selector) ).each(function(){
-            if ($(this).data('sortable'))
-            {
+            if ($(this).data('sortable')){
                 $(this).sortable("destroy");
             }
         });
@@ -221,7 +239,10 @@ var emailTemplateEditor = {
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
-                item.prepend(html);
+                //item.prepend(html);
+                $(emailTemplateEditor.settings.ghost).after('<div class="returned">'+html+'</div>');
+                emailTemplateEditor.unfreezeLayoutEditor();
+                emailTemplateEditor.settings.ghost.detach();
             }
         });
     },
@@ -258,53 +279,53 @@ var emailTemplateEditor = {
         $(emailTemplateEditor.settings.iframeSelector).attr( 'src', function ( i, val ) { return val; });
         emailTemplateEditor.canvasChanged();
     },
-    compileSerializedData: function () {
-        var getSerializedData = function (element) {
-            var data = new Array();
-            var contentArray = new Array();
-            contentArray['content'] = $(element).data('content');
-            data['content'] = contentArray;
-            data['properties'] = $(element).data('properties');
-            data['class'] = $(element).data('class');
-            return data;
-        };
+        compileSerializedData: function () {
+            var getSerializedData = function (element) {
+                var data = new Array();
+                var contentArray = new Array();
+                contentArray['content'] = $(element).data('content');
+                data['content'] = contentArray;
+                data['properties'] = $(element).data('properties');
+                data['class'] = $(element).data('class');
+                return data;
+            };
 
-        var findParentAndAppendSerializedData = function findParent(parent, elementId, serializedData, dataArray) {
-            for(var key in dataArray) {
-                if (key == $(parent).attr('id')) {
-                    dataArray[key]['content'][elementId] = serializedData;
+            var findParentAndAppendSerializedData = function findParent(parent, elementId, serializedData, dataArray) {
+                for(var key in dataArray) {
+                    if (key == $(parent).attr('id')) {
+                        dataArray[key]['content'][elementId] = serializedData;
+                    }
+                    else
+                    {
+                        findParent(parent, elementId, serializedData, dataArray[key]['content']);
+                    }
+                }
+                return dataArray;
+            }
+
+            //Gets the cachedSerializedData and if its set return it
+            var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
+            if (value != '') {
+                return jQuery.parseJSON(value);
+            };
+
+            var data    = new Array();
+            var elementDataArray = contents.find('.element-data');
+            for (var i = 0; i < elementDataArray.length; i++){
+                var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
+                if (parentsElementData.length == 0)
+                {
+                    //Its the first element, the canvas one
+                    data[$(elementDataArray[i]).attr('id')] = getSerializedData(elementDataArray[i]);
                 }
                 else
                 {
-                    findParent(parent, elementId, serializedData, dataArray[key]['content']);
+                    var parent = parentsElementData[0];
+                    data = findParentAndAppendSerializedData(parent, $(elementDataArray[i]).attr('id'), getSerializedData(elementDataArray[i]), data);
                 }
             }
-            return dataArray;
+            value = JSON.stringify(data);
+            $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
+            return value;
         }
-
-        //Gets the cachedSerializedData and if its set return it
-        var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
-        if (value != '') {
-            return jQuery.parseJSON(value);
-        };
-
-        var data    = new Array();
-        var elementDataArray = contents.find('.element-data');
-        for (var i = 0; i < elementDataArray.length; i++){
-            var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
-            if (parentsElementData.length == 0)
-            {
-                //Its the first element, the canvas one
-                data[$(elementDataArray[i]).attr('id')] = getSerializedData(elementDataArray[i]);
-            }
-            else
-            {
-                var parent = parentsElementData[0];
-                data = findParentAndAppendSerializedData(parent, $(elementDataArray[i]).attr('id'), getSerializedData(elementDataArray[i]), data);
-            }
-        }
-        value = JSON.stringify(data);
-        $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
-        return value;
     }
-}

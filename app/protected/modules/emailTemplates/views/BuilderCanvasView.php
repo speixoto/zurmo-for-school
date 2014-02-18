@@ -52,30 +52,21 @@
             <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml">
                       <head>
-                        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                        <meta name="viewport" content="width=device-width"/>
-                        <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">' .
-                        $this->renderIconFont() .
-                        $this->renderLess() .
-                        '<style type="text/css">
-                             /*{ margin: 0; padding: 0; }
-                             .sortable-rows > table{ background: pink }
-                             .sortable-elements{ background: gold }
-                             table{ border:1px solid black; width: 100%}
-                             .state-hover{border: 2px solid blue}*/
-                        </style>
-                      </head>
+                           <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                           <meta name="viewport" content="width=device-width"/>
+                           <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">' .
+                           $this->renderIconFont() .
+                           $this->renderLess() .
+                      '</head>
                       <body>
                         <table class="body">
                             <tr>
                                 <td class="sortable-rows" align="center" valign="top">
 
-
                                         <table id="dummyId1" class="row header builder-element-non-editable element-data"
                                                data-content=""
                                                data-properties=""
-                                               data-class="BuilderRowElement"
-                                        >
+                                               data-class="BuilderRowElement">
                                             <tr>
                                                 <td>
                                                     <div class="email-template-container-tools">
@@ -105,69 +96,53 @@
                                                         </tr>
                                                     </table>
                                                 </td>
-                                            </tr>
-                                        </table>
 
-                                        <table id="dummyId2" class="row header builder-element-non-editable element-data"
-                                               data-content=""
-                                               data-properties=""
-                                               data-class="BuilderRowElement"
-                                        >
-                                              <tr>
-                                                 <td>
-                                                  <div class="email-template-container-tools">
+
+                                                <td>
+                                                    <div class="email-template-container-tools">
                                                         <span class="action-move"><i class="icon-move"></i></span>
                                                         <span class="action-edit"><i class="icon-gear"></i></span>
                                                         <span class="action-delete"><i class="icon-trash"></i></span>
-                                                  </div>
-                                                  <table class="row" data-row-id="2">
-                                                    <tr>
+                                                    </div>
+                                                    <table class="container">
+                                                        <tr>
+                                                            <td class="wrapper last">
+                                                                <table class="six columns">
+                                                                    <tr>
+                                                                        <td  class="sortable-elements">
+                                                                            <div class="builder-element-non-editable">
+                                                                                <div class="email-template-container-tools">
+                                                                                    <span class="action-move"><i class="icon-move"></i></span>
+                                                                                    <span class="action-edit"><i class="icon-gear"></i></span>
+                                                                                    <span class="action-delete"><i class="icon-trash"></i></span>
+                                                                                </div>
+                                                                                <img alt="" src="'.$image.'">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="expander"></td>
+                                                                    </tr>
+                                                                </table>
 
-                                                      <td class="wrapper">
-
-                                                        <table class="six columns" data-column-id="1">
-                                                          <tr>
-                                                            <td class="sortable-elements">
-                                                                <div class="builder-element-non-editable">
-                                                                    <div class="email-template-container-tools">
-                                                                        <span class="action-move"><i class="icon-move"></i></span>
-                                                                        <span class="action-edit"><i class="icon-gear"></i></span>
-                                                                        <span class="action-delete"><i class="icon-trash"></i></span>
-                                                                    </div>
-                                                                    <img alt="" src="'.$image.'">
-                                                                </div>
+                                                                <table class="six columns last">
+                                                                    <tr>
+                                                                        <td  class="sortable-elements">
+                                                                            <div class="builder-element-non-editable">
+                                                                                <div class="email-template-container-tools">
+                                                                                    <span class="action-move"><i class="icon-move"></i></span>
+                                                                                    <span class="action-edit"><i class="icon-gear"></i></span>
+                                                                                    <span class="action-delete"><i class="icon-trash"></i></span>
+                                                                                </div>
+                                                                                <img alt="" src="'.$image.'">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="expander"></td>
+                                                                    </tr>
+                                                                </table>
                                                             </td>
-                                                            <td class="expander"></td>
-                                                          </tr>
-                                                        </table>
-
-                                                      </td>
-
-                                                      <td class="wrapper last">
-
-                                                        <table class="six columns" data-column-id="2">
-                                                          <tr>
-                                                            <td class="sortable-elements">
-                                                                <div class="builder-element-non-editable">
-                                                                   <div class="email-template-container-tools">
-                                                                        <span class="action-move"><i class="icon-move"></i></span>
-                                                                        <span class="action-edit"><i class="icon-gear"></i></span>
-                                                                        <span class="action-delete"><i class="icon-trash"></i></span>
-                                                                    </div>
-                                                                    <img alt="" src="'.$image.'">
-                                                                </div>
-                                                            </td>
-                                                            <td class="expander"></td>
-                                                          </tr>
-                                                        </table>
-
-                                                      </td>
-
-                                                    </tr>
-                                                  </table>
-
+                                                        </tr>
+                                                    </table>
                                                 </td>
-                                              </tr>
+                                            </tr>
                                         </table>
                                 </td>
                             </tr>

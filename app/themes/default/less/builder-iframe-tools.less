@@ -5,10 +5,10 @@ body{
 table.body{
 }
 
-.email-template-container-tools{
-	float: right;
+.builder-element-toolbar{
+	//float: right;
 	display: block;
-	visibility: hidden;
+	//visibility: hidden;
 	span{
 		width: 20px;
 		height: 20px;
@@ -33,7 +33,7 @@ table.body{
 .sortable-elements{
 	&:hover{
 		border: 1px dotted #ccc;
-		.email-template-container-tools{
+		.builder-element-toolbar{
 			visibility: visible;
 		}
 	}
@@ -61,10 +61,52 @@ table.body{
 }
 
 .on{
-	background:rgba(255, 0, 0, 0.1);
+	//background:rgba(255, 0, 0, 0.1);
 }
 
 .hover{
 	//box-shadow: 0 0 0 3px hotpink;
 	border: 1px dotted #ccc;
+}
+
+.ghost{
+	display: block;
+	background:azure !important;
+	padding: 5px !important;
+}
+
+.returned{
+	display: block;
+	border: 2px solid green;
+}
+
+.builder-element-non-editable,
+.body td{
+	&:before,
+	&:after{
+		content:" ";
+		display:table;
+	}
+	&:after{
+		clear:both;
+	}
+	*zoom:1;
+}
+
+.builder-element-non-editable{
+	border: 1px dashed blueviolet;
+}
+
+.email-template-container-tools{
+	display: none;
+}
+
+
+.hoverz{
+	border: 3px solid crimson;
+}
+
+img{
+	width: 100% !important;
+	height: 50px !important;
 }
