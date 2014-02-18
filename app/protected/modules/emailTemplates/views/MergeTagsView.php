@@ -48,9 +48,17 @@
         /**
          * @return string
          */
-        public static function getTreeDivId()
+        public function getTreeDivId()
         {
-            return 'MergeTagsTreeArea';
+            return 'MergeTagsTreeArea' . $this->uniqueId;
+        }
+
+        /**
+         * @return string
+         */
+        public static function getControllerId()
+        {
+            return 'emailTemplates';
         }
 
         public function __construct($uniqueId = null)
@@ -64,11 +72,52 @@
             return false;
         }
 
+        /**
+         * @return string
+         */
+        public function renderTreeViewAjaxScriptContent()
+        {
+            assert('is_string($formName)');
+            assert('is_string($componentViewClassName)');
+            assert('is_string($reportType)');
+            $url    =  Yii::app()->createUrl(static::getControllerId() .
+                                             '/default/relationsAndAttributesTreeForMergeTags', $_GET);
+            // Begin Not Coding Standard
+            $script = "
+                $('#" . $this->getTreeDivId() . "').addClass('loading');
+                $(this).makeLargeLoadingSpinner('" . $this->getTreeDivId() . "');
+                $.ajax({
+                    url : '" . $url . "',
+                    type : 'GET',
+                    success : function(data)
+                    {
+                        $('#" . $this->getTreeDivId() . "').html(data);
+                    },
+                    error : function()
+                    {
+                        //todo: error call
+                    }
+                });
+            ";
+            // End Not Coding Standard
+            return $script;
+        }
+
         protected function renderContent()
         {
+            $this->renderTreeViewAjaxScriptContent();
             $spinner  = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
             $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), $spinner);
+            $this->registerScriptContent();
             return $content;
         }
+
+        protected function registerScriptContent()
+        {
+            Yii::app()->clientScript->registerScript('mergeTagsScript' . $this->uniqueId,
+                                                     $this->renderTreeViewAjaxScriptContent());
+        }
+
+
     }
 ?>

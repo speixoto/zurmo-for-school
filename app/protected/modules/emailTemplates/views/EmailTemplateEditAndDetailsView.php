@@ -138,8 +138,15 @@
                     ");
             // End Not Coding Standard
             $content  = $this->resolveRenderHiddenModelClassNameElement($form);
+            $content .= $this->renderMergeTagsView();
             $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
             return $content;
+        }
+
+        protected function renderMergeTagsView()
+        {
+            $view = new MergeTagsView('EmailTemplate');
+            return $view->render();
         }
 
         protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)

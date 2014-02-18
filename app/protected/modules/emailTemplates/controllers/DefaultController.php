@@ -310,6 +310,32 @@
             echo $model->htmlContent;
         }
 
+        /**
+         * Render relations and attributes tree for merge tags
+         * @param null $id
+         * @param null $nodeId
+         * @param string $moduleClassName
+         */
+        public function actionRelationsAndAttributesTreeForMergeTags($id = null, $nodeId = null, $moduleClassName = 'ContactsModule')
+        {
+            $type     = Report::TYPE_ROWS_AND_COLUMNS;
+            $treeType = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
+            $report   = new Report();
+            $report->setModuleClassName($moduleClassName);
+            $report->setType($type);
+            if ($nodeId != null)
+            {
+                $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
+                echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
+                Yii::app()->end(0, false);
+            }
+            $view        = new ReportRelationsAndAttributesForMergeTagsTreeView($type, $treeType, 'edit-form');
+            $content     = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
         protected static function getZurmoControllerUtil()
         {
             return new EmailTemplateZurmoControllerUtil();
