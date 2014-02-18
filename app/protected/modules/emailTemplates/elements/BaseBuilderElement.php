@@ -302,15 +302,7 @@
             $content        = $elementContent;
             if (!empty($actionsOverlay))
             {
-                if ($this->appendActionsOverlayToContentElementsContent())
-                {
-                    $content        .= $actionsOverlay;
-                    $content        = $this->wrapNonEditableElementContent($content);
-                }
-                else
-                {
                     $contentSuffix  .= $actionsOverlay;
-                }
             }
             $content    = $this->resolveWrapperNonEditableByContentAndHtmlOptions($content, $htmlOptions);
             if ($contentSuffix !== null)
@@ -349,55 +341,7 @@
          */
         protected function resolveWrapperNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
         {
-            $content        = $this->resolveWrapperTdNonEditableByContent($content);
-            $content        = $this->resolveWrapperTrNonEditableByContent($content);
-            $content        = $this->resolveWrapperTBodyNonEditableByContent($content);
-            $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $htmlOptions);
-            return $content;
-        }
-
-        /**
-         * Resolve and return td(s) by using provided content for non-editable representation
-         * @param $content
-         * @return string
-         */
-        protected function resolveWrapperTdNonEditableByContent($content)
-        {
-            $content        = ZurmoHtml::tag('td', $this->resolveNonEditableContentWrappingTdHtmlOptions(), $content);
-            return $content;
-        }
-
-        /**
-         * Resolve and return tr(s) by using provided content for non-editable representation
-         * @param $content
-         * @return string
-         */
-        protected function resolveWrapperTrNonEditableByContent($content)
-        {
-            $content        = ZurmoHtml::tag('tr', array(), $content);
-            return $content;
-        }
-
-        /**
-         * Resolve and return tbody by using provided content for non-editable representation
-         * @param $content
-         * @return string
-         */
-        protected function resolveWrapperTBodyNonEditableByContent($content)
-        {
-            $content        = ZurmoHtml::tag('tbody', array(), $content);
-            return $content;
-        }
-
-        /**
-         * Resolve and return table by using provided content and htmloptions for non-editable representation
-         * @param $content
-         * @param array $htmlOptions
-         * @return string
-         */
-        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
-        {
-            $content        = ZurmoHtml::tag('table', $htmlOptions, $content);
+            $content        = ZurmoHtml::tag('div', $htmlOptions, $content);
             return $content;
         }
 
@@ -421,24 +365,6 @@
             $mergedProperties   = CMap::mergeArray($this->resolveNonEditableWrapperHtmlOptions(), $properties);
             $this->resolveStylePropertiesNonEditable($mergedProperties);
             return $mergedProperties;
-        }
-
-        /**
-         * Resolve wrapper's column html options
-         * @return array
-         */
-        protected function resolveNonEditableContentWrappingTdHtmlOptions()
-        {
-            return array();
-        }
-
-        /**
-         * Whether actions overlay content should be appended to element content or at the end of output.
-         * @return bool
-         */
-        protected function appendActionsOverlayToContentElementsContent()
-        {
-            return true;
         }
 
         /**
