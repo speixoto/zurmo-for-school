@@ -43,6 +43,8 @@
 
         protected static $content;
 
+        protected static $account;
+
         protected static $contact;
 
         protected static $lead;
@@ -172,8 +174,19 @@
             self::$emailTemplate                            = $model;
             self::$content                                  = '[[STRING]] [[FIRST^NAME]] [[LAST^NAME]] [[PHONE]]';
             self::$compareContent                           = 'abc James Jackson 1122334455';
+
+            self::$account                                  = AccountTestHelper::
+                                                              createAccountByNameForOwner('Account1', self::$super);
+            self::$account->billingAddress = new Address();
+            self::$account->billingAddress->street1 = 'AccountStreet1';
+            $saved = self::$account->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
             self::$contact                                  = ContactTestHelper::
-                                                              createContactByNameForOwner('Jason', self::$super);
+                                                              createContactWithAccountByNameForOwner('Jason',
+                                                              self::$super, self::$account);
             self::$lead                                     = LeadTestHelper::
                                                               createLeadByNameForOwner('Laura', self::$super);
         }
@@ -616,6 +629,23 @@
 
         /**
          * @depends testAddressMergeTag
+         */
+        public function testRelationAttributeAndRelationOwnedAddressMergeTag()
+        {
+            $content                        = 'address: [[ACCOUNT__BILLING^ADDRESS__STREET1]] [[ACCOUNT__NAME]]';
+            $compareContent                 = 'address: AccountStreet1 Account1';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($compareContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testRelationAttributeAndRelationOwnedAddressMergeTag
          */
         public function testLikeContactStateMergeTag()
         {
