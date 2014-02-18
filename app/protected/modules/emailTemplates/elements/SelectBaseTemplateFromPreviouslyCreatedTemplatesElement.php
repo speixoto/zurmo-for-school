@@ -38,7 +38,28 @@
     {
         protected function resolveBaseTemplates()
         {
-            return EmailTemplate::getPreviouslyCreatedBuilderTemplates($this->model->modelClassName);
+            return EmailTemplate::getPreviouslyCreatedBuilderTemplates($this->resolveModelClassName());
+        }
+
+        protected function resolveModelClassName()
+        {
+            if (isset($this->params['modelClassName']))
+            {
+                return $this->params['modelClassName'];
+            }
+
+            if (isset($this->model->modelClassName))
+            {
+                return $this->model->modelClassName;
+            }
+
+            if ($this->model->isWorkflowTemplate())
+            {
+                $availableModels    = EmailTemplateModelClassNameElement::getAvailableModelNamesArray();
+                reset($availableModels);
+                return key($availableModels);
+            }
+            return 'Contact';
         }
     }
 ?>

@@ -46,7 +46,6 @@
 
         protected function resolveContainingViews(WizardActiveForm $form)
         {
-            // TODO: @Shoaibi: Critical3: Hide the last two views by enabling third argument.
             $views              = array();
             $views[]            = new GeneralDataForEmailTemplateWizardView($this->model, $form);
             $views[]            = new SelectBaseTemplateForEmailTemplateWizardView($this->model, $form, true);

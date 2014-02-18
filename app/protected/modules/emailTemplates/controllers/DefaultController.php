@@ -633,7 +633,7 @@
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
         }
 
-        public function actionRenderPreview()
+        public function actionRenderPreviewByPost()
         {
             // this would be actually unserialized and an array. Bad naming convention as we need to preserve
             // form names.
@@ -643,6 +643,11 @@
                 Yii::app()->end(0, false);
             }
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedDataArray, false);
+        }
+
+        public function actionRenderPreviewById($id)
+        {
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
         }
 
         public function actionRenderElementEditable($className, $id = null, $properties = null, $content = null)
@@ -677,6 +682,13 @@
                 Yii::app()->end(0, false);
             }
             $this->actionRenderElementNonEditable($className, $renderForCanvas, $id, $properties, $content);
+        }
+
+        public function actionRenderBaseTemplateOptions($elementClassName, $elementModelClassName, $elementAttributeName, $elementFormClassName, array $elementParams = array())
+        {
+            $element                    = new $elementClassName(new $elementModelClassName(), $elementAttributeName,
+                                                                new $elementFormClassName(), $elementParams);
+            echo $element->render();
         }
     }
 ?>

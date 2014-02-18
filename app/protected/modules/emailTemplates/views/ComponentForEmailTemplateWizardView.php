@@ -174,5 +174,10 @@
         {
             return array();
         }
+
+        protected function resolveRelativeUrl($action, $params = array())
+        {
+            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action, $params);
+        }
     }
 ?>
