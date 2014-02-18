@@ -34,25 +34,26 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AccountsForAccountRelatedListView extends AccountsRelatedListView
+    class OrgChart extends ZurmoWidget
     {
-        protected function getRelationAttributeName()
-        {
-            return 'account';
-        }
-
-        public static function getDisplayDescription()
-        {
-            return Zurmo::t('AccountsModule', 'AccountsModulePluralLabel For AccountsModuleSingularLabel',
-                        LabelUtil::getTranslationParamsForAllModules());
-        }
+        public $assetFolderName = 'orgChart';
         
-        /**
-         * @return array
-         */
-        public static function getAllowedOnPortletViewClassNames()
+        public $scriptFile = array('org-chart.js', 'd3.v3.min.js');
+        
+        public $cssFile         = 'org-chart.css';
+
+        public function run()
         {
-            return array('AccountDetailsAndRelationsView');
+            $javaScript = "
+                    $(document).ready(function(){
+                    $('#graph-btn').click(function(){
+                        $('#d3-dialog').fadeIn();
+                        return false;
+                    });
+                });";
+            Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
+            
+            echo "<div id='d3'><div id='tree-container'></div></div>";
         }
     }
 ?>

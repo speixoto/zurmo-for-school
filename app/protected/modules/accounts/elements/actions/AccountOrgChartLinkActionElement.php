@@ -34,25 +34,56 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AccountsForAccountRelatedListView extends AccountsRelatedListView
+    class AccountOrgChartLinkActionElement extends ModalListLinkActionElement
     {
-        protected function getRelationAttributeName()
+        public function render()
         {
-            return 'account';
+            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
+            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
+            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
+            $content .= $ajaxLink = ZurmoHtml::ajaxLink($label, $this->getDefaultRoute(),
+                                                        $this->getAjaxLinkOptions(),
+                                                        $this->getHtmlOptions()
+                                                        );
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
         }
 
-        public static function getDisplayDescription()
+        protected function getDefaultLabel()
         {
-            return Zurmo::t('AccountsModule', 'AccountsModulePluralLabel For AccountsModuleSingularLabel',
-                        LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('ZurmoModule', 'Org Chart');
         }
+
+        protected function getAjaxLinkTitle()
+        {
+            return $this->getLabel();
+        }
+
         
-        /**
-         * @return array
-         */
-        public static function getAllowedOnPortletViewClassNames()
+        protected function getRouteAction()
         {
-            return array('AccountDetailsAndRelationsView');
+            return '/orgGraph/';
         }
+        /*
+        public function getElementValue()
+        {
+            $eventHandlerName = 'auditEventsModalListLinkActionElementHandler';
+            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
+            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($eventHandlerName, "
+                    function ". $eventHandlerName ."()
+                    {
+                        " . ZurmoHtml::ajax($ajaxOptions)."
+                    }
+                ", CClientScript::POS_HEAD);
+            }
+            return $eventHandlerName;
+        }
+        */
     }
 ?>

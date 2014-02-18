@@ -400,5 +400,17 @@
                                         'AccountsMerged', 'AccountsPageView',
                                         '/accounts/default/list');
         }
+        
+        public function actionOrgGraph()
+        {
+            $orgChart = new OrgChart();
+            $orgChart->run();
+            /*
+            $cClipWidget        = new CClipWidget();            
+            list($widget, $widgetStart) = $cClipWidget->renderBeginWidget('application.core.widgets.OrgChart');
+            $widgetEnd  = $clipWidget->renderEndWidget();
+            echo $widgetStart . $widgetEnd;
+            */
+        }
     }
 ?>

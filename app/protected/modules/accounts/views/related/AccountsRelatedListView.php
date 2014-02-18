@@ -40,7 +40,7 @@
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('AccountsModule', 'Related AccountsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
+                    'title' => "eval:Zurmo::t('AccountsModule', 'Children AccountsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
                 ),
                 'global' => array(
                     'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
@@ -52,15 +52,6 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
                                             ),
                                         ),
                                     )

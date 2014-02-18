@@ -47,6 +47,7 @@
                             array('type' => 'EditLink',       'renderType' => 'Details'),
                             array('type' => 'AuditEventsModalListLink',  'renderType' => 'Details'),
                             array('type' => 'CopyLink',       'renderType' => 'Details'),
+                            array('type' => 'AccountOrgChartLink',  'renderType' => 'Details'),
                             array('type' => 'AccountDeleteLink', 'renderType' => 'Details'),
                         ),
                     ),
