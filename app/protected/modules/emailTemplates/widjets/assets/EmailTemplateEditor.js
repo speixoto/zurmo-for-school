@@ -279,54 +279,54 @@ var emailTemplateEditor = {
         $(emailTemplateEditor.settings.iframeSelector).attr( 'src', function ( i, val ) { return val; });
         emailTemplateEditor.canvasChanged();
     },
-        compileSerializedData: function () {
-            var getSerializedData = function (element) {
-                var data = {};
-                var content = {};
-                content['content'] = $(element).data('content');
-                data['content'] = content;
-                data['properties'] = $(element).data('properties');
-                data['class'] = $(element).data('class');
-                return data;
-            };
+    compileSerializedData: function () {
+        var getSerializedData = function (element) {
+            var data = {};
+            var content = {};
+            content['content'] = $(element).data('content');
+            data['content'] = content;
+            data['properties'] = $(element).data('properties');
+            data['class'] = $(element).data('class');
+            return data;
+        };
 
-            var findParentAndAppendSerializedData = function findParent(parent, elementId, serializedData, data) {
-                for(var key in data) {
-                    if (key == $(parent).attr('id')) {
-                        data[key]['content'][elementId] = serializedData;
-                    }
-                    else
-                    {
-                        findParent(parent, elementId, serializedData, data[key]['content']);
-                    }
-                }
-                return data;
-            }
-
-            //Gets the cachedSerializedData and if its set return it
-            var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
-            if (value != '') {
-                console.log(jQuery.parseJSON(value));
-                return jQuery.parseJSON(value);
-            };
-
-            var data    = {};
-            var elementDataArray = contents.find('.element-data');
-            for (var i = 0; i < elementDataArray.length; i++){
-                var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
-                if (parentsElementData.length == 0)
-                {
-                    //Its the first element, the canvas one
-                    data[$(elementDataArray[i]).attr('id')] = getSerializedData(elementDataArray[i]);
+        var findParentAndAppendSerializedData = function findParent(parent, elementId, serializedData, data) {
+            for(var key in data) {
+                if (key == $(parent).attr('id')) {
+                    data[key]['content'][elementId] = serializedData;
                 }
                 else
                 {
-                    var parent = parentsElementData[0];
-                    data = findParentAndAppendSerializedData(parent, $(elementDataArray[i]).attr('id'), getSerializedData(elementDataArray[i]), data);
+                    findParent(parent, elementId, serializedData, data[key]['content']);
                 }
             }
-            value = JSON.stringify(data);
-            $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
-            return value;
+            return data;
         }
+
+        //Gets the cachedSerializedData and if its set return it
+        var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
+        if (value != '') {
+            console.log(jQuery.parseJSON(value));
+            return jQuery.parseJSON(value);
+        };
+
+        var data    = {};
+        var elementDataArray = contents.find('.element-data');
+        for (var i = 0; i < elementDataArray.length; i++){
+            var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
+            if (parentsElementData.length == 0)
+            {
+                //Its the first element, the canvas one
+                data[$(elementDataArray[i]).attr('id')] = getSerializedData(elementDataArray[i]);
+            }
+            else
+            {
+                var parent = parentsElementData[0];
+                data = findParentAndAppendSerializedData(parent, $(elementDataArray[i]).attr('id'), getSerializedData(elementDataArray[i]), data);
+            }
+        }
+        value = JSON.stringify(data);
+        $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
+        return value;
     }
+}

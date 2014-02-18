@@ -70,9 +70,9 @@
                                             <tr>
                                                 <td>
                                                     <div class="email-template-container-tools">
-                                                        <span class="action-move"><i class="icon-move"></i></span>
-                                                        <span class="action-edit"><i class="icon-gear"></i></span>
-                                                        <span class="action-delete"><i class="icon-trash"></i></span>
+                                                        <span class="action-move"><i class="icon-action-move"></i></span>
+                                                        <span class="action-move"><i class="icon-action-move"></i></span>
+                                                        <span class="action-delete"><i class="icon-action-delete"></i></span>
                                                     </div>
                                                     <table class="container">
                                                         <tr>
@@ -82,9 +82,9 @@
                                                                         <td  class="sortable-elements">
                                                                             <div class="builder-element-non-editable">
                                                                                 <div class="email-template-container-tools">
-                                                                                    <span class="action-move"><i class="icon-move"></i></span>
-                                                                                    <span class="action-edit"><i class="icon-gear"></i></span>
-                                                                                    <span class="action-delete"><i class="icon-trash"></i></span>
+                                                                                    <span class="action-move"><i class="icon-action-move"></i></span>
+                                                                                    <span class="action-move"><i class="icon-action-move"></i></span>
+                                                                                    <span class="action-delete"><i class="icon-action-delete"></i></span>
                                                                                 </div>
                                                                                 <img alt="" src="'.$image.'">
                                                                             </div>
@@ -100,9 +100,9 @@
 
                                                 <td>
                                                     <div class="email-template-container-tools">
-                                                        <span class="action-move"><i class="icon-move"></i></span>
-                                                        <span class="action-edit"><i class="icon-gear"></i></span>
-                                                        <span class="action-delete"><i class="icon-trash"></i></span>
+                                                        <span class="action-move"><i class="icon-action-move"></i></span>
+                                                        <span class="action-move"><i class="icon-action-move"></i></span>
+                                                        <span class="action-delete"><i class="icon-action-delete"></i></span>
                                                     </div>
                                                     <table class="container">
                                                         <tr>
@@ -112,9 +112,9 @@
                                                                         <td  class="sortable-elements">
                                                                             <div class="builder-element-non-editable">
                                                                                 <div class="email-template-container-tools">
-                                                                                    <span class="action-move"><i class="icon-move"></i></span>
-                                                                                    <span class="action-edit"><i class="icon-gear"></i></span>
-                                                                                    <span class="action-delete"><i class="icon-trash"></i></span>
+                                                                                    <span class="action-move"><i class="icon-action-move"></i></span>
+                                                                                    <span class="action-move"><i class="icon-action-move"></i></span>
+                                                                                    <span class="action-delete"><i class="icon-action-delete"></i></span>
                                                                                 </div>
                                                                                 <img alt="" src="'.$image.'">
                                                                             </div>
@@ -128,9 +128,9 @@
                                                                         <td  class="sortable-elements">
                                                                             <div class="builder-element-non-editable">
                                                                                 <div class="email-template-container-tools">
-                                                                                    <span class="action-move"><i class="icon-move"></i></span>
-                                                                                    <span class="action-edit"><i class="icon-gear"></i></span>
-                                                                                    <span class="action-delete"><i class="icon-trash"></i></span>
+                                                                                    <span class="action-move"><i class="icon-action-move"></i></span>
+                                                                                    <span class="action-move"><i class="icon-action-move"></i></span>
+                                                                                    <span class="action-delete"><i class="icon-action-delete"></i></span>
                                                                                 </div>
                                                                                 <img alt="" src="'.$image.'">
                                                                             </div>

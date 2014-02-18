@@ -915,7 +915,25 @@
          */
         protected function registerAjaxPostForApplyClickScript()
         {
-            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
+            $hiddenInputId  = ZurmoHtml::activeId($this->getModel(), 'id');
+            Yii::app()->clientScript->registerScript('ajaxPostForApplyClick', "
+                $('#" . $this->resolveApplyLinkId() . "').unbind('click.ajaxPostForApplyClick');
+                $('#" . $this->resolveApplyLinkId() . "').bind('click.ajaxPostForApplyClick', function()
+                {
+                    emailTemplateEditor.freezeLayoutEditor();
+                    var replaceElementId = $('#" . $hiddenInputId . "').val();
+                    $.ajax({
+                        type : 'POST',
+                        data : $('#" .  $this->resolveApplyLinkId() . "').closest('form').serialize(),
+                        success: function (html) {
+                            $('#' + replaceElementId).replaceWith(html);
+                            emailTemplateEditor.unfreezeLayoutEditor();
+                            emailTemplateEditor.canvasChanged();
+                        }
+                    });
+                    setIsDraftToZero();
+                });
+            ");
         }
 
         /**
