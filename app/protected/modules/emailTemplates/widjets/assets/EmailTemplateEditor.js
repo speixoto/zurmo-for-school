@@ -176,13 +176,12 @@ var emailTemplateEditor = {
             }
         });
 
-
-
         $('body').on('mouseup', function(event){
             isDragging = false;
             point.left = event.pageX - offset.left;
             point.top = event.pageY - offset.top;
             var containerToPlace;
+            var numberOfContainers = 0;
             for (i = 0; i < containers.length; i++){
                 rect = containers[i].getBoundingClientRect();
                 if( point.left > rect.left &&
@@ -191,17 +190,23 @@ var emailTemplateEditor = {
                     point.top < rect.bottom ){
                         $(containers[i]).addClass('on');
                         containerToPlace = $(containers[i]);
+                        numberOfContainers++;
                 } else {
                     $(containers[i]).removeClass('on');
                 }
                 $(containers[i]).removeClass('hover');
             }
             if (elementDragged != undefined && elementDragged.is('li') && containerToPlace != undefined){
-                emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, false);
+                if (numberOfContainers == 1) {
+                    //Place a new row
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, true, iframeContents);
+                } else {
+                    //Place a new element
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, false, iframeContents);
+                }
+                emailTemplateEditor.canvasChanged();
             }
         });
-
-
     },
     initSortableElements: function ( selector , connectToSelector, iframeContents) {
         $( iframeContents.find(selector) ).each(function(){
@@ -213,9 +218,6 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.is('li')) {
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, false);
-                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
@@ -233,20 +235,13 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.is('li')) {
-                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, true);
-                    emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
-                        emailTemplateEditor.settings.sortableElementsSelector,
-                        iframeContents);
-                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
             cursor: 'move'
         });
     },
-    placeNewElement: function ( elementClass, item , wrapElement) {
+    placeNewElement: function ( elementClass, item , wrapElement, iframeContents) {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement},
@@ -257,6 +252,8 @@ var emailTemplateEditor = {
                 emailTemplateEditor.settings.ghost.after(html);
                 emailTemplateEditor.unfreezeLayoutEditor();
                 emailTemplateEditor.settings.ghost.detach();
+                emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
+                    emailTemplateEditor.settings.sortableElementsSelector, iframeContents);
             }
         });
     },
