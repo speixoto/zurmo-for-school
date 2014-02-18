@@ -36,6 +36,8 @@
 
     class BuilderCanvasView
     {
+
+        //TODO: @sergio: Remove this file. Not used
         public function render()
         {
             static::registerScripts();

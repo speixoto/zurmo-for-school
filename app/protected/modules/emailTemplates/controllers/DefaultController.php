@@ -249,41 +249,6 @@
             echo $view->render();
         }
 
-        /**
-         * This is to test the Prof of Concept only, remove it when not needed
-         */
-        public function actionCreatePoc($type)
-        {
-            //TODO: @sergio: Remove this!
-            $type = (int)$type;
-            $emailTemplate       = new EmailTemplate();
-            $emailTemplate->type = $type;
-            $editViewClassName   = 'PocEmailTemplateEditAndDetailsView';
-            $editAndDetailsView  = new $editViewClassName('Edit', $this->getId(), $this->getModule()->getId(), $emailTemplate);;
-            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
-            {
-                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
-                $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                    makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                        $breadCrumbLinks, 'WorkflowBreadCrumbView'));
-            }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
-            {
-                $emailTemplate->modelClassName = 'Contact';
-                $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
-                $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                    makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                        $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            echo $view->render();
-        }
-
         public function actionEdit($id, $redirectUrl = null)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
@@ -521,8 +486,6 @@
 
         public function actionRenderCanvas($id = null)
         {
-//            $view = new BuilderCanvasView();
-//            echo $view->render();
             // TODO: @Shoaibi: Critical0: get rid of this.
             $serializedData['dom'] = array(
                 'canvas1'     => array(
