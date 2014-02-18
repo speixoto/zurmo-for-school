@@ -340,7 +340,7 @@ var emailTemplateEditor = {
                 data = findParentAndAppendSerializedData(parent, $(elementDataArray[i]).attr('id'), getSerializedData(elementDataArray[i]), data);
             }
         }
-        value = JSON.stringify(data);
+        value = JSON.stringify({dom: data});
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
         return value;
     }

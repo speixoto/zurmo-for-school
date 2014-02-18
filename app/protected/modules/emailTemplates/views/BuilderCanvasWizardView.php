@@ -345,9 +345,40 @@
 
         protected function registerCanvasSaveScript()
         {
+            $successMessage = Zurmo::t('EmailTemplatesModule',
+                                           'EmailTemplatessModuleSingularLabel was successfully saved.',
+                                           LabelUtil::getTranslationParamsForAllModules());
+            $errorMessage   = Zurmo::t('EmailTemplatesModule',
+                                       'There was an error saving EmailTemplatessModuleSingularLabel',
+                                        LabelUtil::getTranslationParamsForAllModules());
             Yii::app()->clientScript->registerScript('canvasSaveScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
                 // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:111
+                $('#" . static::getNextPageLinkId() . "').unbind('click');
+                $('#" . static::getNextPageLinkId() . "').bind('click', function()
+                {
+                    $.ajax({
+                        url  : $('#" .  static::getNextPageLinkId() . "').closest('form').attr('action'),
+                        type : 'POST',
+                        data : {serializedData: emailTemplateEditor.compileSerializedData()},
+                        success: function () {
+                            $('#FlashMessageBar').jnotifyAddMessage({
+                                text: '" . $successMessage . "',
+                                permanent: true,
+                                clickOverlay : true,
+                                showIcon: false,
+                            });
+                        },
+                        error: function () {
+                            $('#FlashMessageBar').jnotifyAddMessage({
+                                text: '" . $errorMessage . "',
+                                permanent: true,
+                                clickOverlay : true,
+                                showIcon: false,
+                            });
+                        }
+                    });
+                    return false;
+                });
                 ");
         }
 
