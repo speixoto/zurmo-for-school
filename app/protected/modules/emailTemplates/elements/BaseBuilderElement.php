@@ -113,6 +113,15 @@
         }
 
         /**
+         * Return the name of model to use with the form in editable representation
+         * @return string
+         */
+        public static function getModelClassName()
+        {
+            return 'BuilderElementEditableModelForm';
+        }
+
+        /**
          * Return translated label for current Element.
          * @throws NotImplementedException
          */
@@ -1066,7 +1075,8 @@
          */
         protected function getModel()
         {
-            return new BuilderElementEditableModelForm($this->content, $this->properties);
+            $modelClassName = static::getModelClassName();
+            return new $modelClassName($this->content, $this->properties);
         }
 
         /**
