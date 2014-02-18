@@ -128,48 +128,58 @@ var emailTemplateEditor = {
         var n = 0;
         var iframeContent = $(emailTemplateEditor.settings.iframeSelector).contents();
         emailTemplateEditor.settings.ghost = $('<div class="ghost">drop here</div>');
+        var isDragging = false;
 
         $('body').on('mousedown', function(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             containers = $(emailTemplateEditor.settings.iframeSelector).contents().find(
                             emailTemplateEditor.settings.sortableElementsSelector + ', ' +
                             emailTemplateEditor.settings.sortableRowsSelector);
-            innerElements = [];
+            innerElements = $(emailTemplateEditor.settings.iframeSelector).contents().find('.element-wrapper');
+            isDragging = true;
+        });
 
-            $('body').on('mousemove', function(event){
+        var innerInnerElements = [];
+        var areas = [];
+        var smallestIndex = 0;
+
+        $('body').on('mousemove', function(event){
+            if(isDragging === true){
                 point.left = event.pageX - offset.left;
                 point.top = event.pageY - offset.top;
-                for (i = 0; i < containers.length; i++){
-                    rect = containers[i].getBoundingClientRect();
+
+                innerInnerElements = [];
+                areas = [];
+
+                for (i = 0; i < innerElements.length; i++){
+                    rect = innerElements[i].getBoundingClientRect();
                     if( point.left > rect.left && point.left < rect.right &&
                         point.top > rect.top && point.top < rect.bottom ){
-                        $(containers[i]).addClass('hover');
-                        innerElements = $(containers[i]).find('.sortable-rows, .sortable-elements').children().not('.ghost');
-                        for(n = 0; n < innerElements.length; n++){
-                            innerElementRect = innerElements[n].getBoundingClientRect();
-                            if( event.offsetX > innerElementRect.left && event.offsetX < innerElementRect.right &&
-                                event.offsetY > innerElementRect.top && event.offsetY < innerElementRect.bottom ){
-                                $(innerElements[n]).addClass('hoverz');
-                                if( event.offsetY < $(innerElements[n]).outerHeight(true) / 2 ){
-                                    $(innerElements[n]).before(emailTemplateEditor.settings.ghost);
-                                } else {
-                                    $(innerElements[n]).after(emailTemplateEditor.settings.ghost);
-                                }
-                            } else {
-                                iframeContent.find('.hoverz').removeClass('hoverz');
-                            }
-                        }
-                    } else {
-                        $(containers[i]).removeClass('hover');
+                        innerInnerElements.push(innerElements[i]);
                     }
                 }
-            });
+
+                for(var n1 = 0; n1 < innerInnerElements.length; n1++){
+                    areas.push( $(innerInnerElements[n1]).width() * $(innerInnerElements[n1]).height() );
+                }
+
+                smallestIndex = areas.indexOf(Math.min.apply(Math, areas));
+
+                $('.hover').removeClass('hover');
+                $(innerInnerElements[smallestIndex]).addClass('hover');
+
+                if( event.offsetY < $(innerInnerElements[smallestIndex]).outerHeight(true) / 2 ){
+                    $(innerInnerElements[smallestIndex]).before(emailTemplateEditor.settings.ghost);
+                } else {
+                    $(innerInnerElements[smallestIndex]).after(emailTemplateEditor.settings.ghost);
+                }
+            }
         });
 
 
 
         $('body').on('mouseup', function(event){
-            $('body').off('mousemove');
+            isDragging = false;
             point.left = event.pageX - offset.left;
             point.top = event.pageY - offset.top;
             var containerToPlace;
