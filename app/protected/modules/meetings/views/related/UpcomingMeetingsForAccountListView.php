@@ -39,17 +39,26 @@
      */
     class UpcomingMeetingsForAccountListView extends UpcomingMeetingsRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'Account';
         }
 
+        /**
+         * @return null|string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel For AccountsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('AccountDetailsAndRelationsView');

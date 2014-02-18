@@ -39,6 +39,9 @@
      */
     abstract class UpcomingMeetingsRelatedListView extends SecuredRelatedListView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -87,6 +90,9 @@
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected function getCreateLinkRouteParameters()
         {
             return array(
@@ -97,6 +103,10 @@
             );
         }
 
+        /**
+         * @param null $stringTime
+         * @return array
+         */
         protected function makeSearchAttributeData($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
@@ -137,6 +147,9 @@
             return $searchAttributeData;
         }
 
+        /**
+         * @return string
+         */
         public static function getModuleClassName()
         {
             return 'MeetingsModule';

@@ -39,17 +39,26 @@
      */
     class UpcomingMeetingsForOpportunityListView extends UpcomingMeetingsRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'Opportunity';
         }
 
+        /**
+         * @return null|string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel For OpportunitiesModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('OpportunityDetailsAndRelationsView');

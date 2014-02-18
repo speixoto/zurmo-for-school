@@ -39,17 +39,26 @@
      */
     class UpcomingMeetingsForContactListView extends UpcomingMeetingsRelatedListView
     {
+        /**
+         * @return string
+         */
         protected function getRelationAttributeName()
         {
             return 'Contact';
         }
 
+        /**
+         * @return null|string
+         */
         public static function getDisplayDescription()
         {
             return Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel For ContactsModuleSingularLabel',
                             LabelUtil::getTranslationParamsForAllModules());
         }
 
+        /**
+         * @return array
+         */
         public static function getAllowedOnPortletViewClassNames()
         {
             return array('ContactDetailsAndRelationsView');
