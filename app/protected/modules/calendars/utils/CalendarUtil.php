@@ -191,7 +191,7 @@
          */
         public static function getFullCalendarItems(CalendarItemsDataProvider $dataProvider)
         {
-            $calendarItems = $dataProvider->getData(false);
+            $calendarItems = $dataProvider->getData(true);
             $fullCalendarItems = array();
             for($k = 0; $k < count($calendarItems); $k++)
             {
@@ -753,12 +753,13 @@
          * Resolve report by saved calendar post data.
          * @param string $type
          * @param int $id
+         * @param array $postData
          * @return Report
          */
-        public static function resolveReportBySavedCalendarPostData($type, $id = null)
+        public static function resolveReportBySavedCalendarPostData($type, $id = null, $postData)
         {
             assert('is_string($type)');
-            $postData = PostUtil::getData();
+            assert('is_array($postData)');
             if ($id == null)
             {
                 $report = new Report();

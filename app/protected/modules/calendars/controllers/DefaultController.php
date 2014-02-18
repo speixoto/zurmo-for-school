@@ -150,7 +150,8 @@
          */
         public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
         {
-            $report        = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
+            $postData      = PostUtil::getData();
+            $report        = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id, $postData);
             if ($nodeId != null)
             {
                 $reportToTreeAdapter = new CalendarReportRelationsAndAttributesToTreeAdapter($report, $treeType);
@@ -177,7 +178,8 @@
         public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
                                                    $trackableStructurePosition = false, $id = null)
         {
-            $report                             = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
+            $postData   = PostUtil::getData();
+            $report     = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id, $postData);
             ReportUtil::processAttributeAdditionFromTree($nodeId, $treeType, $report, $rowNumber, $trackableStructurePosition);
         }
 
