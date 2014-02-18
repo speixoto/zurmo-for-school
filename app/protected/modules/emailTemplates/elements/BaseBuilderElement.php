@@ -265,15 +265,6 @@
         }
 
         /**
-         * Return html options for the nonEditable representation wrapper.
-         * @return array
-         */
-        protected function resolveControlNonEditableContentHtmlOptions()
-        {
-            return array('class' => 'builder-element-content');
-        }
-
-        /**
          * Render current element nonEditable with its wrapper including custom data attributes, properties and overlay actions.
          * @param string $elementContent
          * @return string
@@ -1044,7 +1035,7 @@
         protected function resolveContentElementNonEditableTemplate(Element $element)
         {
             // we need to put wrapper div inside td else it breaks the table layout output.
-            $element->nonEditableTemplate   = ZurmoHtml::tag('div', $this->resolveControlNonEditableContentHtmlOptions(), '{content}');
+            $element->nonEditableTemplate   = '{content}';
         }
 
         /**
