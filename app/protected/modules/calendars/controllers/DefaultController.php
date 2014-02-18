@@ -134,7 +134,9 @@
          */
         public function actionCombinedDetails()
         {
-            $dataProvider               = CalendarUtil::getCalendarItemsDataProvider();
+            //Check for the calendars for the user. If not add the default calendar.
+            
+            $dataProvider               = CalendarUtil::getCalendarItemsDataProvider(Yii::app()->user->userModel);
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $this->getId(), $this->getModule()->getId());
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                   makeStandardViewForCurrentUser($this, $interactiveCalendarView));
@@ -303,7 +305,7 @@
             $savedCalendar = SavedCalendar::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($savedCalendar);
             $savedCalendar->delete();
-            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider(Yii::app()->user->userModel);
             $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
             $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getMySavedCalendarsAndSelected(),
                                                                                        'mycalendar[]', 'mycalendar', 'saved');
@@ -335,7 +337,7 @@
             $savedCalendarSubscription->user     = $user;
             $savedCalendarSubscription->savedcalendar = $savedCalendar;
             $savedCalendarSubscription->save();
-            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider($user);
             $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
             $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
                                                                                        'sharedcalendar[]', 'sharedcalendar', 'shared');
@@ -350,7 +352,7 @@
         {
             $savedCalendarSubscription = SavedCalendarSubscription::getById(intval($id));
             $savedCalendarSubscription->delete();
-            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider(Yii::app()->user->userModel);
             $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
             $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
                                                                                        'sharedcalendar[]', 'sharedcalendar', 'shared');

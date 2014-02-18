@@ -111,7 +111,27 @@
                                                                                    ],
                                                                      eventRender: function(event, element, view) {
                                                                                         element.qtip({
-                                                                                            content: event.description
+                                                                                            content: {
+                                                                                                        text: event.description,
+                                                                                                        title: event.title,
+                                                                                                        button: true
+                                                                                                     },
+                                                                                            show:{
+                                                                                                    event: 'click'
+                                                                                            },
+                                                                                            hide: {
+                                                                                                    event: 'click'
+                                                                                                  },
+                                                                                            position: {
+                                                                                                        my: 'bottom center',
+                                                                                                        at: 'top center',
+                                                                                                        target: 'mouse',
+                                                                                                        viewport: $('#calendar'),
+                                                                                                        adjust: {
+                                                                                                            mouse: false,
+                                                                                                            scroll: false
+                                                                                                        }
+                                                                                                      }
                                                                                         });
                                                                                     },
                                                                      eventAfterAllRender: function(view)

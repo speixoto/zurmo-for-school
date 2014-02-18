@@ -46,7 +46,10 @@
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
-                        'elements' => array(),
+                        'elements' => array(
+                            array('type'  => 'MeetingEditLink', 'renderType' => 'Details'),
+                            array('type'  => 'MeetingDetailsLink', 'renderType' => 'Details')
+                        ),
                     ),
                     'panels' => array(
                         array(

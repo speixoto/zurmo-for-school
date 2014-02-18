@@ -140,7 +140,7 @@
         public function testSetMyCalendarColor()
         {
             $savedCalendar = CalendarTestHelper::createSavedCalendarByName('Color Cal', null);
-            CalendarUtil::setMyCalendarColor($savedCalendar);
+            CalendarUtil::setMyCalendarColor($savedCalendar, Yii::app()->user->userModel);
             $this->assertNotEquals('#66367b', $savedCalendar->color);
             $this->assertNotEquals('#315AB0', $savedCalendar->color);
         }
@@ -172,6 +172,15 @@
             $this->assertGreaterThan(2, count($availableModuleClassNames));
             $this->assertTrue(in_array('Meetings', $availableModuleClassNames));
             $this->assertTrue(in_array('Tasks', $availableModuleClassNames));
+        }
+
+        public function testLoadDefaultCalendars()
+        {
+            $user = UserTestHelper::createBasicUser('jim');
+            Yii::app()->user->userModel = $user;
+            $this->assertEquals(0, count(CalendarUtil::getUserSavedCalendars($user)));
+            SavedCalendarSubscriptions::makeByUser($user);
+            $this->assertEquals(2, count(CalendarUtil::getUserSavedCalendars($user)));
         }
     }
 ?>

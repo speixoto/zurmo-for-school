@@ -40,6 +40,11 @@
         const RIGHT_DELETE_CALENDAR = 'Delete Calendar';
         const RIGHT_ACCESS_CALENDAR = 'Access Calandar Tab';
 
+        protected function init()
+        {
+            parent::init();
+        }
+        
         /**
          * Get dependencies.
          * @return array
