@@ -89,18 +89,18 @@
 
         /**
          * Generate the widget html definition to be put on the left sidebar of drag-n-drop elements.
-         * @param string $widgetWrapper the html wrapper tag to use for widget html. Defauls to li.
+         * @param string $widgetWrapper the html wrapper tag to use for widget html. Defaults to li.
          * @return string
          */
         public static final function resolveDroppableWidget($widgetWrapper = 'li')
         {
-            $label          = static::resolveLabel();
-            $label          = ZurmoHtml::tag('span', array(), $label);
-            $thumbnail      = ZurmoHtml::image(static::resolveThumbnailUrl(), '', static::resolveThumbnailHtmlOptions());
-            $widget         = $thumbnail . $label;
-            $widget         = ZurmoHtml::tag('div', array('class' => 'clearfix'), $widget);
-            $widget         = ZurmoHtml::tag($widgetWrapper, static::resolveWidgetHtmlOptions(), $widget);
-            return $widget;
+            $label = static::resolveLabel();
+            $label = ZurmoHtml::tag('span', array(), $label);
+            //TODO: @sergio Do we need resolveThumbnailBaseUrl resolveThumbnailName resolveThumbnailUrl anymore
+            // we may need a resolveThumbnailName that will be useded to the icon content or we will use the htmlOptions
+            $icon  = ZurmoHtml::tag('i', static::resolveThumbnailHtmlOptions(), 'z');
+            $widget  = ZurmoHtml::tag('div', array('class' => 'clearfix'), $icon . $label);
+            return ZurmoHtml::tag($widgetWrapper, static::resolveWidgetHtmlOptions(), $widget);
         }
 
         /**
@@ -163,7 +163,7 @@
          */
         protected static function resolveThumbnailHtmlOptions()
         {
-            return array('class' => 'builder-element-droppable-thumbnail');
+            return array('class' => 'icon-z');
         }
 
         /**
@@ -419,7 +419,7 @@
             $cda['data-class']      = get_class($this);
             $cda['data-properties'] = serialize($this->properties);
             $cda['data-content']    = serialize(array());
-            if (!static::isContainerType())
+            if (!$this->isContainerType())
             {
                 // we don't want to bloat container type's data-content as it would be recompiled anyway.
                 $cda['data-content']    = serialize($this->content);
@@ -462,8 +462,8 @@
             $overlayLinkContent = null;
             foreach ($availableActions as $action)
             {
-                $linkContent        = ZurmoHtml::tag('i', array('class' => $action), '');
-                $linkContent        = ZurmoHtml::link($linkContent, '#', array('class' => "${action}-link"));
+                $iconContent        = ZurmoHtml::tag('i', array('class' => 'icon-' . $action), '');
+                $linkContent        = ZurmoHtml::tag('span', array('class' => $action), $iconContent);
                 $overlayLinkContent .= $linkContent;
             }
             return $overlayLinkContent;
@@ -841,7 +841,24 @@
          */
         protected function registerAjaxPostForApplyClickScript()
         {
-            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
+            $hiddenInputId  = ZurmoHtml::activeId($this->getModel(), 'id');
+            Yii::app()->clientScript->registerScript('ajaxPostForApplyClick', "
+                $('#" . $this->resolveApplyLinkId() . "').unbind('click.ajaxPostForApplyClick');
+                $('#" . $this->resolveApplyLinkId() . "').bind('click.ajaxPostForApplyClick', function()
+                {
+                    emailTemplateEditor.freezeLayoutEditor();
+                    var replaceElementId = $('#" . $hiddenInputId . "').val();
+                    $.ajax({
+                        type : 'POST',
+                        data : $('#" .  $this->resolveApplyLinkId() . "').closest('form').serialize(),
+                        success: function (html) {
+                            $('#' + replaceElementId).replaceWith(html);
+                            emailTemplateEditor.unfreezeLayoutEditor();
+                            emailTemplateEditor.canvasChanged();
+                        }
+                    });
+                });
+            ");
         }
 
         /**
@@ -849,7 +866,14 @@
          */
         protected function registerCancelScript()
         {
-            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
+            Yii::app()->clientScript->registerScript('cancelLinkClick', "
+                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick');
+                $('#" . $this->resolveCancelLinkId() . "').bind('click.cancelLinkClick', function()
+                {
+                    $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . "').hide();
+                    $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . "').empty();
+                });
+            ");
         }
 
         /**

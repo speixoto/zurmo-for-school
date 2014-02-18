@@ -1,0 +1,112 @@
+body{
+	//background: url("@{path}psd-light.png") left top repeat;
+}
+
+table.body{
+}
+
+.builder-element-toolbar{
+	//float: right;
+	display: block;
+	//visibility: hidden;
+	span{
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		border: 2px solid #ccc;
+		text-align: center;
+	}
+	i{
+		color: #ccc;
+		font-weight:normal !important;
+		font-style: normal !important;
+		font-size:24px;
+		font-family: "zurmo_gamification_symbly_rRg";
+		vertical-align:middle;
+		padding:0 0 0 0;//3px;
+		margin:0 0 0 0;
+		text-shadow: none !important;
+	}
+}
+
+.row,
+.sortable-elements{
+	&:hover{
+		border: 1px dotted #ccc;
+		.builder-element-toolbar{
+			visibility: visible;
+		}
+	}
+}
+
+.icon-move:before  { content: ")"; }
+.icon-gear:before  { content: "n"; }
+.icon-trash:before { content: "_"; }
+
+
+.ui-sortable-placeholder{
+	visibility: visible !important;
+	background:azure;
+	border: 1px dotted gold;
+	min-height: 60px;
+}
+
+.blox{
+	width: 105px !important;
+	height: 105px !impotant;
+	border: 3px solid green;
+	float: none;
+	margin: 0;
+	z-index: 99999;
+}
+
+.on{
+	//background:rgba(255, 0, 0, 0.1);
+}
+
+.hover{
+	//box-shadow: 0 0 0 3px hotpink;
+	border: 1px dotted #ccc;
+}
+
+.ghost{
+	display: block;
+	background:azure !important;
+	padding: 5px !important;
+}
+
+.returned{
+	display: block;
+	border: 2px solid green;
+}
+
+.builder-element-non-editable,
+.body td{
+	&:before,
+	&:after{
+		content:" ";
+		display:table;
+	}
+	&:after{
+		clear:both;
+	}
+	*zoom:1;
+}
+
+.builder-element-non-editable{
+	border: 1px dashed blueviolet;
+}
+
+.email-template-container-tools{
+	display: none;
+}
+
+
+.hoverz{
+	border: 3px solid crimson;
+}
+
+img{
+	width: 100% !important;
+	height: 50px !important;
+}

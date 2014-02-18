@@ -615,13 +615,20 @@
 
         public function actionRenderElementEditable($className, $id = null, $properties = null, $content = null)
         {
-            echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
+//            echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
+            echo $className . $id;
         }
 
         public function actionRenderElementNonEditable($className, $renderForCanvas = false, $wrapElementInRow = false,
                                                        $id = null, $properties = null, $content = null)
         {
-            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
+            // TODO: @Sergio: Remove this. Only used for PoC
+            $handleSpan   = ZurmoHtml::tag('span', array('class' => 'handle'), ZurmoHtml::tag('i', array('class' => 'icon-move'), ''));
+            $settingsSpan = ZurmoHtml::tag('span', array('class' => 'edit'), ZurmoHtml::tag('i', array('class' => 'icon-gear'), ''));
+            $removeSpan   = ZurmoHtml::tag('span', array('class' => 'delete'), ZurmoHtml::tag('i', array('class' => 'icon-trash'), ''));
+            $tools        = ZurmoHtml::tag('div', array('class' => 'email-template-container-tools'), $handleSpan . $settingsSpan . $removeSpan);
+            echo ZurmoHtml::tag('div', array('id' => time(), 'class' => 'builder-element-non-editable'), $tools . $className);
+            //echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
         }
 
         public function actionRenderElementNonEditableByPost()
@@ -637,7 +644,7 @@
             {
                 Yii::app()->end(0, false);
             }
-            $this->actionRenderElementNonEditable($className, $renderForCanvas, $wrapElementInRow, $id, $properties, $content);
+            $this->actionRenderElementNonEditable($className, $renderForCanvas, $id, $properties, $content);
         }
 
         public function actionRenderBaseTemplateOptions($elementClassName, $elementModelClassName, $elementAttributeName, $elementFormClassName, array $elementParams = array())

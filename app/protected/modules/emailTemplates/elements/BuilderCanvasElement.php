@@ -72,12 +72,39 @@
          */
         protected function normalizeHtmlContent($content)
         {
-            $doctype    = '<!DOCTYPE html>';
-            $html       = ZurmoHtml::tag('head', array(), '');
-            $html       .= ZurmoHtml::tag('body', array(), $content);
-            $html       = ZurmoHtml::tag('html', array(), $html);
+            $doctype    = '<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+            $html       = ZurmoHtml::tag('head', array(), $this->renderIconFont() . $this->renderLess());
+            $html      .= ZurmoHtml::tag('body', array(), $content);
+            $html       = ZurmoHtml::tag('html', array('xmlns' => 'http://www.w3.org/1999/xhtml'), $html);
             $content    = $doctype . $html;
             return $content;
+        }
+
+        protected function renderIconFont(){
+            $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets.fonts"));
+            $iconsFont = "<style>" .
+                "@font-face" .
+                "{" .
+                "font-family: 'zurmo_gamification_symbly_rRg';" .
+                "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot');" .
+                "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), " .
+                "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), " .
+                "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), " .
+                "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.svg#zurmo_gamification_symbly_rRg') format('svg');" .
+                "font-weight: normal;" .
+                "font-style: normal;" .
+                "unicode-range: U+00-FFFF;" . // Not Coding Standard
+                "}" .
+                "</style>";
+            return $iconsFont;
+        }
+
+        protected function renderLess(){
+            $baseUrl = Yii::app()->themeManager->baseUrl . '/default';
+            $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets"));
+            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' . $baseUrl . '/less/builder-iframe-tools.less"/>
+                     <script type="text/javascript" src="' . $publishedAssetsPath . '/less-1.2.0.min.js"></script>';
+            return $less;
         }
 
         protected function registerNonEditableCss()
