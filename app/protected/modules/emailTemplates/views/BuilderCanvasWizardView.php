@@ -239,11 +239,6 @@
             return $this->resolveRelativeUrl('renderElementNonEditable');
         }
 
-        protected function resolveRelativeUrl($action, $params = array())
-        {
-            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action, $params);
-        }
-
         protected function registerScripts()
         {
             // TODO: @Shoaibi/@Sergio: Critical5: Did i miss any JS here?
@@ -265,8 +260,7 @@
                 $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').unbind('click');
                 $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').bind('click', function()
                 {
-                    console.log('base template has changed');
-                    // TODO: @Shoaibi: Critical2: Implement to refresh canvas div by making ajax to a url with templateId
+                    // TODO: @Sergio: reload iframe.
                     return false;
                 });
                 ", CClientScript::POS_READY);

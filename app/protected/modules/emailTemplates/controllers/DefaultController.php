@@ -634,5 +634,12 @@
             }
             $this->actionRenderElementNonEditable($className, $renderForCanvas, $wrapElementInRow, $id, $properties, $content);
         }
+
+        public function actionRenderBaseTemplateOptions($elementClassName, $elementModelClassName, $elementAttributeName, $elementFormClassName, array $elementParams = array())
+        {
+            $element                    = new $elementClassName(new $elementModelClassName(), $elementAttributeName,
+                                                                new $elementFormClassName(), $elementParams);
+            echo $element->render();
+        }
     }
 ?>

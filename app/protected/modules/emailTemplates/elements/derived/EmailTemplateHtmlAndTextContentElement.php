@@ -166,7 +166,7 @@
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent) && $this->model->isPastedHtmlTemplate())
+            if (empty($this->model->textContent) && $this->isPastedHtmlTemplate())
             {
                 return 'html';
             }
@@ -175,7 +175,7 @@
 
         protected function renderEditableHtmlContentArea()
         {
-            if ($this->model->isPastedHtmlTemplate())
+            if ($this->isPastedHtmlTemplate())
             {
                 return $this->renderHtmlContentArea();
             }
@@ -184,7 +184,7 @@
 
         protected function renderNonEditableHtmlContentArea()
         {
-            if ($this->model->isPastedHtmlTemplate())
+            if ($this->isPastedHtmlTemplate())
             {
                 $url            = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
                                     array('id' => $this->model->id, 'className' => get_class($this->model)));
@@ -257,7 +257,31 @@
 
         protected function renderPlainTextOnly()
         {
-            return ($this->model->isPlainTextTemplate() || $this->model->isBuilderTemplate());
+            return ($this->isPlainTextTemplate() || $this->isBuilderTemplate());
+        }
+
+        protected function isPastedHtmlTemplate()
+        {
+            return $this->callMethodIfExistsElseReturnTrue('isPastedHtmlTemplate');
+        }
+
+        protected function isPlainTextTemplate()
+        {
+            return $this->callMethodIfExistsElseReturnTrue('isPlainTextTemplate');
+        }
+
+        protected function isBuilderTemplate()
+        {
+            return $this->callMethodIfExistsElseReturnTrue('isBuilderTemplate');
+        }
+
+        protected function callMethodIfExistsElseReturnTrue($method)
+        {
+            if (method_exists($this->model, $method))
+            {
+                return $this->model->$method();
+            }
+            return true;
         }
     }
 ?>

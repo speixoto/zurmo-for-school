@@ -198,6 +198,7 @@
         {
             parent::registerScripts();
             $this->registerSetIsDraftToZeroScript();
+            $this->registerTrashSomeDataOnModuleChangeScript();
         }
 
         protected function registerSetIsDraftToZeroScript()
@@ -214,6 +215,47 @@
         {
             $id = ZurmoHtml::activeId($this->model, 'isDraft');
             return '#' . $id;
+        }
+
+        protected function resolveModuleClassNameJQuerySelector()
+        {
+            $name               = ZurmoHtml::activeName($this->model, 'modelClassName');
+            $selector           = "select[name^=\"${name}\"]";
+            return $selector;
+        }
+
+        protected function registerTrashSomeDataOnModuleChangeScript()
+        {
+            if (!$this->model->isWorkflowTemplate())
+            {
+                return;
+            }
+            Yii::app()->clientScript->registerScript('trashSomeDataOnModuleChangeScript', "
+                $('" . $this->resolveModuleClassNameJQuerySelector() . "').unbind('change.trashSomeDataOnModuleChange');
+                $('" . $this->resolveModuleClassNameJQuerySelector() . "').bind('change.trashSomeDataOnModuleChange', function()
+                {
+                    $('#" . ZurmoHtml::activeId($this->model, 'textContent') . "').val('');
+                    if (" . intval($this->model->isPastedHtmlTemplate()) . ")
+                    {
+                        // TODO: @Shoaibi/@Sergio: Critical2: How to do this.
+                        //var htmlContentId       = '" . ZurmoHtml::activeId($this->model, 'htmlContent') . "';
+                        //var htmlContentElement  = $('#' + htmlContentId);
+                        //htmlContentElement.val('');
+                        //$('.redactor_editor').html('');
+                    }
+
+                    else if (" . intval($this->model->isBuilderTemplate()) . ")
+                    {
+                        $('" . $this->resolveIsDraftHiddenInputJQuerySelector() ."').val(1);
+                        resetBaseTemplateId();
+                        resetOriginalBaseBaseTemplateId();
+                        resetSerializedDomData();
+                        var params  = JSON.parse('{ \"modelClassName\" : \"' + $(this).val() + '\" }');
+                        reloadPreviouslyCreatedTemplates(params)
+                        preSelectBaseTemplate();
+                    }
+                });
+                ");
         }
 
         public static function resolveAdditionalAjaxOptions($formName)
