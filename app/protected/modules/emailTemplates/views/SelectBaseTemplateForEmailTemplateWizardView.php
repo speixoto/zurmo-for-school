@@ -131,13 +131,12 @@
             parent::registerScripts();
             $this->registerUpdateBaseTemplateIdHiddenInputOnSelectionChangeScript();
             $this->registerPreSelectBaseTemplateScript();
-            $this->registerTriggerCanvasRefreshIfBaseTemplateChangedTriggerScript();
         }
 
         protected function registerPreSelectBaseTemplateScript()
         {
             Yii::app()->clientScript->registerScript('preSelectBaseTemplateScript', "
-                    baseTemplateId  = $('" . $this->resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
+                    baseTemplateId  = $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
                     if (baseTemplateId == '')
                     {
                         baseTemplateId = $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . " :first').val();
@@ -153,13 +152,13 @@
             Yii::app()->clientScript->registerScript('updateBaseTemplateIdHiddenInputOnSelectionChangeScript', "
                 function updateBaseTemplateIdHiddenInputValue(value)
                 {
-                    $('" . $this->resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val(value);
+                    $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val(value);
                 }
 
                 $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('click');
                 $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').bind('click', function()
                 {
-                    originalBaseTemplateId  = $('#BuilderEmailTemplateWizardForm_originalBaseTemplateId').val();
+                    originalBaseTemplateId  = $('" . $this->resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
                     currentSelectedValue    = $(this).val();
                     // show warning only on edit when a user has already been to canvas once.
                     if (originalBaseTemplateId != '' && currentSelectedValue != originalBaseTemplateId)
@@ -175,23 +174,10 @@
                 ", CClientScript::POS_END);
         }
 
-        protected function registerTriggerCanvasRefreshIfBaseTemplateChangedTriggerScript()
-        {
-            Yii::app()->clientScript->registerScript('triggerCanvasRefreshIfBaseTemplateChangedTriggerScript', "
-                function triggerCanvasRefreshIfBaseTemplateChanged(refreshCanvasFromSavedTemplateLinkId)
-                {
-                    originalBaseTemplateId  = $('#BuilderEmailTemplateWizardForm_originalBaseTemplateId').val();
-                    selectedBaseTemplateId  = $('" . $this->resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
-                    if (selectedBaseTemplateId != originalBaseTemplateId)
-                    {
-                        $('#' + refreshCanvasFromSavedTemplateLinkId).trigger('click');
-                    }
-                }", CClientScript::POS_HEAD);
-        }
-
         protected function resolveBaseTemplateIdIputNameWithoutSerializedData()
         {
-            return get_class($this->model) . '[baseTemplateId]';
+            $name   = ZurmoHtml::activeName($this->model, 'baseTemplateId');
+            return $name;
         }
 
         protected function resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector()
@@ -201,9 +187,34 @@
             return $selector;
         }
 
-        protected function resolveBaseTemplateIdHiddenInputJQuerySelector()
+        protected static function resolveBaseTemplateIdHiddenInputJQuerySelector()
         {
-            return '#' . get_class($this->model) .'_serializedData_baseTemplateId';
+            $id = ZurmoHtml::activeId(new BuilderEmailTemplateWizardForm(), 'serializedData[baseTemplateId]');
+            return '#' . $id;
+        }
+
+        protected static function resolveOriginalBaseTemplateIdHiddenInputJQuerySelector()
+        {
+            $id = ZurmoHtml::activeId(new BuilderEmailTemplateWizardForm(), 'originalBaseTemplateId');
+            return '#' . $id;
+        }
+
+        public static function resolveAdditionalAjaxOptions($formName)
+        {
+            $ajaxArray                  = array();
+            // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
+            $ajaxArray['success']       = "js:function(data)
+                                            {
+                                                originalBaseTemplateId  = $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
+                                                selectedBaseTemplateId  = $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
+                                                if (selectedBaseTemplateId != originalBaseTemplateId)
+                                                {
+                                                    $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
+                                                }
+                                                $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val(selectedBaseTemplateId);
+
+                                            }";
+            return $ajaxArray;
         }
     }
 ?>

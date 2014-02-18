@@ -44,34 +44,13 @@
             return parent::getTitle() . ' - ' . Zurmo::t('EmailTemplatesModule', 'Builder');
         }
 
-        /**
-         * @param $formName
-         * @param bool $redirectAfterSave
-         * @return array
-         */
-        protected function resolveSaveAjaxArray($formName, $redirectAfterSave = true)
-        {
-            $ajaxArray                  = parent::resolveSaveAjaxArray($formName, $redirectAfterSave);
-            if (!$redirectAfterSave)
-            {
-                $ajaxArray['success']       = "js:function(data)
-                                            {
-                                                // update form action url to contain ids to prevent duplicate models
-                                                var actionUrl = $('#" . $formName . "').attr('action');
-                                                actionUrl = actionUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                                $('#" . $formName . "').attr('action',  actionUrl);
-                                            }";
-            }
-            return $ajaxArray;
-        }
-
         protected function resolveContainingViews(WizardActiveForm $form)
         {
             // TODO: @Shoaibi: Critical3: Hide the last two views by enabling third argument.
             $views              = array();
             $views[]            = new GeneralDataForEmailTemplateWizardView($this->model, $form);
-            $views[]            = new SelectBaseTemplateForEmailTemplateWizardView($this->model, $form);//, true);
-            $views[]            = new BuilderCanvasWizardView($this->model, $form);//, true);
+            $views[]            = new SelectBaseTemplateForEmailTemplateWizardView($this->model, $form, true);
+            $views[]            = new BuilderCanvasWizardView($this->model, $form, true);
             return $views;
         }
 
@@ -80,8 +59,7 @@
             return "
                     if (linkId == '" . GeneralDataForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName, false) . "
-                        triggerCanvasRefreshIfBaseTemplateChanged('" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID ."');
+                        " . $this->getSaveAjaxString($formName, false, GeneralDataForEmailTemplateWizardView::resolveAdditionalAjaxOptions($formName)) . "
                         $('#" . static::getValidationScenarioInputId() . "').val('" .
                                             BuilderEmailTemplateWizardForm::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO. "');
                         $('#GeneralDataForEmailTemplateWizardView').hide();
@@ -100,7 +78,7 @@
             return "
                     if (linkId == '" . SelectBaseTemplateForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName, false) . "
+                        " . $this->getSaveAjaxString($formName, false, SelectBaseTemplateForEmailTemplateWizardView::resolveAdditionalAjaxOptions($formName)) . "
                         $('#" . static::getValidationScenarioInputId() . "').val('" .
                                             BuilderEmailTemplateWizardForm::SERIALIZED_DATA_VALIDATION_SCENARIO . "');
                         $('#SelectBaseTemplateForEmailTemplateWizardView').hide();
@@ -110,11 +88,11 @@
                     }
                     if (linkId == '" . BuilderCanvasWizardView::getNextPageLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName, false) . "
+                        " . $this->getSaveAjaxString($formName, false, BuilderCanvasWizardView::resolveAdditionalAjaxOptions($formName)) . "
                     }
                     if (linkId == '" . BuilderCanvasWizardView::getFinishLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName) . "
+                        " . $this->getSaveAjaxString($formName, true, BuilderCanvasWizardView::resolveAdditionalAjaxOptions($formName)) . "
                     }
                     ";
         }

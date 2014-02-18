@@ -223,21 +223,23 @@
         /**
          * @param $formName
          * @param bool $redirectAfterSave
+         * @param array $additionalAjaxOptions
          * @return string
          */
-        protected function getSaveAjaxString($formName, $redirectAfterSave = true)
+        protected function getSaveAjaxString($formName, $redirectAfterSave = true, array $additionalAjaxOptions = array())
         {
             assert('is_string($formName)');
-            $ajaxArray              = $this->resolveSaveAjaxArray($formName, $redirectAfterSave);
+            $ajaxArray              = $this->resolveSaveAjaxArray($formName, $redirectAfterSave, $additionalAjaxOptions);
             return ZurmoHtml::ajax($ajaxArray);
         }
 
         /**
          * @param $formName
          * @param bool $redirectAfterSave
+         * @param array $additionalAjaxOptions
          * @return array
          */
-        protected function resolveSaveAjaxArray($formName, $redirectAfterSave = true)
+        protected function resolveSaveAjaxArray($formName, $redirectAfterSave = true, array $additionalAjaxOptions = array())
         {
             $ajaxArray                  = array('type'     => 'POST',
                                                 'data'     => 'js:$("#' . $formName . '").serialize()',
@@ -259,6 +261,7 @@
                                                 window.location.href = url;
                                             }';
             }
+            $ajaxArray                  = CMap::mergeArray($ajaxArray, $additionalAjaxOptions);
             return $ajaxArray;
         }
 

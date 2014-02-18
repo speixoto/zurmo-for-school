@@ -34,8 +34,20 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Class EmailTemplateSerializedDataToHtmlUtil
+     * Utility class to resolve serializedData of an email template into html with option to also
+     * resolve merge tags at the same time.
+     */
     class EmailTemplateSerializedDataToHtmlUtil
     {
+        /**
+         * Resolve html for a builder template provided its id
+         * @param $emailTemplateId
+         * @param bool $renderForCanvas
+         * @param OwnedSecurableItem $attachedMergeTagModel
+         * @return bool|null|string
+         */
         public static function resolveHtmlByEmailTemplateId($emailTemplateId, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($emailTemplateId));
@@ -43,6 +55,13 @@
             return $resolvedHtml;
         }
 
+        /**
+         * Resolve html for a builder template provided the model itself.
+         * @param EmailTemplate $emailTemplate
+         * @param bool $renderForCanvas
+         * @param OwnedSecurableItem $attachedMergeTagModel
+         * @return bool|null|string
+         */
         public static function resolveHtmlByEmailTemplateModel(EmailTemplate $emailTemplate, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null)
         {
             $serializedData = $emailTemplate->serializedData;
@@ -50,6 +69,15 @@
             return $resolvedHtml;
         }
 
+        /**
+         * Resolve html for provided serialized data
+         * @param $serializedData
+         * @param bool $renderForCanvas
+         * @param OwnedSecurableItem $attachedMergeTagModel
+         * @param null $type
+         * @param null $language
+         * @return bool|null|string
+         */
         public static function resolveHtmlBySerializedData($serializedData, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
         {
             $unserializedData   = unserialize($serializedData);
@@ -57,6 +85,15 @@
             return $resolvedHtml;
         }
 
+        /**
+         * Resolve html for provided unserialized data array
+         * @param array $unserializedData
+         * @param bool $renderForCanvas
+         * @param OwnedSecurableItem $attachedMergeTagModel
+         * @param null $type
+         * @param null $language
+         * @return bool|null|string
+         */
         public static function resolveHtmlByUnserializedData(array $unserializedData, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
         {
             $resolvedHtml   = null;
@@ -83,6 +120,15 @@
         }
 
 
+        /**
+         * Resolve merge tags present in html
+         * @param $html
+         * @param OwnedSecurableItem $attachedMergeTagModel
+         * @param null $type
+         * @param null $language
+         * @return bool|string
+         * @throws FailedToResolveMergeTagsException
+         */
         public static function resolveMergeTagsByModel($html, OwnedSecurableItem $attachedMergeTagModel, $type = null, $language = null)
         {
             $invalidTags = array();
