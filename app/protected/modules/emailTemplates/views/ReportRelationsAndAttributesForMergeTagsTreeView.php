@@ -52,7 +52,7 @@
          */
         protected function getDataUrl()
         {
-            return  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesForMergeTagsTree', $_GET);
+            return  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTreeForMergeTags', $_GET);
         }
     }
 ?>

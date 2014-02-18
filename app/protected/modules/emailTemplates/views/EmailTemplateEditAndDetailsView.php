@@ -138,14 +138,18 @@
                     ");
             // End Not Coding Standard
             $content  = $this->resolveRenderHiddenModelClassNameElement($form);
-            $content .= $this->renderMergeTagsView();
+
             $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
+
+            $content .= $this->renderMergeTagsView(); //todo: placed last so redactor is already initialized first. just a trick for the css right now
+
             return $content;
         }
 
         protected function renderMergeTagsView()
         {
-            $view = new MergeTagsView('EmailTemplate');
+            $view = new MergeTagsView('EmailTemplate', 'EmailTemplate_textContent', 'EmailTemplate_htmlContent'); //todo: get these last 2 values dynamically
+            $view->setCssClasses(array('clearfix'));
             return $view->render();
         }
 

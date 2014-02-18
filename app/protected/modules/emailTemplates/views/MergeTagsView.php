@@ -46,6 +46,18 @@
         protected $uniqueId;
 
         /**
+         * If used, populate with the html content id such as EmailTemplate_htmlContent
+         * @var null|string
+         */
+        protected $textContentId;
+
+        /**
+         * If used, populate with the html content id such as EmailTemplate_textContent
+         * @var null|string
+         */
+        protected $htmlContentId;
+
+        /**
          * @return string
          */
         public function getTreeDivId()
@@ -61,10 +73,14 @@
             return 'emailTemplates';
         }
 
-        public function __construct($uniqueId = null)
+        public function __construct($uniqueId = null, $textContentId = null, $htmlContentId = null)
         {
-            assert('is_string($uniqueId)');
+            assert('is_string($uniqueId) || $uniqueId === null');
+            assert('is_string($textContentId) || $textContentId === null');
+            assert('is_string($htmlContentId) || $htmlContentId === null');
             $this->uniqueId = $uniqueId;
+            $this->textContentId = $textContentId;
+            $this->htmlContentId = $htmlContentId;
         }
 
         public function isUniqueToAPage()
@@ -114,10 +130,78 @@
 
         protected function registerScriptContent()
         {
+            Yii::app()->getClientScript()->registerCoreScript('treeview');
             Yii::app()->clientScript->registerScript('mergeTagsScript' . $this->uniqueId,
                                                      $this->renderTreeViewAjaxScriptContent());
+            $script = '
+                $(document).ready(function(){
+
+                    $(".item-to-place").live("mousemove",function(){
+                        $(this).draggable({
+                            helper: function(event){
+                                var label = $(event.target).html();
+                                var width = $(".wrapper").width() * 0.5 - 55;
+                                var clone = $(\'<div class="dynamic-row clone">\' + label + \'</div>\');
+                                //clone.width(width);
+                                clone.animate({ width : width}, 250);
+                                $("body").append(clone);
+                                return clone;
+                            },
+                            iframeFix: true,
+                            revert: "invalid",
+                            snapMode: "inner",
+                            cursor: "pointer",
+                            start: function(event,ui){
+                                $(ui.helper).attr("id", $(this).attr("id"));
+                            },
+                            stop: function(event, ui){
+                                document.body.style.cursor = "auto";
+                            }
+                        });
+                    });
+                ';
+            if($this->textContentId != null)
+            {
+                $script.= '$("#EmailTemplate_textContent").droppable({
+                                iframeFix: true,
+                                    hoverClass: "textarea",
+                                    accept: ":not(.ui-sortable-helper)",
+                                    drop: function(event, ui) {
+                                        var $this = $(this);
+                                        var tempid = ui.draggable.text();
+                                        var dropText;
+                                        dropText = " {" + tempid + "} ";
+                                        var droparea = document.getElementById("EmailTemplate_textContent");
+                                        var range1 = droparea.selectionStart;
+                                        var range2 = droparea.selectionEnd;
+                                        var val = droparea.value;
+                                        var str1 = val.substring(0, range1);
+                                        var str3 = val.substring(range1, val.length);
+                                        droparea.value = str1 + dropText + str3;
+                                    }
+                                });';
+            }
+            if($this->htmlContentId != null)
+            {
+                $script .= '$("#EmailTemplate_htmlContent").parent().droppable({
+                                iframeFix: true,
+                                drop: function(event, ui) {
+                                    var $this = $(this);
+                                    var tempid = ui.draggable.text();
+                                    var dropText;
+                                    dropText = " {" + tempid + "} ";
+                                    var droparea = $("#EmailTemplate_htmlContent").redactor("getIframe").contents().find("body");
+                                    var range1 = droparea.selectionStart;
+                                    var range2 = droparea.selectionEnd;
+                                    var val = droparea.html();
+                                    var str1 = val.substring(0, range1);
+                                    var str3 = val.substring(range1, val.length);
+                                    droparea.html(str1 + dropText + str3);
+                                }
+                            });';
+            }
+            $script .= '});';
+            Yii::app()->clientScript->registerScript('mergeTagsDragDropScript' . $this->uniqueId, $script);
         }
-
-
     }
 ?>
