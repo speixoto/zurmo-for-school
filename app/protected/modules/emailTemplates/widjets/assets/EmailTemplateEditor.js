@@ -281,35 +281,36 @@ var emailTemplateEditor = {
     },
         compileSerializedData: function () {
             var getSerializedData = function (element) {
-                var data = new Array();
-                var contentArray = new Array();
-                contentArray['content'] = $(element).data('content');
-                data['content'] = contentArray;
+                var data = {};
+                var content = {};
+                content['content'] = $(element).data('content');
+                data['content'] = content;
                 data['properties'] = $(element).data('properties');
                 data['class'] = $(element).data('class');
                 return data;
             };
 
-            var findParentAndAppendSerializedData = function findParent(parent, elementId, serializedData, dataArray) {
-                for(var key in dataArray) {
+            var findParentAndAppendSerializedData = function findParent(parent, elementId, serializedData, data) {
+                for(var key in data) {
                     if (key == $(parent).attr('id')) {
-                        dataArray[key]['content'][elementId] = serializedData;
+                        data[key]['content'][elementId] = serializedData;
                     }
                     else
                     {
-                        findParent(parent, elementId, serializedData, dataArray[key]['content']);
+                        findParent(parent, elementId, serializedData, data[key]['content']);
                     }
                 }
-                return dataArray;
+                return data;
             }
 
             //Gets the cachedSerializedData and if its set return it
             var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
             if (value != '') {
+                console.log(jQuery.parseJSON(value));
                 return jQuery.parseJSON(value);
             };
 
-            var data    = new Array();
+            var data    = {};
             var elementDataArray = contents.find('.element-data');
             for (var i = 0; i < elementDataArray.length; i++){
                 var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');

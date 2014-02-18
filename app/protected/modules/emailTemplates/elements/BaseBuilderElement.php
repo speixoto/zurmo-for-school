@@ -534,10 +534,9 @@
         {
             $availableActions   = $this->resolveAvailableNonEditableActionsArray();
             $overlayLinkContent = null;
-            $actionIconsMap     = static::getActionIconsMappedByActions();
             foreach ($availableActions as $action)
             {
-                $iconContent        = ZurmoHtml::tag('i', array('class' => $actionIconsMap[$action]), '');
+                $iconContent        = ZurmoHtml::tag('i', array('class' => 'icon-' . $action), '');
                 $linkContent        = ZurmoHtml::tag('span', array('class' => $action), $iconContent);
                 $overlayLinkContent .= $linkContent;
             }
