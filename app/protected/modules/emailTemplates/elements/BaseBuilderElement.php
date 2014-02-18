@@ -940,7 +940,6 @@
                             emailTemplateEditor.canvasChanged();
                         }
                     });
-                    setIsDraftToZero();
                 });
             ");
         }
@@ -950,7 +949,14 @@
          */
         protected function registerCancelScript()
         {
-            // TODO: @Shoaibi/@Sergio: Critical0: Implement JS
+            Yii::app()->clientScript->registerScript('cancelLinkClick', "
+                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick');
+                $('#" . $this->resolveCancelLinkId() . "').bind('click.cancelLinkClick', function()
+                {
+                    $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . "').hide();
+                    $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . "').empty();
+                });
+            ");
         }
 
         /**
