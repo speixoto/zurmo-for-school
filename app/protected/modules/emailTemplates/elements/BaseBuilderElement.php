@@ -116,7 +116,7 @@
          * Return the name of model to use with the form in editable representation
          * @return string
          */
-        public static function getModelClassName()
+        public static final function getModelClassName()
         {
             return 'BuilderElementEditableModelForm';
         }
