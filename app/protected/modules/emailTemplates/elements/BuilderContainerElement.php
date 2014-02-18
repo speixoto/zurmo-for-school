@@ -57,11 +57,68 @@
             return $content;
         }
 
-        protected function appendActionsOverlayToContentElementsContent()
+        protected function resolveWrapperNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
         {
-            // no, because here elementContent is the nested element content, not the container element's content.
-            // the canvas/row element is actually rendered as the non-editable wrapper here
-            return false;
+            // these are container elements, we wrap them in tables instead of divs
+            $content        = $this->resolveWrapperTdNonEditableByContent($content);
+            $content        = $this->resolveWrapperTrNonEditableByContent($content);
+            $content        = $this->resolveWrapperTBodyNonEditableByContent($content);
+            $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $htmlOptions);
+            return $content;
+        }
+
+        /**
+         * Resolve and return td(s) by using provided content for non-editable representation
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperTdNonEditableByContent($content)
+        {
+            $content        = ZurmoHtml::tag('td', $this->resolveNonEditableContentWrappingTdHtmlOptions(), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve and return tr(s) by using provided content for non-editable representation
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperTrNonEditableByContent($content)
+        {
+            $content        = ZurmoHtml::tag('tr', array(), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve and return tbody by using provided content for non-editable representation
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperTBodyNonEditableByContent($content)
+        {
+            $content        = ZurmoHtml::tag('tbody', array(), $content);
+            return $content;
+        }
+
+        /**
+         * Resolve and return table by using provided content and htmloptions for non-editable representation
+         * @param $content
+         * @param array $htmlOptions
+         * @return string
+         */
+        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
+        {
+            $content        = ZurmoHtml::tag('table', $htmlOptions, $content);
+            return $content;
+        }
+
+        /**
+         * Resolve wrapper's column html options
+         * @return array
+         */
+        protected function resolveNonEditableContentWrappingTdHtmlOptions()
+        {
+            return array();
         }
 
         /**
