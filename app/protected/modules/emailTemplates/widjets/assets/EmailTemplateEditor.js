@@ -133,15 +133,14 @@ var emailTemplateEditor = {
                             emailTemplateEditor.settings.sortableElementsSelector + ', ' +
                             emailTemplateEditor.settings.sortableRowsSelector);
             innerElements = [];
-        });
 
-        $('body').on('mousemove', function(event){
-            point.left = event.pageX - offset.left;
-            point.top = event.pageY - offset.top;
-            for (i = 0; i < containers.length; i++){
-                rect = containers[i].getBoundingClientRect();
-                if( point.left > rect.left && point.left < rect.right &&
-                    point.top > rect.top && point.top < rect.bottom ){
+            $('body').on('mousemove', function(event){
+                point.left = event.pageX - offset.left;
+                point.top = event.pageY - offset.top;
+                for (i = 0; i < containers.length; i++){
+                    rect = containers[i].getBoundingClientRect();
+                    if( point.left > rect.left && point.left < rect.right &&
+                        point.top > rect.top && point.top < rect.bottom ){
                         $(containers[i]).addClass('hover');
                         innerElements = $(containers[i]).find('.sortable-rows, .sortable-elements').children().not('.ghost');
                         for(n = 0; n < innerElements.length; n++){
@@ -149,7 +148,7 @@ var emailTemplateEditor = {
                             if( event.offsetX > innerElementRect.left && event.offsetX < innerElementRect.right &&
                                 event.offsetY > innerElementRect.top && event.offsetY < innerElementRect.bottom ){
                                 $(innerElements[n]).addClass('hoverz');
-                                if( event.offsetY < $(innerElements[n]).height() / 2 ){
+                                if( event.offsetY < $(innerElements[n]).outerHeight(true) / 2 ){
                                     $(innerElements[n]).before(emailTemplateEditor.settings.ghost);
                                 } else {
                                     $(innerElements[n]).after(emailTemplateEditor.settings.ghost);
@@ -158,13 +157,17 @@ var emailTemplateEditor = {
                                 iframeContent.find('.hoverz').removeClass('hoverz');
                             }
                         }
-                } else {
-                    $(containers[i]).removeClass('hover');
+                    } else {
+                        $(containers[i]).removeClass('hover');
+                    }
                 }
-            }
+            });
         });
 
+
+
         $('body').on('mouseup', function(event){
+            $('body').off('mousemove');
             point.left = event.pageX - offset.left;
             point.top = event.pageY - offset.top;
             var containerToPlace;
@@ -239,7 +242,7 @@ var emailTemplateEditor = {
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
-                $(emailTemplateEditor.settings.ghost).after(html);
+                emailTemplateEditor.settings.ghost.after(html);
                 emailTemplateEditor.unfreezeLayoutEditor();
                 emailTemplateEditor.settings.ghost.detach();
             }

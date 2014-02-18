@@ -5,19 +5,36 @@ body{
 table.body{
 }
 
+.element-wrapper{
+	position: relative;
+	display:block;
+	width: 100%;
+	height: 100%;
+	&:hover{
+		box-shadow: inset 0 0 0 2px #545454;
+		.builder-element-toolbar{
+			visibility: visible;
+		}
+	}
+}
+
 .builder-element-toolbar{
-	//float: right;
 	display: block;
-	//visibility: hidden;
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1000;
 	span{
 		width: 20px;
 		height: 20px;
 		display: inline-block;
-		border: 2px solid #ccc;
+		border: 2px solid #545454;
 		text-align: center;
+		background:#fff;
 	}
 	i{
-		color: #ccc;
+		color: #545454;
 		font-weight:normal !important;
 		font-style: normal !important;
 		font-size:24px;
@@ -29,19 +46,26 @@ table.body{
 	}
 }
 
+.builder-element-non-editable{
+	position: relative;
+	z-index: 1;
+	padding: 10px;
+	display: block;
+}
+
 .row,
 .sortable-elements{
 	&:hover{
-		border: 1px dotted #ccc;
+		//box-shadow: inset 0 0 0 2px #545454;
 		.builder-element-toolbar{
-			visibility: visible;
+		//	visibility: visible;
 		}
 	}
 }
 
-.icon-move:before  { content: ")"; }
-.icon-gear:before  { content: "n"; }
-.icon-trash:before { content: "_"; }
+.icon-action-move:before  { content: ")"; }
+.icon-action-edit:before  { content: "n"; }
+.icon-action-delete:before { content: "_"; }
 
 
 .ui-sortable-placeholder{
@@ -53,7 +77,7 @@ table.body{
 
 .blox{
 	width: 105px !important;
-	height: 105px !impotant;
+	height: 105px !important;
 	border: 3px solid green;
 	float: none;
 	margin: 0;
@@ -80,8 +104,7 @@ table.body{
 	border: 2px solid green;
 }
 
-.builder-element-non-editable,
-.body td{
+.element-wrapper{
 	&:before,
 	&:after{
 		content:" ";
@@ -93,9 +116,10 @@ table.body{
 	*zoom:1;
 }
 
-.builder-element-non-editable{
-	border: 1px dashed blueviolet;
-}
+
+
+
+
 
 .email-template-container-tools{
 	display: none;
