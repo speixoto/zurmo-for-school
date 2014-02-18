@@ -265,6 +265,7 @@
                 $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').unbind('click');
                 $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').bind('click', function()
                 {
+                    console.log('base template has changed');
                     // TODO: @Shoaibi: Critical2: Implement to refresh canvas div by making ajax to a url with templateId
                     return false;
                 });
@@ -331,6 +332,18 @@
             Yii::app()->clientScript->registerScript('canvasChangedScript', "
                 // TODO: @Sergio/@Shoaibi: Critical2: Attach an event(canvasChanged) to window object. register event handler that clears the cached serialized data from hidden input
                 ");
+        }
+
+        public static function resolveAdditionalAjaxOptions($formName)
+        {
+            /*
+             * For Save/Finish do this:
+             * first event should compile serializedData if need and shove it into an html entity
+             * second event(for finish), set isDraft to zero, we have this done.
+             * third, change the $ajaxArray['data'] to jquery selector of val of the entity containing cached serialized data.
+             */
+            $ajaxArray                  = array();
+            return $ajaxArray;
         }
     }
 ?>

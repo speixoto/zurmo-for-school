@@ -169,5 +169,10 @@
             $this->wrapContentForAttributesContainer($content);
             return $content;
         }
+
+        public static function resolveAdditionalAjaxOptions($formName)
+        {
+            return array();
+        }
     }
 ?>

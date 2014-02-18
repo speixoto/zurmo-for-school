@@ -205,14 +205,29 @@
             Yii::app()->clientScript->registerScript('setIsDraftToZero', "
                 function setIsDraftToZero()
                 {
-                    $('" . $this->resolveIsDraftdHiddenInputJQuerySelector() ."').val(0);
+                    $('" . $this->resolveIsDraftHiddenInputJQuerySelector() ."').val(0);
                 }
                 ", CClientScript::POS_END);
         }
 
-        protected function resolveIsDraftdHiddenInputJQuerySelector()
+        protected function resolveIsDraftHiddenInputJQuerySelector()
         {
-            return '#' . get_class($this->model) .'_isDraft';
+            $id = ZurmoHtml::activeId($this->model, 'isDraft');
+            return '#' . $id;
+        }
+
+        public static function resolveAdditionalAjaxOptions($formName)
+        {
+            $ajaxArray                  = array();
+            // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
+            $ajaxArray['success']       = "js:function(data)
+                                            {
+                                                // update form action url to contain ids to prevent duplicate models
+                                                var actionUrl = $('#" . $formName . "').attr('action');
+                                                actionUrl = actionUrl.replace(/id=(\d*)/, 'id=' + data.id);
+                                                $('#" . $formName . "').attr('action',  actionUrl);
+                                            }";
+            return $ajaxArray;
         }
     }
 ?>
