@@ -181,7 +181,7 @@ var emailTemplateEditor = {
                 }
                 $(containers[i]).removeClass('hover');
             }
-            if (elementDragged.is('li') && containerToPlace != undefined){
+            if (elementDragged != undefined && elementDragged.is('li') && containerToPlace != undefined){
                 emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, false);
             }
         });
@@ -239,8 +239,7 @@ var emailTemplateEditor = {
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
-                //item.prepend(html);
-                $(emailTemplateEditor.settings.ghost).after('<div class="returned">'+html+'</div>');
+                $(emailTemplateEditor.settings.ghost).after(html);
                 emailTemplateEditor.unfreezeLayoutEditor();
                 emailTemplateEditor.settings.ghost.detach();
             }
@@ -273,7 +272,7 @@ var emailTemplateEditor = {
         emailTemplateEditor.unfreezeLayoutEditor();
     },
     onClickDeleteEvent: function () {
-        $(this).closest(".builder-element-non-editable").remove();
+        $(this).closest(".element-wrapper").remove();
     },
     reloadCanvas: function () {
         $(emailTemplateEditor.settings.iframeSelector).attr( 'src', function ( i, val ) { return val; });
