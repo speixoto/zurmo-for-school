@@ -50,16 +50,17 @@ var emailTemplateEditor = {
         cachedSerializedDataSelector: '#serialized-data-cache'
     },
     init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
-                     iframeOverlaySelector, editElementUrl, getNewElementUrl) {
-        this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
-        this.settings.iframeSelector          = iframeSelector;
-        this.settings.editSelector            = editSelector;
-        this.settings.editActionSelector      = editActionSelector;
-        this.settings.moveActionSelector      = moveActionSelector;
-        this.settings.deleteActionSelector    = deleteActionSelector;
-        this.settings.iframeOverlaySelector   = iframeOverlaySelector;
-        this.settings.editElementUrl          = editElementUrl;
-        this.settings.getNewElementUrl        = getNewElementUrl;
+                     iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl) {
+        this.settings.elementsToPlaceSelector       = elementsToPlaceSelector;
+        this.settings.iframeSelector                = iframeSelector;
+        this.settings.editSelector                  = editSelector;
+        this.settings.editActionSelector            = editActionSelector;
+        this.settings.moveActionSelector            = moveActionSelector;
+        this.settings.deleteActionSelector          = deleteActionSelector;
+        this.settings.iframeOverlaySelector         = iframeOverlaySelector;
+        this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
+        this.settings.editElementUrl                = editElementUrl;
+        this.settings.getNewElementUrl              = getNewElementUrl;
         this.setupLayout();
         emailTemplateEditor = this;
     },
@@ -159,7 +160,7 @@ var emailTemplateEditor = {
                     $(containers[i]).removeClass('on');
                 }
             }
-            if (elementDragged.is('li'))
+            if (elementDragged.is('li') && containerToPlace != undefined)
             {
                 emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, false);
             }
@@ -258,12 +259,51 @@ var emailTemplateEditor = {
         emailTemplateEditor.canvasChanged();
     },
     compileSerializedData: function () {
+        var getSerializedData = function (element) {
+            var data = new Array();
+            var contentArray = new Array();
+            contentArray['content'] = $(element).data('content');
+            data['content'] = contentArray;
+            data['properties'] = $(element).data('properties');
+            data['class'] = $(element).data('class');
+            return data;
+        };
+
+        var findParentAndAppendSerializedData = function findParent(parent, elementId, serializedData, dataArray) {
+            for(var key in dataArray) {
+                if (key == $(parent).attr('id')) {
+                    dataArray[key]['content'][elementId] = serializedData;
+                }
+                else
+                {
+                    findParent(parent, elementId, serializedData, dataArray[key]['content']);
+                }
+            }
+            return dataArray;
+        }
+
+        //Gets the cachedSerializedData and if its set return it
         var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
         if (value != '') {
-            return value;
+            return jQuery.parseJSON(value);
         };
-        console.log($('.element-data'));
-        value = '123';
+
+        var data    = new Array();
+        var elementDataArray = contents.find('.element-data');
+        for (var i = 0; i < elementDataArray.length; i++){
+            var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
+            if (parentsElementData.length == 0)
+            {
+                //Its the first element, the canvas one
+                data[$(elementDataArray[i]).attr('id')] = getSerializedData(elementDataArray[i]);
+            }
+            else
+            {
+                var parent = parentsElementData[0];
+                data = findParentAndAppendSerializedData(parent, $(elementDataArray[i]).attr('id'), getSerializedData(elementDataArray[i]), data);
+            }
+        }
+        value = JSON.stringify(data);
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
         return value;
     }

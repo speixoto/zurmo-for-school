@@ -521,8 +521,8 @@
 
         public function actionRenderCanvas($id = null)
         {
-            $view = new BuilderCanvasView();
-            echo $view->render();
+//            $view = new BuilderCanvasView();
+//            echo $view->render();
             // TODO: @Shoaibi: Critical0: get rid of this.
             $serializedData['dom'] = array(
                 'canvas1'     => array(
@@ -621,16 +621,16 @@
                 ),
             );
 
-//            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedData, true);
-//            Yii::app()->end(0, false);
-//
-//            // it would be empty for the first time during create so we just end the request here.
-//            if (empty($id))
-//            {
-//                Yii::app()->end(0, false);
-//            }
-//            assert('is_int($id) || is_string($id)');
-//            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedData, true);
+            Yii::app()->end(0, false);
+
+            // it would be empty for the first time during create so we just end the request here.
+            if (empty($id))
+            {
+                Yii::app()->end(0, false);
+            }
+            assert('is_int($id) || is_string($id)');
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
         }
 
         public function actionRenderPreview()
@@ -654,7 +654,13 @@
         public function actionRenderElementNonEditable($className, $renderForCanvas = false, $wrapElementInRow = false,
                                                        $id = null, $properties = null, $content = null)
         {
-            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
+            // TODO: @Sergio: Remove this. Only used for PoC
+            $handleSpan   = ZurmoHtml::tag('span', array('class' => 'handle'), ZurmoHtml::tag('i', array('class' => 'icon-move'), ''));
+            $settingsSpan = ZurmoHtml::tag('span', array('class' => 'edit'), ZurmoHtml::tag('i', array('class' => 'icon-gear'), ''));
+            $removeSpan   = ZurmoHtml::tag('span', array('class' => 'delete'), ZurmoHtml::tag('i', array('class' => 'icon-trash'), ''));
+            $tools        = ZurmoHtml::tag('div', array('class' => 'email-template-container-tools'), $handleSpan . $settingsSpan . $removeSpan);
+            echo ZurmoHtml::tag('div', array('id' => time(), 'class' => 'builder-element-non-editable'), $tools . $className);
+            //echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
         }
 
         public function actionRenderElementNonEditableByPost()

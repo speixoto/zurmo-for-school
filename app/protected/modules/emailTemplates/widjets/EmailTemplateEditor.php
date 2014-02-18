@@ -99,6 +99,7 @@
                         '#building-blocks',
                         '#preview-template',
                         'div.element-edit-form-overlay',
+                        '#serialized-data-cache',
                         'span.action-edit',
                         'span.action-move',
                         'span.action-delete',
