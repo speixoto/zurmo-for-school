@@ -52,7 +52,7 @@
         const OVERLAY_ACTION_DELETE  = 'action-delete';
 
         /**
-         * @var int Id of current element, unique.
+         * @var string Id of current element, unique.
          */
         protected $id;
 
@@ -1142,6 +1142,61 @@
         protected function resolveContentElementAttributeName()
         {
             throw new NotImplementedException('Children elements should override it, or remove all calls made to it.');
+        }
+
+        /**
+         * Getter for $id
+         * @return string
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
+
+        /**
+         * Getter for $content
+         * @param bool $serialized
+         * @return array|string
+         */
+        public function getContent($serialized = false)
+        {
+            if ($serialized)
+            {
+                return serialize($this->content);
+            }
+            return $this->content;
+        }
+
+        /**
+         * Getter for $properties
+         * @param bool $serialized
+         * @return array|string
+         */
+        public function getProperties($serialized = false)
+        {
+            if ($serialized)
+            {
+                return serialize($this->properties);
+            }
+            return $this->properties;
+        }
+
+        /**
+         * Getter for $renderForCanvas
+         * @return bool
+         */
+        public function getRenderForCanvas()
+        {
+            return $this->renderForCanvas;
+        }
+
+        /**
+         * Getter for $params
+         * @return array
+         */
+        public function getParams()
+        {
+            return $this->params;
         }
     }
 ?>

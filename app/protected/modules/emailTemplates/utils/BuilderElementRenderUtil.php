@@ -34,8 +34,23 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
+    /**
+     * Class BuilderElementRenderUtil
+     * Utility class to render builder elements. This should always be preferred over directly invoking
+     * Builder element's construct. 
+     */
     class BuilderElementRenderUtil
     {
+        /**
+         * Render an element as editable
+         * @param $className
+         * @param bool $renderForCanvas
+         * @param null $id
+         * @param null $properties
+         * @param null $content
+         * @param null $params
+         * @return string
+         */
         public static function renderEditable($className, $renderForCanvas = false, $id = null,
                                               $properties = null, $content = null, $params = null)
         {
@@ -44,20 +59,70 @@
             return $content;
         }
 
+        /**
+         * Render an element as noneditable
+         * @param $className
+         * @param bool $renderForCanvas
+         * @param bool $wrapElementInRow
+         * @param null $id
+         * @param null $properties
+         * @param null $content
+         * @param null $params
+         * @return string
+         */
         public static function renderNonEditable($className, $renderForCanvas = false, $wrapElementInRow = false,
                                                  $id = null, $properties = null, $content = null, $params = null)
         {
-            // TODO: @Shoaibi: Critical0: $wrapElementInRow = false?
-            $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content, $params);
-            $content    = $element->renderNonEditable();
+            $element        = static::resolveElement($className, $renderForCanvas, $id, $properties, $content, $params);
+            if (!$wrapElementInRow)
+            {
+                $content        = $element->renderNonEditable();
+            }
+            else
+            {
+                // we could have built the arrays ourselves but better to be bit slow and relay on the element
+                // logic than hardcode anything here.
+                $elementData    = static::resolveSerializedDataByElement($element);
+                $columnElement  = static::resolveElement('BuilderColumnElement', $renderForCanvas, null, null, $elementData);
+                $columnData     = static::resolveSerializedDataByElement($columnElement);
+                $rowElement     = static::resolveElement('BuilderRowElement', $renderForCanvas, null, null, $columnData);
+                $content        = $rowElement->renderNonEditable();
+            }
             return $content;
         }
 
+        /**
+         * Resolve a builder element
+         * @param $className
+         * @param bool $renderForCanvas
+         * @param null $id
+         * @param null $properties
+         * @param null $content
+         * @param null $params
+         * @return BaseBuilderElement
+         */
         protected static function resolveElement($className, $renderForCanvas = false, $id = null,
                                                  $properties = null, $content = null, $params = null)
         {
             $element    = new $className($renderForCanvas, $id, $properties, $content, $params);
             return $element;
+        }
+
+        /**
+         * Resolve serialized data array for an element.
+         * @param BaseBuilderElement $element
+         * @param bool $serializedProperties
+         * @param bool $serializedContent
+         * @return array
+         */
+        public static function resolveSerializedDataByElement(BaseBuilderElement $element, $serializedProperties = false,
+                                                              $serializedContent = false)
+        {
+            return array($element->getId() => array(
+               'class'          => get_class($element),
+                'properties'    => $element->getProperties($serializedProperties),
+                'content'       => $element->getContent($serializedContent),
+            ));
         }
     }
 ?>
