@@ -117,5 +117,31 @@
             $this->resetGetArray();
             $this->runControllerWithNoExceptionsAndGetContent('calendars/default/modalList');
         }
+
+        public function testSuperUserDeleteAction()
+        {
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $calendar                   = CalendarTestHelper::createSavedCalendarByName("My Cal 2", '#66367b');
+
+            //Delete a product
+            $this->setGetArray(array('id' => $calendar->id));
+            $this->resetPostArray();
+            $calendars                  = SavedCalendar::getAll();
+            $this->assertEquals(3, count($calendars));
+            $this->runControllerWithNoExceptionsAndGetContent('calendars/default/delete');
+            $calendars                  = SavedCalendar::getAll();
+            $this->assertEquals(2, count($calendars));
+            try
+            {
+                SavedCalendar::getById($calendar->id);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+                //success
+            }
+        }
     }
 ?>
