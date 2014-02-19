@@ -94,8 +94,7 @@ var emailTemplateEditor = {
     },
     initDraggableElements: function ( selector , connectToSelector, iframeContents) {
         $( selector ).each(function(){
-            if ($(this).data('draggable'))
-            {
+            if ($(this).data('draggable')){
                 $(this).draggable("destroy");
             }
         });
@@ -121,90 +120,50 @@ var emailTemplateEditor = {
         var containers = [];
         var offset = {};
         var rect = {};
-        var innerElementRect = {};
         var innerElements = [];
         var point = {};
         var i = 0;
-        var n = 0;
-        var iframeContent = $(emailTemplateEditor.settings.iframeSelector).contents();
         emailTemplateEditor.settings.ghost = $('<div class="ghost">drop here</div>');
         var isDragging = false;
+        var mostTopElement;
 
         $('body').on('mousedown', function(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
-            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find(
-                            emailTemplateEditor.settings.sortableElementsSelector + ', ' +
-                            emailTemplateEditor.settings.sortableRowsSelector);
-            innerElements = $(emailTemplateEditor.settings.iframeSelector).contents().find('.element-wrapper');
+            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.element-wrapper');
             isDragging = true;
         });
 
-        var innerInnerElements = [];
-        var areas = [];
-        var smallestIndex = 0;
-
-        $('body').on('mousemove', function(event){
+        $('body').on('mousemove', function doMouseMoveOnBody(event){
             if(isDragging === true){
                 point.left = event.pageX - offset.left;
                 point.top = event.pageY - offset.top;
-
-                innerInnerElements = [];
-                areas = [];
-
-                for (i = 0; i < innerElements.length; i++){
-                    rect = innerElements[i].getBoundingClientRect();
+                $(innerElements).each(function(){$(this).removeClass('hover');});
+                innerElements = [];
+                for (i = 0; i < containers.length; i++){
+                    rect = containers[i].getBoundingClientRect();
                     if( point.left > rect.left && point.left < rect.right &&
                         point.top > rect.top && point.top < rect.bottom ){
-                        innerInnerElements.push(innerElements[i]);
+                        innerElements.push(containers[i]);
                     }
                 }
-
-                for(var n1 = 0; n1 < innerInnerElements.length; n1++){
-                    areas.push( $(innerInnerElements[n1]).width() * $(innerInnerElements[n1]).height() );
-                }
-
-                smallestIndex = areas.indexOf(Math.min.apply(Math, areas));
-
-                $('.hover').removeClass('hover');
-                $(innerInnerElements[smallestIndex]).addClass('hover');
-
-                if( event.offsetY < $(innerInnerElements[smallestIndex]).outerHeight(true) / 2 ){
-                    $(innerInnerElements[smallestIndex]).before(emailTemplateEditor.settings.ghost);
-                } else {
-                    $(innerInnerElements[smallestIndex]).after(emailTemplateEditor.settings.ghost);
+                if(innerElements.length > 0){
+                    mostTopElement = innerElements[innerElements.length-1];
+                    $(mostTopElement).addClass('hover');
+                    if( point.top - $(mostTopElement).offset().top < $(mostTopElement).outerHeight(true) / 2 ){
+                        $(mostTopElement).before(emailTemplateEditor.settings.ghost);
+                    } else {
+                        $(mostTopElement).after(emailTemplateEditor.settings.ghost);
+                    }
                 }
             }
         });
 
         $('body').on('mouseup', function(event){
             isDragging = false;
-            point.left = event.pageX - offset.left;
-            point.top = event.pageY - offset.top;
-            var containerToPlace;
-            var numberOfContainers = 0;
-            for (i = 0; i < containers.length; i++){
-                rect = containers[i].getBoundingClientRect();
-                if( point.left > rect.left &&
-                    point.left < rect.right &&
-                    point.top > rect.top &&
-                    point.top < rect.bottom ){
-                        $(containers[i]).addClass('on');
-                        containerToPlace = $(containers[i]);
-                        numberOfContainers++;
-                } else {
-                    $(containers[i]).removeClass('on');
-                }
-                $(containers[i]).removeClass('hover');
-            }
-            if (elementDragged != undefined && elementDragged.is('li') && containerToPlace != undefined){
-                if (numberOfContainers == 1) {
-                    //Place a new row
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, true, iframeContents);
-                } else {
-                    //Place a new element
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, containerToPlace, false, iframeContents);
-                }
-                emailTemplateEditor.canvasChanged();
+            if (elementDragged != undefined && elementDragged.is('li')){
+                emailTemplateEditor.placeNewElement(elementDraggedClass, null, false);
+            } else {
+                console.log('error while droppping', elementDragged);
             }
         });
     },
@@ -218,6 +177,9 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
+                if (ui.item.is('li')) {
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, false);
+                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
@@ -235,13 +197,20 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
+                if (ui.item.is('li')) {
+                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
+                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, true);
+                    emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
+                        emailTemplateEditor.settings.sortableElementsSelector,
+                        iframeContents);
+                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
             cursor: 'move'
         });
     },
-    placeNewElement: function ( elementClass, item , wrapElement, iframeContents) {
+    placeNewElement: function ( elementClass, item , wrapElement) { //@TODO SERGIO, do we need _item_? its not used inside the function
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement},
@@ -249,11 +218,10 @@ var emailTemplateEditor = {
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
+                //@TODO SERGIO, it seems like Shoaibi wraps these in table eventhough they should be divs now
                 emailTemplateEditor.settings.ghost.after(html);
                 emailTemplateEditor.unfreezeLayoutEditor();
                 emailTemplateEditor.settings.ghost.detach();
-                emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
-                    emailTemplateEditor.settings.sortableElementsSelector, iframeContents);
             }
         });
     },
@@ -340,7 +308,7 @@ var emailTemplateEditor = {
                 data = findParentAndAppendSerializedData(parent, $(elementDataArray[i]).attr('id'), getSerializedData(elementDataArray[i]), data);
             }
         }
-        value = JSON.stringify({dom: data});
+        value = JSON.stringify(data);
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
         return value;
     }
