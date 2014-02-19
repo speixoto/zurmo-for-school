@@ -55,6 +55,14 @@
 
         protected $language;
 
+        public static function resolveAttributeStringToMergeTagString($attributeString)
+        {
+            $string = preg_replace('/(?<=\\w)(?=[A-Z])/', static::CAPITAL_DELIMITER . "$1", $attributeString);
+            $string = strtolower($string);
+            $string = str_replace(FormModelUtil::RELATION_DELIMITER, static::PROPERTY_DELIMITER, $string);
+            return static::TAG_PREFIX . strtoupper($string) . static::TAG_SUFFIX;
+        }
+
         protected static function resolveUniqueMergeTags(& $mergeTags, $key)
         {
             $mergeTags = array_unique($mergeTags);

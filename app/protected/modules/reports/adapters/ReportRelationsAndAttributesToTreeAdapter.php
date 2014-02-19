@@ -116,7 +116,9 @@
             {
                 $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
-                                            'wrapperClass' => 'item-to-place');
+                                            'wrapperClass' => 'item-to-place',
+                                            //'dataValue' => MergeTagsUtil::resolveAttributeStringToMergeTagString($nodeIdPrefix . $attribute)
+                ); //todo: refactor so we can extend. and fix to use proper
                 $childrenNodeData[] = $attributeNode;
             }
             $selectableRelationsData = $modelToReportAdapter->
