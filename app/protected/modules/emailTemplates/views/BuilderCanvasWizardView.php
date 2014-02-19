@@ -350,10 +350,10 @@
         protected function registerCanvasSaveScript()
         {
             $successMessage = Zurmo::t('EmailTemplatesModule',
-                                           'EmailTemplatessModuleSingularLabel was successfully saved.',
+                                           'EmailTemplatesModuleSingularLabel was successfully saved.',
                                            LabelUtil::getTranslationParamsForAllModules());
             $errorMessage   = Zurmo::t('EmailTemplatesModule',
-                                       'There was an error saving EmailTemplatessModuleSingularLabel',
+                                       'There was an error saving EmailTemplatesModuleSingularLabel',
                                         LabelUtil::getTranslationParamsForAllModules());
             Yii::app()->clientScript->registerScript('canvasSaveScript', "
                 // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:111
