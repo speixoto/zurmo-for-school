@@ -495,21 +495,21 @@
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
         }
 
-        public function actionRenderPreviewByPost()
+        public function actionRenderPreview($id = null)
         {
+            if (isset($id))
+            {
+                echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
+                Yii::app()->end(0, false);
+            }
             // this would be actually unserialized and an array. Bad naming convention as we need to preserve
             // form names.
             $serializedDataArray    = Yii::app()->request->getPost('serializedData');
             if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
             {
-                Yii::app()->end(0, false);
+
             }
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedDataArray, false);
-        }
-
-        public function actionRenderPreviewById($id)
-        {
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
         }
 
         public function actionRenderElementEditable()

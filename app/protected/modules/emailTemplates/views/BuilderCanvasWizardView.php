@@ -231,7 +231,7 @@
 
         protected function resolvePreviewActionUrl()
         {
-            return $this->resolveRelativeUrl('renderPreviewByPost');
+            return $this->resolveRelativeUrl('renderPreview');
         }
 
         protected function resolveElementEditableActionUrl()
