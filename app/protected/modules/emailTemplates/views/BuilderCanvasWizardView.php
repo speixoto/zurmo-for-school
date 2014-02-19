@@ -38,7 +38,7 @@
     {
         const REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID    = 'refresh-canvas-from-saved-template';
 
-        const CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME         = 'cachedSerializedData';
+        const CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME         = 'serializedData';
 
         const CANVAS_IFRAME_ID                              = 'canvas-iframe';
 
@@ -103,7 +103,6 @@
             $freezeOverlayContent                       = $this->renderFreezeOverlayContent();
             $leftSidebarContent                         = ZurmoHtml::tag('h3', array(), 'Elements');
             $leftSidebarContent                        .= $this->resolveElementsSidebarContent();
-            $this->renderCachedSerializedDataHiddenField($hiddenElements);
             $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
             $this->renderRefreshCanvasLink($leftSidebarContent);
 
@@ -124,14 +123,9 @@
             return ZurmoHtml::tag('div', array('id' => static::ELEMENT_IFRAME_OVERLAY_ID, 'class' => 'ui-overlay-block'), $span);
         }
 
-        protected function renderCachedSerializedDataHiddenField(& $hiddenElements)
-        {
-            $this->renderHiddenField($hiddenElements, static::CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME, null);
-        }
-
         protected function resolveCachedSerializedDataHiddenInputJQuerySelector()
         {
-            return '#' . get_class($this->model) . '_' . static::CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME;
+            return '#' . get_class($this->model) . '_' . static::CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME . '_dom';
         }
 
         protected function resolveContentHtmlOptions()
