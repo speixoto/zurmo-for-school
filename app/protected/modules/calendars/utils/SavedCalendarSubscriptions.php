@@ -69,32 +69,30 @@
                                                     User $user, $selectedCalendarIds)
         {
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
-            if (count($mySavedCalendars) > 0)
+            if(count($mySavedCalendars) == 0)
             {
-                ZurmoConfigurationUtil::setByUserAndModuleName($user,
-                                                               'CalendarsModule',
-                                                               'myCalendarSelections', $selectedCalendarIds);
-                $selectedCalendarIdArray = array();
-                if ($selectedCalendarIds != null)
-                {
-                    $selectedCalendarIdArray = explode(',', $selectedCalendarIds); // Not Coding Standard
-                }
-                foreach ($mySavedCalendars as $key => $mySavedCalendar)
-                {
-                    CalendarUtil::setMyCalendarColor($mySavedCalendar, $user);
-                    if (in_array($mySavedCalendar->id, $selectedCalendarIdArray))
-                    {
-                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
-                    }
-                    else
-                    {
-                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
-                    }
-                }
+                $mySavedCalendars    = CalendarUtil::loadDefaultCalendars($user);
+                $selectedCalendarIds = $mySavedCalendars[0]->id . ',' . $mySavedCalendars[1]->id;
             }
-            else
+            ZurmoConfigurationUtil::setByUserAndModuleName($user,
+                                                           'CalendarsModule',
+                                                           'myCalendarSelections', $selectedCalendarIds);
+            $selectedCalendarIdArray = array();
+            if ($selectedCalendarIds != null)
             {
-                CalendarUtil::loadDefaultCalendars($user);
+                $selectedCalendarIdArray = explode(',', $selectedCalendarIds); // Not Coding Standard
+            }
+            foreach ($mySavedCalendars as $key => $mySavedCalendar)
+            {
+                CalendarUtil::setMyCalendarColor($mySavedCalendar, $user);
+                if (in_array($mySavedCalendar->id, $selectedCalendarIdArray))
+                {
+                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
+                }
+                else
+                {
+                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
+                }
             }
         }
 

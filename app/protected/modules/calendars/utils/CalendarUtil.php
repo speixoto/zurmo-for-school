@@ -858,10 +858,11 @@
          */
         public static function loadDefaultCalendars(User $user)
         {
-            $name = Zurmo::t('CalendarsModule', 'My Meetings');
-            self::populateSavedCalendar($user, $name, 'MeetingsModule', 'startDateTime', 'endDateTime');
-            $name = Zurmo::t('CalendarsModule', 'My Tasks');
-            self::populateSavedCalendar($user, $name, 'TasksModule', 'createdDateTime');
+            $name           = Zurmo::t('CalendarsModule', 'My Meetings');
+            $mtgCalendar    = self::populateSavedCalendar($user, $name, 'MeetingsModule', 'startDateTime', 'endDateTime');
+            $name           = Zurmo::t('CalendarsModule', 'My Tasks');
+            $taskCalendar   = self::populateSavedCalendar($user, $name, 'TasksModule', 'createdDateTime');
+            return array($mtgCalendar, $taskCalendar);
         }
 
         /**
@@ -900,6 +901,7 @@
                                                        );
             CalendarUtil::populateFiltersDataInModel($savedCalendar, $filtersData);
             assert($savedCalendar->save());
+            return $savedCalendar;
         }
 
         /**

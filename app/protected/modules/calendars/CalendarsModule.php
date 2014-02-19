@@ -162,7 +162,7 @@
          */
         public static function getDemoDataMakerClassNames()
         {
-            return array('CalendarsDemoDataMaker');
+            return array();
         }
 
         /**

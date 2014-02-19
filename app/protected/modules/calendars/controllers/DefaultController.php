@@ -134,8 +134,6 @@
          */
         public function actionCombinedDetails()
         {
-            //Check for the calendars for the user. If not add the default calendar.
-            
             $dataProvider               = CalendarUtil::getCalendarItemsDataProvider(Yii::app()->user->userModel);
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $this->getId(), $this->getModule()->getId());
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
