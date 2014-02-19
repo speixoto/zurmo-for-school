@@ -72,6 +72,11 @@
         protected $params;
 
         /**
+         * @var object contains model for editable form, only for when elements are being rendered editably.
+         */
+        protected $model;
+
+        /**
          * @var bool if this element is being rendered for canvas or not.
          * Non-editable rendering behavior varies depending on this.
          * @see resolveCustomDataAttributesNonEditable()
@@ -213,6 +218,7 @@
             {
                 throw new NotSupportedException('This element does not support editable representation');
             }
+            $this->initModel();
             $formTitle                  = $this->resolveFormatterFormTitle();
             $formContent                = $this->renderFormContent();
             $content                    = $formTitle . $formContent;
@@ -623,9 +629,9 @@
          */
         protected final function renderHiddenField($attributeName, $value)
         {
-            return ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->getModel(), $attributeName),
+            return ZurmoHtml::hiddenField(ZurmoHtml::activeName($this->model, $attributeName),
                                                 $value,
-                                                array('id' => ZurmoHtml::activeId($this->getModel(), $attributeName)));
+                                                array('id' => ZurmoHtml::activeId($this->model, $attributeName)));
          }
 
         /**
@@ -841,7 +847,7 @@
          */
         protected function registerAjaxPostForApplyClickScript()
         {
-            $hiddenInputId  = ZurmoHtml::activeId($this->getModel(), 'id');
+            $hiddenInputId  = ZurmoHtml::activeId($this->model, 'id');
             Yii::app()->clientScript->registerScript('ajaxPostForApplyClick', "
                 $('#" . $this->resolveApplyLinkId() . "').unbind('click.ajaxPostForApplyClick');
                 $('#" . $this->resolveApplyLinkId() . "').bind('click.ajaxPostForApplyClick', function()
@@ -996,6 +1002,10 @@
             $this->content      = $content;
         }
 
+        /**
+         * init element params
+         * @param null $params
+         */
         protected function initParams($params = null)
         {
             $defaultParams  = $this->resolveDefaultParams();
@@ -1008,6 +1018,14 @@
                 $params     = CMap::mergeArray($defaultParams, $params);
             }
             $this->params   = $params;
+        }
+
+        /**
+         * init element model
+         */
+        protected function initModel()
+        {
+            $this->model    = $this->getModel();
         }
 
         /**
@@ -1030,7 +1048,7 @@
             $elementClassName   = $this->resolveContentElementClassName();
             $attributeName      = $this->resolveContentElementAttributeName();
             $params             = $this->resolveContentElementParams();
-            $element            = new $elementClassName($this->getModel(), $attributeName, $form, $params);
+            $element            = new $elementClassName($this->model, $attributeName, $form, $params);
             if (isset($form))
             {
                 $this->resolveContentElementEditableTemplate($element);
