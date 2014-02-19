@@ -107,6 +107,11 @@
             return array('EmailTemplatesDemoDataMaker');
         }
 
+        public static function getDefaultDataMakerClassName()
+        {
+            return 'EmailTemplatesDefaultDataMaker';
+        }
+
         public static function hasPermissions()
         {
             return true;
