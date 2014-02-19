@@ -34,11 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ProductEditLinkActionElement extends EditLinkActionElement
+    class TaskEditLinkActionElement extends EditLinkActionElement
     {
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl('products/default/edit?id=' . $this->modelId);
+            return Yii::app()->createUrl('tasks/default/edit?id=' . $this->modelId);
         }
     }
 ?>

@@ -34,32 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class that builds demo calendars.
-     */
-    class CalendarsDemoDataMaker extends DemoDataMaker
+    class TaskDetailsLinkActionElement extends DetailsLinkActionElement
     {
-        protected $ratioToLoad = 1;
-
-        public static function getDependencies()
+        protected function getDefaultRoute()
         {
-            return array('users');
-        }
-
-        /**
-         * @param DemoDataHelper $demoDataHelper
-         */
-        public function makeAll(& $demoDataHelper)
-        {
-            assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("User")');
-        }
-
-        /**
-         * @param RedBeanModel $model
-         */
-        public function populateModel(& $model)
-        {
+            return Yii::app()->createUrl('tasks/default/details?id=' . $this->modelId);
         }
     }
 ?>

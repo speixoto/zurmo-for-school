@@ -46,7 +46,10 @@
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
-                        'elements' => array(),
+                        'elements' => array(
+                            array('type'  => 'TaskEditLink', 'renderType' => 'Details'),
+                            array('type'  => 'TaskDetailsLink', 'renderType' => 'Details')
+                        ),
                     ),
                     'panels' => array(
                         array(

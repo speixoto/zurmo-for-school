@@ -150,22 +150,6 @@
         }
 
         /**
-         * @return null
-         */
-        public static function getDefaultDataMakerClassName()
-        {
-            return null;
-        }
-
-        /**
-         * @return array
-         */
-        public static function getDemoDataMakerClassNames()
-        {
-            return array('CalendarsDemoDataMaker');
-        }
-
-        /**
          * @return string
          */
         public static function getGlobalSearchFormClassName()

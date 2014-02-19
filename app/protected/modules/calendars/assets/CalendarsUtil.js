@@ -63,6 +63,7 @@ function getCalendarEvents(url, inputId)
 {
     var events = {
         url : url,
+        cache: false,
         data :function()
         {
             var view                    = $('#' + inputId).fullCalendar('getView');

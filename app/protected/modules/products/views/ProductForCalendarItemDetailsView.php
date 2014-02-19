@@ -46,7 +46,10 @@
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
-                        'elements' => array(),
+                        'elements' => array(
+                            array('type'  => 'ProductEditLink', 'renderType' => 'Details'),
+                            array('type'  => 'ProductDetailsLink', 'renderType' => 'Details')
+                        ),
                     ),
                     'panels' => array(
                         array(
