@@ -492,14 +492,20 @@
                 Yii::app()->end(0, false);
             }
             assert('is_int($id) || is_string($id)');
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
+            $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
+            Yii::app()->clientScript->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
         }
 
         public function actionRenderPreview($id = null)
         {
             if (isset($id))
             {
-                echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
+                $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
+                Yii::app()->clientScript->setToAjaxMode();
+                Yii::app()->getClientScript()->render($content);
+                echo $content;
                 Yii::app()->end(0, false);
             }
             // this would be actually unserialized and an array. Bad naming convention as we need to preserve
@@ -509,7 +515,10 @@
             {
 
             }
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedDataArray, false);
+            $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedDataArray, false);
+            Yii::app()->clientScript->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
         }
 
         public function actionRenderElementEditable()
@@ -524,7 +533,10 @@
             {
                 Yii::app()->end(0, false);
             }
-            echo BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
+            $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
+            Yii::app()->clientScript->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
         }
 
         public function actionRenderElementNonEditable()
@@ -540,7 +552,10 @@
             {
                 Yii::app()->end(0, false);
             }
-            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
+            $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
+            Yii::app()->clientScript->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
         }
 
         public function actionRenderBaseTemplateOptions($elementClassName, $elementModelClassName, $elementAttributeName, $elementFormClassName, array $elementParams = array())

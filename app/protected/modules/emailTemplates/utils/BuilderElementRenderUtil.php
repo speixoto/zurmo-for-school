@@ -135,7 +135,7 @@
         {
             // this disables the footer but breaks stuff for some reason.
             //Yii::app()->clientScript->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
+            //Yii::app()->getClientScript()->render($content);
         }
     }
 ?>
