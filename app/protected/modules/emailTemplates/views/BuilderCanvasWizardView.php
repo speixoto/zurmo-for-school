@@ -258,10 +258,8 @@
         protected function registerScripts()
         {
             // TODO: @Shoaibi/@Sergio: Critical5: Did i miss any JS here?
-            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.emailTemplates.widjets.assets'));
-            $cs            = Yii::app()->getClientScript();
-            $cs->registerScriptFile($baseScriptUrl . '/EmailTemplateEditor.js', CClientScript::POS_HEAD);
             parent::registerScripts();
+            $this->registerEmailTemplateEditorScriptFile();
             $this->registerInitializeEmailTemplateEditor();
             $this->registerRefreshCanvasFromSavedTemplateScript();
             $this->registerSetIsDraftToZeroOnClickingFinishScript();
@@ -272,6 +270,13 @@
             $this->registerCanvasSaveScript();
             $this->registerCanvasFinishScript();
             $this->registerCanvasChangedScript();
+        }
+
+        protected function registerEmailTemplateEditorScriptFile()
+        {
+            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.emailTemplates.widjets.assets'));
+            $cs            = Yii::app()->getClientScript();
+            $cs->registerScriptFile($baseScriptUrl . '/EmailTemplateEditor.js', CClientScript::POS_HEAD);
         }
 
         protected function registerInitializeEmailTemplateEditor()
