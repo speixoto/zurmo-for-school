@@ -97,6 +97,19 @@
                 $templateUnserializedData = array('baseTemplateId' => null);
             }
 
+            // dom element would be empty till we get to canvas screen and hit save/finish at least once on create
+            // we need to unset it so if user does not change pre-selected base template on step 2 and moves to canvas
+            // during step 2, we don't end up purging baseTemplate's dom we loaded in step1's save.
+            if (empty($postUnserializedData['dom']))
+            {
+                unset($postUnserializedData['dom']);
+            }
+            else
+            {
+                // if it is set then it is most probably in
+                $postUnserializedData['dom'] = CJSON::decode($postUnserializedData['dom']);
+            }
+
             if (static::hasBaseTemplateIdChanged($postUnserializedData['baseTemplateId'], $templateUnserializedData['baseTemplateId']))
             {
                 // baseTemplateId has changed.
