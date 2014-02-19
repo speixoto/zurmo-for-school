@@ -356,6 +356,7 @@
                 $('#" . static::getNextPageLinkId() . "').unbind('click');
                 $('#" . static::getNextPageLinkId() . "').bind('click', function()
                 {
+                    emailTemplateEditor.freezeLayoutEditor();
                     $.ajax({
                         url  : $('#" .  static::getNextPageLinkId() . "').closest('form').attr('action'),
                         type : 'POST',
@@ -367,6 +368,7 @@
                                 clickOverlay : true,
                                 showIcon: false,
                             });
+                            emailTemplateEditor.unfreezeLayoutEditor();
                         },
                         error: function () {
                             $('#FlashMessageBar').jnotifyAddMessage({
@@ -375,6 +377,7 @@
                                 clickOverlay : true,
                                 showIcon: false,
                             });
+                            emailTemplateEditor.unfreezeLayoutEditor();
                         }
                     });
                     return false;

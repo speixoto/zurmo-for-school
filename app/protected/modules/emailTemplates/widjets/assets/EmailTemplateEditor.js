@@ -290,7 +290,7 @@ var emailTemplateEditor = {
         //Gets the cachedSerializedData and if its set return it
         var value = $(emailTemplateEditor.settings.cachedSerializedDataSelector).val();
         if (value != '') {
-            return jQuery.parseJSON(value);
+            return value;
         };
 
         var data    = {};
