@@ -98,7 +98,7 @@
         protected function renderFormContent()
         {
             // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes?
-            $hiddenElements                             = null;
+            $hiddenElements                             = $this->resolvePreviewContent();
 
             $freezeOverlayContent                       = $this->renderFreezeOverlayContent();
             $leftSidebarContent                         = ZurmoHtml::tag('h3', array(), 'Elements');
@@ -212,6 +212,22 @@
                             'width' => '100%',
                             'height'    => '100%',
                             'frameborder' => 0);
+        }
+
+        protected function resolvePreviewContent()
+        {
+            $canvasContent  = ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
+            return $canvasContent;
+        }
+
+        protected function resolvePreviewIFrameHtmlOptions()
+        {
+            return array('id' => static::PREVIEW_IFRAME_ID,
+                'src' => $this->resolvePreviewActionUrl(),
+                'width' => '100%',
+                'height'    => '100%',
+                'frameborder' => 0,
+                'style' => 'display: none;');
         }
 
         protected function resolveUiAccessibleContainerTypeElementClassNames($jsonEncoded = false)
