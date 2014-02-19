@@ -364,7 +364,7 @@
                     $.ajax({
                         url  : $('#" .  static::getNextPageLinkId() . "').closest('form').attr('action'),
                         type : 'POST',
-                        data : {serializedData: emailTemplateEditor.compileSerializedData()},
+                        data : $('#edit-form').serialize() + '&BuilderEmailTemplateWizardForm[serializedData][dom]= ' + emailTemplateEditor.compileSerializedData(),
                         success: function () {
                             $('#FlashMessageBar').jnotifyAddMessage({
                                 text: '" . $successMessage . "',
