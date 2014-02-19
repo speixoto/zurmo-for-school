@@ -48,7 +48,7 @@
             $emailTemplate->language        = Yii::app()->languageHelper-> getForCurrentUser();
             $emailTemplate->htmlContent     = null;
             $emailTemplate->textContent     = "Text content does not even matter";
-            $emailTemplate->serializedData  = serialize(array(
+            $emailTemplate->serializedData  = CJSON::encode(array(
                 'baseTemplateId'    => null,
                 // TODO: @Shoaibi/@Amit: Critical: thumbnails
                 'thumbnailUrl'      => 'some-thumbnail-url-here',

@@ -150,7 +150,7 @@
             // handle any custom mappings between EmailTemplateWizardForm and EmailTemplate model here.
             if ($this->emailTemplate->isBuilderTemplate())
             {
-                $unserializedData   = unserialize($this->emailTemplate->serializedData);
+                $unserializedData   = CJSON::decode($this->emailTemplate->serializedData);
                 $formModel->baseTemplateId = $unserializedData['baseTemplateId'];
             }
         }

@@ -91,7 +91,7 @@
         {
             $unserializedData   = array();
             $postUnserializedData = static::$data['serializedData'];
-            $templateUnserializedData   = unserialize(static::$emailTemplate->serializedData);
+            $templateUnserializedData   = CJSON::decode(static::$emailTemplate->serializedData);
             if (empty($templateUnserializedData))
             {
                 $templateUnserializedData = array('baseTemplateId' => null);
@@ -114,7 +114,7 @@
             {
                 // baseTemplateId has changed.
                 $baseTemplateModel  = EmailTemplate::getById(intval($postUnserializedData['baseTemplateId']));
-                $unserializedData   = unserialize($baseTemplateModel->serializedData);
+                $unserializedData   = CJSON::decode($baseTemplateModel->serializedData);
                 unset($unserializedData['thumbnailUrl']);
                 $unserializedData['baseTemplateId'] = $postUnserializedData['baseTemplateId'];
             }
@@ -126,7 +126,7 @@
 
             if (!empty($unserializedData))
             {
-                static::$emailTemplate->serializedData  = serialize($unserializedData);
+                static::$emailTemplate->serializedData  = CJSON::encode($unserializedData);
             }
             // we don't need this as we "continue" in the invoker if block but still...
             unset(static::$data['serializedData']);

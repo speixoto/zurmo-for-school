@@ -80,7 +80,7 @@
          */
         public static function resolveHtmlBySerializedData($serializedData, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
         {
-            $unserializedData   = unserialize($serializedData);
+            $unserializedData   = CJSON::decode($serializedData);
             $resolvedHtml       = static::resolveHtmlByUnserializedData($unserializedData, $renderForCanvas, $attachedMergeTagModel, $type, $language);
             return $resolvedHtml;
         }

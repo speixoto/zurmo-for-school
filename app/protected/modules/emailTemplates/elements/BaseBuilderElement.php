@@ -423,12 +423,12 @@
                 return array();
             }
             $cda['data-class']      = get_class($this);
-            $cda['data-properties'] = serialize($this->properties);
-            $cda['data-content']    = serialize(array());
+            $cda['data-properties'] = CJSON::encode($this->properties);
+            $cda['data-content']    = CJSON::encode(array());
             if (!$this->isContainerType())
             {
                 // we don't want to bloat container type's data-content as it would be recompiled anyway.
-                $cda['data-content']    = serialize($this->content);
+                $cda['data-content']    = CJSON::encode($this->content);
             }
             return $cda;
         }
@@ -1151,7 +1151,7 @@
         {
             if ($serialized)
             {
-                return serialize($this->content);
+                return CJSON::encode($this->content);
             }
             return $this->content;
         }
@@ -1165,7 +1165,7 @@
         {
             if ($serialized)
             {
-                return serialize($this->properties);
+                return CJSON::encode($this->properties);
             }
             return $this->properties;
         }

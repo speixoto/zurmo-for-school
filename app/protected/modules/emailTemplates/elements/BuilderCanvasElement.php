@@ -43,7 +43,6 @@
             $content    = parent::resolveWrapperNonEditable($elementContent, $properties,
                                                             $customDataAttributes, $actionsOverlay);
             $content    = $this->normalizeHtmlContent($content);
-            Yii::app()->clientScript->setToAjaxMode();
             Yii::app()->clientScript->render($content);
             return $content;
         }

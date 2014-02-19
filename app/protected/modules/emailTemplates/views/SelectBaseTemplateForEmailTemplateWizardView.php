@@ -129,7 +129,7 @@
         {
             $this->renderHiddenField($hiddenElements, 'serializedData[thumbnailUrl]', null);
 
-            $unserializedData   = unserialize($this->model->serializedData);
+            $unserializedData   = CJSON::decode($this->model->serializedData);
             $baseTemplateId     = (isset($unserializedData['baseTemplateId']))? $unserializedData['baseTemplateId'] : null;
             $this->renderHiddenField($hiddenElements, 'serializedData[baseTemplateId]', $baseTemplateId);
             $this->renderHiddenField($hiddenElements, 'originalBaseTemplateId', $baseTemplateId);

@@ -89,7 +89,7 @@
 
         protected function resolveThumbnailUrl(EmailTemplate $template)
         {
-            $unserializedData = unserialize($template->serializedData);
+            $unserializedData = CJSON::decode($template->serializedData);
             if (!empty($unserializedData['thumbnailUrl']))
             {
                 return $unserializedData['thumbnailUrl'];

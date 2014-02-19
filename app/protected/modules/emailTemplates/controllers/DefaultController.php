@@ -518,12 +518,13 @@
             $id                 = Yii::app()->request->getPost('id');
             $properties         = Yii::app()->request->getPost('properties');
             $content            = Yii::app()->request->getPost('content');
+            $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', false);
             // at bare minimum we should have classname. Without these it does not make sense.
             if (!Yii::app()->request->isPostRequest || !isset($className))
             {
                 Yii::app()->end(0, false);
             }
-            echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
+            echo BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
         }
 
         public function actionRenderElementNonEditable()

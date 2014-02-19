@@ -41,7 +41,7 @@
             $serialized = $object->$attribute;
             if (!empty($serialized))
             {
-                $unserialized = unserialize($serialized);
+                $unserialized = CJSON::decode($serialized);
                 if (empty($unserialized))
                 {
                     return true;
