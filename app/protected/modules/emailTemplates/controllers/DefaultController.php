@@ -517,26 +517,20 @@
             echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
         }
 
-        public function actionRenderElementNonEditable($className, $renderForCanvas = false, $wrapElementInRow = false,
-                                                       $id = null, $properties = null, $content = null)
+        public function actionRenderElementNonEditable()
         {
-            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
-        }
-
-        public function actionRenderElementNonEditableByPost()
-        {
-            $renderForCanvas    = true;
-            $wrapElementInRow   = false;
-            $id                 = Yii::app()->request->getPost('id');
             $className          = Yii::app()->request->getPost('className');
-            $content            = Yii::app()->request->getPost('content');
+            $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', true);
+            $wrapElementInRow   = Yii::app()->request->getPost('$wrapElementInRow', false);
+            $id                 = Yii::app()->request->getPost('id');
             $properties         = Yii::app()->request->getPost('properties');
-            // at bare minimum we should have id and classname. Without these it does not make sense.
-            if (!Yii::app()->request->isPostRequest || !isset($id, $className))
+            $content            = Yii::app()->request->getPost('content');
+            // at bare minimum we should have classname. Without these it does not make sense.
+            if (!Yii::app()->request->isPostRequest || !isset($className))
             {
                 Yii::app()->end(0, false);
             }
-            $this->actionRenderElementNonEditable($className, $renderForCanvas, $id, $properties, $content);
+            echo BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
         }
 
         public function actionRenderBaseTemplateOptions($elementClassName, $elementModelClassName, $elementAttributeName, $elementFormClassName, array $elementParams = array())
