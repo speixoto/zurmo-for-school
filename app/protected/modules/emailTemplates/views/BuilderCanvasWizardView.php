@@ -285,7 +285,7 @@
             $errorOnDeleteMessage       = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
             $csrfToken                  = Yii::app()->request->csrfToken;
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
-                $(document).ready(function(){
+                initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
                         '{$elementsToPlaceSelector}',
                         '{$iframeSelector}',
@@ -300,7 +300,7 @@
                         '{$errorOnDeleteMessage}',
                         '{$csrfToken}'
                     );
-                });
+                };
                 ", CClientScript::POS_END);
         }
 
