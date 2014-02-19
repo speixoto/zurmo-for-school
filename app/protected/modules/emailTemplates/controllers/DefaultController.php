@@ -493,8 +493,7 @@
             }
             assert('is_int($id) || is_string($id)');
             $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
-            Yii::app()->clientScript->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
+            $this->resolveContentForScriptAndSetToAjaxMode($content);
             echo $content;
         }
 
@@ -516,8 +515,7 @@
 
             }
             $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedDataArray, false);
-            Yii::app()->clientScript->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
+            $this->resolveContentForScriptAndSetToAjaxMode($content);
             echo $content;
         }
 
@@ -534,8 +532,7 @@
                 Yii::app()->end(0, false);
             }
             $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
-            Yii::app()->clientScript->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
+            $this->resolveContentForScriptAndSetToAjaxMode($content);
             echo $content;
         }
 
@@ -553,8 +550,7 @@
                 Yii::app()->end(0, false);
             }
             $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
-            Yii::app()->clientScript->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
+            $this->resolveContentForScriptAndSetToAjaxMode($content);
             echo $content;
         }
 
@@ -563,6 +559,12 @@
             $element                    = new $elementClassName(new $elementModelClassName(), $elementAttributeName,
                                                                 new $elementFormClassName(), $elementParams);
             echo $element->render();
+        }
+
+        protected function resolveContentForScriptAndSetToAjaxMode(& $content)
+        {
+            Yii::app()->clientScript->setToAjaxMode();
+            Yii::app()->clientScript->render($content);
         }
     }
 ?>
