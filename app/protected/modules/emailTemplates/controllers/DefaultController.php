@@ -530,7 +530,7 @@
         {
             $className          = Yii::app()->request->getPost('className');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', true);
-            $wrapElementInRow   = Yii::app()->request->getPost('$wrapElementInRow', false);
+            $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', false);
             $id                 = Yii::app()->request->getPost('id');
             $properties         = Yii::app()->request->getPost('properties');
             $content            = Yii::app()->request->getPost('content');

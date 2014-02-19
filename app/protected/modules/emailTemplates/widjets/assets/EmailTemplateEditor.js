@@ -213,6 +213,7 @@ var emailTemplateEditor = {
     placeNewElement: function ( elementClass, item , wrapElement) { //@TODO SERGIO, do we need _item_? its not used inside the function
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
+            type: 'POST',
             data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement},
             beforeSend: function() {
                     emailTemplateEditor.freezeLayoutEditor();
@@ -243,6 +244,7 @@ var emailTemplateEditor = {
         elementClass = element.data("class") + 'removeThisWhenImplemented';
         $.ajax({
             url: emailTemplateEditor.settings.editElementUrl,
+            type: 'POST',
             data: {id: id, className: elementClass, renderForCanvas: 1},
             success: function (html) {
                 $(emailTemplateEditor.settings.editSelector).html(html);
