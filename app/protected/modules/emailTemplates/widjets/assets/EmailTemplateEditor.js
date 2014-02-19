@@ -271,10 +271,8 @@ var emailTemplateEditor = {
     compileSerializedData: function () {
         var getSerializedData = function (element) {
             var data = {};
-            var content = {};
-            content['content'] = $(element).data('content');
-            data['content'] = content;
-            data['properties'] = $(element).data('properties');
+            data['content'] = $.extend({}, $(element).data('content'));
+            data['properties'] = $.extend({}, $(element).data('properties'));
             data['class'] = $(element).data('class');
             return data;
         };
