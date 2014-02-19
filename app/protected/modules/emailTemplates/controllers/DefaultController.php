@@ -512,8 +512,17 @@
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
         }
 
-        public function actionRenderElementEditable($className, $id = null, $properties = null, $content = null)
+        public function actionRenderElementEditable()
         {
+            $className          = Yii::app()->request->getPost('className');
+            $id                 = Yii::app()->request->getPost('id');
+            $properties         = Yii::app()->request->getPost('properties');
+            $content            = Yii::app()->request->getPost('content');
+            // at bare minimum we should have classname. Without these it does not make sense.
+            if (!Yii::app()->request->isPostRequest || !isset($className))
+            {
+                Yii::app()->end(0, false);
+            }
             echo BuilderElementRenderUtil::renderEditable($className, $id, $properties, $content);
         }
 
