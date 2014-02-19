@@ -284,6 +284,7 @@
             $iframeOverlaySelector      = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
             $cachedSerializedSelector   = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
             $errorOnDeleteMessage       = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
+            $csrfToken                  = Yii::app()->request->csrfToken;
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 $(document).ready(function(){
                     emailTemplateEditor.init(
@@ -297,7 +298,8 @@
                         '{$cachedSerializedSelector}',
                         '{$this->resolveElementEditableActionUrl()}',
                         '{$this->resolveElementNonEditableActionUrl()}',
-                        '{$errorOnDeleteMessage}'
+                        '{$errorOnDeleteMessage}',
+                        '{$csrfToken}'
                     );
                 });
                 ", CClientScript::POS_END);

@@ -49,10 +49,12 @@ var emailTemplateEditor = {
         deleteActionSelector: 'span.action-delete',
         cachedSerializedDataSelector: '#serialized-data-cache',
         ghost : '',
-        alertErrorOnDelete: 'You cannot delete last row'
+        alertErrorOnDelete: 'You cannot delete last row',
+        csrfToken: ''
     },
     init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
-                     iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete) {
+                     iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
+                     csrfToken) {
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
         this.settings.iframeSelector          = iframeSelector;
         this.settings.editSelector            = editSelector;
@@ -64,6 +66,7 @@ var emailTemplateEditor = {
         this.settings.editElementUrl          = editElementUrl;
         this.settings.getNewElementUrl        = getNewElementUrl;
         this.settings.alertErrorOnDelete      = alertErrorOnDelete;
+        this.settings.csrfToken               = csrfToken;
         this.setupLayout();
         emailTemplateEditor = this;
     },
@@ -214,7 +217,7 @@ var emailTemplateEditor = {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',
-            data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement},
+            data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
             beforeSend: function() {
                     emailTemplateEditor.freezeLayoutEditor();
             },
@@ -245,7 +248,7 @@ var emailTemplateEditor = {
         $.ajax({
             url: emailTemplateEditor.settings.editElementUrl,
             type: 'POST',
-            data: {id: id, className: elementClass, renderForCanvas: 1},
+            data: {id: id, className: elementClass, renderForCanvas: 1, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
             success: function (html) {
                 $(emailTemplateEditor.settings.editSelector).html(html);
             }
