@@ -325,7 +325,7 @@
             $report->setType($type);
             if ($nodeId != null)
             {
-                $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
+                $reportToTreeAdapter = new MergeTagsReportRelationsAndAttributesToTreeAdapter($report, $treeType);
                 echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
                 Yii::app()->end(0, false);
             }

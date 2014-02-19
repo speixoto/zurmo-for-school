@@ -117,8 +117,8 @@
                 $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
                                             'wrapperClass' => 'item-to-place',
-                                            //'dataValue' => MergeTagsUtil::resolveAttributeStringToMergeTagString($nodeIdPrefix . $attribute)
-                ); //todo: refactor so we can extend. and fix to use proper
+                );
+                $this->resolveChildNodeDataValueForAttributeNode($attributeNode, $attribute, $nodeIdPrefix);
                 $childrenNodeData[] = $attributeNode;
             }
             $selectableRelationsData = $modelToReportAdapter->
@@ -142,6 +142,16 @@
                 $childrenNodeData[]           = $relationNode;
             }
             return $childrenNodeData;
+        }
+
+        /**
+         * Override as needed
+         * @param $attributeNode
+         * @param $attribute
+         * @param $nodeIdPrefix
+         */
+        protected function resolveChildNodeDataValueForAttributeNode(& $attributeNode, $attribute, $nodeIdPrefix)
+        {
         }
 
         /**

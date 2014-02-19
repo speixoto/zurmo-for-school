@@ -135,7 +135,7 @@
                                                      $this->renderTreeViewAjaxScriptContent());
             $script = '
                 $(document).ready(function(){
-
+                    $(".item-to-place").off("mousemove");
                     $(".item-to-place").live("mousemove",function(){
                         $(this).draggable({
                             helper: function(event){
@@ -162,6 +162,10 @@
                 ';
             if($this->textContentId != null)
             {
+                $script.='if ($("#EmailTemplate_textContent").data("droppable"))
+                                {
+                                    $("#EmailTemplate_textContent").droppable("destroy");
+                                }';
                 $script.= '$("#EmailTemplate_textContent").droppable({
                                 iframeFix: true,
                                     hoverClass: "textarea",
@@ -169,34 +173,30 @@
                                     drop: function(event, ui) {
                                         var $this = $(this);
                                         var tempid = ui.draggable.text();
-                                        var dropText;
-                                        dropText = " {" + tempid + "} ";
+                                        var dropText = ui.draggable.data("value");
                                         var droparea = document.getElementById("EmailTemplate_textContent");
-                                        var range1 = droparea.selectionStart;
-                                        var range2 = droparea.selectionEnd;
-                                        var val = droparea.value;
-                                        var str1 = val.substring(0, range1);
-                                        var str3 = val.substring(range1, val.length);
+                                        var range1   = droparea.selectionStart;
+                                        var range2   = droparea.selectionEnd;
+                                        var val      = droparea.value;
+                                        var str1     = val.substring(0, range1);
+                                        var str3     = val.substring(range1, val.length);
                                         droparea.value = str1 + dropText + str3;
                                     }
                                 });';
             }
             if($this->htmlContentId != null)
             {
+                $script.='if ($("#EmailTemplate_htmlContent").parent().data("droppable"))
+                                {
+                                    $("#EmailTemplate_htmlContent").parent().droppable("destroy");
+                                }';
                 $script .= '$("#EmailTemplate_htmlContent").parent().droppable({
                                 iframeFix: true,
                                 drop: function(event, ui) {
-                                    var $this = $(this);
-                                    var tempid = ui.draggable.text();
-                                    var dropText;
-                                    dropText = " {" + tempid + "} ";
-                                    var droparea = $("#EmailTemplate_htmlContent").redactor("getIframe").contents().find("body");
-                                    var range1 = droparea.selectionStart;
-                                    var range2 = droparea.selectionEnd;
-                                    var val = droparea.html();
-                                    var str1 = val.substring(0, range1);
-                                    var str3 = val.substring(range1, val.length);
-                                    droparea.html(str1 + dropText + str3);
+                                    var $this    = $(this);
+                                    var dropText = ui.draggable.data("value");
+                                    var node = document.createTextNode(dropText);
+                                    $("#EmailTemplate_htmlContent").redactor("insertNode", node);
                                 }
                             });';
             }
