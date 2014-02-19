@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,50 +31,44 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTextElement extends BaseBuilderElement
+    class BuilderTextRedactorElement extends RedactorElement
     {
-        public static function isUIAccessible()
+        protected function resolveHtmlOptions()
         {
-            return true;
+            $id                      = $this->getEditableInputId();
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $id;
+            $htmlOptions['name']     = $this->getEditableInputName();
+            return $htmlOptions;
         }
 
-        protected static function resolveLabel()
+        protected function resolveRedactorOptions()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
+            $parentOptions      = parent::resolveRedactorOptions();
+            $options            = array(
+                'paragraphy'    => 'false',
+                'deniedTags'    => json_encode(array()),
+                'buttons'       => $this->resolveRedactorButtons(),
+            );
+            $options            = CMap::mergeArray($parentOptions, $options);
+            return $options;
         }
 
-        protected function resolveDefaultContent()
+        protected function resolveDeniedTags()
         {
-            // TODO: @Shoaibi: Critical5: Better default content.
-            return array('text' => '<u>This is default dummy content.</u>');
+            return CJSON::encode(array());
         }
 
-        protected function renderSettingsTab(ZurmoActiveForm $form)
+        protected function resolveRedactorButtons()
         {
-            // TODO: @Shoaibi: Critical0: Implement settings interface
-            return 'Settings Edit form goes here';
-        }
-
-        protected function resolveContentElementClassName()
-        {
-            return 'BuilderTextRedactorElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
-            // it would give an error saying we are trying to convert an array to string.
-            return 'content[text]';
-        }
-
-        protected function resolveContentElementParams()
-        {
-            $params                     = parent::resolveContentElementParams();
-            $params['labelHtmlOptions'] = array('label' => 'Text');
-            return $params;
+            $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
+                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'table', 'link',
+                                    '|', '|', 'fontcolor', 'backcolor', '|', 'alignment', 'alignleft', 'aligncenter',
+                                    'alignright', 'justify', '|', 'horizontalrule');
+            return CJSON::encode($buttons);
         }
     }
 ?>

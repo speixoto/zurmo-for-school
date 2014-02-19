@@ -207,7 +207,7 @@
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $htmlContent,
                                         'paragraphy'  => "false",
-                                        'deniedTags'  => json_encode(array()),
+                                        'deniedTags'  => CJSON::encode(array()),
                                 ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
