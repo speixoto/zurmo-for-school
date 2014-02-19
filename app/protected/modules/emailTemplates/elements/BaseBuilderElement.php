@@ -72,7 +72,7 @@
         protected $params;
 
         /**
-         * @var object contains model for editable form, only for when elements are being rendered editably.
+         * @var object contains model for forms
          */
         protected $model;
 
@@ -194,6 +194,7 @@
             $this->initproperties($properties);
             $this->initContent($content);
             $this->initParams($params);
+            $this->initModel();
         }
 
         /**
@@ -218,7 +219,6 @@
             {
                 throw new NotSupportedException('This element does not support editable representation');
             }
-            $this->initModel();
             $formTitle                  = $this->resolveFormatterFormTitle();
             $formContent                = $this->renderFormContent();
             $content                    = $formTitle . $formContent;
