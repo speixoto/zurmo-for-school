@@ -256,7 +256,6 @@
             $this->registerEmailTemplateEditorScriptFile();
             $this->registerInitializeEmailTemplateEditor();
             $this->registerRefreshCanvasFromSavedTemplateScript();
-            $this->registerSetIsDraftToZeroOnClickingFinishScript();
             $this->registerBindElementNonEditableActionsOverlayScript();
             $this->registerElementDragAndDropScript();
             $this->registerPreviewModalScript();
@@ -316,17 +315,6 @@
                     return false;
                 });
                 ", CClientScript::POS_READY);
-        }
-
-        protected function registerSetIsDraftToZeroOnClickingFinishScript()
-        {
-            Yii::app()->clientScript->registerScript('setIsDraftToZeroOnClickingFinishScript', "
-                $('#" . static::getFinishLinkId() . "').unbind('click.setIsDraftToZero');
-                $('#" . static::getFinishLinkId() . "').bind('click.setIsDraftToZero', function()
-                {
-                    setIsDraftToZero();
-                });
-                ", CClientScript::POS_END);
         }
 
         protected function registerBindElementNonEditableActionsOverlayScript()
@@ -389,9 +377,14 @@
         protected function registerCanvasFinishScript()
         {
             Yii::app()->clientScript->registerScript('canvasFinishScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
-                // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:115
-                ");
+                $('#" . static::getFinishLinkId() . "').unbind('click.canvasFinishScript');
+                $('#" . static::getFinishLinkId() . "').bind('click.canvasFinishScript', function()
+                {
+                    setIsDraftToZero();
+                    $('#" . static::getNextPageLinkId() . "').click();
+
+                });
+                ", CClientScript::POS_END);
         }
 
         protected function registerSerializedDataCompilationFunctionsScript()
