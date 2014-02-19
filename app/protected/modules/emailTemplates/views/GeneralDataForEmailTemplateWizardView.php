@@ -264,10 +264,19 @@
             // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
             $ajaxArray['success']       = "js:function(data)
                                             {
-                                                // update form action url to contain ids to prevent duplicate models
-                                                var actionUrl = $('#" . $formName . "').attr('action');
-                                                actionUrl = actionUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                                $('#" . $formName . "').attr('action',  actionUrl);
+                                                if ('create' == '" . Yii::app()->getController()->getAction()->getId() . "')
+                                                {
+                                                    // update form action url to contain ids to prevent duplicate models
+                                                    var formActionUrl   = $('#" . $formName . "').attr('action');
+                                                    formActionUrl       = formActionUrl.replace(/id=(\d*)/, 'id=' + data.id);
+                                                    $('#" . $formName . "').attr('action',  formActionUrl);
+
+                                                    // update canvas url
+                                                    var canvasSourceUrl = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src');
+                                                    canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
+                                                    $('#" . $formName . "').attr('action',  formActionUrl);
+                                                    $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
+                                                }
                                             }";
             return $ajaxArray;
         }

@@ -317,7 +317,6 @@
                 $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').bind('click', function()
                 {
                     emailTemplateEditor.reloadCanvas();
-                    // TODO: @Shoaibi: Critical2: Implement to refresh canvas div by making ajax to a url with templateId
                     return false;
                 });
                 ", CClientScript::POS_READY);
