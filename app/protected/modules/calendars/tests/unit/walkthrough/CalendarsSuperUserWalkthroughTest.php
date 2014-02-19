@@ -42,7 +42,8 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
+            ProductTestHelper::createProductByNameForOwner('My First Prod', Yii::app()->user->userModel);
+            ProductTestHelper::createProductByNameForOwner('My Second Prod', Yii::app()->user->userModel);
             CalendarTestHelper::createSavedCalendarByName("My Cal 1", '#315AB0');
             CalendarTestHelper::createSavedCalendarByName("My Cal 2", '#66367b');
         }
@@ -86,7 +87,7 @@
             $this->setGetArray (array('id'      => $superCalId));
             $this->setPostArray(array('SavedCalendar' => array('name' => 'Test'),
                                       'ajax' => 'edit-form',
-                                      'RowsAndColumnsReportWizardForm' => array('filtersStructure' => '',
+                                      'RowsAndColumnsReportWizardForm' => array('filtersStructure' => '1',
                                                                                 'Filters' => array(
                                                                                                     array('attributeIndexOrDerivedType' => 'createdDateTime',
                                                                                                     'structurePosition'  => '1',
@@ -95,12 +96,13 @@
                                                                                                     'availableAtRunTime' => '0')
                                                                                                   ))));
             $content = $this->runControllerWithExitExceptionAndGetContent('calendars/default/edit');
+            $this->assertFalse(strpos($content, 'Value cannot be blank') === false);
 
             //Valid case
             $this->setGetArray (array('id'      => $superCalId));
-            $this->setPostArray(array('SavedCalendar' => array('name' => 'Test'),
+            $this->setPostArray(array('SavedCalendar' => array('name' => 'My New Cal 1'),
                                       'ajax' => 'edit-form',
-                                      'RowsAndColumnsReportWizardForm' => array('filtersStructure' => '',
+                                      'RowsAndColumnsReportWizardForm' => array('filtersStructure' => '1',
                                                                                 'Filters' => array(
                                                                                                     array('attributeIndexOrDerivedType' => 'createdDateTime',
                                                                                                     'structurePosition'  => '1',
@@ -116,6 +118,46 @@
 
             $this->resetGetArray();
             $this->runControllerWithNoExceptionsAndGetContent('calendars/default/modalList');
+
+            //Month view
+            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2,
+                                      'selectedSharedCalendarIds'  => null,
+                                      'startDate'                  => CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_MONTH),
+                                      'endDate'                    => CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_MONTH),
+                                      'dateRangeType'              => SavedCalendar::DATERANGE_TYPE_MONTH));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getEvents');
+            $this->assertFalse(strpos($content, 'My First Prod') === false);
+
+            //Week view
+            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2,
+                                      'selectedSharedCalendarIds'  => null,
+                                      'startDate'                  => CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_WEEK),
+                                      'endDate'                    => CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_WEEK),
+                                      'dateRangeType'              => SavedCalendar::DATERANGE_TYPE_WEEK));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getEvents');
+            $this->assertFalse(strpos($content, 'My First Prod') === false);
+
+            //Day view
+            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2,
+                                      'selectedSharedCalendarIds'  => null,
+                                      'startDate'                  => CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_DAY),
+                                      'endDate'                    => CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_DAY),
+                                      'dateRangeType'              => SavedCalendar::DATERANGE_TYPE_DAY));
+            $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getEvents');
+
+            //Add subscribed calendar
+            $user = UserTestHelper::createBasicUser('jim');
+            $subscribedCalendar = CalendarTestHelper::createSavedCalendarByName("My Subscribed Cal", '#315AB0');
+            $subscribedCalendar->owner = $user;
+            $subscribedCalendar->save();
+            $this->setGetArray (array('id' => $subscribedCalendar->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('calendars/default/addSubsriptionForCalendar');
+            $this->assertFalse(strpos($content, 'My Subscribed Cal') === false);
+
+            $subscribedCalendars = CalendarUtil::getUserSubscribedCalendars($super);
+            $this->setGetArray (array('id' => $subscribedCalendars[0]->id));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('calendars/default/unsubscribe');
+            $this->assertTrue(strpos($content, 'My Subscribed Cal') === false);
         }
 
         public function testSuperUserDeleteAction()
@@ -123,16 +165,16 @@
             $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $calendar                   = CalendarTestHelper::createSavedCalendarByName("My Cal 2", '#66367b');
+            $calendar                   = CalendarTestHelper::createSavedCalendarByName("My Cal 3", '#66367b');
 
             //Delete a product
             $this->setGetArray(array('id' => $calendar->id));
             $this->resetPostArray();
             $calendars                  = SavedCalendar::getAll();
-            $this->assertEquals(3, count($calendars));
+            $this->assertEquals(4, count($calendars));
             $this->runControllerWithNoExceptionsAndGetContent('calendars/default/delete');
             $calendars                  = SavedCalendar::getAll();
-            $this->assertEquals(2, count($calendars));
+            $this->assertEquals(3, count($calendars));
             try
             {
                 SavedCalendar::getById($calendar->id);

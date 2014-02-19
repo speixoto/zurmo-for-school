@@ -888,6 +888,44 @@
             $savedCalendar->endAttributeName    = $endAttributeName;
             assert($savedCalendar->save());
             CalendarUtil::setMyCalendarColor($savedCalendar, $user);
+            $filtersData                        = array('filtersStructure' => '1',
+                                                        'Filters' => array(
+                                                                            array('attributeIndexOrDerivedType' => 'owner__User',
+                                                                            'structurePosition'  => '1',
+                                                                            'operator'           => 'equals',
+                                                                            'value'              => $user->id,
+                                                                            'stringifiedModelForValue'  => strval($user),
+                                                                            'availableAtRunTime' => '0')
+                                                                          )
+                                                       );
+            CalendarUtil::populateFiltersDataInModel($savedCalendar, $filtersData);
+            assert($savedCalendar->save());
+        }
+
+        /**
+         * Populate filters data in model.
+         *
+         * @param SavedCalendar $model
+         * @param array $data
+         */
+        public static function populateFiltersDataInModel(SavedCalendar $model, $data)
+        {
+            $report        = SavedCalendarToReportAdapter::makeReportBySavedCalendar($model);
+            DataToReportUtil::resolveFiltersStructure($data, $report);
+            DataToReportUtil::resolveFilters($data, $report);
+            if (count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
+            {
+                $sanitizedFiltersData  = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
+                                                                              $report->getType(),
+                                                                              $filtersData);
+                $unserializedData      = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
+                                        'filtersStructure' => $report->getFiltersStructure());
+                $model->serializedData = serialize($unserializedData);
+            }
+            else
+            {
+                $model->serializedData = null;
+            }
         }
     }
 ?>

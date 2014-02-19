@@ -50,18 +50,7 @@
             $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType(Report::TYPE_ROWS_AND_COLUMNS);
             if (isset($postData[$wizardFormClassName]))
             {
-                $report        = SavedCalendarToReportAdapter::makeReportBySavedCalendar($model);
-                DataToReportUtil::resolveFiltersStructure($postData[$wizardFormClassName], $report);
-                DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report);
-                if (count($filtersData = ArrayUtil::getArrayValue($postData[$wizardFormClassName], ComponentForReportForm::TYPE_FILTERS)) > 0)
-                {
-                    $sanitizedFiltersData  = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
-                                                                                  $report->getType(),
-                                                                                  $filtersData);
-                    $unserializedData      = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
-                                            'filtersStructure' => $report->getFiltersStructure());
-                    $model->serializedData = serialize($unserializedData);
-                }
+                CalendarUtil::populateFiltersDataInModel($model, $postData[$wizardFormClassName]);
             }
         }
     }
