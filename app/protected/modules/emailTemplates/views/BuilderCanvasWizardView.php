@@ -355,10 +355,11 @@
                 $('#" . static::getNextPageLinkId() . "').bind('click', function()
                 {
                     emailTemplateEditor.freezeLayoutEditor();
+                    emailTemplateEditor.compileSerializedData();
                     $.ajax({
                         url  : $('#" .  static::getNextPageLinkId() . "').closest('form').attr('action'),
                         type : 'POST',
-                        data : $('#edit-form').serialize() + '&BuilderEmailTemplateWizardForm[serializedData][dom]= ' + emailTemplateEditor.compileSerializedData(),
+                        data : $('#edit-form').serialize(),
                         success: function () {
                             $('#FlashMessageBar').jnotifyAddMessage({
                                 text: '" . $successMessage . "',
