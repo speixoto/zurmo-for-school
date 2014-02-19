@@ -40,6 +40,8 @@
 
         public $cssFile         = 'redactor.css';
 
+        public $assetFolderName = 'redactor';
+
         public $htmlOptions;
 
         public $content;
@@ -95,19 +97,6 @@
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
             echo "<textarea id='{$id}' name='{$name}'>" . CHtml::encode($this->content) . "</textarea>";
-        }
-
-        protected function resolvePackagePath()
-        {
-            if ($this->scriptUrl === null || $this->themeUrl === null)
-            {
-                $cs = Yii::app()->getClientScript();
-                if ($this->scriptUrl === null)
-                {
-                    $this->scriptUrl = Yii::app()->getAssetManager()->publish(
-                                        Yii::getPathOfAlias('application.core.widgets.assets.redactor'));
-                }
-            }
         }
     }
 ?>
