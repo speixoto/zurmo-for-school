@@ -69,7 +69,7 @@
         {
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("emailTemplateEditor");
-            $cClipWidget->widget('application.modules.emailTemplates.widjets.EmailTemplateEditor', array());
+            $cClipWidget->widget('application.modules.emailTemplates.widgets.EmailTemplateEditor', array());
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['emailTemplateEditor'];
         }

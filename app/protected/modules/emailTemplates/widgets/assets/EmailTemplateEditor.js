@@ -269,13 +269,24 @@ var emailTemplateEditor = {
     },
     onClickEditEvent: function () {
         emailTemplateEditor.freezeLayoutEditor();
-        var element = $(this).closest('.builder-element-non-editable');
-        id           = element.attr('id');
-        elementClass = element.data("class") + 'removeThisWhenImplemented';
+        // closest always traversal to the parents, in out case the actual element is a sibling of its parent.
+        var element         = $(this).parent().siblings('.builder-element-non-editable .element-data');
+        id                  = element.attr('id');
+        elementClass        = element.data('class');
+        elementProperties   = element.data('properties');
+        // TODO: @Shoaibi: Critical0: get rid of console.log statements from here.
+        // TODO: @Shoaibi/@Sergio: Critical0: Following should be compiled for all container elements. resolveUiAccessibleContainerTypeElementClassNames(true)
+        elementContent      = element.data('content');
+        postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
+                                content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
+        postData            = decodeURIComponent($.param(postData));
+        console.log('post data after serialization: ', postData);
+        // TODO: @Shoaibi/@Sergio/@Jason: Why do we not get empty properties?
         $.ajax({
             url: emailTemplateEditor.settings.editElementUrl,
             type: 'POST',
-            data: {id: id, className: elementClass, renderForCanvas: 1, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
+            data: postData,
+            cache: false,
             success: function (html) {
                 $(emailTemplateEditor.settings.editSelector).html(html);
             }

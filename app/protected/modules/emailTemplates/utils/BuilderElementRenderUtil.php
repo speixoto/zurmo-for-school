@@ -56,7 +56,6 @@
         {
             $element    = static::resolveElement($className, $renderForCanvas, $id, $properties, $content, $params);
             $content    = $element->renderEditable();
-            static::resolveContentForScripts($content);
             return $content;
         }
 
@@ -89,7 +88,6 @@
                 $rowElement     = static::resolveElement('BuilderRowElement', $renderForCanvas, null, null, $columnData);
                 $content        = $rowElement->renderNonEditable();
             }
-            static::resolveContentForScripts($content);
             return $content;
         }
 
@@ -125,17 +123,6 @@
                 'properties'    => $element->getProperties($serializedProperties),
                 'content'       => $element->getContent($serializedContent),
             ));
-        }
-
-        /**
-         * Resolve content for css and js
-         * @param $content
-         */
-        protected static function resolveContentForScripts(& $content)
-        {
-            // this disables the footer but breaks stuff for some reason.
-            //Yii::app()->clientScript->setToAjaxMode();
-            //Yii::app()->getClientScript()->render($content);
         }
     }
 ?>
