@@ -12465,8 +12465,9 @@ a.close-ModalGameNotification.simple-link {
   background: none !important;
   margin-right: 10px;
   margin-left: -35px;
-  top: -10px;
   font-size: 11px;
+  line-height: 27px;
+  display: inline-block;
 }
 .UserSocialItemsForPortletView {
   margin-right: 20px !important;
@@ -19474,23 +19475,53 @@ a + .project-stats {
   margin: 5px 0 0 0;
   display: block;
 }
+.AppNavigation {
+  display: none !important;
+}
+.AppContent {
+  margin-left: 0 !important;
+}
+.strong-right {
+  position: relative;
+}
 .strong-right .left-column {
   width: 30%;
+  z-index: 100;
+  position: relative;
 }
 .strong-right .right-column {
   width: 70%;
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
 }
 #builder .view-toolbar-container {
   border-top: none;
 }
-#preview-template {
+#builder .right-column .right-side-edit-view-panel {
+  background: none;
+  padding: 0;
+}
+#canvas-iframe {
   border: 1px solid #efefef;
   min-height: 800px;
+  width: 100%;
+  height: 100%;
   background: url("../images/psd-light.png") left top repeat;
-  padding: 15px;
+  position: relative;
+  min-width: 600px;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+#iframe-overlay {
+  display: none;
+}
+#iframe-overlay.freeze {
+  display: block;
 }
 #building-blocks {
   list-style: none;
+  display: block;
 }
 #building-blocks li {
   float: left;
@@ -19498,6 +19529,10 @@ a + .project-stats {
   height: 105px;
   margin: 0 15px 15px 0;
   display: block;
+  cursor: pointer;
+}
+#building-blocks li:active {
+  cursor: move;
 }
 #building-blocks li div {
   border: 3px solid #efefef;
@@ -19530,6 +19565,26 @@ a + .project-stats {
   color: #acacac;
   font-size: 13px;
   font-weight: bold;
+}
+#building-blocks .ui-draggable-dragging {
+  width: 105px;
+  height: 105px;
+  border: 1px solid red;
+  float: none;
+  margin: 0;
+}
+.ui-draggable.ui-draggable-dragging.ui-sortable-helper {
+  border: 1px solid red;
+  opacity: 1 !important;
+}
+.blox {
+  display: block;
+  width: 105px !important;
+  height: 105px !important;
+  border: 1px solid red;
+  float: none;
+  margin: 0;
+  z-index: 999999;
 }
 body.flat-cement * {
   box-shadow: none !important;
