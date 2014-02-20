@@ -819,11 +819,11 @@
         protected function renderApplyLink()
         {
             $this->registerAjaxPostForApplyClickScript();
-            $params                = array();
-            $params['label']       = $this->renderApplyLinkLabel();
-            $params['htmlOptions'] = $this->resolveApplyLinkHtmlOptions();
-            $element               = new SaveButtonActionElement(null, null, null, $params);
-            return $element->render();
+            $label                      = $this->renderApplyLinkLabel();
+            $htmlOptions                = $this->resolveApplyLinkHtmlOptions();
+            $wrappedLabel               = ZurmoHtml::wrapLink($label);
+            $link                       = ZurmoHtml::link($wrappedLabel, '#', $htmlOptions);
+            return $link;
         }
 
         /**
@@ -832,7 +832,8 @@
          */
         protected function resolveApplyLinkHtmlOptions()
         {
-            return array('id' => $this->resolveApplyLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            return array('id' => $this->resolveApplyLinkId(), 'class' => 'attachLoading z-button',
+                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
         }
 
         /**
@@ -887,7 +888,6 @@
                         }
                         // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
                     });
-                    event.preventDefault();
                 });
             ");
         }

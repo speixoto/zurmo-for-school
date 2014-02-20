@@ -486,6 +486,7 @@
 
         public function actionRenderCanvas($id = null)
         {
+            Yii::app()->clientScript->setToAjaxMode();
             // it would be empty for the first time during create so we just end the request here.
             if (empty($id))
             {
@@ -493,16 +494,17 @@
             }
             assert('is_int($id) || is_string($id)');
             $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
-            $this->resolveContentForScriptAndSetToAjaxMode($content);
+            Yii::app()->clientScript->render($content);
             echo $content;
         }
 
         public function actionRenderPreview($id = null)
         {
+            Yii::app()->clientScript->setToAjaxMode();
             if (isset($id))
             {
                 $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
-                $this->resolveContentForScriptAndSetToAjaxMode($content);
+                Yii::app()->clientScript->render($content);
                 echo $content;
                 Yii::app()->end(0, false);
             }
@@ -513,12 +515,13 @@
                 Yii::app()->end(0, false);
             }
             $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($serializedDataArray, false);
-            $this->resolveContentForScriptAndSetToAjaxMode($content);
+            Yii::app()->clientScript->render($content);
             echo $content;
         }
 
         public function actionRenderElementEditable()
         {
+            Yii::app()->clientScript->setToAjaxMode();
             $className          = Yii::app()->request->getPost('className');
             $id                 = Yii::app()->request->getPost('id');
             $properties         = Yii::app()->request->getPost('properties');
@@ -530,12 +533,13 @@
                 Yii::app()->end(0, false);
             }
             $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
-            $this->resolveContentForScriptAndSetToAjaxMode($content);
+            Yii::app()->clientScript->render($content);
             echo $content;
         }
 
         public function actionRenderElementNonEditable()
         {
+            Yii::app()->clientScript->setToAjaxMode();
             $className          = Yii::app()->request->getPost('className');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', true);
             $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', false);
@@ -548,7 +552,7 @@
                 Yii::app()->end(0, false);
             }
             $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
-            $this->resolveContentForScriptAndSetToAjaxMode($content);
+            Yii::app()->clientScript->render($content);
             echo $content;
         }
 
@@ -557,12 +561,6 @@
             $element                    = new $elementClassName(new $elementModelClassName(), $elementAttributeName,
                                                                 new $elementFormClassName(), $elementParams);
             echo $element->render();
-        }
-
-        protected function resolveContentForScriptAndSetToAjaxMode(& $content)
-        {
-            Yii::app()->clientScript->setToAjaxMode();
-            Yii::app()->clientScript->render($content);
         }
     }
 ?>

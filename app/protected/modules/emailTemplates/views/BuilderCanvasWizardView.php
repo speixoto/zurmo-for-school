@@ -367,7 +367,7 @@
                     $.ajax({
                         url  : $('#" .  static::getNextPageLinkId() . "').closest('form').attr('action'),
                         type : 'POST',
-                        data : $('#edit-form').serialize(),
+                        data : $('#" .  static::getNextPageLinkId() . "').closest('form').serialize(),
                         success: function () {
                             $('#FlashMessageBar').jnotifyAddMessage({
                                 text: '" . $successMessage . "',
