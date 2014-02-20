@@ -689,9 +689,9 @@
             $settingsTabClass       = null;
             if (!empty($contentTab))
             {
-                $contentTabHyperLink    = ZurmoHtml::link($this->renderContentTabLabel(), '#tab1',
+                $contentTabHyperLink    = ZurmoHtml::link($this->renderContentTabLabel(), '#element-content',
                                                             array('class' => $contentTabClass));
-                $contentTabDiv          = ZurmoHtml::tag('div', array('id' => 'tab1',
+                $contentTabDiv          = ZurmoHtml::tag('div', array('id' => 'element-content',
                                                                         'class' => $contentTabClass .
                                                                                     ' tab element-edit-form-content-tab'),
                                                                 $contentTab);
@@ -704,9 +704,9 @@
 
             if (!empty($settingsTab))
             {
-                $settingsTabHyperLink   = ZurmoHtml::link($this->renderSettingsTabLabel(), '#tab2',
+                $settingsTabHyperLink   = ZurmoHtml::link($this->renderSettingsTabLabel(), '#element-settings',
                                                             array('class' => $settingsTabClass));
-                $settingsTabDiv  = ZurmoHtml::tag('div', array('id' => 'tab2',
+                $settingsTabDiv  = ZurmoHtml::tag('div', array('id' => 'element-settings',
                                                                     'class' => $settingsTabClass .
                                                                                 ' tab element-edit-form-settings-tab'),
                                                                 $settingsTab);
@@ -747,10 +747,9 @@
          */
         protected function registerTabbedContentScripts()
         {
-            // TODO: @Shoaibi/@Amit: Critical0: There is bug with tab switch script/css.
             $scriptName = 'element-edit-form-tab-switch-handler';
             Yii::app()->clientScript->registerScript($scriptName, "
-                    $('.tabs-nav a:not(.simple-link)').click( function(event){
+                    $('.edit-form-tab-content .tabs-nav a:not(.simple-link)').click( function(event){
                         event.preventDefault();
                         //the menu items
                         $('.active-tab', $(this).parent()).removeClass('active-tab');
