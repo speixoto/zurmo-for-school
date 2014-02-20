@@ -216,16 +216,6 @@
             return $fullCalendarItems;
         }
 
-        public static function getOffset()
-        {
-            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
-            $gmtTimeZone  = new DateTimeZone('GMT');
-
-            $dateTimeUser = new DateTime("now", $gmtTimeZone);
-
-            return $userTimeZone->getOffset($dateTimeUser);
-        }
-
         /**
          * Gets full calendar formatted date time.
          * @param string $dateTime
@@ -242,7 +232,7 @@
             }
             $dateTimeObject  = new DateTime();
             $dateTimeObject->setTimestamp(strtotime($dateTime));
-            $offset = self::getOffset();
+            $offset          = DateTimeUtil::getTimeZoneOffset();
             if($offset < 0)
             {
                 $offset = abs($offset);
