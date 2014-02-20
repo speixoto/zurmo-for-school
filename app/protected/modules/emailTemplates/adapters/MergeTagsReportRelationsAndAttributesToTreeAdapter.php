@@ -39,6 +39,77 @@
      */
     class MergeTagsReportRelationsAndAttributesToTreeAdapter extends ReportRelationsAndAttributesToTreeAdapter
     {
+        protected $uniqueId;
+
+        /**
+         * @param Report $report
+         * @param string $treeType
+         * @param null $uniqueId
+         */
+        public function __construct(Report $report, $treeType, $uniqueId = null)
+        {
+            assert('is_string($uniqueId) || $uniqueId === null');
+            parent::__construct($report, $treeType, $uniqueId);
+            $this->uniqueId   = $uniqueId;
+        }
+
+        /**
+         * Override to support adding special tags
+         * @param string $nodeId
+         * @return array
+         */
+        public function getData($nodeId)
+        {
+            $data = parent::getData($nodeId);
+            if ($nodeId == 'source')
+            {
+                $data[1] = $data[0];
+                $data[0] = array('expanded' => false,
+                                 'text'     => 'Special Tags');
+                $data[0]['children'] = $this->resolveSpecialTagNodes();
+            }
+            return $data;
+        }
+
+        protected function resolveTreeTypeForMakingNodeId()
+        {
+            return $this->uniqueId;
+        }
+
+        protected function resolveSpecialTagNodes()
+        {
+            $specialTagNodesData = array();
+            foreach($this->getSpecialTagsData() as $data)
+            {
+                $node = array(  'id'           => self::makeNodeId($data['id']),
+                                'text'         => $data['label'],
+                                'dataValue'    => $data['dataValue'],
+                                'wrapperClass' => 'item-to-place',
+                                'expanded'     => false,
+                                'hasChildren'  => false);
+                $specialTagNodesData[] = $node;
+            }
+            return $specialTagNodesData;
+        }
+
+        /**
+         * Override to call a different report adapter class for merge tags. This will allow special tags to be
+         * added as well as blocking hasMany variations.
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @return ModelRelationsAndAttributesToReportAdapter based object
+         */
+        protected function makeModelRelationsAndAttributesToReportAdapter($moduleClassName, $modelClassName)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            $rules   = ReportRules::makeByModuleClassName($moduleClassName);
+            $model   = new $modelClassName(false);
+            return new MergeTagsModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model,
+                        $rules,
+                        $this->report->getType(),
+                        $moduleClassName);
+        }
 
         /**
          * Override as needed
@@ -49,6 +120,64 @@
         protected function resolveChildNodeDataValueForAttributeNode(& $attributeNode, $attribute, $nodeIdPrefix)
         {
             $attributeNode['dataValue'] = MergeTagsUtil::resolveAttributeStringToMergeTagString($nodeIdPrefix . $attribute);
+        }
+
+        /**
+         * [[MODEL^URL]] : prints absolute url to the current model attached to template.
+         * [[BASE^URL]] : prints absolute url to the current install without trailing slash.
+         * [[APPLICATION^NAME]] : prints application name as set in global settings > application name.
+         * [[CURRENT^YEAR]] : prints current year.
+         * [[LAST^YEAR]] : prints last year.
+         * [[OWNERS^AVATAR^SMALL]] : prints the owner's small avatar image (32x32).
+         * [[OWNERS^AVATAR^MEDIUM ]] : prints the owner's medium avatar image (32x32).
+         * [[OWNERS^AVATAR^LARGE]] : prints the owner's large avatar image (32x32).
+         * [[OWNERS^EMAIL^SIGNATURE]] : prints the owner's email signature.
+         * {{UNSUBSCRIBE_URL}} : prints unsubscribe url.
+         * {{MANAGE_SUBSCRIPTIONS_URL}} : prints manage subscriptions url.
+         * @return array
+         */
+        protected function getSpecialTagsData()
+        {
+            return  array(
+                array('id'        => 'modelUrl',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Model URL'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'MODEL' . MergeTagsUtil::CAPITAL_DELIMITER . 'URL' .
+                                     MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'baseUrl',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Base URL'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'BASE' . MergeTagsUtil::CAPITAL_DELIMITER . 'URL' .
+                                   MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'applicationName',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Application Name'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'APPLICATION' . MergeTagsUtil::CAPITAL_DELIMITER . 'NAME' .
+                                   MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'currentYear',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Current Year'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'CURRENT' . MergeTagsUtil::CAPITAL_DELIMITER . 'YEAR' .
+                                   MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'lastYear',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Last Year'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'LAST' . MergeTagsUtil::CAPITAL_DELIMITER . 'YEAR' .
+                                   MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'ownersAvatarSmall',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Owner\'s Avatar Small'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'OWNERS' . MergeTagsUtil::CAPITAL_DELIMITER . 'AVATAR' .
+                                   MergeTagsUtil::CAPITAL_DELIMITER . 'SMALL' . MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'ownersAvatarMedium',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Owner\'s Avatar Medium'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'OWNERS' . MergeTagsUtil::CAPITAL_DELIMITER . 'AVATAR' .
+                                     MergeTagsUtil::CAPITAL_DELIMITER . 'MEDIUM' . MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'ownersAvatarLarge',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Owner\'s Avatar Large'),
+                      'dataValue' => MergeTagsUtil::TAG_PREFIX . 'OWNERS' . MergeTagsUtil::CAPITAL_DELIMITER . 'AVATAR' .
+                                     MergeTagsUtil::CAPITAL_DELIMITER . 'LARGE' . MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'unsubscribeUrl',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Unsubscribe URL'),
+                      'dataValue' => '{{UNSUBSCRIBE_URL}}'),
+                array('id'        => 'manageSubscriptionsUrl',
+                      'label'     => Zurmo::t('EmailTemplatesModule', 'Manage Subscriptions URL'),
+                      'dataValue' => '{{MANAGE_SUBSCRIPTIONS_URL}}'),
+            );
         }
     }
 ?>

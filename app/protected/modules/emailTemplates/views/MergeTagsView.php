@@ -97,7 +97,8 @@
             assert('is_string($componentViewClassName)');
             assert('is_string($reportType)');
             $url    =  Yii::app()->createUrl(static::getControllerId() .
-                                             '/default/relationsAndAttributesTreeForMergeTags', $_GET);
+                                             '/default/relationsAndAttributesTreeForMergeTags',
+                                             array_merge($_GET, array('uniqueId' => $this->uniqueId)));
             // Begin Not Coding Standard
             $script = "
                 $('#" . $this->getTreeDivId() . "').addClass('loading');
@@ -162,11 +163,11 @@
                 ';
             if($this->textContentId != null)
             {
-                $script.='if ($("#EmailTemplate_textContent").data("droppable"))
+                $script.='if ($("#' . $this->textContentId . '").data("droppable"))
                                 {
-                                    $("#EmailTemplate_textContent").droppable("destroy");
+                                    $("#' . $this->textContentId . '").droppable("destroy");
                                 }';
-                $script.= '$("#EmailTemplate_textContent").droppable({
+                $script.= '$("#' . $this->textContentId . '").droppable({
                                 iframeFix: true,
                                     hoverClass: "textarea",
                                     accept: ":not(.ui-sortable-helper)",
@@ -174,7 +175,7 @@
                                         var $this = $(this);
                                         var tempid = ui.draggable.text();
                                         var dropText = ui.draggable.data("value");
-                                        var droparea = document.getElementById("EmailTemplate_textContent");
+                                        var droparea = document.getElementById("' . $this->textContentId . '");
                                         var range1   = droparea.selectionStart;
                                         var range2   = droparea.selectionEnd;
                                         var val      = droparea.value;
@@ -186,17 +187,17 @@
             }
             if($this->htmlContentId != null)
             {
-                $script.='if ($("#EmailTemplate_htmlContent").parent().data("droppable"))
+                $script.='if ($("#' . $this->htmlContentId . '").parent().data("droppable"))
                                 {
-                                    $("#EmailTemplate_htmlContent").parent().droppable("destroy");
+                                    $("#' . $this->htmlContentId . '").parent().droppable("destroy");
                                 }';
-                $script .= '$("#EmailTemplate_htmlContent").parent().droppable({
+                $script .= '$("#' . $this->htmlContentId . '").parent().droppable({
                                 iframeFix: true,
                                 drop: function(event, ui) {
                                     var $this    = $(this);
                                     var dropText = ui.draggable.data("value");
                                     var node = document.createTextNode(dropText);
-                                    $("#EmailTemplate_htmlContent").redactor("insertNode", node);
+                                    $("#' . $this->htmlContentId . '").redactor("insertNode", node);
                                 }
                             });';
             }

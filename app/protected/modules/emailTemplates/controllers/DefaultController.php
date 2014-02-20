@@ -311,21 +311,20 @@
         }
 
         /**
-         * Render relations and attributes tree for merge tags
-         * @param null $id
+         * @param null $uniqueId
          * @param null $nodeId
          * @param string $moduleClassName
          */
-        public function actionRelationsAndAttributesTreeForMergeTags($id = null, $nodeId = null, $moduleClassName = 'ContactsModule')
+        public function actionRelationsAndAttributesTreeForMergeTags($uniqueId = null, $nodeId = null, $moduleClassName = 'ContactsModule')
         {
             $type     = Report::TYPE_ROWS_AND_COLUMNS;
-            $treeType = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
+            $treeType = ComponentForReportForm::TYPE_FILTERS;
             $report   = new Report();
             $report->setModuleClassName($moduleClassName);
             $report->setType($type);
             if ($nodeId != null)
             {
-                $reportToTreeAdapter = new MergeTagsReportRelationsAndAttributesToTreeAdapter($report, $treeType);
+                $reportToTreeAdapter = new MergeTagsReportRelationsAndAttributesToTreeAdapter($report, $treeType, $uniqueId);
                 echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
                 Yii::app()->end(0, false);
             }
