@@ -119,7 +119,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 2 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -139,7 +139,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 2 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -165,7 +165,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 3 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -185,7 +185,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 3 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -205,7 +205,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 3 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 3 Col 3 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -231,7 +231,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -251,7 +251,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -271,7 +271,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 3 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 3 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -291,7 +291,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 4 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 4 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -317,7 +317,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 5 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -337,7 +337,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 5 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -363,7 +363,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 6 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -383,7 +383,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 6 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -452,7 +452,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 2 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -472,7 +472,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 2 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -498,7 +498,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 3 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -518,7 +518,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 3 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -538,7 +538,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 3 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 3 Col 3 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -564,7 +564,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -584,7 +584,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -604,7 +604,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 3 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 3 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -624,7 +624,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 4 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 4 Col 4 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -650,7 +650,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 5 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -670,7 +670,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 5 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -696,7 +696,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 1 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 6 Col 1 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
@@ -716,7 +716,7 @@
                                                 'class'         => 'BuilderTextElement',
                                                 'properties'    => array(),
                                                 'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 2 Text 1</li></ul>',
+                                                    'text'      => '<ul><li>Row 6 Col 2 Text 2</li></ul>',
                                                 ),
                                             ),
                                         ),
