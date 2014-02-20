@@ -120,8 +120,8 @@
             }
             else if ($templateUnserializedData != $postUnserializedData)
             {
-                // baseTemplateId remains same, probably a post from canvas, update everything.
-                $unserializedData     = $postUnserializedData;
+                // baseTemplateId remains same, probably a post from canvas
+                $unserializedData     = CMap::mergeArray($templateUnserializedData, $postUnserializedData);
             }
 
             if (!empty($unserializedData))
@@ -136,6 +136,12 @@
         {
             return ((empty($savedBaseTemplateId) && !empty($postBaseTemplateId)) ||
                     (!empty($postBaseTemplateId) && $savedBaseTemplateId != $postBaseTemplateId));
+        }
+
+        protected static function hasDomChanged($postBaseTemplateDom, $savedBaseTemplateId)
+        {
+            return ((empty($savedBaseTemplateId) && !empty($postBaseTemplateDom)) ||
+                (!empty($postBaseTemplateDom) && $savedBaseTemplateId != $postBaseTemplateDom));
         }
 
         protected static function resolveOwner()
