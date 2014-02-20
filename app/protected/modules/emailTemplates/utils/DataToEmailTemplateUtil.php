@@ -120,8 +120,8 @@
             }
             else if ($templateUnserializedData != $postUnserializedData)
             {
-                // baseTemplateId remains same, probably a post from canvas.
-                $unserializedData     = CMap::mergeArray($templateUnserializedData, $postUnserializedData);
+                // baseTemplateId remains same, probably a post from canvas, update everything.
+                $unserializedData     = $postUnserializedData;
             }
 
             if (!empty($unserializedData))
