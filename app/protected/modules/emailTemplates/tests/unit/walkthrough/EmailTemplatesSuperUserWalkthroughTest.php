@@ -85,6 +85,19 @@
         /**
          * @depends testSuperUserAllDefaultControllerActions
          */
+        public function testSuperUserRelationsAndAttributesTreeForMergeTags()
+        {
+            //Test without a node id
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/relationsAndAttributesTreeForMergeTags');
+
+            //Test with a node id
+            $this->setGetArray (array('uniqueId' => 'EmailTemplate', 'nodeId' => 'EmailTemplate_secondaryAddress'));
+            $this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/relationsAndAttributesTreeForMergeTags');
+        }
+
+        /**
+         * @depends testSuperUserRelationsAndAttributesTreeForMergeTags
+         */
         public function testSuperUserListForMarketingAction()
         {
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');

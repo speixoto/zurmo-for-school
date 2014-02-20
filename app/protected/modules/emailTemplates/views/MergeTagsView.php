@@ -93,9 +93,6 @@
          */
         public function renderTreeViewAjaxScriptContent()
         {
-            assert('is_string($formName)');
-            assert('is_string($componentViewClassName)');
-            assert('is_string($reportType)');
             $url    =  Yii::app()->createUrl(static::getControllerId() .
                                              '/default/relationsAndAttributesTreeForMergeTags',
                                              array_merge($_GET, array('uniqueId' => $this->uniqueId)));

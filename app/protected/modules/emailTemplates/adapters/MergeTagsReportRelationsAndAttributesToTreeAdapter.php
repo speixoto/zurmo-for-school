@@ -49,7 +49,7 @@
         public function __construct(Report $report, $treeType, $uniqueId = null)
         {
             assert('is_string($uniqueId) || $uniqueId === null');
-            parent::__construct($report, $treeType, $uniqueId);
+            parent::__construct($report, $treeType);
             $this->uniqueId   = $uniqueId;
         }
 
@@ -71,7 +71,7 @@
             return $data;
         }
 
-        protected function resolveTreeTypeForMakingNodeId()
+        protected function resolveTreeTypeForMakingOrExplodingNodeId()
         {
             return $this->uniqueId;
         }
