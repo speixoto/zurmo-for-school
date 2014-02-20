@@ -140,9 +140,7 @@
         protected function getFormActionUrl()
         {
             return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/save',
-                                                    array(//'type' => $this->model->type,
-                                                            'builtType' => $this->model->builtType,
-                                                            'id' => $this->model->id));
+                                                    array('builtType' => $this->model->builtType));
         }
 
         protected function resolveListActionByEmailTemplateType()
@@ -153,14 +151,6 @@
                 $action = 'ListForWorkflow';
             }
             return $action;
-        }
-
-        protected function getClientOptions()
-        {
-            $clientOptions = parent::getClientOptions();
-            // TODO: @Shoaibi/@Nabeel/@Sergio: Critical0: Why does this not get updated?
-            $clientOptions['validationUrl']     = 'js:$("#' . static::getFormId() . '").attr("action")';
-            return $clientOptions;
         }
     }
 ?>

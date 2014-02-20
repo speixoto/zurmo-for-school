@@ -36,6 +36,8 @@
 
     class GeneralDataForEmailTemplateWizardView extends ComponentForEmailTemplateWizardView
     {
+        const HIDDEN_ID = 'hiddenId';
+
         protected $defaultTextAndDropDownElementEditableTemplate    = '<th>{label}<span class="required">*</span></th><td colspan="{colspan}">{content}</td>';
 
         /**
@@ -90,6 +92,7 @@
             $this->renderBuiltType($hiddenElements);
             $this->renderIsDraft($hiddenElements);
             $this->renderLanguage($hiddenElements);
+            $this->renderId($hiddenElements);
             $this->renderModelClassName($leftSideContent, $hiddenElements);
             $this->renderName($leftSideContent);
             $this->renderSubject($leftSideContent);
@@ -129,6 +132,11 @@
         protected function renderIsDraft(& $hiddenElements)
         {
             $this->renderHiddenField($hiddenElements, 'isDraft', (int)$this->model->isDraft);
+        }
+
+        protected function renderId(& $hiddenElements)
+        {
+            $hiddenElements .= ZurmoHtml::hiddenField(static::HIDDEN_ID, (int)$this->model->id);
         }
 
         protected function renderLanguage(& $hiddenElements)
@@ -266,16 +274,13 @@
                                             {
                                                 if ('create' == '" . Yii::app()->getController()->getAction()->getId() . "')
                                                 {
-                                                    // update form action url to contain ids to prevent duplicate models
-                                                    var formActionUrl   = $('#" . $formName . "').attr('action');
-                                                    formActionUrl       = formActionUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                                    $('#" . $formName . "').attr('action',  formActionUrl);
-
                                                     // update canvas url
                                                     var canvasSourceUrl = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src');
                                                     canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                                    $('#" . $formName . "').attr('action',  formActionUrl);
                                                     $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
+
+                                                    //update id
+                                                    $('#" . static::HIDDEN_ID . "').val(data.id);
                                                 }
                                             }";
             return $ajaxArray;

@@ -195,10 +195,15 @@
             echo $view->render();
         }
 
-        public function actionSave($builtType, $id = null)
+        public function actionSave($builtType)
         {
             // TODO: @Shoaibi/@Jason: Critical: No data sanitization?
             $postData                   = PostUtil::getData();
+            $id                         = $postData[GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
+            if ($id <= 0)
+            {
+                $id = null;
+            }
             $emailTemplate              = null;
             $this->resolveEmailTemplateByPostData($postData, $emailTemplate, $builtType, $id);
 
@@ -432,9 +437,10 @@
             return $breadCrumbLinks;
         }
 
-        protected function resolveEmailTemplateByPostData(Array $postData, & $emailTemplate, $builtType, $id = null)
+        protected function resolveEmailTemplateByPostData(Array $postData, & $emailTemplate, $builtType)
         {
-            if ($id == null)
+            $id = $postData[GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
+            if ($id <= 0)
             {
                 $this->resolveCanCurrentUserAccessEmailTemplates();
                 $emailTemplate               = new EmailTemplate();
