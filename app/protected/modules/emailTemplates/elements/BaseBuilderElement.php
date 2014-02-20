@@ -541,13 +541,15 @@
         protected function renderFormInputsContent(ZurmoActiveForm $form)
         {
             $contentTabContent      = $this->renderContentTab($form);
+            $contentTabContent      = $this->wrapEditableContentFormContentInTable($contentTabContent);
+
             $settingsTabContent     = $this->renderSettingsTab($form);
+            $settingsTabContent     = $this->wrapEditableContentFormContentInTable($settingsTabContent);
+
             $content                = $this->renderBeforeFormLayout($form);
             $content                .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
-            $content                .= '<tr><td colspan="2">' . $this->renderHiddenFields($form) . '</td></tr>';
+            $content                .= $this->renderHiddenFields($form);
             $content                .= $this->renderAfterFormLayout($form);
-            $content                = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>' . $content;
-            $content                .= '</table>';
             $content                = ZurmoHtml::tag('div', array('class' => 'panel'), $content);
             $content                = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
             $content                = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
@@ -563,6 +565,19 @@
         {
             $content    = $this->renderContentElement($form);
             return $content;
+        }
+
+        /**
+         * Wrap content inside a 2 col table. Useful for wrapping form content on Content and Settings tab.
+         * @param $content
+         * @return string
+         */
+        protected function wrapEditableContentFormContentInTable($content)
+        {
+            $tableContent   = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>';
+            $tableContent   .= $content;
+            $tableContent   .= '</table>';
+            return $tableContent;
         }
 
         /**
@@ -734,29 +749,22 @@
         {
             // TODO: @Shoaibi/@Amit: Critical0: There is bug with tab switch script/css.
             $scriptName = 'element-edit-form-tab-switch-handler';
-            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
-            {
-                return;
-            }
-            else
-            {
-                Yii::app()->clientScript->registerScript($scriptName, "
-                        $('.tabs-nav a:not(.simple-link)').click( function(event){
-                            event.preventDefault();
-                            //the menu items
-                            $('.active-tab', $(this).parent()).removeClass('active-tab');
-                            $(this).addClass('active-tab');
-                            //the sections
-                            var _old = $('.tab.active-tab'); //maybe add context here for tab-container
-                            _old.fadeToggle();
-                            var _new = $( $(this).attr('href') );
-                            _new.fadeToggle(150, 'linear', function(){
-                                _old.removeClass('active-tab');
-                                _new.addClass('active-tab');
-                            });
+            Yii::app()->clientScript->registerScript($scriptName, "
+                    $('.tabs-nav a:not(.simple-link)').click( function(event){
+                        event.preventDefault();
+                        //the menu items
+                        $('.active-tab', $(this).parent()).removeClass('active-tab');
+                        $(this).addClass('active-tab');
+                        //the sections
+                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                        _old.fadeToggle();
+                        var _new = $( $(this).attr('href') );
+                        _new.fadeToggle(150, 'linear', function(){
+                            _old.removeClass('active-tab');
+                            _new.addClass('active-tab');
                         });
-                    ");
-            }
+                    });
+                ");
         }
 
         /**
@@ -872,9 +880,10 @@
                 $('#" . $this->resolveApplyLinkId() . "').unbind('click.ajaxPostForApplyClick');
                 $('#" . $this->resolveApplyLinkId() . "').bind('click.ajaxPostForApplyClick', function()
                 {
-                    formData    = $('#" .  $this->resolveApplyLinkId() . "').closest('form').serialize();
-                    formData    = formData.replace(/BuilderElementEditableModelForm%5B(\w*)%5D/g, '$1');
                     emailTemplateEditor.freezeLayoutEditor();
+                    formData    = $('#" .  $this->resolveApplyLinkId() . "').closest('form').serialize();
+                    // we want to reuse same action so lets get rid of form prefixes
+                    formData    = formData.replace(/" . static::getModelClassName() . "%5B(\w*)%5D/g, '$1');
                     var replaceElementId = $('#" . $hiddenInputId . "').val();
                     $.ajax({
                         url: $('#" .  $this->resolveApplyLinkId() . "').closest('form').attr('action'),
