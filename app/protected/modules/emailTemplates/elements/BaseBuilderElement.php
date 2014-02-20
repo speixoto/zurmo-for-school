@@ -881,7 +881,7 @@
                         type : 'POST',
                         data : formData,
                         success: function (html) {
-                            $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').contents().find('#' + replaceElementId).replaceWith(html);
+                            $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').contents().find('#' + replaceElementId).parent().replaceWith(html);
                             emailTemplateEditor.unfreezeLayoutEditor();
                             emailTemplateEditor.canvasChanged();
                             hideElementEditFormOverlay();
