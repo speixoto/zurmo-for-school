@@ -66,7 +66,7 @@
         {
             $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
                                     'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'table', 'link',
-                                    '|', '|', 'fontcolor', 'backcolor', '|', 'alignment', 'alignleft', 'aligncenter',
+                                    '|', '|', 'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter',
                                     'alignright', 'justify', '|', 'horizontalrule');
             return CJSON::encode($buttons);
         }

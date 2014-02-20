@@ -51,17 +51,19 @@
             return array();
         }
 
-        protected function resolveWrapperNonEditable($elementContent, $properties, $customDataAttributes, $actionsOverlay)
+        protected function resolveWrapperNonEditable($elementContent, array $backendProperties,
+                                                     array $frontendProperties, array $customDataAttributes,
+                                                     $actionsOverlay)
         {
-            $content    = parent::resolveWrapperNonEditable($elementContent, $properties,
+            $content    = parent::resolveWrapperNonEditable($elementContent, $backendProperties, $frontendProperties,
                                                                 $customDataAttributes, $actionsOverlay);
             $content    = ZurmoHtml::tag('td', $this->resolveColumnWrapperTdHtmlOptions(), $content);
             return $content;
         }
 
-        protected function resolveWrapperTdNonEditableByContent($content)
+        protected function resolveWrapperTdNonEditableByContent($content, array $properties = array())
         {
-            $content        = parent::resolveWrapperTdNonEditableByContent($content);
+            $content        = parent::resolveWrapperTdNonEditableByContent($content, $properties);
             $content        .= ZurmoHtml::tag('td', $this->resolveNonEditableExpanderTdHtmlOptions(), '');
             return $content;
         }

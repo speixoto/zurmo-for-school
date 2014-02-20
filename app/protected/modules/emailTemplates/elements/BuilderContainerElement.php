@@ -57,24 +57,28 @@
             return $content;
         }
 
-        protected function resolveWrapperNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
+        protected function resolveWrapperNonEditableByContentAndProperties($content, array $backendProperties,
+                                                                                        array $frontendProperties,
+                                                                                        array $customDataAttributes)
         {
             // these are container elements, we wrap them in tables instead of divs
-            $content        = $this->resolveWrapperTdNonEditableByContent($content);
+            $content        = $this->resolveWrapperTdNonEditableByContent($content, $frontendProperties);
             $content        = $this->resolveWrapperTrNonEditableByContent($content);
             $content        = $this->resolveWrapperTBodyNonEditableByContent($content);
-            $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $htmlOptions);
+            $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $backendProperties, $customDataAttributes);
             return $content;
         }
 
         /**
          * Resolve and return td(s) by using provided content for non-editable representation
          * @param $content
+         * @param array $properties
          * @return string
          */
-        protected function resolveWrapperTdNonEditableByContent($content)
+        protected function resolveWrapperTdNonEditableByContent($content, array $properties = array())
         {
-            $content        = ZurmoHtml::tag('td', $this->resolveNonEditableContentWrappingTdHtmlOptions(), $content);
+            $htmlOptions    = CMap::mergeArray($this->resolveNonEditableContentWrappingTdHtmlOptions(), $properties);
+            $content        = ZurmoHtml::tag('td', $htmlOptions, $content);
             return $content;
         }
 
@@ -103,11 +107,15 @@
         /**
          * Resolve and return table by using provided content and htmloptions for non-editable representation
          * @param $content
-         * @param array $htmlOptions
+         * @param array $backendProperties
+         * @param array $customDataAttributes
          * @return string
          */
-        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $htmlOptions)
+        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $backendProperties,
+                                                                                 array $customDataAttributes)
         {
+            $defaultHtmlOptions = $this->resolveNonEditableWrapperHtmlOptions();
+            $htmlOptions        = CMap::mergeArray($defaultHtmlOptions, $backendProperties, $customDataAttributes);
             $content        = ZurmoHtml::tag('table', $htmlOptions, $content);
             return $content;
         }
