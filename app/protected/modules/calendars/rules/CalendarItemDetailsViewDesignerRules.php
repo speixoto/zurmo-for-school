@@ -97,5 +97,10 @@
         {
             return false;
         }
+
+        public function getSavableMetadataRules()
+        {
+            return array();
+        }
     }
 ?>

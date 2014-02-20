@@ -93,7 +93,7 @@
                                                                             },
                                                                      defaultView: '{$defaultView}',
                                                                      firstDay    :1,
-                                                                     ignoreTimeZone:true,
+                                                                     ignoreTimeZone:false,
                                                                      lazyFetching : false,
                                                                      loading: function(bool)
                                                                               {

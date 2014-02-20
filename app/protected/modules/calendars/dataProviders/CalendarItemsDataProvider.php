@@ -170,8 +170,10 @@
             {
                 if ($savedCalendarData[1])
                 {
-                    $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]->savedcalendar);
-                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendarData[0]->savedcalendar);
+                    $models        = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]->savedcalendar);
+                    $savedCalendar = $savedCalendarData[0]->savedcalendar;
+                    $savedCalendar->color = $savedCalendarData[0]->color;
+                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendar);
                 }
             }
             return $calendarItems;

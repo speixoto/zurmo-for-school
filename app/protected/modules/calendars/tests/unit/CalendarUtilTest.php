@@ -181,6 +181,13 @@
             $this->assertEquals(0, count(CalendarUtil::getUserSavedCalendars($user)));
             SavedCalendarSubscriptions::makeByUser($user);
             $this->assertEquals(2, count(CalendarUtil::getUserSavedCalendars($user)));
+            $calendars = CalendarUtil::getUserSavedCalendars($user);
+            $model     = $calendars[0];
+            $data      = unserialize($model->serializedData);
+            $filtersData = $data[ComponentForReportForm::TYPE_FILTERS];
+            $this->assertEquals(strval($user), $filtersData[0]['stringifiedModelForValue']);
+            $this->assertEquals($user->id, $filtersData[0]['value']);
+            $this->assertEquals('1', $data['filtersStructure']);
         }
     }
 ?>

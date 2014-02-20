@@ -100,12 +100,15 @@
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.calendars.assets')) . '/CalendarsUtil.js',
                                             CClientScript::POS_END);
+            //Right
+            $rightSideContent = $this->renderOverMaxCountText() . $this->renderFullCalendarContent();
+            $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightSideContent);
+            //Left
             $content  = $this->renderSmallCalendarContent();
             $content  .= $this->renderMyCalendarsContent();
             $content  .= $this->renderSubscribedToCalendarsContent();
             $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
-            $rightSideContent = $this->renderOverMaxCountText() . $this->renderFullCalendarContent();
-            $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightSideContent);
+
             $params   = LabelUtil::getTranslationParamsForAllModules();
             $title    = ZurmoHtml::tag('h1', array(), Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params));
             $view     = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
