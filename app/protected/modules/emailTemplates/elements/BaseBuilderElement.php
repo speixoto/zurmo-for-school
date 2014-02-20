@@ -625,7 +625,7 @@
          */
         protected function resolveFormActionUrl()
         {
-            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditableByPost');
+            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditable');
         }
 
         /**
@@ -858,7 +858,7 @@
          */
         protected function registerActiveFormScripts()
         {
-
+            $this->registerHideFormScript();
         }
 
         /**
@@ -871,17 +871,23 @@
                 $('#" . $this->resolveApplyLinkId() . "').unbind('click.ajaxPostForApplyClick');
                 $('#" . $this->resolveApplyLinkId() . "').bind('click.ajaxPostForApplyClick', function()
                 {
+                    formData    = $('#" .  $this->resolveApplyLinkId() . "').closest('form').serialize();
+                    formData    = formData.replace(/BuilderElementEditableModelForm%5B(\w*)%5D/g, '$1');
                     emailTemplateEditor.freezeLayoutEditor();
                     var replaceElementId = $('#" . $hiddenInputId . "').val();
                     $.ajax({
+                        url: $('#" .  $this->resolveApplyLinkId() . "').closest('form').attr('action'),
                         type : 'POST',
-                        data : $('#" .  $this->resolveApplyLinkId() . "').closest('form').serialize(),
+                        data : formData,
                         success: function (html) {
-                            $('#' + replaceElementId).replaceWith(html);
+                            $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').contents().find('#' + replaceElementId).replaceWith(html);
                             emailTemplateEditor.unfreezeLayoutEditor();
                             emailTemplateEditor.canvasChanged();
+                            hideElementEditFormOverlay();
                         }
+                        // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
                     });
+                    event.preventDefault();
                 });
             ");
         }
@@ -895,9 +901,22 @@
                 $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick');
                 $('#" . $this->resolveCancelLinkId() . "').bind('click.cancelLinkClick', function()
                 {
+                    hideElementEditFormOverlay();
+                });
+            ");
+        }
+
+        /**
+         * Registers a function to hide the form overlay and empty it.
+         */
+        protected function registerHideFormScript()
+        {
+            Yii::app()->clientScript->registerScript('hideElementEditFormOverlay', "
+                function hideElementEditFormOverlay()
+                {
                     $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . "').hide();
                     $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . "').empty();
-                });
+                }
             ");
         }
 

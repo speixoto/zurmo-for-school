@@ -278,7 +278,6 @@ var emailTemplateEditor = {
         // TODO: @Shoaibi/@Sergio: Critical0: Following should be compiled for all container elements. resolveUiAccessibleContainerTypeElementClassNames(true)
         elementContent      = element.data('content');
         postData        = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties, content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
-        console.log('post data after serialization: ', decodeURIComponent($.param(postData)));
         postData            = decodeURIComponent($.param(postData));
         console.log('post data after serialization: ', postData);
         // TODO: @Shoaibi/@Sergio/@Jason: Why do we not get empty properties?
