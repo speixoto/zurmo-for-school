@@ -38,6 +38,8 @@
     {
         const REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID    = 'refresh-canvas-from-saved-template';
 
+        const PREVIEW_TEMPLATE_LINK_ID                      = 'preview-template';
+
         const CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME         = 'serializedData';
 
         const CANVAS_IFRAME_ID                              = 'canvas-iframe';
@@ -105,7 +107,7 @@
             $leftSidebarContent                        .= $this->resolveElementsSidebarContent();
             $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
             $this->renderRefreshCanvasLink($leftSidebarContent);
-
+            $this->renderPreviewLink($leftSidebarContent);
             $rightSidebarContent                        = $this->resolveCanvasContent();
 
             $this->wrapContentForLeftSideBar($leftSidebarContent);
@@ -141,9 +143,22 @@
             $content            .= $linkContent;
         }
 
+        protected function renderPreviewLink(& $content)
+        {
+            $linkContent    = ZurmoHtml::link('Preview', '#', $this->resolvePreviewLinkHtmlOptions());
+            $this->wrapContentInTableCell($linkContent, array('colspan' => 2));
+            $this->wrapContentInTableRow($linkContent);
+            $content            .= $linkContent;
+        }
+
         protected function resolveRefreshCanvasLinkHtmlOptions()
         {
             return array('id' => static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID, 'style' => 'display:none');
+        }
+
+        protected function resolvePreviewLinkHtmlOptions()
+        {
+            return array('id' => static::PREVIEW_TEMPLATE_LINK_ID);
         }
 
         protected function renderActionLinksContent()
@@ -415,8 +430,24 @@
         protected function registerPreviewModalScript()
         {
             Yii::app()->clientScript->registerScript('previewModalScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
-                ");
+                $('#" . static::PREVIEW_TEMPLATE_LINK_ID . "').unbind('click.previewModalScript');
+                $('#" . static::PREVIEW_TEMPLATE_LINK_ID . "').bind('click.previewModalScript', function()
+                {
+                    emailTemplateEditor.freezeLayoutEditor();
+                    serializedData = emailTemplateEditor.compileSerializedData();
+                    $.ajax({
+                        url  : '" . $this->resolvePreviewActionUrl() . "',
+                        type : 'POST',
+                        data : {serializedData: serializedData, 'YII_CSRF_TOKEN': '" . Yii::app()->request->csrfToken . "'},
+                        success: function (html) {
+                            $('#" . static::PREVIEW_IFRAME_ID . "').html('dsasadsadsaddas');
+                            $('#" . static::PREVIEW_IFRAME_ID . "').show();
+                            emailTemplateEditor.unfreezeLayoutEditor();
+                        },
+                    });
+                    return false;
+                });
+                ", CClientScript::POS_END);
         }
 
         protected function registerCanvasChangedScript()
