@@ -82,6 +82,7 @@
                                             BuilderEmailTemplateWizardForm::SERIALIZED_DATA_VALIDATION_SCENARIO . "');
                         $('#SelectBaseTemplateForEmailTemplateWizardView').hide();
                         $('#BuilderCanvasWizardView').show();
+                        initEmailTemplateEditor();
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                     }

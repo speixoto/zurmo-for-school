@@ -356,7 +356,8 @@
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
-                    'webforms-external.less'
+                    'webforms-external.less',
+                    'builder-iframe-tools.less'
                 ),
             ),
         ),

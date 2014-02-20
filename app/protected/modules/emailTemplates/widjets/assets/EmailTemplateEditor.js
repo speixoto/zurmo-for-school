@@ -50,7 +50,8 @@ var emailTemplateEditor = {
         cachedSerializedDataSelector: '#serialized-data-cache',
         ghost : '',
         alertErrorOnDelete: 'You cannot delete last row',
-        csrfToken: ''
+        csrfToken: '',
+        isDragging: false
     },
     init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
@@ -126,29 +127,60 @@ var emailTemplateEditor = {
         var innerElements = [];
         var point = {};
         var i = 0;
-        emailTemplateEditor.settings.ghost = $('<div class="ghost">drop here</div>');
-        var isDragging = false;
         var mostTopElement;
+        emailTemplateEditor.settings.ghost = $('<div class="ghost">drop here</div>');
 
-        $('body').on('mousedown', function(event){
+        var positions = [];
+
+        $('#building-blocks').on('mousedown', onBodyMouseDown);
+        //$('body').on('mouseup', onBodyMouseUp);
+        //$('body').on('mousemove', onBodyMouseMove);
+
+
+        function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
-            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.element-wrapper');
-            isDragging = true;
-        });
+            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
+            //$(emailTemplateEditor.settings.iframeSelector).contents().find('body').prepend(emailTemplateEditor.settings.ghost);
+            emailTemplateEditor.settings.isDragging = true;
 
-        $('body').on('mousemove', function doMouseMoveOnBody(event){
-            if(isDragging === true){
-                point.left = event.pageX - offset.left;
-                point.top = event.pageY - offset.top;
+            $('body').on('mousemove', onBodyMouseMove);
+            $('body').on('mouseup', onBodyMouseUp);
+
+            //calculate position of droppables on mousedown, ONLY ONCE each time
+            positions = [];
+            for (i = 0; i < containers.length; i++){
+                rect = containers[i].getBoundingClientRect();
+                positions.push(rect);
+            }
+        }
+
+        function onBodyMouseUp(event){
+            $('body').off('mousemove', onBodyMouseMove);
+            $('body').off('mouseup', onBodyMouseUp);
+            emailTemplateEditor.settings.isDragging = false;
+            if (elementDragged != undefined && elementDragged.is('li')){
+                emailTemplateEditor.placeNewElement(elementDraggedClass, null, false);
+            } else {
+                console.log('error while droppping', elementDragged);
+            }
+        }
+
+        function onBodyMouseMove(event){
+            if(emailTemplateEditor.settings.isDragging === true){
+
                 $(innerElements).each(function(){$(this).removeClass('hover');});
                 innerElements = [];
-                for (i = 0; i < containers.length; i++){
-                    rect = containers[i].getBoundingClientRect();
-                    if( point.left > rect.left && point.left < rect.right &&
-                        point.top > rect.top && point.top < rect.bottom ){
+
+                point.left = event.pageX - offset.left;
+                point.top = event.pageY - offset.top;
+
+                for(i = 0; i < positions.length; i++){
+                    if( point.left > positions[i].left && point.left < positions[i].right &&
+                        point.top > positions[i].top && point.top < positions[i].bottom ){
                         innerElements.push(containers[i]);
                     }
                 }
+
                 if(innerElements.length > 0){
                     mostTopElement = innerElements[innerElements.length-1];
                     $(mostTopElement).addClass('hover');
@@ -159,16 +191,7 @@ var emailTemplateEditor = {
                     }
                 }
             }
-        });
-
-        $('body').on('mouseup', function(event){
-            isDragging = false;
-            if (elementDragged != undefined && elementDragged.is('li')){
-                emailTemplateEditor.placeNewElement(elementDraggedClass, null, false);
-            } else {
-                console.log('error while droppping', elementDragged);
-            }
-        });
+        }
     },
     initSortableElements: function ( selector , connectToSelector, iframeContents) {
         $( iframeContents.find(selector) ).each(function(){
@@ -271,10 +294,8 @@ var emailTemplateEditor = {
     compileSerializedData: function () {
         var getSerializedData = function (element) {
             var data = {};
-            var content = {};
-            content['content'] = $(element).data('content');
-            data['content'] = content;
-            data['properties'] = $(element).data('properties');
+            data['content'] = $.extend({}, $(element).data('content'));
+            data['properties'] = $.extend({}, $(element).data('properties'));
             data['class'] = $(element).data('class');
             return data;
         };
