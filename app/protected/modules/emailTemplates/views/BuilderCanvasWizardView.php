@@ -283,7 +283,7 @@
 
         protected function registerEmailTemplateEditorScriptFile()
         {
-            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.emailTemplates.widjets.assets'));
+            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.emailTemplates.widgets.assets'));
             $cs            = Yii::app()->getClientScript();
             $cs->registerScriptFile($baseScriptUrl . '/EmailTemplateEditor.js', CClientScript::POS_HEAD);
         }
