@@ -502,19 +502,18 @@
             if (isset($id))
             {
                 $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
-                Yii::app()->clientScript->setToAjaxMode();
-                Yii::app()->getClientScript()->render($content);
+                $this->resolveContentForScriptAndSetToAjaxMode($content);
                 echo $content;
                 Yii::app()->end(0, false);
             }
-            // this would be actually unserialized and an array. Bad naming convention as we need to preserve
-            // form names.
+            // this would be serialized json string for dom
+            // serializedData = json_encoded_stuff
             $serializedDataArray    = Yii::app()->request->getPost('serializedData');
             if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
             {
-
+                Yii::app()->end(0, false);
             }
-            $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByUnserializedData($serializedDataArray, false);
+            $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($serializedDataArray, false);
             $this->resolveContentForScriptAndSetToAjaxMode($content);
             echo $content;
         }
