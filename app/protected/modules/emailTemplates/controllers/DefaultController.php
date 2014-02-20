@@ -506,8 +506,7 @@
                 echo $content;
                 Yii::app()->end(0, false);
             }
-            // this would be serialized json string for dom
-            // serializedData = json_encoded_stuff
+            // serializedData['dom'] = json_encoded_dom
             $serializedDataArray    = Yii::app()->request->getPost('serializedData');
             if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
             {
