@@ -251,6 +251,7 @@ var emailTemplateEditor = {
             success: function (html) {
                 //@TODO SERGIO, it seems like Shoaibi wraps these in table eventhough they should be divs now
                 emailTemplateEditor.settings.ghost.after(html);
+                emailTemplateEditor.canvasChanged();
                 emailTemplateEditor.unfreezeLayoutEditor();
                 emailTemplateEditor.settings.ghost.detach();
             }
@@ -298,6 +299,7 @@ var emailTemplateEditor = {
         if ($(this).closest('.sortable-rows').children('.element-wrapper').length > 1 ||
             $(this).parents('.sortable-elements').length > 0) {
                 $(this).closest(".element-wrapper").remove();
+                emailTemplateEditor.canvasChanged();
         } else {
             alert(emailTemplateEditor.settings.alertErrorOnDelete);
         }
