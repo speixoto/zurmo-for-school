@@ -50,12 +50,13 @@ var emailTemplateEditor = {
         cachedSerializedDataSelector: '#serialized-data-cache',
         ghost : '',
         alertErrorOnDelete: 'You cannot delete last row',
+        dropHereMessage: 'Drop here',
         csrfToken: '',
         isDragging: false
     },
     init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
-                     csrfToken) {
+                     dropHereMessage, csrfToken) {
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
         this.settings.iframeSelector          = iframeSelector;
         this.settings.editSelector            = editSelector;
@@ -67,6 +68,7 @@ var emailTemplateEditor = {
         this.settings.editElementUrl          = editElementUrl;
         this.settings.getNewElementUrl        = getNewElementUrl;
         this.settings.alertErrorOnDelete      = alertErrorOnDelete;
+        this.settings.dropHereMessage         = dropHereMessage;
         this.settings.csrfToken               = csrfToken;
         this.setupLayout();
         emailTemplateEditor = this;
@@ -128,7 +130,7 @@ var emailTemplateEditor = {
         var point = {};
         var i = 0;
         var mostTopElement;
-        emailTemplateEditor.settings.ghost = $('<div class="ghost">drop here</div>');
+        emailTemplateEditor.settings.ghost = $('<div class="ghost">' +  emailTemplateEditor.settings.dropHereMessage + '</div>');
 
         var positions = [];
 
@@ -159,6 +161,8 @@ var emailTemplateEditor = {
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
             if (elementDragged != undefined && elementDragged.is('li')){
+                //TODO: @amit: Remember that we need to be able to know if we are placing the element insinde sortable-row or sortable-elements
+                //to wrap it accordly
                 emailTemplateEditor.placeNewElement(elementDraggedClass, null, false);
             } else {
                 console.log('error while droppping', elementDragged);
