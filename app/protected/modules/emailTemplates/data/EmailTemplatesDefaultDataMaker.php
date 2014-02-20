@@ -275,23 +275,23 @@
                                                 ),
                                             ),
                                         ),
-                                        'row4column4'   => array(
-                                            'class'         => 'BuilderColumnElement',
-                                            'properties'    => array(),
-                                            'content'       => array(
-                                                'row4column4text1'     => array(
-                                                    'class'         => 'BuilderTextElement',
-                                                    'properties'    => array(),
-                                                    'content'       => array(
-                                                        'text'      => '<strong>Row 4 Col 4 Text 1</strong>',
-                                                    ),
+                                    ),
+                                    'row4column4'   => array(
+                                        'class'         => 'BuilderColumnElement',
+                                        'properties'    => array(),
+                                        'content'       => array(
+                                            'row4column4text1'     => array(
+                                                'class'         => 'BuilderTextElement',
+                                                'properties'    => array(),
+                                                'content'       => array(
+                                                    'text'      => '<strong>Row 4 Col 4 Text 1</strong>',
                                                 ),
-                                                'row4column4text2'     => array(
-                                                    'class'         => 'BuilderTextElement',
-                                                    'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
-                                                    'content'       => array(
-                                                        'text'      => '<ul><li>Row 4 Col 4 Text 1</li></ul>',
-                                                    ),
+                                            ),
+                                            'row4column4text2'     => array(
+                                                'class'         => 'BuilderTextElement',
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'content'       => array(
+                                                    'text'      => '<ul><li>Row 4 Col 4 Text 1</li></ul>',
                                                 ),
                                             ),
                                         ),
