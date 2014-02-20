@@ -216,6 +216,16 @@
             return $fullCalendarItems;
         }
 
+        public static function getOffset()
+        {
+            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
+            $gmtTimeZone  = new DateTimeZone('GMT');
+
+            $dateTimeUser = new DateTime("now", $gmtTimeZone);
+
+            return $userTimeZone->getOffset($dateTimeUser);
+        }
+
         /**
          * Gets full calendar formatted date time.
          * @param string $dateTime
@@ -224,23 +234,25 @@
         public static function getFullCalendarFormattedDateTimeElement($dateTime)
         {
             assert('is_string($dateTime)');
-            $gmtAdjustedUnixTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($dateTime);
+            //The reason its put because timezone can vary from -12:00 to +12:00 max so
+            //if we put 12:00:00 it would fall in the same day in local time zone.
+            if(DateTimeUtil::isValidDbFormattedDate($dateTime))
+            {
+                $dateTime = $dateTime . ' 12:00:00';
+            }
             $dateTimeObject  = new DateTime();
-            $dateTimeObject->setTimestamp($gmtAdjustedUnixTimeStamp);
-            $currentTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
-            $offset          = $currentTimeZone->getOffset($dateTimeObject);
+            $dateTimeObject->setTimestamp(strtotime($dateTime));
+            $offset = self::getOffset();
             if($offset < 0)
             {
-                $modifiedGmtAdjustedUnixTimeStamp = $gmtAdjustedUnixTimeStamp + abs($offset/3600);
+                $offset = abs($offset);
+                $dateTimeObject->sub(new DateInterval('PT' . $offset . 'S'));
             }
             else
             {
-                $modifiedGmtAdjustedUnixTimeStamp = $gmtAdjustedUnixTimeStamp - $offset/3600;
+                $dateTimeObject->add(new DateInterval('PT' . $offset . 'S'));
             }
-            $dateTimeObject  = new DateTime();
-            $dateTimeObject->setTimestamp($modifiedGmtAdjustedUnixTimeStamp);
-            return Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss',
-                        $dateTimeObject->getTimestamp());
+            return $dateTimeObject->format('c');
         }
 
         /**
