@@ -248,13 +248,24 @@
                         }
                         else
                         {
+                            //todo: refactor to use ZurmoHtml::errorSummary after this supports that method
+                            //todo: supports nested messages better.
                             $errors = $emailMessage->getErrors();
-                            $data = array();
                             foreach ($errors as $attributeNameWithErrors)
                             {
                                 foreach ($attributeNameWithErrors as $attributeError)
                                 {
-                                    $messageContent .= reset($attributeError) . "\n";
+                                    if(is_array($attributeError))
+                                    {
+                                        foreach($attributeError as $nestedAttributeError)
+                                        {
+                                            $messageContent .= reset($nestedAttributeError) . "\n";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $messageContent .= reset($attributeError) . "\n";
+                                    }
                                 }
                             }
                         }

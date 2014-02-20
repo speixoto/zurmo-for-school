@@ -35,42 +35,20 @@
      ********************************************************************************/
 
     /**
-     * Base class for displaying meetings on a calendar for a related model
+     * Base class for displaying meetings list view for a related model
      */
-    abstract class UpcomingMeetingsRelatedCalendarView extends UpcomingMeetingsCalendarView implements RelatedPortletViewInterface
+    abstract class UpcomingMeetingsRelatedListView extends SecuredRelatedListView
     {
-        abstract protected function getRelationAttributeName();
-
         /**
-         * @param array $viewData
-         * @param array $params
-         * @param string $uniqueLayoutId
+         * @return array
          */
-        public function __construct($viewData, $params, $uniqueLayoutId)
-        {
-            assert('isset($params["controllerId"])');
-            assert('isset($params["relationModuleId"])');
-            assert('$params["relationModel"] instanceof RedBeanModel || $params["relationModel"] instanceof ModelForm');
-            assert('isset($params["portletId"])');
-            assert('$this->getRelationAttributeName() != null');
-            parent::__construct($viewData, $params, $uniqueLayoutId);
-        }
-
-        /**
-         * What kind of PortletRules this view follows.
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'RelatedCalendar';
-        }
-
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
             $metadata = array_merge($metadata, array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('MeetingsModule', 'Upcoming MeetingsModulePluralLabel Calendar', LabelUtil::getTranslationParamsForAllModules())",
+                    'title' => "eval:Zurmo::t('MeetingsModule', 'Upcoming MeetingsModulePluralLabel List',
+                               LabelUtil::getTranslationParamsForAllModules())",
                 ),
                 'global' => array(
                     'toolbar' => array(
@@ -80,12 +58,41 @@
                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
                         ),
                     ),
-                    'panels' => array(),
+                    'nonPlaceableAttributeNames' => array(
+                        'latestDateTime',
+                    ),
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'startDateTime', 'type' => 'DateTime'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             ));
             return $metadata;
         }
 
+        /**
+         * @return array
+         */
         protected function getCreateLinkRouteParameters()
         {
             return array(
@@ -96,46 +103,56 @@
             );
         }
 
+        /**
+         * @param null $stringTime
+         * @return array
+         */
         protected function makeSearchAttributeData($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
-            $searchAttributeData = parent::makeSearchAttributeData($stringTime);
-            assert("count(\$searchAttributeData['clauses']) == 4");
-            $searchAttributeData['clauses'][5] =
-            array(
-                'attributeName'        => 'activityItems',
-                'relatedAttributeName' => 'id',
-                'operatorType'         => 'equals',
-                'value'                => (int)$this->params['relationModel']->getClassId('Item')
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'startDateTime',
+                    'operatorType'         => 'greaterThan',
+                    'value'                => DateTimeUtil::
+                                              convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay(
+                                              DateTimeUtil::getFirstDayOfAMonthDate($stringTime))
+                ),
+                2 => array(
+                    'attributeName'        => 'startDateTime',
+                    'operatorType'         => 'lessThan',
+                    'value'                => DateTimeUtil::
+                                              convertDateIntoTimeZoneAdjustedDateTimeEndOfDay(
+                                              DateTimeUtil::getLastDayOfAMonthDate($stringTime))
+                ),
+                3 => array(
+                    'attributeName'        => 'logged',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => true
+                ),
+                4 => array(
+                    'attributeName'        => 'logged',
+                    'operatorType'         => 'isNull',
+                    'value'                => null
+                ),
+                5 => array(
+                    'attributeName'        => 'activityItems',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => (int)$this->params['relationModel']->getClassId('Item')
+                )
             );
             $searchAttributeData['structure'] = '(1 and 2 and (3 or 4) and 5)';
             return $searchAttributeData;
         }
 
-        protected function getPortletSelectDayUrl()
+        /**
+         * @return string
+         */
+        public static function getModuleClassName()
         {
-            return Yii::app()->createUrl('/meetings/default/daysMeetingsFromCalendarModalList',
-                                                        array_merge($_GET, array(
-                                                            'redirectUrl'            => $this->params['redirectUrl'],
-                                                            'relationModelId'        => $this->params['relationModel']->id,
-                                                            'relationModelClassName' => get_class($this->params['relationModel']),
-                                                            'relationModuleId'       => $this->params['relationModuleId']
-                                                            )));
-        }
-
-        public function resolvePortletModuleId()
-        {
-            return $this->params['relationModuleId'];
-        }
-
-        public static function getAllowedOnPortletViewClassNames()
-        {
-            return array();
-        }
-
-        public static function allowMultiplePlacement()
-        {
-            return false;
+            return 'MeetingsModule';
         }
     }
 ?>
