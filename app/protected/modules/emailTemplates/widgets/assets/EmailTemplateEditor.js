@@ -41,6 +41,7 @@ var emailTemplateEditor = {
         iframeSelector: '#preview-template',
         editSelector: '',
         iframeOverlaySelector: '#iframe-overlay',
+        elementsContainerId: '',
         elementsToPlaceSelector: '#building-blocks',
         sortableRowsSelector: '.sortable-rows',
         sortableElementsSelector: '.sortable-elements',
@@ -54,9 +55,10 @@ var emailTemplateEditor = {
         csrfToken: '',
         isDragging: false
     },
-    init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
+    init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
                      dropHereMessage, csrfToken) {
+        this.settings.elementsContainerId     = elementsContainerId;
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
         this.settings.iframeSelector          = iframeSelector;
         this.settings.editSelector            = editSelector;
@@ -125,6 +127,8 @@ var emailTemplateEditor = {
 
         var containers = [];
         var offset = {};
+        var iframeElement = document.getElementById('canvas-iframe');
+        var iframeRect = {};
         var rect = {};
         var innerElements = [];
         var point = {};
@@ -135,12 +139,12 @@ var emailTemplateEditor = {
         var positions = [];
 
         $('#building-blocks').on('mousedown', onBodyMouseDown);
-        //$('body').on('mouseup', onBodyMouseUp);
-        //$('body').on('mousemove', onBodyMouseMove);
-
 
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
+
+            iframeRect = iframeElement.getBoundingClientRect();
+
             containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
             //$(emailTemplateEditor.settings.iframeSelector).contents().find('body').prepend(emailTemplateEditor.settings.ghost);
             emailTemplateEditor.settings.isDragging = true;
@@ -160,12 +164,16 @@ var emailTemplateEditor = {
             $('body').off('mousemove', onBodyMouseMove);
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
-            if (elementDragged != undefined && elementDragged.is('li')){
-                //TODO: @amit: Remember that we need to be able to know if we are placing the element insinde sortable-row or sortable-elements
-                //to wrap it accordly
-                emailTemplateEditor.placeNewElement(elementDraggedClass, null, false);
+            if (elementDragged != undefined && elementDragged.is('li') &&
+                event.pageX > iframeRect.left && event.pageX < iframeRect.right &&
+                event.pageY > iframeRect.top && event.pageY < iframeRect.bottom){
+                if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, true, iframeContents);
+                } else {
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, false, iframeContents);
+                }
             } else {
-                console.log('error while droppping', elementDragged);
+                console.log('error while droppping');
             }
         }
 
@@ -184,7 +192,7 @@ var emailTemplateEditor = {
                         innerElements.push(containers[i]);
                     }
                 }
-
+                
                 if(innerElements.length > 0){
                     mostTopElement = innerElements[innerElements.length-1];
                     $(mostTopElement).addClass('hover');
@@ -207,9 +215,6 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.is('li')) {
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, false);
-                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
@@ -227,20 +232,13 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.is('li')) {
-                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, true);
-                    emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
-                        emailTemplateEditor.settings.sortableElementsSelector,
-                        iframeContents);
-                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
             cursor: 'move'
         });
     },
-    placeNewElement: function ( elementClass, item , wrapElement) { //@TODO SERGIO, do we need _item_? its not used inside the function
+    placeNewElement: function ( elementClass, wrapElement, iframeContents) {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',
@@ -249,8 +247,13 @@ var emailTemplateEditor = {
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
-                //@TODO SERGIO, it seems like Shoaibi wraps these in table eventhough they should be divs now
                 emailTemplateEditor.settings.ghost.after(html);
+                if (wrapElement)
+                {
+                    emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
+                        emailTemplateEditor.settings.sortableElementsSelector,
+                        iframeContents);
+                }
                 emailTemplateEditor.canvasChanged();
                 emailTemplateEditor.unfreezeLayoutEditor();
                 emailTemplateEditor.settings.ghost.detach();
@@ -269,6 +272,7 @@ var emailTemplateEditor = {
         $(this).makeLargeLoadingSpinner(false, emailTemplateEditor.settings.iframeOverlaySelector);
     },
     onClickEditEvent: function () {
+        $(emailTemplateEditor.settings.elementsContainerId).hide();
         emailTemplateEditor.freezeLayoutEditor();
         // closest always traversal to the parents, in out case the actual element is a sibling of its parent.
         var element         = $(this).parent().siblings('.builder-element-non-editable.element-data');

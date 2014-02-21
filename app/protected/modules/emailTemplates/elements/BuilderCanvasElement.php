@@ -76,6 +76,17 @@
             return array(static::OVERLAY_ACTION_EDIT);
         }
 
+        /**
+         * Override to hide the canvas icons.  There is only an 'edit' link and this is controlled via the toolbar
+         * @param $action
+         * @return string
+         */
+        protected function resolveAvailableNonEditableActionLinkSpan($action)
+        {
+            $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-' . $action), '');
+            return         ZurmoHtml::tag('span', array('class' => $action, 'style' => 'display:none;'), $iconContent);
+        }
+
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $parentOptions          = parent::resolveNonEditableWrapperHtmlOptions();

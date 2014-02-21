@@ -487,11 +487,16 @@
             $overlayLinkContent = null;
             foreach ($availableActions as $action)
             {
-                $iconContent        = ZurmoHtml::tag('i', array('class' => 'icon-' . $action), '');
-                $linkContent        = ZurmoHtml::tag('span', array('class' => $action), $iconContent);
+                $linkContent        = $this->resolveAvailableNonEditableActionLinkSpan($action);
                 $overlayLinkContent .= $linkContent;
             }
             return $overlayLinkContent;
+        }
+
+        protected function resolveAvailableNonEditableActionLinkSpan($action)
+        {
+            $iconContent = ZurmoHtml::tag('i', array('class' => 'icon-' . $action), '');
+            return         ZurmoHtml::tag('span', array('class' => $action), $iconContent);
         }
 
         /**
@@ -910,6 +915,7 @@
                 $('#" . $this->resolveCancelLinkId() . "').bind('click.cancelLinkClick', function()
                 {
                     hideElementEditFormOverlay();
+                    $('#" . BuilderCanvasWizardView::ELEMENTS_CONTAINER_ID . "').show();
                 });
             ");
         }
