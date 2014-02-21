@@ -255,9 +255,9 @@
                             {
                                 foreach ($attributeNameWithErrors as $attributeError)
                                 {
-                                    if(is_array($attributeError))
+                                    if (is_array($attributeError))
                                     {
-                                        foreach($attributeError as $nestedAttributeError)
+                                        foreach ($attributeError as $nestedAttributeError)
                                         {
                                             $messageContent .= reset($nestedAttributeError) . "\n";
                                         }

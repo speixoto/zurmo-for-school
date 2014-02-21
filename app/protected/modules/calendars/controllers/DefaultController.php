@@ -284,7 +284,7 @@
                                                                                                $endDate,
                                                                                                $dateRangeType);
             $calendarItems = $dataProvider->getData(true);
-            if($dataProvider->getIsMaxCountReached())
+            if ($dataProvider->getIsMaxCountReached())
             {
                 echo CJSON::encode(array('limitReached' => true));
             }
