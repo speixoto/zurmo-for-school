@@ -56,24 +56,34 @@
             $difference                 = $columnCountConfiguration - $contentColumnCount;
             if ($difference < 0)
             {
-                $extraColumns           = array_splice($this->content, $difference);
-                $lastKey                = ArrayUtil::findLastKey($this->content);
-                $lastKeyContent         = $this->content[$lastKey]['content'];
-                foreach ($extraColumns as $extraColumn)
-                {
-                    $lastKeyContent   = CMap::mergeArray($lastKeyContent, $extraColumn['content']);
-                }
-                $this->content[$lastKey]['content'] = $lastKeyContent;
+                $this->reduceColumns($difference);
             }
             else if ($difference > 0)
             {
-                for ($i = 0; $i < $difference; $i++)
-                {
-                    $blankColumnElement     = BuilderElementRenderUtil::resolveElement('BuilderColumnElement',
+                $this->induceColumn($difference);
+            }
+        }
+
+        protected function reduceColumns($count)
+        {
+            $extraColumns           = array_splice($this->content, $count);
+            $lastKey                = ArrayUtil::findLastKey($this->content);
+            $lastKeyContent         = $this->content[$lastKey]['content'];
+            foreach ($extraColumns as $extraColumn)
+            {
+                $lastKeyContent   = CMap::mergeArray($lastKeyContent, $extraColumn['content']);
+            }
+            $this->content[$lastKey]['content'] = $lastKeyContent;
+        }
+
+        protected function induceColumn($count)
+        {
+            for ($i = 0; $i < $count; $i++)
+            {
+                $blankColumnElement     = BuilderElementRenderUtil::resolveElement('BuilderColumnElement',
                                                                                     $this->renderForCanvas);
-                    $blankColumnElementData = BuilderElementRenderUtil::resolveSerializedDataByElement($blankColumnElement);
-                    $this->content          = CMap::mergeArray($this->content, $blankColumnElementData);
-                }
+                $blankColumnElementData = BuilderElementRenderUtil::resolveSerializedDataByElement($blankColumnElement);
+                $this->content          = CMap::mergeArray($this->content, $blankColumnElementData);
             }
         }
 
