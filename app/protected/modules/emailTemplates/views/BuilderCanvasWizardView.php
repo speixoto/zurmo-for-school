@@ -238,7 +238,9 @@
         protected function resolvePreviewIFrameHtmlOptions()
         {
             return array('id' => static::PREVIEW_IFRAME_ID,
-                'src' => $this->resolvePreviewActionUrl(),
+                // we set it to about:blank instead of preview url to save request and to also have some
+                // sort of basic html structure there which we can replace.
+                'src' => 'about:blank',
                 'width' => '100%',
                 'height'    => '100%',
                 'frameborder' => 0,
@@ -443,7 +445,7 @@
                         type : 'POST',
                         data : {serializedData: serializedData, 'YII_CSRF_TOKEN': '" . Yii::app()->request->csrfToken . "'},
                         success: function (html) {
-                            $('#" . static::PREVIEW_IFRAME_ID . "').html('dsasadsadsaddas');
+                            $('#" . static::PREVIEW_IFRAME_ID . "').contents().find('html').html(html);
                             $('#" . static::PREVIEW_IFRAME_ID . "').show();
                             emailTemplateEditor.unfreezeLayoutEditor();
                         },
