@@ -46,6 +46,8 @@
 
         const PREVIEW_IFRAME_CONTAINER_ID                   = 'preview-iframe-container';
 
+        const PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID        = 'preview-iframe-container-close-link';
+
         const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-container';
 
         const UL_ELEMENT_TO_PLACE_ID                        = 'building-blocks';
@@ -142,7 +144,8 @@
             $this->registerLeftSideToolbarScripts();
             $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $element  = new EmailTemplateBuilderElementsMenuActionElement('default', 'emailTemplates', null,
-                            array('htmlOptions' => array('id'=> static::ELEMENTS_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+                            array('htmlOptions' => array('id'=> static::ELEMENTS_MENU_BUTTON_ID, 'class' => 'active'),
+                                  'iconClass'=> 'icon-layout'));
             $content .= $element->render();
             $element  = new EmailTemplateBuilderCanvasConfigurationMenuActionElement('default', 'emailTemplates', null,
                             array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
@@ -158,6 +161,11 @@
         {
             $script  = '$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click", function()
                          {
+                            if(!$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").hasClass("active"))
+                            {
+                                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").addClass("active");
+                            }
+                            $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").removeClass("active");
                             $("#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . '").hide();
                             $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
                          });
@@ -165,6 +173,11 @@
             ';
             $script .= '$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click", function()
                          {
+                            if(!$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").hasClass("active"))
+                            {
+                                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").addClass("active");
+                            }
+                            $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").removeClass("active");
                             $("#' . static::ELEMENTS_CONTAINER_ID . '").hide();
                             $("#' . static::CANVAS_IFRAME_ID . '").contents().find("#element-actions-canvas1").find(".' .
                             BaseBuilderElement::OVERLAY_ACTION_EDIT . '").trigger("click");
@@ -187,6 +200,11 @@
                             });
                          });
 
+            ';
+            $script .= '$("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").live("click", function()
+                         {
+                            $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
+                         });
             ';
             Yii::app()->getClientScript()->registerScript('emailTemplateBuilderCanvasLeftSideToolbarScripts', $script);
         }
@@ -291,7 +309,8 @@
 
         protected function resolvePreviewContainerContent()
         {
-            $content    = ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
+            $content  = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID));
+            $content .= ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
             $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
             return $content;
         }
