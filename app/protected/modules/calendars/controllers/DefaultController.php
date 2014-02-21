@@ -256,6 +256,7 @@
             foreach ($items as $index => $item)
             {
                 $itemClass = isset($item['itemClass']) ? $item['itemClass']:null;
+                //If not more events
                 if($itemClass != 'more-events')
                 {
                     $itemDetailViewClassName = get_class($item['model']) . 'ForCalendarItemDetailsView';
@@ -265,7 +266,12 @@
                 }
                 else
                 {
-                    $item['description']     = "Hello";
+                    $description = null;
+                    foreach($item['additionalItems'] as $additionalItem)
+                    {
+                        $description .= $additionalItem['title'];
+                    }
+                    $item['description']     = $description;
                 }
                 $items[$index]           = $item;
             }

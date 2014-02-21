@@ -198,11 +198,6 @@
                 $fullCalendarItem = array();
                 $calItem = $calendarItems[$k];
                 $fullCalendarItem['title'] = $calItem->getTitle();
-                /*$fullCalendarItem['start'] = self::getFullCalendarFormattedDateTimeElement($calItem->getStartDateTime());
-                if($calItem->getEndDateTime() != null)
-                {
-                    $fullCalendarItem['end'] = self::getFullCalendarFormattedDateTimeElement($calItem->getEndDateTime());
-                }*/
                 $fullCalendarItem['start'] = $calItem->getStartDateTime();
                 if($calItem->getEndDateTime() != null)
                 {
@@ -236,8 +231,8 @@
          */
         public static function processCalendarItemsAndAddMoreEventsIfRequired(& $fullCalendarItems)
         {
-            $dateToCalendarItemsCountData = array();
-            $moreEventsItemCreatedByDate = array();
+            $dateToCalendarItemsCountData   = array();
+            $moreEventsItemCreatedByDate    = array();
             foreach($fullCalendarItems as $key => $fullCalItem)
             {
                 $startDate       = date('Y-m-d', strtotime($fullCalItem['start']));
@@ -245,7 +240,7 @@
                 {
                     if(in_array($startDate, $moreEventsItemCreatedByDate) === false)
                     {
-                        $fullCalItem           = self::createMoreEventsCalendarItem($fullCalItem);
+                        $fullCalItem           = self::createMoreEventsCalendarItem($fullCalItem, $key, $fullCalendarItems);
                         $moreEventsItemCreatedByDate[] = $startDate;
                     }
                     else
@@ -269,7 +264,7 @@
          * @param array $fullCalItem
          * @return string
          */
-        public static function createMoreEventsCalendarItem($fullCalItem)
+        public static function createMoreEventsCalendarItem($fullCalItem, $key, $fullCalendarItems)
         {
             $moreEventsCalItem = array();
             $moreEventsCalItem['title'] = Zurmo::t('CalendarsModule', 'More Events..');
@@ -277,6 +272,21 @@
             $moreEventsCalItem['end']   = $fullCalItem['end'];
             $moreEventsCalItem['color'] = '#cccccc';
             $moreEventsCalItem['itemClass'] = 'more-events';
+            $additionalCalItems = array();
+            $moreEventsStartDate       = date('Y-m-d', strtotime($moreEventsCalItem['start']));
+            for($i = $key; $i < count($fullCalendarItems); $i++)
+            {
+                $fullCalItemStartDate       = date('Y-m-d', strtotime($fullCalendarItems[$i]['start']));
+                if($moreEventsStartDate != $fullCalItemStartDate)
+                {
+                    break;
+                }
+                else
+                {
+                    $additionalCalItems[] = $fullCalendarItems[$i];
+                }
+            }
+            $moreEventsCalItem['additionalItems'] = $additionalCalItems;
             return $moreEventsCalItem;
         }
 
