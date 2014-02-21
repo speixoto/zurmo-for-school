@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,52 +31,42 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTextElement extends BaseBuilderElement
+    class BuilderElementPropertiesEditableElementUtil
     {
-        public static function isUIAccessible()
+        /**
+         * Render editable element for a property
+         * @param $elementClassName
+         * @param CModel $model
+         * @param $attribute
+         * @param ZurmoActiveForm $form
+         * @param array $params
+         * @param bool $wrapInTr
+         * @param array $trOptions
+         * @return mixed
+         */
+        public static function render($elementClassName, CModel $model, $property, ZurmoActiveForm $form,
+                                        array $params = array(), $wrapInTr = true, array $trOptions = array())
         {
-            return true;
+            $attribute  = "properties[${property}]";
+            $element    = new $elementClassName($model, $attribute, $form, $params);
+            $content    = $element->render();
+            if ($wrapInTr)
+            {
+                static::wrapContentInTr($content, $trOptions);
+            }
+            return $content;
         }
 
-        protected static function resolveLabel()
+        /**
+         * @param $content
+         * @param $trOptions
+         */
+        protected static function wrapContentInTr(& $content, $trOptions)
         {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
-        }
-
-        protected function resolveDefaultContent()
-        {
-            // TODO: @Shoaibi: Critical3: Better default content.
-            return array('text' => '<u>This is default dummy content.</u>');
-        }
-
-        protected function renderSettingsTab(ZurmoActiveForm $form)
-        {
-            $propertiesForm     = BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
-            return $propertiesForm;
-        }
-
-        protected function resolveContentElementClassName()
-        {
-            return 'BuilderTextRedactorElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
-            // it would give an error saying we are trying to convert an array to string.
-            return 'content[text]';
-        }
-
-        protected function resolveContentElementParams()
-        {
-            $params                     = parent::resolveContentElementParams();
-            $params['labelHtmlOptions'] = array('label' => 'Text');
-            return $params;
+            $content    = ZurmoHtml::tag('tr', $trOptions, $content);
         }
     }
 ?>

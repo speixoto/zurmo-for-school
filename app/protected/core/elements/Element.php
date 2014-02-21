@@ -97,12 +97,17 @@
             {
                 return $this->getFormattedAttributeLabel();
             }
-            $htmlOptions    = array('for' => $this->getEditableInputId());
+            $htmlOptions    = array('for' => $this->resolveIdForLabel());
             if (isset($this->params['labelHtmlOptions']))
             {
                 $htmlOptions    = CMap::mergeArray($htmlOptions, $this->params['labelHtmlOptions']);
             }
             return $this->form->labelEx($this->model, $this->attribute, $htmlOptions);
+        }
+
+        protected function resolveIdForLabel()
+        {
+            return $this->getEditableInputId();
         }
 
         protected function getFormattedAttributeLabel()

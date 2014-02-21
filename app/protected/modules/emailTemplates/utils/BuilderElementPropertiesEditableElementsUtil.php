@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,52 +31,59 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTextElement extends BaseBuilderElement
+    class BuilderElementPropertiesEditableElementsUtil
     {
-        public static function isUIAccessible()
+        public static function render(CModel $model, ZurmoActiveForm $form, $wrapInTr = true, array $trOptions = array())
         {
-            return true;
+            $content                = null;
+            $configurationItems     = static::resolveConfiguration();
+            foreach ($configurationItems as $configurationItem)
+            {
+                $util           = null;
+                $elementClass   = null;
+                $property       = null;
+                $params         = array();
+                extract($configurationItem);
+                $content        .= $util::render($elementClass, $model, $property, $form, $params, $wrapInTr, $trOptions);
+
+            }
+            return $content;
         }
 
-        protected static function resolveLabel()
+
+        /**
+         * @return array
+         */
+        protected static function resolveConfiguration()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
+            return array();
         }
 
-        protected function resolveDefaultContent()
+        /**
+         * @param $util
+         * @param $elementClass
+         * @param $property
+         * @param $params
+         * @return array
+         */
+        protected static function resolveConfigurationItem($util, $elementClass, $property, $params)
         {
-            // TODO: @Shoaibi: Critical3: Better default content.
-            return array('text' => '<u>This is default dummy content.</u>');
+            return compact('util', 'elementClass', 'property', 'params');
         }
 
-        protected function renderSettingsTab(ZurmoActiveForm $form)
-        {
-            $propertiesForm     = BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
-            return $propertiesForm;
-        }
 
-        protected function resolveContentElementClassName()
+        /**
+         * @param string $label
+         * @return array
+         */
+        protected static function resolveDefaultParams($label = '')
         {
-            return 'BuilderTextRedactorElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
-            // it would give an error saying we are trying to convert an array to string.
-            return 'content[text]';
-        }
-
-        protected function resolveContentElementParams()
-        {
-            $params                     = parent::resolveContentElementParams();
-            $params['labelHtmlOptions'] = array('label' => 'Text');
+            $params = array();
+            $params['labelHtmlOptions'] = array('label' => $label);
             return $params;
         }
-    }
+  }
 ?>
