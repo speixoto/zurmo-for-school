@@ -104,6 +104,11 @@
         protected static function resolveElement($className, $renderForCanvas = false, $id = null,
                                                  $properties = null, $content = null, $params = null)
         {
+            if ($className::isContainerType())
+            {
+                static::resolveToArrayIfJson($properties);
+                static::resolveToArrayIfJson($content);
+            }
             $element    = new $className($renderForCanvas, $id, $properties, $content, $params);
             return $element;
         }
@@ -123,6 +128,22 @@
                 'properties'    => $element->getProperties($serializedProperties),
                 'content'       => $element->getContent($serializedContent),
             ));
+        }
+
+        /**
+         * Resolve a string to array if its appears to be json
+         * @param $content
+         */
+        protected static function resolveToArrayIfJson(& $content)
+        {
+            if (is_string($content))
+            {
+                $contentArray   = CJSON::decode($content);
+                if (json_last_error() == JSON_ERROR_NONE)
+                {
+                    $content    = $contentArray;
+                }
+            }
         }
     }
 ?>

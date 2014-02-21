@@ -271,7 +271,7 @@ var emailTemplateEditor = {
     onClickEditEvent: function () {
         emailTemplateEditor.freezeLayoutEditor();
         // closest always traversal to the parents, in out case the actual element is a sibling of its parent.
-        var element         = $(this).parent().siblings('.builder-element-non-editable .element-data');
+        var element         = $(this).parent().siblings('.builder-element-non-editable.element-data');
         id                  = element.attr('id');
         elementClass        = element.data('class');
         elementProperties   = $.extend({}, element.data('properties'));
