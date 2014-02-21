@@ -224,23 +224,25 @@
         public static function getFullCalendarFormattedDateTimeElement($dateTime)
         {
             assert('is_string($dateTime)');
-            $gmtAdjustedUnixTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($dateTime);
+            //The reason its put because timezone can vary from -12:00 to +12:00 max so
+            //if we put 12:00:00 it would fall in the same day in local time zone.
+            if(DateTimeUtil::isValidDbFormattedDate($dateTime))
+            {
+                $dateTime = $dateTime . ' 12:00:00';
+            }
             $dateTimeObject  = new DateTime();
-            $dateTimeObject->setTimestamp($gmtAdjustedUnixTimeStamp);
-            $currentTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
-            $offset          = $currentTimeZone->getOffset($dateTimeObject);
+            $dateTimeObject->setTimestamp(strtotime($dateTime));
+            $offset          = DateTimeUtil::getTimeZoneOffset();
             if($offset < 0)
             {
-                $modifiedGmtAdjustedUnixTimeStamp = $gmtAdjustedUnixTimeStamp + abs($offset/3600);
+                $offset = abs($offset);
+                $dateTimeObject->sub(new DateInterval('PT' . $offset . 'S'));
             }
             else
             {
-                $modifiedGmtAdjustedUnixTimeStamp = $gmtAdjustedUnixTimeStamp - $offset/3600;
+                $dateTimeObject->add(new DateInterval('PT' . $offset . 'S'));
             }
-            $dateTimeObject  = new DateTime();
-            $dateTimeObject->setTimestamp($modifiedGmtAdjustedUnixTimeStamp);
-            return Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss',
-                        $dateTimeObject->getTimestamp());
+            return $dateTimeObject->format('c');
         }
 
         /**
@@ -858,10 +860,11 @@
          */
         public static function loadDefaultCalendars(User $user)
         {
-            $name = Zurmo::t('CalendarsModule', 'My Meetings');
-            self::populateSavedCalendar($user, $name, 'MeetingsModule', 'startDateTime', 'endDateTime');
-            $name = Zurmo::t('CalendarsModule', 'My Tasks');
-            self::populateSavedCalendar($user, $name, 'TasksModule', 'createdDateTime');
+            $name           = Zurmo::t('CalendarsModule', 'My Meetings');
+            $mtgCalendar    = self::populateSavedCalendar($user, $name, 'MeetingsModule', 'startDateTime', 'endDateTime');
+            $name           = Zurmo::t('CalendarsModule', 'My Tasks');
+            $taskCalendar   = self::populateSavedCalendar($user, $name, 'TasksModule', 'createdDateTime');
+            return array($mtgCalendar, $taskCalendar);
         }
 
         /**
@@ -888,6 +891,45 @@
             $savedCalendar->endAttributeName    = $endAttributeName;
             assert($savedCalendar->save());
             CalendarUtil::setMyCalendarColor($savedCalendar, $user);
+            $filtersData                        = array('filtersStructure' => '1',
+                                                        'Filters' => array(
+                                                                            array('attributeIndexOrDerivedType' => 'owner__User',
+                                                                            'structurePosition'  => '1',
+                                                                            'operator'           => 'equals',
+                                                                            'value'              => $user->id,
+                                                                            'stringifiedModelForValue'  => strval($user),
+                                                                            'availableAtRunTime' => '0')
+                                                                          )
+                                                       );
+            CalendarUtil::populateFiltersDataInModel($savedCalendar, $filtersData);
+            assert($savedCalendar->save());
+            return $savedCalendar;
+        }
+
+        /**
+         * Populate filters data in model.
+         *
+         * @param SavedCalendar $model
+         * @param array $data
+         */
+        public static function populateFiltersDataInModel(SavedCalendar $model, $data)
+        {
+            $report        = SavedCalendarToReportAdapter::makeReportBySavedCalendar($model);
+            DataToReportUtil::resolveFiltersStructure($data, $report);
+            DataToReportUtil::resolveFilters($data, $report);
+            if (count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
+            {
+                $sanitizedFiltersData  = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
+                                                                              $report->getType(),
+                                                                              $filtersData);
+                $unserializedData      = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
+                                        'filtersStructure' => $report->getFiltersStructure());
+                $model->serializedData = serialize($unserializedData);
+            }
+            else
+            {
+                $model->serializedData = null;
+            }
         }
     }
 ?>
