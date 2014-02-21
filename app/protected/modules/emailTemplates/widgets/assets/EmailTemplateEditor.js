@@ -127,6 +127,8 @@ var emailTemplateEditor = {
 
         var containers = [];
         var offset = {};
+        var iframeElement = document.getElementById('canvas-iframe');
+        var iframeRect = {};
         var rect = {};
         var innerElements = [];
         var point = {};
@@ -140,6 +142,9 @@ var emailTemplateEditor = {
 
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
+
+            iframeRect = iframeElement.getBoundingClientRect();
+
             containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
             //$(emailTemplateEditor.settings.iframeSelector).contents().find('body').prepend(emailTemplateEditor.settings.ghost);
             emailTemplateEditor.settings.isDragging = true;
@@ -159,14 +164,16 @@ var emailTemplateEditor = {
             $('body').off('mousemove', onBodyMouseMove);
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
-            if (elementDragged != undefined && elementDragged.is('li')){
+            if (elementDragged != undefined && elementDragged.is('li') &&
+                event.pageX > iframeRect.left && event.pageX < iframeRect.right &&
+                event.pageY > iframeRect.top && event.pageY < iframeRect.bottom){
                 if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
                     emailTemplateEditor.placeNewElement(elementDraggedClass, true, iframeContents);
                 } else {
                     emailTemplateEditor.placeNewElement(elementDraggedClass, false, iframeContents);
                 }
             } else {
-                console.log('error while droppping', elementDragged);
+                console.log('error while droppping');
             }
         }
 
@@ -185,7 +192,7 @@ var emailTemplateEditor = {
                         innerElements.push(containers[i]);
                     }
                 }
-
+                
                 if(innerElements.length > 0){
                     mostTopElement = innerElements[innerElements.length-1];
                     $(mostTopElement).addClass('hover');
