@@ -432,9 +432,10 @@
             return $breadCrumbLinks;
         }
 
-        protected function resolveEmailTemplateByPostData(Array $postData, & $emailTemplate, $builtType)
+        protected function resolveEmailTemplateByPostData(array $postData, & $emailTemplate, $builtType)
         {
-            $id = $postData[GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
+            $formName   = EmailTemplateToWizardFormAdapter::getFormClassNameByBuiltType($builtType);
+            $id         = $postData[$formName][GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
             if ($id <= 0)
             {
                 $this->resolveCanCurrentUserAccessEmailTemplates();
