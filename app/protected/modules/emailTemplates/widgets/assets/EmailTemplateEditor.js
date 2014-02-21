@@ -274,10 +274,11 @@ var emailTemplateEditor = {
         var element         = $(this).parent().siblings('.builder-element-non-editable .element-data');
         id                  = element.attr('id');
         elementClass        = element.data('class');
-        elementProperties   = element.data('properties');
+        elementProperties   = $.extend({}, element.data('properties'));
         // TODO: @Shoaibi: Critical0: get rid of console.log statements from here.
         // TODO: @Shoaibi/@Sergio: Critical0: Following should be compiled for all container elements. resolveUiAccessibleContainerTypeElementClassNames(true)
-        elementContent      = element.data('content');
+        var serializedData = $.parseJSON(emailTemplateEditor.compileSerializedData());
+        elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
         postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
                                 content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
         postData            = decodeURIComponent($.param(postData));
@@ -354,5 +355,24 @@ var emailTemplateEditor = {
         value = JSON.stringify(data);
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
         return value;
+    },
+    getElementContent: function findContent (elementId, data) {
+        var content = {};
+        if ($.type(data) === 'object') {
+            for (var key in data) {
+                if (key == elementId)
+                {
+                    return data[key]['content'];
+                }
+                else
+                {
+                    if (data[key] != undefined)
+                    {
+                        content = $.extend(content, findContent(elementId, data[key]['content']));
+                    }
+                }
+            }
+        }
+        return content;
     }
 }

@@ -305,17 +305,18 @@
 
         protected function registerInitializeEmailTemplateEditor()
         {
-            $elementsToPlaceSelector    = '#' . static::UL_ELEMENT_TO_PLACE_ID;
-            $iframeSelector             = '#' . static::CANVAS_IFRAME_ID;
-            $editSelector               = '#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID;
-            $editActionSelector         = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
-            $moveActionSelector         = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
-            $deleteActionSelector       = 'span.' . BaseBuilderElement::OVERLAY_ACTION_DELETE;
-            $iframeOverlaySelector      = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
-            $cachedSerializedSelector   = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
-            $errorOnDeleteMessage       = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
-            $dropHereMessage            = Zurmo::t('EmailTemplatesModule', 'Drop here');
-            $csrfToken                  = Yii::app()->request->csrfToken;
+            $elementsToPlaceSelector            = '#' . static::UL_ELEMENT_TO_PLACE_ID;
+            $iframeSelector                     = '#' . static::CANVAS_IFRAME_ID;
+            $editSelector                       = '#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID;
+            $editActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
+            $moveActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
+            $deleteActionSelector               = 'span.' . BaseBuilderElement::OVERLAY_ACTION_DELETE;
+            $iframeOverlaySelector              = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
+            $cachedSerializedSelector           = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
+            $errorOnDeleteMessage               = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
+            $dropHereMessage                    = Zurmo::t('EmailTemplatesModule', 'Drop here');
+            $csrfToken                          = Yii::app()->request->csrfToken;
+            $uiAccessibleContainerClassNames    = $this->resolveUiAccessibleContainerTypeElementClassNames(true);
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
@@ -331,7 +332,8 @@
                         '{$this->resolveElementNonEditableActionUrl()}',
                         '{$errorOnDeleteMessage}',
                         '{$dropHereMessage}',
-                        '{$csrfToken}'
+                        '{$csrfToken}',
+                        '{$uiAccessibleContainerClassNames}'
                     );
                 };
                 ", CClientScript::POS_END);
