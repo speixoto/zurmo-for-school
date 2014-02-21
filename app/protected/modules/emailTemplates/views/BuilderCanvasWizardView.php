@@ -46,6 +46,8 @@
 
         const PREVIEW_IFRAME_ID                             = 'preview-iframe';
 
+        const PREVIEW_IFRAME_CONTAINER_ID                   = 'preview-iframe-container';
+
         const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-container';
 
         const UL_ELEMENT_TO_PLACE_ID                        = 'building-blocks';
@@ -100,8 +102,9 @@
         protected function renderFormContent()
         {
             // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes?
-            $hiddenElements                             = $this->resolvePreviewContent();
+            $hiddenElements                             = null;
 
+            $previewContainerContent                    = $this->resolvePreviewContent();
             $freezeOverlayContent                       = $this->renderFreezeOverlayContent();
             $leftSidebarContent                         = ZurmoHtml::tag('h3', array(), 'Elements');
             $leftSidebarContent                        .= $this->resolveElementsSidebarContent();
@@ -112,7 +115,8 @@
 
             $this->wrapContentForLeftSideBar($leftSidebarContent);
             $this->wrapContentForRightSideBar($rightSidebarContent);
-            $content                                    = $freezeOverlayContent . $leftSidebarContent . $rightSidebarContent;
+            $content                                    = $freezeOverlayContent . $previewContainerContent .
+                                                            $leftSidebarContent . $rightSidebarContent;
             $content                                    = ZurmoHtml::tag('div', $this->resolveContentHtmlOptions(),
                                                                                     $content);
             $this->wrapContentForAttributesContainer($content);
@@ -231,8 +235,9 @@
 
         protected function resolvePreviewContent()
         {
-            $canvasContent  = ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
-            return $canvasContent;
+            $content    = ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
+            $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
+            return $content;
         }
 
         protected function resolvePreviewIFrameHtmlOptions()
@@ -245,6 +250,11 @@
                 'height'    => '100%',
                 'frameborder' => 0,
                 'style' => 'display: none;');
+        }
+
+        protected function resolvePreviewIFrameContainerHtmlOptions()
+        {
+            return array('id' => static::PREVIEW_IFRAME_CONTAINER_ID, 'title' => Zurmo::t('EmailTemplatesModule', 'Preview'));
         }
 
         protected function resolveUiAccessibleContainerTypeElementClassNames($jsonEncoded = false)
@@ -445,8 +455,25 @@
                         type : 'POST',
                         data : {serializedData: serializedData, 'YII_CSRF_TOKEN': '" . Yii::app()->request->csrfToken . "'},
                         success: function (html) {
-                            $('#" . static::PREVIEW_IFRAME_ID . "').contents().find('html').html(html);
-                            $('#" . static::PREVIEW_IFRAME_ID . "').show();
+                            $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').dialog({
+                                modal: true,
+                                autoOpen: true,
+                                draggable: false,
+                                resizable: false,
+                                position: ['center', 'top'],
+                                show: 'blind',
+                                hide: 'blind',
+                                dialogClass: 'ui-dialog-osx',
+                                'open': function( event, ui )  {
+                                            $('#" . static::PREVIEW_IFRAME_ID . "').contents().find('html').html(html);
+                                            $('#" . static::PREVIEW_IFRAME_ID . "').show();
+                                            $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().addClass('openingModal');
+                                            },
+                                'close': function( event, ui ) {
+                                            $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().removeClass('openingModal');
+                                            $('#" . static::PREVIEW_IFRAME_ID . "').hide();
+                                            }
+                            });
                             emailTemplateEditor.unfreezeLayoutEditor();
                         },
                     });

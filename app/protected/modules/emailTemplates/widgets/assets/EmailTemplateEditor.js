@@ -276,7 +276,6 @@ var emailTemplateEditor = {
         elementClass        = element.data('class');
         elementProperties   = $.extend({}, element.data('properties'));
         // TODO: @Shoaibi: Critical0: get rid of console.log statements from here.
-        // TODO: @Shoaibi/@Sergio: Critical0: Following should be compiled for all container elements. resolveUiAccessibleContainerTypeElementClassNames(true)
         var serializedData = $.parseJSON(emailTemplateEditor.compileSerializedData());
         elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
         postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
