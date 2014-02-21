@@ -53,27 +53,32 @@ var emailTemplateEditor = {
         alertErrorOnDelete: 'You cannot delete last row',
         dropHereMessage: 'Drop here',
         csrfToken: '',
-        isDragging: false
+        isDragging: false,
+        isInited: false
     },
     init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
                      dropHereMessage, csrfToken) {
-        this.settings.elementsContainerId     = elementsContainerId;
-        this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
-        this.settings.iframeSelector          = iframeSelector;
-        this.settings.editSelector            = editSelector;
-        this.settings.editActionSelector      = editActionSelector;
-        this.settings.moveActionSelector      = moveActionSelector;
-        this.settings.deleteActionSelector    = deleteActionSelector;
-        this.settings.iframeOverlaySelector   = iframeOverlaySelector;
-        this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
-        this.settings.editElementUrl          = editElementUrl;
-        this.settings.getNewElementUrl        = getNewElementUrl;
-        this.settings.alertErrorOnDelete      = alertErrorOnDelete;
-        this.settings.dropHereMessage         = dropHereMessage;
-        this.settings.csrfToken               = csrfToken;
-        this.setupLayout();
-        emailTemplateEditor = this;
+        if (!this.settings.isInited)
+        {
+            this.settings.elementsContainerId     = elementsContainerId;
+            this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
+            this.settings.iframeSelector          = iframeSelector;
+            this.settings.editSelector            = editSelector;
+            this.settings.editActionSelector      = editActionSelector;
+            this.settings.moveActionSelector      = moveActionSelector;
+            this.settings.deleteActionSelector    = deleteActionSelector;
+            this.settings.iframeOverlaySelector   = iframeOverlaySelector;
+            this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
+            this.settings.editElementUrl          = editElementUrl;
+            this.settings.getNewElementUrl        = getNewElementUrl;
+            this.settings.alertErrorOnDelete      = alertErrorOnDelete;
+            this.settings.dropHereMessage         = dropHereMessage;
+            this.settings.csrfToken               = csrfToken;
+            this.setupLayout();
+            this.settings.isInited                = true;
+            emailTemplateEditor = this;
+        }
     },
     setupLayout : function() {
         $(emailTemplateEditor.settings.iframeSelector).load(function () {
@@ -192,7 +197,7 @@ var emailTemplateEditor = {
                         innerElements.push(containers[i]);
                     }
                 }
-                
+
                 if(innerElements.length > 0){
                     mostTopElement = innerElements[innerElements.length-1];
                     $(mostTopElement).addClass('hover');
