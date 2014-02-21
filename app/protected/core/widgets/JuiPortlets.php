@@ -149,8 +149,9 @@
         {
             $content  = "<div class=\"juiportlet-widget-head\">\n";
             $content .= "<h3>" . $item['title'] . "</h3>";
-            $content .= static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent, $item['portletParams']);
-            $content .= $item['headContent'] . "\n";
+            $content .= "<div class=\"portlet-actions-container\">" .
+                        static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent, $item['portletParams']);
+            $content .= $item['headContent'] . "</div>\n";
             if (isset($item['collapsed']) && $item['collapsed'])
             {
                 $widgetContentStyle = "style=\"display:none;\"";
