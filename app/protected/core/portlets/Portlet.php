@@ -318,7 +318,15 @@
             $uniqueLayoutId    = 'HomeDashboard' . $layoutId;
             $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId,
                                  Yii::app()->user->userModel->id, array());
-            if (count($portletCollection) < max(array_keys($portletCollection)))
+            if (count($portletCollection) > 0)
+            {
+                $totalColumns = max(array_keys($portletCollection));
+            }
+            else
+            {
+                $totalColumns = 0;
+            }
+            if (count($portletCollection) < $totalColumns)
             {
                 $columnIndex = 1;
                 foreach ($portletCollection as $portletItem)
