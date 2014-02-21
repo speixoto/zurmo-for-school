@@ -309,7 +309,8 @@
 
         protected function resolvePreviewContainerContent()
         {
-            $content  = ZurmoHtml::link(Zurmo::t('Core', 'Close'), '#', array('id' => static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID));
+            $content  = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),Zurmo::t('Core', 'Close')),
+                        '#', array('id' => static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID, 'class' => 'default-btn'));
             $content .= ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
             $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
             return $content;

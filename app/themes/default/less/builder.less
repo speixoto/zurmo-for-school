@@ -34,12 +34,12 @@
 //should add this to zurmo.less where i define right/left columns
 .strong-right{
 	position: relative;
-	.left-column{
+	> .left-column{
 		width: 30%;
 		z-index: 100;
 		position: relative;
 	}
-	.right-column{
+	> .right-column{
 		width: 70%;
 		z-index: 1;
 		position: relative;
@@ -55,6 +55,11 @@
 		.right-side-edit-view-panel{
 			background: none;
 			padding: 0;
+		}
+	}
+	.form-fields{
+		td{
+			padding-left: 0 !important;
 		}
 	}
 }
@@ -84,11 +89,18 @@
 	width: 100%;
 	height: 100%;
 	left: 0;
-	top: 0;
+	top: 78px;
 	right: 0;
 	bottom: 0;
 	z-index: 999999;
 	overflow: scroll;
+	background: #fff;
+}
+
+#preview-iframe-container-close-link{
+	position: absolute;
+	right: 10px;
+	top: 10px;
 }
 
 #preview-iframe{
@@ -165,4 +177,30 @@
 	margin: 0;
 	z-index: 999999;
 }
+
+#element-edit-form-overlay-container{
+	.panel{
+		width: 100%;
+		.tabs-container{
+			width: 100%;
+		}
+	}
+	.element-edit-form, .wrapper{
+		.unstyle-panel() !important;
+	}
+}
+
+#element-settings{
+	padding: 10px;
+	background: none;
+	border: none;
+	> div{
+		margin-bottom: 10px;
+		clear: left;
+	}
+	label{
+		display: block;
+	}
+}
+
 

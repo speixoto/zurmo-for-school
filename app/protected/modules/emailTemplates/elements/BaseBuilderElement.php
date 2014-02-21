@@ -222,7 +222,7 @@
             $formTitle                  = $this->resolveFormatterFormTitle();
             $formContent                = $this->renderFormContent();
             $content                    = $formTitle . $formContent;
-            $content                    = ZurmoHtml::tag('div', array('class' => 'element-edit-form-overlay'), $content);
+            $content                    = ZurmoHtml::tag('div', array('class' => 'element-edit-form-overlay clearfix'), $content);
             return $content;
         }
 
@@ -579,9 +579,9 @@
          */
         protected function wrapEditableContentFormContentInTable($content)
         {
-            $tableContent   = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>';
-            $tableContent   .= $content;
-            $tableContent   .= '</table>';
+           // $tableContent   = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>';
+            $tableContent    = $content;
+            //$tableContent   .= '</table>';
             return $tableContent;
         }
 
@@ -599,8 +599,8 @@
          */
         protected function resolveFormatterFormTitle()
         {
-            $formTitle                  = ZurmoHtml::tag('h2', array(), $this->resolveFormTitle());
-            $formTitle                  = ZurmoHtml::tag('center', array(), $formTitle);
+            $formTitle                  = ZurmoHtml::tag('h3', array(), $this->resolveFormTitle());
+            //$formTitle                  = ZurmoHtml::tag('center', array(), $formTitle);
             return $formTitle;
         }
 
