@@ -436,7 +436,8 @@
                 $('#" . static::PREVIEW_TEMPLATE_LINK_ID . "').bind('click.previewModalScript', function()
                 {
                     emailTemplateEditor.freezeLayoutEditor();
-                    serializedData = emailTemplateEditor.compileSerializedData();
+                    jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
+                    serializedData = JSON.stringify(jsonSerializedData);
                     $.ajax({
                         url  : '" . $this->resolvePreviewActionUrl() . "',
                         type : 'POST',
