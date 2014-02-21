@@ -210,7 +210,7 @@
          */
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
-            $acceptanceStatusLabel = Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE);
+            $acceptanceStatusLabel = ZurmoHtml::encode(Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE));
             $acceptanceStatus      = Task::STATUS_AWAITING_ACCEPTANCE;
             $inProgressKanbanType  = KanbanItem::TYPE_IN_PROGRESS;
             // Begin Not Coding Standard
