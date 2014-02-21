@@ -19475,12 +19475,6 @@ a + .project-stats {
   margin: 5px 0 0 0;
   display: block;
 }
-.AppNavigation {
-  display: none !important;
-}
-.AppContent {
-  margin-left: 0 !important;
-}
 .strong-right {
   position: relative;
 }
