@@ -448,35 +448,35 @@
                 $('#" . static::PREVIEW_TEMPLATE_LINK_ID . "').bind('click.previewModalScript', function()
                 {
                     emailTemplateEditor.freezeLayoutEditor();
-                    jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
-                    serializedData = JSON.stringify(jsonSerializedData);
-                    $.ajax({
-                        url  : '" . $this->resolvePreviewActionUrl() . "',
-                        type : 'POST',
-                        data : {serializedData: serializedData, 'YII_CSRF_TOKEN': '" . Yii::app()->request->csrfToken . "'},
-                        success: function (html) {
-                            $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').dialog({
-                                modal: true,
-                                autoOpen: true,
-                                draggable: false,
-                                resizable: false,
-                                position: ['center', 'top'],
-                                show: 'blind',
-                                hide: 'blind',
-                                dialogClass: 'ui-dialog-osx',
-                                'open': function( event, ui )  {
-                                            $('#" . static::PREVIEW_IFRAME_ID . "').contents().find('html').html(html);
-                                            $('#" . static::PREVIEW_IFRAME_ID . "').show();
-                                            $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().addClass('openingModal');
-                                            },
-                                'close': function( event, ui ) {
-                                            $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().removeClass('openingModal');
-                                            $('#" . static::PREVIEW_IFRAME_ID . "').hide();
-                                            }
-                            });
-                            emailTemplateEditor.unfreezeLayoutEditor();
-                        },
+                    $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').dialog({
+                        modal: true,
+                        autoOpen: true,
+                        draggable: false,
+                        resizable: false,
+                        position: ['center', 'top'],
+                        show: 'blind',
+                        hide: 'blind',
+                        dialogClass: 'ui-dialog-osx',
+                        open: function( event, ui )  {
+                                    jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
+                                    serializedData = JSON.stringify(jsonSerializedData);
+                                    $.ajax({
+                                        url  : '" . $this->resolvePreviewActionUrl() . "',
+                                        type : 'POST',
+                                        data : {serializedData: serializedData, 'YII_CSRF_TOKEN': '" . Yii::app()->request->csrfToken . "'},
+                                        success: function (html) {
+                                                        $('#" . static::PREVIEW_IFRAME_ID . "').contents().find('html').html(html);
+                                                        $('#" . static::PREVIEW_IFRAME_ID . "').show();
+                                                    }
+                                                });
+                                    $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().addClass('openingModal');
+                                },
+                        close: function( event, ui ) {
+                                    $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().removeClass('openingModal');
+                                    $('#" . static::PREVIEW_IFRAME_ID . "').hide();
+                                }
                     });
+                    emailTemplateEditor.unfreezeLayoutEditor();
                     return false;
                 });
                 ", CClientScript::POS_END);
