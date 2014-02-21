@@ -192,10 +192,20 @@
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'beforeValidate'    => $this->getBeforeValidateActionScript(),
                         'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
                     );
+        }
+
+        /**
+         * The script to be triggered before validation action
+         * @see WizardView::getClientOptions
+         * @return string
+         */
+        protected function getBeforeValidateActionScript()
+        {
+            return 'js:$(this).beforeValidateAction';
         }
 
         protected function registerScripts()

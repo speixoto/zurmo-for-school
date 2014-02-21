@@ -124,5 +124,20 @@
                     }
                 );");
         }
+
+        protected function getBeforeValidateActionScript()
+        {
+            $validationScenarioInputId         = static::getValidationScenarioInputId();
+            $serializedDataValidationScenario = EmailTemplateWizardForm::SERIALIZED_DATA_VALIDATION_SCENARIO;
+            return "js:function(form)
+                        {
+                            if ($('#{$validationScenarioInputId}').val() == '{$serializedDataValidationScenario}')
+                            {
+                                emailTemplateEditor.freezeLayoutEditor();
+                                emailTemplateEditor.compileSerializedData();
+                            }
+                            return true;
+                        }";
+        }
     }
 ?>
