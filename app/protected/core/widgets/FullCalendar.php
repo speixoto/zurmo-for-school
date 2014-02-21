@@ -73,6 +73,8 @@
             $currentMonth  = intval(date('m')) - 1;
             $currentDay    = date('d');
 
+            $maxCount      = CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_COUNT;
+
             //Register full calendar script and css
             self::registerFullCalendarScriptAndCss();
 
@@ -107,7 +109,7 @@
                                                                                 }
                                                                               },
                                                                      eventSources: [
-                                                                                      getCalendarEvents('{$eventsUrl}', '{$inputId}')
+                                                                                      getCalendarEvents('{$eventsUrl}', '{$inputId}', '{$maxCount}')
                                                                                    ],
                                                                      eventRender: function(event, element, view) {
                                                                                         element.qtip({
@@ -134,10 +136,10 @@
                                                                                                       }
                                                                                         });
                                                                                     },
-                                                                     eventAfterAllRender: function(view)
+                                                                     /*eventAfterAllRender: function(view)
                                                                                           {
                                                                                              getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
-                                                                                          },
+                                                                                          },*/
                                                                      timeFormat: {
                                                                                     'month'    : '',
                                                                                     'basicDay': 'h:mm-{h:mm}tt',

@@ -255,10 +255,18 @@
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
             foreach ($items as $index => $item)
             {
-                $itemDetailViewClassName = get_class($item['model']) . 'ForCalendarItemDetailsView';
-                $itemDetailViewInstance  = new $itemDetailViewClassName($this->getId(), $this->getModule()->getId(), $item['model']);
-                $item['description']     = $itemDetailViewInstance->render();
-                unset($item['model']);
+                $itemClass = isset($item['itemClass']) ? $item['itemClass']:null;
+                if($itemClass != 'more-events')
+                {
+                    $itemDetailViewClassName = get_class($item['model']) . 'ForCalendarItemDetailsView';
+                    $itemDetailViewInstance  = new $itemDetailViewClassName($this->getId(), $this->getModule()->getId(), $item['model']);
+                    $item['description']     = $itemDetailViewInstance->render();
+                    unset($item['model']);
+                }
+                else
+                {
+                    $item['description']     = "Hello";
+                }
                 $items[$index]           = $item;
             }
             echo CJSON::encode($items);
