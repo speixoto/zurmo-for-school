@@ -199,13 +199,8 @@
         {
             // TODO: @Shoaibi/@Jason: Critical: No data sanitization?
             $postData                   = PostUtil::getData();
-            $id                         = $postData[GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
-            if ($id <= 0)
-            {
-                $id = null;
-            }
             $emailTemplate              = null;
-            $this->resolveEmailTemplateByPostData($postData, $emailTemplate, $builtType, $id);
+            $this->resolveEmailTemplateByPostData($postData, $emailTemplate, $builtType);
 
             $emailTemplateToWizardFormAdapter   = new EmailTemplateToWizardFormAdapter($emailTemplate);
             $model                              =  $emailTemplateToWizardFormAdapter->makeFormByBuiltType();

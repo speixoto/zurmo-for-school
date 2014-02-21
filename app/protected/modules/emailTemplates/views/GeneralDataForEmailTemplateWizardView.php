@@ -136,7 +136,7 @@
 
         protected function renderId(& $hiddenElements)
         {
-            $hiddenElements .= ZurmoHtml::hiddenField(static::HIDDEN_ID, (int)$this->model->id);
+            $this->renderHiddenField($hiddenElements, static::HIDDEN_ID, (int)$this->model->id);
         }
 
         protected function renderLanguage(& $hiddenElements)
