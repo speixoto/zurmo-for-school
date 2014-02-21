@@ -255,7 +255,7 @@
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
             foreach ($items as $index => $item)
             {
-                $itemClass = isset($item['itemClass']) ? $item['itemClass']:null;
+                $itemClass = isset($item['className']) ? $item['className']:null;
                 //If not more events
                 if($itemClass != 'more-events')
                 {
@@ -266,46 +266,12 @@
                 }
                 else
                 {
-                    $description = null;
-                    foreach($item['additionalItems'] as $additionalItem)
-                    {
-                        $description .= $additionalItem['title'];
-                    }
-                    $item['description']     = $description;
+                    $calItemListView      = new CalendarItemsListView($this->getId(), $this->getModule()->getId(), $item['additionalItems']);
+                    $item['description']  = $calItemListView->render();
                 }
                 $items[$index]           = $item;
             }
             echo CJSON::encode($items);
-        }
-
-        /**
-         * Get events count for the selected calendars.
-         * @param string $selectedMyCalendarIds
-         * @param string $selectedSharedCalendarIds
-         * @param string $startDate
-         * @param string $endDate
-         * @param string $dateRangeType
-         */
-        public function actionGetEventsCount($selectedMyCalendarIds = null,
-                                            $selectedSharedCalendarIds = null,
-                                            $startDate = null,
-                                            $endDate = null,
-                                            $dateRangeType = null)
-        {
-            $dataProvider               = CalendarUtil::processAndGetDataProviderForEventsData($selectedMyCalendarIds,
-                                                                                               $selectedSharedCalendarIds,
-                                                                                               $startDate,
-                                                                                               $endDate,
-                                                                                               $dateRangeType);
-            $calendarItems = $dataProvider->getData(true);
-            if($dataProvider->getIsMaxCountReached())
-            {
-                echo CJSON::encode(array('limitReached' => true));
-            }
-            else
-            {
-                echo CJSON::encode(array('limitReached' => false));
-            }
         }
 
         /**

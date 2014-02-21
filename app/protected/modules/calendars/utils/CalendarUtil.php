@@ -272,7 +272,7 @@
             $moreEventsCalItem['start'] = $fullCalItem['start'];
             $moreEventsCalItem['end']   = $fullCalItem['end'];
             $moreEventsCalItem['color'] = '#cccccc';
-            $moreEventsCalItem['itemClass'] = 'more-events';
+            $moreEventsCalItem['className'] = 'more-events';
             $additionalCalItems = array();
             $moreEventsStartDate       = date('Y-m-d', strtotime($moreEventsCalItem['start']));
             for($i = $key; $i < count($fullCalendarItems); $i++)

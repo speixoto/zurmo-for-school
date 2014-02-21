@@ -136,10 +136,6 @@
                                                                                                       }
                                                                                         });
                                                                                     },
-                                                                     /*eventAfterAllRender: function(view)
-                                                                                          {
-                                                                                             getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
-                                                                                          },*/
                                                                      timeFormat: {
                                                                                     'month'    : '',
                                                                                     'basicDay': 'h:mm-{h:mm}tt',
