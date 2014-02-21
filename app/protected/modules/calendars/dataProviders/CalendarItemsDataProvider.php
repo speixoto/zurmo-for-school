@@ -40,6 +40,8 @@
     {
         const MAXIMUM_CALENDAR_ITEMS_COUNT = 200;
 
+        const MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE = 5;
+
         /**
          * @var array
          */
@@ -192,13 +194,13 @@
             $reportResultsRows  = $reportDataProvider->getData();
             foreach ($reportResultsRows as $reportResultsRowData)
             {
-                $models[] = $reportResultsRowData->getModel('attribute0');
-                $this->_itemCount++;
-                if ($this->_itemCount > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
+                if ($this->_itemCount >= self::MAXIMUM_CALENDAR_ITEMS_COUNT)
                 {
                     $this->setIsMaxCountReached(true);
                     break;
                 }
+                $models[] = $reportResultsRowData->getModel('attribute0');
+                $this->_itemCount++;
             }
             return $models;
         }

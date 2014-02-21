@@ -38,6 +38,8 @@
       */
     class CalendarItem
     {
+        const MAXIMUM_TITLE_LENGTH = 30;
+
         /**
          * @var string
          */

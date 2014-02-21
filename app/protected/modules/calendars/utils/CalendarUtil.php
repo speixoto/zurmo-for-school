@@ -47,7 +47,7 @@
             $calendarItem   = new CalendarItem();
             $startAttribute = $savedCalendar->startAttributeName;
             $endAttribute   = $savedCalendar->endAttributeName;
-            $calendarItem->setTitle($model->name);
+            $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
             $calendarItem->setStartDateTime($model->$startAttribute);
             if ($endAttribute != null)
             {
@@ -198,10 +198,14 @@
                 $fullCalendarItem = array();
                 $calItem = $calendarItems[$k];
                 $fullCalendarItem['title'] = $calItem->getTitle();
-                $fullCalendarItem['start'] = self::getFullCalendarFormattedDateTimeElement($calItem->getStartDateTime());
+                $fullCalendarItem['start'] = $calItem->getStartDateTime();
                 if($calItem->getEndDateTime() != null)
                 {
-                    $fullCalendarItem['end'] = self::getFullCalendarFormattedDateTimeElement($calItem->getEndDateTime());
+                    $fullCalendarItem['end'] = $calItem->getEndDateTime();
+                }
+                else
+                {
+                    $fullCalendarItem['end'] = '';
                 }
                 $fullCalendarItem['color'] = $calItem->getColor();
                 $modelClass                = $calItem->getModelClass();
@@ -213,7 +217,93 @@
                 }
                 $fullCalendarItems[] = $fullCalendarItem;
             }
+            if(count($fullCalendarItems) >  0)
+            {
+                ArrayUtil::sortArrayByElementField('compareCalendarItemsByDateTime', 'usort', $fullCalendarItems, 'CalendarUtil');
+            }
+            self::processCalendarItemsAndAddMoreEventsIfRequired($fullCalendarItems);
             return $fullCalendarItems;
+        }
+
+        /**
+         * Process full calendar items and render more events button if required.
+         * @param array $fullCalendarItems
+         */
+        public static function processCalendarItemsAndAddMoreEventsIfRequired(& $fullCalendarItems)
+        {
+            $dateToCalendarItemsCountData   = array();
+            $moreEventsItemCreatedByDate    = array();
+            foreach($fullCalendarItems as $key => $fullCalItem)
+            {
+                $startDate       = date('Y-m-d', strtotime($fullCalItem['start']));
+                if(isset($dateToCalendarItemsCountData[$startDate])
+                            && (count($dateToCalendarItemsCountData[$startDate]) >= CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE))
+                {
+                    if(in_array($startDate, $moreEventsItemCreatedByDate) === false)
+                    {
+                        $fullCalItem           = self::createMoreEventsCalendarItem($fullCalItem, $key, $fullCalendarItems);
+                        $moreEventsItemCreatedByDate[] = $startDate;
+                    }
+                    else
+                    {
+                        unset($fullCalendarItems[$key]);
+                        continue;
+                    }
+                }
+                $fullCalItem['start'] = self::getFullCalendarFormattedDateTimeElement($fullCalItem['start']);
+                if(isset($fullCalItem['end']))
+                {
+                    $fullCalItem['end'] = self::getFullCalendarFormattedDateTimeElement($fullCalItem['end']);
+                }
+                $dateToCalendarItemsCountData[$startDate][] = $fullCalItem;
+                $fullCalendarItems[$key] = $fullCalItem;
+            }
+        }
+
+        /**
+         * Create more events calendar item.
+         * @param array $fullCalItem
+         * @return string
+         */
+        public static function createMoreEventsCalendarItem($fullCalItem, $key, $fullCalendarItems)
+        {
+            $moreEventsCalItem = array();
+            $moreEventsCalItem['title'] = Zurmo::t('CalendarsModule', 'More Events..');
+            $moreEventsCalItem['start'] = $fullCalItem['start'];
+            $moreEventsCalItem['end']   = $fullCalItem['end'];
+            $moreEventsCalItem['color'] = '#cccccc';
+            $moreEventsCalItem['itemClass'] = 'more-events';
+            $additionalCalItems = array();
+            $moreEventsStartDate       = date('Y-m-d', strtotime($moreEventsCalItem['start']));
+            for($i = $key; $i < count($fullCalendarItems); $i++)
+            {
+                $fullCalItemStartDate       = date('Y-m-d', strtotime($fullCalendarItems[$i]['start']));
+                if($moreEventsStartDate != $fullCalItemStartDate)
+                {
+                    break;
+                }
+                else
+                {
+                    $additionalCalItems[] = $fullCalendarItems[$i];
+                }
+            }
+            $moreEventsCalItem['additionalItems'] = $additionalCalItems;
+            return $moreEventsCalItem;
+        }
+
+        /**
+         * Compare datetime.
+         *
+         * @param array $firstDate
+         * @param array $secondDate
+         */
+        public static function compareCalendarItemsByDateTime($firstDate, $secondDate)
+        {
+            assert('is_array($firstDate)');
+            assert('is_array($secondDate)');
+            $firstDateUnixTimestamp = strtotime($firstDate['start']);
+            $secondDateUnixTimestamp = strtotime($secondDate['start']);
+            return $firstDateUnixTimestamp - $secondDateUnixTimestamp;
         }
 
         /**
@@ -225,14 +315,15 @@
         {
             assert('is_string($dateTime)');
             //The reason its put because timezone can vary from -12:00 to +12:00 max so
-            //if we put 12:00:00 it would fall in the same day in local time zone.
+            //if we offset the gmt date by timezoneoffset, on applying offset, correct results
+            //would come.
             if(DateTimeUtil::isValidDbFormattedDate($dateTime))
             {
-                $dateTime = $dateTime . ' 12:00:00';
+                $dateTime = DateTimeUtil::convertDateToDateTimeByTimeZoneOffset($dateTime);
             }
             $dateTimeObject  = new DateTime();
             $dateTimeObject->setTimestamp(strtotime($dateTime));
-            $offset          = DateTimeUtil::getTimeZoneOffset();
+            $offset          = ZurmoTimeZoneHelper::getTimeZoneOffset();
             if($offset < 0)
             {
                 $offset = abs($offset);
