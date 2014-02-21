@@ -52,15 +52,19 @@
         protected function adjustContentColumnDataForConfiguration()
         {
             $columnCountConfiguration   = $this->resolveColumnCountConfiguration();
-            $contentColumnCount         = count($this->content);
-            $difference                 = $columnCountConfiguration - $contentColumnCount;
-            if ($difference < 0)
+
+            if (isset($columnCountConfiguration))
             {
-                $this->reduceColumns($difference);
-            }
-            else if ($difference > 0)
-            {
-                $this->induceColumn($difference);
+                $contentColumnCount         = count($this->content);
+                $difference                 = $columnCountConfiguration - $contentColumnCount;
+                if ($difference < 0)
+                {
+                    $this->reduceColumns($difference);
+                }
+                else if ($difference > 0)
+                {
+                    $this->induceColumn($difference);
+                }
             }
         }
 

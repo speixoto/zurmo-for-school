@@ -173,9 +173,9 @@ var emailTemplateEditor = {
                 event.pageX > iframeRect.left && event.pageX < iframeRect.right &&
                 event.pageY > iframeRect.top && event.pageY < iframeRect.bottom){
                 if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, true, iframeContents);
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, 1, iframeContents);
                 } else {
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, false, iframeContents);
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, 0, iframeContents);
                 }
             } else {
                 console.log('error while droppping');
