@@ -439,12 +439,17 @@
             $this->resetPostArray();
             $this->runControllerWithRedirectExceptionAndGetContent('home/defaultPortlet/add');
             //Edit dashboard and change it to one column layout
+            $this->resetGetArray();
+            $this->setGetArray(array('id' => $myDataDashboard->id));
+            $this->runControllerWithNoExceptionsAndGetContent('home/default/editDashboard');
             $this->setPostArray(array('Dashboard' => array('layoutType' => '100')));
-            $this->runControllerWithRedirectExceptionAndGetContent('home/default/editDashboard');
+            $editActionContent = $this->runControllerWithRedirectExceptionAndGetContent('home/default/editDashboard');
+            $this->assertTrue(strpos($editActionContent, 'Undefined variable: maxPositionInColumn1') === false);
             $this->resetGetArray();
             $this->setGetArray(array('id' => $myDataDashboard->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('home/default/dashboardDetails');
+            $this->assertTrue(strpos($editActionContent, 'Undefined offset: 2') === false);
         }
     }
 ?>

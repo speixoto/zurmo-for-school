@@ -125,15 +125,7 @@
         public static function shiftPositionsBasedOnColumnReduction($portletCollection, $newColumnCount)
         {
             //Current column count is determined by the max key of all collection items, instead of count($items)
-            $portletCollectionColumns = array_keys($portletCollection);
-            if (count($portletCollectionColumns) > 0)
-            {
-                $currentColumnCount = max($portletCollectionColumns);
-            }
-            else
-            {
-                $currentColumnCount = 0;
-            }
+            $currentColumnCount = max(array_keys($portletCollection));
             if (!empty($portletCollection[1]))
             {
                 $maxPositionInColumn1 = count($portletCollection[1]);
@@ -316,7 +308,7 @@
         public static function resolvePortletCollectionColumnIndexes($layoutId)
         {
             $uniqueLayoutId    = 'HomeDashboard' . $layoutId;
-            $portletCollection = Portlet::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId,
+            $portletCollection = self::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId,
                                  Yii::app()->user->userModel->id, array());
             if (count($portletCollection) > 0)
             {
