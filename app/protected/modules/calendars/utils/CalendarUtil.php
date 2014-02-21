@@ -236,7 +236,8 @@
             foreach($fullCalendarItems as $key => $fullCalItem)
             {
                 $startDate       = date('Y-m-d', strtotime($fullCalItem['start']));
-                if(isset($dateToCalendarItemsCountData[$startDate]) && (count($dateToCalendarItemsCountData[$startDate]) >= 2))
+                if(isset($dateToCalendarItemsCountData[$startDate])
+                            && (count($dateToCalendarItemsCountData[$startDate]) >= CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE))
                 {
                     if(in_array($startDate, $moreEventsItemCreatedByDate) === false)
                     {
