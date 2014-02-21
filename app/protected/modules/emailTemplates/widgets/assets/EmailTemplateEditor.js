@@ -137,9 +137,6 @@ var emailTemplateEditor = {
         var positions = [];
 
         $('#building-blocks').on('mousedown', onBodyMouseDown);
-        //$('body').on('mouseup', onBodyMouseUp);
-        //$('body').on('mousemove', onBodyMouseMove);
-
 
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
@@ -163,9 +160,11 @@ var emailTemplateEditor = {
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
             if (elementDragged != undefined && elementDragged.is('li')){
-                //TODO: @amit: Remember that we need to be able to know if we are placing the element insinde sortable-row or sortable-elements
-                //to wrap it accordly
-                emailTemplateEditor.placeNewElement(elementDraggedClass, null, false);
+                if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, true, iframeContents);
+                } else {
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, false, iframeContents);
+                }
             } else {
                 console.log('error while droppping', elementDragged);
             }
@@ -209,9 +208,6 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.is('li')) {
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, false);
-                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
@@ -229,20 +225,13 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
-                if (ui.item.is('li')) {
-                    ui.item.wrap(emailTemplateEditor.settings.rowWrapper);
-                    emailTemplateEditor.placeNewElement(ui.item.data("class"), ui.item, true);
-                    emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
-                        emailTemplateEditor.settings.sortableElementsSelector,
-                        iframeContents);
-                }
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
             cursor: 'move'
         });
     },
-    placeNewElement: function ( elementClass, item , wrapElement) { //@TODO SERGIO, do we need _item_? its not used inside the function
+    placeNewElement: function ( elementClass, wrapElement, iframeContents) {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',
@@ -251,8 +240,13 @@ var emailTemplateEditor = {
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
-                //@TODO SERGIO, it seems like Shoaibi wraps these in table eventhough they should be divs now
                 emailTemplateEditor.settings.ghost.after(html);
+                if (wrapElement)
+                {
+                    emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
+                        emailTemplateEditor.settings.sortableElementsSelector,
+                        iframeContents);
+                }
                 emailTemplateEditor.canvasChanged();
                 emailTemplateEditor.unfreezeLayoutEditor();
                 emailTemplateEditor.settings.ghost.detach();
