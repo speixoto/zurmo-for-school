@@ -48,5 +48,61 @@
         {
             return array(GamePoint::TYPE_COMMUNICATION => 10);
         }
+        /**
+         * Override to handle 'draft' email template creation
+         * @param CEvent $event
+         * @throws FailedToSaveModelException
+         */
+        public function scoreOnSaveModel(CEvent $event)
+        {
+            $model                   = $event->sender;
+            assert('$model instanceof Item');
+            if (Yii::app()->gameHelper->isScoringModelsOnSaveMuted())
+            {
+                return;
+            }
+            if ($model->getIsNewModel())
+            {
+                if(!$model->isDraft)
+                {
+                    $scoreType           = static::resolveCreateScoreTypeByModel($model);
+                    $category            = static::SCORE_CATEGORY_CREATE_MODEL;
+                    $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            elseif (!$this->scoreOnUpdate)
+            {
+                return;
+            }
+            else
+            {
+                if (array_key_exists('isDraft', $event->sender->originalAttributeValues) && $event->sender->isDraft)
+                {
+                    //Considered a new 'email template'
+                    $scoreType           = static::resolveCreateScoreTypeByModel($model);
+                    $category            = static::SCORE_CATEGORY_CREATE_MODEL;
+                    $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
+                }
+                else
+                {
+                    $scoreType           = static::resolveUpdateScoreTypeByModel($model);
+                    $category            = static::SCORE_CATEGORY_UPDATE_MODEL;
+                    $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
+                }
+
+            }
+            $gameScore->addValue();
+            $saved = $gameScore->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            GamePointUtil::addPointsByPointData(Yii::app()->user->userModel,
+                static::getPointTypeAndValueDataByCategory($category));
+        }
     }
 ?>
