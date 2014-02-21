@@ -453,36 +453,7 @@
                                         LabelUtil::getTranslationParamsForAllModules());
             Yii::app()->clientScript->registerScript('canvasSaveScript', "
                 // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:111
-                $('#" . static::getNextPageLinkId() . "').unbind('click');
-                $('#" . static::getNextPageLinkId() . "').bind('click', function()
-                {
-                    emailTemplateEditor.freezeLayoutEditor();
-                    emailTemplateEditor.compileSerializedData();
-                    $.ajax({
-                        url  : $('#" .  static::getNextPageLinkId() . "').closest('form').attr('action'),
-                        type : 'POST',
-                        data : $('#" .  static::getNextPageLinkId() . "').closest('form').serialize(),
-                        success: function () {
-                            $('#FlashMessageBar').jnotifyAddMessage({
-                                text: '" . $successMessage . "',
-                                permanent: true,
-                                clickOverlay : true,
-                                showIcon: false,
-                            });
-                            emailTemplateEditor.unfreezeLayoutEditor();
-                        },
-                        error: function () {
-                            $('#FlashMessageBar').jnotifyAddMessage({
-                                text: '" . $errorMessage . "',
-                                permanent: true,
-                                clickOverlay : true,
-                                showIcon: false,
-                            });
-                            emailTemplateEditor.unfreezeLayoutEditor();
-                        }
-                    });
-                    return false;
-                });
+                //TODO: @Sergio: This was moved to resolveAdditionalAjaxOptions is this still needed?
                 ");
         }
 
@@ -522,7 +493,33 @@
              * second event(for finish), set isDraft to zero, we have this done.
              * third, change the $ajaxArray['data'] to jquery selector of val of the entity containing cached serialized data.
              */
+            $successMessage = Zurmo::t('EmailTemplatesModule',
+                                        'EmailTemplatesModuleSingularLabel was successfully saved.',
+                                        LabelUtil::getTranslationParamsForAllModules());
+            $errorMessage   = Zurmo::t('EmailTemplatesModule',
+                                        'There was an error saving EmailTemplatesModuleSingularLabel',
+                                        LabelUtil::getTranslationParamsForAllModules());
             $ajaxArray                  = array();
+            $ajaxArray['success']       = "js:function(data)
+                                            {
+                                                $('#FlashMessageBar').jnotifyAddMessage({
+                                                    text: '" . $successMessage . "',
+                                                    permanent: true,
+                                                    clickOverlay : true,
+                                                    showIcon: false,
+                                                });
+                                                emailTemplateEditor.unfreezeLayoutEditor();
+                                            }";
+            $ajaxArray['error']       = "js:function(data)
+                                            {
+                                                $('#FlashMessageBar').jnotifyAddMessage({
+                                                    text: '" . $errorMessage . "',
+                                                    permanent: true,
+                                                    clickOverlay : true,
+                                                    showIcon: false,
+                                                });
+                                                emailTemplateEditor.unfreezeLayoutEditor();
+                                            }";
             return $ajaxArray;
         }
     }
