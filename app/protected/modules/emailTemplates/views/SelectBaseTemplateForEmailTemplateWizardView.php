@@ -109,13 +109,15 @@
         {
             $element                    = new $elementName($this->model,
                                                         static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME, $this->form);
-            $content                    = $element->render();
-            $content                    = ZurmoHtml::tag('ul', $this->resolveSelectBaseTemplateElementWrapperHtmlOptions(),
-                                                        $content);
-            $content                    = "<h3>${heading}</h3>" . $content;
-            $this->wrapContentInDiv($content, array('id' => $wrapperDivCssId));
-            $this->wrapContentInTableCell($content, array('colspan' => 2));
-            $this->wrapContentInTableRow($content);
+            if(null != $content = $element->render())
+            {
+                $content                    = ZurmoHtml::tag('ul', $this->resolveSelectBaseTemplateElementWrapperHtmlOptions(),
+                    $content);
+                $content                    = "<h3>${heading}</h3>" . $content;
+                $this->wrapContentInDiv($content, array('id' => $wrapperDivCssId));
+                $this->wrapContentInTableCell($content, array('colspan' => 2));
+                $this->wrapContentInTableRow($content);
+            }
             return $content;
         }
 

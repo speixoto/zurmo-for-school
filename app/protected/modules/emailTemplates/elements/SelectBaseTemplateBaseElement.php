@@ -48,12 +48,16 @@
         protected function renderControlEditable()
         {
             $content = null;
-            $content .= $this->form->radioButtonList(
-                $this->model,
-                $this->attribute,
-                $this->resolveData(),
-                $this->getEditableHtmlOptions()
-            );
+            $data    = $this->resolveData();
+            if(!empty($data))
+            {
+                $content .= $this->form->radioButtonList(
+                    $this->model,
+                    $this->attribute,
+                    $data,
+                    $this->getEditableHtmlOptions()
+                );
+            }
             return $content;
         }
 

@@ -41,6 +41,7 @@ var emailTemplateEditor = {
         iframeSelector: '#preview-template',
         editSelector: '',
         iframeOverlaySelector: '#iframe-overlay',
+        elementsContainerId: '',
         elementsToPlaceSelector: '#building-blocks',
         sortableRowsSelector: '.sortable-rows',
         sortableElementsSelector: '.sortable-elements',
@@ -54,9 +55,10 @@ var emailTemplateEditor = {
         csrfToken: '',
         isDragging: false
     },
-    init : function (elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
+    init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
                      dropHereMessage, csrfToken) {
+        this.settings.elementsContainerId     = elementsContainerId;
         this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
         this.settings.iframeSelector          = iframeSelector;
         this.settings.editSelector            = editSelector;
@@ -269,6 +271,7 @@ var emailTemplateEditor = {
         $(this).makeLargeLoadingSpinner(false, emailTemplateEditor.settings.iframeOverlaySelector);
     },
     onClickEditEvent: function () {
+        $(emailTemplateEditor.settings.elementsContainerId).hide();
         emailTemplateEditor.freezeLayoutEditor();
         // closest always traversal to the parents, in out case the actual element is a sibling of its parent.
         var element         = $(this).parent().siblings('.builder-element-non-editable .element-data');

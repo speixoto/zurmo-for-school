@@ -38,8 +38,6 @@
     {
         const REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID    = 'refresh-canvas-from-saved-template';
 
-        const PREVIEW_TEMPLATE_LINK_ID                      = 'preview-template';
-
         const CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME         = 'serializedData';
 
         const CANVAS_IFRAME_ID                              = 'canvas-iframe';
@@ -53,6 +51,14 @@
         const UL_ELEMENT_TO_PLACE_ID                        = 'building-blocks';
 
         const ELEMENT_IFRAME_OVERLAY_ID                     = 'iframe-overlay';
+
+        const ELEMENTS_MENU_BUTTON_ID                       = 'builder-elements-menu-button';
+
+        const CANVAS_CONFIGURATION_MENU_BUTTON_ID           = 'builder-canvas-configuration-menu-button';
+
+        const PREVIEW_MENU_BUTTON_ID                        = 'builder-preview-menu-button';
+
+        const ELEMENTS_CONTAINER_ID                         = 'droppable-element-sidebar';
 
         /**
          * @return string
@@ -78,6 +84,12 @@
             return 'builderCanvasSaveLink';
         }
 
+        protected function renderNextPageLinkContent()
+        {
+            //todo: temporary. removed save button for now. eventually we can add this back in
+            return null;
+        }
+
         /**
          * @return string
          */
@@ -101,27 +113,84 @@
          */
         protected function renderFormContent()
         {
-            // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes?
-            $hiddenElements                             = null;
-
-            $previewContainerContent                    = $this->resolvePreviewContent();
-            $freezeOverlayContent                       = $this->renderFreezeOverlayContent();
-            $leftSidebarContent                         = ZurmoHtml::tag('h3', array(), 'Elements');
-            $leftSidebarContent                        .= $this->resolveElementsSidebarContent();
-            $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
-            $this->renderRefreshCanvasLink($leftSidebarContent);
-            $this->renderPreviewLink($leftSidebarContent);
-            $rightSidebarContent                        = $this->resolveCanvasContent();
-
+            $previewContainerContent   = $this->resolvePreviewContainerContent();
+            $freezeOverlayContent      = $this->renderFreezeOverlayContent();
+            $leftSidebarContent        = $this->renderLeftSidebarContent();
+            $rightSidebarContent       = $this->resolveCanvasContent();
             $this->wrapContentForLeftSideBar($leftSidebarContent);
             $this->wrapContentForRightSideBar($rightSidebarContent);
-            $content                                    = $freezeOverlayContent . $previewContainerContent .
-                                                            $leftSidebarContent . $rightSidebarContent;
-            $content                                    = ZurmoHtml::tag('div', $this->resolveContentHtmlOptions(),
-                                                                                    $content);
+            $content = $freezeOverlayContent . $previewContainerContent .
+                       $leftSidebarContent . $rightSidebarContent;
+            $content = ZurmoHtml::tag('div', $this->resolveContentHtmlOptions(), $content);
             $this->wrapContentForAttributesContainer($content);
             return $content;
         }
+
+        protected function renderLeftSidebarContent()
+        {
+            // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes?
+            $hiddenElements      = null;
+            $leftSidebarContent  = $this->renderLeftSidebarToolbarContent();
+            $leftSidebarContent .= $this->resolveElementsSidebarContent();
+            $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
+            $leftSidebarContent .= $this->renderRefreshCanvasLinkContent($leftSidebarContent);
+            return $leftSidebarContent;
+        }
+
+        protected function renderLeftSidebarToolbarContent()
+        {
+            $this->registerLeftSideToolbarScripts();
+            $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
+            $element  = new EmailTemplateBuilderElementsMenuActionElement('default', 'emailTemplates', null,
+                            array('htmlOptions' => array('id'=> static::ELEMENTS_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+            $content .= $element->render();
+            $element  = new EmailTemplateBuilderCanvasConfigurationMenuActionElement('default', 'emailTemplates', null,
+                            array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+            $content .= $element->render();
+            $element  = new EmailTemplateBuilderPreviewMenuActionElement('default', 'emailTemplates', null,
+                            array('htmlOptions' => array('id'=> static::PREVIEW_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+            $content .= $element->render();
+            $content .= '</nav></div>';
+            return $content;
+        }
+
+        protected function registerLeftSideToolbarScripts()
+        {
+            $script  = '$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click", function()
+                         {
+                            $("#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . '").hide();
+                            $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
+                         });
+
+            ';
+            $script .= '$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click", function()
+                         {
+                            $("#' . static::ELEMENTS_CONTAINER_ID . '").hide();
+                            $("#' . static::CANVAS_IFRAME_ID . '").contents().find("#element-actions-canvas1").find(".' .
+                            BaseBuilderElement::OVERLAY_ACTION_EDIT . '").trigger("click");
+                         });
+
+            ';
+            $script .= '$("#' . static::PREVIEW_MENU_BUTTON_ID . '").live("click", function()
+                         {
+                            $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").show();
+                            jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
+                            serializedData     = JSON.stringify(jsonSerializedData);
+                            $.ajax({
+                                url  : "' . $this->resolvePreviewActionUrl() . '",
+                                type : "POST",
+                                data : {serializedData: serializedData, "YII_CSRF_TOKEN": "' . Yii::app()->request->csrfToken . '"},
+                                success: function (html)
+                                {
+                                    $("#' . static::PREVIEW_IFRAME_ID . '").contents().find("html").html(html);
+                                }
+                            });
+                         });
+
+            ';
+            Yii::app()->getClientScript()->registerScript('emailTemplateBuilderCanvasLeftSideToolbarScripts', $script);
+        }
+
 
         protected function renderFreezeOverlayContent()
         {
@@ -139,30 +208,17 @@
             return array('id' => 'builder', 'class' => 'strong-right clearfix');
         }
 
-        protected function renderRefreshCanvasLink(& $content)
+        protected function renderRefreshCanvasLinkContent()
         {
             $linkContent    = ZurmoHtml::link('Reload Canvas', '#', $this->resolveRefreshCanvasLinkHtmlOptions());
             $this->wrapContentInTableCell($linkContent, array('colspan' => 2));
             $this->wrapContentInTableRow($linkContent);
-            $content            .= $linkContent;
-        }
-
-        protected function renderPreviewLink(& $content)
-        {
-            $linkContent    = ZurmoHtml::link('Preview', '#', $this->resolvePreviewLinkHtmlOptions());
-            $this->wrapContentInTableCell($linkContent, array('colspan' => 2));
-            $this->wrapContentInTableRow($linkContent);
-            $content            .= $linkContent;
+            return $linkContent;
         }
 
         protected function resolveRefreshCanvasLinkHtmlOptions()
         {
             return array('id' => static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID, 'style' => 'display:none');
-        }
-
-        protected function resolvePreviewLinkHtmlOptions()
-        {
-            return array('id' => static::PREVIEW_TEMPLATE_LINK_ID);
         }
 
         protected function renderActionLinksContent()
@@ -215,7 +271,7 @@
 
         protected function resolveElementsSidebarHtmlOptions()
         {
-            return array('id' => 'droppable-element-sidebar');
+            return array('id' => static::ELEMENTS_CONTAINER_ID);
         }
 
         protected function resolveCanvasContent()
@@ -233,7 +289,7 @@
                             'frameborder' => 0);
         }
 
-        protected function resolvePreviewContent()
+        protected function resolvePreviewContainerContent()
         {
             $content    = ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
             $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
@@ -248,13 +304,14 @@
                 'src' => 'about:blank',
                 'width' => '100%',
                 'height'    => '100%',
-                'frameborder' => 0,
-                'style' => 'display: none;');
+                'frameborder' => 0);
         }
 
         protected function resolvePreviewIFrameContainerHtmlOptions()
         {
-            return array('id' => static::PREVIEW_IFRAME_CONTAINER_ID, 'title' => Zurmo::t('EmailTemplatesModule', 'Preview'));
+            return array('id'    => static::PREVIEW_IFRAME_CONTAINER_ID,
+                         'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
+                         'style' => 'display:none');
         }
 
         protected function resolveUiAccessibleContainerTypeElementClassNames($jsonEncoded = false)
@@ -301,7 +358,6 @@
             $this->registerRefreshCanvasFromSavedTemplateScript();
             $this->registerBindElementNonEditableActionsOverlayScript();
             $this->registerElementDragAndDropScript();
-            $this->registerPreviewModalScript();
             $this->registerSerializedDataCompilationFunctionsScript();
             $this->registerCanvasSaveScript();
             $this->registerCanvasFinishScript();
@@ -317,6 +373,7 @@
 
         protected function registerInitializeEmailTemplateEditor()
         {
+            $elementsContainerId                = '#' . static::ELEMENTS_CONTAINER_ID;
             $elementsToPlaceSelector            = '#' . static::UL_ELEMENT_TO_PLACE_ID;
             $iframeSelector                     = '#' . static::CANVAS_IFRAME_ID;
             $editSelector                       = '#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID;
@@ -332,6 +389,7 @@
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
+                        '{$elementsContainerId}',
                         '{$elementsToPlaceSelector}',
                         '{$iframeSelector}',
                         '{$editSelector}',
@@ -441,46 +499,6 @@
                 ", CClientScript::POS_END);
         }
 
-        protected function registerPreviewModalScript()
-        {
-            Yii::app()->clientScript->registerScript('previewModalScript', "
-                $('#" . static::PREVIEW_TEMPLATE_LINK_ID . "').unbind('click.previewModalScript');
-                $('#" . static::PREVIEW_TEMPLATE_LINK_ID . "').bind('click.previewModalScript', function()
-                {
-                    emailTemplateEditor.freezeLayoutEditor();
-                    $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').dialog({
-                        modal: true,
-                        autoOpen: true,
-                        draggable: false,
-                        resizable: false,
-                        position: ['center', 'top'],
-                        show: 'blind',
-                        hide: 'blind',
-                        dialogClass: 'ui-dialog-osx',
-                        open: function( event, ui )  {
-                                    jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
-                                    serializedData = JSON.stringify(jsonSerializedData);
-                                    $.ajax({
-                                        url  : '" . $this->resolvePreviewActionUrl() . "',
-                                        type : 'POST',
-                                        data : {serializedData: serializedData, 'YII_CSRF_TOKEN': '" . Yii::app()->request->csrfToken . "'},
-                                        success: function (html) {
-                                                        $('#" . static::PREVIEW_IFRAME_ID . "').contents().find('html').html(html);
-                                                        $('#" . static::PREVIEW_IFRAME_ID . "').show();
-                                                    }
-                                                });
-                                    $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().addClass('openingModal');
-                                },
-                        close: function( event, ui ) {
-                                    $('#" . static::PREVIEW_IFRAME_CONTAINER_ID . "').parent().removeClass('openingModal');
-                                    $('#" . static::PREVIEW_IFRAME_ID . "').hide();
-                                }
-                    });
-                    emailTemplateEditor.unfreezeLayoutEditor();
-                    return false;
-                });
-                ", CClientScript::POS_END);
-        }
 
         protected function registerCanvasChangedScript()
         {
