@@ -101,7 +101,7 @@
          * @param null $params
          * @return BaseBuilderElement
          */
-        protected static function resolveElement($className, $renderForCanvas = false, $id = null,
+        public static function resolveElement($className, $renderForCanvas = false, $id = null,
                                                  $properties = null, $content = null, $params = null)
         {
             if ($className::isContainerType())

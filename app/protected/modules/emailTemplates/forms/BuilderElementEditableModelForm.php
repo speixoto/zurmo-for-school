@@ -53,7 +53,7 @@
                 $index              = substr($name, strpos($name, '[') + 1, -1);
                 if (property_exists($this, $basePropertyName))
                 {
-                    return $this->{$basePropertyName}[$index];
+                    return ArrayUtil::getNestedValue($this->{$basePropertyName}, $index);
                 }
             }
             return parent::__get($name);

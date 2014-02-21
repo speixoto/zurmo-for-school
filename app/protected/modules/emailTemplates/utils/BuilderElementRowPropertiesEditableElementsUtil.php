@@ -34,14 +34,25 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementBackendPropertiesEditableElementUtil extends BuilderElementPropertiesEditableElementUtil
+    class BuilderElementRowPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
-        public static function render($elementClassName, CModel $model, $property, ZurmoActiveForm $form,
-                                      array $params = array(), $wrapInTr = true, array $trOptions = array())
+        protected static function resolveConfiguration()
         {
-            $property   = "[backend][$property]";
-            $content    = parent::render($elementClassName, $model, $property, $form, $params, $wrapInTr, $trOptions);
-            return $content;
+            $configurationItems         = array();
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'RowConfigurationStaticDropDownFormElement',
+                                            'configuration',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Configuration')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'CheckBoxElement',
+                                            'header',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Convert to Header')));
+            return $configurationItems;
         }
     }
+
 ?>

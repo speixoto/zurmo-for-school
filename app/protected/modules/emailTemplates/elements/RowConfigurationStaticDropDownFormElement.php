@@ -34,14 +34,30 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementBackendPropertiesEditableElementUtil extends BuilderElementPropertiesEditableElementUtil
+    class RowConfigurationStaticDropDownFormElement extends StaticDropDownFormElement
     {
-        public static function render($elementClassName, CModel $model, $property, ZurmoActiveForm $form,
-                                      array $params = array(), $wrapInTr = true, array $trOptions = array())
+        /**
+         * @return array
+         */
+        protected function getDropDownArray()
         {
-            $property   = "[backend][$property]";
-            $content    = parent::render($elementClassName, $model, $property, $form, $params, $wrapInTr, $trOptions);
-            return $content;
+            $configurations     = $this->resolveAvailableFonts();
+            return $configurations;
         }
+
+        protected function resolveAvailableFonts()
+        {
+            $configurations         = array();
+            $configurations[1]      = Zurmo::t('EmailTemplatesModule', '{{count}} Column', array('{{count}}' => 1));
+            $configurations[2]      = Zurmo::t('EmailTemplatesModule', '{{count}} Columns', array('{{count}}' => 2));
+            $configurations[3]      = Zurmo::t('EmailTemplatesModule', '{{count}} Columns', array('{{count}}' => 3));
+            $configurations[4]      = Zurmo::t('EmailTemplatesModule', '{{count}} Columns', array('{{count}}' => 4));
+            $configurations['1:2']  = Zurmo::t('EmailTemplatesModule', '{{count}} Columns with left sidebar',
+                                                                        array('{{count}}' => '1:2'));
+            $configurations['2:1']  = Zurmo::t('EmailTemplatesModule', '{{count}} Columns with right sidebar',
+                                                                        array('{{count}}' => '2:1'));
+            return $configurations;
+        }
+
     }
 ?>

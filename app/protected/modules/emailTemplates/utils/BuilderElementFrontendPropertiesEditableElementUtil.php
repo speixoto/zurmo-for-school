@@ -39,7 +39,7 @@
         public static function render($elementClassName, CModel $model, $property, ZurmoActiveForm $form,
                                       array $params = array(), $wrapInTr = true, array $trOptions = array())
         {
-            $property   = "frontend[$property]";
+            $property   = "[frontend]$property";
             $content    = parent::render($elementClassName, $model, $property, $form, $params, $wrapInTr, $trOptions);
             return $content;
         }

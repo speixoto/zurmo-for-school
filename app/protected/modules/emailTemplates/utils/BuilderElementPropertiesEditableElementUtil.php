@@ -50,7 +50,7 @@
         public static function render($elementClassName, CModel $model, $property, ZurmoActiveForm $form,
                                         array $params = array(), $wrapInTr = true, array $trOptions = array())
         {
-            $attribute  = "properties[${property}]";
+            $attribute  = "properties${property}";
             $element    = new $elementClassName($model, $attribute, $form, $params);
             $content    = $element->render();
             if ($wrapInTr)

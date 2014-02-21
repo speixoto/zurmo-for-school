@@ -38,12 +38,76 @@
     {
         const MAX_COLUMN_WIDTH  = 12;
 
-        // TODO: @Shoaibi: Critical0: Editable Representation
-        // take care of logic swapping to header or changing columns(moving elements)
+        protected static function resolveLabel()
+        {
+            return Zurmo::t('EmailTemplatesModule', 'Row');
+        }
+
+        public function __construct($renderForCanvas = false, $id = null, $properties = null, $content = null, $params = null)
+        {
+            parent::__construct($renderForCanvas, $id, $properties, $content, $params);
+            $this->adjustContentColumnDataForConfiguration();
+        }
+
+        protected function adjustContentColumnDataForConfiguration()
+        {
+            $columnCountConfiguration   = $this->resolveColumnCountConfiguration();
+            $contentColumnCount         = count($this->content);
+            $difference                 = $columnCountConfiguration - $contentColumnCount;
+            if ($difference < 0)
+            {
+                $extraColumns           = array_splice($this->content, $difference);
+                $lastKey                = ArrayUtil::findLastKey($this->content);
+                $lastKeyContent         = $this->content[$lastKey]['content'];
+                foreach ($extraColumns as $extraColumn)
+                {
+                    $lastKeyContent   = CMap::mergeArray($lastKeyContent, $extraColumn['content']);
+                }
+                $this->content[$lastKey]['content'] = $lastKeyContent;
+            }
+            else if ($difference > 0)
+            {
+                for ($i = 0; $i < $difference; $i++)
+                {
+                    $blankColumnElement     = BuilderElementRenderUtil::resolveElement('BuilderColumnElement',
+                                                                                    $this->renderForCanvas);
+                    $blankColumnElementData = BuilderElementRenderUtil::resolveSerializedDataByElement($blankColumnElement);
+                    $this->content          = CMap::mergeArray($this->content, $blankColumnElementData);
+                }
+                echo "done";
+            }
+        }
+
+        protected function resolveColumnCountConfiguration()
+        {
+            if (isset($this->properties['backend']['configuration']))
+            {
+                if (strpos($this->properties['backend']['configuration'], ':') === false)
+                {
+                    return intval($this->properties['backend']['configuration']);
+                }
+                return 2;
+            }
+        }
 
         protected function resolveAvailableNonEditableActionsArray()
         {
             return array(static::OVERLAY_ACTION_EDIT, static::OVERLAY_ACTION_DELETE);
+        }
+
+        protected function renderContentTab(ZurmoActiveForm $form)
+        {
+            // TODO: @Shoaibi: Critical5: we have to check for unserialization in BuilderElementRendererUtil just because of this.
+            $content    = $this->renderHiddenField('content', CJSON::encode($this->content));
+            return $content;
+        }
+
+        protected function renderSettingsTab(ZurmoActiveForm $form)
+        {
+            $propertiesForm     = BuilderElementRowPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
+            return $propertiesForm;
         }
 
         protected function resolveNestedElementsParamsArray()

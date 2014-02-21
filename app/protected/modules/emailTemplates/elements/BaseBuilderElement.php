@@ -191,7 +191,7 @@
         {
             $this->renderForCanvas  = $renderForCanvas;
             $this->initId($id);
-            $this->initproperties($properties);
+            $this->initProperties($properties);
             $this->initContent($content);
             $this->initParams($params);
             $this->initModel();
