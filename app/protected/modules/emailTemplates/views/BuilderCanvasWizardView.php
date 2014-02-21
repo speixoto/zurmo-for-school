@@ -314,16 +314,6 @@
                          'style' => 'display:none');
         }
 
-        protected function resolveUiAccessibleContainerTypeElementClassNames($jsonEncoded = false)
-        {
-            $elements   = PathUtil::getAllUIAccessibleContainerTypeBuilderElementClassNames();
-            if ($jsonEncoded)
-            {
-                return CJSON::encode($elements);
-            }
-            return $elements;
-        }
-
         protected function resolveCanvasActionUrl()
         {
             return $this->resolveRelativeUrl('renderCanvas', array('id' => $this->model->id));
@@ -385,7 +375,6 @@
             $errorOnDeleteMessage               = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
             $dropHereMessage                    = Zurmo::t('EmailTemplatesModule', 'Drop here');
             $csrfToken                          = Yii::app()->request->csrfToken;
-            $uiAccessibleContainerClassNames    = $this->resolveUiAccessibleContainerTypeElementClassNames(true);
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
@@ -402,8 +391,7 @@
                         '{$this->resolveElementNonEditableActionUrl()}',
                         '{$errorOnDeleteMessage}',
                         '{$dropHereMessage}',
-                        '{$csrfToken}',
-                        '{$uiAccessibleContainerClassNames}'
+                        '{$csrfToken}'
                     );
                 };
                 ", CClientScript::POS_END);

@@ -232,6 +232,12 @@
             return $selector;
         }
 
+        protected static function resolveTemplateIdHiddenInputJQuerySelector()
+        {
+            $id = ZurmoHtml::activeId(new BuilderEmailTemplateWizardForm(), static::HIDDEN_ID);
+            return '#' . $id;
+        }
+
         protected function registerTrashSomeDataOnModuleChangeScript()
         {
             if (!$this->model->isWorkflowTemplate())
@@ -280,7 +286,7 @@
                                                     $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
 
                                                     //update id
-                                                    $('#" . static::HIDDEN_ID . "').val(data.id);
+                                                    $('" . static::resolveTemplateIdHiddenInputJQuerySelector() . "').val(data.id);
                                                 }
                                             }";
             return $ajaxArray;
