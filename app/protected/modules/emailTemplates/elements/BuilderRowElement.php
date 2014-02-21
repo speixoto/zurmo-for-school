@@ -74,7 +74,6 @@
                     $blankColumnElementData = BuilderElementRenderUtil::resolveSerializedDataByElement($blankColumnElement);
                     $this->content          = CMap::mergeArray($this->content, $blankColumnElementData);
                 }
-                echo "done";
             }
         }
 
