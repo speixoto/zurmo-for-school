@@ -141,7 +141,7 @@
 
         protected function renderLeftSidebarToolbarContent()
         {
-            $this->registerLeftSideToolbarScripts();
+
             $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $element  = new EmailTemplateBuilderElementsMenuActionElement('default', 'emailTemplates', null,
                             array('htmlOptions' => array('id'=> static::ELEMENTS_MENU_BUTTON_ID, 'class' => 'active'),
@@ -156,60 +156,6 @@
             $content .= '</nav></div>';
             return $content;
         }
-
-        protected function registerLeftSideToolbarScripts()
-        {
-            $script  = '$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click", function()
-                         {
-                            if(!$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").hasClass("active"))
-                            {
-                                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").addClass("active");
-                            }
-                            $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").removeClass("active");
-                            $("#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . '").hide();
-                            $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
-                         });
-
-            ';
-            $script .= '$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click", function()
-                         {
-                            if(!$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").hasClass("active"))
-                            {
-                                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").addClass("active");
-                            }
-                            $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").removeClass("active");
-                            $("#' . static::ELEMENTS_CONTAINER_ID . '").hide();
-                            $("#' . static::CANVAS_IFRAME_ID . '").contents().find("#element-actions-canvas1").find(".' .
-                            BaseBuilderElement::OVERLAY_ACTION_EDIT . '").trigger("click");
-                         });
-
-            ';
-            $script .= '$("#' . static::PREVIEW_MENU_BUTTON_ID . '").live("click", function()
-                         {
-                            $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").show();
-                            jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
-                            serializedData     = JSON.stringify(jsonSerializedData);
-                            $.ajax({
-                                url  : "' . $this->resolvePreviewActionUrl() . '",
-                                cache:  false,
-                                type : "POST",
-                                data : {serializedData: serializedData, "YII_CSRF_TOKEN": "' . Yii::app()->request->csrfToken . '"},
-                                success: function (html)
-                                {
-                                    $("#' . static::PREVIEW_IFRAME_ID . '").contents().find("html").html(html);
-                                }
-                            });
-                         });
-
-            ';
-            $script .= '$("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").live("click", function()
-                         {
-                            $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
-                         });
-            ';
-            Yii::app()->getClientScript()->registerScript('emailTemplateBuilderCanvasLeftSideToolbarScripts', $script);
-        }
-
 
         protected function renderFreezeOverlayContent()
         {
@@ -320,12 +266,12 @@
         protected function resolvePreviewIFrameHtmlOptions()
         {
             return array('id' => static::PREVIEW_IFRAME_ID,
-                // we set it to about:blank instead of preview url to save request and to also have some
-                // sort of basic html structure there which we can replace.
-                'src' => 'about:blank',
-                'width' => '100%',
-                'height'    => '100%',
-                'frameborder' => 0);
+                            // we set it to about:blank instead of preview url to save request and to also have some
+                            // sort of basic html structure there which we can replace.
+                            'src' => 'about:blank',
+                            'width' => '100%',
+                            'height'    => '100%',
+                            'frameborder' => 0);
         }
 
         protected function resolvePreviewIFrameContainerHtmlOptions()
@@ -362,27 +308,28 @@
 
         protected function registerScripts()
         {
-            // TODO: @Shoaibi/@Sergio: Critical5: Did i miss any JS here?
             parent::registerScripts();
-            $this->registerEmailTemplateEditorScriptFile();
-            $this->registerInitializeEmailTemplateEditor();
+            $this->registeremailTemplateEditorScripts();
+            $this->registerLeftSideToolbarScripts();
             $this->registerRefreshCanvasFromSavedTemplateScript();
-            $this->registerBindElementNonEditableActionsOverlayScript();
-            $this->registerElementDragAndDropScript();
-            $this->registerSerializedDataCompilationFunctionsScript();
-            $this->registerCanvasSaveScript();
             $this->registerCanvasFinishScript();
-            $this->registerCanvasChangedScript();
+        }
+
+        protected function registeremailTemplateEditorScripts()
+        {
+            $this->registerEmailTemplateEditorScriptFile();
+            $this->registerInitializeEmailTemplateEditorScript();
         }
 
         protected function registerEmailTemplateEditorScriptFile()
         {
-            $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.modules.emailTemplates.widgets.assets'));
-            $cs            = Yii::app()->getClientScript();
-            $cs->registerScriptFile($baseScriptUrl . '/EmailTemplateEditor.js', CClientScript::POS_HEAD);
+            $baseScriptUrl = Yii::app()->assetManager->publish(
+                                            Yii::getPathOfAlias('application.modules.emailTemplates.widgets.assets'));
+            Yii::app()->clientScript->registerScriptFile($baseScriptUrl . '/EmailTemplateEditor.js',
+                                                        CClientScript::POS_HEAD);
         }
 
-        protected function registerInitializeEmailTemplateEditor()
+        protected function registerInitializeEmailTemplateEditorScript()
         {
             $elementsContainerId                = '#' . static::ELEMENTS_CONTAINER_ID;
             $elementsToPlaceSelector            = '#' . static::UL_ELEMENT_TO_PLACE_ID;
@@ -418,7 +365,6 @@
                 ", CClientScript::POS_END);
         }
 
-
         protected function registerRefreshCanvasFromSavedTemplateScript()
         {
             Yii::app()->clientScript->registerScript('refreshCanvasFromSavedTemplateScript', "
@@ -431,32 +377,106 @@
                 ", CClientScript::POS_READY);
         }
 
-        protected function registerBindElementNonEditableActionsOverlayScript()
+        protected function registerLeftSideToolbarScripts()
         {
-            Yii::app()->clientScript->registerScript('bindElementNonEditableActionsOverlayScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS to bind element actions
-                ", CClientScript::POS_READY);
+            $this->registerElementsMenuButtonClickScript();
+            $this->registerCanvasConfigurationMenuButtonClickScript();
+            $this->registerPreviewMenuButtonClickScript();
+            $this->registerPreviewIFrameContainerCloserLinkClick();
         }
 
-        protected function registerElementDragAndDropScript()
+        protected function registerElementsMenuButtonClickScript()
         {
-            Yii::app()->clientScript->registerScript('elementDragAndDropScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
-                ", CClientScript::POS_READY);
+            Yii::app()->clientScript->registerScript('elementsMenuButtonClickScript', '
+                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click.elementsMenuButtonClickScript", function()
+                 {
+                    if(!$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").hasClass("active"))
+                    {
+                        $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").addClass("active");
+                    }
+                    $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").removeClass("active");
+                    $("#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . '").hide();
+                    $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
+                 });');
         }
 
-        protected function registerCanvasSaveScript()
+        protected function registerCanvasConfigurationMenuButtonClickScript()
         {
-            $successMessage = Zurmo::t('EmailTemplatesModule',
-                                           'EmailTemplatesModuleSingularLabel was successfully saved.',
-                                           LabelUtil::getTranslationParamsForAllModules());
-            $errorMessage   = Zurmo::t('EmailTemplatesModule',
-                                       'There was an error saving EmailTemplatesModuleSingularLabel',
-                                        LabelUtil::getTranslationParamsForAllModules());
-            Yii::app()->clientScript->registerScript('canvasSaveScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: What to do about: BuilderEmailTemplateWizardView:111
-                //TODO: @Sergio: This was moved to resolveAdditionalAjaxOptions is this still needed?
-                ");
+            Yii::app()->clientScript->registerScript('canvasConfigurationMenuButtonClickScript', '
+                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click.canvasConfigurationMenuButtonClick", function()
+                 {
+                    if(!$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").hasClass("active"))
+                    {
+                        $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").addClass("active");
+                    }
+                    $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").removeClass("active");
+                    $("#' . static::ELEMENTS_CONTAINER_ID . '").hide();
+                    $("#' . static::CANVAS_IFRAME_ID . '").contents()
+                            .find(".builder-element-non-editable.element-data.body")
+                            .siblings(".' . BaseBuilderElement::OVERLAY_ACTIONS_CONTAINER_CLASS . '")
+                            .find(".' . BaseBuilderElement::OVERLAY_ACTION_EDIT . '").trigger("click");
+                     });');
+        }
+
+        protected function registerPreviewMenuButtonClickScript()
+        {
+            $ajaxOption     = $this->resolvePreviewAjaxOptions();
+            Yii::app()->clientScript->registerScript('previewMenuButtonClickScript', '
+                $("#' . static::PREVIEW_MENU_BUTTON_ID . '").live("click.previewMenuButtonClick", function()
+                 {
+                    ' . ZurmoHtml::ajax($ajaxOption) . '
+
+                    /*
+                    $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").show();
+                    jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
+                    serializedData     = JSON.stringify(jsonSerializedData);
+                    $.ajax({
+                        url  : "' . $this->resolvePreviewActionUrl() . '",
+                        cache:  false,
+                        type : "POST",
+                        data : {serializedData: serializedData, "YII_CSRF_TOKEN": "' . Yii::app()->request->csrfToken . '"},
+                        success: function (html)
+                        {
+                            $("#' . static::PREVIEW_IFRAME_ID . '").contents().find("html").html(html);
+                        }
+                    });
+                    */
+                });');
+        }
+
+        protected function resolvePreviewAjaxOptions()
+        {
+            $ajaxArray                  = array();
+            $ajaxArray['cache']         = 'false';
+            $ajaxArray['url']           = $this->resolvePreviewActionUrl();
+            $ajaxArray['type']          = 'POST';
+            $ajaxArray['data']          = 'js:(function()
+                                            {
+                                                jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
+                                                serializedData     = JSON.stringify(jsonSerializedData);
+                                                requestData = {serializedData: serializedData,
+                                                                "YII_CSRF_TOKEN": "' . Yii::app()->request->csrfToken .
+                                                                '"};
+                                                return requestData;
+                                            })()';
+            $ajaxArray['beforeSend']    = 'js:function()
+                                        {
+                                            $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").show();
+                                        }';
+            $ajaxArray['success']       = 'js:function (html)
+                                        {
+                                            $("#' . static::PREVIEW_IFRAME_ID . '").contents().find("html").html(html);
+                                        }';
+            return $ajaxArray;
+        }
+
+        protected function registerPreviewIFrameContainerCloserLinkClick()
+        {
+            Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
+                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").live("click.reviewIFrameContainerCloserLinkClick", function()
+                 {
+                    $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
+                 });');
         }
 
         protected function registerCanvasFinishScript()
@@ -472,27 +492,12 @@
                 ", CClientScript::POS_END);
         }
 
-        protected function registerSerializedDataCompilationFunctionsScript()
-        {
-            Yii::app()->clientScript->registerScript('serializedDataCompilationFunctionsScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Add JS
-                ", CClientScript::POS_END);
-        }
-
-
-        protected function registerCanvasChangedScript()
-        {
-            Yii::app()->clientScript->registerScript('canvasChangedScript', "
-                // TODO: @Sergio/@Shoaibi: Critical2: Attach an event(canvasChanged) to window object. register event handler that clears the cached serialized data from hidden input
-                ");
-        }
-
         public static function resolveAdditionalAjaxOptions($formName)
         {
             /*
              * For Save/Finish do this:
              * first event should compile serializedData if need and shove it into an html entity
-             * second event(for finish), set isDraft to zero, we have this done.
+             * second event(for finish), set isDraft to zero, we have this done in registerCanvasFinishScript
              * third, change the $ajaxArray['data'] to jquery selector of val of the entity containing cached serialized data.
              */
             $successMessage = Zurmo::t('EmailTemplatesModule',

@@ -284,14 +284,11 @@ var emailTemplateEditor = {
         id                  = element.attr('id');
         elementClass        = element.data('class');
         elementProperties   = $.extend({}, element.data('properties'));
-        // TODO: @Shoaibi: Critical0: get rid of console.log statements from here.
         var serializedData = $.parseJSON(emailTemplateEditor.compileSerializedData());
         elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
         postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
                                 content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
         postData            = decodeURIComponent($.param(postData));
-        console.log('post data after serialization: ', postData);
-        // TODO: @Shoaibi/@Sergio/@Jason: Why do we not get empty properties?
         $.ajax({
             url: emailTemplateEditor.settings.editElementUrl,
             type: 'POST',

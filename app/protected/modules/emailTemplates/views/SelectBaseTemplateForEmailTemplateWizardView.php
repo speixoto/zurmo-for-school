@@ -231,34 +231,26 @@
             Yii::app()->clientScript->registerScript('populateBaseTemplatesScript', "
                 function populateBaseTemplates(elementClassName, elementModelClassName, elementAttributeName, elementFormClassName, elementParams, divId)
                 {
-                    var url                 = '" . $this->resolveBaseTemplateOptionsUrl() . "';
-                    $.ajax(
-                    {
-                        url:        url,
-                        cache:      false,
-                        data:
-                        {
-                            elementClassName: elementClassName,
-                            elementModelClassName: elementModelClassName,
-                            elementAttributeName: elementAttributeName,
-                            elementFormClassName: elementFormClassName,
-                            elementParams: elementParams
-                        },
-                        success:    function(data, status, request)
-                                    {
-                                        updateBaseTemplatesByDivId(divId, data)
-                                    },
-                        error:      function(request, status, error)
-                                    {
-                                        var data = {" . // Not Coding Standard
-                                                    "   'message' : '" . Zurmo::t("Core",
-                                                        "There was an error processing your request") .
-                                                    "',
-                                                    'type'    : 'error'
-                                                };
-                                    },
-                    });
+                    var requestData    = { elementClassName: elementClassName, elementModelClassName: elementModelClassName,
+                                    elementAttributeName: elementAttributeName, elementFormClassName: elementFormClassName,
+                                    elementParams: elementParams };
+
+                    " . ZurmoHtml::ajax($this->resolvePopulateBaseTemplateAjaxOptions()) . "
                 }", CClientScript::POS_HEAD);
+        }
+
+        protected function resolvePopulateBaseTemplateAjaxOptions()
+        {
+            $ajaxArray                  = array();
+            $ajaxArray['cache']         = 'false';
+            $ajaxArray['url']           = $this->resolveBaseTemplateOptionsUrl();
+            $ajaxArray['type']          = 'GET';
+            $ajaxArray['data']          = "js:requestData";
+            $ajaxArray['success']       = "js:function(data, status, request)
+                                        {
+                                            updateBaseTemplatesByDivId(divId, data);
+                                        }";
+            return $ajaxArray;
         }
 
         protected function registerUpdateBaseTemplatesByDivIdScript()
