@@ -893,6 +893,7 @@
                         url: $('#" .  $this->resolveApplyLinkId() . "').closest('form').attr('action'),
                         type : 'POST',
                         data : formData,
+                        cache : false,
                         success: function (html) {
                             $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').contents().find('#' + replaceElementId).parent().replaceWith(html);
                             emailTemplateEditor.unfreezeLayoutEditor();

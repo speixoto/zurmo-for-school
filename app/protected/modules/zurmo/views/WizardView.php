@@ -251,10 +251,11 @@
          */
         protected function resolveSaveAjaxArray($formName, $redirectAfterSave = true, array $additionalAjaxOptions = array())
         {
-            $ajaxArray                  = array('type'     => 'POST',
-                                                'data'     => 'js:$("#' . $formName . '").serialize()',
-                                                'url'      =>  'js:$("#' . $formName . '").attr("action")',
-                                                'dataType' => 'json',
+            $ajaxArray                  = array('type'      => 'POST',
+                                                'cache'     => 'false',
+                                                'data'      => 'js:$("#' . $formName . '").serialize()',
+                                                'url'       =>  'js:$("#' . $formName . '").attr("action")',
+                                                'dataType'  => 'json',
                                             );
             if ($redirectAfterSave)
             {

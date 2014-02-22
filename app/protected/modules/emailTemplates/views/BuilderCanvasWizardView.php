@@ -191,6 +191,7 @@
                             serializedData     = JSON.stringify(jsonSerializedData);
                             $.ajax({
                                 url  : "' . $this->resolvePreviewActionUrl() . '",
+                                cache:  false,
                                 type : "POST",
                                 data : {serializedData: serializedData, "YII_CSRF_TOKEN": "' . Yii::app()->request->csrfToken . '"},
                                 success: function (html)

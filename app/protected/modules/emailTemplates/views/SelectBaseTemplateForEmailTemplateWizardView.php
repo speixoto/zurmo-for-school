@@ -235,6 +235,7 @@
                     $.ajax(
                     {
                         url:        url,
+                        cache:      false,
                         data:
                         {
                             elementClassName: elementClassName,
