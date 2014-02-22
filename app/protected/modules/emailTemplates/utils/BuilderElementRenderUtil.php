@@ -80,7 +80,7 @@
             }
             else
             {
-                // we could have built the arrays ourselves but better to be bit slow and relay on the element
+                // we could have built the arrays ourselves but better to be bit slow and rely on the element
                 // logic than hardcode anything here.
                 $elementData    = static::resolveSerializedDataByElement($element);
                 $columnElement  = static::resolveElement('BuilderColumnElement', $renderForCanvas, null, null, $elementData);
