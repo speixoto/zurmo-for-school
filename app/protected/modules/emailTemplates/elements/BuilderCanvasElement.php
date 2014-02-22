@@ -56,13 +56,6 @@
             return array('class' => 'sortable-rows ui-sortable', 'align' => 'center', 'valign' => 'top');
         }
 
-        protected function renderContentTab(ZurmoActiveForm $form)
-        {
-            // TODO: @Shoaibi: Critical5: we have to check for unserialization in BuilderElementRendererUtil just because of this.
-            $content    = $this->renderHiddenField('content', CJSON::encode($this->content));
-            return $content;
-        }
-
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
             $propertiesForm     = BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);

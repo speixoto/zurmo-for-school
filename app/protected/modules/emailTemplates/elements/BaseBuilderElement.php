@@ -655,9 +655,10 @@
 
         /**
          * Render and return any special hidden fields.
-         * @param $form
+         * @param ZurmoActiveForm $form
+         * @return string
          */
-        protected function renderHiddenFields($form)
+        protected function renderHiddenFields(ZurmoActiveForm $form)
         {
             $idHiddenInput          = $this->renderHiddenField('id', $this->id);
             $classNameHiddenInput   = $this->renderHiddenField('className', get_class($this));

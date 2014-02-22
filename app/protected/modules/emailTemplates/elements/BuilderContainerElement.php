@@ -51,6 +51,19 @@
             false;
         }
 
+        protected function renderContentTab(ZurmoActiveForm $form)
+        {
+            // we don't need content tab for container elements, there is nothing to show.
+        }
+
+        protected function renderHiddenFields(ZurmoActiveForm $form)
+        {
+            // TODO: @Shoaibi: Critical5: we have to check for unserialization in BuilderElementRendererUtil just because of this.
+            $content    = $this->renderHiddenField('content', CJSON::encode($this->content));
+            $content    .= parent::renderHiddenFields($form);
+            return $content;
+        }
+
         protected function renderControlContentNonEditable()
         {
             $content        = $this->resolveNestedElementsNonEditable();

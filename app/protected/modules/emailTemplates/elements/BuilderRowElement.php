@@ -108,13 +108,6 @@
             return array(static::OVERLAY_ACTION_EDIT, static::OVERLAY_ACTION_DELETE);
         }
 
-        protected function renderContentTab(ZurmoActiveForm $form)
-        {
-            // TODO: @Shoaibi: Critical5: we have to check for unserialization in BuilderElementRendererUtil just because of this.
-            $content    = $this->renderHiddenField('content', CJSON::encode($this->content));
-            return $content;
-        }
-
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
             $propertiesForm     = BuilderElementRowPropertiesEditableElementsUtil::render($this->model, $form);
