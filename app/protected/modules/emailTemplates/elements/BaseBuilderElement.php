@@ -927,12 +927,30 @@
                                                                             "').contents().find('#' + replaceElementId)
                                                                             .parent();
                                             replaceElementInIframe.replaceWith(html);
+                                            " . $this->getAjaxScriptForInitSortableElements() . "
                                             emailTemplateEditor.unfreezeLayoutEditor();
                                             emailTemplateEditor.canvasChanged();
                                             hideElementEditFormOverlay();
                                         }";
             return $ajaxArray;
 
+        }
+
+        /**
+         * Return the script to init the sortable elements in case BuilderElement is a container
+         * @return string
+         */
+        protected function getAjaxScriptForInitSortableElements()
+        {
+            $ajaxScript = '';
+            if ($this->isContainerType())
+            {
+                $ajaxScript = "emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
+                        emailTemplateEditor.settings.sortableElementsSelector,
+                        $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID ."').
+                        contents());";
+            }
+            return $ajaxScript;
         }
 
         /**
