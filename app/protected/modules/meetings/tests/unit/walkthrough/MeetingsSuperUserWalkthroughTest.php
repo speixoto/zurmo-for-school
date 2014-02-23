@@ -163,8 +163,8 @@
 
             //Test adding a meeting with multiple contacts
             $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
-            $meetingAttendeesData = $contactItemPrefix . $superContactId . ',' .
-                                    $contactItemPrefix . $superContactId2 . ',' .
+            $meetingAttendeesData = $contactItemPrefix . $superContactId . ',' . // Not Coding Standard
+                                    $contactItemPrefix . $superContactId2 . ',' . // Not Coding Standard
                                     $contactItemPrefix . $superContactId3;
             $activityItemPostData = array('Account' => array('id' => $superAccountId),
                                           'Contact' => array('ids' => $meetingAttendeesData)); // Not Coding Standard

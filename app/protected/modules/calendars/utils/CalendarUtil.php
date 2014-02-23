@@ -980,7 +980,7 @@
             $savedCalendar->moduleClassName     = $moduleClassName;
             $savedCalendar->startAttributeName  = $startAttributeName;
             $savedCalendar->endAttributeName    = $endAttributeName;
-            assert($savedCalendar->save());
+            assert($savedCalendar->save()); // Not Coding Standard
             CalendarUtil::setMyCalendarColor($savedCalendar, $user);
             $filtersData                        = array('filtersStructure' => '1',
                                                         'Filters' => array(
@@ -993,7 +993,7 @@
                                                                           )
                                                        );
             CalendarUtil::populateFiltersDataInModel($savedCalendar, $filtersData);
-            assert($savedCalendar->save());
+            assert($savedCalendar->save()); // Not Coding Standard
             return $savedCalendar;
         }
 
