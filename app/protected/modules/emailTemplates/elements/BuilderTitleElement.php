@@ -34,18 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderFooterElement extends BuilderTextElement
+    class BuilderTitleElement extends BuilderTextElement
     {
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Footer');
+            return Zurmo::t('EmailTemplatesModule', 'Title');
         }
 
         protected function resolveDefaultContent()
         {
-            return array('text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
-                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
-                                    This email was sent to [[PRIMARY^EMAIL]].</p>');
+            return array('text' => '[[APPLICATION^NAME]]');
         }
 
         protected function resolveDefaultProperties()
@@ -54,9 +52,9 @@
             $ownProperties              = array(
                 'frontend'  => array(
                     'inlineStyles'  => array(
-                        'font-size'         =>  '8px',
-                        'font-color'        => '#cccccc',
-                        'text-align'        => 'center',
+                        'font-size'         =>  '18px',
+                        'font-color'        => '#aaaaaa',
+                        'text-align'        => 'left',
                     )
                 )
             );
