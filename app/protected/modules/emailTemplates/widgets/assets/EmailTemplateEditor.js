@@ -105,6 +105,7 @@ var emailTemplateEditor = {
             emailTemplateEditor.initSortableRows(emailTemplateEditor.settings.sortableRowsSelector, contents);
         });
     },
+    //Init the elements from outside iframe to be draggable
     initDraggableElements: function ( selector , connectToSelector, iframeContents) {
         $( selector ).each(function(){
             if ($(this).data('draggable')){
@@ -151,7 +152,6 @@ var emailTemplateEditor = {
             iframeRect = iframeElement.getBoundingClientRect();
 
             containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
-            //$(emailTemplateEditor.settings.iframeSelector).contents().find('body').prepend(emailTemplateEditor.settings.ghost);
             emailTemplateEditor.settings.isDragging = true;
 
             $('body').on('mousemove', onBodyMouseMove);
@@ -210,6 +210,7 @@ var emailTemplateEditor = {
             }
         }
     },
+    //Init the cells to be sortable
     initSortableElements: function ( selector , connectToSelector, iframeContents) {
         $( iframeContents.find(selector) ).each(function(){
             if ($(this).data('sortable')) {
@@ -227,6 +228,7 @@ var emailTemplateEditor = {
             connectWith: iframeContents.find(connectToSelector)
         });
     },
+    //Init the rows to be sortable
     initSortableRows: function ( selector , iframeContents) {
         $( iframeContents.find(selector) ).each(function(){
             if ($(this).data('sortable')){
@@ -243,77 +245,101 @@ var emailTemplateEditor = {
             cursor: 'move'
         });
     },
+    //Used on a new element is dragged and dropped from outside iframa
     placeNewElement: function ( elementClass, wrapElement, iframeContents) {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',
             data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
             beforeSend: function() {
+                    //Show an overlay with loading spinner
                     emailTemplateEditor.freezeLayoutEditor();
             },
             success: function (html) {
+                //Places the element
                 emailTemplateEditor.settings.ghost.after(html);
                 if (wrapElement)
                 {
+                    //If its a new row init the sortable element so the the row cells can be sortable/draggable
                     emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
                         emailTemplateEditor.settings.sortableElementsSelector,
                         iframeContents);
                 }
+                //Process canvasChanged event
                 emailTemplateEditor.canvasChanged();
+                //Hide the overlay with loading spinner
                 emailTemplateEditor.unfreezeLayoutEditor();
+                //Remove the ghost element
                 emailTemplateEditor.settings.ghost.detach();
             }
         });
     },
+    //Resets the serializedData cache
     canvasChanged: function () {
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val('');
     },
+    //Shows an overlay with loading spinner
     freezeLayoutEditor: function () {
         $(emailTemplateEditor.settings.iframeOverlaySelector).addClass('freeze');
         $(this).makeLargeLoadingSpinner(true, emailTemplateEditor.settings.iframeOverlaySelector);
     },
+    //Removes the overlay with loading spinner
     unfreezeLayoutEditor: function () {
         $(emailTemplateEditor.settings.iframeOverlaySelector).removeClass('freeze');
         $(this).makeLargeLoadingSpinner(false, emailTemplateEditor.settings.iframeOverlaySelector);
     },
     onClickEditEvent: function () {
-        $(emailTemplateEditor.settings.elementsContainerId).hide();
+        //Shows overlay with loading spinner
         emailTemplateEditor.freezeLayoutEditor();
         // closest always traversal to the parents, in out case the actual element is a sibling of its parent.
         var element         = $(this).parent().siblings('.builder-element-non-editable.element-data');
+        //Get the element id next to which Edit was clicked.
         id                  = element.attr('id');
+        //Get data-class of that element.
         elementClass        = element.data('class');
+        //Extract serializedData and assign to JS vars e.g. content, properties
         elementProperties   = $.extend({}, element.data('properties'));
         var serializedData = $.parseJSON(emailTemplateEditor.compileSerializedData());
         elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
         postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
                                 content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
         postData            = decodeURIComponent($.param(postData));
+        //Send an ajax to resolveElementEditableActionUrl()
         $.ajax({
             url: emailTemplateEditor.settings.editElementUrl,
             type: 'POST',
             data: postData,
             cache: false,
             success: function (html) {
+                //Replace the contents of left side overlay with response
                 $(emailTemplateEditor.settings.editSelector).html(html);
             }
         });
+        //Make the left side overlay visible.
         $(emailTemplateEditor.settings.editSelector).show();
+        //Hides overlay with loading spinner
         emailTemplateEditor.unfreezeLayoutEditor();
     },
     onClickDeleteEvent: function () {
+        //Check if removing last row
         if ($(this).closest('.sortable-rows').children('.element-wrapper').length > 1 ||
             $(this).parents('.sortable-elements').length > 0) {
+                //Remove row/element
                 $(this).closest(".element-wrapper").remove();
+                //Process canvasChanged event
                 emailTemplateEditor.canvasChanged();
         } else {
+            //Alert use cant remove last row
             alert(emailTemplateEditor.settings.alertErrorOnDelete);
         }
     },
     reloadCanvas: function () {
+        //Reload the canvas by reloading iframe
         $(emailTemplateEditor.settings.iframeSelector).attr( 'src', function ( i, val ) { return val; });
+        //Process canvasChanged event
         emailTemplateEditor.canvasChanged();
     },
+    //Compile serializedData
     compileSerializedData: function () {
         var getSerializedData = function (element) {
             var data = {};
@@ -358,9 +384,11 @@ var emailTemplateEditor = {
             }
         }
         value = JSON.stringify(data);
+        //Store the serializedData on cache selector
         $(emailTemplateEditor.settings.cachedSerializedDataSelector).val(value);
         return value;
     },
+    //Recursive get the element and child elements content
     getElementContent: function findContent (elementId, data) {
         var content = {};
         if ($.type(data) === 'object') {
