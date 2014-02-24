@@ -48,5 +48,21 @@
                                     <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
                                     This email was sent to [[PRIMARY^EMAIL]].</p>');
         }
+
+        protected function resolveDefaultProperties()
+        {
+            $parentDefaultProperties    = parent::resolveDefaultProperties();
+            $ownProperties              = array(
+                'frontend'  => array(
+                    'inlineStyles'  => array(
+                        'font-size'         =>  '8px',
+                        'font-color'        => '#cccccc',
+                        'text-align'        => 'center',
+                    )
+                )
+            );
+            $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
+            return $properties;
+        }
     }
 ?>
