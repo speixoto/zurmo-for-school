@@ -162,9 +162,12 @@
             $this->assertEquals(0, count($meetings));
 
             //Test adding a meeting with multiple contacts
+            $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
+            $meetingAttendeesData = $contactItemPrefix . $superContactId . ',' . // Not Coding Standard
+                                    $contactItemPrefix . $superContactId2 . ',' . // Not Coding Standard
+                                    $contactItemPrefix . $superContactId3;
             $activityItemPostData = array('Account' => array('id' => $superAccountId),
-                                          'Contact' => array('ids' =>
-                                                $superContactId . ',' . $superContactId2 . ',' . $superContactId3)); // Not Coding Standard
+                                          'Contact' => array('ids' => $meetingAttendeesData)); // Not Coding Standard
             $this->setGetArray(array(   'relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
                                         'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
             $this->setPostArray(array('ActivityItemForm' => $activityItemPostData,

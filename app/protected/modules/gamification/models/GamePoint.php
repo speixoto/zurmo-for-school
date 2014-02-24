@@ -321,7 +321,7 @@
             else
             {
                 $pointType = $levelType;
-                return ' type = "' . $pointType . '" and ';
+                return " type = '" . $pointType . "' and ";
             }
         }
 

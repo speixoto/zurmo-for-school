@@ -39,6 +39,11 @@
      */
     class MixedCurrencyValueTypesElement extends MixedNumberTypesElement
     {
+        public static function getValueAreasCount()
+        {
+            return 2;
+        }
+
         protected function renderEditableFirstValueContent()
         {
             $content = parent::renderEditableFirstValueContent();
@@ -66,6 +71,11 @@
         protected function getCurrencyIdForValueEditableInputName()
         {
             return $this->getEditableInputName('currencyIdForValue');
+        }
+
+        protected function getExtraFirstValueAreaClassName()
+        {
+            return ' currency-input';
         }
     }
 ?>

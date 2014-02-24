@@ -57,19 +57,26 @@
 
         public function run()
         {
-            $defaultView   = $this->defaultView;
-            $inputId       = $this->inputId;
-            $eventsUrl           = Yii::app()->createUrl('calendars/default/getEvents');
+            $defaultView     = $this->defaultView;
+            $inputId         = $this->inputId;
+            $eventsUrl       = Yii::app()->createUrl('calendars/default/getEvents');
+            $eventsCountUrl  = Yii::app()->createUrl('calendars/default/getEventsCount');
 
             //Set the goto date for calendar
             $startDate     = $this->startDate;
             $startDateAttr = explode('-', $startDate);
             $year          = $startDateAttr[0];
             $month         = intval($startDateAttr[1]) - 1;
-            $day           = $startDateAttr[2];
+            $day           = intval($startDateAttr[2]);
+
+            $currentYear   = date('Y');
+            $currentMonth  = intval(date('m')) - 1;
+            $currentDay    = date('d');
+
+            $maxCount      = CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_COUNT;
 
             //Register full calendar script and css
-            self::registerFullCalendarCalendarScriptAndCss();
+            self::registerFullCalendarScriptAndCss();
 
             //Register qtip for event render
             $qtip = new ZurmoTip();
@@ -77,15 +84,14 @@
 
             $cs            = Yii::app()->getClientScript();
             // Begin Not Coding Standard
-            
+
             $script        = "$(document).on('ready', function() {
-                                    $('#{$inputId}').fullCalendar('gotoDate', '{$year}', '{$month}', '{$day}');
                                     $('#{$inputId}').fullCalendar({
                                                                     editable: false,
                                                                     header: {
                                                                                 left: 'prev,next today',
                                                                                 center: 'title',
-                                                                                right: 'month,agendaWeek,agendaDay'
+                                                                                right: 'month,basicWeek,basicDay'
                                                                             },
                                                                      defaultView: '{$defaultView}',
                                                                      firstDay    :1,
@@ -102,15 +108,51 @@
                                                                                     $(this).makeLargeLoadingSpinner(false, '#{$inputId}');
                                                                                 }
                                                                               },
-                                                                     eventRender: function(event, element) {
+                                                                     eventSources: [
+                                                                                      getCalendarEvents('{$eventsUrl}', '{$inputId}', '{$maxCount}')
+                                                                                   ],
+                                                                     eventRender: function(event, element, view) {
                                                                                         element.qtip({
-                                                                                            content: event.description
+                                                                                            content: {
+                                                                                                        text: event.description,
+                                                                                                        title: event.title,
+                                                                                                        button: true
+                                                                                                     },
+                                                                                            show:{
+                                                                                                    event: 'click'
+                                                                                            },
+                                                                                            hide: {
+                                                                                                    event: 'click'
+                                                                                                  },
+                                                                                            position: {
+                                                                                                        my: 'bottom center',
+                                                                                                        at: 'top center',
+                                                                                                        target: 'mouse',
+                                                                                                        viewport: $('#calendar'),
+                                                                                                        adjust: {
+                                                                                                            mouse: false,
+                                                                                                            scroll: false
+                                                                                                        }
+                                                                                                      }
                                                                                         });
-                                                                                    }
+                                                                                    },
+                                                                     /*eventAfterAllRender: function(view)
+                                                                                          {
+                                                                                             getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
+                                                                                          },*/
+                                                                     timeFormat: {
+                                                                                    'month'    : '',
+                                                                                    'basicDay': 'h:mm-{h:mm}tt',
+                                                                                    'basicWeek': 'h:mm-{h:mm}tt'
+                                                                                 },
                                                                     });
-                                    $('#{$inputId}').fullCalendar('addEventSource', getCalendarEvents('{$eventsUrl}', '{$inputId}'));
+                                         $('#{$inputId}').fullCalendar('gotoDate', {$year}, {$month}, {$day});
+                                         $('.fc-button-today').click(function() {
+                                                                                    $('#{$inputId}').fullCalendar('changeView', 'basicDay');
+                                                                                    $('#{$inputId}').fullCalendar('gotoDate', {$currentYear}, {$currentMonth}, {$currentDay});
+                                                                                });
                                  });";
-                                 
+
             // End Not Coding Standard
             $cs->registerScript('loadCalendarScript', $script, ClientScript::POS_END);
         }
@@ -118,11 +160,11 @@
         /**
          * Registers script and css file
          */
-        protected static function registerFullCalendarCalendarScriptAndCss()
+        protected static function registerFullCalendarScriptAndCss()
         {
             $cs            = Yii::app()->getClientScript();
             $baseScriptUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.core.widgets.assets'));
-            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_END);
+            $cs->registerScriptFile($baseScriptUrl . '/fullCalendar/fullcalendar.min.js', ClientScript::POS_HEAD);
             $cs->registerCssFile($baseScriptUrl . '/fullCalendar/fullcalendar.css');
         }
     }

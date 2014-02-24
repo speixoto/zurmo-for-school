@@ -40,6 +40,7 @@
     class CalendarReportRelationsAndAttributesToTreeAdapter extends ReportRelationsAndAttributesToTreeAdapter
     {
         /**
+         * Override to call a different report adapter class for calendar.
          * @param string $moduleClassName
          * @param string $modelClassName
          * @return ModelRelationsAndAttributesToReportAdapter based object

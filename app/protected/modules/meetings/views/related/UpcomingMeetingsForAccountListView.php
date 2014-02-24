@@ -35,31 +35,33 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo calendars.
+     * For a given account, display the meetings in a list view.
      */
-    class CalendarsDemoDataMaker extends DemoDataMaker
+    class UpcomingMeetingsForAccountListView extends UpcomingMeetingsRelatedListView
     {
-        protected $ratioToLoad = 1;
-
-        public static function getDependencies()
+        /**
+         * @return string
+         */
+        protected function getRelationAttributeName()
         {
-            return array('users');
+            return 'Account';
         }
 
         /**
-         * @param DemoDataHelper $demoDataHelper
+         * @return null|string
          */
-        public function makeAll(& $demoDataHelper)
+        public static function getDisplayDescription()
         {
-            assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("User")');
+            return Zurmo::t('MeetingsModule', 'MeetingsModulePluralLabel For AccountsModuleSingularLabel',
+                            LabelUtil::getTranslationParamsForAllModules());
         }
 
         /**
-         * @param RedBeanModel $model
+         * @return array
          */
-        public function populateModel(& $model)
+        public static function getAllowedOnPortletViewClassNames()
         {
+            return array('AccountDetailsAndRelationsView');
         }
     }
 ?>

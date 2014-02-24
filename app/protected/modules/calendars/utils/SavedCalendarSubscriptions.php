@@ -62,33 +62,36 @@
          *
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param User $user
+         * @param string $selectedCalendarIds
          * @return \SavedCalendarSubscriptions
          */
         private static function addMySavedCalendars(SavedCalendarSubscriptions $savedCalendarSubscriptions,
                                                     User $user, $selectedCalendarIds)
         {
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
-            if (count($mySavedCalendars) > 0)
+            if (count($mySavedCalendars) == 0)
             {
-                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarSelections', $selectedCalendarIds);
-                $selectedCalendarIdArray = array();
-                if ($selectedCalendarIds != null)
+                $mySavedCalendars    = CalendarUtil::loadDefaultCalendars($user);
+                $selectedCalendarIds = $mySavedCalendars[0]->id . ',' . $mySavedCalendars[1]->id; // Not Coding Standard
+            }
+            ZurmoConfigurationUtil::setByUserAndModuleName($user,
+                                                           'CalendarsModule',
+                                                           'myCalendarSelections', $selectedCalendarIds);
+            $selectedCalendarIdArray = array();
+            if ($selectedCalendarIds != null)
+            {
+                $selectedCalendarIdArray = explode(',', $selectedCalendarIds); // Not Coding Standard
+            }
+            foreach ($mySavedCalendars as $key => $mySavedCalendar)
+            {
+                CalendarUtil::setMyCalendarColor($mySavedCalendar, $user);
+                if (in_array($mySavedCalendar->id, $selectedCalendarIdArray))
                 {
-                    $selectedCalendarIdArray = explode(',', $selectedCalendarIds); // Not Coding Standard
+                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
                 }
-                foreach ($mySavedCalendars as $key => $mySavedCalendar)
+                else
                 {
-                    CalendarUtil::setMyCalendarColor($mySavedCalendar);
-                    if (in_array($mySavedCalendar->id, $selectedCalendarIdArray))
-                    {
-                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, true);
-                    }
-                    else
-                    {
-                        $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
-                    }
+                    $savedCalendarSubscriptions->addMySavedCalendar($mySavedCalendar, false);
                 }
             }
         }
@@ -107,7 +110,7 @@
             $mySubscribedCalendars           = CalendarUtil::getUserSubscribedCalendars($user);
             if (count($mySubscribedCalendars) > 0)
             {
-                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                ZurmoConfigurationUtil::setByUserAndModuleName($user,
                                                                'CalendarsModule',
                                                                'mySubscribedCalendarSelections', $subscribedCalendarIds);
                 $subscribedCalendarIdArray = array();

@@ -35,12 +35,28 @@
      ********************************************************************************/
 
     /**
-     * Class to make default data that needs to be created upon an installation.
+     * Data provider for rows and columns report for a calendar.
      */
-    class ProjectsDefaultDataMaker extends DefaultDataMaker
+    class CalendarRowsAndColumnsReportDataProvider extends RowsAndColumnsReportDataProvider
     {
-        public function make()
+        /**
+         * Makes sql query adapter.
+         *
+         * @param bool $isDistinct
+         */
+        protected function makeSelectQueryAdapter($isDistinct = false)
         {
+            return new RedBeanModelSelectQueryAdapter(true);
+        }
+
+        /**
+         * Resolve sql query adapter for count query.
+         *
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         */
+        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            return new RedBeanModelSelectQueryAdapter(false);
         }
     }
 ?>

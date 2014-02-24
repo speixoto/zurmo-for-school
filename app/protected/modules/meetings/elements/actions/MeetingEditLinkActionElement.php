@@ -34,7 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarsModuleForm extends GlobalSearchEnabledModuleForm
+    class MeetingEditLinkActionElement extends EditLinkActionElement
     {
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl('meetings/default/edit?id=' . $this->modelId);
+        }
     }
 ?>

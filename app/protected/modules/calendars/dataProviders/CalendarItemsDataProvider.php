@@ -40,6 +40,8 @@
     {
         const MAXIMUM_CALENDAR_ITEMS_COUNT = 200;
 
+        const MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE = 5;
+
         /**
          * @var array
          */
@@ -76,6 +78,16 @@
         private $_calendarItemsData;
 
         /**
+         * @var boolean
+         */
+        private $_isMaxCountReached = false;
+
+        /**
+         * @var int
+         */
+        private $_itemCount;
+
+        /**
          * @param SavedCalendarSubscriptions $savedCalendarSubscriptions
          * @param array $config
          */
@@ -86,24 +98,19 @@
             {
                 $this->$key = $value;
             }
-            $this->startDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->startDate));
-            $this->endDate = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->endDate));
+            $this->startDate  = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->startDate));
+            $this->endDate    = DateTimeUtil::convertTimestampToDbFormatDate(strtotime($this->endDate));
+            $this->_itemCount = 0;
         }
 
         /**
-         * See the yii documentation. This function is made public for unit testing.
-         * @return int|string
+         * Calculates total item count.
+         *
+         * @return int
          */
         public function calculateTotalItemCount()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-            $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
-            $count = ZurmoRedBean::getCell($sql);
-            if ($count === null || empty($count))
-            {
-                $count = 0;
-            }
-            return $count;
+            return 0;
         }
 
         /**
@@ -123,6 +130,8 @@
         }
 
         /**
+         * Fetches data.
+         *
          * @return array
          */
         protected function fetchData()
@@ -131,7 +140,7 @@
         }
 
         /**
-         * See the yii documentation.
+         * Fetches keys for data items.
          * @return array
          */
         protected function fetchKeys()
@@ -163,8 +172,10 @@
             {
                 if ($savedCalendarData[1])
                 {
-                    $models = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]->savedcalendar);
-                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendarData[0]->savedcalendar);
+                    $models        = $this->resolveRedBeanModelsByCalendar($savedCalendarData[0]->savedcalendar);
+                    $savedCalendar = $savedCalendarData[0]->savedcalendar;
+                    $savedCalendar->color = $savedCalendarData[0]->color;
+                    $this->resolveRedBeanModelsToCalendarItems($calendarItems, $models, $savedCalendar);
                 }
             }
             return $calendarItems;
@@ -179,24 +190,18 @@
         {
             $models             = array();
             $report             = $this->makeReportBySavedCalendar($calendar);
-            $reportDataProvider = new RowsAndColumnsReportDataProvider($report);
+            $reportDataProvider = new CalendarRowsAndColumnsReportDataProvider($report);
             $reportResultsRows  = $reportDataProvider->getData();
-            $count              = 1;
             foreach ($reportResultsRows as $reportResultsRowData)
             {
-                $models[] = $reportResultsRowData->getModel('attribute0'); //todo: even though it is 0 because we only have one displayAttribute, we should
-                                                                           //todo: be pulling this from somewhere else instead of statically defining it here. probably...
-                $count++;
-                if ($count > self::MAXIMUM_CALENDAR_ITEMS_COUNT)
+                if ($this->_itemCount >= self::MAXIMUM_CALENDAR_ITEMS_COUNT)
                 {
+                    $this->setIsMaxCountReached(true);
                     break;
                 }
+                $models[] = $reportResultsRowData->getModel('attribute0');
+                $this->_itemCount++;
             }
-
-            //todo: need to set distinct? or we do we set it somewhere else? we need this otherwise we could have duplicate models...
-            //todo: we don't want duplicate models in the results from the report data provider.we might have to just block has-many filtering?
-            //todo: that might force it to always be distinct
-
             return $models;
         }
 
@@ -227,15 +232,16 @@
             $endFilter->value                       = $this->endDate;
             $endFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE;
             $report->addFilter($endFilter);
-//            if (count($existingFilters) > 0)
-//            {
-//                $report->setFiltersStructure($report->getFiltersStructure() .
-//                                             '(' . (count($existingFilters) + 1) . ' AND ' . ($existingFilters + 2) . ')');
-//            }
-//            else
-//            {
+            if (count($existingFilters) > 0)
+            {
+                $filtersCount = count($existingFilters);
+                $report->setFiltersStructure($report->getFiltersStructure() .
+                                             ' AND ' . ($filtersCount + 1) . ' AND ' . ($filtersCount + 2));
+            }
+            else
+            {
                 $report->setFiltersStructure('1 AND 2');
-            //}
+            }
             $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                     $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'id';
@@ -319,6 +325,24 @@
         public function setDateRangeType($dateRangeType)
         {
             $this->dateRangeType = $dateRangeType;
+        }
+
+        /**
+         * @return bool
+         */
+        public function getIsMaxCountReached()
+        {
+            return $this->_isMaxCountReached;
+        }
+
+        /**
+         * Sets is max count reached
+         * @param bool $isMaxCountReached
+         */
+        public function setIsMaxCountReached($isMaxCountReached)
+        {
+            assert('is_bool($isMaxCountReached)');
+            $this->_isMaxCountReached = $isMaxCountReached;
         }
     }
 ?>

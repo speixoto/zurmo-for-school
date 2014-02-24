@@ -40,6 +40,11 @@
      */
     class MixedNumberTypesElement extends Element
     {
+        public static function getValueAreasCount()
+        {
+            return 1;
+        }
+
         /**
          * @return The element's content as a string.
          */
@@ -59,8 +64,9 @@
             {
                 $startingDivStyleSecondValue = "display:none;";
             }
+            $extraFirstValueAreaClassName = $this->getExtraFirstValueAreaClassName();
             $content  = ZurmoHtml::tag('div', array('id'    => $firstValueSpanAreaId,
-                                                    'class' => 'first-value-area',
+                                                    'class' => 'first-value-area' . $extraFirstValueAreaClassName,
                                                     'style' => $startingDivStyleFirstValue),
                                                     $this->renderEditableFirstValueContent());
             $content .= ZurmoHtml::tag('div', array('id'    => $secondValueSpanAreaId,
@@ -69,6 +75,10 @@
                                                     ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Zurmo::t('Core', 'and')) .
                                                     $this->renderEditableSecondValueContent());
             return $content;
+        }
+
+        protected function getExtraFirstValueAreaClassName()
+        {
         }
 
         protected function renderEditableFirstValueContent()

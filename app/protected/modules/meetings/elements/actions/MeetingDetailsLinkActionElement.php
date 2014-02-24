@@ -34,13 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class to make default data that needs to be created upon an installation.
-     */
-    class CalendarsDefaultDataMaker extends DefaultDataMaker
+    class MeetingDetailsLinkActionElement extends DetailsLinkActionElement
     {
-        public function make()
+        protected function getDefaultRoute()
         {
+            return Yii::app()->createUrl('meetings/default/details?id=' . $this->modelId);
         }
     }
 ?>

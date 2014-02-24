@@ -45,6 +45,10 @@
                                 'applicationName'   => 'resolveApplicationName',
                                 'currentYear'       => 'resolveCurrentYear',
                                 'lastYear'          => 'resolveLastYear',
+                                'ownersAvatarSmall'   => 'resolveOwnersAvatarSmall',
+                                'ownersAvatarMedium'   => 'resolveOwnersAvatarMedium',
+                                'ownersAvatarLarge'  => 'resolveOwnersAvatarLarge',
+                                'ownersEmailSignature'  => 'resolveOwnersEmailSignature',
                                 );
 
         public static function isSpecialMergeTag($attributeName, $timeQualifier)
@@ -90,6 +94,55 @@
         protected static function resolveLastYear()
         {
             return date('Y') - 1 ;
+        }
+
+        /**
+         * @param $model
+         */
+        protected static function resolveOwnersAvatarSmall($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                return $model->owner->getAvatarImage(32);
+            }
+        }
+
+        /**
+         * @param $model
+         */
+        protected static function resolveOwnersAvatarMedium($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                return $model->owner->getAvatarImage(64);
+            }
+        }
+
+        /**
+         * @param $model
+         * @return mixed
+         */
+        protected static function resolveOwnersAvatarLarge($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                return $model->owner->getAvatarImage(128);
+            }
+        }
+
+        /**
+         * Will only grab first available email signature for user if available
+         * @param $model
+         */
+        protected static function resolveOwnersEmailSignature($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                if ($model->owner->emailSignatures->count() > 0)
+                {
+                    return $model->owner->emailSignatures[0]->htmlContent;
+                }
+            }
         }
     }
 ?>

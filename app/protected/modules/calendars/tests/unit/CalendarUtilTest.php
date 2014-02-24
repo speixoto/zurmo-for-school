@@ -109,11 +109,19 @@
             $this->assertTrue(strpos($content, 'Test Cal New') > 0);
         }
 
+        /**
+         * @covers SavedCalendarSubscriptions::makeByUser
+         * @covers SavedCalendarSubscriptions::addMySavedCalendars
+         * @covers SavedCalendarSubscriptions::addMySubscribedCalendars
+         * @covers SavedCalendarSubscriptions::addMySavedCalendar
+         * @covers SavedCalendarSubscriptions::addSubscribedToCalendar
+         */
         public function testProcessUserCalendarsAndMakeDataProviderForCombinedView()
         {
             $savedCalendars = SavedCalendar::getByName('Test Cal');
             $subscribedCalendars = CalendarUtil::getUserSubscribedCalendars(Yii::app()->user->userModel);
-            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($savedCalendars[0]->id, $subscribedCalendars[0]->savedcalendar->id);
+            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView(strval($savedCalendars[0]->id),
+                                strval($subscribedCalendars[0]->savedcalendar->id));
             $calendarItems = $dp->getData();
             $this->assertCount(2, $calendarItems);
             $this->assertEquals('First Product', $calendarItems[0]->getTitle());
@@ -125,14 +133,14 @@
             $user                        = UserTestHelper::createBasicUser('sam');
             $savedCalendarSubscription   = CalendarTestHelper::createSavedCalendarSubscription('Test Cal New', '#66367b', $user);
             $savedCalendar               = SavedCalendar::getByName('Test Cal New');
-            $subscribedUsers = CalendarUtil::getUsersSubscribedForCalendar($savedCalendar[0]);
+            $subscribedUsers             = CalendarUtil::getUsersSubscribedForCalendar($savedCalendar[0]);
             $this->assertCount(2, $subscribedUsers);
         }
 
         public function testSetMyCalendarColor()
         {
             $savedCalendar = CalendarTestHelper::createSavedCalendarByName('Color Cal', null);
-            CalendarUtil::setMyCalendarColor($savedCalendar);
+            CalendarUtil::setMyCalendarColor($savedCalendar, Yii::app()->user->userModel);
             $this->assertNotEquals('#66367b', $savedCalendar->color);
             $this->assertNotEquals('#315AB0', $savedCalendar->color);
         }
@@ -145,11 +153,41 @@
             $this->assertNotEquals('#66367b', $savedCalendarSubscription->color);
         }
 
+        /**
+         * @covers CalendarDateAttributeStaticDropDownElement::getDropDownArray
+         */
         public function testGetModelAttributesForSelectedModule()
         {
             $selectedAttributes = CalendarUtil::getModelAttributesForSelectedModule('ProductsModule');
             $this->assertContains('Created Date Time', $selectedAttributes);
             $this->assertContains('Modified Date Time', $selectedAttributes);
+        }
+
+        /**
+         * @covers CalendarModuleClassNameDropDownElement::getAvailableModulesForCalendar
+         */
+        public function testGetAvailableModulesForCalendar()
+        {
+            $availableModuleClassNames = CalendarUtil::getAvailableModulesForCalendar();
+            $this->assertGreaterThan(2, count($availableModuleClassNames));
+            $this->assertTrue(in_array('Meetings', $availableModuleClassNames));
+            $this->assertTrue(in_array('Tasks', $availableModuleClassNames));
+        }
+
+        public function testLoadDefaultCalendars()
+        {
+            $user = UserTestHelper::createBasicUser('jim');
+            Yii::app()->user->userModel = $user;
+            $this->assertEquals(0, count(CalendarUtil::getUserSavedCalendars($user)));
+            SavedCalendarSubscriptions::makeByUser($user);
+            $this->assertEquals(2, count(CalendarUtil::getUserSavedCalendars($user)));
+            $calendars = CalendarUtil::getUserSavedCalendars($user);
+            $model     = $calendars[0];
+            $data      = unserialize($model->serializedData);
+            $filtersData = $data[ComponentForReportForm::TYPE_FILTERS];
+            $this->assertEquals(strval($user), $filtersData[0]['stringifiedModelForValue']);
+            $this->assertEquals($user->id, $filtersData[0]['value']);
+            $this->assertEquals('1', $data['filtersStructure']);
         }
     }
 ?>

@@ -36,6 +36,9 @@
 
     class CalendarsDefaultController extends ZurmoModuleController
     {
+        /**
+         * @return array
+         */
         public function filters()
         {
             $modelClassName   = $this->getModule()->getPrimaryModelName();
@@ -131,7 +134,7 @@
          */
         public function actionCombinedDetails()
         {
-            $dataProvider               = CalendarUtil::getCalendarItemsDataProvider();
+            $dataProvider               = CalendarUtil::getCalendarItemsDataProvider(Yii::app()->user->userModel);
             $interactiveCalendarView    = new CombinedCalendarView($dataProvider, $this->getId(), $this->getModule()->getId());
             $view                       = new CalendarsPageView(ZurmoDefaultViewUtil::
                                                   makeStandardViewForCurrentUser($this, $interactiveCalendarView));
@@ -147,7 +150,8 @@
          */
         public function actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
         {
-            $report        = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
+            $postData      = PostUtil::getData();
+            $report        = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id, $postData);
             if ($nodeId != null)
             {
                 $reportToTreeAdapter = new CalendarReportRelationsAndAttributesToTreeAdapter($report, $treeType);
@@ -161,40 +165,22 @@
             echo $content;
         }
 
-        //todO: refactor to reuse same code in controller for reporting? do if it makes sense after done.
+        /**
+         * Add attribute from tree.
+         *
+         * @param string $type
+         * @param string $treeType
+         * @param string $nodeId
+         * @param int $rowNumber
+         * @param boolean $trackableStructurePosition
+         * @param int $id
+         */
         public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
                                                    $trackableStructurePosition = false, $id = null)
         {
-            $report                             = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id);
-            $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
-                                                     removeTreeTypeFromNodeId($nodeId, $treeType);
-            $moduleClassName                    = $report->getModuleClassName();
-            $modelClassName                     = $moduleClassName::getPrimaryModelName();
-            $form                               = new WizardActiveForm();
-            $form->id                           = 'edit-form';
-            $form->enableAjaxValidation         = true; //ensures error validation populates correctly
-
-            $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
-            $model                              = ComponentForReportFormFactory::makeByComponentType($moduleClassName,
-                                                      $modelClassName, $report->getType(), $treeType);
-            $form->modelClassNameForError       = $wizardFormClassName;
-            $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveInputPrefixData($wizardFormClassName,
-                                                      $treeType, (int)$rowNumber);
-            $adapter                            = new ReportAttributeForSavedCalendarToElementAdapter($inputPrefixData, $model,
-                                                      $form, $treeType);
-            $view                               = new AttributeRowForReportComponentView($adapter,
-                                                      (int)$rowNumber, $inputPrefixData, $attribute,
-                                                      (bool)$trackableStructurePosition, true, $treeType);
-            $content               = $view->render();
-            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
-            Yii::app()->getClientScript()->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
-            echo $content;
+            $postData   = PostUtil::getData();
+            $report     = CalendarUtil::resolveReportBySavedCalendarPostData($type, $id, $postData);
+            ReportUtil::processAttributeAdditionFromTree($nodeId, $treeType, $report, $rowNumber, $trackableStructurePosition);
         }
 
         /**
@@ -249,6 +235,11 @@
 
         /**
          * Get events for the selected calendars.
+         * @param string $selectedMyCalendarIds
+         * @param string $selectedSharedCalendarIds
+         * @param string $startDate
+         * @param string $endDate
+         * @param string $dateRangeType
          */
         public function actionGetEvents($selectedMyCalendarIds = null,
                                         $selectedSharedCalendarIds = null,
@@ -256,22 +247,65 @@
                                         $endDate = null,
                                         $dateRangeType = null)
         {
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarStartDate', $startDate);
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarEndDate', $endDate);
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarDateRangeType', $dateRangeType);
-            $dataProvider               = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
-                                                                                                               $selectedSharedCalendarIds,
-                                                                                                               $dateRangeType,
-                                                                                                               $startDate,
-                                                                                                               $endDate);
+            $dataProvider               = CalendarUtil::processAndGetDataProviderForEventsData($selectedMyCalendarIds,
+                                                                                               $selectedSharedCalendarIds,
+                                                                                               $startDate,
+                                                                                               $endDate,
+                                                                                               $dateRangeType);
             $items                      = CalendarUtil::getFullCalendarItems($dataProvider);
+            foreach ($items as $index => $item)
+            {
+                $itemClass = isset($item['itemClass']) ? $item['itemClass']:null;
+                //If not more events
+                if($itemClass != 'more-events')
+                {
+                    $itemDetailViewClassName = get_class($item['model']) . 'ForCalendarItemDetailsView';
+                    $itemDetailViewInstance  = new $itemDetailViewClassName($this->getId(), $this->getModule()->getId(), $item['model']);
+                    $item['description']     = $itemDetailViewInstance->render();
+                    unset($item['model']);
+                }
+                else
+                {
+                    $description = null;
+                    foreach($item['additionalItems'] as $additionalItem)
+                    {
+                        $description .= $additionalItem['title'];
+                    }
+                    $item['description']     = $description;
+                }
+                $items[$index]           = $item;
+            }
             echo CJSON::encode($items);
+        }
+
+        /**
+         * Get events count for the selected calendars.
+         * @param string $selectedMyCalendarIds
+         * @param string $selectedSharedCalendarIds
+         * @param string $startDate
+         * @param string $endDate
+         * @param string $dateRangeType
+         */
+        public function actionGetEventsCount($selectedMyCalendarIds = null,
+                                            $selectedSharedCalendarIds = null,
+                                            $startDate = null,
+                                            $endDate = null,
+                                            $dateRangeType = null)
+        {
+            $dataProvider               = CalendarUtil::processAndGetDataProviderForEventsData($selectedMyCalendarIds,
+                                                                                               $selectedSharedCalendarIds,
+                                                                                               $startDate,
+                                                                                               $endDate,
+                                                                                               $dateRangeType);
+            $calendarItems = $dataProvider->getData(true);
+            if ($dataProvider->getIsMaxCountReached())
+            {
+                echo CJSON::encode(array('limitReached' => true));
+            }
+            else
+            {
+                echo CJSON::encode(array('limitReached' => false));
+            }
         }
 
         /**
@@ -283,7 +317,7 @@
             $savedCalendar = SavedCalendar::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($savedCalendar);
             $savedCalendar->delete();
-            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider(Yii::app()->user->userModel);
             $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
             $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getMySavedCalendarsAndSelected(),
                                                                                        'mycalendar[]', 'mycalendar', 'saved');
@@ -315,7 +349,7 @@
             $savedCalendarSubscription->user     = $user;
             $savedCalendarSubscription->savedcalendar = $savedCalendar;
             $savedCalendarSubscription->save();
-            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider($user);
             $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
             $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
                                                                                        'sharedcalendar[]', 'sharedcalendar', 'shared');
@@ -330,7 +364,7 @@
         {
             $savedCalendarSubscription = SavedCalendarSubscription::getById(intval($id));
             $savedCalendarSubscription->delete();
-            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider();
+            $dataProvider                        = CalendarUtil::getCalendarItemsDataProvider(Yii::app()->user->userModel);
             $savedCalendarSubscriptions          = $dataProvider->getSavedCalendarSubscriptions();
             $content                             = CalendarUtil::makeCalendarItemsList($savedCalendarSubscriptions->getSubscribedToSavedCalendarsAndSelected(),
                                                                                        'sharedcalendar[]', 'sharedcalendar', 'shared');

@@ -100,11 +100,15 @@
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.calendars.assets')) . '/CalendarsUtil.js',
                                             CClientScript::POS_END);
+            //Right
+            $rightSideContent = $this->renderOverMaxCountText() . $this->renderFullCalendarContent();
+            $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightSideContent);
+            //Left
             $content  = $this->renderSmallCalendarContent();
             $content  .= $this->renderMyCalendarsContent();
             $content  .= $this->renderSubscribedToCalendarsContent();
             $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $content);
-            $right    = ZurmoHtml::tag('div', array('class' => 'right-column'), $this->renderFullCalendarContent());
+
             $params   = LabelUtil::getTranslationParamsForAllModules();
             $title    = ZurmoHtml::tag('h1', array(), Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params));
             $view     = ZurmoHtml::tag('div', array('class' => 'calendar-view'), $left . $right);
@@ -121,7 +125,16 @@
          */
         protected function renderSmallCalendarContent()
         {
-            Yii::app()->clientScript->registerScript('smallcalendarscript', '$( "#smallcalendar" ).datepicker();', ClientScript::POS_END);
+            // Begin Not Coding Standard
+            $script = "$( '#smallcalendar' ).datepicker({onSelect: function (date) {
+                                                                    var dateArray = date.split('/');
+                                                                    var month     = parseInt(dateArray[0]) - 1;
+                                                                    $('#calendar').fullCalendar('changeView', 'basicDay');
+                                                                    $('#calendar').fullCalendar('gotoDate', dateArray[2], month, dateArray[1]);
+                                                                 }
+                        });";
+            Yii::app()->clientScript->registerScript('smallcalendarscript', $script, ClientScript::POS_END);
+            // End Not Coding Standard
             return ZurmoHtml::tag('div', array('id' => 'smallcalendar'), '');
         }
 
@@ -159,6 +172,18 @@
         {
             $view = new FullCalendarForCombinedView($this->dataProvider);
             return $view->render();
+        }
+
+        /**
+         * Renders the message when the count of records is more than the limit.
+         */
+        public function renderOverMaxCountText()
+        {
+            $label = Zurmo::t('CalendarsModule', 'Only displaying the first X calendar items. Try using filters to narrow your results ');
+            $content  = '<div class="general-issue-notice" id="calItemCountResult" style="display:none"><span class="icon-notice"></span><p>';
+            $content .= $label;
+            $content .= '</p></div>';
+            return $content;
         }
     }
 ?>
