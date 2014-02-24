@@ -139,6 +139,7 @@
                 'moduleId'     => $this->getModule()->getId(),
             );
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($dashboard);
+            Portlet::resolvePortletCollectionColumnIndexes($layoutId);
             $homeTitleBarAndDashboardView = new HomeTitleBarAndDashboardView(
                                                     $this->getId(),
                                                     $this->getModule()->getId(),

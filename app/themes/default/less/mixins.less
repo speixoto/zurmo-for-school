@@ -175,6 +175,34 @@
 	}
 }
 
+.text-input(){
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	display:inline-block;
+	border:1px solid #ccc;
+	.radius(3px);
+	font-size:12px;
+	color:#666 !important;
+	text-indent:6px;
+	line-height: 24px;
+	height:26px;
+	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
+	.ie-shadow(#999999, 1, 15);
+	width:100%;
+
+	&:focus{
+		.b-shadow(0 0 1px 1px @themeColor);
+	}
+}
+
+.view-toolbar-icons(@size: 24px){
+	.symbly(@size);
+	padding:0;
+	margin:0;
+	vertical-align:middle;
+	position:relative;
+
+}
+
 // Gradients
 #gradient {
   .horizontal (@startColor: #555, @endColor: #333) {

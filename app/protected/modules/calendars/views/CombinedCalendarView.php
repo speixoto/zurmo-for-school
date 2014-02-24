@@ -125,6 +125,7 @@
          */
         protected function renderSmallCalendarContent()
         {
+            // Begin Not Coding Standard
             $script = "$( '#smallcalendar' ).datepicker({onSelect: function (date) {
                                                                     var dateArray = date.split('/');
                                                                     var month     = parseInt(dateArray[0]) - 1;
@@ -133,6 +134,7 @@
                                                                  }
                         });";
             Yii::app()->clientScript->registerScript('smallcalendarscript', $script, ClientScript::POS_END);
+            // End Not Coding Standard
             return ZurmoHtml::tag('div', array('id' => 'smallcalendar'), '');
         }
 

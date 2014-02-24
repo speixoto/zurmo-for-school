@@ -45,6 +45,7 @@
         {
             return false;
         }
+
         /**
          * @return int
          */
@@ -52,6 +53,7 @@
         {
             return 1;
         }
+
         /**
          * @return boolean
          */
@@ -59,6 +61,7 @@
         {
             return false;
         }
+
         /**
          * @return boolean
          */
@@ -66,6 +69,7 @@
         {
             return false;
         }
+
         /**
          * @return array
          */
@@ -73,6 +77,7 @@
         {
             return array();
         }
+
         /**
          * @return boolean
          */
@@ -80,6 +85,7 @@
         {
             return false;
         }
+
         /**
          * @return boolean
          */
@@ -87,6 +93,7 @@
         {
             return false;
         }
+
         /**
          * @return boolean
          */

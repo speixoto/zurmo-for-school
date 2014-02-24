@@ -49,7 +49,7 @@
         public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language, $errorOnFirstMissing = false)
         {
             assert('$language == null || is_string($language)');
-            if($language == null)
+            if ($language == null)
             {
                 $language = Yii::app()->language;
             }

@@ -101,7 +101,7 @@
          */
         protected static function resolveOwnersAvatarSmall($model)
         {
-            if($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
                 return $model->owner->getAvatarImage(32);
             }
@@ -112,7 +112,7 @@
          */
         protected static function resolveOwnersAvatarMedium($model)
         {
-            if($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
                 return $model->owner->getAvatarImage(64);
             }
@@ -124,7 +124,7 @@
          */
         protected static function resolveOwnersAvatarLarge($model)
         {
-            if($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
                 return $model->owner->getAvatarImage(128);
             }
@@ -136,9 +136,9 @@
          */
         protected static function resolveOwnersEmailSignature($model)
         {
-            if($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                if($model->owner->emailSignatures->count() > 0)
+                if ($model->owner->emailSignatures->count() > 0)
                 {
                     return $model->owner->emailSignatures[0]->htmlContent;
                 }

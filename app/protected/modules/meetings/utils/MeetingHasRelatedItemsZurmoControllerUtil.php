@@ -52,7 +52,7 @@
                 $userAttendees        = array();
                 $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
                 $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
-                $attendees = explode(',', $_POST[$this->relatedItemsFormName]['Contact']['ids']);
+                $attendees = explode(',', $_POST[$this->relatedItemsFormName]['Contact']['ids']); // Not Coding Standard
                 foreach ($attendees as $item)
                 {
                     if (strpos($item, $contactItemPrefix) !== false)
@@ -67,7 +67,7 @@
                     }
                 }
                 $this->resolveUserAttendees($model, $userAttendees);
-                $_POST[$this->relatedItemsFormName]['Contact']['ids'] = implode(',', $contactActivityItems);
+                $_POST[$this->relatedItemsFormName]['Contact']['ids'] = implode(',', $contactActivityItems); // Not Coding Standard
             }
             parent::resolveModelsRelatedItemsFromPost($model);
         }

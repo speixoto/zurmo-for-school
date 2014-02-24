@@ -299,15 +299,18 @@
             if ($this->activeThemeColor != static::CUSTOM_NAME)
             {
                 $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $this->activeThemeColor . '.css');
+                $cs->registerCssFile($themeBaseUrl . '/css/imports-' . $this->activeThemeColor . '.css');
             }
             else
             {
-                $filePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
-                if (!is_file($filePath))
+                $primaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+                $secondaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/imports-custom.css';
+                if (!is_file($primaryFilePath) || !is_file($secondaryFilePath))
                 {
                     Yii::app()->lessCompiler->compileCustom();
                 }
-                $cs->registerCssFile(Yii::app()->assetManager->publish($filePath));
+                $cs->registerCssFile(Yii::app()->assetManager->publish($primaryFilePath));
+                $cs->registerCssFile(Yii::app()->assetManager->publish($secondaryFilePath));
             }
         }
     }

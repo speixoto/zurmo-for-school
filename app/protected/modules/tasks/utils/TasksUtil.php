@@ -1015,7 +1015,7 @@
             }
             else
             {
-                if(!TasksUtil::isKanbanItemTypeValidBasedOnTaskStatus($kanbanItem->type, $task->status))
+                if (!TasksUtil::isKanbanItemTypeValidBasedOnTaskStatus($kanbanItem->type, $task->status))
                 {
                     $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
                     if ($kanbanItem->type != $kanbanTypeByStatus)
