@@ -43,6 +43,13 @@
 
         protected $params;
 
+        /**
+         * Class constructor.
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $calendarItems
+         * @param string $params
+         */
         public function __construct($controllerId, $moduleId, $calendarItems, $params)
         {
             $this->controllerId      = $controllerId;
@@ -51,16 +58,71 @@
             $this->params            = $params;
         }
 
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'title', 'type' => 'CalendarTitle'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'start', 'type' => 'CalendarDate'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'end', 'type' => 'CalendarDate'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+
+            );
+            return $metadata;
+        }
+
+        /**
+         * Gets pager css class.
+         * @return string
+         */
         protected static function getPagerCssClass()
         {
             return 'pager horizontal';
         }
 
+        /**
+         * Gets summary text.
+         * @return string
+         */
         protected static function getSummaryText()
         {
             return Zurmo::t('Core', '{start}-{end} of {count} result(s).');
         }
 
+        /**
+         * Gets grid view pager params.
+         * @return array
+         */
         protected function getCGridViewPagerParams()
         {
             return array(
@@ -68,34 +130,25 @@
                     'prevPageLabel'    => '<span>previous</span>',
                     'nextPageLabel'    => '<span>next</span>',
                     'lastPageLabel'    => '<span>last</span>',
-                    'paginationParams' => $this->params,
+                    'paginationParams' => array_merge(GetUtil::getData(), $this->params),
                     'route'            => '/calendars/default/getDayEvents',
                     'class'            => 'SimpleListLinkPager',
                 );
         }
 
         /**
-         * Override to not run global eval, since it causes doubling up of ajax requests on the pager.
-         * (non-PHPdoc)
-         * @see ListView::getCGridViewAfterAjaxUpdate()
+         * Gets designer rule type.
+         * @return null
          */
-        protected function getCGridViewAfterAjaxUpdate()
-        {
-            // Begin Not Coding Standard
-            return 'js:function(id, data) {
-                        processAjaxSuccessError(id, data);
-                        processListViewSummaryClone("' . $this->getGridViewId() . '",
-                                                    "' . static::getSummaryCssClass() . '",
-                                                    "' . $this->getSummaryCloneId() . '" );
-                    }';
-            // End Not Coding Standard
-        }
-
         public static function getDesignerRulesType()
         {
-            return null;
+            return 'CalendarItemsListView';
         }
 
+        /**
+         * Gets data provider.
+         * @return CalendarListItemsDataProvider
+         */
         protected function getDataProvider()
         {
             return new CalendarListItemsDataProvider($this->calendarItems, $this->resolveConfigForDataProvider());
@@ -104,7 +157,7 @@
         /**
          * Get the fields from calendar items to create a column array that fits the CGridView columns API
          */
-         protected function getCGridViewColumns()
+         /*protected function getCGridViewColumns()
          {
             $columns = array('title', 'start', 'end');
             //$lastColumn = $this->getCGridViewLastColumn();
@@ -114,7 +167,7 @@
                 array_push($columns, $lastColumn);
             }
             return $columns;
-        }
+        }*/
 
         /**
          * Resolve configuration for data provider
@@ -129,24 +182,66 @@
                     );
         }
 
-        protected function getCGridViewParams()
-        {
-            $params = parent::getCGridViewParams();
-            $params['ajaxUpdate'] = true;
-            return $params;
-        }
-
+        /**
+         * Gets grid view id.
+         * @return string
+         */
         public function getGridViewId()
         {
             $startDateArray = explode('-', $this->params['startDate']);
             return 'calendarDayEvents-' . $startDateArray[2];
         }
 
+        /**
+         * Renders the content by adding the scripts necessary for the view.
+         * @return string
+         */
         protected function renderContent()
         {
             $content = parent::renderContent();
             Yii::app()->getClientScript()->render($content);
             return $content;
+        }
+
+        /**
+         * Render script for interaction.js
+         */
+        protected function renderScripts()
+        {
+            parent::renderScripts();
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.views.assets')) . '/interactions.js');
+        }
+
+        /**
+         * Get the meta data and merge with standard CGridView column elements
+         * to create a column array that fits the CGridView columns API
+         */
+         protected function getCGridViewColumns()
+         {
+            $columns    = array();
+            $metadata   = static::getDefaultMetadata();
+            foreach ($metadata['global']['panels'] as $panel)
+            {
+                foreach ($panel['rows'] as $row)
+                {
+                    foreach ($row['cells'] as $cell)
+                    {
+                        foreach ($cell['elements'] as $columnInformation)
+                        {
+                            $column = $this->processColumnInfoToFetchColumnData($columnInformation);
+                            array_push($columns, $column);
+                        }
+                    }
+                }
+            }
+            /*$lastColumn = $this->getCGridViewLastColumn();
+            if (!empty($lastColumn))
+            {
+                array_push($columns, $lastColumn);
+            }*/
+            return $columns;
         }
     }
 ?>

@@ -33,42 +33,71 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Provides a pager used for displaying lists with a simple pagination of previous and next for
-     * more events in calendar.
-     */
-    class CalendarListLinkPager extends SimpleListLinkPager
+     /**
+      * Calendar items list view designer rules.
+      */
+    class CalendarItemsListViewDesignerRules extends ListViewDesignerRules
     {
-        protected function getActivePageLink($page, $label, $class)
+        /**
+         * @return boolean
+         */
+        public function allowEditInLayoutTool()
         {
-            $url = $this->createPageUrl($page);
-            $id  = 'link-' . $class;
-            $this->registerScript($url, $id);
-            return ZurmoHtml::link($label, '#',
-                                       array('id' => $id));
+            return false;
+        }
+        /**
+         * @return int
+         */
+        public function maxCellsPerRow()
+        {
+            return 1;
+        }
+        /**
+         * @return boolean
+         */
+        public function canMergeAndSplitCells()
+        {
+            return false;
+        }
+        /**
+         * @return boolean
+         */
+        public function canConfigureLayoutPanelsType()
+        {
+            return false;
+        }
+        /**
+         * @return array
+         */
+        public function getNonPlaceableLayoutAttributeNames()
+        {
+            return array();
+        }
+        /**
+         * @return boolean
+         */
+        public function canAddPanels()
+        {
+            return false;
+        }
+        /**
+         * @return boolean
+         */
+        public function canMovePanels()
+        {
+            return false;
+        }
+        /**
+         * @return boolean
+         */
+        public function canRemovePanels()
+        {
+            return false;
         }
 
-        protected function getItemClass($class)
+        public function getSavableMetadataRules()
         {
-            return $class . ' calpagination';
-        }
-
-        protected function registerScript($url, $id)
-        {
-            $params = $this->paginationParams;
-            $gridId = $params['gridId'];
-            $script = "$(document).on('click', $id, function(){
-                                                                                $.ajax({
-                                                                                    url: '{$url}',
-                                                                                    success: function(data)
-                                                                                             {
-                                                                                                $('#{$gridId}').html(data);
-                                                                                             }
-                                                                                });
-                                                                           })";
-            $cs = Yii::app()->clientScript;
-            $cs->registerScript('pagination-' . $id, $script, ClientScript::POS_END);
+            return array();
         }
     }
 ?>

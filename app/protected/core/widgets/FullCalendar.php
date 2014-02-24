@@ -81,6 +81,7 @@
             $qtip->addQTip(".fc-event");
 
             $cs            = Yii::app()->getClientScript();
+            $loadingText   = Zurmo::t('Core', 'Loading..');
             // Begin Not Coding Standard
 
             $script        = "$(document).on('ready', function() {
@@ -112,7 +113,7 @@
                                                                      eventRender: function(event, element, view) {
                                                                                         element.qtip({
                                                                                             content: {
-                                                                                                        text: 'Loading..',
+                                                                                                        text: '{$loadingText}',
                                                                                                         ajax: {
                                                                                                                     url: event.description,
                                                                                                                     type: 'get'
