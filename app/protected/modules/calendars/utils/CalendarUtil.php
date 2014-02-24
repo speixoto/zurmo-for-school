@@ -191,36 +191,7 @@
          */
         public static function getFullCalendarItems(CalendarItemsDataProvider $dataProvider)
         {
-            $calendarItems = $dataProvider->getData(true);
-            $fullCalendarItems = array();
-            for($k = 0; $k < count($calendarItems); $k++)
-            {
-                $fullCalendarItem = array();
-                $calItem = $calendarItems[$k];
-                $fullCalendarItem['title'] = $calItem->getTitle();
-                $fullCalendarItem['start'] = $calItem->getStartDateTime();
-                if($calItem->getEndDateTime() != null)
-                {
-                    $fullCalendarItem['end'] = $calItem->getEndDateTime();
-                }
-                else
-                {
-                    $fullCalendarItem['end'] = '';
-                }
-                $fullCalendarItem['color'] = $calItem->getColor();
-                $modelClass                = $calItem->getModelClass();
-                $model                     = $modelClass::getById($calItem->getModelId());
-                $fullCalendarItem['model'] = $model;
-                if($modelClass == 'Meeting')
-                {
-                    $fullCalendarItem['allDay'] = false;
-                }
-                $fullCalendarItems[] = $fullCalendarItem;
-            }
-            if(count($fullCalendarItems) >  0)
-            {
-                ArrayUtil::sortArrayByElementField('compareCalendarItemsByDateTime', 'usort', $fullCalendarItems, 'CalendarUtil');
-            }
+            $fullCalendarItems = self::processDataProviderAndGetCalendarItems($dataProvider);
             self::processCalendarItemsAndAddMoreEventsIfRequired($fullCalendarItems);
             return $fullCalendarItems;
         }
@@ -273,21 +244,21 @@
             $moreEventsCalItem['end']   = $fullCalItem['end'];
             $moreEventsCalItem['color'] = '#cccccc';
             $moreEventsCalItem['className'] = 'more-events';
-            $additionalCalItems = array();
+            $moreEventsCalItems = array();
             $moreEventsStartDate       = date('Y-m-d', strtotime($moreEventsCalItem['start']));
-            for($i = $key; $i < count($fullCalendarItems); $i++)
+            for($i = 0; $i < count($fullCalendarItems); $i++)
             {
                 $fullCalItemStartDate       = date('Y-m-d', strtotime($fullCalendarItems[$i]['start']));
                 if($moreEventsStartDate != $fullCalItemStartDate)
                 {
-                    break;
+                    continue;
                 }
                 else
                 {
-                    $additionalCalItems[] = $fullCalendarItems[$i];
+                    $moreEventsCalItems[] = $fullCalendarItems[$i];
                 }
             }
-            $moreEventsCalItem['additionalItems'] = $additionalCalItems;
+            $moreEventsCalItem['items'] = $moreEventsCalItems;
             return $moreEventsCalItem;
         }
 
@@ -927,17 +898,21 @@
                                                                       $selectedSharedCalendarIds = null,
                                                                       $startDate = null,
                                                                       $endDate = null,
-                                                                      $dateRangeType = null)
+                                                                      $dateRangeType = null,
+                                                                      $isSticky = true)
         {
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarStartDate', $startDate);
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarEndDate', $endDate);
-            ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
-                                                               'CalendarsModule',
-                                                               'myCalendarDateRangeType', $dateRangeType);
+            if($isSticky)
+            {
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                                   'CalendarsModule',
+                                                                   'myCalendarStartDate', $startDate);
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                                   'CalendarsModule',
+                                                                   'myCalendarEndDate', $endDate);
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                                   'CalendarsModule',
+                                                                   'myCalendarDateRangeType', $dateRangeType);
+            }
             return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
                                                                                         $selectedSharedCalendarIds,
                                                                                         $dateRangeType,
@@ -1021,6 +996,47 @@
             {
                 $model->serializedData = null;
             }
+        }
+
+        /**
+         * Process data provider and get calendar items.
+         * @param CalendarItemsDataProvider $dataProvider
+         * @return boolean
+         */
+        public static function processDataProviderAndGetCalendarItems(CalendarItemsDataProvider $dataProvider)
+        {
+            $calendarItems = $dataProvider->getData(true);
+            $fullCalendarItems = array();
+            for($k = 0; $k < count($calendarItems); $k++)
+            {
+                $fullCalendarItem = array();
+                $calItem = $calendarItems[$k];
+                $fullCalendarItem['title'] = $calItem->getTitle();
+                $fullCalendarItem['start'] = $calItem->getStartDateTime();
+                if($calItem->getEndDateTime() != null)
+                {
+                    $fullCalendarItem['end'] = $calItem->getEndDateTime();
+                }
+                else
+                {
+                    $fullCalendarItem['end'] = '';
+                }
+                $fullCalendarItem['color']      = $calItem->getColor();
+                $fullCalendarItem['modelClass'] = $calItem->getModelClass();
+                $fullCalendarItem['modelId']    = $calItem->getModelId();
+                //$model                     = $modelClass::getById($calItem->getModelId());
+                //$fullCalendarItem['model'] = $model;
+                if($calItem->getModelClass() == 'Meeting')
+                {
+                    $fullCalendarItem['allDay'] = false;
+                }
+                $fullCalendarItems[] = $fullCalendarItem;
+            }
+            if(count($fullCalendarItems) >  0)
+            {
+                ArrayUtil::sortArrayByElementField('compareCalendarItemsByDateTime', 'usort', $fullCalendarItems, 'CalendarUtil');
+            }
+            return $fullCalendarItems;
         }
     }
 ?>

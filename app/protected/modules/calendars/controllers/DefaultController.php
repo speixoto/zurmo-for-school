@@ -259,17 +259,28 @@
                 //If not more events
                 if($itemClass != 'more-events')
                 {
-                    $itemDetailViewClassName = get_class($item['model']) . 'ForCalendarItemDetailsView';
-                    $itemDetailViewInstance  = new $itemDetailViewClassName($this->getId(), $this->getModule()->getId(), $item['model']);
-                    $item['description']     = $itemDetailViewInstance->render();
-                    unset($item['model']);
+                    $item['description']     = Yii::app()->createUrl('calendars/default/getCalendarItemDetail',
+                                                                     array(
+                                                                            'modelClass' => $item['modelClass'],
+                                                                            'modelId'    => $item['modelId']
+                                                                     ));
                 }
                 else
                 {
-                    $calItemListView      = new CalendarItemsListView($this->getId(), $this->getModule()->getId(), $item['additionalItems']);
-                    $item['description']  = $calItemListView->render();
+                    $moreEventStartDate     = date('Y-m-d', strtotime($item['start']));
+                    $dateTimeObject         = new DateTime($moreEventStartDate);
+                    $dateTimeObject->add(new DateInterval('P1D'));
+                    $moreEventEndDate       = $dateTimeObject->format('Y-m-d');
+                    $params               = array(
+                                                    'selectedMyCalendarIds'     => $selectedMyCalendarIds,
+                                                    'selectedSharedCalendarIds' => $selectedSharedCalendarIds,
+                                                    'startDate'                 => $moreEventStartDate,
+                                                    'endDate'                   => $moreEventEndDate,
+                                                    'dateRangeType'             => SavedCalendar::DATERANGE_TYPE_DAY
+                                                );
+                    $item['description']     = Yii::app()->createUrl('calendars/default/getDayEvents', $params);
                 }
-                $items[$index]           = $item;
+                $items[$index]            = $item;
             }
             echo CJSON::encode($items);
         }
@@ -362,6 +373,50 @@
         protected static function getZurmoControllerUtil()
         {
             return new CalendarZurmoControllerUtil();
+        }
+
+        /**
+         * Get events for the selected calendars.
+         * @param string $selectedMyCalendarIds
+         * @param string $selectedSharedCalendarIds
+         * @param string $startDate
+         * @param string $endDate
+         * @param string $dateRangeType
+         */
+        public function actionGetDayEvents($selectedMyCalendarIds = null,
+                                            $selectedSharedCalendarIds = null,
+                                            $startDate = null,
+                                            $endDate = null,
+                                            $dateRangeType = null)
+        {
+            $dataProvider               = CalendarUtil::processAndGetDataProviderForEventsData($selectedMyCalendarIds,
+                                                                                               $selectedSharedCalendarIds,
+                                                                                               $startDate,
+                                                                                               $endDate,
+                                                                                               $dateRangeType,
+                                                                                               false);
+            $items                      = CalendarUtil::processDataProviderAndGetCalendarItems($dataProvider);
+            $calItemListView            = new CalendarItemsListView(
+                                                                    $this->getId(),
+                                                                    $this->getModule()->getId(),
+                                                                    $items,
+                                                                    GetUtil::getData()
+                                                                   );
+            echo $calItemListView->render();
+        }
+
+        /**
+         * Get event details in the calendar.
+         *
+         * @param string $modelClass
+         * @param string $modelId
+         */
+        public function actionGetCalendarItemDetail($modelClass, $modelId)
+        {
+            $model                   = $modelClass::getById(intval($modelId));
+            $itemDetailViewClassName = $modelClass . 'ForCalendarItemDetailsView';
+            $itemDetailViewInstance  = new $itemDetailViewClassName($this->getId(), $this->getModule()->getId(), $model);
+            echo $itemDetailViewInstance->render();
         }
     }
 ?>

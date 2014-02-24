@@ -41,11 +41,14 @@
     {
         protected $calendarItems;
 
-        public function __construct($controllerId, $moduleId, $calendarItems)
+        protected $params;
+
+        public function __construct($controllerId, $moduleId, $calendarItems, $params)
         {
-            $this->controllerId           = $controllerId;
-            $this->moduleId               = $moduleId;
-            $this->calendarItems          = $calendarItems;
+            $this->controllerId      = $controllerId;
+            $this->moduleId          = $moduleId;
+            $this->calendarItems     = $calendarItems;
+            $this->params            = $params;
         }
 
         protected static function getPagerCssClass()
@@ -65,8 +68,8 @@
                     'prevPageLabel'    => '<span>previous</span>',
                     'nextPageLabel'    => '<span>next</span>',
                     'lastPageLabel'    => '<span>last</span>',
-                    //'paginationParams' => GetUtil::getData(),
-                    //'route'            => $this->getGridViewActionRoute($this->actionId, $this->moduleId),
+                    'paginationParams' => $this->params,
+                    'route'            => '/calendars/default/getDayEvents',
                     'class'            => 'SimpleListLinkPager',
                 );
         }
@@ -90,7 +93,7 @@
 
         public static function getDesignerRulesType()
         {
-            return 'CalendarItemsListView';
+            return null;
         }
 
         protected function getDataProvider()
@@ -119,12 +122,31 @@
          */
         protected function resolveConfigForDataProvider()
         {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('modalListPageSize');
             return array(
                             'pagination' => array(
-                                'pageSize' => 2,
-                        )
+                                                    'pageSize' => CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE,
+                                                 )
                     );
+        }
+
+        protected function getCGridViewParams()
+        {
+            $params = parent::getCGridViewParams();
+            $params['ajaxUpdate'] = true;
+            return $params;
+        }
+
+        public function getGridViewId()
+        {
+            $startDateArray = explode('-', $this->params['startDate']);
+            return 'calendarDayEvents-' . $startDateArray[2];
+        }
+
+        protected function renderContent()
+        {
+            $content = parent::renderContent();
+            Yii::app()->getClientScript()->render($content);
+            return $content;
         }
     }
 ?>

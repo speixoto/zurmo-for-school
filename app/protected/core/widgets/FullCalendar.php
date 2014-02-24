@@ -60,8 +60,6 @@
             $defaultView     = $this->defaultView;
             $inputId         = $this->inputId;
             $eventsUrl       = Yii::app()->createUrl('calendars/default/getEvents');
-            $eventsCountUrl  = Yii::app()->createUrl('calendars/default/getEventsCount');
-
             //Set the goto date for calendar
             $startDate     = $this->startDate;
             $startDateAttr = explode('-', $startDate);
@@ -114,7 +112,11 @@
                                                                      eventRender: function(event, element, view) {
                                                                                         element.qtip({
                                                                                             content: {
-                                                                                                        text: event.description,
+                                                                                                        text: 'Loading..',
+                                                                                                        ajax: {
+                                                                                                                    url: event.description,
+                                                                                                                    type: 'get'
+                                                                                                                },
                                                                                                         title: event.title,
                                                                                                         button: true
                                                                                                      },
