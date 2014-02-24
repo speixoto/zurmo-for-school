@@ -92,7 +92,8 @@
                     }
                     if (linkId == '" . BuilderCanvasWizardView::getFinishLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName, true, BuilderCanvasWizardView::resolveAdditionalAjaxOptions($formName)) . "
+                        setIsDraftToZero()
+                        " . $this->getSaveAjaxString($formName, true, BuilderCanvasWizardView::resolveAdditionalAjaxOptionsForFinish($formName)) . "
                     }
                     ";
         }
@@ -133,6 +134,7 @@
                         {
                             if ($('#{$validationScenarioInputId}').val() == '{$serializedDataValidationScenario}')
                             {
+                                $(this).beforeValidateAction
                                 emailTemplateEditor.freezeLayoutEditor();
                                 emailTemplateEditor.compileSerializedData();
                             }

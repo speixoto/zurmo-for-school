@@ -312,7 +312,6 @@
             $this->registeremailTemplateEditorScripts();
             $this->registerLeftSideToolbarScripts();
             $this->registerRefreshCanvasFromSavedTemplateScript();
-            $this->registerCanvasFinishScript();
         }
 
         protected function registeremailTemplateEditorScripts()
@@ -479,17 +478,12 @@
                  });');
         }
 
-        protected function registerCanvasFinishScript()
+        /**
+         * @return string
+         */
+        protected static function resolveSaveRedirectToDetailsUrl()
         {
-            Yii::app()->clientScript->registerScript('canvasFinishScript', "
-                $('#" . static::getFinishLinkId() . "').unbind('click.canvasFinishScript');
-                $('#" . static::getFinishLinkId() . "').bind('click.canvasFinishScript', function()
-                {
-                    setIsDraftToZero();
-                    $('#" . static::getNextPageLinkId() . "').click();
-
-                });
-                ", CClientScript::POS_END);
+            return Yii::app()->createUrl('emailTemplates/default/details');
         }
 
         public static function resolveAdditionalAjaxOptions($formName)
@@ -527,6 +521,16 @@
                                                 });
                                                 emailTemplateEditor.unfreezeLayoutEditor();
                                             }";
+            return $ajaxArray;
+        }
+
+        public static function resolveAdditionalAjaxOptionsForFinish($formName)
+        {
+            $ajaxArray = array();
+            $ajaxArray['success']    = "js:function(data)
+                                        {
+                                            window.location.href = '" . static::resolveSaveRedirectToDetailsUrl() . "?id=' + data.id;
+                                        }";
             return $ajaxArray;
         }
     }
