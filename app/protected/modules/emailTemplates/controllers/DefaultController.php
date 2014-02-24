@@ -523,37 +523,37 @@
 
         public function actionRenderElementEditable()
         {
-            Yii::app()->clientScript->setToAjaxMode();
-            $className          = Yii::app()->request->getPost('className');
-            $id                 = Yii::app()->request->getPost('id');
-            $properties         = Yii::app()->request->getPost('properties');
-            $content            = Yii::app()->request->getPost('content');
-            $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', false);
-            // at bare minimum we should have classname. Without these it does not make sense.
-            if (!Yii::app()->request->isPostRequest || !isset($className))
-            {
-                Yii::app()->end(0, false);
-            }
-            $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
-            Yii::app()->clientScript->render($content);
-            echo $content;
+            $this->actionRenderElement(true);
         }
 
         public function actionRenderElementNonEditable()
         {
+            $this->actionRenderElement(false);
+        }
+
+        protected function actionRenderElement($editable = false)
+        {
             Yii::app()->clientScript->setToAjaxMode();
             $className          = Yii::app()->request->getPost('className');
-            $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', true);
-            $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', false);
             $id                 = Yii::app()->request->getPost('id');
             $properties         = Yii::app()->request->getPost('properties');
             $content            = Yii::app()->request->getPost('content');
+            $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
+            $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', false);
+
             // at bare minimum we should have classname. Without these it does not make sense.
             if (!Yii::app()->request->isPostRequest || !isset($className))
             {
                 Yii::app()->end(0, false);
             }
-            $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
+            if ($editable)
+            {
+                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
+            }
+            else
+            {
+                $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
+            }
             Yii::app()->clientScript->render($content);
             echo $content;
         }
