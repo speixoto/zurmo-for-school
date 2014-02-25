@@ -35,21 +35,38 @@
      ********************************************************************************/
 
     /**
-     * Class ImageModel
+     * Class ImageFileModel
      * Used to store public accessible images
      */
-    class ImageModel extends FileModel
+    class ImageFileModel extends FileModel
     {
+
+        public function getImageCachePath()
+        {
+            return Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $this->getImageCacheFileName();
+        }
+
+        protected function getImageCacheFileName()
+        {
+            return $this->id . '_' . $this->name;
+        }
+
         public function getThumbSrc()
         {
             //TODO: @sergio: Add test
-
+            //TODO: @sergio: Implement cache for thumb, its serving image only for now
+            return $this->getImageSrc();
         }
 
         public function getImageSrc()
         {
             //TODO: @sergio: Add test
-
+            $this->createCacheDirIfNotExists();
+            if (!$this->isImageCached())
+            {
+                $this->cacheImage();
+            }
+            return Yii::app()->getAssetManager()->publish($this->getImageCachePath());
         }
 
         public function createCacheDirIfNotExists()
@@ -58,6 +75,16 @@
             {
                 mkdir(Yii::getPathOfAlias('application.runtime.uploads'), 0755, true); // set recursive flag and permissions 0755
             }
+        }
+
+        protected function isImageCached()
+        {
+            return file_exists($this->getImageCachePath());
+        }
+
+        protected function cacheImage()
+        {
+            file_put_contents($this->getImageCachePath(), $this->fileContent);
         }
     }
 ?>

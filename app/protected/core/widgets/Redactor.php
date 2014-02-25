@@ -71,6 +71,8 @@
 
         public $imageUpload     = "false";
 
+        public $imageGetJson    = "false";
+
         public function run()
         {
             $id         = $this->htmlOptions['id'];
@@ -93,6 +95,7 @@
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
                                 imageUpload:    '{$this->imageUpload}',
+                                imageGetJson:   '{$this->imageGetJson}',
                             });
                         }
                     );";

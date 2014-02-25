@@ -45,20 +45,21 @@
             $fileContent = new FileContent();
             $fileContent->content = file_get_contents($tempFilePath);
 
-            $imageModel = new ImageModel();
-            $imageModel->name        = $uploadedFile->getName();
-            $imageModel->size        = $uploadedFile->getSize();
-            $imageModel->type        = $uploadedFile->getType();
-            $imageModel->fileContent = $fileContent;
-            $imageModel->save();
+            //TODO: @sergio Retrict upload of image types only
+            $imageFileModel = new ImageFileModel();
+            $imageFileModel->name        = $uploadedFile->getName();
+            $imageFileModel->size        = $uploadedFile->getSize();
+            $imageFileModel->type        = $uploadedFile->getType();
+            $imageFileModel->fileContent = $fileContent;
+            $imageFileModel->save();
 
-            $imageModel->createCacheDirIfNotExists();
+            $imageFileModel->createCacheDirIfNotExists();
 
-            $cachedImageName = $imageModel->id . '_' . $imageModel->name;
-            $logoCachedImagePath   = Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $cachedImageName;
-            $uploadedFile->saveAs($logoCachedImagePath);
+            $cachedImageName    = $imageFileModel->id . '_' . $imageFileModel->name;
+            $cachedImagePath    = $imageFileModel->getImageCachePath();
+            $uploadedFile->saveAs($cachedImagePath);
 
-            $imageSrc = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $cachedImageName);
+            $imageSrc = Yii::app()->getAssetManager()->publish($cachedImagePath);
 
             $array = array(
                 'filelink' => $imageSrc
@@ -70,12 +71,12 @@
         {
             //TODO: @sergio: Add test
             $array = array();
-            $imageModels = ImageModel::getAll();
-            foreach ($imageModels as $imageModel)
+            $imageFileModels = ImageFileModel::getAll();
+            foreach ($imageFileModels as $imageFileModel)
             {
-                $array[] = array('thumb' => $imageModel->getThumbSrc(),
-                                 'image' => $imageModel->getImageSrc(),
-                                 'title' => $imageModel->name);
+                $array[] = array('thumb' => $imageFileModel->getThumbSrc(),
+                                 'image' => $imageFileModel->getImageSrc(),
+                                 'title' => $imageFileModel->name);
             }
             echo stripslashes(json_encode($array));
         }
