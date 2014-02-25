@@ -61,23 +61,6 @@ function getModuleDateTimeAttributes(moduleName, url, targetId, attributeName)
 
 function getCalendarEvents(url, inputId, maxCount)
 {
-    /*var events = {
-        url : url,
-        cache: false,
-        data :function()
-        {
-            var view                    = $('#' + inputId).fullCalendar('getView');
-            var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
-            var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-            return {
-                selectedMyCalendarIds : selectedMyCalendars,
-                selectedSharedCalendarIds : selectedSharedCalendars,
-                startDate      : $.fullCalendar.formatDate(view.start, 'yyyy-MM-dd'),
-                endDate        : $.fullCalendar.formatDate(view.end, 'yyyy-MM-dd'),
-                dateRangeType  : view.name
-                }
-        }
-    };*/
     $('#' + inputId).fullCalendar('removeEvents');
     var events = function(start, end, callback) {
         var view                    = $('#' + inputId).fullCalendar('getView');
@@ -135,32 +118,4 @@ function getCalendarEvents(url, inputId, maxCount)
         });
     }
     return events;
-}
-
-function getEventsCount(url, inputId, flashElement)
-{
-    var view                    = $('#' + inputId).fullCalendar('getView');
-    var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
-    var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-    $.ajax({
-            url: url,
-            dataType: 'json',
-            beforeSend: function(xhr)
-                       {
-                           $('#calItemCountResult').hide();
-                       },
-            data:{
-                selectedMyCalendarIds : selectedMyCalendars,
-                selectedSharedCalendarIds : selectedSharedCalendars,
-                startDate      : $.fullCalendar.formatDate(view.start, 'yyyy-MM-dd'),
-                endDate        : $.fullCalendar.formatDate(view.end, 'yyyy-MM-dd'),
-                dateRangeType  : view.name
-            },
-            success: function(data) {
-                if(data.limitReached == true)
-                {
-                    $('#calItemCountResult').show();
-                }
-            }
-        });
 }

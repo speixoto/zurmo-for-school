@@ -60,8 +60,6 @@
             $defaultView     = $this->defaultView;
             $inputId         = $this->inputId;
             $eventsUrl       = Yii::app()->createUrl('calendars/default/getEvents');
-            $eventsCountUrl  = Yii::app()->createUrl('calendars/default/getEventsCount');
-
             //Set the goto date for calendar
             $startDate     = $this->startDate;
             $startDateAttr = explode('-', $startDate);
@@ -83,6 +81,7 @@
             $qtip->addQTip(".fc-event");
 
             $cs            = Yii::app()->getClientScript();
+            $loadingText   = Zurmo::t('Core', 'Loading..');
             // Begin Not Coding Standard
 
             $script        = "$(document).on('ready', function() {
@@ -114,7 +113,11 @@
                                                                      eventRender: function(event, element, view) {
                                                                                         element.qtip({
                                                                                             content: {
-                                                                                                        text: event.description,
+                                                                                                        text: '{$loadingText}',
+                                                                                                        ajax: {
+                                                                                                                    url: event.description,
+                                                                                                                    type: 'get'
+                                                                                                                },
                                                                                                         title: event.title,
                                                                                                         button: true
                                                                                                      },
@@ -136,10 +139,6 @@
                                                                                                       }
                                                                                         });
                                                                                     },
-                                                                     /*eventAfterAllRender: function(view)
-                                                                                          {
-                                                                                             getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
-                                                                                          },*/
                                                                      timeFormat: {
                                                                                     'month'    : '',
                                                                                     'basicDay': 'h:mm-{h:mm}tt',
