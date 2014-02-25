@@ -140,23 +140,19 @@ var emailTemplateEditor = {
         var point = {};
         var i = 0;
         var mostTopElement;
-        emailTemplateEditor.settings.ghost = $('<div class="ghost">' +  emailTemplateEditor.settings.dropHereMessage + '</div>');
-
+        var mostTopElementHalf = 0;
         var positions = [];
+        emailTemplateEditor.settings.ghost = $('<div class="ghost">' +  emailTemplateEditor.settings.dropHereMessage + '</div>');
 
         $('#building-blocks').on('mousedown', onBodyMouseDown);
 
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
-
             iframeRect = iframeElement.getBoundingClientRect();
-
             containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
             emailTemplateEditor.settings.isDragging = true;
-
             $('body').on('mousemove', onBodyMouseMove);
             $('body').on('mouseup', onBodyMouseUp);
-
             //calculate position of droppables on mousedown, ONLY ONCE each time
             positions = [];
             for (i = 0; i < containers.length; i++){
@@ -169,42 +165,40 @@ var emailTemplateEditor = {
             $('body').off('mousemove', onBodyMouseMove);
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
-            if (elementDragged != undefined && elementDragged.is('li') &&
-                event.pageX > iframeRect.left && event.pageX < iframeRect.right &&
-                event.pageY > iframeRect.top && event.pageY < iframeRect.bottom){
+            if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
                 if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
                     emailTemplateEditor.placeNewElement(elementDraggedClass, 1, iframeContents);
                 } else {
                     emailTemplateEditor.placeNewElement(elementDraggedClass, 0, iframeContents);
                 }
             } else {
-                console.log('error while droppping');
+                console.log('dropped either outside of canvas or not on element');
+                //Remove the ghost element
+                $(innerElements).each(function(){$(this).removeClass('hover');});
+                emailTemplateEditor.settings.ghost.detach();
             }
         }
 
         function onBodyMouseMove(event){
             if(emailTemplateEditor.settings.isDragging === true){
-
                 $(innerElements).each(function(){$(this).removeClass('hover');});
                 innerElements = [];
-
                 point.left = event.pageX - offset.left;
                 point.top = event.pageY - offset.top;
-
                 for(i = 0; i < positions.length; i++){
                     if( point.left > positions[i].left && point.left < positions[i].right &&
                         point.top > positions[i].top && point.top < positions[i].bottom ){
                         innerElements.push(containers[i]);
                     }
                 }
-
                 if(innerElements.length > 0){
-                    mostTopElement = innerElements[innerElements.length-1];
+                    mostTopElement = $(innerElements[innerElements.length-1]);
                     $(mostTopElement).addClass('hover');
-                    if( point.top - $(mostTopElement).offset().top < $(mostTopElement).outerHeight(true) / 2 ){
-                        $(mostTopElement).before(emailTemplateEditor.settings.ghost);
+                    mostTopElementHalf = mostTopElement.outerHeight(true) / 2;
+                    if( point.top - mostTopElement.offset().top + mostTopElementHalf < mostTopElementHalf ){
+                        mostTopElement.before(emailTemplateEditor.settings.ghost);
                     } else {
-                        $(mostTopElement).after(emailTemplateEditor.settings.ghost);
+                        mostTopElement.after(emailTemplateEditor.settings.ghost);
                     }
                 }
             }
@@ -271,6 +265,8 @@ var emailTemplateEditor = {
                 emailTemplateEditor.unfreezeLayoutEditor();
                 //Remove the ghost element
                 emailTemplateEditor.settings.ghost.detach();
+                //Remove any class 'hover' for elements
+                $(innerElements).each(function(){$(this).removeClass('hover');});
             }
         });
     },

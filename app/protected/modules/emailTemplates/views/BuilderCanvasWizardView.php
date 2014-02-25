@@ -148,10 +148,10 @@
                                   'iconClass'=> 'icon-layout'));
             $content .= $element->render();
             $element  = new EmailTemplateBuilderCanvasConfigurationMenuActionElement('default', 'emailTemplates', null,
-                            array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+                            array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-configuration'));
             $content .= $element->render();
             $element  = new EmailTemplateBuilderPreviewMenuActionElement('default', 'emailTemplates', null,
-                            array('htmlOptions' => array('id'=> static::PREVIEW_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+                            array('htmlOptions' => array('id'=> static::PREVIEW_MENU_BUTTON_ID), 'iconClass'=> 'icon-preview'));
             $content .= $element->render();
             $content .= '</nav></div>';
             return $content;
@@ -388,7 +388,7 @@
         protected function registerElementsMenuButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('elementsMenuButtonClickScript', '
-                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click.elementsMenuButtonClickScript", function()
+                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click.elementsMenuButtonClickScript", function(event)
                  {
                     if(!$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").hasClass("active"))
                     {
@@ -397,13 +397,14 @@
                     $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").removeClass("active");
                     $("#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . '").hide();
                     $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
+                    event.preventDefault();
                  });');
         }
 
         protected function registerCanvasConfigurationMenuButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('canvasConfigurationMenuButtonClickScript', '
-                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click.canvasConfigurationMenuButtonClick", function()
+                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click.canvasConfigurationMenuButtonClick", function(event)
                  {
                     if(!$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").hasClass("active"))
                     {
@@ -415,14 +416,15 @@
                             .find(".builder-element-non-editable.element-data.body")
                             .siblings(".' . BaseBuilderElement::OVERLAY_ACTIONS_CONTAINER_CLASS . '")
                             .find(".' . BaseBuilderElement::OVERLAY_ACTION_EDIT . '").trigger("click");
-                     });');
+                    event.preventDefault();
+                    });');
         }
 
         protected function registerPreviewMenuButtonClickScript()
         {
             $ajaxOption     = $this->resolvePreviewAjaxOptions();
             Yii::app()->clientScript->registerScript('previewMenuButtonClickScript', '
-                $("#' . static::PREVIEW_MENU_BUTTON_ID . '").live("click.previewMenuButtonClick", function()
+                $("#' . static::PREVIEW_MENU_BUTTON_ID . '").live("click.previewMenuButtonClick", function(event)
                  {
                     ' . ZurmoHtml::ajax($ajaxOption) . '
 
@@ -441,6 +443,7 @@
                         }
                     });
                     */
+                    event.preventDefault();
                 });');
         }
 
@@ -473,9 +476,10 @@
         protected function registerPreviewIFrameContainerCloserLinkClick()
         {
             Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
-                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").live("click.reviewIFrameContainerCloserLinkClick", function()
+                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").live("click.reviewIFrameContainerCloserLinkClick", function(event)
                  {
                     $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
+                    event.preventDefault();
                  });');
         }
 
@@ -483,11 +487,11 @@
         {
             Yii::app()->clientScript->registerScript('canvasFinishScript', "
                 $('#" . static::getFinishLinkId() . "').unbind('click.canvasFinishScript');
-                $('#" . static::getFinishLinkId() . "').bind('click.canvasFinishScript', function()
+                $('#" . static::getFinishLinkId() . "').bind('click.canvasFinishScript', function(event)
                 {
                     setIsDraftToZero();
                     $('#" . static::getNextPageLinkId() . "').click();
-
+                    event.preventDefault();
                 });
                 ", CClientScript::POS_END);
         }
