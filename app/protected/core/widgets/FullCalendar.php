@@ -118,14 +118,16 @@
                                                                                                                     url: event.description,
                                                                                                                     type: 'get'
                                                                                                                 },
-                                                                                                        title: event.title,
-                                                                                                        button: true
+                                                                                                        title: {
+                                                                                                                  text: event.title,
+                                                                                                                  button: 'Close'
+                                                                                                               }
                                                                                                      },
                                                                                             show:{
                                                                                                     event: 'click'
                                                                                             },
                                                                                             hide: {
-                                                                                                    event: 'click'
+                                                                                                    event: 'false'
                                                                                                   },
                                                                                             position: {
                                                                                                         my: 'bottom center',

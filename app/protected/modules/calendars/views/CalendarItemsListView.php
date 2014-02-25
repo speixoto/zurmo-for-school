@@ -69,7 +69,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'title', 'type' => 'CalendarTitle'),
+                                                array('attributeName' => 'color', 'type' => 'CalendarColor'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'title', 'type' => 'CalendarItemTitle'),
                                             ),
                                         ),
                                     )
