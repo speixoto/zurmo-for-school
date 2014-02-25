@@ -1024,8 +1024,6 @@
                 $fullCalendarItem['color']      = $calItem->getColor();
                 $fullCalendarItem['modelClass'] = $calItem->getModelClass();
                 $fullCalendarItem['modelId']    = $calItem->getModelId();
-                //$model                     = $modelClass::getById($calItem->getModelId());
-                //$fullCalendarItem['model'] = $model;
                 if($calItem->getModelClass() == 'Meeting')
                 {
                     $fullCalendarItem['allDay'] = false;
@@ -1037,6 +1035,31 @@
                 ArrayUtil::sortArrayByElementField('compareCalendarItemsByDateTime', 'usort', $fullCalendarItems, 'CalendarUtil');
             }
             return $fullCalendarItems;
+        }
+
+        /**
+         * Populate details url for calendar items.
+         * @param array $items
+         * @return array
+         */
+        public static function populateDetailsUrlForCalendarItems($items)
+        {
+            assert('is_array($items)');
+            $moduleClassNames           = CalendarUtil::getAvailableModulesForCalendar();
+            foreach($items as $index => $item)
+            {
+                foreach($moduleClassNames as $moduleClassName)
+                {
+                    $moduleClassName = $moduleClassName . 'Module';
+                    if($moduleClassName::getPrimaryModelName() == $item['modelClass'])
+                    {
+                        $moduleId           = $moduleClassName::getDirectoryName();
+                        $item['detailsUrl'] = Yii::app()->createUrl($moduleId . '/default/details', array('id' => $item['modelId']));
+                        $items[$index]      = $item;
+                    }
+                }
+            }
+            return $items;
         }
     }
 ?>

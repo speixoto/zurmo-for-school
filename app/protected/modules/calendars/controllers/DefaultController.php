@@ -396,6 +396,7 @@
                                                                                                $dateRangeType,
                                                                                                false);
             $items                      = CalendarUtil::processDataProviderAndGetCalendarItems($dataProvider);
+            $items                      = CalendarUtil::populateDetailsUrlForCalendarItems($items);
             $calItemListView            = new CalendarItemsListView(
                                                                     $this->getId(),
                                                                     $this->getModule()->getId(),
