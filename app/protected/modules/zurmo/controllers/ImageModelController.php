@@ -53,16 +53,11 @@
             $imageFileModel->fileContent = $fileContent;
             $imageFileModel->save();
 
-            $imageFileModel->createCacheDirIfNotExists();
-
-            $cachedImageName    = $imageFileModel->id . '_' . $imageFileModel->name;
-            $cachedImagePath    = $imageFileModel->getImageCachePath();
-            $uploadedFile->saveAs($cachedImagePath);
-
-            $imageSrc = Yii::app()->getAssetManager()->publish($cachedImagePath);
+            $imageFileModel->createImageCache();
 
             $array = array(
-                'filelink' => $imageSrc
+                'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
+                                    array('fileName' => $imageFileModel->getImageCacheFileName()))
             );
             echo stripslashes(json_encode($array));
         }
@@ -74,11 +69,42 @@
             $imageFileModels = ImageFileModel::getAll();
             foreach ($imageFileModels as $imageFileModel)
             {
-                $array[] = array('thumb' => $imageFileModel->getThumbSrc(),
-                                 'image' => $imageFileModel->getImageSrc(),
-                                 'title' => $imageFileModel->name);
+                $array[] = array('thumb' => $this->createAbsoluteUrl('imageModel/getThumb',
+                                                array('fileName' => $imageFileModel->getImageCacheFileName())),
+                                 'image' => $this->createAbsoluteUrl('imageModel/getImage',
+                                                array('fileName' => $imageFileModel->getImageCacheFileName())));
             }
             echo stripslashes(json_encode($array));
+        }
+
+        public function actionGetImage($fileName)
+        {
+            assert('is_string($fileName)');
+            $this->getGetImageFromCache($fileName, false);
+        }
+
+        public function actionGetThumb($fileName)
+        {
+            assert('is_string($fileName)');
+            $this->getGetImageFromCache($fileName, true);
+        }
+
+        protected function getGetImageFromCache($fileName, $isThumb = false)
+        {
+            $imagePath = ImageFileModel::getImageCachePathByFileName($fileName, $isThumb);
+            if (!file_exists($imagePath))
+            {
+                $imageFileModel = ImageFileModel::getByFileName($fileName);
+                $imageFileModel->createImageCache($isThumb);
+            }
+            $mime               = ZurmoFileHelper::getMimeType($imagePath);
+            $size               = filesize($imagePath);
+            $name               = pathinfo($imagePath, PATHINFO_FILENAME);
+            header('Content-Type: '     .   $mime);
+            header('Content-Length: '   .   $size);
+            header('Content-Name: '     .   $name);
+            readfile($imagePath);
+            Yii::app()->end(0, false);
         }
     }
 ?>

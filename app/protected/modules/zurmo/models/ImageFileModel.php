@@ -40,36 +40,67 @@
      */
     class ImageFileModel extends FileModel
     {
+        const DEFAULT_THUMBNAIL_HEIGHT      = 30;
+        const DEFAULT_THUMBNAIL_WIDTH       = 65;
+        const THUMB_FILE_NAME_PREFIX   = 'thumb_';
 
-        public function getImageCachePath()
+        public static function getByFileName($fileName)
         {
-            return Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $this->getImageCacheFileName();
+            assert('is_string($fileName)');
+            $matches = array();
+            preg_match('/^(\d+)_/', $fileName, $matches);
+            if (count($matches) == 2)
+            {
+                $id = $matches[1];
+                return static::getById((int) $id);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
-        protected function getImageCacheFileName()
+        public function getImageCachePath($isThumbnail = false)
+        {
+            //TODO: @sergio: Add test
+            if ($isThumbnail)
+            {
+                return static::getPathToCachedFiles() . static::THUMB_FILE_NAME_PREFIX . $this->getImageCacheFileName();
+            }
+            return static::getPathToCachedFiles() . $this->getImageCacheFileName();
+        }
+
+        public static function getImageCachePathByFileName($fileName, $isThumb)
+        {
+            assert('is_string($fileName)');
+            if ($isThumb)
+            {
+                $fileName = static::THUMB_FILE_NAME_PREFIX . $fileName;
+            }
+            return static::getPathToCachedFiles() . $fileName;
+        }
+
+        protected static function getPathToCachedFiles()
+        {
+            return Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR;
+        }
+
+        public function getImageCacheFileName()
         {
             return $this->id . '_' . $this->name;
         }
 
-        public function getThumbSrc()
+        public function createImageCache($isThumbnail = false)
         {
-            //TODO: @sergio: Add test
-            //TODO: @sergio: Implement cache for thumb, its serving image only for now
-            return $this->getImageSrc();
-        }
-
-        public function getImageSrc()
-        {
-            //TODO: @sergio: Add test
+            $imageCachePath = $this->getImageCachePath($isThumbnail);
             $this->createCacheDirIfNotExists();
-            if (!$this->isImageCached())
+            if (!$this->isImageCached($imageCachePath))
             {
-                $this->cacheImage();
+                $this->cacheImage($imageCachePath, $isThumbnail);
             }
-            return Yii::app()->getAssetManager()->publish($this->getImageCachePath());
         }
 
-        public function createCacheDirIfNotExists()
+        protected function createCacheDirIfNotExists()
         {
             if (!is_dir(Yii::getPathOfAlias('application.runtime.uploads')))
             {
@@ -77,14 +108,23 @@
             }
         }
 
-        protected function isImageCached()
+        protected function isImageCached($imageCachePath)
         {
-            return file_exists($this->getImageCachePath());
+            return file_exists($imageCachePath);
         }
 
-        protected function cacheImage()
+        protected function cacheImage($imageCachePath, $isThumbnail)
         {
-            file_put_contents($this->getImageCachePath(), $this->fileContent);
+            if ($isThumbnail)
+            {
+                $newWidth  = static::DEFAULT_THUMBNAIL_WIDTH;
+                $newHeight = static::DEFAULT_THUMBNAIL_HEIGHT;
+                WideImage::load($this->fileContent->content)->resize($newWidth, $newHeight)->saveToFile($imageCachePath);
+            }
+            else
+            {
+                file_put_contents($imageCachePath, $this->fileContent->content);
+            }
         }
     }
 ?>
