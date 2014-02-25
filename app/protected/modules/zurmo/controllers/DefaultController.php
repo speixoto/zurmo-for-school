@@ -566,39 +566,5 @@
             $value = (bool) ZurmoConfigurationUtil::getForCurrentUserByModuleName($moduleName, $panelId);
             ZurmoConfigurationUtil::setForCurrentUserByModuleName($moduleName, $panelId, !$value);
         }
-
-        public function actionUploadImages()
-        {
-
-            //TODO: @Sergio: move this to FileModelController @see common.php and @see EmailMessageContentElement too
-            $uploadedFile = UploadedFileUtil::getByNameAndCatchError('file');
-            $tempFilePath = $uploadedFile->getTempName();
-
-            if (!is_dir(Yii::getPathOfAlias('application.runtime.uploads')))
-            {
-                mkdir(Yii::getPathOfAlias('application.runtime.uploads'), 0755, true); // set recursive flag and permissions 0755
-            }
-
-            $fileContent = new FileContent();
-            $fileContent->content = file_get_contents($tempFilePath);
-
-            $fileModel = new FileModel();
-            $fileModel->name        = $uploadedFile->getName();
-            $fileModel->size        = $uploadedFile->getSize();
-            $fileModel->type        = $uploadedFile->getType();
-            $fileModel->fileContent = $fileContent;
-            $fileModel->save();
-
-            $cachedFileName = $fileModel->id . '_' . $fileModel->name;
-            $logoCachedFilePath   = Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $cachedFileName;
-            $uploadedFile->saveAs($logoCachedFilePath);
-
-            $logoFileSrc = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $cachedFileName);
-
-            $array = array(
-                'filelink' => $logoFileSrc
-            );
-            echo stripslashes(json_encode($array));
-        }
     }
 ?>
