@@ -172,7 +172,20 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            return array();
+            $errorMessage   = Zurmo::t('EmailTemplatesModule',
+                                                'There was an error saving EmailTemplatesModuleSingularLabel',
+                                                LabelUtil::getTranslationParamsForAllModules());
+            $ajaxArray                  = array();
+            $ajaxArray['error']       = "js:function(data)
+                                            {
+                                                $('#FlashMessageBar').jnotifyAddMessage({
+                                                    text: '" . $errorMessage . "',
+                                                    permanent: true,
+                                                    clickOverlay : true,
+                                                    showIcon: false,
+                                                });
+                                            }";
+            return $ajaxArray;
         }
 
         protected function resolveRelativeUrl($action, $params = array())

@@ -274,8 +274,8 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            $ajaxArray                  = array();
             // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
+            $ajaxArray                  = parent::resolveAdditionalAjaxOptions($formName);
             $ajaxArray['success']       = "js:function(data)
                                             {
                                                 if ('create' == '" . Yii::app()->getController()->getAction()->getId() . "')

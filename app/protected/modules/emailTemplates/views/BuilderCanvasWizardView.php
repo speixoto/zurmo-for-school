@@ -488,20 +488,11 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            /*
-             * For Save/Finish do this:
-             * first event should compile serializedData if need and shove it into an html entity
-             * second event(for finish), set isDraft to zero, we have this done in registerCanvasFinishScript
-             * third, change the $ajaxArray['data'] to jquery selector of val of the entity containing cached serialized data.
-             */
             $successMessage = Zurmo::t('EmailTemplatesModule',
-                                        'EmailTemplatesModuleSingularLabel was successfully saved.',
-                                        LabelUtil::getTranslationParamsForAllModules());
-            $errorMessage   = Zurmo::t('EmailTemplatesModule',
-                                        'There was an error saving EmailTemplatesModuleSingularLabel',
-                                        LabelUtil::getTranslationParamsForAllModules());
-            $ajaxArray                  = array();
-            $ajaxArray['success']       = "js:function(data)
+                                                                'EmailTemplatesModuleSingularLabel was successfully saved.',
+                                                                LabelUtil::getTranslationParamsForAllModules());
+            $ajaxArray                      = parent::resolveAdditionalAjaxOptions($formName);
+            $ajaxArray['success']           = "js:function(data)
                                             {
                                                 $('#FlashMessageBar').jnotifyAddMessage({
                                                     text: '" . $successMessage . "',
@@ -509,16 +500,9 @@
                                                     clickOverlay : true,
                                                     showIcon: false,
                                                 });
-                                                emailTemplateEditor.unfreezeLayoutEditor();
                                             }";
-            $ajaxArray['error']       = "js:function(data)
+            $ajaxArray['complete']          = "js:function()
                                             {
-                                                $('#FlashMessageBar').jnotifyAddMessage({
-                                                    text: '" . $errorMessage . "',
-                                                    permanent: true,
-                                                    clickOverlay : true,
-                                                    showIcon: false,
-                                                });
                                                 emailTemplateEditor.unfreezeLayoutEditor();
                                             }";
             return $ajaxArray;
@@ -526,11 +510,8 @@
 
         public static function resolveAdditionalAjaxOptionsForFinish($formName)
         {
-            $ajaxArray = array();
-            $ajaxArray['success']    = "js:function(data)
-                                        {
-                                            window.location.href = '" . static::resolveSaveRedirectToDetailsUrl() . "?id=' + data.id;
-                                        }";
+            $ajaxArray = static::resolveAdditionalAjaxOptions($formName);
+            unset($ajaxArray['success']);
             return $ajaxArray;
         }
     }
