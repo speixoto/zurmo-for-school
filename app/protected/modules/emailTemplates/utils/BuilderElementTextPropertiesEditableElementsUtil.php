@@ -54,13 +54,13 @@
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
                                             'FontFamilyStaticDropDownFormElement',
-                                            'font-style',
+                                            'font-family',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Text Style')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'FontWeightStaticDropDownFormElement',
-                                            'font-weight',
+                                            'FontStyleStaticDropDownFormElement',
+                                            'font-style',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Text Weight')));
             $configurationItems[]       = static::resolveConfigurationItem(
