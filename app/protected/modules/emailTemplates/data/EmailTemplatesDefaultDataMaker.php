@@ -72,11 +72,11 @@
                 'dom'               => array(
                     'canvas1'     => array(
                         'class'       => 'BuilderCanvasElement',
-                        'properties'  => array('frontend' => array('inlineStyles' => array('background-color' =>  '#aaaaaa', 'font-color' => '#ff0000', 'font-size' => '18px'))),
+                        'properties'  => array('frontend' => array('inlineStyles' => array('background-color' =>  '#aaaaaa', 'color' => '#ff0000', 'font-size' => '18px'))),
                         'content'     => array(
                             'row1'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 1), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'font-color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 1), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row1column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -91,7 +91,7 @@
                                             ),
                                             'row1column1text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' =>  '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' =>  '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 1 Col 1 Text 2</li></ul>',
                                                 ),
@@ -102,7 +102,7 @@
                             ),
                             'row2'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 2), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'font-color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 2), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row2column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -117,7 +117,7 @@
                                             ),
                                             'row2column1text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 2 Col 1 Text 2</li></ul>',
                                                 ),
@@ -137,7 +137,7 @@
                                             ),
                                             'row2column2text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 2 Col 2 Text 2</li></ul>',
                                                 ),
@@ -148,7 +148,7 @@
                             ),
                             'row3'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 3), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'font-color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 3), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row3column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -163,7 +163,7 @@
                                             ),
                                             'row3column1text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 3 Col 1 Text 2</li></ul>',
                                                 ),
@@ -183,7 +183,7 @@
                                             ),
                                             'row3column2text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 3 Col 2 Text 2</li></ul>',
                                                 ),
@@ -203,7 +203,7 @@
                                             ),
                                             'row3column3text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 3 Col 3 Text 2</li></ul>',
                                                 ),
@@ -214,7 +214,7 @@
                             ),
                             'row4'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 4), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'font-color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 4), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row4column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -229,7 +229,7 @@
                                             ),
                                             'row4column1text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 4 Col 1 Text 2</li></ul>',
                                                 ),
@@ -249,7 +249,7 @@
                                             ),
                                             'row4column2text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 4 Col 2 Text 2</li></ul>',
                                                 ),
@@ -269,7 +269,7 @@
                                             ),
                                             'row4column3text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 4 Col 3 Text 2</li></ul>',
                                                 ),
@@ -289,7 +289,7 @@
                                             ),
                                             'row4column4text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 4 Col 4 Text 2</li></ul>',
                                                 ),
@@ -300,7 +300,7 @@
                             ),
                             'row5'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '1:2'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'font-color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => '1:2'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row5column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -315,7 +315,7 @@
                                             ),
                                             'row5column1text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 5 Col 1 Text 2</li></ul>',
                                                 ),
@@ -335,7 +335,7 @@
                                             ),
                                             'row5column2text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 5 Col 2 Text 2</li></ul>',
                                                 ),
@@ -346,7 +346,7 @@
                             ),
                             'row6'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '2:1'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'font-color' => '#0000fff00', 'font-size' => '14px'))),
+                                'properties'    =>  array('backend' => array('configuration' => '2:1'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '14px'))),
                                 'content'       => array(
                                     'row6column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -361,7 +361,7 @@
                                             ),
                                             'row6column1text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 6 Col 1 Text 2</li></ul>',
                                                 ),
@@ -381,7 +381,7 @@
                                             ),
                                             'row6column2text2'     => array(
                                                 'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','font-color' => '#0000ff', 'font-size' => '10px'))),
+                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
                                                 'content'       => array(
                                                     'text'      => '<ul><li>Row 6 Col 2 Text 2</li></ul>',
                                                 ),

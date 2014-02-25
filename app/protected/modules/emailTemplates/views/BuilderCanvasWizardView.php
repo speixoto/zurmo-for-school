@@ -148,10 +148,10 @@
                                   'iconClass'=> 'icon-layout'));
             $content .= $element->render();
             $element  = new EmailTemplateBuilderCanvasConfigurationMenuActionElement('default', 'emailTemplates', null,
-                            array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-configuration'));
+                            array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
             $content .= $element->render();
             $element  = new EmailTemplateBuilderPreviewMenuActionElement('default', 'emailTemplates', null,
-                            array('htmlOptions' => array('id'=> static::PREVIEW_MENU_BUTTON_ID), 'iconClass'=> 'icon-preview'));
+                            array('htmlOptions' => array('id'=> static::PREVIEW_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
             $content .= $element->render();
             $content .= '</nav></div>';
             return $content;
@@ -312,7 +312,6 @@
             $this->registeremailTemplateEditorScripts();
             $this->registerLeftSideToolbarScripts();
             $this->registerRefreshCanvasFromSavedTemplateScript();
-            $this->registerCanvasFinishScript();
         }
 
         protected function registeremailTemplateEditorScripts()
@@ -388,7 +387,7 @@
         protected function registerElementsMenuButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('elementsMenuButtonClickScript', '
-                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click.elementsMenuButtonClickScript", function(event)
+                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").live("click.elementsMenuButtonClickScript", function()
                  {
                     if(!$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").hasClass("active"))
                     {
@@ -397,14 +396,13 @@
                     $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").removeClass("active");
                     $("#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . '").hide();
                     $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
-                    event.preventDefault();
                  });');
         }
 
         protected function registerCanvasConfigurationMenuButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('canvasConfigurationMenuButtonClickScript', '
-                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click.canvasConfigurationMenuButtonClick", function(event)
+                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").live("click.canvasConfigurationMenuButtonClick", function()
                  {
                     if(!$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").hasClass("active"))
                     {
@@ -416,15 +414,14 @@
                             .find(".builder-element-non-editable.element-data.body")
                             .siblings(".' . BaseBuilderElement::OVERLAY_ACTIONS_CONTAINER_CLASS . '")
                             .find(".' . BaseBuilderElement::OVERLAY_ACTION_EDIT . '").trigger("click");
-                    event.preventDefault();
-                    });');
+                     });');
         }
 
         protected function registerPreviewMenuButtonClickScript()
         {
             $ajaxOption     = $this->resolvePreviewAjaxOptions();
             Yii::app()->clientScript->registerScript('previewMenuButtonClickScript', '
-                $("#' . static::PREVIEW_MENU_BUTTON_ID . '").live("click.previewMenuButtonClick", function(event)
+                $("#' . static::PREVIEW_MENU_BUTTON_ID . '").live("click.previewMenuButtonClick", function()
                  {
                     ' . ZurmoHtml::ajax($ajaxOption) . '
 
@@ -443,7 +440,6 @@
                         }
                     });
                     */
-                    event.preventDefault();
                 });');
         }
 
@@ -476,42 +472,27 @@
         protected function registerPreviewIFrameContainerCloserLinkClick()
         {
             Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
-                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").live("click.reviewIFrameContainerCloserLinkClick", function(event)
+                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").live("click.reviewIFrameContainerCloserLinkClick", function()
                  {
                     $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
-                    event.preventDefault();
                  });');
         }
 
-        protected function registerCanvasFinishScript()
+        /**
+         * @return string
+         */
+        protected static function resolveSaveRedirectToDetailsUrl()
         {
-            Yii::app()->clientScript->registerScript('canvasFinishScript', "
-                $('#" . static::getFinishLinkId() . "').unbind('click.canvasFinishScript');
-                $('#" . static::getFinishLinkId() . "').bind('click.canvasFinishScript', function(event)
-                {
-                    setIsDraftToZero();
-                    $('#" . static::getNextPageLinkId() . "').click();
-                    event.preventDefault();
-                });
-                ", CClientScript::POS_END);
+            return Yii::app()->createUrl('emailTemplates/default/details');
         }
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            /*
-             * For Save/Finish do this:
-             * first event should compile serializedData if need and shove it into an html entity
-             * second event(for finish), set isDraft to zero, we have this done in registerCanvasFinishScript
-             * third, change the $ajaxArray['data'] to jquery selector of val of the entity containing cached serialized data.
-             */
             $successMessage = Zurmo::t('EmailTemplatesModule',
-                                        'EmailTemplatesModuleSingularLabel was successfully saved.',
-                                        LabelUtil::getTranslationParamsForAllModules());
-            $errorMessage   = Zurmo::t('EmailTemplatesModule',
-                                        'There was an error saving EmailTemplatesModuleSingularLabel',
-                                        LabelUtil::getTranslationParamsForAllModules());
-            $ajaxArray                  = array();
-            $ajaxArray['success']       = "js:function(data)
+                                                                'EmailTemplatesModuleSingularLabel was successfully saved.',
+                                                                LabelUtil::getTranslationParamsForAllModules());
+            $ajaxArray                      = parent::resolveAdditionalAjaxOptions($formName);
+            $ajaxArray['success']           = "js:function(data)
                                             {
                                                 $('#FlashMessageBar').jnotifyAddMessage({
                                                     text: '" . $successMessage . "',
@@ -519,18 +500,18 @@
                                                     clickOverlay : true,
                                                     showIcon: false,
                                                 });
-                                                emailTemplateEditor.unfreezeLayoutEditor();
                                             }";
-            $ajaxArray['error']       = "js:function(data)
+            $ajaxArray['complete']          = "js:function()
                                             {
-                                                $('#FlashMessageBar').jnotifyAddMessage({
-                                                    text: '" . $errorMessage . "',
-                                                    permanent: true,
-                                                    clickOverlay : true,
-                                                    showIcon: false,
-                                                });
                                                 emailTemplateEditor.unfreezeLayoutEditor();
                                             }";
+            return $ajaxArray;
+        }
+
+        public static function resolveAdditionalAjaxOptionsForFinish($formName)
+        {
+            $ajaxArray = static::resolveAdditionalAjaxOptions($formName);
+            unset($ajaxArray['success']);
             return $ajaxArray;
         }
     }

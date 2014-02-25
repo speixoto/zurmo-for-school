@@ -314,8 +314,8 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            $ajaxArray                  = array();
             // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
+            $ajaxArray                                      = parent::resolveAdditionalAjaxOptions($formName);
             $ajaxArray['success']       = "js:function(data)
                                             {
                                                 originalBaseTemplateId  = $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
@@ -325,7 +325,6 @@
                                                     $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
                                                 }
                                                 $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val(selectedBaseTemplateId);
-
                                             }";
             return $ajaxArray;
         }
