@@ -144,7 +144,11 @@
                                       'endDate'                    => CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_DAY),
                                       'dateRangeType'              => SavedCalendar::DATERANGE_TYPE_DAY));
             $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getEvents');
+            $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getDayEvents');
 
+            $this->setGetArray (array('modelClass'  => 'Product', // Not Coding Standard
+                                      'modelId'     => $superCalId));
+            $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getCalendarItemDetail');
             //Add subscribed calendar
             $user = UserTestHelper::createBasicUser('jim');
             $subscribedCalendar = CalendarTestHelper::createSavedCalendarByName("My Subscribed Cal", '#315AB0');

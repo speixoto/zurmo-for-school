@@ -40,7 +40,7 @@
     {
         const MAXIMUM_CALENDAR_ITEMS_COUNT = 200;
 
-        const MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE = 5;
+        const MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE = 2;
 
         /**
          * @var array

@@ -155,21 +155,6 @@
         }
 
         /**
-         * Get the fields from calendar items to create a column array that fits the CGridView columns API
-         */
-         /*protected function getCGridViewColumns()
-         {
-            $columns = array('title', 'start', 'end');
-            //$lastColumn = $this->getCGridViewLastColumn();
-            $lastColumn = null;
-            if (!empty($lastColumn))
-            {
-                array_push($columns, $lastColumn);
-            }
-            return $columns;
-        }*/
-
-        /**
          * Resolve configuration for data provider
          * @return array
          */
@@ -236,12 +221,33 @@
                     }
                 }
             }
-            /*$lastColumn = $this->getCGridViewLastColumn();
+            $lastColumn = $this->getCGridViewLastColumn();
             if (!empty($lastColumn))
             {
                 array_push($columns, $lastColumn);
-            }*/
+            }
             return $columns;
+        }
+
+        /**
+         * Gets grid view last column.
+         * @return array
+         */
+        protected function getCGridViewLastColumn()
+        {
+            return array(
+                'class'           => 'ButtonColumn',
+                'template'        => '{update}',
+                'buttons' => array(
+                    'update' => array(
+                    'url'             => '$data["detailsUrl"]',
+                    'imageUrl'        => false,
+                    //todo @amit has to correct the class.
+                    'options'         => array('class' => 'pencil', 'title' => 'Details'),
+                    'label'           => '!'
+                    ),
+                ),
+            );
         }
     }
 ?>
