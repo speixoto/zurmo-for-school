@@ -80,31 +80,13 @@
         public function actionGetImage($fileName)
         {
             assert('is_string($fileName)');
-            $this->getGetImageFromCache($fileName, false);
+            ImageFileModelUtil::readImageFromCache($fileName, false);
         }
 
         public function actionGetThumb($fileName)
         {
             assert('is_string($fileName)');
-            $this->getGetImageFromCache($fileName, true);
-        }
-
-        protected function getGetImageFromCache($fileName, $isThumb = false)
-        {
-            $imagePath = ImageFileModel::getImageCachePathByFileName($fileName, $isThumb);
-            if (!file_exists($imagePath))
-            {
-                $imageFileModel = ImageFileModel::getByFileName($fileName);
-                $imageFileModel->createImageCache($isThumb);
-            }
-            $mime               = ZurmoFileHelper::getMimeType($imagePath);
-            $size               = filesize($imagePath);
-            $name               = pathinfo($imagePath, PATHINFO_FILENAME);
-            header('Content-Type: '     .   $mime);
-            header('Content-Length: '   .   $size);
-            header('Content-Name: '     .   $name);
-            readfile($imagePath);
-            Yii::app()->end(0, false);
+            ImageFileModelUtil::readImageFromCache($fileName, true);
         }
     }
 ?>

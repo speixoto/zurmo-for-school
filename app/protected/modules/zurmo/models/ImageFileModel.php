@@ -40,66 +40,109 @@
      */
     class ImageFileModel extends FileModel
     {
-        const DEFAULT_THUMBNAIL_HEIGHT      = 30;
-        const DEFAULT_THUMBNAIL_WIDTH       = 65;
+        const DEFAULT_THUMBNAIL_HEIGHT = 30;
+        const DEFAULT_THUMBNAIL_WIDTH  = 65;
         const THUMB_FILE_NAME_PREFIX   = 'thumb_';
+        const FILE_NAME_SEPARATOR      = '_';
 
+        /**
+         * Get the model by the fileName
+         * @param $fileName The filename of the model
+         * @return The model
+         * @throws NotSupportedException
+         */
         public static function getByFileName($fileName)
         {
-            assert('is_string($fileName)');
+            return static::getById(static::getIdByFileName($fileName));
+        }
+
+        /**
+         * Get the id based on the cached model file name
+         * @param $fileName The fileName of the model
+         * @return int The model id
+         * @throws NotFoundException
+         */
+        protected static function getIdByFileName($fileName)
+        {
             $matches = array();
-            preg_match('/^(\d+)_/', $fileName, $matches);
+            $pattern = '/^(\d+)' . static::FILE_NAME_SEPARATOR . '/';
+            preg_match($pattern, $fileName, $matches);
             if (count($matches) == 2)
             {
-                $id = $matches[1];
-                return static::getById((int) $id);
+                return (int) $matches[1];
             }
             else
             {
-                throw new NotSupportedException();
+                throw new NotFoundException();
             }
         }
 
-        public function getImageCachePath($isThumbnail = false)
+        /**
+         * Get the cached model file path
+         * @param bool $shouldGetThumbnail True if we should return the thumbnail
+         * @return string The path where the cached model is stored
+         */
+        public function getImageCachePath($shouldGetThumbnail = false)
         {
             //TODO: @sergio: Add test
-            if ($isThumbnail)
+            if ($shouldGetThumbnail)
             {
                 return static::getPathToCachedFiles() . static::THUMB_FILE_NAME_PREFIX . $this->getImageCacheFileName();
             }
             return static::getPathToCachedFiles() . $this->getImageCacheFileName();
         }
 
-        public static function getImageCachePathByFileName($fileName, $isThumb)
+        /**
+         * Get the cached model file path by the file name of the cached model
+         * @param $fileName The filename of the cached model
+         * @param $shouldReturnThumbnail True if we should return the thumbnail
+         * @return string The path where the cached model is stored
+         */
+        public static function getImageCachePathByFileName($fileName, $shouldReturnThumbnail)
         {
             assert('is_string($fileName)');
-            if ($isThumb)
+            assert('is_bool($shouldReturnThumbnail)');
+            if ($shouldReturnThumbnail)
             {
                 $fileName = static::THUMB_FILE_NAME_PREFIX . $fileName;
             }
             return static::getPathToCachedFiles() . $fileName;
         }
 
+        /**
+         * Get the path to the directory where we should store cached models
+         * @return string
+         */
         protected static function getPathToCachedFiles()
         {
             return Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR;
         }
 
+        /**
+         * Get the cache model file name
+         * @return string The file name
+         */
         public function getImageCacheFileName()
         {
-            return $this->id . '_' . $this->name;
+            return $this->id . static::FILE_NAME_SEPARATOR . $this->name;
         }
 
-        public function createImageCache($isThumbnail = false)
+        /**
+         * Caches the model in filesystem
+         * @param bool $shouldCreateThumbnail True if we want to create the cache for thumbnail
+         */
+        public function createImageCache($shouldCreateThumbnail = false)
         {
-            $imageCachePath = $this->getImageCachePath($isThumbnail);
             $this->createCacheDirIfNotExists();
-            if (!$this->isImageCached($imageCachePath))
+            if (!$this->isImageCached($shouldCreateThumbnail))
             {
-                $this->cacheImage($imageCachePath, $isThumbnail);
+                $this->cacheImage($shouldCreateThumbnail);
             }
         }
 
+        /**
+         * Create the filesystem dir where cached models will be stored
+         */
         protected function createCacheDirIfNotExists()
         {
             if (!is_dir(Yii::getPathOfAlias('application.runtime.uploads')))
@@ -108,14 +151,25 @@
             }
         }
 
-        protected function isImageCached($imageCachePath)
+        /**
+         * Check if the model has cache created on the filesystem
+         * @param bool $checkThumbnail True if we are chechink the cached thumbail
+         * @return bool True if the cached model is cached
+         */
+        protected function isImageCached($checkThumbnail = false)
         {
+            $imageCachePath = $this->getImageCachePath($checkThumbnail);
             return file_exists($imageCachePath);
         }
 
-        protected function cacheImage($imageCachePath, $isThumbnail)
+        /**
+         * Cache the model on the filesystem
+         * @param $shouldCacheThumbnail True to create the cache for thumbnail of the model
+         */
+        protected function cacheImage($shouldCacheThumbnail)
         {
-            if ($isThumbnail)
+            $imageCachePath = $this->getImageCachePath($shouldCacheThumbnail);
+            if ($shouldCacheThumbnail)
             {
                 $newWidth  = static::DEFAULT_THUMBNAIL_WIDTH;
                 $newHeight = static::DEFAULT_THUMBNAIL_HEIGHT;
