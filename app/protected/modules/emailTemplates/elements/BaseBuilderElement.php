@@ -531,7 +531,7 @@
             $this->registerActiveFormScripts();
             $clipWidget             = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget($this->resolveActiveFormClassName(),
-                                                                        $this->resolveActiveFormOptions());
+                                                                     $this->resolveActiveFormOptions());
             $formInputContent       = $this->renderFormInputsContent($form);
             $formEnd                = $this->renderFormActionLinks();
             $formEnd                .= $clipWidget->renderEndWidget();
@@ -550,19 +550,17 @@
          */
         protected function renderFormInputsContent(ZurmoActiveForm $form)
         {
-            $contentTabContent      = $this->renderContentTab($form);
-            $contentTabContent      = $this->wrapEditableContentFormContentInTable($contentTabContent);
+            $contentTabContent  = $this->renderContentTab($form);
+            //AMIT: NOT SURE WE CURRENTLY NEED THIS TO BE ALSO WRAPPED IN THE FORM_-FIELDS TABLE
+            //$contentTabContent      = $this->wrapEditableContentFormContentInTable($contentTabContent);
 
-            $settingsTabContent     = $this->renderSettingsTab($form);
-            $settingsTabContent     = $this->wrapEditableContentFormContentInTable($settingsTabContent);
+            $settingsTabContent  = $this->renderSettingsTab($form);
+            $settingsTabContent  = $this->wrapEditableContentFormContentInTable($settingsTabContent);
 
-            $content                = $this->renderBeforeFormLayout($form);
-            $content                .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
-            $content                .= $this->renderHiddenFields($form);
-            $content                .= $this->renderAfterFormLayout($form);
-            $content                = ZurmoHtml::tag('div', array('class' => 'panel'), $content);
-            $content                = ZurmoHtml::tag('div', array('class' => 'left-column full-width'), $content);
-            $content                = ZurmoHtml::tag('div', array('class' => 'attributesContainer'), $content);
+            $content             = $this->renderBeforeFormLayout($form);
+            $content            .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
+            $content            .= $this->renderHiddenFields($form);
+            $content            .= $this->renderAfterFormLayout($form);
             return $content;
         }
 
@@ -578,16 +576,13 @@
         }
 
         /**
-         * Wrap content inside a 2 col table. Useful for wrapping form content on Content and Settings tab.
+         * Wrap content inside a table. Useful for wrapping form content on Content and Settings tab.
          * @param $content
          * @return string
          */
         protected function wrapEditableContentFormContentInTable($content)
         {
-           // $tableContent   = '<table class="form-fields"><colgroup><col class="col-0"><col class="col-1"></colgroup>';
-            $tableContent    = $content;
-            //$tableContent   .= '</table>';
-            return $tableContent;
+            return ZurmoHtml::tag('table', array('class' => 'form-fields'), $content);
         }
 
         /**
@@ -700,12 +695,11 @@
             $settingsTabClass       = null;
             if (!empty($contentTab))
             {
-                $contentTabHyperLink    = ZurmoHtml::link($this->renderContentTabLabel(), '#element-content',
-                                                            array('class' => $contentTabClass));
-                $contentTabDiv          = ZurmoHtml::tag('div', array('id' => 'element-content',
-                                                                        'class' => $contentTabClass .
-                                                                                    ' tab element-edit-form-content-tab'),
-                                                                $contentTab);
+                $contentTabHyperLink = ZurmoHtml::link($this->renderContentTabLabel(), '#element-content',
+                                                       array('class' => $contentTabClass));
+                $contentTabDiv       = ZurmoHtml::tag('div', array('id' => 'element-content',
+                                                                   'class' => $contentTabClass . ' tab element-edit-form-content-tab'),
+                                                                   $contentTab);
             }
             else
             {
@@ -715,12 +709,11 @@
 
             if (!empty($settingsTab))
             {
-                $settingsTabHyperLink   = ZurmoHtml::link($this->renderSettingsTabLabel(), '#element-settings',
-                                                            array('class' => $settingsTabClass));
-                $settingsTabDiv  = ZurmoHtml::tag('div', array('id' => 'element-settings',
-                                                                    'class' => $settingsTabClass .
-                                                                                ' tab element-edit-form-settings-tab'),
-                                                                $settingsTab);
+                $settingsTabHyperLink = ZurmoHtml::link($this->renderSettingsTabLabel(), '#element-settings',
+                                                        array('class' => $settingsTabClass));
+                $settingsTabDiv       = ZurmoHtml::tag('div', array('id' => 'element-settings',
+                                                                    'class' => $settingsTabClass . ' tab element-edit-form-settings-tab'),
+                                                                    $settingsTab);
             }
 
             if (isset($contentTabDiv, $settingsTabDiv))
@@ -851,7 +844,7 @@
         protected function resolveApplyLinkHtmlOptions()
         {
             return array('id' => $this->resolveApplyLinkId(), 'class' => 'attachLoading z-button',
-                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+                         'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
         }
 
         /**

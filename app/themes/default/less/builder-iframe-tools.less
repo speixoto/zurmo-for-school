@@ -33,6 +33,16 @@
  * Copyright Zurmo Inc. 2014. All rights reserved.
  ********************************************************************************/
 
+@z_textColor         : #545454;
+@z_themeColor        : #282A76;
+@z_themeColor2       : #7CB830;
+@z_themeColorBtn     : #97c43d;
+@z_themeColorHeader  : #464646;
+@z_path              : '../images/';
+
+@import "variables.less";
+
+
 body{
 	padding: 20px 0 !important;
 }
@@ -66,18 +76,19 @@ body{
 	right: 0;
 	z-index: 1000;
 	span{
-		width: 20px;
-		height: 20px;
+		width: 24px;
+		height: 24px;
 		display: inline-block;
-		border: 2px solid #ccc;
+		border: 1px solid #ccc;
 		text-align: center;
-		background:#fff;
+		//background: #efefef;
+		background:rgba(255, 255, 255, 0.5);
 	}
 	i{
-		color: #545454;
+		color: #9b9b9a;
 		font-weight:normal !important;
 		font-style: normal !important;
-		font-size:24px;
+		font-size:28px;
 		font-family: "zurmo_gamification_symbly_rRg";
 		vertical-align:middle;
 		padding:0 0 0 0;//3px;
@@ -91,7 +102,6 @@ body{
 	z-index: 1;
 	padding: 10px;
 	display: block;
-	//box-shadow: inset 0 0 0 2px #545454;
 }
 
 table.builder-element-non-editable{
@@ -115,42 +125,26 @@ table.builder-element-non-editable{
 
 .ui-sortable-placeholder{
 	visibility: visible !important;
-	box-shadow: 0 0 5px 0 dodgerblue !important;
+	box-shadow: 0 0 5px 0 @themeColor !important;
 	min-height: 60px;
 }
 
-.blox{
-	width: 105px !important;
-	height: 105px !important;
-	border: 3px solid green;
-	float: none;
-	margin: 0;
-	z-index: 99999;
-}
-
 .hover{
-	box-shadow: inset 0 0 0 2px deeppink;
+	box-shadow: inset 0 0 5px 0 @themeColor !important;
 }
 
 .ghost{
 	display: block;
-	background:rgba(0, 0, 255, 0.3) !important;
-	height: 20px;
-	line-height: 20px;
+	background: rgba(237, 237, 237, 0.8);
+	box-shadow:inset 0 0 5px 0 #ccc;
+	color: #9b9b9a;
+	text-shadow:0 1px 0 #fff;
+	padding: 10px 0;
+	//height: 20px;
+	//line-height: 20px;
 	text-align: center;
-	color: #fff;
-	font-weight: bold;
-	box-shadow: inset 0 0 0 2px #545454;
 	width: 100%;
-	&.before{
-		top:0;
-		background: deeppink;
-	}
-	&.after{
-		top:auto;
-		bottom: 0;
-		background: lightpink;
-	}
+	letter-spacing: 1px;
 }
 
 .element-wrapper{

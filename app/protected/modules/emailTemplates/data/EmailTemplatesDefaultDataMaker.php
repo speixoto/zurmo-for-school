@@ -76,7 +76,7 @@
                         'content'     => array(
                             'row1'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 1), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 1), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#00fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row1column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -102,7 +102,7 @@
                             ),
                             'row2'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 2), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 2), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#00fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row2column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -148,7 +148,7 @@
                             ),
                             'row3'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 3), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 3), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row3column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -214,7 +214,7 @@
                             ),
                             'row4'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 4), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 4), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row4column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -300,7 +300,7 @@
                             ),
                             'row5'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '1:2'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => '1:2'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row5column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -346,7 +346,7 @@
                             ),
                             'row6'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '2:1'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0000fff00', 'font-size' => '14px'))),
+                                'properties'    =>  array('backend' => array('configuration' => '2:1'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '14px'))),
                                 'content'       => array(
                                     'row6column1'   => array(
                                         'class'         => 'BuilderColumnElement',

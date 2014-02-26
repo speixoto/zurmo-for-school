@@ -39,7 +39,7 @@
         // TODO: @Shoaibi: Critical: Remember to populate thumbnailUrl property for predefined templates
 
         // TODO: @Shoaibi/Amit: Critical: Update this path.
-        const GENERIC_THUMBNAIL_PATH = '/default/images/1x1-pixel.png';
+        const GENERIC_THUMBNAIL_PATH = '/default/images/email-builder/transparent.gif';
 
         public $editableTemplate = '{content}';
 
@@ -71,7 +71,8 @@
             $htmlOptions              = array();
             $htmlOptions['separator'] = '';
             $htmlOptions['template']  = ZurmoHtml::tag('li',
-                                                        array('class' => 'radio-input base-template-selection {value}'),
+                                                        //@SHOAIBI - we technically can't have a loose number as a class name {value}
+                                                        array('class' => 'base-template-selection {value}'),
                                                         '{input}{label}');
             return $htmlOptions;
         }
@@ -83,9 +84,8 @@
             foreach ($templates as $template)
             {
                 $thumbnailUrl           = $this->resolveThumbnailUrl($template);
-                $thumbnail              = ZurmoHtml::image($thumbnailUrl, null, array('class' => 'thumb'));
-                $label                  = ZurmoHtml::tag('span', array(), $template->name);
-                $label                  = ZurmoHtml::tag('h6', array('class' => 'name'), $label);
+                $thumbnail              = ZurmoHtml::image($thumbnailUrl, null, array('class' => 'template-thumbnail'));
+                $label                  = ZurmoHtml::tag('h4', array('class' => 'name'),  $template->name);
                 $data[$template->id]    = $thumbnail . $label;
             }
             return $data;
@@ -103,9 +103,9 @@
 
         protected function resolveGenericThumbnailUrl()
         {
-            return 'http://upload.wikimedia.org/wikipedia/commons/1/1c/Nuvola_mimetypes_template_source.png';
             // TODO: @Shoaibi: Critical5: enable this
             //return Yii::app()->themeManager->baseUrl . static::GENERIC_THUMBNAIL_PATH;
+            return Yii::app()->themeManager->baseUrl . '/default/images/zurmo-zapier.png';
         }
     }
 ?>

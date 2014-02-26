@@ -126,7 +126,7 @@ var emailTemplateEditor = {
             helper: function(event, ui){
                 elementDragged      = $(event.currentTarget),
                 elementDraggedClass = $(event.currentTarget).data('class');
-                clone = $('<div class="blox">' + $(event.currentTarget).html() + '</div>');
+                clone = $('<div class="draggable-element-clone">' + $(event.currentTarget).html() + '</div>');
                 return clone;
             }
         });
@@ -167,9 +167,9 @@ var emailTemplateEditor = {
             emailTemplateEditor.settings.isDragging = false;
             if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
                 if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, 1, iframeContents);
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, 1, iframeContents, innerElements);
                 } else {
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, 0, iframeContents);
+                    emailTemplateEditor.placeNewElement(elementDraggedClass, 0, iframeContents, innerElements);
                 }
             } else {
                 console.log('dropped either outside of canvas or not on element');
@@ -240,7 +240,7 @@ var emailTemplateEditor = {
         });
     },
     //Used on a new element is dragged and dropped from outside iframa
-    placeNewElement: function ( elementClass, wrapElement, iframeContents) {
+    placeNewElement: function ( elementClass, wrapElement, iframeContents, innerElements) {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',

@@ -83,7 +83,7 @@
             $leftSideContent                            .= $this->renderSelectBaseTemplateFromPreviouslyCreatedTemplates();
             $this->renderHiddenElements($hiddenElements, $leftSideContent);
 
-            $content                                    = $this->renderLeftAndRightSideBarContentWithWrappers($leftSideContent);
+            $content                                    = $leftSideContent;
             return $content;
         }
 
@@ -107,24 +107,14 @@
 
         protected function renderSelectBaseTemplateByElementName($elementName, $wrapperDivCssId, $heading = null)
         {
-            $element                    = new $elementName($this->model,
-                                                        static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME, $this->form);
+            $element = new $elementName($this->model, static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME, $this->form);
             if(null != $content = $element->render())
             {
-                $content                    = ZurmoHtml::tag('ul', $this->resolveSelectBaseTemplateElementWrapperHtmlOptions(),
-                    $content);
-                $content                    = "<h3>${heading}</h3>" . $content;
-                $this->wrapContentInDiv($content, array('id' => $wrapperDivCssId));
-                $this->wrapContentInTableCell($content, array('colspan' => 2));
-                $this->wrapContentInTableRow($content);
+                $content = ZurmoHtml::tag('ul', array('class' => 'clearfix'), $content);
+                $content = "<h3>${heading}</h3>" . $content;
+                $this->wrapContentInDiv($content, array('id' => $wrapperDivCssId, 'class' => 'templates-chooser-list clearfix'));
             }
             return $content;
-        }
-
-        protected function resolveSelectBaseTemplateElementWrapperHtmlOptions()
-        {
-            return array('class' => 'large-block-grid-3 small-block-grid-1 '.
-                            'template-thumbs select-base-template-selection');
         }
 
         protected function renderSerializedDataHiddenFields(& $hiddenElements)

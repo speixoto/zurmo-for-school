@@ -31,6 +31,14 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
+
+.AppNavigation{
+	//display: none;
+}
+.AppContent{
+	//margin-left: 0;
+}
+
 //should add this to zurmo.less where i define right/left columns
 .strong-right{
 	position: relative;
@@ -70,7 +78,6 @@
 	width: 100%;
 	height: 100%;
 	background:url("@{path}psd-light.png") left top repeat;
-	//padding: 15px;
 	position: relative;
 	min-width: 600px;
 	overflow-y: hidden;
@@ -117,48 +124,16 @@
 		width: 105px;
 		height: 105px;
 		margin:0 15px 15px 0;
-		//padding: 10px;
 		display: block;
 		cursor: pointer;
 		&:active{
 			cursor: move;
 		}
 		div{
-			border: 3px solid #efefef;
-			.radius(2px);
-			text-align: center;
-			display: block;
-			height: 100%;
-			width: 100%;
-			position: relative;
+			.draggable-element-clone();
+			.b-shadow(none);
+			position:relative;
 		}
-		i{
-			display: block;
-			text-align: center;
-			font-size: 80px;
-			line-height: 1px;
-			margin-top: 30px;
-			color: #ddd;
-		}
-		span{
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			padding: 10px 0;
-			background: #efefef;
-			color: #acacac;
-			font-size: 13px;
-			font-weight: bold;
-		}
-	}
-
-	.ui-draggable-dragging{
-		width: 105px;
-		height: 105px;
-		border: 1px solid red;
-		float: none;
-		margin: 0;
 	}
 }
 
@@ -167,14 +142,37 @@
 	opacity: 1 !important;
 }
 
-.blox{
+.draggable-element-clone{
 	display: block;
 	width: 105px !important;
 	height: 105px !important;
-	border: 1px solid red;
+	border: 3px solid #efefef;
+	.radius(2px);
 	float: none;
 	margin: 0;
 	z-index: 999999;
+	background:#fff;
+	text-align: center;
+	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.5));
+	i{
+		display: block;
+		text-align: center;
+		font-size: 80px;
+		line-height: 1px;
+		margin-top: 30px;
+		color: #ddd;
+	}
+	span{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 10px 0;
+		background: #efefef;
+		color: #acacac;
+		font-size: 13px;
+		font-weight: bold;
+	}
 }
 
 #element-edit-form-overlay-container{
@@ -203,3 +201,55 @@
 }
 
 
+/*Template Chooser*/
+.templates-chooser-list{
+	margin-bottom: 30px;
+	> h3{
+		font-weight: normal;
+		color: #777;
+		.t-shadow(0 1px 0 #fff);
+	}
+	li{
+		list-style: none;
+		width: 150px;
+		height: 150px;
+		float: left;
+		text-align: center;
+		position: relative;
+		margin: 0 15px 15px 0;
+		cursor: pointer;
+		input[type="radio"]{
+			visibility: hidden;
+			display: none;
+		}
+		input[type="radio"]:checked + label{
+			overflow: hidden;
+			.b-shadow(0 0 3px 0px @themeColor);
+			//.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
+		}
+		label{
+			display:block;
+			width: 100%;
+			height: 100%;
+			border: 3px solid #efefef;
+			.radius(2px);
+			overflow: hidden;
+		}
+	}
+	h4{
+		width: 100%;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 10px 0;
+		background: #efefef;
+		color: #9b9b9a;
+		.t-shadow(0 1px 0 #fff);
+		font-size: 13px;
+		font-weight: bold;
+	}
+	img{
+		margin: 5px auto 0 auto;
+	}
+}
