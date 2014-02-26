@@ -80,8 +80,11 @@
         public function renderValue($value)
         {
             $value      = strtotime($value);
+            if($value == ZurmoTimeZoneHelper::getTimeZoneOffset())
+            {
+                return Zurmo::t('Core', '(None)');
+            }
             $dateTime   = date('Y-m-d H:i:s', $value);
-            //return $dateTime;
             return DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay($dateTime);
         }
     }

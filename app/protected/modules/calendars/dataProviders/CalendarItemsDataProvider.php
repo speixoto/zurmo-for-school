@@ -191,7 +191,7 @@
             $models             = array();
             $report             = $this->makeReportBySavedCalendar($calendar);
             $reportDataProvider = new CalendarRowsAndColumnsReportDataProvider($report);
-            $reportResultsRows  = $reportDataProvider->getData();
+            $reportResultsRows  = $reportDataProvider->getData(true);
             foreach ($reportResultsRows as $reportResultsRowData)
             {
                 if ($this->_itemCount >= self::MAXIMUM_CALENDAR_ITEMS_COUNT)
