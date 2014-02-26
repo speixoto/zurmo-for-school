@@ -328,6 +328,9 @@
 
             ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(), true,
                               Yii::getPathOfAlias('application.modules.contacts.tests.unit.files'));
+            //update the ids of the account column to match the parent account.
+            ZurmoRedBean::exec("update " . $import->getTempTableName() . " set column_17 = " .
+                                $accountId . " where id != 1 limit 4");
             $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
             $currency = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
