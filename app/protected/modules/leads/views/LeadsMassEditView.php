@@ -46,6 +46,9 @@
                             array('type' => 'CancelLink'),
                         ),
                     ),
+                    'derivedAttributeTypes' => array(
+                        'LeadStateDropDown',
+                    ),
                     'nonPlaceableAttributeNames' => array(
                         'title',
                         'firstName',

@@ -694,27 +694,27 @@
                 $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/login');
             }
         }
-        
+
         public function testDateAttributeIsSanitizedCorrectly()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             $metadata = User::getMetadata();
-            if(!in_array('birthday', $metadata['User']['members']))
+            if (!in_array('birthday', $metadata['User']['members']))
             {
                 $metadata['User']['members'][]  = 'birthday';
             }
-            if(!in_array(array('birthday', 'type', 'type' => 'date'), $metadata['User']['rules']))
+            if (!in_array(array('birthday', 'type', 'type' => 'date'), $metadata['User']['rules']))
             {
                 $metadata['User']['rules'][]    = array('birthday', 'type', 'type' => 'date');
                 $metadata['User']['elements']['birthday'] = 'Date';
             }
             unset($metadata['Person']);
             User::setMetadata($metadata);
-            
+
             $messageLogger = new MessageLogger();
             RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array('User'), $messageLogger);
-            
+
             UserTestHelper::createBasicUser('dateUser');
             $dateUser = User::getByUsername('dateuser');
             $this->setGetArray(array('id' => $dateUser->id));

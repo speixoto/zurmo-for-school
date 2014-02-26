@@ -160,5 +160,17 @@
             }
             return false;
         }
+
+        /**
+         * Gets timezone offset.
+         * @return int in seconds
+         */
+        public static function getTimeZoneOffset()
+        {
+            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
+            $gmtTimeZone  = new DateTimeZone('GMT');
+            $dateTimeUser = new DateTime("now", $gmtTimeZone);
+            return $userTimeZone->getOffset($dateTimeUser);
+        }
     }
 ?>

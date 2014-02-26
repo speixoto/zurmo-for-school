@@ -48,7 +48,7 @@
             assert('is_string($attributeName) || $attributeName == null');
             assert('is_string($columnName)');
             assert('$columnMappingData == null || is_array($columnMappingData)');
-            $sanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';;
+            $sanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';
             return new $sanitizerUtilClassName($modelClassName, $attributeName, $columnName, $columnMappingData,
                                                $importSanitizeResultsUtil, $penultimateModelClassName, $penultimateAttributeName);
         }

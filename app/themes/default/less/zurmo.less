@@ -494,6 +494,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 #user-header-menu,
 #settings-header-menu,
+#header-calendar-link-wrapper,
 #header-game-dashboard-link-wrapper{
 	position: relative;
 	z-index: 100;
@@ -593,7 +594,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		display: none;
 	}
 }
-
+#header-calendar-link,
 #header-game-dashboard-link{
 	.symbly(28px);
 	text-align: center;
@@ -601,7 +602,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	line-height: 18px;
 	display: block;
 	height: 20px;
-	width: 20px;
+	//width: 20px;
+	padding: 0 8px;
 	.radius(50%);
 	background: transparent;
 	position: relative;
@@ -612,6 +614,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	}
 }
 
+#header-calendar-link-wrapper,
 #header-game-dashboard-link-wrapper{
 	a{
 		color: #ddd;
@@ -619,6 +622,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 			color: #fff;
 		}
 	}
+}
+
+#header-calendar-link-wrapper{
 }
 
 #GlobalSearchAndShortcutsCreateMenuView{
@@ -1970,15 +1976,6 @@ td.empty{
 	border-top:none !important;
 }
 
-.view-toolbar-icons(@size: 24px){
-	.symbly(@size);
-	padding:0;
-	margin:0;
-	vertical-align:middle;
-	position:relative;
-	
-}
-
 .icon-notice:before{
 	content: "j";
 	.view-toolbar-icons();
@@ -2012,25 +2009,6 @@ td.empty{
 }
 
 /*forms*/
-.text-input(){
-	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-	display:inline-block;
-	border:1px solid #ccc;
-	.radius(3px);
-	font-size:12px;
-	color:#666 !important;
-	text-indent:6px;
-	line-height: 24px;
-	height:26px;
-	.b-shadow(0 0 1px 1px rgba(153, 153, 153, 0.3));
-	.ie-shadow(#999999, 1, 15);
-	width:100%;
-	
-	&:focus{
-		.b-shadow(0 0 1px 1px @themeColor);
-	}
-}
-
 input[type="text"],
 input[type="password"],
 select.multiple,
@@ -2387,7 +2365,7 @@ div.wide.form{
 		margin-top:0 !important; //was !important
 	}
 	a{
-		//color: @themeColor;
+		color: @themeColor;
 	}
 }
 
@@ -5321,38 +5299,9 @@ div.radio-input{
 	}
 }
 
+@import 'mixins.less';
 @import 'keyframes.less';
 @import 'icons.less';
 @import 'buttons.less';
 @import 'widget-juiportlets.less';
-@import 'install.less';
-@import 'configuration.less';
-@import 'dashboard-portlets.less';
-@import 'form.less';
-@import 'file-upload.less';
-@import 'datepicker.less';
-@import 'token-input.less';
-@import 'notifications.less';
-@import 'designer.less';
-@import 'mozilla.less';
-@import 'qtip.less';
-@import 'gamification.less';
-@import 'welcome.less';
-@import 'tablet.less';
-@import 'thread-view.less';
-@import 'email.less';
 @import 'reports.less';
-@import 'inbox.less';
-@import 'email-templates.less';
-@import 'marketing.less';
-@import 'kanban.less';
-@import 'webforms.less';
-@import 'business-card.less';
-@import 'pillbox.less';
-@import 'game-dashboard.less';
-@import 'projects.less';
-@import 'merging.less';
-@import 'shared-calendar.less';
-@import 'builder.less';
-@import 'color-scheme.less';
-@import 'media-queries.less';

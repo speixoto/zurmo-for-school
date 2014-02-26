@@ -228,6 +228,22 @@
         }
 
         /**
+         * Sorts array by a field in array element.
+         * @param string $compareFunction
+         * @param string $sortFunctionName
+         * @param array $data
+         * @param string $className
+         */
+        public static function sortArrayByElementField($compareFunction, $sortFunctionName, & $data, $className)
+        {
+            assert('$sortFunctionName == "usort"');
+            assert('is_string($compareFunction)');
+            assert('is_string($className)');
+            assert('is_array($data)');
+            $sortFunctionName($data, array($className, $compareFunction));
+        }
+
+        /**
          * Find the last key in an array
          * @param array $array
          * @return mixed

@@ -107,20 +107,25 @@
             }
             $themeBaseUrl =  Yii::app()->themeManager->baseUrl . '/default/css';
             $filePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
-            if (!is_file($filePath))
+            $primaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+            $secondaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/imports-custom.css';
+            if (!is_file($primaryFilePath) || !is_file($secondaryFilePath))
             {
                 Yii::app()->lessCompiler->compileCustom();
             }
-            $customCssUrl = Yii::app()->assetManager->publish($filePath);
+            $primaryCustomCssUrl   = Yii::app()->assetManager->publish($primaryFilePath);
+            $secondaryCustomCssUrl = Yii::app()->assetManager->publish($secondaryFilePath);
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName($this->getAttributeForRadioButtonList()) . "\"]').live('change', function(){
                           $removeScript
                           $(document.body).addClass(this.value);
-                          var themeBaseUrl = '$themeBaseUrl';
-                          var customCssUrl = '$customCssUrl';
+                          var themeBaseUrl          = '$themeBaseUrl';
+                          var primaryCustomCssUrl   = '$primaryCustomCssUrl';
+                          var secondaryCustomCssUrl = '$secondaryCustomCssUrl';
                           if(this.value === 'custom')
                           {
-                            $('head').append('<link rel=\"stylesheet\" href=\"'+customCssUrl+'\" type=\"text/css\" />');
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+primaryCustomCssUrl+'\" type=\"text/css\" />');
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+secondaryCustomCssUrl+'\" type=\"text/css\" />');
                           }
                           else
                           {

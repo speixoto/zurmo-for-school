@@ -93,7 +93,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                             $('#TimeTriggerForWorkflowWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView', $this->model->type) . "
                             $('#TriggersForWorkflowWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');

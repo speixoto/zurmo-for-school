@@ -469,5 +469,14 @@
             }
             return DataUtil::purifyHtml($sanitizedAttributeValue);
         }
+
+        public static function getResolvedModuleIdForContactWebFormEntry(Contact $contact)
+        {
+            if (LeadsUtil::isStateALead($contact->state))
+            {
+                return 'leads';
+            }
+            return 'contacts';
+        }
     }
 ?>

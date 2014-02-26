@@ -368,7 +368,7 @@
 			});
 			return checked;
 		}
-		
+
 	};
 
 	$.fn.yiiGridView = function (method) {
