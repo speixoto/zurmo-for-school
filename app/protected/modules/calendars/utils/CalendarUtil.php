@@ -191,22 +191,23 @@
          */
         public static function getFullCalendarItems(CalendarItemsDataProvider $dataProvider)
         {
-            $fullCalendarItems = self::processDataProviderAndGetCalendarItems($dataProvider);
-            self::processCalendarItemsAndAddMoreEventsIfRequired($fullCalendarItems);
-            return $fullCalendarItems;
+            $fullCalendarItems     = self::processDataProviderAndGetCalendarItems($dataProvider);
+            return self::processCalendarItemsAndAddMoreEventsIfRequired($fullCalendarItems);
         }
 
         /**
          * Process full calendar items and render more events button if required.
          * @param array $fullCalendarItems
          */
-        public static function processCalendarItemsAndAddMoreEventsIfRequired(& $fullCalendarItems)
+        public static function processCalendarItemsAndAddMoreEventsIfRequired($fullCalendarItems)
         {
+            $modifiedCalendarItems          = array();
             $dateToCalendarItemsCountData   = array();
             $moreEventsItemCreatedByDate    = array();
             foreach($fullCalendarItems as $key => $fullCalItem)
             {
                 $startDate       = date('Y-m-d', strtotime($fullCalItem['start']));
+                //Check for the count of cal items on a given start date and if more than max add more events
                 if(isset($dateToCalendarItemsCountData[$startDate])
                             && (count($dateToCalendarItemsCountData[$startDate]) >= CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE))
                 {
@@ -217,7 +218,6 @@
                     }
                     else
                     {
-                        unset($fullCalendarItems[$key]);
                         continue;
                     }
                 }
@@ -227,8 +227,9 @@
                     $fullCalItem['end'] = self::getFullCalendarFormattedDateTimeElement($fullCalItem['end']);
                 }
                 $dateToCalendarItemsCountData[$startDate][] = $fullCalItem;
-                $fullCalendarItems[$key] = $fullCalItem;
+                $modifiedCalendarItems[] = $fullCalItem;
             }
+            return $modifiedCalendarItems;
         }
 
         /**
@@ -244,21 +245,6 @@
             $moreEventsCalItem['end']   = $fullCalItem['end'];
             $moreEventsCalItem['color'] = '#cccccc';
             $moreEventsCalItem['className'] = 'more-events';
-            $moreEventsCalItems = array();
-            $moreEventsStartDate       = date('Y-m-d', strtotime($moreEventsCalItem['start']));
-            for($i = 0; $i < count($fullCalendarItems); $i++)
-            {
-                $fullCalItemStartDate       = date('Y-m-d', strtotime($fullCalendarItems[$i]['start']));
-                if($moreEventsStartDate != $fullCalItemStartDate)
-                {
-                    continue;
-                }
-                else
-                {
-                    $moreEventsCalItems[] = $fullCalendarItems[$i];
-                }
-            }
-            $moreEventsCalItem['items'] = $moreEventsCalItems;
             return $moreEventsCalItem;
         }
 
@@ -1024,8 +1010,7 @@
                 $fullCalendarItem['color']      = $calItem->getColor();
                 $fullCalendarItem['modelClass'] = $calItem->getModelClass();
                 $fullCalendarItem['modelId']    = $calItem->getModelId();
-                //$model                     = $modelClass::getById($calItem->getModelId());
-                //$fullCalendarItem['model'] = $model;
+                $fullCalendarItem['calendarId'] = $calItem->getCalendarId();
                 if($calItem->getModelClass() == 'Meeting')
                 {
                     $fullCalendarItem['allDay'] = false;
@@ -1037,6 +1022,31 @@
                 ArrayUtil::sortArrayByElementField('compareCalendarItemsByDateTime', 'usort', $fullCalendarItems, 'CalendarUtil');
             }
             return $fullCalendarItems;
+        }
+
+        /**
+         * Populate details url for calendar items.
+         * @param array $items
+         * @return array
+         */
+        public static function populateDetailsUrlForCalendarItems($items)
+        {
+            assert('is_array($items)');
+            $moduleClassNames           = CalendarUtil::getAvailableModulesForCalendar();
+            foreach($items as $index => $item)
+            {
+                foreach($moduleClassNames as $moduleClassName)
+                {
+                    $moduleClassName = $moduleClassName . 'Module';
+                    if($moduleClassName::getPrimaryModelName() == $item['modelClass'])
+                    {
+                        $moduleId           = $moduleClassName::getDirectoryName();
+                        $item['detailsUrl'] = Yii::app()->createUrl($moduleId . '/default/details', array('id' => $item['modelId']));
+                        $items[$index]      = $item;
+                    }
+                }
+            }
+            return $items;
         }
     }
 ?>

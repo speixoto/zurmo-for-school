@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarTitleListViewColumnAdapter extends TextListViewColumnAdapter
+    class CalendarItemTitleListViewColumnAdapter extends TextListViewColumnAdapter
     {
         public function renderGridViewData()
         {
