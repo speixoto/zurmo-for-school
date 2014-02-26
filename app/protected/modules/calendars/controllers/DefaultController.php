@@ -403,6 +403,7 @@
                                                                     $items,
                                                                     GetUtil::getData()
                                                                    );
+            Yii::app()->getClientScript()->setToAjaxMode();
             echo $calItemListView->render();
         }
 
