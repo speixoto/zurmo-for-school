@@ -40,12 +40,13 @@
         {
             $parentOptions          = parent::resolveRedactorOptions();
             $options                = array(
-                'content'                   => '',
+                'content'                   => $this->model->{$this->attribute},
                 'observeImages'             => 'true',
                 'allowedTags'               => $this->resolveAllowedTags(),
                 'buttons'                   => $this->resolveRedactorButtons(),
                 'imageUpload'               => ImageFileModelUtil::getUrlForActionUpload(),
-                'imageGetJson'              => ImageFileModelUtil::getUrlForActionGetUploaded()
+                'imageGetJson'              => ImageFileModelUtil::getUrlForActionGetUploaded(),
+                'syncBeforeCallback'        => $this->renderSyncBeforeCallbackScript()
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;
@@ -53,13 +54,21 @@
 
         protected function resolveAllowedTags()
         {
-            return CJSON::encode(array('img'));
+            return CJSON::encode(array('img', 'p'));
         }
 
         protected function resolveRedactorButtons()
         {
             $buttons         = array('image');
             return CJSON::encode($buttons);
+        }
+
+        protected function renderSyncBeforeCallbackScript()
+        {
+            return "function(html)
+                    {
+                        return this.getEditor().contents().find('img:first').wrap('<p/>').parent().html();
+                    }";
         }
     }
 ?>

@@ -112,7 +112,6 @@
                                 cleanup:        {$this->cleanup},
                                 convertDivs:    {$this->convertDivs},
                                 {$this->renderRedactorParamForInit('allowedTags')}
-                                {$this->renderRedactorParamForInit('deniedTags')}
                                 deniedTags:     {$this->deniedTags},
                                 fullpage:       {$this->fullpage},
                                 iframe:         {$this->iframe},
