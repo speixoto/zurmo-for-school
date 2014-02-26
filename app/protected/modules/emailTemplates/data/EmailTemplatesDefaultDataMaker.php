@@ -76,7 +76,7 @@
                         'content'     => array(
                             'row1'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 1), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#00fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 1), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row1column1'   => array(
                                         'class'         => 'BuilderColumnElement',
@@ -102,7 +102,7 @@
                             ),
                             'row2'    => array(
                                 'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 2), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#00fff00', 'font-size' => '16px'))),
+                                'properties'    =>  array('backend' => array('configuration' => 2), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#fff000', 'font-size' => '16px'))),
                                 'content'       => array(
                                     'row2column1'   => array(
                                         'class'         => 'BuilderColumnElement',
