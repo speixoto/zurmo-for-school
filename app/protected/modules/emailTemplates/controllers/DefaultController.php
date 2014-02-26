@@ -570,6 +570,7 @@
             $emailTemplate  = EmailTemplate::getById(intval($id));
             $contact        = Contact::getById(intval($contactId));
             $this->resolveEmailMessage($emailTemplate, $contact);
+            Yii::app()->emailHelper->sendImmediately($emailMessage);
         }
 
         protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact)

@@ -232,7 +232,7 @@
             }
             return true;
         }
-        
+
         /**
          * Returns PredefinedTemplates
          * @return Array of EmailTemplate models
