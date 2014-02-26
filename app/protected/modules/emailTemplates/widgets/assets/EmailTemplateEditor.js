@@ -312,6 +312,7 @@ var emailTemplateEditor = {
             }
         });
         //Make the left side overlay visible.
+        $('#droppable-element-sidebar').hide();
         $(emailTemplateEditor.settings.editSelector).show();
         //Hides overlay with loading spinner
         emailTemplateEditor.unfreezeLayoutEditor();

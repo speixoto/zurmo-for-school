@@ -69,6 +69,7 @@
         protected function getEditableHtmlOptions()
         {
             $htmlOptions              = array();
+            $htmlOptions['id']        = $this->getEditableInputId($this->attribute);
             $htmlOptions['separator'] = '';
             $htmlOptions['template']  = ZurmoHtml::tag('li',
                                                         //@SHOAIBI - we technically can't have a loose number as a class name {value}

@@ -92,7 +92,8 @@
             $elementClassName   = static::PREDEFINED_TEMPLATES_ELEMENT_CLASS_NAME;
             $wrapperDivCssId    = static::PREDEFINED_TEMPLATES_DIV_ID;
             $heading            = Zurmo::t('EmailTemplatesModule', 'Predefined Templates');
-            $content            = $this->renderSelectBaseTemplateByElementName($elementClassName, $wrapperDivCssId, $heading);
+            $params             = array('inputPrefix' => 'predefinedTemplate');
+            $content            = $this->renderSelectBaseTemplateByElementName($elementClassName, $wrapperDivCssId, $heading, $params);
             return $content;
         }
 
@@ -101,13 +102,14 @@
             $elementClassName   = static::PREVIOUSLY_CREATED_TEMPLATES_ELEMENT_CLASS_NAME;
             $wrapperDivCssId    = static::PREVIOUSLY_CREATED_TEMPLATES_DIV_ID;
             $heading            = Zurmo::t('EmailTemplatesModule', 'My Templates');
-            $content            = $this->renderSelectBaseTemplateByElementName($elementClassName, $wrapperDivCssId, $heading);
+            $params             = array('inputPrefix' => 'previouslyDefinedTemplate');
+            $content            = $this->renderSelectBaseTemplateByElementName($elementClassName, $wrapperDivCssId, $heading, $params);
             return $content;
         }
 
-        protected function renderSelectBaseTemplateByElementName($elementName, $wrapperDivCssId, $heading = null)
+        protected function renderSelectBaseTemplateByElementName($elementName, $wrapperDivCssId, $heading = null, $params = array())
         {
-            $element = new $elementName($this->model, static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME, $this->form);
+            $element = new $elementName($this->model, static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME, $this->form, $params);
             if(null != $content = $element->render())
             {
                 $content = ZurmoHtml::tag('ul', array('class' => 'clearfix'), $content);

@@ -229,7 +229,7 @@
             $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
             $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
             $this->wrapContentInDiv($content, $this->resolveElementsSidebarHtmlOptions());
-            $content                .= ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
+            $content                .= ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID, 'style' => 'display:none'), '');
             //$this->wrapContentInTableCell($content, array('colspan' => 2));
             //$this->wrapContentInTableRow($content);
             return $content;
