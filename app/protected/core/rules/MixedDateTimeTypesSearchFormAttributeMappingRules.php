@@ -123,6 +123,87 @@
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
                 }
+                elseif ($value['type'] == self::TYPE_LAST_30_DAYS)
+                {
+                    $today                 = static::calculateNewDateByDaysFromNow(0);
+                    $todayMinusThirtyDays   = static::calculateNewDateByDaysFromNow(-30);
+                    $greaterThanValue      = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($todayMinusThirtyDays);
+                    $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_THIS_MONTH)
+                {
+                    $firstDateValue  = date('Y-m-1');
+                    $secondDateValue = date('Y-m-t');
+                    
+                    if ($firstDateValue == null)
+                    {
+                        $greaterThanValue  = null;
+                    }
+                    else
+                    {
+                        $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    }
+                    if ($secondDateValue == null)
+                    {
+                        $lessThanValue     = null;
+                    }
+                    else
+                    {
+                        $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    }
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_LAST_MONTH)
+                {
+                    $firstDateValue  = date('Y-m', strtotime('-1 month'));
+                    $secondDateValue = date('Y-m', strtotime('-1 month'));
+                    
+                    if ($firstDateValue == null)
+                    {
+                        $greaterThanValue  = null;
+                    }
+                    else
+                    {
+                        $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    }
+                    if ($secondDateValue == null)
+                    {
+                        $lessThanValue     = null;
+                    }
+                    else
+                    {
+                        $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    }
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_NEXT_MONTH)
+                {
+                    $firstDateValue  = date('Y-m', strtotime('+1 month'));
+                    $secondDateValue = date('Y-m', strtotime('+1 month'));
+                    
+                    if ($firstDateValue == null)
+                    {
+                        $greaterThanValue  = null;
+                    }
+                    else
+                    {
+                        $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    }
+                    if ($secondDateValue == null)
+                    {
+                        $lessThanValue     = null;
+                    }
+                    else
+                    {
+                        $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    }
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
                 else
                 {
                     throw new NotSupportedException();
