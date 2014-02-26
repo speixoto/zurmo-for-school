@@ -70,15 +70,14 @@
             return $content;
         }
 
-        protected function resolveWrapperNonEditableByContentAndProperties($content, array $backendProperties,
-                                                                                        array $frontendProperties,
+        protected function resolveWrapperNonEditableByContentAndProperties($content, array $frontendProperties,
                                                                                         array $customDataAttributes)
         {
             // these are container elements, we wrap them in tables instead of divs
             $content        = $this->resolveWrapperTdNonEditableByContent($content, $frontendProperties);
             $content        = $this->resolveWrapperTrNonEditableByContent($content);
             $content        = $this->resolveWrapperTBodyNonEditableByContent($content);
-            $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $backendProperties, $customDataAttributes);
+            $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $customDataAttributes);
             return $content;
         }
 
@@ -120,15 +119,13 @@
         /**
          * Resolve and return table by using provided content and htmloptions for non-editable representation
          * @param $content
-         * @param array $backendProperties
          * @param array $customDataAttributes
          * @return string
          */
-        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $backendProperties,
-                                                                                 array $customDataAttributes)
+        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $customDataAttributes)
         {
             $defaultHtmlOptions = $this->resolveNonEditableWrapperHtmlOptions();
-            $htmlOptions        = CMap::mergeArray($defaultHtmlOptions, $backendProperties, $customDataAttributes);
+            $htmlOptions        = CMap::mergeArray($defaultHtmlOptions, $customDataAttributes);
             $content        = ZurmoHtml::tag('table', $htmlOptions, $content);
             return $content;
         }

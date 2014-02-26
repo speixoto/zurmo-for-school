@@ -41,12 +41,11 @@
             return Zurmo::t('EmailTemplatesModule', 'Canvas');
         }
 
-        protected function resolveWrapperNonEditable($elementContent, array $backendProperties,
-                                                     array $frontendProperties, array $customDataAttributes,
+        protected function resolveWrapperNonEditable($elementContent, array $frontendProperties, array $customDataAttributes,
                                                      $actionsOverlay)
         {
-            $content    = parent::resolveWrapperNonEditable($elementContent, $backendProperties, $frontendProperties,
-                                                                $customDataAttributes, $actionsOverlay);
+            $content    = parent::resolveWrapperNonEditable($elementContent, $frontendProperties, $customDataAttributes,
+                                                            $actionsOverlay);
             $content    = $this->normalizeHtmlContent($content);
             return $content;
         }
