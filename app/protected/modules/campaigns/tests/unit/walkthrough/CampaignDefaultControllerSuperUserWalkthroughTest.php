@@ -507,7 +507,7 @@
             $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView type-campaigns" id="Campaign' .
                                                 'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
-            $this->assertTrue(strpos($content, '<h3>Campaign Dashboard</h3><ul class="options-menu '.
+            $this->assertTrue(strpos($content, '<h3>Campaign Dashboard</h3><div class="portlet-actions-container"><ul class="options-menu '.
                                                 'edit-portlet-menu nav">') !== false);
             $this->assertTrue(strpos($content, '<li class="parent last"><a href="javascript:void(0);">' .
                                                 '<span></span></a>') !== false);
