@@ -36,24 +36,16 @@
 
     class BuilderImageRedactorElement extends RedactorElement
     {
-        protected function resolveHtmlOptions()
-        {
-            $id                      = $this->getEditableInputId();
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName();
-            return $htmlOptions;
-        }
-
         protected function resolveRedactorOptions()
         {
-            $parentOptions      = parent::resolveRedactorOptions();
-            $options            = array(
-                'observeImages' => 'true',
-                'allowedTags'   => $this->resolveAllowedTags(),
-                'buttons'       => $this->resolveRedactorButtons(),
-                'imageUpload'   => ImageFileModelUtil::getUrlForActionUpload(),
-                'imageGetJson'  => ImageFileModelUtil::getUrlForActionGetUploaded()
+            $parentOptions          = parent::resolveRedactorOptions();
+            $options                = array(
+                'content'                   => '',
+                'observeImages'             => 'true',
+                'allowedTags'               => $this->resolveAllowedTags(),
+                'buttons'                   => $this->resolveRedactorButtons(),
+                'imageUpload'               => ImageFileModelUtil::getUrlForActionUpload(),
+                'imageGetJson'              => ImageFileModelUtil::getUrlForActionGetUploaded()
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;

@@ -69,28 +69,50 @@
 
         public $wym             = "false";
 
+        public $toolbarExternal;
+
         public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
 
-        public $allowedTags     = null;
+        public $allowedTags;
 
-        public $imageUpload     = null;
+        public $imageUpload;
 
-        public $imageGetJson    = null;
+        public $imageGetJson;
+
+        public $initCallback;
+
+        public $changeCallback;
+
+        public $focusCallback;
+
+        public $syncAfterCallback;
+
+        public $syncBeforeCallback;
+
+        public $textareaKeydownCallback;
 
         public function run()
         {
             $id         = $this->htmlOptions['id'];
             $name       = $this->htmlOptions['name'];
+            unset($this->htmlOptions['name']);
             $javaScript = "
                     $(document).ready(
                         function()
                         {
                             $('#{$id}').redactor(
                             {
+                                {$this->renderRedactorParamForInit('initCallback')}
+                                {$this->renderRedactorParamForInit('changeCallback')}
+                                {$this->renderRedactorParamForInit('focusCallback')}
+                                {$this->renderRedactorParamForInit('syncAfterCallback')}
+                                {$this->renderRedactorParamForInit('syncBeforeCallback')}
+                                {$this->renderRedactorParamForInit('textareaKeydownCallback')}
                                 buttons:        {$this->buttons},
                                 cleanup:        {$this->cleanup},
                                 convertDivs:    {$this->convertDivs},
-                                allowedTags:    {$this->allowedTags},
+                                {$this->renderRedactorParamForInit('allowedTags')}
+                                {$this->renderRedactorParamForInit('deniedTags')}
                                 deniedTags:     {$this->deniedTags},
                                 fullpage:       {$this->fullpage},
                                 iframe:         {$this->iframe},
@@ -99,13 +121,23 @@
                                 source:         {$this->source},
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
+                                {$this->renderRedactorParamForInit('toolbarExternal')}
                                 imageUpload:    '{$this->imageUpload}',
                                 imageGetJson:   '{$this->imageGetJson}',
                             });
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo "<textarea id='{$id}' name='{$name}'>" . CHtml::encode($this->content) . "</textarea>";
+            echo ZurmoHtml::textArea($name, CHtml::encode($this->content), $this->htmlOptions);
+        }
+
+        protected function renderRedactorParamForInit($paramName)
+        {
+            $paramValue = $this->$paramName;
+            if (isset($paramValue))
+            {
+                return "{$paramName}: {$paramValue},";
+            }
         }
     }
 ?>
