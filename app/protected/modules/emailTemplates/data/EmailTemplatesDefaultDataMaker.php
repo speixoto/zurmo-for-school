@@ -50,6 +50,10 @@
             $emailTemplate->isDraft         = $isDraft;
             $emailTemplate->modelClassName  = $modelClassName;
             $emailTemplate->name            = $name;
+            if (empty($subject))
+            {
+                $subject                    = $name;
+            }
             $emailTemplate->subject         = $subject;
             if (!isset($language))
             {

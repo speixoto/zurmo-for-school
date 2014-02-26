@@ -564,5 +564,57 @@
                                                                 new $elementFormClassName(), $elementParams);
             echo $element->render();
         }
+
+        public function actionSendTestEmail($id = null, $contactId = null)
+        {
+            $emailTemplate  = EmailTemplate::getById(intval($id));
+            $contact        = Contact::getById(intval($contactId));
+            $this->resolveEmailMessage($emailTemplate, $contact);
+        }
+
+        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact)
+        {
+            // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
+            $emailMessage                       = new EmailMessage();
+            $emailMessage->subject              = $emailTemplate->subject;
+            $emailContent                       = new EmailMessageContent();
+            $emailContent->textContent          = $emailTemplate->textContent;
+            $emailContent->htmlContent          = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
+            $emailMessage->content              = $emailContent;
+            $emailMessage->sender               = static::resolveSender();
+            static::resolveRecipient($emailMessage, $contact);
+            $box                                = EmailBox::resolveAndGetByName(EmailBox::USER_DEFAULT_NAME);
+            $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+            Yii::app()->emailHelper->send($emailMessage);
+            $emailMessage->owner                = $emailTemplate->owner;
+            $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailTemplate);
+            ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
+                                                                                    $explicitReadWriteModelPermissions);
+            if (!$emailMessage->save())
+            {
+                throw new FailedToSaveModelException("Unable to save EmailMessage");
+            }
+        }
+
+        protected static function resolveSender()
+        {
+            $sender                         = new EmailMessageSender();
+            $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
+            $sender->fromName               = strval(Yii::app()->user->userModel);
+            return $sender;
+        }
+
+        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact)
+        {
+            if ($contact->primaryEmail->emailAddress != null)
+            {
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $contact->primaryEmail->emailAddress;
+                $recipient->toName          = strval($contact);
+                $recipient->type            = EmailMessageRecipient::TYPE_TO;
+                $recipient->personsOrAccounts->add($contact);
+                $emailMessage->recipients->add($recipient);
+            }
+        }
     }
 ?>
