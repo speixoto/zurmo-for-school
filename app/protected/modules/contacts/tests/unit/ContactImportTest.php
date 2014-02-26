@@ -309,5 +309,77 @@
             $account = Account::getById($accountId);
             $this->assertEquals(3, $account->contacts->count());
         }
+
+        /**
+         * @depends testSimpleUserImportWhereAllRowsSucceed
+         */
+        public function testImportContactWithAccount()
+        {
+            Yii::app()->user->userModel            = User::getByUsername('super');
+            Contact::deleteAll();
+            $account                               = AccountTestHelper::createAccountByNameForOwner('Account',
+                                                     Yii::app()->user->userModel);
+            $accountId = $account->id;
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Contacts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::createTempTableByFileNameAndTableName('importTest.csv', $import->getTempTableName(), true,
+                              Yii::getPathOfAlias('application.modules.contacts.tests.unit.files'));
+            $this->assertEquals(4, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $currency = Currency::getByCode(Yii::app()->currencyHelper->getBaseCode());
+            $accountMappingData = array('attributeIndexOrDerivedType' => 'account',
+                                        'type'                        => 'importColumn',
+                                        'mappingRulesData'            => array(
+                                        'IdValueTypeMappingRuleForm'  => array()));
+
+            $mappingData = array(
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData       ('firstName'),
+                'column_1'  => ImportMappingUtil::makeStringColumnMappingData       ('lastName'),
+                'column_2'  => ImportMappingUtil::makeStringColumnMappingData       ('jobTitle'),
+                'column_3'  => ImportMappingUtil::makeStringColumnMappingData       ('officePhone'),
+                'column_4'  => ImportMappingUtil::makeStringColumnMappingData       ('officeFax'),
+                'column_5'  => ImportMappingUtil::makeStringColumnMappingData       ('department'),
+                'column_6'  => ImportMappingUtil::makeUrlColumnMappingData          ('website'),
+                'column_7'  => ImportMappingUtil::makeTextAreaColumnMappingData     ('description'),
+                'column_8'  => ImportMappingUtil::makeStringColumnMappingData       ('primaryAddress__city'),
+                'column_9'  => ImportMappingUtil::makeStringColumnMappingData       ('primaryAddress__country'),
+                'column_10' => ImportMappingUtil::makeStringColumnMappingData       ('primaryAddress__postalCode'),
+                'column_11' => ImportMappingUtil::makeStringColumnMappingData       ('primaryAddress__state'),
+                'column_12' => ImportMappingUtil::makeStringColumnMappingData       ('primaryAddress__street1'),
+                'column_13' => ImportMappingUtil::makeStringColumnMappingData       ('primaryAddress__street2'),
+                'column_14' => ImportMappingUtil::makeEmailColumnMappingData        ('primaryEmail__emailAddress'),
+                'column_15' => ImportMappingUtil::makeBooleanColumnMappingData      ('primaryEmail__isInvalid'),
+                'column_16' => ImportMappingUtil::makeBooleanColumnMappingData      ('primaryEmail__optOut'),
+                'column_17' => $accountMappingData,
+                'column_18' => ImportMappingUtil::makeDropDownColumnMappingData     ('source'),
+                'column_19' => ContactImportTestHelper::makeStateColumnMappingData  (),
+                'column_20' => ImportMappingUtil::makeDropDownColumnMappingData     ('industry'),
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Contacts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider, $importRules, $mappingData, $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(), $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 3 models where created.
+            $contacts = Contact::getAll();
+            $this->assertEquals(3, count($contacts));
+            $contacts = Contact::getByName('contact1 contact1son');
+            $this->assertTrue($contacts[0]->account->isSame($account));
+            //test the account has 3 contacts
+            $account->forget();
+            $account = Account::getById($accountId);
+            $this->assertEquals(3, $account->contacts->count());
+        }
     }
 ?>
