@@ -374,7 +374,6 @@
             //Confirm that 3 models where created.
             $contacts = Contact::getAll();
             $this->assertEquals(3, count($contacts));
-            $contacts = Contact::getByName('contact1 contact1son');
             $this->assertTrue($contacts[0]->account->isSame($account));
             //test the account has 3 contacts
             $account->forget();
