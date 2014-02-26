@@ -396,11 +396,22 @@
                                                                                                $dateRangeType,
                                                                                                false);
             $items                      = CalendarUtil::processDataProviderAndGetCalendarItems($dataProvider);
-            $items                      = CalendarUtil::populateDetailsUrlForCalendarItems($items);
+            $modifiedItems = array();
+            foreach($items as $item)
+            {
+                $item['start'] = CalendarUtil::getFullCalendarFormattedDateTimeElement($item['start']);
+                $startDateTime = strtotime($item['start']);
+                if(date('Y-m-d', $startDateTime) == $startDate)
+                {
+                    $item['end'] = CalendarUtil::getFullCalendarFormattedDateTimeElement($item['end']);
+                    $modifiedItems[] = $item;
+                }
+            }
+            $modifiedItems                      = CalendarUtil::populateDetailsUrlForCalendarItems($modifiedItems);
             $calItemListView            = new CalendarItemsListView(
                                                                     $this->getId(),
                                                                     $this->getModule()->getId(),
-                                                                    $items,
+                                                                    $modifiedItems,
                                                                     GetUtil::getData()
                                                                    );
             Yii::app()->getClientScript()->setToAjaxMode();
