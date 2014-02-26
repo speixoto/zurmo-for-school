@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTextRedactorElement extends RedactorElement
+    class BuilderImageRedactorElement extends RedactorElement
     {
         protected function resolveHtmlOptions()
         {
@@ -49,25 +49,24 @@
         {
             $parentOptions      = parent::resolveRedactorOptions();
             $options            = array(
-                'paragraphy'    => 'false',
-                'deniedTags'    => json_encode(array()),
+                'observeImages' => 'true',
+                'allowedTags'   => $this->resolveAllowedTags(),
                 'buttons'       => $this->resolveRedactorButtons(),
+                'imageUpload'   => ImageFileModelUtil::getUrlForActionUpload(),
+                'imageGetJson'  => ImageFileModelUtil::getUrlForActionGetUploaded()
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;
         }
 
-        protected function resolveDeniedTags()
+        protected function resolveAllowedTags()
         {
-            return CJSON::encode(array());
+            return CJSON::encode(array('img'));
         }
 
         protected function resolveRedactorButtons()
         {
-            $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
-                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link',
-                                    '|', '|', 'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter',
-                                    'alignright', 'justify', '|', 'horizontalrule');
+            $buttons         = array('image');
             return CJSON::encode($buttons);
         }
     }

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,44 +31,48 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2014. All rights reserved".
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTextRedactorElement extends RedactorElement
+    class BuilderImageElement extends BaseBuilderElement
     {
-        protected function resolveHtmlOptions()
+        public static function isUIAccessible()
         {
-            $id                      = $this->getEditableInputId();
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName();
-            return $htmlOptions;
+            return true;
         }
 
-        protected function resolveRedactorOptions()
+        protected static function resolveLabel()
         {
-            $parentOptions      = parent::resolveRedactorOptions();
-            $options            = array(
-                'paragraphy'    => 'false',
-                'deniedTags'    => json_encode(array()),
-                'buttons'       => $this->resolveRedactorButtons(),
-            );
-            $options            = CMap::mergeArray($parentOptions, $options);
-            return $options;
+            return Zurmo::t('EmailTemplatesModule', 'Image');
         }
 
-        protected function resolveDeniedTags()
+        protected function resolveDefaultContent()
         {
-            return CJSON::encode(array());
+            return array('image' => '<img src="http://zurmo.org/wp-content/themes/Zurmo/images/Zurmo-logo.png"></img>');
         }
 
-        protected function resolveRedactorButtons()
+        protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
-                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link',
-                                    '|', '|', 'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter',
-                                    'alignright', 'justify', '|', 'horizontalrule');
-            return CJSON::encode($buttons);
+            return null;
+        }
+
+        protected function resolveContentElementClassName()
+        {
+            return 'BuilderImageRedactorElement';
+        }
+
+        protected function resolveContentElementAttributeName()
+        {
+            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
+            // it would give an error saying we are trying to convert an array to string.
+            return 'content[image]';
+        }
+
+        protected function resolveContentElementParams()
+        {
+            $params                     = parent::resolveContentElementParams();
+            $params['labelHtmlOptions'] = array('label' => 'Image');
+            return $params;
         }
     }
 ?>

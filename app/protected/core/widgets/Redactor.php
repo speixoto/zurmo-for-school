@@ -71,9 +71,11 @@
 
         public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
 
-        public $imageUpload     = "false";
+        public $allowedTags     = null;
 
-        public $imageGetJson    = "false";
+        public $imageUpload     = null;
+
+        public $imageGetJson    = null;
 
         public function run()
         {
@@ -88,6 +90,7 @@
                                 buttons:        {$this->buttons},
                                 cleanup:        {$this->cleanup},
                                 convertDivs:    {$this->convertDivs},
+                                allowedTags:    {$this->allowedTags},
                                 deniedTags:     {$this->deniedTags},
                                 fullpage:       {$this->fullpage},
                                 iframe:         {$this->iframe},

@@ -66,5 +66,15 @@
             readfile($imagePath);
             Yii::app()->end(0, false);
         }
+
+        public static function getUrlForActionUpload()
+        {
+            return Yii::app()->createAbsoluteUrl('zurmo/imageModel/upload');
+        }
+
+        public static function getUrlForActionGetUploaded()
+        {
+            return Yii::app()->createAbsoluteUrl('zurmo/imageModel/getUploaded');
+        }
     }
 ?>

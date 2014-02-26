@@ -429,22 +429,6 @@
                 $("#' . static::PREVIEW_MENU_BUTTON_ID . '").on("click.previewMenuButtonClick", function(event)
                  {
                     ' . ZurmoHtml::ajax($ajaxOption) . '
-
-                    /*
-                    $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").show();
-                    jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
-                    serializedData     = JSON.stringify(jsonSerializedData);
-                    $.ajax({
-                        url  : "' . $this->resolvePreviewActionUrl() . '",
-                        cache:  false,
-                        type : "POST",
-                        data : {serializedData: serializedData, "YII_CSRF_TOKEN": "' . Yii::app()->request->csrfToken . '"},
-                        success: function (html)
-                        {
-                            $("#' . static::PREVIEW_IFRAME_ID . '").contents().find("html").html(html);
-                        }
-                    });
-                    */
                     event.preventDefault();
                 });');
         }
@@ -459,7 +443,7 @@
                                                 jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
                                                 serializedData     = JSON.stringify(jsonSerializedData);
                                                 requestData = {serializedData: serializedData,
-                                                                "YII_CSRF_TOKEN": "' . Yii::app()->request->csrfToken .
+                                                                "YII_CSRF_TOKEN": "' . addslashes(Yii::app()->request->csrfToken) .
                                                                 '"};
                                                 return requestData;
                                             })()';
