@@ -2704,9 +2704,6 @@ div.wide.form {
 div.wide.form label.hasCheckBox {
   margin-top: 0 !important;
 }
-div.wide.form a {
-  color: #323232;
-}
 .ui-multiselect-checkboxes label {
   padding-left: 25px;
   background: url("../images/checkbox.png") left 4px no-repeat;
@@ -3729,6 +3726,20 @@ div.wide.form a {
   float: right;
   width: 30%;
   padding: 15px 15px 15px 15px;
+}
+.strong-right {
+  position: relative;
+}
+.strong-right > .left-column {
+  width: 30%;
+  z-index: 100;
+  position: relative;
+}
+.strong-right > .right-column {
+  width: 70%;
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
 }
 #modal-edit-form,
 #edit-form,
@@ -6648,6 +6659,15 @@ i[class^="icon"] {
 }
 .icon-google:after {
   content: '\221E';
+}
+.icon-layout:after {
+  content: '\00B6';
+}
+.icon-preview:after {
+  content: '\02DA';
+}
+.icon-configuration:after {
+  content: '\0060';
 }
 .pillbox .icon-projects-list {
   font-size: 22px;

@@ -2365,7 +2365,7 @@ div.wide.form{
 		margin-top:0 !important; //was !important
 	}
 	a{
-		color: @themeColor;
+		//color: @themeColor;
 	}
 }
 
@@ -3181,7 +3181,21 @@ div.wide.form{
 	float: right;
 	width: 30%;
 	padding:15px 15px 15px 15px;
-	
+}
+
+.strong-right{
+	position: relative;
+	> .left-column{
+		width: 30%;
+		z-index: 100;
+		position: relative;
+	}
+	> .right-column{
+		width: 70%;
+		z-index: 1;
+		position: relative;
+		overflow: hidden;
+	}
 }
 
 #modal-edit-form,
