@@ -923,7 +923,6 @@
                                             " . $this->getAjaxScriptForInitSortableElements() . "
                                             emailTemplateEditor.unfreezeLayoutEditor();
                                             emailTemplateEditor.canvasChanged();
-                                            hideElementEditFormOverlay();
                                         }";
             return $ajaxArray;
 
