@@ -139,13 +139,10 @@
             // End Not Coding Standard
             $content  = $this->resolveRenderHiddenModelClassNameElement($form);
 
-            $content .= '<div class="editor-with-merge-tags left-column strong-right">';
+            $editor  = $this->renderHtmlAndTextContentElement($this->model, null, $form);
+            $editor .= $this->renderMergeTagsView(); //todo: placed last so redactor is already initialized first. just a trick for the css right now
 
-            $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
-
-            $content .= $this->renderMergeTagsView(); //todo: placed last so redactor is already initialized first. just a trick for the css right now
-
-            $content .= '</div>';
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column strong-right'), $editor);
 
             return $content;
         }
