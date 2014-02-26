@@ -224,6 +224,15 @@
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
         }
 
+        public function setToUserDefaultLanguage($attribute, $params)
+        {
+            if (empty($this->$attribute))
+            {
+                $this->$attribute = Yii::app()->languageHelper->getForCurrentUser();
+            }
+            return true;
+        }
+        
         /**
          * Returns PredefinedTemplates
          * @return Array of EmailTemplate models
