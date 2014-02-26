@@ -757,11 +757,10 @@
          */
         protected function renderFormActionLinks()
         {
-            $content    = $this->renderCancelLink();
-            $content   .= $this->renderApplyLink();
+            $content    = $this->renderApplyLink();
+            $content   .= $this->renderCancelLink();
             $content    = ZurmoHtml::tag('div', array('class' => 'form-toolbar'), $content);
-            $content    = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix dock'), $content);
-            $content    = ZurmoHtml::tag('div', array('class' => 'float-bar'), $content);
+            $content    = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $content);
             return $content;
         }
 
