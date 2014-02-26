@@ -127,7 +127,7 @@
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo ZurmoHtml::textArea($name, CHtml::encode($this->content), $this->htmlOptions);
+            echo ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
         }
 
         protected function renderRedactorParamForInit($paramName)
