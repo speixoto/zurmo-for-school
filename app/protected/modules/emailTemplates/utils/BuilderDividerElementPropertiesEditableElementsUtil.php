@@ -57,12 +57,13 @@
                                             'border-top-color',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Color')));
+            $paddingParams              = static::resolveDefaultParams(Zurmo::t('EmailTemplatesModule', 'Padding'));
+            $paddingParams['inline']    = true;
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
                                             'PixelSizeStaticDropDownFormElement',
                                             'divider-padding',
-                                            static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Padding')));
+                                            $paddingParams);
 
             return $configurationItems;
         }

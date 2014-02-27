@@ -51,10 +51,18 @@
             $sizes  = array();
             for ($availableSize = 8; $availableSize <= 20; $availableSize++)
             {
-                $size           = "${availableSize}px";
-                $sizes[$size]   = $size;
+                $this->resolveSizeForUnits($availableSize);
+                $sizes[$availableSize]   = $availableSize;
             }
             return $sizes;
+        }
+
+        protected function resolveSizeForUnits(& $size)
+        {
+            if (!isset($this->params['inline']) || !$this->params['inline'])
+            {
+                $size   .= "px";
+            }
         }
     }
 ?>

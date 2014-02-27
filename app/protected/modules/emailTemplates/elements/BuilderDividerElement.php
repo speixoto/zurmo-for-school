@@ -50,7 +50,7 @@
         {
             $properties              = array(
                 'backend'   => array(
-                    'divider-padding'           => '10px',
+                    'divider-padding'           => '10',
                 ),
                 'frontend'   => array(
                     'inlineStyles'  => array(
@@ -70,7 +70,10 @@
             $imageOptions   = array();
             if (isset($this->properties['frontend']['inlineStyles']['border-top-width']))
             {
-                $imageOptions   = array('height' => $this->properties['frontend']['inlineStyles']['border-top-width']);
+                $height         = $this->properties['frontend']['inlineStyles']['border-top-width'];
+                // get rid of px as for border-top-width we have to save it with px(it appears in style property).
+                $height         = substr($height, 0, -2);
+                $imageOptions   = array('height' => $height);
             }
             $content        = ZurmoHtml::image($src, $alt, $imageOptions);
             return $content;

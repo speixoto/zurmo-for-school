@@ -50,7 +50,7 @@
         {
             $properties              = array(
                 'frontend'   => array(
-                    'height'            => '10px',
+                    'height'            => '10',
                 )
             );
             return $properties;
@@ -67,10 +67,11 @@
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $elementClass   = 'PixelSizeStaticDropDownFormElement';
-            $property       = '[height]';
-            $label          = Zurmo::t('EmailTemplatesModule', 'Height');
-            $params         = static::resolveDefaultElementParamsForEditableForm($label);
+            $elementClass       = 'PixelSizeStaticDropDownFormElement';
+            $property           = '[height]';
+            $label              = Zurmo::t('EmailTemplatesModule', 'Height');
+            $params             = static::resolveDefaultElementParamsForEditableForm($label);
+            $params['inline']   = true;
             $propertiesForm = BuilderElementFrontendPropertiesEditableElementUtil::render($elementClass, $this->model,
                                                                                             $property, $form, $params);
             return $propertiesForm;
