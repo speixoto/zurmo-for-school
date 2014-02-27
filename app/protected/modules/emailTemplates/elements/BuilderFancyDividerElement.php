@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,55 +31,55 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2014. All rights reserved".
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with placeholder images
-     */
-    class PlaceholderImageUtil
+    class BuilderFancyDividerElement extends BuilderDividerElement
     {
-        const ONE_BY_ONE_PIXEL_IMAGE_PATH               =   '/default/images/1x1-pixel.png';
+        const DEFAULT_STYLE_IMAGE_PATH              = 'transparent.gif';
 
-        const TRANSPARENT_IMAGE_PATH                    =   '/default/images/email-builder/transparent.gif';
+        const DEFAULT_STYLE_IMAGE_DIRECTORY_PATH    = '/default/images/email-builder/';
 
-        public static function resolveOneByOnePixelImageUrl($absolute = true)
+        protected static function resolveLabel()
         {
-            return static::resolveUrlForThemeFile(static::ONE_BY_ONE_PIXEL_IMAGE_PATH, $absolute);
+            return Zurmo::t('EmailTemplatesModule', 'Fancy Divider');
         }
 
-        public static function resolveOneByOnePixelImagePath()
+        protected function resolveDefaultProperties()
         {
-            return Yii::app()->themeManager->basePath . static::ONE_BY_ONE_PIXEL_IMAGE_PATH;
+            $properties              = array(
+                'backend'   => array(
+                    'divider-padding'           => '10px',
+                    'image'                     => static::DEFAULT_STYLE_IMAGE_PATH,
+                ),
+            );
+            return $properties;
         }
 
-        public static function resolveTransparentImageUrl($absolute = true)
+        protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            return static::resolveUrlForThemeFile(static::TRANSPARENT_IMAGE_PATH, $absolute);
+            $propertiesForm = BuilderFancyDividerElementPropertiesEditableElementsUtil::render($this->model, $form);
+            return $propertiesForm;
         }
 
-        public static function resolveTransparentImagePath()
+        /**
+         * Resolve the divider image for the middle td
+         * @return string
+         */
+        protected function resolveDividerImageUrl()
         {
-            return Yii::app()->themeManager->basePath . static::TRANSPARENT_IMAGE_PATH;
+            $imagePath      = static::DEFAULT_STYLE_IMAGE_DIRECTORY_PATH . $this->properties['backend']['image'];
+            $imageUrl       = PlaceholderImageUtil::resolveUrlForThemeFile($imagePath, true);
+            return $imageUrl;
         }
 
-        public static function resolveUrlForThemeFile($filePath, $absolute = true)
+        /**
+         * Resolve additional css class names to put on wrapper table.
+         * @return string
+         */
+        protected function resolveDividerCssClassNames()
         {
-            if (strpos($filePath, '/') !== 0)
-            {
-                $filePath = '/' . $filePath;
-            }
-            $themeFilePath = Yii::app()->themeManager->baseUrl . $filePath;
-            if (!$absolute)
-            {
-                return $themeFilePath;
-            }
-            return static::resolveAbsoluteUrlForFile($themeFilePath);
-        }
-
-        protected static function resolveAbsoluteUrlForFile($filePath)
-        {
-            return Yii::app()->request->getHostInfo() . $filePath;
+            return 'fancy-divider';
         }
     }
 ?>

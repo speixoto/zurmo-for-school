@@ -34,52 +34,26 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with placeholder images
-     */
-    class PlaceholderImageUtil
+    class BuilderFancyDividerElementPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
-        const ONE_BY_ONE_PIXEL_IMAGE_PATH               =   '/default/images/1x1-pixel.png';
-
-        const TRANSPARENT_IMAGE_PATH                    =   '/default/images/email-builder/transparent.gif';
-
-        public static function resolveOneByOnePixelImageUrl($absolute = true)
+        protected static function resolveConfiguration()
         {
-            return static::resolveUrlForThemeFile(static::ONE_BY_ONE_PIXEL_IMAGE_PATH, $absolute);
-        }
+            $configurationItems         = array();
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'FancyDividerStyleStaticDropDownFormElement',
+                                            'image',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Style')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'PixelSizeStaticDropDownFormElement',
+                                            'divider-padding',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Padding')));
 
-        public static function resolveOneByOnePixelImagePath()
-        {
-            return Yii::app()->themeManager->basePath . static::ONE_BY_ONE_PIXEL_IMAGE_PATH;
-        }
-
-        public static function resolveTransparentImageUrl($absolute = true)
-        {
-            return static::resolveUrlForThemeFile(static::TRANSPARENT_IMAGE_PATH, $absolute);
-        }
-
-        public static function resolveTransparentImagePath()
-        {
-            return Yii::app()->themeManager->basePath . static::TRANSPARENT_IMAGE_PATH;
-        }
-
-        public static function resolveUrlForThemeFile($filePath, $absolute = true)
-        {
-            if (strpos($filePath, '/') !== 0)
-            {
-                $filePath = '/' . $filePath;
-            }
-            $themeFilePath = Yii::app()->themeManager->baseUrl . $filePath;
-            if (!$absolute)
-            {
-                return $themeFilePath;
-            }
-            return static::resolveAbsoluteUrlForFile($themeFilePath);
-        }
-
-        protected static function resolveAbsoluteUrlForFile($filePath)
-        {
-            return Yii::app()->request->getHostInfo() . $filePath;
+            return $configurationItems;
         }
     }
+
 ?>

@@ -67,7 +67,11 @@
         {
             $src            = $this->resolveDividerImageUrl();
             $alt            = static::resolveLabel();
-            $imageOptions   = array('height' => $this->properties['frontend']['inlineStyles']['border-top-width']);
+            $imageOptions   = array();
+            if (isset($this->properties['frontend']['inlineStyles']['border-top-width']))
+            {
+                $imageOptions   = array('height' => $this->properties['frontend']['inlineStyles']['border-top-width']);
+            }
             $content        = ZurmoHtml::image($src, $alt, $imageOptions);
             return $content;
         }

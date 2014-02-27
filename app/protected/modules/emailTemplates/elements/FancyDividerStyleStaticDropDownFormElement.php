@@ -34,52 +34,27 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper class for working with placeholder images
-     */
-    class PlaceholderImageUtil
+    class FancyDividerStyleStaticDropDownFormElement extends StaticDropDownFormElement
     {
-        const ONE_BY_ONE_PIXEL_IMAGE_PATH               =   '/default/images/1x1-pixel.png';
-
-        const TRANSPARENT_IMAGE_PATH                    =   '/default/images/email-builder/transparent.gif';
-
-        public static function resolveOneByOnePixelImageUrl($absolute = true)
+        /**
+         * @return array
+         */
+        protected function getDropDownArray()
         {
-            return static::resolveUrlForThemeFile(static::ONE_BY_ONE_PIXEL_IMAGE_PATH, $absolute);
+            $dividerStyles     = $this->resolveAvailableFonts();
+            return $dividerStyles;
         }
 
-        public static function resolveOneByOnePixelImagePath()
+        protected function resolveAvailableFonts()
         {
-            return Yii::app()->themeManager->basePath . static::ONE_BY_ONE_PIXEL_IMAGE_PATH;
-        }
-
-        public static function resolveTransparentImageUrl($absolute = true)
-        {
-            return static::resolveUrlForThemeFile(static::TRANSPARENT_IMAGE_PATH, $absolute);
-        }
-
-        public static function resolveTransparentImagePath()
-        {
-            return Yii::app()->themeManager->basePath . static::TRANSPARENT_IMAGE_PATH;
-        }
-
-        public static function resolveUrlForThemeFile($filePath, $absolute = true)
-        {
-            if (strpos($filePath, '/') !== 0)
-            {
-                $filePath = '/' . $filePath;
-            }
-            $themeFilePath = Yii::app()->themeManager->baseUrl . $filePath;
-            if (!$absolute)
-            {
-                return $themeFilePath;
-            }
-            return static::resolveAbsoluteUrlForFile($themeFilePath);
-        }
-
-        protected static function resolveAbsoluteUrlForFile($filePath)
-        {
-            return Yii::app()->request->getHostInfo() . $filePath;
+            // TODO: @Shoaibi: Critical1: We need actual images and styles here.
+            $styles    = array(
+                'transparent1.gif'   => 'Fancy 1',
+                'transparent2.gif'   => 'Fancy 2',
+                'transparent3.gif'   => 'Fancy 3',
+                'transparent.gif'    => 'Fancy 4',
+            );
+            return $styles;
         }
     }
 ?>
