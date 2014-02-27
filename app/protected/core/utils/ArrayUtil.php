@@ -282,12 +282,12 @@
          * @param array $haystack
          * @return array
          */
-        public static function recursiveRemoveEmptyValues(array $haystack)
+        public static function recursivelyRemoveEmptyValues(array $haystack)
         {
             foreach ($haystack as $key => $value) {
                 if (is_array($value))
                 {
-                    $haystack[$key] = static::recursiveRemoveEmptyValues($haystack[$key]);
+                    $haystack[$key] = static::recursivelyRemoveEmptyValues($haystack[$key]);
                 }
 
                 if (empty($haystack[$key]))

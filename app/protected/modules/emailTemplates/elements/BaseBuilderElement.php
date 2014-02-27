@@ -1076,7 +1076,7 @@
         {
             if (!isset($this->params['doNotCleanUpProperties']))
             {
-                $this->properties   = ArrayUtil::recursiveRemoveEmptyValues($this->properties);
+                $this->properties   = ArrayUtil::recursivelyRemoveEmptyValues($this->properties);
             }
         }
 
