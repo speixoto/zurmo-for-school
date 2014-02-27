@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FancyDividerStyleStaticDropDownFormElement extends StaticDropDownFormElement
+    class FancyDividerStyleStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
         /**
          * @return array

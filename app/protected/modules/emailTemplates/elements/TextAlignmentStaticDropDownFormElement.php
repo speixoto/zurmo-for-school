@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class TextAlignmentStaticDropDownFormElement extends StaticDropDownFormElement
+    class TextAlignmentStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
         /**
          * @return array

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ColorStaticDropDownFormElement extends StaticDropDownFormElement
+    class ColorStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
         /**
          * @return array
@@ -52,6 +52,9 @@
                 '#ff0000' => Zurmo::t('EmailTemplatesModule', 'Red'),
                 '#00ff00' => Zurmo::t('EmailTemplatesModule', 'Green'),
                 '#0000ff' => Zurmo::t('EmailTemplatesModule', 'Blue'),
+                '#cccccc' => Zurmo::t('EmailTemplatesModule', '6xCs'),
+                '#dddddd' => Zurmo::t('EmailTemplatesModule', '6xds'),
+                '#555555' => Zurmo::t('EmailTemplatesModule', '6x5s'),
             );
         }
     }

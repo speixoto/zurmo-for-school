@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FontStyleStaticDropDownFormElement extends StaticDropDownFormElement
+    class FontStyleStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
         /**
          * @return array

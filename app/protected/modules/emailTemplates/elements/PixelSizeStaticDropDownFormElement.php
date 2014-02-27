@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class PixelSizeStaticDropDownFormElement extends StaticDropDownFormElement
+    class PixelSizeStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
         /**
          * @return array

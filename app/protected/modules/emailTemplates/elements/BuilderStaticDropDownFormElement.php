@@ -34,23 +34,12 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FontFamilyStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class BuilderStaticDropDownFormElement extends StaticDropDownFormElement
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
+        protected function getAddBlank()
         {
-            $fonts     = $this->resolveAvailableFonts();
-            return $fonts;
-        }
-
-        protected function resolveAvailableFonts()
-        {
-            // TODO: @Shoaibi: Critical: Need better font styles here.
-            $fonts = array('Arial', 'Verdana', 'Tahoma', 'Times New Roman', 'Georgia', 'Courier New');
-            $fonts  = array_combine($fonts, $fonts);
-            return $fonts;
+            // we need to show blank option for all of these.
+            return true;
         }
     }
 ?>
