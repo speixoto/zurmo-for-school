@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementRowPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
+    class BuilderRowElementPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
         protected static function resolveConfiguration()
         {

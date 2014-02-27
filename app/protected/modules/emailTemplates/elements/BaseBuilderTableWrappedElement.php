@@ -59,9 +59,7 @@
          */
         protected function resolveWrapperTdNonEditableByContent($content)
         {
-            $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
-            $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
-            $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
+            $options            = $this->resolveNonEditableContentWrappingTdOptions();
             $content            = ZurmoHtml::tag('td', $options, $content);
             return $content;
         }
@@ -96,10 +94,18 @@
          */
         protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $customDataAttributes)
         {
-            $defaultHtmlOptions = $this->resolveNonEditableWrapperHtmlOptions();
+            $defaultHtmlOptions = $this->resolveNonEditableWrapperOptions($customDataAttributes);
             $htmlOptions        = CMap::mergeArray($defaultHtmlOptions, $customDataAttributes);
             $content            = ZurmoHtml::tag('table', $htmlOptions, $content);
             return $content;
+        }
+
+        protected function resolveNonEditableWrapperOptions(array $customDataAttributes)
+        {
+            // frontend options are rendered directly on the td in this case.
+            $htmlOptions        = $this->resolveNonEditableWrapperHtmlOptions();
+            $options            = CMap::mergeArray($htmlOptions, $customDataAttributes);
+            return $options;
         }
 
         /**
@@ -109,6 +115,18 @@
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
             return array();
+        }
+
+        /**
+         * Resolve wrapper's column options
+         * @return array
+         */
+        protected function resolveNonEditableContentWrappingTdOptions()
+        {
+            $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
+            $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
+            $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
+            return $options;
         }
     }
 ?>

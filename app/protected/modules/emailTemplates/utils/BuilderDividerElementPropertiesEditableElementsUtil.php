@@ -34,28 +34,36 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementButtonPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
+    class BuilderDividerElementPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
         protected static function resolveConfiguration()
         {
             $configurationItems         = array();
-            /*
-            Target/Open In
-            sizeClass
-             */
-
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementInlineStylePropertiesEditableElementUtil',
+                                            'PixelSizeStaticDropDownFormElement',
+                                            'border-top-width',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Height')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementInlineStylePropertiesEditableElementUtil',
+                                            'BorderStyleStaticDropDownFormElement',
+                                            'border-top-style',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Style')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementInlineStylePropertiesEditableElementUtil',
+                                            'ColorStaticDropDownFormElement',
+                                            'border-top-color',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Color')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
-                                            'TextElement',
-                                            'text',
+                                            'PixelSizeStaticDropDownFormElement',
+                                            'divider-padding',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Text')));
-            $configurationItems[]       = static::resolveConfigurationItem(
-                                            'BuilderElementFrontendPropertiesEditableElementUtil',
-                                            'TextElement',
-                                            'href',
-                                            static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'URL')));
+                                                Zurmo::t('EmailTemplatesModule', 'Padding')));
+
             return $configurationItems;
         }
     }

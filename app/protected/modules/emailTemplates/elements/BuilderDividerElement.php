@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderExpanderElement extends BaseBuilderTableWrappedElement
+    class BuilderDividerElement extends BaseBuilderTableWrappedElement
     {
         public static function isUIAccessible()
         {
@@ -43,16 +43,23 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Expander');
+            return Zurmo::t('EmailTemplatesModule', 'Divider');
         }
 
         protected function resolveDefaultProperties()
         {
             $parentDefaultProperties    = parent::resolveDefaultProperties();
             $ownProperties              = array(
+                'backend'   => array(
+                    'divider-padding'           => '10px',
+                ),
                 'frontend'   => array(
-                    'height'            => '10px',
-                )
+                    'inlineStyles'  => array(
+                        'border-top-width'              => '15px',
+                        'border-top-style'              => 'dotted',
+                        'border-top-color'              => '#0000ff',
+                        ),
+                    )
             );
             $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
             return $properties;
@@ -60,21 +67,16 @@
 
         protected function renderControlContentNonEditable()
         {
-            $src        = $this->resolveExpanderImageUrl();
-            $alt        = static::resolveLabel();
-            $options    = $this->resolveFrontendPropertiesNonEditable();
-            $content    = ZurmoHtml::image($src, $alt, $options);
+            $src            = $this->resolveDummyDividerImageUrl();
+            $alt            = static::resolveLabel();
+            $imageOptions   = array('height' => $this->properties['frontend']['inlineStyles']['border-top-width']);
+            $content        = ZurmoHtml::image($src, $alt, $imageOptions);
             return $content;
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $elementClass   = 'PixelSizeStaticDropDownFormElement';
-            $property       = '[height]';
-            $label          = Zurmo::t('EmailTemplatesModule', 'Height');
-            $params         = static::resolveDefaultElementParamsForEditableForm($label);
-            $propertiesForm = BuilderElementFrontendPropertiesEditableElementUtil::render($elementClass, $this->model,
-                                                                                            $property, $form, $params);
+            $propertiesForm = BuilderDividerElementPropertiesEditableElementsUtil::render($this->model, $form);
             return $propertiesForm;
         }
 
@@ -83,22 +85,73 @@
             return null;
         }
 
-        protected function resolveExpanderImageUrl()
+        /**
+         * Resolve the divider image for the middle td
+         * @return string
+         */
+        protected function resolveDividerImageUrl()
+        {
+            // its simple divider, we would use same dummy image for divider
+            return $this->resolveDummyDividerImageUrl();
+        }
+
+        /**
+         * resolve the url for td before and after divider image
+         * @return string
+         */
+        protected function resolveDummyDividerImageUrl()
         {
             return PlaceholderImageUtil::resolveTransparentImageUrl(true);
         }
 
-        protected function resolveNonEditableContentWrappingTdOptions()
+        protected function resolveWrapperTdNonEditableByContent($content)
         {
-            // frontend options are directly rendered on the image
-            return $this->resolveNonEditableContentWrappingTdHtmlOptions();
+            $options            = $this->resolveNonEditableContentWrappingTdOptions();
+            $content            = ZurmoHtml::tag('td', $options, $content);
+            $content            = $this->resolveContentForPaddingTds($content);
+            return $content;
+        }
+
+        /**
+         * Add Padding Tds to content
+         * @param $content
+         * @return string
+         */
+        protected function resolveContentForPaddingTds($content)
+        {
+            $paddingTdContent   = $this->resolvePaddingTdContent();
+            $content            = $paddingTdContent . $content . $paddingTdContent;
+            return $content;
+        }
+
+        /**
+         * Resolve padding td content
+         * @return string
+         */
+        protected function resolvePaddingTdContent()
+        {
+            $src            = $this->resolveDummyDividerImageUrl();
+            $alt            = static::resolveLabel();
+            $imageOptions   = array('height' => $this->properties['backend']['divider-padding']);
+            $content        = ZurmoHtml::image($src, $alt, $imageOptions);
+            $content        = ZurmoHtml::tag('td', array(), $content);
+            return $content;
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $options            = parent::resolveNonEditableWrapperHtmlOptions();
-            $options['class']   .= ' ' . 'expander';
+            $options['class']   .= ' ' . $this->resolveDividerCssClassNames();
             return $options;
+        }
+
+        /**
+         * Resolve additional css class names to put on wrapper table.
+         * @return string
+         */
+        protected function resolveDividerCssClassNames()
+        {
+            return 'simple-divider';
         }
     }
 ?>
