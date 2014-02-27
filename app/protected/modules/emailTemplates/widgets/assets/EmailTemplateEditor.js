@@ -59,28 +59,30 @@ var emailTemplateEditor = {
         isDragging: false,
         isInited: false
     },
-    init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
-                     iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
+    init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editFormSelector,
+                     editActionSelector, moveActionSelector, deleteActionSelector, iframeOverlaySelector,
+                     cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
                      dropHereMessage, csrfToken, doNotWrapInRow, wrapInRow, wrapInHeaderRow) {
         if (!this.settings.isInited)
         {
-            this.settings.elementsContainerId     = elementsContainerId;
-            this.settings.elementsToPlaceSelector = elementsToPlaceSelector;
-            this.settings.iframeSelector          = iframeSelector;
-            this.settings.editSelector            = editSelector;
-            this.settings.editActionSelector      = editActionSelector;
-            this.settings.moveActionSelector      = moveActionSelector;
-            this.settings.deleteActionSelector    = deleteActionSelector;
-            this.settings.iframeOverlaySelector   = iframeOverlaySelector;
+            this.settings.elementsContainerId           = elementsContainerId;
+            this.settings.elementsToPlaceSelector       = elementsToPlaceSelector;
+            this.settings.iframeSelector                = iframeSelector;
+            this.settings.editSelector                  = editSelector;
+            this.settings.editFormSelector              = editFormSelector;
+            this.settings.editActionSelector            = editActionSelector;
+            this.settings.moveActionSelector            = moveActionSelector;
+            this.settings.deleteActionSelector          = deleteActionSelector;
+            this.settings.iframeOverlaySelector         = iframeOverlaySelector;
             this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
-            this.settings.editElementUrl          = editElementUrl;
-            this.settings.getNewElementUrl        = getNewElementUrl;
-            this.settings.alertErrorOnDelete      = alertErrorOnDelete;
-            this.settings.dropHereMessage         = dropHereMessage;
-            this.settings.csrfToken               = csrfToken;
-            this.settings.doNotWrapInRow          = doNotWrapInRow;
-            this.settings.wrapInRow               = wrapInRow;
-            this.settings.wrapInHeaderRow         = wrapInHeaderRow;
+            this.settings.editElementUrl                = editElementUrl;
+            this.settings.getNewElementUrl              = getNewElementUrl;
+            this.settings.alertErrorOnDelete            = alertErrorOnDelete;
+            this.settings.dropHereMessage               = dropHereMessage;
+            this.settings.csrfToken                     = csrfToken;
+            this.settings.doNotWrapInRow                = doNotWrapInRow;
+            this.settings.wrapInRow                     = wrapInRow;
+            this.settings.wrapInHeaderRow               = wrapInHeaderRow;
             this.setupLayout();
             this.settings.isInited                = true;
             emailTemplateEditor = this;
@@ -317,9 +319,7 @@ var emailTemplateEditor = {
             data: postData,
             cache: false,
             success: function (html) {
-                //Replace the contents of left side overlay with response
-                //@TODO SERGIO, SHOULD THE CLASS NAME BE MOVED TO BuilderCanvasView.php ?
-                $('.settings-form-container', emailTemplateEditor.settings.editSelector).html(html);
+                $(emailTemplateEditor.settings.editFormSelector).html(html);
             }
         });
         //Make the left side overlay visible.

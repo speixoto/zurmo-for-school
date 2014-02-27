@@ -48,6 +48,8 @@
 
         const PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID        = 'preview-iframe-container-close-link';
 
+        const ELEMENT_EDIT_CONTAINER                        = 'element-edit-container';
+
         const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-container';
 
         const UL_ELEMENT_TO_PLACE_ID                        = 'building-blocks';
@@ -226,14 +228,26 @@
         protected function resolveElementsSidebarContent()
         {
             $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
-            $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
-            $this->wrapContentInDiv($content, $this->resolveElementsSidebarHtmlOptions());
-            $formContainer = '<div class="settings-form-container"></div>';
+            $uiAccessibleContent    = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
+            $this->wrapContentInDiv($uiAccessibleContent, $this->resolveElementsSidebarHtmlOptions());
+            $editFormContent        = $this->resolveEditFormContent();
+            $mergeTagsContent       = $this->resolveMergeTagsContent();
+            $content                = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_CONTAINER, 'style' => 'display:none'),
+                                                $editFormContent . $mergeTagsContent);
+            return $uiAccessibleContent . $content;
+        }
+
+        protected function resolveEditFormContent()
+        {
+            $content = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
+            return $content;
+        }
+
+        protected function resolveMergeTagsContent()
+        {
             //@TODO JASON PUT THE MERGE TAGS TREE HERE
             $mergeTags     = '<div class="clearfix MergeTagsView">TREE HERE</div>';
-            $content      .= ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID, 'style' => 'display:none'),
-                             $formContainer . $mergeTags);
-            return $content;
+            return $mergeTags;
         }
 
         protected function resolveElementsSidebarHtmlOptions()
@@ -336,7 +350,8 @@
             $elementsContainerId                = '#' . static::ELEMENTS_CONTAINER_ID;
             $elementsToPlaceSelector            = '#' . static::UL_ELEMENT_TO_PLACE_ID;
             $iframeSelector                     = '#' . static::CANVAS_IFRAME_ID;
-            $editSelector                       = '#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID;
+            $editSelector                       = '#' . static::ELEMENT_EDIT_CONTAINER;
+            $editFormSelector                   = '#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID;
             $editActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
             $moveActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
             $deleteActionSelector               = 'span.' . BaseBuilderElement::OVERLAY_ACTION_DELETE;
@@ -355,6 +370,7 @@
                         '{$elementsToPlaceSelector}',
                         '{$iframeSelector}',
                         '{$editSelector}',
+                        '{$editFormSelector}',
                         '{$editActionSelector}',
                         '{$moveActionSelector}',
                         '{$deleteActionSelector}',
