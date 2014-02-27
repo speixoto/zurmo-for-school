@@ -208,7 +208,8 @@
                                         'content'     => $htmlContent,
                                         'paragraphy'  => "false",
                                         'deniedTags'  => CJSON::encode(array()),
-                                ));
+                                        'plugins'     => $this->resolveRedactorPlugins()
+            ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
             $content                .= $cClipWidget->getController()->clips['Redactor'];
@@ -282,6 +283,14 @@
                 return $this->model->$method();
             }
             return true;
+        }
+
+        protected function resolveRedactorPlugins()
+        {
+            if(isset($this->params['redactorPlugins']))
+            {
+                return $this->params['redactorPlugins'];
+            }
         }
     }
 ?>

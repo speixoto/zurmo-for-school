@@ -71,6 +71,8 @@
 
         public $toolbarExternal;
 
+        public $plugins         = '';
+
         public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
 
         public $allowedTags;
@@ -100,6 +102,17 @@
                     $(document).ready(
                         function()
                         {
+                            RedactorPlugins = {};
+                            RedactorPlugins.mergeTags = {
+                                init: function ()
+                                {
+                                    this.buttonAdd('mergeTags', 'Merge Tags', this.mergeTagsButton);
+                                },
+                                mergeTagsButton: function(buttonName, buttonDOM, buttonObj, e)
+                                {
+                                    $('.MergeTagsView').toggle();
+                                }
+                            };
                             $('#{$id}').redactor(
                             {
                                 {$this->renderRedactorParamForInit('initCallback')}
@@ -123,6 +136,7 @@
                                 {$this->renderRedactorParamForInit('toolbarExternal')}
                                 imageUpload:    '{$this->imageUpload}',
                                 imageGetJson:   '{$this->imageGetJson}',
+                                plugins:        {$this->plugins},
                             });
                         }
                     );";
