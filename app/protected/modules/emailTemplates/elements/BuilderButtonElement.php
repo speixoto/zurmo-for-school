@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderExpanderElement extends BaseBuilderTableWrappedElement
+    class BuilderButtonElement extends BaseBuilderElement
     {
         public static function isUIAccessible()
         {
@@ -43,15 +43,20 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Expander');
+            return Zurmo::t('EmailTemplatesModule', 'Button');
         }
 
         protected function resolveDefaultProperties()
         {
             $parentDefaultProperties    = parent::resolveDefaultProperties();
             $ownProperties              = array(
-                'frontend'   => array(
-                    'height'            => '10px',
+                'backend'       => array(
+                    'sizeClass'         => null,
+                    'text'              => 'Button',
+                ),
+                'frontend'      => array(
+                    'href'              => null,
+                    'target'            => '_blank',
                 )
             );
             $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
@@ -60,32 +65,32 @@
 
         protected function renderControlContentNonEditable()
         {
-            $src        = $this->resolveExpanderImageUrl();
-            $alt        = static::resolveLabel();
-            $options    = $this->resolveFrontendPropertiesNonEditable();
-            $content    = ZurmoHtml::image($src, $alt, $options);
+            $sizeClass          = null;
+            $text               = null;
+            extract($this->properties['backend']);
+            $target             = null;
+            $href               = null;
+            extract($this->properties['frontend']);
+            $label              = ZurmoHtml::tag('span', array(), $text);
+            $options            = $this->resolveFrontendPropertiesNonEditable();
+            $options['class']   = ' ' .$sizeClass;
+            $options['target']  = $target;
+            $content            = ZurmoHtml::link($label, $href, $options);
             return $content;
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $elementClass   = 'PixelSizeStaticDropDownFormElement';
-            $property       = 'height';
-            $label          = Zurmo::t('EmailTemplatesModule', 'Height');
-            $params         =  static::resolveDefaultElementParamsForEditableForm($label);
-            $propertiesForm = BuilderElementBackendPropertiesEditableElementUtil::render($elementClass, $this->model,
-                                                                                            $property, $form, $params);
+            $propertiesForm     = BuilderElementButtonPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
             return $propertiesForm;
         }
 
         protected function renderContentTab(ZurmoActiveForm $form)
         {
             return null;
-        }
-
-        protected function resolveExpanderImageUrl()
-        {
-            return PlaceholderImageUtil::resolveTransparentImageUrl(true);
         }
 
         protected function resolveNonEditableWrapperOptions(array $customDataAttributes)

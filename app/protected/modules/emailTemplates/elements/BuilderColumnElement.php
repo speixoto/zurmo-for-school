@@ -51,10 +51,10 @@
             return array();
         }
 
-        protected function resolveWrapperNonEditable($elementContent, array $frontendProperties, array $customDataAttributes,
+        protected function resolveWrapperNonEditable($elementContent, array $customDataAttributes,
                                                      $actionsOverlay)
         {
-            $content    = parent::resolveWrapperNonEditable($elementContent, $frontendProperties, $customDataAttributes,
+            $content    = parent::resolveWrapperNonEditable($elementContent, $customDataAttributes,
                                                             $actionsOverlay);
             $content    = ZurmoHtml::tag('td', $this->resolveColumnWrapperTdHtmlOptions(), $content);
             return $content;

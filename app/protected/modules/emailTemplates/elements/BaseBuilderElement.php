@@ -283,21 +283,19 @@
         protected final function renderControlWrapperNonEditable($elementContent = '{{dummyContent}}')
         {
             $customDataAttributes   = $this->resolveCustomDataAttributesNonEditable();
-            $frontendProperties     = $this->resolveFrontendPropertiesNonEditable();
             $actionsOverlay         = $this->resolveNonEditableActions();
-            $content                = $this->resolveWrapperNonEditable($elementContent, $frontendProperties, $customDataAttributes, $actionsOverlay);
+            $content                = $this->resolveWrapperNonEditable($elementContent, $customDataAttributes, $actionsOverlay);
             return $content;
         }
 
         /**
          * Render the actual wrapper for nonEditable representation bundling provided information.
          * @param $elementContent
-         * @param array $frontendProperties
          * @param array $customDataAttributes
          * @param $actionsOverlay
          * @return string
          */
-        protected function resolveWrapperNonEditable($elementContent, array $frontendProperties, array $customDataAttributes,
+        protected function resolveWrapperNonEditable($elementContent, array $customDataAttributes,
                                                         $actionsOverlay)
         {
             $contentSuffix  = null;
@@ -305,7 +303,7 @@
             {
                     $contentSuffix  .= $actionsOverlay;
             }
-            $content    = $this->resolveWrapperNonEditableByContentAndProperties($elementContent, $frontendProperties, $customDataAttributes);
+            $content    = $this->resolveWrapperNonEditableByContentAndProperties($elementContent, $customDataAttributes);
             if ($contentSuffix !== null)
             {
                 $content    .= $contentSuffix;
@@ -337,17 +335,13 @@
         /**
          * Resolve and return wrapper using provided content and html options for non-editable representation
          * @param $content
-         * @param array $frontendProperties
          * @param array $customDataAttributes
          * @return string
          */
-        protected function resolveWrapperNonEditableByContentAndProperties($content, array $frontendProperties,
-                                                                                        array $customDataAttributes)
+        protected function resolveWrapperNonEditableByContentAndProperties($content, array $customDataAttributes)
         {
-            $defaultHtmlOptions = $this->resolveNonEditableWrapperHtmlOptions();
-            $htmlOptions        = CMap::mergeArray($defaultHtmlOptions, $frontendProperties,
-                                                    $customDataAttributes);
-            $content            = ZurmoHtml::tag('div', $htmlOptions, $content);
+            $options            = $this->resolveNonEditableWrapperOptions($customDataAttributes);
+            $content            = ZurmoHtml::tag('div', $options, $content);
             return $content;
         }
 
@@ -495,12 +489,25 @@
         }
 
         /**
-         * Resolve html options for nonEditable representation's wrapper
+         * Resolve default html options for nonEditable representation's wrapper
          * @return array
          */
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             return array('id' => $this->id, 'class' => 'builder-element-non-editable element-data');
+        }
+
+        /**
+         * Resolve options for non editable wrapper
+         * @param array $customDataAttributes
+         * @return array|mixed
+         */
+        protected function resolveNonEditableWrapperOptions(array $customDataAttributes)
+        {
+            $htmlOptions        = $this->resolveNonEditableWrapperHtmlOptions();
+            $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
+            $options            = CMap::mergeArray($htmlOptions, $frontendOptions, $customDataAttributes);
+            return $options;
         }
 
         /**

@@ -41,11 +41,10 @@
             return false;
         }
 
-        protected function resolveWrapperNonEditableByContentAndProperties($content, array $frontendProperties,
-                                                                                        array $customDataAttributes)
+        protected function resolveWrapperNonEditableByContentAndProperties($content, array $customDataAttributes)
         {
             // these are container elements, we wrap them in tables instead of divs
-            $content        = $this->resolveWrapperTdNonEditableByContent($content, $frontendProperties);
+            $content        = $this->resolveWrapperTdNonEditableByContent($content);
             $content        = $this->resolveWrapperTrNonEditableByContent($content);
             $content        = $this->resolveWrapperTBodyNonEditableByContent($content);
             $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $customDataAttributes);
@@ -58,10 +57,12 @@
          * @param array $properties
          * @return string
          */
-        protected function resolveWrapperTdNonEditableByContent($content, array $properties = array())
+        protected function resolveWrapperTdNonEditableByContent($content)
         {
-            $htmlOptions    = CMap::mergeArray($this->resolveNonEditableContentWrappingTdHtmlOptions(), $properties);
-            $content        = ZurmoHtml::tag('td', $htmlOptions, $content);
+            $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
+            $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
+            $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
+            $content            = ZurmoHtml::tag('td', $options, $content);
             return $content;
         }
 

@@ -55,6 +55,12 @@
                                                 Zurmo::t('EmailTemplatesModule', 'Border Width')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
+                                            'PixelSizeStaticDropDownFormElement',
+                                            'border-radius',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Border Radius')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementInlineStylePropertiesEditableElementUtil',
                                             'BorderStyleStaticDropDownFormElement',
                                             'border-style',
                                             static::resolveDefaultParams(

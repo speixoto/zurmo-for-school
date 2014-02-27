@@ -34,14 +34,30 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementInlineStylePropertiesEditableElementUtil extends BuilderElementFrontendPropertiesEditableElementUtil
+    class BuilderElementButtonPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
-        public static function render($elementClassName, CModel $model, $property, ZurmoActiveForm $form,
-                                      array $params = array(), $wrapInTr = true, array $trOptions = array())
+        protected static function resolveConfiguration()
         {
-            $property   = "[inlineStyles]$property";
-            $content    = parent::render($elementClassName, $model, $property, $form, $params, $wrapInTr, $trOptions);
-            return $content;
+            $configurationItems         = array();
+            /*
+            Target/Open In
+            sizeClass
+             */
+
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'TextElement',
+                                            'text',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Text')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementFrontendPropertiesEditableElementUtil',
+                                            'TextElement',
+                                            'href',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'URL')));
+            return $configurationItems;
         }
     }
+
 ?>

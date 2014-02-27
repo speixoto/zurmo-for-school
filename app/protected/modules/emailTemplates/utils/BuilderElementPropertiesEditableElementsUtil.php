@@ -47,6 +47,7 @@
                 $property       = null;
                 $params         = array();
                 extract($configurationItem);
+                $property       = "[${property}]";
                 $content        .= $util::render($elementClass, $model, $property, $form, $params, $wrapInTr, $trOptions);
 
             }
