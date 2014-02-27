@@ -43,10 +43,5 @@
         {
             return array('DefaultValueModelAttribute' => 'ImportMappingRuleLanguageStaticDropDown');
         }
-
-        public static function getSanitizerUtilTypesInProcessingOrder()
-        {
-            return array('Language', 'Required');
-        }
     }
 ?>

@@ -43,10 +43,5 @@
         {
             return array('DefaultValueModelAttribute' => 'ImportMappingRuleTimeZoneStaticDropDown');
         }
-
-        public static function getSanitizerUtilTypesInProcessingOrder()
-        {
-            return array('TimeZone', 'Required');
-        }
     }
 ?>

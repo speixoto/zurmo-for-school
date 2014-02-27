@@ -43,10 +43,5 @@
         {
             return array('DefaultValueModelAttribute' => 'ImportMappingRuleCurrencyStaticDropDown');
         }
-
-        public static function getSanitizerUtilTypesInProcessingOrder()
-        {
-            return array('Currency', 'Required');
-        }
     }
 ?>
