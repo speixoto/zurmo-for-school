@@ -120,6 +120,7 @@
         protected function renderContent()
         {
             $this->renderTreeViewAjaxScriptContent();
+            $this->renderRedactorPluginScriptContent();
             $spinner  = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
             $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), $spinner);
             $this->registerScriptContent();
@@ -200,6 +201,30 @@
             }
             $script .= '});';
             Yii::app()->clientScript->registerScript('mergeTagsDragDropScript' . $this->uniqueId, $script);
+        }
+
+        protected function renderRedactorPluginScriptContent()
+        {
+            $script = 'if (!RedactorPlugins) var RedactorPlugins = {};
+                            RedactorPlugins.advanced = {
+                                init: function ()
+                                {
+                                    this.buttonAdd("advanced", "Advanced", this.testButton);
+                                },
+                                testButton: function(buttonName, buttonDOM, buttonObj, e)
+                                {
+                                    alert(buttonName);
+                                }
+                            };';
+            $script .= '
+$(document).ready(function()
+{
+    $("#' . $this->htmlContentId . '").redactor({
+        plugins: ["advanced"]
+        });
+});
+    ';
+            Yii::app()->clientScript->registerScript('mergeTagsRedactorPluginsScript' . $this->uniqueId, $script);
         }
     }
 ?>
