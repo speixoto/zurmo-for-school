@@ -173,7 +173,8 @@
 
         protected function renderPlainTextAndHtmlContent(& $content)
         {
-            $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form);
+            $params  = array('redactorPlugins' => "['mergeTags']");
+            $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
             $element->editableTemplate  = '{label}{content}';
             $contentAreasContent        = $element->render();
             $this->wrapContentInDiv($contentAreasContent, array('class' => 'email-template-combined-content'));
