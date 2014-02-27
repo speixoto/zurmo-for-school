@@ -190,7 +190,6 @@
             $view = new MergeTagsView('EmailTemplate',
                                       get_class($this->model) . '_textContent',
                                       get_class($this->model) . '_htmlContent'); //todo: get these last 2 values dynamically
-            //$view->setCssClasses(array('clearfix left-column'));
             return $view->render();
         }
 
