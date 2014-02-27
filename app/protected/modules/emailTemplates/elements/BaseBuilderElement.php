@@ -938,7 +938,7 @@
             Yii::app()->clientScript->registerScript('hideElementEditFormOverlay', "
                 function hideElementEditFormOverlay()
                 {
-                    $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER . "').hide();
+                    $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER_ID . "').hide();
                     $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . "').empty();
                 }
             ");

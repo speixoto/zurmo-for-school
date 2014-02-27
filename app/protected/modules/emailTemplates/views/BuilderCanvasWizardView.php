@@ -48,9 +48,11 @@
 
         const PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID        = 'preview-iframe-container-close-link';
 
-        const ELEMENT_EDIT_CONTAINER                        = 'element-edit-container';
+        const ELEMENT_EDIT_CONTAINER_ID                        = 'element-edit-container';
 
         const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-container';
+
+        const ELEMENT_MERGE_TAGS_CONTAINER_ID                  = 'element-merge-tags-container';
 
         const UL_ELEMENT_TO_PLACE_ID                        = 'building-blocks';
 
@@ -232,7 +234,7 @@
             $this->wrapContentInDiv($uiAccessibleContent, $this->resolveElementsSidebarHtmlOptions());
             $editFormContent        = $this->resolveEditFormContent();
             $mergeTagsContent       = $this->resolveMergeTagsContent();
-            $content                = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_CONTAINER, 'style' => 'display:none'),
+            $content                = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_CONTAINER_ID, 'style' => 'display:none'),
                                                 $editFormContent . $mergeTagsContent);
             return $uiAccessibleContent . $content;
         }
@@ -246,8 +248,9 @@
         protected function resolveMergeTagsContent()
         {
             //@TODO JASON PUT THE MERGE TAGS TREE HERE
-            $mergeTags     = '<div class="clearfix MergeTagsView">TREE HERE</div>';
-            return $mergeTags;
+            $mergeTagsContent = 'TREE HERE';
+            return ZurmoHtml::tag('div', array('id' => static::ELEMENT_MERGE_TAGS_CONTAINER_ID, 'class' => 'clearfix'),
+                                  $mergeTagsContent);
         }
 
         protected function resolveElementsSidebarHtmlOptions()
@@ -350,7 +353,7 @@
             $elementsContainerId                = '#' . static::ELEMENTS_CONTAINER_ID;
             $elementsToPlaceSelector            = '#' . static::UL_ELEMENT_TO_PLACE_ID;
             $iframeSelector                     = '#' . static::CANVAS_IFRAME_ID;
-            $editSelector                       = '#' . static::ELEMENT_EDIT_CONTAINER;
+            $editSelector                       = '#' . static::ELEMENT_EDIT_CONTAINER_ID;
             $editFormSelector                   = '#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID;
             $editActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
             $moveActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
@@ -419,7 +422,7 @@
                         $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").addClass("active");
                     }
                     $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").removeClass("active");
-                    $("#' . static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID . '").hide();
+                    $("#' . static::ELEMENT_EDIT_CONTAINER_ID . '").hide();
                     $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
                     event.preventDefault();
                  });');
