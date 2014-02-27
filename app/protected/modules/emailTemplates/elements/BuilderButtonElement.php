@@ -65,17 +65,18 @@
 
         protected function renderControlContentNonEditable()
         {
-            $sizeClass          = null;
-            $text               = null;
+            $sizeClass              = null;
+            $text                   = null;
             extract($this->properties['backend']);
-            $target             = null;
-            $href               = null;
+            $target                 = null;
+            $href                   = null;
             extract($this->properties['frontend']);
-            $label              = ZurmoHtml::tag('span', array(), $text);
-            $options            = $this->resolveFrontendPropertiesNonEditable();
-            $options['class']   = ' ' .$sizeClass;
-            $options['target']  = $target;
-            $content            = ZurmoHtml::link($label, $href, $options);
+            $label                  = ZurmoHtml::tag('span', array(), $text);
+            $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
+            $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
+            $htmlOptions['class']   .= ' ' . $sizeClass;
+            $options                = CMap::mergeArray($htmlOptions, $frontendOptions);
+            $content                = ZurmoHtml::link($label, $href, $options);
             return $content;
         }
 
@@ -99,6 +100,11 @@
             $htmlOptions        = $this->resolveNonEditableWrapperHtmlOptions();
             $options            = CMap::mergeArray($htmlOptions, $customDataAttributes);
             return $options;
+        }
+
+        protected function resolveDefaultHtmlOptionsForLink()
+        {
+            return array('class' => 'newsletter-button');
         }
     }
 ?>
