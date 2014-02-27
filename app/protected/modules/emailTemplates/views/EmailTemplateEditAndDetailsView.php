@@ -140,7 +140,21 @@
                     ");
             // End Not Coding Standard
             $content  = $this->resolveRenderHiddenModelClassNameElement($form);
-            $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
+
+            $editor  = $this->renderHtmlAndTextContentElement($this->model, null, $form);
+            $editor .= $this->renderMergeTagsView(); //todo: placed last so redactor is already initialized first. just a trick for the css right now
+
+            $content .= ZurmoHtml::tag('div', array('class' => 'left-column strong-right'), $editor);
+
+            return $content;
+        }
+
+        protected function renderMergeTagsView()
+        {
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags Guide'));
+            $view = new MergeTagsView('EmailTemplate', 'EmailTemplate_textContent', 'EmailTemplate_htmlContent'); //todo: get these last 2 values dynamically
+            $view->setCssClasses(array('clearfix left-column'));
+            $content = $title . $view->render();
             return $content;
         }
 
@@ -171,8 +185,7 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            $content = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)
