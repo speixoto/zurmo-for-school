@@ -176,14 +176,13 @@
             $params  = array('redactorPlugins' => "['mergeTags']");
             $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
             $element->editableTemplate  = '{label}{content}';
-            $contentAreasContent        = $element->render();
-            $this->wrapContentInDiv($contentAreasContent, array('class' => 'email-template-combined-content'));
+            $right = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            $right = ZurmoHtml::tag('td', array(), $right);
             //todo: placed last so redactor is already initialized first. just a trick for the css right now
-            $contentAreasContent .= $this->renderMergeTagsView();
-            $contentAreasContent  = ZurmoHtml::tag('div', array('class' => 'left-column strong-right'), $contentAreasContent);
-            $contentAreasContent  = ZurmoHtml::tag('td', array('colspan' => 2), $contentAreasContent);
-            $this->wrapContentInTableRow($contentAreasContent);
-            $content            .= $contentAreasContent;
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags Guide'));
+            $left = $this->renderMergeTagsView();
+            $left = ZurmoHtml::tag('th', array(), $title . $left);
+            $content .= $left . $right;
         }
 
         protected function renderMergeTagsView()
@@ -191,7 +190,7 @@
             $view = new MergeTagsView('EmailTemplate',
                                       get_class($this->model) . '_textContent',
                                       get_class($this->model) . '_htmlContent'); //todo: get these last 2 values dynamically
-            $view->setCssClasses(array('clearfix left-column'));
+            //$view->setCssClasses(array('clearfix left-column'));
             return $view->render();
         }
 

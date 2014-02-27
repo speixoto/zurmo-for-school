@@ -117,10 +117,10 @@
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
                         $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
                         {
-                            selectedOptionValue                 = $(this).find(':selected').val();
-                            modelClassNameDropDown              = $('#EmailTemplate_modelClassName_value');
-                            modelClassNameTr                    = modelClassNameDropDown.parent().parent().parent();
-                            animationSpeed                      = 400;
+                            selectedOptionValue    = $(this).find(':selected').val();
+                            modelClassNameDropDown = $('#EmailTemplate_modelClassName_value');
+                            modelClassNameTr       = modelClassNameDropDown.parent().parent().parent();
+                            animationSpeed         = 400;
                             if (selectedOptionValue == " . EmailTemplate::TYPE_WORKFLOW . ")
                             {
                                 modelClassNameTr.show(animationSpeed);
@@ -144,7 +144,7 @@
             $editor  = $this->renderHtmlAndTextContentElement($this->model, null, $form);
             $editor .= $this->renderMergeTagsView(); //todo: placed last so redactor is already initialized first. just a trick for the css right now
 
-            $content .= ZurmoHtml::tag('div', array('class' => 'left-column strong-right'), $editor);
+            //$content .= ZurmoHtml::tag('div', array('class' => 'left-column strong-right'), $editor);
 
             return $content;
         }
@@ -153,8 +153,8 @@
         {
             $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags Guide'));
             $view = new MergeTagsView('EmailTemplate', 'EmailTemplate_textContent', 'EmailTemplate_htmlContent'); //todo: get these last 2 values dynamically
-            $view->setCssClasses(array('clearfix left-column'));
-            $content = $title . $view->render();
+            $view = ZurmoHtml::tag('div', array('class' => 'wizard-merge-tags'), $view->render());
+            $content = $title . $view;
             return $content;
         }
 
