@@ -105,7 +105,7 @@
 
         protected function resolveAvailableNonEditableActionsArray()
         {
-            return array(static::OVERLAY_ACTION_EDIT, static::OVERLAY_ACTION_DELETE);
+            return array(static::OVERLAY_ACTION_MOVE, static::OVERLAY_ACTION_EDIT, static::OVERLAY_ACTION_DELETE);
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
