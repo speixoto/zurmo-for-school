@@ -52,8 +52,6 @@
 
         const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-container';
 
-        const ELEMENT_MERGE_TAGS_CONTAINER_ID                  = 'element-merge-tags-container';
-
         const UL_ELEMENT_TO_PLACE_ID                        = 'building-blocks';
 
         const ELEMENT_IFRAME_OVERLAY_ID                     = 'iframe-overlay';
@@ -233,9 +231,8 @@
             $uiAccessibleContent    = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
             $this->wrapContentInDiv($uiAccessibleContent, $this->resolveElementsSidebarHtmlOptions());
             $editFormContent        = $this->resolveEditFormContent();
-            $mergeTagsContent       = $this->resolveMergeTagsContent();
             $content                = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_CONTAINER_ID, 'style' => 'display:none'),
-                                                $editFormContent . $mergeTagsContent);
+                                                $editFormContent);
             return $uiAccessibleContent . $content;
         }
 
@@ -243,14 +240,6 @@
         {
             $content = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
             return $content;
-        }
-
-        protected function resolveMergeTagsContent()
-        {
-            //@TODO JASON PUT THE MERGE TAGS TREE HERE
-            $mergeTagsContent = 'TREE HERE';
-            return ZurmoHtml::tag('div', array('id' => static::ELEMENT_MERGE_TAGS_CONTAINER_ID, 'class' => 'clearfix'),
-                                  $mergeTagsContent);
         }
 
         protected function resolveElementsSidebarHtmlOptions()
