@@ -71,6 +71,10 @@
             $htmlOptions['template']  = ZurmoHtml::tag('li',
                                                         array('class' => 'base-template-selection'),
                                                         '{input}{label}');
+            if (isset($this->params['inputPrefix']) && $this->params['inputPrefix'])
+            {
+                $htmlOptions['dataInputPrefix'] = $this->params['inputPrefix'];
+            }
             return $htmlOptions;
         }
 
