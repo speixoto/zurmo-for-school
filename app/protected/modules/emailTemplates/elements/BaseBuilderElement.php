@@ -200,6 +200,7 @@
             $this->initContent($content);
             $this->initParams($params);
             $this->initModel();
+            $this->cleanUpProperties();
         }
 
         /**
@@ -1066,6 +1067,17 @@
                 $properties   = $this->resolveDefaultProperties();
             }
             $this->properties   = $properties;
+        }
+
+        /**
+         * Cleanup any empty indexes from properties
+         */
+        protected function cleanUpProperties()
+        {
+            if (!isset($this->params['doNotCleanUpProperties']))
+            {
+                $this->properties   = ArrayUtil::recursiveRemoveEmptyValues($this->properties);
+            }
         }
 
         /**

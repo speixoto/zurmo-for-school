@@ -276,5 +276,26 @@
             }
             return $array;
         }
+
+        /**
+         * Remove all empty values
+         * @param array $haystack
+         * @return array
+         */
+        public static function recursiveRemoveEmptyValues(array $haystack)
+        {
+            foreach ($haystack as $key => $value) {
+                if (is_array($value))
+                {
+                    $haystack[$key] = static::recursiveRemoveEmptyValues($haystack[$key]);
+                }
+
+                if (empty($haystack[$key]))
+                {
+                    unset($haystack[$key]);
+                }
+            }
+            return $haystack;
+        }
     }
 ?>
