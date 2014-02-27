@@ -51,11 +51,7 @@
             $parentDefaultProperties    = parent::resolveDefaultProperties();
             $ownProperties              = array(
                 'backend'   => array(
-                    'image'     => array(
-                        'height'            => '10px',
-                        'src'               => $this->resolveExpanderImageUrl(),
-                        'alt'               => static::resolveLabel(),
-                    )
+                    'height'            => '10px',
                 )
             );
             $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
@@ -64,17 +60,22 @@
 
         protected function renderControlContentNonEditable()
         {
-            $src    = null;
-            $alt    = null;
-            $height = null;
-            extract($this->properties['backend']['image']);
+            $src        = $this->resolveExpanderImageUrl();
+            $alt        = static::resolveLabel();
+            $height     = $this->properties['backend']['height'];
             $content    = ZurmoHtml::image($src, $alt, array('height' => $height));
             return $content;
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            return null;
+            $elementClass   = 'PixelSizeStaticDropDownFormElement';
+            $property       = 'height';
+            $label          = Zurmo::t('EmailTemplatesModule', 'Height');
+            $params         =  static::resolveDefaultElementParamsForEditableForm($label);
+            $propertiesForm = BuilderElementBackendPropertiesEditableElementUtil::render($elementClass, $this->model,
+                                                                                            $property, $form, $params);
+            return $propertiesForm;
         }
 
         protected function renderContentTab(ZurmoActiveForm $form)
