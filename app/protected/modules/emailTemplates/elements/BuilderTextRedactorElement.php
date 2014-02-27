@@ -52,6 +52,7 @@
                 'paragraphy'    => 'false',
                 'deniedTags'    => json_encode(array()),
                 'buttons'       => $this->resolveRedactorButtons(),
+                'plugins'       => "['mergeTags']"
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;

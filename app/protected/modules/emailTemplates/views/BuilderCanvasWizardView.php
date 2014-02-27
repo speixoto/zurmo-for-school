@@ -229,10 +229,8 @@
             $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
             $this->wrapContentInDiv($content, $this->resolveElementsSidebarHtmlOptions());
             $formContainer = '<div class="settings-form-container"></div>';
-            //@TODO JASON PUT THE MERGE TAGS TREE HERE
-            $mergeTags     = '<div class="clearfix MergeTagsView">TREE HERE</div>';
             $content      .= ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID, 'style' => 'display:none'),
-                             $formContainer . $mergeTags);
+                             $formContainer);
             return $content;
         }
 

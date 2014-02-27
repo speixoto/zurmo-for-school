@@ -78,5 +78,19 @@
             $params['labelHtmlOptions'] = array('label' => 'Text');
             return $params;
         }
+
+        protected function renderAfterFormLayout(ZurmoActiveForm $form)
+        {
+            $content = parent::renderAfterFormLayout($form);
+            return  $content. $this->renderMergeTagsView();
+        }
+
+        protected function renderMergeTagsView()
+        {
+            $view = new MergeTagsView('BuilderElementEditable', null,
+                'BuilderElementEditableModelForm_content_text'); //todo: get this value values dynamically
+            $view->setCssClasses(array('clearfix wizard-merge-tags'));
+            return $view->render();
+        }
     }
 ?>

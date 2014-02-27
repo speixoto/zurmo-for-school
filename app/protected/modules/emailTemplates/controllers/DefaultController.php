@@ -415,7 +415,7 @@
                 echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
                 Yii::app()->end(0, false);
             }
-            $view        = new ReportRelationsAndAttributesForMergeTagsTreeView($type, $treeType, 'edit-form');
+            $view        = new ReportRelationsAndAttributesForMergeTagsTreeView($type, $treeType, 'edit-form', $uniqueId);
             $content     = $view->render();
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
