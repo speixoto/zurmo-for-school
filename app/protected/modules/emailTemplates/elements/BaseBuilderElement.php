@@ -547,7 +547,14 @@
             $settingsTabContent  = $this->wrapEditableContentFormContentInTable($settingsTabContent);
 
             $content             = $this->renderBeforeFormLayout($form);
-            $content            .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
+            if (isset($contentTabContent, $settingsTabContent))
+            {
+                $content            .= $this->renderWrappedContentAndSettingsTab($contentTabContent, $settingsTabContent);
+            }
+            else
+            {
+                $content            = $contentTabContent . $settingsTabContent;
+            }
             $content            .= $this->renderHiddenFields($form);
             $content            .= $this->renderAfterFormLayout($form);
             return $content;
@@ -665,51 +672,26 @@
 
         /**
          * Wrap content and settings tab into a tab container and return output.
-         * @param null $contentTab
-         * @param null $settingsTab
+         * @param $contentTab
+         * @param $settingsTab
          * @return string
          */
-        protected final function renderWrappedContentAndSettingsTab($contentTab = null, $settingsTab = null)
+        protected final function renderWrappedContentAndSettingsTab($contentTab, $settingsTab)
         {
-            if (empty($contentTab) && empty($settingsTab))
-            {
-                throw new NotSupportedException('Content for at least one tab should be provided');
-            }
-
-            $settingsTabHyperLink   = null;
-            $contentTabHyperLink    = null;
-            $settingsTabDiv         = null;
-            $contentTabDiv          = null;
             $contentTabClass        = 'active-tab';
             $settingsTabClass       = null;
-            if (!empty($contentTab))
-            {
-                $contentTabHyperLink = ZurmoHtml::link($this->renderContentTabLabel(), '#element-content',
-                                                       array('class' => $contentTabClass));
-                $contentTabDiv       = ZurmoHtml::tag('div', array('id' => 'element-content',
-                                                                   'class' => $contentTabClass . ' tab element-edit-form-content-tab'),
-                                                                   $contentTab);
-            }
-            else
-            {
-                $contentTabClass    = null;
-                $settingsTabClass   = 'active-tab';
-            }
 
-            if (!empty($settingsTab))
-            {
-                $settingsTabHyperLink = ZurmoHtml::link($this->renderSettingsTabLabel(), '#element-settings',
-                                                        array('class' => $settingsTabClass));
-                $settingsTabDiv       = ZurmoHtml::tag('div', array('id' => 'element-settings',
-                                                                    'class' => $settingsTabClass . ' tab element-edit-form-settings-tab'),
-                                                                    $settingsTab);
-            }
-
-            if (isset($contentTabDiv, $settingsTabDiv))
-            {
-                $this->registerTabbedContentScripts();
-            }
-
+            $contentTabHyperLink = ZurmoHtml::link($this->renderContentTabLabel(), '#element-content',
+                                                   array('class' => $contentTabClass));
+            $contentTabDiv       = ZurmoHtml::tag('div', array('id' => 'element-content',
+                                                               'class' => $contentTabClass . ' tab element-edit-form-content-tab'),
+                                                               $contentTab);
+            $settingsTabHyperLink = ZurmoHtml::link($this->renderSettingsTabLabel(), '#element-settings',
+                                                    array('class' => $settingsTabClass));
+            $settingsTabDiv       = ZurmoHtml::tag('div', array('id' => 'element-settings',
+                                                                'class' => $settingsTabClass . ' tab element-edit-form-settings-tab'),
+                                                                $settingsTab);
+            $this->registerTabbedContentScripts();
             $tabContent             = ZurmoHtml::tag('div', array('class' => 'tabs-nav'),
                                                             $contentTabHyperLink . $settingsTabHyperLink);
             $content                = ZurmoHtml::tag('div', array('class' => 'edit-form-tab-content tabs-container'),
