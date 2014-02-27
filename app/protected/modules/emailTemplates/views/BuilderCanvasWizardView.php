@@ -312,12 +312,12 @@
         protected function registerScripts()
         {
             parent::registerScripts();
-            $this->registeremailTemplateEditorScripts();
+            $this->registerEmailTemplateEditorScripts();
             $this->registerLeftSideToolbarScripts();
             $this->registerRefreshCanvasFromSavedTemplateScript();
         }
 
-        protected function registeremailTemplateEditorScripts()
+        protected function registerEmailTemplateEditorScripts()
         {
             $this->registerEmailTemplateEditorScriptFile();
             $this->registerInitializeEmailTemplateEditorScript();
@@ -345,6 +345,9 @@
             $errorOnDeleteMessage               = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
             $dropHereMessage                    = Zurmo::t('EmailTemplatesModule', 'Drop here');
             $csrfToken                          = Yii::app()->request->csrfToken;
+            $doNotWrapInRow                     = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
+            $wrapInRow                          = BuilderElementRenderUtil::WRAP_IN_ROW;
+            $wrapInHeaderRow                    = BuilderElementRenderUtil::WRAP_IN_HEADER_ROW;
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
@@ -361,7 +364,10 @@
                         '{$this->resolveElementNonEditableActionUrl()}',
                         '{$errorOnDeleteMessage}',
                         '{$dropHereMessage}',
-                        '{$csrfToken}'
+                        '{$csrfToken}',
+                        {$doNotWrapInRow},
+                        {$wrapInRow},
+                        {$wrapInHeaderRow}
                     );
                 };
                 ", CClientScript::POS_END);
@@ -375,7 +381,6 @@
                 {
                     emailTemplateEditor.reloadCanvas();
                     event.preventDefault();
-                    console.log('refreshing');
                 });
                 ", CClientScript::POS_READY);
         }

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,28 +31,33 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2014. All rights reserved".
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ButtonTargetStaticDropDownFormElement extends StaticDropDownFormElement
+    class BuilderHeaderTextElement extends BuilderTextElement
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
+        protected static function resolveLabel()
         {
-            $targets     = $this->resolveAvailableTargets();
-            return $targets;
+            return Zurmo::t('EmailTemplatesModule', 'Header');
         }
 
-        protected function resolveAvailableTargets()
+        protected static function resolveWidgetHtmlOptions()
         {
-            $targets         = array(
-                '_self'     => 'Same Window',
-                '_blank'    => 'New Window',
-            );
-            return $targets;
+            $options                = parent::resolveWidgetHtmlOptions();
+            $options['data-wrap']   = BuilderElementRenderUtil::WRAP_IN_HEADER_ROW;
+            return $options;
         }
 
+        protected function resolveDefaultContent()
+        {
+            // TODO: @Shoaibi: Critical3: Better default content.
+            return array('text' => '<u>This is default Header content.</u>');
+        }
+
+        protected function resolveDefaultProperties()
+        {
+            // TODO: @Shoaibi: Critical3: Header Text should have some default properties too.
+            return array();
+        }
     }
 ?>

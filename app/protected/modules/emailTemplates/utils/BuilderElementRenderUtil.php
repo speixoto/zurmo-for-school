@@ -41,6 +41,12 @@
      */
     class BuilderElementRenderUtil
     {
+        const DO_NOT_WRAP_IN_ROW    = 0;
+
+        const WRAP_IN_ROW           = 1;
+
+        const WRAP_IN_HEADER_ROW    = 2;
+
         /**
          * Render an element as editable
          * @param $className
@@ -74,7 +80,7 @@
                                                  $id = null, $properties = null, $content = null, $params = null)
         {
             $element        = static::resolveElement($className, $renderForCanvas, $id, $properties, $content, $params);
-            if (!$wrapElementInRow)
+            if ($wrapElementInRow == static::DO_NOT_WRAP_IN_ROW)
             {
                 $content        = $element->renderNonEditable();
             }
@@ -85,7 +91,12 @@
                 $elementData    = static::resolveSerializedDataByElement($element);
                 $columnElement  = static::resolveElement('BuilderColumnElement', $renderForCanvas, null, null, $elementData);
                 $columnData     = static::resolveSerializedDataByElement($columnElement);
-                $rowElement     = static::resolveElement('BuilderRowElement', $renderForCanvas, null, null, $columnData);
+                $rowClassName   =' BuilderRowElement';
+                if ($wrapElementInRow == static::WRAP_IN_HEADER_ROW)
+                {
+                    $rowClassName   = 'BuilderHeaderRowElement';
+                }
+                $rowElement     = static::resolveElement($rowClassName, $renderForCanvas, null, null, $columnData);
                 $content        = $rowElement->renderNonEditable();
             }
             return $content;

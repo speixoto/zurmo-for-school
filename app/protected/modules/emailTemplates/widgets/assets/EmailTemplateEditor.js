@@ -53,12 +53,15 @@ var emailTemplateEditor = {
         alertErrorOnDelete: 'You cannot delete last row',
         dropHereMessage: 'Drop here',
         csrfToken: '',
+        doNotWrapInRow: 0,
+        wrapInRow: 1,
+        wrapInHeaderRow: 2,
         isDragging: false,
         isInited: false
     },
     init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editActionSelector, moveActionSelector, deleteActionSelector,
                      iframeOverlaySelector, cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
-                     dropHereMessage, csrfToken) {
+                     dropHereMessage, csrfToken, doNotWrapInRow, wrapInRow, wrapInHeaderRow) {
         if (!this.settings.isInited)
         {
             this.settings.elementsContainerId     = elementsContainerId;
@@ -75,6 +78,9 @@ var emailTemplateEditor = {
             this.settings.alertErrorOnDelete      = alertErrorOnDelete;
             this.settings.dropHereMessage         = dropHereMessage;
             this.settings.csrfToken               = csrfToken;
+            this.settings.doNotWrapInRow          = doNotWrapInRow;
+            this.settings.wrapInRow               = wrapInRow;
+            this.settings.wrapInHeaderRow         = wrapInHeaderRow;
             this.setupLayout();
             this.settings.isInited                = true;
             emailTemplateEditor = this;
@@ -166,11 +172,15 @@ var emailTemplateEditor = {
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
             if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
-                if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, 1, iframeContents, innerElements);
-                } else {
-                    emailTemplateEditor.placeNewElement(elementDraggedClass, 0, iframeContents, innerElements);
+                var wrapInRow       = elementDragged.data('wrap');
+                if (typeof wrapInRow == 'undefined') {
+                    if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
+                        wrapInRow   = emailTemplateEditor.settings.wrapInRow;
+                    } else {
+                        wrapInRow   = emailTemplateEditor.settings.doNotWrapInRow;
+                    }
                 }
+                emailTemplateEditor.placeNewElement(elementDraggedClass, wrapInRow, iframeContents, innerElements);
             } else {
                 console.log('dropped either outside of canvas or not on element');
                 //Remove the ghost element
@@ -252,7 +262,7 @@ var emailTemplateEditor = {
             success: function (html) {
                 //Places the element
                 emailTemplateEditor.settings.ghost.after(html);
-                if (wrapElement)
+                if (wrapElement != emailTemplateEditor.doNotWrapInRow)
                 {
                     //If its a new row init the sortable element so the the row cells can be sortable/draggable
                     emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,

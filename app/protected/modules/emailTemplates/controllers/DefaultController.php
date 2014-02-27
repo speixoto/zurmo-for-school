@@ -539,7 +539,7 @@
             $properties         = Yii::app()->request->getPost('properties');
             $content            = Yii::app()->request->getPost('content');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
-            $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', false);
+            $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW);
 
             // at bare minimum we should have classname. Without these it does not make sense.
             if (!Yii::app()->request->isPostRequest || !isset($className))
@@ -552,7 +552,8 @@
             }
             else
             {
-                $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,$wrapElementInRow, $id, $properties, $content);
+                $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $wrapElementInRow,
+                                                                        $id, $properties, $content);
             }
             Yii::app()->clientScript->render($content);
             echo $content;
@@ -570,7 +571,6 @@
             $emailTemplate  = EmailTemplate::getById(intval($id));
             $contact        = Contact::getById(intval($contactId));
             $this->resolveEmailMessage($emailTemplate, $contact);
-            Yii::app()->emailHelper->sendImmediately($emailMessage);
         }
 
         protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact)
@@ -586,7 +586,7 @@
             static::resolveRecipient($emailMessage, $contact);
             $box                                = EmailBox::resolveAndGetByName(EmailBox::USER_DEFAULT_NAME);
             $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-            Yii::app()->emailHelper->send($emailMessage);
+            Yii::app()->emailHelper->sendImmediately($emailMessage);
             $emailMessage->owner                = $emailTemplate->owner;
             $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailTemplate);
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
