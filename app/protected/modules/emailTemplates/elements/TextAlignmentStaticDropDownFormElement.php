@@ -41,11 +41,11 @@
          */
         protected function getDropDownArray()
         {
-            $alignments     = $this->resolveAvailableFonts();
+            $alignments     = $this->resolveAvailableAlignments();
             return $alignments;
         }
 
-        protected function resolveAvailableFonts()
+        protected function resolveAvailableAlignments()
         {
             $alignments = array('left', 'right', 'center', 'justify');
             $alignments    = array_combine(array_values($alignments), array_map('ucfirst', array_values($alignments)));

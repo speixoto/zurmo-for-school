@@ -34,22 +34,25 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FontStyleStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class ButtonTargetStaticDropDownFormElement extends StaticDropDownFormElement
     {
         /**
          * @return array
          */
         protected function getDropDownArray()
         {
-            $fontStyles     = $this->resolveAvailableStyles();
-            return $fontStyles;
+            $targets     = $this->resolveAvailableTargets();
+            return $targets;
         }
 
-        protected function resolveAvailableStyles()
+        protected function resolveAvailableTargets()
         {
-            $styles    = array('normal', 'bold', 'bolder', 'lighter');
-            $styles    = array_combine(array_values($styles), array_map('ucfirst', array_values($styles)));
-            return $styles;
+            $targets         = array(
+                '_self'     => 'Same Window',
+                '_blank'   => 'New Window',
+            );
+            return $targets;
         }
+
     }
 ?>

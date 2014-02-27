@@ -41,11 +41,11 @@
          */
         protected function getDropDownArray()
         {
-            $styles     = $this->resolveAvailableFonts();
+            $styles     = $this->resolveAvailableStyles();
             return $styles;
         }
 
-        protected function resolveAvailableFonts()
+        protected function resolveAvailableStyles()
         {
             $styles = array('solid', 'double', 'dashed', 'dotted');
             $styles    = array_combine(array_values($styles), array_map('ucfirst', array_values($styles)));

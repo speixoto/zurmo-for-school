@@ -41,11 +41,11 @@
          */
         protected function getDropDownArray()
         {
-            $dividerStyles     = $this->resolveAvailableFonts();
+            $dividerStyles     = $this->resolveAvailableStyles();
             return $dividerStyles;
         }
 
-        protected function resolveAvailableFonts()
+        protected function resolveAvailableStyles()
         {
             // TODO: @Shoaibi: Critical1: We need actual images and styles here.
             $styles    = array(

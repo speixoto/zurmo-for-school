@@ -41,11 +41,11 @@
          */
         protected function getDropDownArray()
         {
-            $configurations     = $this->resolveAvailableFonts();
+            $configurations     = $this->resolveAvailableConfigurations();
             return $configurations;
         }
 
-        protected function resolveAvailableFonts()
+        protected function resolveAvailableConfigurations()
         {
             $configurations         = array();
             $configurations[1]      = Zurmo::t('EmailTemplatesModule', '{{count}} Column', array('{{count}}' => 1));

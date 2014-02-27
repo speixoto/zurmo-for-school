@@ -51,6 +51,12 @@
                                             'href',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'URL')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementFrontendPropertiesEditableElementUtil',
+                                            'ButtonTargetStaticDropDownFormElement',
+                                            'target',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Open in')));
             return $configurationItems;
         }
     }
