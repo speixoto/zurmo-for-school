@@ -177,9 +177,21 @@
             $element->editableTemplate  = '{label}{content}';
             $contentAreasContent        = $element->render();
             $this->wrapContentInDiv($contentAreasContent, array('class' => 'email-template-combined-content'));
-            $contentAreasContent = ZurmoHtml::tag('td', array('colspan' => 2), $contentAreasContent);
+            //todo: placed last so redactor is already initialized first. just a trick for the css right now
+            $contentAreasContent .= $this->renderMergeTagsView();
+            $contentAreasContent  = ZurmoHtml::tag('div', array('class' => 'left-column strong-right'), $contentAreasContent);
+            $contentAreasContent  = ZurmoHtml::tag('td', array('colspan' => 2), $contentAreasContent);
             $this->wrapContentInTableRow($contentAreasContent);
             $content            .= $contentAreasContent;
+        }
+
+        protected function renderMergeTagsView()
+        {
+            $view = new MergeTagsView('EmailTemplate',
+                                      get_class($this->model) . '_textContent',
+                                      get_class($this->model) . '_htmlContent'); //todo: get these last 2 values dynamically
+            $view->setCssClasses(array('clearfix left-column'));
+            return $view->render();
         }
 
         /**

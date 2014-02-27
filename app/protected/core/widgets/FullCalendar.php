@@ -145,7 +145,7 @@
                                                                                     'month'    : '',
                                                                                     'basicDay': 'h:mm-{h:mm}tt',
                                                                                     'basicWeek': 'h:mm-{h:mm}tt'
-                                                                                 },
+                                                                                 }
                                                                     });
                                          $('#{$inputId}').fullCalendar('gotoDate', {$year}, {$month}, {$day});
                                          $('.fc-button-today').click(function() {
