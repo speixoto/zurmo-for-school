@@ -36,10 +36,7 @@
 
     abstract class SelectBaseTemplateBaseElement extends Element
     {
-        // TODO: @Shoaibi: Critical: Remember to populate thumbnailUrl property for predefined templates
-
-        // TODO: @Shoaibi/Amit: Critical: Update this path.
-        const GENERIC_THUMBNAIL_PATH = '/default/images/email-builder/transparent.gif';
+        const GENERIC_THUMBNAIL_PATH = '/default/images/zurmo-zapier.png';
 
         public $editableTemplate = '{content}';
 
@@ -72,8 +69,7 @@
             $htmlOptions['id']        = $this->getEditableInputId($this->attribute);
             $htmlOptions['separator'] = '';
             $htmlOptions['template']  = ZurmoHtml::tag('li',
-                                                        //@SHOAIBI - we technically can't have a loose number as a class name {value}
-                                                        array('class' => 'base-template-selection {value}'),
+                                                        array('class' => 'base-template-selection'),
                                                         '{input}{label}');
             return $htmlOptions;
         }
@@ -104,9 +100,7 @@
 
         protected function resolveGenericThumbnailUrl()
         {
-            // TODO: @Shoaibi: Critical5: enable this
-            //return Yii::app()->themeManager->baseUrl . static::GENERIC_THUMBNAIL_PATH;
-            return Yii::app()->themeManager->baseUrl . '/default/images/zurmo-zapier.png';
+            return Yii::app()->themeManager->baseUrl . static::GENERIC_THUMBNAIL_PATH;
         }
     }
 ?>
