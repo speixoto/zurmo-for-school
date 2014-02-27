@@ -48,8 +48,7 @@
 
         protected function resolveDefaultProperties()
         {
-            $parentDefaultProperties    = parent::resolveDefaultProperties();
-            $ownProperties              = array(
+            $properties             = array(
                 'frontend'  => array(
                     'inlineStyles'  => array(
                         'font-size'         =>  '18px',
@@ -58,7 +57,6 @@
                     )
                 )
             );
-            $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
             return $properties;
         }
     }

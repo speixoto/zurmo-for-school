@@ -48,13 +48,11 @@
 
         protected function resolveDefaultProperties()
         {
-            $parentDefaultProperties    = parent::resolveDefaultProperties();
-            $ownProperties              = array(
+            $properties              = array(
                 'frontend'   => array(
                     'height'            => '10px',
                 )
             );
-            $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
             return $properties;
         }
 

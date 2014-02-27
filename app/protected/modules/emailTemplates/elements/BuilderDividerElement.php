@@ -48,8 +48,7 @@
 
         protected function resolveDefaultProperties()
         {
-            $parentDefaultProperties    = parent::resolveDefaultProperties();
-            $ownProperties              = array(
+            $properties              = array(
                 'backend'   => array(
                     'divider-padding'           => '10px',
                 ),
@@ -61,7 +60,6 @@
                         ),
                     )
             );
-            $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
             return $properties;
         }
 

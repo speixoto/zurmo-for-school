@@ -48,8 +48,7 @@
 
         protected function resolveDefaultProperties()
         {
-            $parentDefaultProperties    = parent::resolveDefaultProperties();
-            $ownProperties              = array(
+            $properties              = array(
                 'backend'       => array(
                     'sizeClass'         => null,
                     'text'              => 'Button',
@@ -59,7 +58,6 @@
                     'target'            => '_blank',
                 )
             );
-            $properties                 = CMap::mergeArray($parentDefaultProperties, $ownProperties);
             return $properties;
         }
 
