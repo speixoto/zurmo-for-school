@@ -51,7 +51,8 @@
             $sizes  = array();
             for ($availableSize = 8; $availableSize <= 20; $availableSize++)
             {
-                $sizes[$availableSize]   = $this->resolveSizeForUnits($availableSize);
+                $size           = $this->resolveSizeForUnits($availableSize);
+                $sizes[$size]   = $size;
             }
             return $sizes;
         }
