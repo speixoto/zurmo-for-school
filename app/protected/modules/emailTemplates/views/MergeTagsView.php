@@ -58,6 +58,12 @@
         protected $htmlContentId;
 
         /**
+         * Should this view be hidden by default
+         * @var bool
+         */
+        protected $hideByDefault = true;
+
+        /**
          * @return string
          */
         public function getTreeDivId()
@@ -73,14 +79,16 @@
             return 'emailTemplates';
         }
 
-        public function __construct($uniqueId = null, $textContentId = null, $htmlContentId = null)
+        public function __construct($uniqueId = null, $textContentId = null, $htmlContentId = null, $hideByDefault = true)
         {
             assert('is_string($uniqueId) || $uniqueId === null');
             assert('is_string($textContentId) || $textContentId === null');
             assert('is_string($htmlContentId) || $htmlContentId === null');
-            $this->uniqueId = $uniqueId;
+            assert('is_bool($hideByDefault)');
+            $this->uniqueId      = $uniqueId;
             $this->textContentId = $textContentId;
             $this->htmlContentId = $htmlContentId;
+            $this->hideByDefault = $hideByDefault;
         }
 
         public function isUniqueToAPage()
@@ -204,7 +212,10 @@
 
         protected function getViewStyle()
         {
-            return 'style=display:none;';
+            if($this->hideByDefault)
+            {
+                return 'style=display:none;';
+            }
         }
     }
 ?>

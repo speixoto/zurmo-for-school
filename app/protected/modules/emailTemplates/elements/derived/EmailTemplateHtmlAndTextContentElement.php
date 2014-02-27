@@ -204,11 +204,13 @@
             $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
-                                        'htmlOptions' => $htmlOptions,
-                                        'content'     => $htmlContent,
-                                        'paragraphy'  => "false",
-                                        'deniedTags'  => CJSON::encode(array()),
-                                        'plugins'     => $this->resolveRedactorPlugins()
+                                'htmlOptions'           => $htmlOptions,
+                                'content'               => $htmlContent,
+                                'paragraphy'            => "false",
+                                'deniedTags'            => CJSON::encode(array()),
+                                'observeImages'         => 'true',
+                                'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),
+                                'imageGetJson'          => ImageFileModelUtil::getUrlForActionGetUploaded()
             ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
@@ -283,14 +285,6 @@
                 return $this->model->$method();
             }
             return true;
-        }
-
-        protected function resolveRedactorPlugins()
-        {
-            if(isset($this->params['redactorPlugins']))
-            {
-                return $this->params['redactorPlugins'];
-            }
         }
     }
 ?>
