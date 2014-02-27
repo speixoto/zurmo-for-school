@@ -50,7 +50,7 @@
                                             'CheckBoxElement',
                                             'header',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Convert to Header')));
+                                                Zurmo::t('EmailTemplatesModule', 'Full Width')));
             return $configurationItems;
         }
     }

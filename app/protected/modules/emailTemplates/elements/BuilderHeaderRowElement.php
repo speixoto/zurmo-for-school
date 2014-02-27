@@ -36,6 +36,8 @@
 
     class BuilderHeaderRowElement extends BuilderRowElement
     {
+        // we have created a separate class for this because we may customize
+        // more options for row than just if its header or not.
         protected static function resolveLabel()
         {
             return Zurmo::t('EmailTemplatesModule', 'Header Row');
