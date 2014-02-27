@@ -91,7 +91,7 @@
                 $elementData    = static::resolveSerializedDataByElement($element);
                 $columnElement  = static::resolveElement('BuilderColumnElement', $renderForCanvas, null, null, $elementData);
                 $columnData     = static::resolveSerializedDataByElement($columnElement);
-                $rowClassName   =' BuilderRowElement';
+                $rowClassName   = 'BuilderRowElement';
                 if ($wrapElementInRow == static::WRAP_IN_HEADER_ROW)
                 {
                     $rowClassName   = 'BuilderHeaderRowElement';
