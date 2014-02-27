@@ -179,6 +179,11 @@
 
             $items  = array();
             $baseID = self::getIdByName($name);
+            if(isset($htmlOptions['dataInputPrefix']))
+            {
+                $baseID = $htmlOptions['dataInputPrefix'] . $baseID;
+                unset($htmlOptions['dataInputPrefix']);
+            }
             $id     = 0;
             foreach ($data as $value => $label)
             {
