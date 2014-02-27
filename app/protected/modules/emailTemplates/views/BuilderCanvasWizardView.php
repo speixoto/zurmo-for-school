@@ -140,18 +140,17 @@
 
         protected function renderLeftSidebarToolbarContent()
         {
-
             $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $element  = new EmailTemplateBuilderElementsMenuActionElement('default', 'emailTemplates', null,
                             array('htmlOptions' => array('id'=> static::ELEMENTS_MENU_BUTTON_ID, 'class' => 'active'),
                                   'iconClass'=> 'icon-layout'));
             $content .= $element->render();
             $element  = new EmailTemplateBuilderCanvasConfigurationMenuActionElement('default', 'emailTemplates', null,
-                            array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+                            array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-configuration'));
             $content .= $element->render();
             $content .= '</nav><nav class="pillbox clearfix">';
             $element  = new EmailTemplateBuilderPreviewMenuActionElement('default', 'emailTemplates', null,
-                            array('htmlOptions' => array('id'=> static::PREVIEW_MENU_BUTTON_ID), 'iconClass'=> 'icon-layout'));
+                            array('htmlOptions' => array('id'=> static::PREVIEW_MENU_BUTTON_ID), 'iconClass'=> 'icon-preview'));
             $content .= $element->render();
             $content .= '</nav></div>';
             return $content;
@@ -229,9 +228,11 @@
             $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
             $content                = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
             $this->wrapContentInDiv($content, $this->resolveElementsSidebarHtmlOptions());
-            $content                .= ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID, 'style' => 'display:none'), '');
-            //$this->wrapContentInTableCell($content, array('colspan' => 2));
-            //$this->wrapContentInTableRow($content);
+            $formContainer = '<div class="settings-form-container"></div>';
+            //@TODO JASON PUT THE MERGE TAGS TREE HERE
+            $mergeTags     = '<div class="clearfix MergeTagsView">TREE HERE</div>';
+            $content      .= ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID, 'style' => 'display:none'),
+                             $formContainer . $mergeTags);
             return $content;
         }
 

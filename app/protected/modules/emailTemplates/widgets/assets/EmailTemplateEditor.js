@@ -308,7 +308,8 @@ var emailTemplateEditor = {
             cache: false,
             success: function (html) {
                 //Replace the contents of left side overlay with response
-                $(emailTemplateEditor.settings.editSelector).html(html);
+                //@TODO SERGIO, SHOULD THE CLASS NAME BE MOVED TO BuilderCanvasView.php ?
+                $('.settings-form-container', emailTemplateEditor.settings.editSelector).html(html);
             }
         });
         //Make the left side overlay visible.
