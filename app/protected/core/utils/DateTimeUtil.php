@@ -619,18 +619,26 @@
         }
 
         /**
-         * Gets timezone offset.
-         *
-         * @return int in seconds
+         * Convert date to datetime by setting the h:i:s as offset hours, minutes and seconds.
+         * @param string $date
+         * @return string
          */
-        public static function getTimeZoneOffset()
+        public static function convertDateToDateTimeByTimeZoneOffset($date)
         {
-            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
-            $gmtTimeZone  = new DateTimeZone('GMT');
+            $offset          = ZurmoTimeZoneHelper::getTimeZoneOffset();
+            $absOffset       = abs($offset);
+            $hours           = floor($absOffset / (60 * 60));
+            $absOffset       -= $hours * (60 * 60);
 
-            $dateTimeUser = new DateTime("now", $gmtTimeZone);
+            $minutes         = floor($absOffset / 60);
+            $absOffset       -= $minutes * 60;
 
-            return $userTimeZone->getOffset($dateTimeUser);
+            $seconds         = floor($absOffset);
+            $absOffset       -= $seconds;
+            $hours           = ($hours < 10)? '0' . $hours : $hours;
+            $minutes         = ($minutes < 10)? '0' . $minutes : $minutes;
+            $seconds         = ($seconds < 10)? '0' . $seconds : $seconds;
+            return $date . ' ' . $hours . ':' . $minutes . ':' . $seconds;
         }
     }
 ?>

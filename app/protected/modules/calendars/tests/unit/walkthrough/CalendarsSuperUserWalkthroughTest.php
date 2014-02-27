@@ -120,7 +120,7 @@
             $this->runControllerWithNoExceptionsAndGetContent('calendars/default/modalList');
 
             //Month view
-            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2,
+            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2, // Not Coding Standard
                                       'selectedSharedCalendarIds'  => null,
                                       'startDate'                  => CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_MONTH),
                                       'endDate'                    => CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_MONTH),
@@ -129,7 +129,7 @@
             $this->assertFalse(strpos($content, 'My First Prod') === false);
 
             //Week view
-            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2,
+            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2, // Not Coding Standard
                                       'selectedSharedCalendarIds'  => null,
                                       'startDate'                  => CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_WEEK),
                                       'endDate'                    => CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_WEEK),
@@ -138,13 +138,17 @@
             $this->assertFalse(strpos($content, 'My First Prod') === false);
 
             //Day view
-            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2,
+            $this->setGetArray (array('selectedMyCalendarIds'      => $superCalId . ',' . $superCalId2, // Not Coding Standard
                                       'selectedSharedCalendarIds'  => null,
                                       'startDate'                  => CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_DAY),
                                       'endDate'                    => CalendarUtil::getEndDate(SavedCalendar::DATERANGE_TYPE_DAY),
                                       'dateRangeType'              => SavedCalendar::DATERANGE_TYPE_DAY));
             $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getEvents');
+            $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getDayEvents');
 
+            $this->setGetArray (array('modelClass'  => 'Product', // Not Coding Standard
+                                      'modelId'     => $superCalId));
+            $this->runControllerWithNoExceptionsAndGetContent('calendars/default/getCalendarItemDetail');
             //Add subscribed calendar
             $user = UserTestHelper::createBasicUser('jim');
             $subscribedCalendar = CalendarTestHelper::createSavedCalendarByName("My Subscribed Cal", '#315AB0');

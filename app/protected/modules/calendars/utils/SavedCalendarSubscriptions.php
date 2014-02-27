@@ -69,10 +69,10 @@
                                                     User $user, $selectedCalendarIds)
         {
             $mySavedCalendars           = CalendarUtil::getUserSavedCalendars($user);
-            if(count($mySavedCalendars) == 0)
+            if (count($mySavedCalendars) == 0)
             {
                 $mySavedCalendars    = CalendarUtil::loadDefaultCalendars($user);
-                $selectedCalendarIds = $mySavedCalendars[0]->id . ',' . $mySavedCalendars[1]->id;
+                $selectedCalendarIds = $mySavedCalendars[0]->id . ',' . $mySavedCalendars[1]->id; // Not Coding Standard
             }
             ZurmoConfigurationUtil::setByUserAndModuleName($user,
                                                            'CalendarsModule',
