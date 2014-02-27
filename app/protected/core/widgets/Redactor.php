@@ -71,7 +71,7 @@
 
         public $toolbarExternal;
 
-        public $plugins         = '';
+        public $plugins;
 
         public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
 
@@ -136,7 +136,7 @@
                                 {$this->renderRedactorParamForInit('toolbarExternal')}
                                 imageUpload:    '{$this->imageUpload}',
                                 imageGetJson:   '{$this->imageGetJson}',
-                                plugins:        {$this->plugins},
+                                {$this->resolveAndRenderPluginParam()}
                             });
                         }
                     );";
@@ -150,6 +150,14 @@
             if (isset($paramValue))
             {
                 return "{$paramName}: {$paramValue},";
+            }
+        }
+
+        protected function resolveAndRenderPluginParam()
+        {
+            if ($this->plugins != null)
+            {
+                return "plugins:        {$this->plugins}";
             }
         }
     }
