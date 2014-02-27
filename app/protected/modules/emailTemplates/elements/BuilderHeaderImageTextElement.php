@@ -34,8 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderHeaderTextElement extends BuilderTextElement
+    class BuilderHeaderImageTextElement extends BaseBuilderElement
     {
+        public static function isUIAccessible()
+        {
+            return true;
+        }
+
         protected static function resolveLabel()
         {
             return Zurmo::t('EmailTemplatesModule', 'Header');
@@ -50,14 +55,46 @@
 
         protected function resolveDefaultContent()
         {
-            // TODO: @Shoaibi: Critical3: Better default content.
-            return array('text' => '<u>This is default Header content.</u>');
+            // TODO: @Sergio: Critical3: Better default content.
+            return array('text' => 'This is default Header content.',
+                         'logo' => '<img src="http://zurmo.org/wp-content/themes/Zurmo/images/Zurmo-logo.png"></img>');
         }
 
         protected function resolveDefaultProperties()
         {
-            // TODO: @Shoaibi: Critical3: Header Text should have some default properties too.
+            // TODO: @Sergio: Critical3: Header should have some default properties too.
             return array();
+        }
+
+        protected function renderSettingsTab(ZurmoActiveForm $form)
+        {
+            // TODO: @Sergio: Settings for the text element: other font size colour weight is the regular dropdown
+            return null;
+        }
+
+        protected function resolveContentElementClassName()
+        {
+            return 'BuilderHeaderImageTextRedactorElement';
+        }
+
+        protected function resolveContentElementAttributeName()
+        {
+            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
+            // it would give an error saying we are trying to convert an array to string.
+            return 'content[text]';
+        }
+
+        protected function resolveContentElementParams()
+        {
+            $params                     = parent::resolveContentElementParams();
+            $params['labelHtmlOptions'] = array('label' => 'Image');
+            return $params;
+        }
+
+        protected function renderContentTab(ZurmoActiveForm $form)
+        {
+            $content    = $this->renderContentElement($form);
+            return $content;
         }
     }
 ?>

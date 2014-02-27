@@ -48,7 +48,7 @@
 
         const PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID        = 'preview-iframe-container-close-link';
 
-        const ELEMENT_EDIT_CONTAINER_ID                        = 'element-edit-container';
+        const ELEMENT_EDIT_CONTAINER_ID                     = 'element-edit-container';
 
         const ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID        = 'element-edit-form-overlay-container';
 

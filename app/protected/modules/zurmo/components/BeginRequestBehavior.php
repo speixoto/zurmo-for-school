@@ -42,6 +42,8 @@
             'tracking/default/track',
             'marketingLists/external/',
             'contacts/external/',
+            'zurmo/imageModel/getImage/',
+            'zurmo/imageModel/getThumb/',
             'min/serve');
 
         public function attach($owner)

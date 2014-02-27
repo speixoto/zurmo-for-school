@@ -110,7 +110,7 @@
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $propertiesForm     = BuilderRowElementPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm      = BuilderRowElementPropertiesEditableElementsUtil::render($this->model, $form);
             $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
             $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
             return $propertiesForm;
