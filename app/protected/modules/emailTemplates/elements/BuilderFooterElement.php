@@ -55,7 +55,7 @@
                 'frontend'  => array(
                     'inlineStyles'  => array(
                         'font-size'         =>  '8px',
-                        'font-color'        => '#cccccc',
+                        'color'             => '#cccccc',
                         'text-align'        => 'center',
                     )
                 )

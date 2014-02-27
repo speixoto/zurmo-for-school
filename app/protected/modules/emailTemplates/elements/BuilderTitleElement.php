@@ -53,7 +53,7 @@
                 'frontend'  => array(
                     'inlineStyles'  => array(
                         'font-size'         =>  '18px',
-                        'font-color'        => '#aaaaaa',
+                        'color'             => '#aaaaaa',
                         'text-align'        => 'left',
                     )
                 )
