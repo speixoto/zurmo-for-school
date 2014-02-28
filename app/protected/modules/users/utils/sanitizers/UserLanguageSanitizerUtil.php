@@ -35,18 +35,43 @@
      ********************************************************************************/
 
     /**
-     * Specific rules for handling the user locale attribute for import process
+     * Sanitizer for handling user language.
      */
-    class LocaleStaticDropDownAttributeImportRules extends DropDownAttributeImportRules
+    class UserLanguageSanitizerUtil extends SanitizerUtil
     {
-        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
+        /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            return array('DefaultValueModelAttribute' => 'ImportMappingRuleLocaleStaticDropDown');
+            if ($rowBean->{$this->columnName} != null)
+            {
+                $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+                if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
+                {
+                    $label = Zurmo::t('ImportModule',
+                                      '{attributeLabel} specified is invalid.',
+                                      array('{attributeLabel}' => User::getAnAttributeLabel('language')));
+                    $this->shouldSkipRow      = false;
+                    $this->analysisMessages[] = $label;
+                }
+            }
         }
 
-        public static function getSanitizerUtilTypesInProcessingOrder()
+        public function sanitizeValue($value)
         {
-            return array('UserLocale');
+            $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+            if (!in_array(strtolower($value), $resolvedAcceptableValues))
+            {
+                return null;
+            }
+            return $value;
+        }
+
+        protected static function getAcceptableValues()
+        {
+            $activeLanguages = Yii::app()->languageHelper->getActiveLanguagesData();
+            return array_keys($activeLanguages);
         }
     }
 ?>
