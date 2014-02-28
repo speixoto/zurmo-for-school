@@ -299,6 +299,8 @@ var emailTemplateEditor = {
     onClickEditEvent: function () {
         //Shows overlay with loading spinner
         emailTemplateEditor.freezeLayoutEditor();
+        $('.editing-element').removeClass('editing-element');
+        $(this).closest('.element-wrapper').addClass('editing-element');
         // closest always traversal to the parents, in out case the actual element is a sibling of its parent.
         var element         = $(this).parent().siblings('.builder-element-non-editable.element-data');
         //Get the element id next to which Edit was clicked.
