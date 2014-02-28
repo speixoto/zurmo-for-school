@@ -40,7 +40,7 @@
         {
             $parentOptions          = parent::resolveRedactorOptions();
             $options                = array(
-                'content'                   => $this->model->{$this->attribute},
+                'content'                   => $this->getRedactorContent(),
                 'observeImages'             => 'true',
                 'allowedTags'               => $this->resolveAllowedTags(),
                 'buttons'                   => $this->resolveRedactorButtons(),
@@ -69,6 +69,11 @@
                     {
                         return this.getEditor().contents().find('img:first').wrap('<p/>').parent().html();
                     }";
+        }
+
+        protected function getRedactorContent()
+        {
+            return $this->model->{$this->attribute};
         }
     }
 ?>

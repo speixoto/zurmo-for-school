@@ -36,20 +36,67 @@
 
     class BuilderHeaderImageTextRedactorElement extends BuilderImageRedactorElement
     {
+        const TEXT_NAME = 'text';
+
+        const IMAGE_NAME = 'image';
+
+        public function __construct($model, $attribute, $form = null, array $params = array())
+        {
+            assert('$attribute == null || is_string($attribute)');
+            assert('is_array($params)');
+            $this->model     = $model;
+            $this->attribute = $attribute;
+            $this->form      = $form;
+            $this->params    = $params;
+        }
+
+        protected function renderControlNonEditable()
+        {
+            assert('$this->attribute != null');
+            return $this->model->{$this->attribute}[static::IMAGE_NAME] . $this->model->{$this->attribute}[static::TEXT_NAME];
+        }
+
         protected function renderControlEditable()
         {
             assert('$this->attribute != null');
-            $cClipWidget             = new CClipWidget();
+            $cClipWidget  = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', $this->resolveRedactorOptions());
             $cClipWidget->endClip();
-            $content                 = $cClipWidget->getController()->clips['Redactor'];
-            return $content . $this->renderTextInputContent();
+            $content    = Zurmo::t('EmailTemplatesModule', 'Choose your logo');
+            $content   .= $cClipWidget->getController()->clips['Redactor'];
+            $content   .= '</br>';
+            $content   .= Zurmo::t('EmailTemplatesModule', 'Your description');
+            $content   .= $this->renderTextInputContent();
+            return $content;
         }
 
         protected function renderTextInputContent()
         {
-            return "test content";
+            $name  = $this->getEditableInputName($this->attribute, static::TEXT_NAME);
+            $value = $this->model->{$this->attribute}[static::TEXT_NAME];
+            return ZurmoHtml::textField($name, $value, $this->resolveTextFieldHtmlOptions());
+        }
+
+        protected function getRedactorContent()
+        {
+            return $this->model->{$this->attribute}[static::IMAGE_NAME];
+        }
+
+        protected function resolveHtmlOptions()
+        {
+            $id                      = $this->getEditableInputId($this->attribute, static::IMAGE_NAME);
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $id;
+            $htmlOptions['name']     = $this->getEditableInputName($this->attribute, static::IMAGE_NAME);
+            return $htmlOptions;
+        }
+
+        protected function resolveTextFieldHtmlOptions()
+        {
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $this->getEditableInputId($this->attribute, static::TEXT_NAME);
+            return $htmlOptions;
         }
     }
 ?>

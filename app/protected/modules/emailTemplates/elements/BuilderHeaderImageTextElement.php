@@ -55,9 +55,11 @@
 
         protected function resolveDefaultContent()
         {
+            $textName  = BuilderHeaderImageTextRedactorElement::TEXT_NAME;
+            $imageName = BuilderHeaderImageTextRedactorElement::IMAGE_NAME;
             // TODO: @Sergio: Critical3: Better default content.
-            return array('text' => 'This is default Header content.',
-                         'logo' => '<img src="http://zurmo.org/wp-content/themes/Zurmo/images/Zurmo-logo.png"></img>');
+            return array($textName  => 'This is default Header content.',
+                         $imageName => '<img src="http://zurmo.org/wp-content/themes/Zurmo/images/Zurmo-logo.png"></img>');
         }
 
         protected function resolveDefaultProperties()
@@ -68,8 +70,8 @@
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            // TODO: @Sergio: Settings for the text element: other font size colour weight is the regular dropdown
-            return null;
+            $propertiesForm     = BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
+            return $propertiesForm;
         }
 
         protected function resolveContentElementClassName()
@@ -81,20 +83,7 @@
         {
             // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
             // it would give an error saying we are trying to convert an array to string.
-            return 'content[text]';
-        }
-
-        protected function resolveContentElementParams()
-        {
-            $params                     = parent::resolveContentElementParams();
-            $params['labelHtmlOptions'] = array('label' => 'Image');
-            return $params;
-        }
-
-        protected function renderContentTab(ZurmoActiveForm $form)
-        {
-            $content    = $this->renderContentElement($form);
-            return $content;
+            return 'content';
         }
     }
 ?>
