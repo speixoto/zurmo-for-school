@@ -227,6 +227,7 @@ var emailTemplateEditor = {
             handle: emailTemplateEditor.settings.moveActionSelector,
             iframeFix: true,
             stop: function( event, ui ) {
+                emailTemplateEditor.addPlaceHolderForEmptyCells();
                 emailTemplateEditor.canvasChanged();
             },
             cursorAt: { top: 0, left: 0 },
@@ -332,16 +333,23 @@ var emailTemplateEditor = {
     },
     onClickDeleteEvent: function () {
         //Check if removing last row
-        if ($(this).closest('.sortable-rows').children('.element-wrapper').length > 1 ||
-            $(this).parents('.sortable-elements').length > 0) {
+        if ($(this).closest(emailTemplateEditor.settings.sortableRowsSelector).children('.element-wrapper').length > 1 ||
+            $(this).parents(emailTemplateEditor.settings.sortableElementsSelector).length > 0) {
                 //Remove row/element
                 $(this).closest(".element-wrapper").remove();
+                emailTemplateEditor.addPlaceHolderForEmptyCells();
                 //Process canvasChanged event
                 emailTemplateEditor.canvasChanged();
         } else {
             //Alert use cant remove last row
             alert(emailTemplateEditor.settings.alertErrorOnDelete);
         }
+    },
+    addPlaceHolderForEmptyCells: function () {
+        $(emailTemplateEditor.settings.iframeSelector).contents().
+            find(emailTemplateEditor.settings.sortableElementsSelector + ':empty').html(
+                '<div class="element-wrapper"></div>'
+        );
     },
     reloadCanvas: function () {
         //Reload the canvas by reloading iframe
