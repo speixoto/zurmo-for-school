@@ -60,8 +60,6 @@
             $defaultView     = $this->defaultView;
             $inputId         = $this->inputId;
             $eventsUrl       = Yii::app()->createUrl('calendars/default/getEvents');
-            $eventsCountUrl  = Yii::app()->createUrl('calendars/default/getEventsCount');
-
             //Set the goto date for calendar
             $startDate     = $this->startDate;
             $startDateAttr = explode('-', $startDate);
@@ -83,6 +81,7 @@
             $qtip->addQTip(".fc-event");
 
             $cs            = Yii::app()->getClientScript();
+            $loadingText   = Zurmo::t('Core', 'Loading..');
             // Begin Not Coding Standard
 
             $script        = "$(document).on('ready', function() {
@@ -114,15 +113,21 @@
                                                                      eventRender: function(event, element, view) {
                                                                                         element.qtip({
                                                                                             content: {
-                                                                                                        text: event.description,
-                                                                                                        title: event.title,
-                                                                                                        button: true
+                                                                                                        text: '{$loadingText}',
+                                                                                                        ajax: {
+                                                                                                                    url: event.description,
+                                                                                                                    type: 'get'
+                                                                                                                },
+                                                                                                        title: {
+                                                                                                                  text: event.title,
+                                                                                                                  button: 'Close'
+                                                                                                               }
                                                                                                      },
                                                                                             show:{
                                                                                                     event: 'click'
                                                                                             },
                                                                                             hide: {
-                                                                                                    event: 'click'
+                                                                                                    event: 'false'
                                                                                                   },
                                                                                             position: {
                                                                                                         my: 'bottom center',
@@ -136,15 +141,11 @@
                                                                                                       }
                                                                                         });
                                                                                     },
-                                                                     /*eventAfterAllRender: function(view)
-                                                                                          {
-                                                                                             getEventsCount('{$eventsCountUrl}', '{$inputId}', '')
-                                                                                          },*/
                                                                      timeFormat: {
                                                                                     'month'    : '',
                                                                                     'basicDay': 'h:mm-{h:mm}tt',
                                                                                     'basicWeek': 'h:mm-{h:mm}tt'
-                                                                                 },
+                                                                                 }
                                                                     });
                                          $('#{$inputId}').fullCalendar('gotoDate', {$year}, {$month}, {$day});
                                          $('.fc-button-today').click(function() {

@@ -33,41 +33,59 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Data provider for rows and columns report for a calendar.
-     */
-    class CalendarRowsAndColumnsReportDataProvider extends RowsAndColumnsReportDataProvider
+     /**
+      * Calendar date value column adapter.
+      */
+    class CalendarDateListViewColumnAdapter extends DateTimeListViewColumnAdapter
     {
         /**
-         * Makes sql query adapter.
-         *
-         * @param bool $isDistinct
+         * Renders grid view data.
+         * @return string
+         * @throws NotSupportedException
          */
-        protected function makeSelectQueryAdapter($isDistinct = false)
+        public function renderGridViewData()
         {
-            return new RedBeanModelSelectQueryAdapter(true);
+            $data  = parent::renderGridViewData();
+            if($this->attribute == 'start')
+            {
+                $data['header'] = Zurmo::t('CalendarsModule', 'Start Date');
+            }
+            elseif($this->attribute == 'end')
+            {
+                $data['header'] = Zurmo::t('CalendarsModule', 'End Date');
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $data;
         }
 
         /**
-         * Resolve sql query adapter for count query.
-         *
-         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * Renders data cell content.
+         * @param array $data
+         * @param int $row
+         * @return string
          */
-        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        public function renderDataCellContent($data, $row)
         {
-            return new RedBeanModelSelectQueryAdapter(false);
+           return $this->renderValue($data[$this->attribute]);
         }
 
         /**
-         * By default report is returing only 10 items for any calendar thus overriding it here
-         * to remove limit so that all items would be returned and pagination would be handled by
-         * calendars module.
-         * @return array
+         * Renders value.
+         * @param string $value
+         * @return string
          */
-        protected function fetchData()
+        public function renderValue($value)
         {
-            return $this->runQueryAndGetResolveResultsData(null, null);
+            $value      = strtotime($value);
+            if($value == ZurmoTimeZoneHelper::getTimeZoneOffset())
+            {
+                return Zurmo::t('Core', '(None)');
+            }
+            $dateTime   = date('Y-m-d H:i:s', $value);
+            return DateTimeUtil::resolveTimeStampForDateTimeLocaleFormattedDisplay($dateTime);
         }
     }
 ?>

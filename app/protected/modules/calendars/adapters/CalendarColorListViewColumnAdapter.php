@@ -34,40 +34,29 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Data provider for rows and columns report for a calendar.
-     */
-    class CalendarRowsAndColumnsReportDataProvider extends RowsAndColumnsReportDataProvider
+    class CalendarColorListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        /**
-         * Makes sql query adapter.
-         *
-         * @param bool $isDistinct
-         */
-        protected function makeSelectQueryAdapter($isDistinct = false)
+        public function renderGridViewData()
         {
-            return new RedBeanModelSelectQueryAdapter(true);
+            $params      = LabelUtil::getTranslationParamsForAllModules();
+            return array(
+                'name'  => $this->attribute,
+                'header'=> Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params),
+                'value' => 'CalendarColorListViewColumnAdapter::getCalendarColor($data)',
+                'type'  => 'html',
+                'sortable' => false,
+            );
         }
 
         /**
-         * Resolve sql query adapter for count query.
-         *
-         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * Get calendar color.
+         * @param array $data
+         * @return string
          */
-        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        public static function getCalendarColor($data)
         {
-            return new RedBeanModelSelectQueryAdapter(false);
-        }
-
-        /**
-         * By default report is returing only 10 items for any calendar thus overriding it here
-         * to remove limit so that all items would be returned and pagination would be handled by
-         * calendars module.
-         * @return array
-         */
-        protected function fetchData()
-        {
-            return $this->runQueryAndGetResolveResultsData(null, null);
+            $color = $data['color'];
+            return "<span class='cal-color' style='background:$color'></span>";
         }
     }
 ?>

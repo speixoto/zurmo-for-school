@@ -120,12 +120,28 @@
         {
             $savedCalendars = SavedCalendar::getByName('Test Cal');
             $subscribedCalendars = CalendarUtil::getUserSubscribedCalendars(Yii::app()->user->userModel);
-            $dp = CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView(strval($savedCalendars[0]->id),
-                                strval($subscribedCalendars[0]->savedcalendar->id));
+            $dp = CalendarUtil::processAndGetDataProviderForEventsData(strval($savedCalendars[0]->id),
+                                                                       strval($subscribedCalendars[0]->savedcalendar->id),
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       false);
             $calendarItems = $dp->getData();
             $this->assertCount(2, $calendarItems);
             $this->assertEquals('First Product', $calendarItems[0]->getTitle());
             $this->assertEquals('Second Product', $calendarItems[1]->getTitle());
+
+            //Check getFullCalendarItems
+            $items  = CalendarUtil::getFullCalendarItems($dp);
+            $this->assertCount(2, $items);
+            $this->assertEquals('First Product', $items[0]['title']);
+            $this->assertFalse(isset($items[0]['detailsUrl']));
+            $this->assertEquals('Second Product', $items[1]['title']);
+
+            $items = CalendarUtil::populateDetailsUrlForCalendarItems($items);
+            $this->assertTrue(isset($items[0]['detailsUrl']));
+            $this->assertEquals(Yii::app()->createUrl('/products/default/details', array('id' => $savedCalendars[0]->id)),
+                                                      $items[0]['detailsUrl']);
         }
 
         public function testGetUsersSubscribedForCalendar()

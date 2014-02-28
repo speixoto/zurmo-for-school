@@ -33,41 +33,78 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Data provider for rows and columns report for a calendar.
-     */
-    class CalendarRowsAndColumnsReportDataProvider extends RowsAndColumnsReportDataProvider
+     /**
+      * Calendar items list view designer rules.
+      */
+    class CalendarItemsListViewDesignerRules extends ListViewDesignerRules
     {
         /**
-         * Makes sql query adapter.
-         *
-         * @param bool $isDistinct
+         * @return boolean
          */
-        protected function makeSelectQueryAdapter($isDistinct = false)
+        public function allowEditInLayoutTool()
         {
-            return new RedBeanModelSelectQueryAdapter(true);
+            return false;
         }
 
         /**
-         * Resolve sql query adapter for count query.
-         *
-         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @return int
          */
-        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        public function maxCellsPerRow()
         {
-            return new RedBeanModelSelectQueryAdapter(false);
+            return 1;
         }
 
         /**
-         * By default report is returing only 10 items for any calendar thus overriding it here
-         * to remove limit so that all items would be returned and pagination would be handled by
-         * calendars module.
+         * @return boolean
+         */
+        public function canMergeAndSplitCells()
+        {
+            return false;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function canConfigureLayoutPanelsType()
+        {
+            return false;
+        }
+
+        /**
          * @return array
          */
-        protected function fetchData()
+        public function getNonPlaceableLayoutAttributeNames()
         {
-            return $this->runQueryAndGetResolveResultsData(null, null);
+            return array();
+        }
+
+        /**
+         * @return boolean
+         */
+        public function canAddPanels()
+        {
+            return false;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function canMovePanels()
+        {
+            return false;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function canRemovePanels()
+        {
+            return false;
+        }
+
+        public function getSavableMetadataRules()
+        {
+            return array();
         }
     }
 ?>
