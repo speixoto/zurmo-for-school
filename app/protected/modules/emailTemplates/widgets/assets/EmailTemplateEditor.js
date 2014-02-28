@@ -157,7 +157,7 @@ var emailTemplateEditor = {
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             iframeRect = iframeElement.getBoundingClientRect();
-            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
+            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements');//'.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
             emailTemplateEditor.settings.isDragging = true;
             $('body').on('mousemove', onBodyMouseMove);
             $('body').on('mouseup', onBodyMouseUp);
@@ -203,6 +203,7 @@ var emailTemplateEditor = {
                         innerElements.push(containers[i]);
                     }
                 }
+                console.log(innerElements);
                 if(innerElements.length > 0){
                     mostTopElement = $(innerElements[innerElements.length-1]);
                     $(mostTopElement).addClass('hover');
@@ -300,7 +301,7 @@ var emailTemplateEditor = {
     onClickEditEvent: function () {
         //Shows overlay with loading spinner
         emailTemplateEditor.freezeLayoutEditor();
-        $('.editing-element').removeClass('editing-element');
+        $(emailTemplateEditor.settings.iframeSelector).contents().find('.editing-element').removeClass('editing-element');
         $(this).closest('.element-wrapper').addClass('editing-element');
         // closest always traversal to the parents, in out case the actual element is a sibling of its parent.
         var element         = $(this).parent().siblings('.builder-element-non-editable.element-data');

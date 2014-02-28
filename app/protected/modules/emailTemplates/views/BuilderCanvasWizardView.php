@@ -145,7 +145,7 @@
             $content  = '<div class="view-toolbar-container clearfix"><nav class="pillbox clearfix">';
             $element  = new EmailTemplateBuilderElementsMenuActionElement('default', 'emailTemplates', null,
                             array('htmlOptions' => array('id'=> static::ELEMENTS_MENU_BUTTON_ID, 'class' => 'active'),
-                                  'iconClass'=> 'icon-layout'));
+                                  'iconClass'=> 'icon-elements'));
             $content .= $element->render();
             $element  = new EmailTemplateBuilderCanvasConfigurationMenuActionElement('default', 'emailTemplates', null,
                             array('htmlOptions' => array('id'=> static::CANVAS_CONFIGURATION_MENU_BUTTON_ID), 'iconClass'=> 'icon-configuration'));
