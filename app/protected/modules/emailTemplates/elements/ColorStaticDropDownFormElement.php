@@ -36,6 +36,8 @@
 
     class ColorStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
+        //TODO: @Sergio: Can we remove this since we are using CustomColorElement
+
         /**
          * @return array
          */

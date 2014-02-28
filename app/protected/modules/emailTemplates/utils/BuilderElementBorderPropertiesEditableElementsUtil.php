@@ -41,7 +41,7 @@
             $configurationItems         = array();
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'ColorStaticDropDownFormElement',
+                                            'CustomColorElement',
                                             'border-color',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Border Color')));

@@ -50,6 +50,8 @@
 
         public $inputValue;
 
+        public $palettes = 'false';
+
         /**
          * @var string a javascript function that will be invoked after the color changes.
          */
@@ -68,6 +70,7 @@
                 {
                     $('#{$this->inputId}').iris({
                         change: {$this->change},
+                        palettes: {$this->palettes},
                     });
                 }
                 );
