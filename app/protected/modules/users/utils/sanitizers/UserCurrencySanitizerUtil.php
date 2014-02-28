@@ -65,7 +65,14 @@
             {
                 return null;
             }
-            return $value;
+            if ($value != null)
+            {
+                $currency = Currency::getById(intval($value));
+                if ($currency != null)
+                {
+                    return $currency;
+                }
+            }
         }
 
         protected static function getAcceptableValues()
