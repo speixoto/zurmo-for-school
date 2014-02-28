@@ -130,7 +130,7 @@ var emailTemplateEditor = {
             cursor: 'move',
             iframeFix: true,
             revert: 'invalid',
-            cursorAt: { left:  -20, top: -20 },
+            cursorAt: { left:  -10, top: -10 },
             helper: function(event, ui){
                 elementDragged      = $(event.currentTarget),
                 elementDraggedClass = $(event.currentTarget).data('class');
@@ -207,7 +207,7 @@ var emailTemplateEditor = {
                     mostTopElement = $(innerElements[innerElements.length-1]);
                     $(mostTopElement).addClass('hover');
                     mostTopElementHalf = mostTopElement.outerHeight(true) / 2;
-                    if( point.top - mostTopElement.offset().top + mostTopElementHalf < mostTopElementHalf ){
+                    if(event.pageY < mostTopElement.offset().top + offset.top + mostTopElementHalf){
                         mostTopElement.before(emailTemplateEditor.settings.ghost);
                     } else {
                         mostTopElement.after(emailTemplateEditor.settings.ghost);
