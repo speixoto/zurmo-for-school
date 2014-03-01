@@ -48,7 +48,7 @@
 
         protected function resolveDefaultContent()
         {
-            return array('image' => '<img src="http://zurmo.org/wp-content/themes/Zurmo/images/Zurmo-logo.png"></img>');
+            return array('image' => '<img src="http://placehold.it/200x200"></img>');
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
