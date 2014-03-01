@@ -72,10 +72,17 @@
         {
             $extraColumns           = array_splice($this->content, $count);
             $lastKey                = ArrayUtil::findLastKey($this->content);
-            $lastKeyContent         = $this->content[$lastKey]['content'];
+            $lastKeyContent         = array();
+            if (isset($this->content[$lastKey]['content']))
+            {
+                $lastKeyContent         = $this->content[$lastKey]['content'];
+            }
             foreach ($extraColumns as $extraColumn)
             {
-                $lastKeyContent   = CMap::mergeArray($lastKeyContent, $extraColumn['content']);
+                if (isset($extraColumn['content']))
+                {
+                    $lastKeyContent   = CMap::mergeArray($lastKeyContent, $extraColumn['content']);
+                }
             }
             $this->content[$lastKey]['content'] = $lastKeyContent;
         }
