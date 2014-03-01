@@ -106,9 +106,7 @@
         {
             $label = static::resolveLabel();
             $label = ZurmoHtml::tag('span', array(), $label);
-            //TODO: @sergio Do we need resolveThumbnailBaseUrl resolveThumbnailName resolveThumbnailUrl anymore
-            // we may need a resolveThumbnailName that will be useded to the icon content or we will use the htmlOptions
-            $icon  = ZurmoHtml::tag('i', static::resolveThumbnailHtmlOptions(), 'z');
+            $icon  = ZurmoHtml::tag('i', static::resolveThumbnailHtmlOptions(), '');
             $widget  = ZurmoHtml::tag('div', array('class' => 'clearfix'), $icon . $label);
             return ZurmoHtml::tag($widgetWrapper, static::resolveWidgetHtmlOptions(), $widget);
         }
@@ -141,30 +139,15 @@
         }
 
         /**
-         * Returns the relative url to the directory containing element thumbnails.
-         * @return string
-         */
-        protected static final function resolveThumbnailBaseUrl()
-        {
-            return Yii::app()->themeManager->baseUrl . '/default/email-templates/elements/';
-        }
-
-        /**
          * Returns the element thumbnail name.
          * @return string
          */
-        protected static final function resolveThumbnailName()
+        protected static function resolveThumbnailName()
         {
-            return strtolower(get_called_class()) . '.png';
-        }
-
-        /**
-         * Returns the relative thumbnail url
-         * @return string
-         */
-        protected static final function resolveThumbnailUrl()
-        {
-            return static::resolveThumbnailBaseUrl() . static::resolveThumbnailName();
+            $name = strtolower(get_called_class());
+            $name = str_replace('element', '', $name);
+            $name = str_replace('builder', '', $name);
+            return $name;
         }
 
         /**
@@ -173,7 +156,7 @@
          */
         protected static function resolveThumbnailHtmlOptions()
         {
-            return array('class' => 'icon-z');
+            return array('class' => 'icon-' . static::resolveThumbnailName());
         }
 
         /**

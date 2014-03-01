@@ -88,5 +88,10 @@
             $options['data-wrap']   = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
             return $options;
         }
+
+        protected static function resolveThumbnailName()
+        {
+            return 'header';
+        }
     }
 ?>
