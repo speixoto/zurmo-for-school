@@ -157,7 +157,7 @@ var emailTemplateEditor = {
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             iframeRect = iframeElement.getBoundingClientRect();
-            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements');//'.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
+            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');//'.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
             emailTemplateEditor.settings.isDragging = true;
             $('body').on('mousemove', onBodyMouseMove);
             $('body').on('mouseup', onBodyMouseUp);

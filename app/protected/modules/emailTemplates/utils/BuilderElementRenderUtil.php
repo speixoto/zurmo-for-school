@@ -135,7 +135,7 @@
                                                               $serializedContent = false)
         {
             return array($element->getId() => array(
-               'class'          => get_class($element),
+                'class'         => get_class($element),
                 'properties'    => $element->getProperties($serializedProperties),
                 'content'       => $element->getContent($serializedContent),
             ));

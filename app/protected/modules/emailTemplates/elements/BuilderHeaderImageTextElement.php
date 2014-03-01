@@ -34,8 +34,33 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderHeaderImageTextElement extends BaseBuilderElement
+    class BuilderHeaderImageTextElement extends BuilderRowElement
     {
+        protected function adjustContentColumnDataForConfiguration()
+        {
+            if (count($this->content) == 0)
+            {
+                $this->adjustContentWhenEmpty();
+            }
+            parent::adjustContentColumnDataForConfiguration();
+        }
+
+        protected function adjustContentWhenEmpty()
+        {
+            $this->content   = array();
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas);
+            $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
+            $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
+            $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
+            $this->content[$columnElement->id] = $columnData[$columnElement->id];
+            $defaultContent  = array('text' => Zurmo::t('EmailTemplatesModule', 'Your header description'));
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderTextElement', $this->renderForCanvas, null, null, $defaultContent);
+            $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
+            $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
+            $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
+            $this->content[$columnElement->id] = $columnData[$columnElement->id];
+        }
+
         public static function isUIAccessible()
         {
             return true;
@@ -46,44 +71,22 @@
             return Zurmo::t('EmailTemplatesModule', 'Header');
         }
 
+        protected function resolveDefaultProperties()
+        {
+            $properties = array(
+                'backend'   => array(
+                    'header'        => 1,
+                    'configuration' => '1:2',
+                ),
+            );
+            return $properties;
+        }
+
         protected static function resolveWidgetHtmlOptions()
         {
             $options                = parent::resolveWidgetHtmlOptions();
-            $options['data-wrap']   = BuilderElementRenderUtil::WRAP_IN_HEADER_ROW;
+            $options['data-wrap']   = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
             return $options;
-        }
-
-        protected function resolveDefaultContent()
-        {
-            $textName  = BuilderHeaderImageTextRedactorElement::TEXT_NAME;
-            $imageName = BuilderHeaderImageTextRedactorElement::IMAGE_NAME;
-            // TODO: @Sergio: Critical3: Better default content.
-            return array($textName  => 'This is default Header content.',
-                         $imageName => '<img src="http://zurmo.org/wp-content/themes/Zurmo/images/Zurmo-logo.png"></img>');
-        }
-
-        protected function resolveDefaultProperties()
-        {
-            // TODO: @Sergio: Critical3: Header should have some default properties too.
-            return array();
-        }
-
-        protected function renderSettingsTab(ZurmoActiveForm $form)
-        {
-            $propertiesForm     = BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
-            return $propertiesForm;
-        }
-
-        protected function resolveContentElementClassName()
-        {
-            return 'BuilderHeaderImageTextRedactorElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
-            // it would give an error saying we are trying to convert an array to string.
-            return 'content';
         }
     }
 ?>
