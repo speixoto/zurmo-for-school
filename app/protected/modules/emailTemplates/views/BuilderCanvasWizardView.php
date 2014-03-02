@@ -347,6 +347,7 @@
             $editActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
             $moveActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
             $deleteActionSelector               = 'span.' . BaseBuilderElement::OVERLAY_ACTION_DELETE;
+            $cellDroppableClass                 = BaseBuilderElement::BUILDER_ELEMENT_CELL_DROPPABLE_CLASS;
             $iframeOverlaySelector              = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
             $cachedSerializedSelector           = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
             $errorOnDeleteMessage               = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
@@ -366,6 +367,7 @@
                         '{$editActionSelector}',
                         '{$moveActionSelector}',
                         '{$deleteActionSelector}',
+                        '{$cellDroppableClass}',
                         '{$iframeOverlaySelector}',
                         '{$cachedSerializedSelector}',
                         '{$this->resolveElementEditableActionUrl()}',

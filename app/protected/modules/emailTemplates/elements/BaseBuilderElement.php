@@ -57,6 +57,11 @@
         const OVERLAY_ACTIONS_CONTAINER_CLASS   = 'builder-element-toolbar';
 
         /**
+         * class used for builder elements that can be dropped in cells
+         */
+        const BUILDER_ELEMENT_CELL_DROPPABLE_CLASS   = 'builder-element-cell-droppable';
+
+        /**
          * @var string Id of current element, unique.
          */
         protected $id;
@@ -165,7 +170,17 @@
          */
         protected static function resolveWidgetHtmlOptions()
         {
-            return  array('data-class' => get_called_class(), 'class' => 'builder-element builder-element-droppable');
+            return  array('data-class' => get_called_class(), 'class' => static::resolveWidgetClassesForHtmlOptions());
+        }
+
+        protected static function resolveWidgetClassesForHtmlOptions()
+        {
+            $classes = 'builder-element builder-element-droppable';
+            if (!static::isContainerType())
+            {
+                $classes .= ' ' . static::BUILDER_ELEMENT_CELL_DROPPABLE_CLASS;
+            }
+            return $classes;
         }
 
         /**

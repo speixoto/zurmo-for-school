@@ -60,7 +60,7 @@ var emailTemplateEditor = {
         isInited: false
     },
     init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editFormSelector,
-                     editActionSelector, moveActionSelector, deleteActionSelector, iframeOverlaySelector,
+                     editActionSelector, moveActionSelector, deleteActionSelector, cellDroppableClass, iframeOverlaySelector,
                      cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
                      dropHereMessage, csrfToken, doNotWrapInRow, wrapInRow, wrapInHeaderRow) {
         if (!this.settings.isInited)
@@ -73,6 +73,7 @@ var emailTemplateEditor = {
             this.settings.editActionSelector            = editActionSelector;
             this.settings.moveActionSelector            = moveActionSelector;
             this.settings.deleteActionSelector          = deleteActionSelector;
+            this.settings.cellDroppableClass            = cellDroppableClass;
             this.settings.iframeOverlaySelector         = iframeOverlaySelector;
             this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
             this.settings.editElementUrl                = editElementUrl;
@@ -132,7 +133,7 @@ var emailTemplateEditor = {
             revert: 'invalid',
             cursorAt: { left:  -10, top: -10 },
             helper: function(event, ui){
-                elementDragged      = $(event.currentTarget),
+                elementDragged      = $(event.currentTarget);
                 elementDraggedClass = $(event.currentTarget).data('class');
                 clone = $('<div class="draggable-element-clone">' + $(event.currentTarget).html() + '</div>');
                 return clone;
@@ -200,10 +201,14 @@ var emailTemplateEditor = {
                 for(i = 0; i < positions.length; i++){
                     if( point.left > positions[i].left && point.left < positions[i].right &&
                         point.top > positions[i].top && point.top < positions[i].bottom ){
-                        innerElements.push(containers[i]);
+                        //Only make container for sortable-elements if the elementDragged is cellDroppable
+                        if (($(containers[i]).closest('td').hasClass('sortable-elements') && $(elementDragged).hasClass(emailTemplateEditor.settings.cellDroppableClass))) {
+                            innerElements.push(containers[i]);
+                        } else if (($(containers[i]).closest('td').hasClass('sortable-rows'))) {
+                            innerElements.push(containers[i]);
+                        }
                     }
                 }
-                console.log(innerElements);
                 if(innerElements.length > 0){
                     mostTopElement = $(innerElements[innerElements.length-1]);
                     $(mostTopElement).addClass('hover');
