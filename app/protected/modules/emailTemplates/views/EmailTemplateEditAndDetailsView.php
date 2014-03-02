@@ -36,6 +36,7 @@
 
     class EmailTemplateEditAndDetailsView extends SecuredEditAndDetailsView
     {
+        // TODO: @Shoaibi: Critical; We don't need edit part of this at least.
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -102,7 +103,7 @@
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
             if ($elementInformation['attributeName'] == 'modelClassName' &&
-               $this->model->type == EmailTemplate::TYPE_CONTACT)
+               $this->model->isContactTemplate())
             {
                 $elementInformation['attributeName'] = null;
                 $elementInformation['type']          = 'NoCellNull'; // Not Coding Standard
@@ -111,14 +112,15 @@
 
         protected function renderAfterFormLayout($form)
         {
+            // TODO: @Shoaibi/@Jason: Critical: Do we even need this js?
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
                         $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
                         {
-                            selectedOptionValue                 = $(this).find(':selected').val();
-                            modelClassNameDropDown              = $('#EmailTemplate_modelClassName_value');
-                            modelClassNameTr                    = modelClassNameDropDown.parent().parent().parent();
-                            animationSpeed                      = 400;
+                            selectedOptionValue    = $(this).find(':selected').val();
+                            modelClassNameDropDown = $('#EmailTemplate_modelClassName_value');
+                            modelClassNameTr       = modelClassNameDropDown.parent().parent().parent();
+                            animationSpeed         = 400;
                             if (selectedOptionValue == " . EmailTemplate::TYPE_WORKFLOW . ")
                             {
                                 modelClassNameTr.show(animationSpeed);
@@ -138,13 +140,27 @@
                     ");
             // End Not Coding Standard
             $content  = $this->resolveRenderHiddenModelClassNameElement($form);
-            $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
+
+            $editor  = $this->renderHtmlAndTextContentElement($this->model, null, $form);
+            $editor .= $this->renderMergeTagsView(); //todo: placed last so redactor is already initialized first. just a trick for the css right now
+
+            //$content .= ZurmoHtml::tag('div', array('class' => 'left-column strong-right'), $editor);
+
+            return $content;
+        }
+
+        protected function renderMergeTagsView()
+        {
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $view = new MergeTagsView('EmailTemplate', 'EmailTemplate_textContent', 'EmailTemplate_htmlContent'); //todo: get these last 2 values dynamically
+            $view = ZurmoHtml::tag('div', array('class' => 'wizard-merge-tags'), $view->render());
+            $content = $title . $view;
             return $content;
         }
 
         protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)
         {
-            if ($this->model->type == EmailTemplate::TYPE_CONTACT)
+            if ($this->model->isContactTemplate())
             {
                 return $form->hiddenField($this->model, 'modelClassName', array());
             }
@@ -169,7 +185,7 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)

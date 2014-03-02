@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h1>February 24</h1>
+
+
+<!--Fancy Divider-->
+<table class="simple-divider">
+	<tr>
+		<td>
+			<img src="transparent.gif" height="PADDING_HEIGHT" />
+		</td>
+		<td>
+			<img src="SELECTED_FANCY_IMAGE_TYPE.PNG" />
+		</td>
+		<td>
+			<img src="transparent.gif" height="PADDING_HEIGHT" />
+		</td>
+	</tr>
+</table>
+
+<!--FORM for Fancy Divider-->
+<div>
+	<p>Padding (space above and under): <input type="number" placeholder="10"> pixels</p>
+	<p>
+		Style
+		<select>
+			<option value="path/to/image/1/png">Fancy 1</option>
+			<option value="path/to/image/2/png">Fancy 2</option>
+			<option value="path/to/image/3/png">Fancy 3</option>
+		</select>
+	</p>
+</div>
+
+<!--Simple Divider-->
+<table class="simple-divider">
+	<tr>
+		<td>
+			<img src="transparent.gif" height="PADDING_HEIGHT" />
+		</td>
+		<!--we give the td a border TOP only and apply fake height with a transparent gif so it actually show the border and collapses it-->
+		<td style="border-top:PIXELS-HEIGHT STYLE COLOR;">
+			<img src="transparent.gif" height="PIXELS-HEIGHT" />
+		</td>
+		<td>
+			<img src="transparent.gif" height="PADDING_HEIGHT" />
+		</td>
+	</tr>
+</table>
+
+<!--FORM for Simple Divider-->
+<div>
+	<p>Height: <input type="number" placeholder="10"> pixels</p>
+	<p>Padding (space above and under): <input type="number" placeholder="10"> pixels</p>
+	<p>
+		Color
+		<input type="COLOR_PICKER" placeholder="#fff000">
+	</p>
+	<p>
+		Style
+		<select>
+			<option value="">Style</option>
+			<option value="">Solid</option>
+			<option value="">Dashed</option>
+			<option value="">Dotted</option>
+			<option value="">Double</option>
+			<option value="">Groove</option>
+			<option value="">Ridge</option>
+			<option value="">Inset</option>
+			<option value="">Outset</option>
+		</select>
+	</p>
+</div>
+
+
+<!--expander-->
+<table class="expander">
+	<tr>
+		<td>
+			<img src="transparent.gif" height="" />
+		</td>
+	</tr>
+</table>
+
+<!--FORM for Expander-->
+<div>
+	Height: <input type="number" placeholder="10"> pixels
+</div>
+
+
+<!--Button-->
+<td class="button-container" align="ALIGNMENT" width="100%-IF-WIDTH-IS-FULL">
+	<a href="URL" target="OPEN_IN" class="newsletter-button SIZE_CLASS"
+		style="background-color/font-family/font-size/color/border-radius"><span>Button Text</span></a>
+</td>
+
+<!--FORM for Button-->
+<div>
+	<p>
+		Text for button
+		<input type="text" placeholder="Click Me!">
+	</p>
+	<p>
+		URL
+		<input type="text" placeholder="http://...">
+	</p>
+	<p>
+		Open in
+		<select>
+			<option value="_self">new window</option>
+			<option value="_blank">same window</option>
+		</select>
+	</p>
+	<p>
+		Font Family
+		<select>
+			<option value="">Arial</option>
+			<option value="">Trebuchet</option>
+			<option value="">Times</option>
+			<option value="">Serif</option>
+			<option value="">Sans Serif</option>
+			<!--
+				LEAVE THIS LIST OPEN, MORE SHOULD BE ADDED HERE.
+				IDEALLY THIS IS BROUGHT FROM ONE ARRAY FOR ALL ELEMENTS WHO USE IT
+			-->
+		</select>
+	</p>
+	<p>
+		Font Size
+		<input type="number" placeholder="14"> pixels
+	</p>
+	<p>
+		Text Color
+		<input type="COLOR_PICKER" placeholder="#111fff">
+	</p>
+	<p>
+		Background Color
+		<input type="COLOR_PICKER" placeholder="#fff000">
+	</p>
+	<p>
+		Border Radius
+		<input type="number" placeholder="4"> pixels
+	</p>
+	<p>
+		Button Width
+		<select>
+			<option value="">Full Width</option>
+			<option value="">Fit To Text</option>
+		</select>
+	</p>
+	<p>
+		Alignment (only works if button width is set to FIT text)
+		<select>
+			<option value="">Center</option>
+			<option value="">Left</option>
+			<option value="">Right</option>
+		</select>
+	</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- social buttons in one line-->
+<div class="element-non-editable">
+	<a href="facebook" class="social-button facebook">Facebook</a>
+	<a href="twitter" class="social-button twitter">twitter</a>
+	<a href="gplus" class="social-button gplus">g+</a>
+</div>
+
+<!-- social buttons stacked-->
+<div class="element-non-editable">
+	<a href="facebook" class="social-button facebook">Facebook</a>
+</div>
+<div class="element-non-editable">
+	<a href="twitter" class="social-button twitter">twitter</a>
+</div>
+<div class="element-non-editable">
+	<a href="gplus" class="social-button gplus">g+</a>
+</div>
+
+
+<!--footer (zurmo logo should be hard coded, not editbale. FOOTER_TEXT class to predefine smaller/lighter font)-->
+<div class="element-non-editable">
+	<div class="RICH_TEXT FOOTER_TEXT">some content, links, unsubscribe, copyright</div>
+	<table class="ZURMO_LOGO" align="center">
+		<tr><td><a href="zurmo.com"><img src="powered-by-ZURMO.PNG" /></a></td></tr>
+	</table>
+</div>
+
+
+<!--header-->
+<table align="center">
+	<tr>
+		<td>
+			<a href="mycompany.com"><img src="my-company.png" /></a>
+		</td>
+		<td>
+			<div>Title.. The best newsletter ever..</div><!--this should have user inline style-->
+		</td>
+	</tr>
+</table>
+
+
+<!--Title (those are defined in the <style/head> code block)-->
+<div class="element-non-editable">
+	<h1>very big title</h1> or
+	<h2>medium size title</h2> or
+	<h3>smaller/subsection title</h3>
+	<!--could have rich-text/image/whatever after in the same TD-->
+</div>
+
+
+</body>
+</html>

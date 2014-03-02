@@ -39,7 +39,9 @@
      */
     class PlaceholderImageUtil
     {
-        const ONE_BY_ONE_PIXEL_IMAGE_PATH            =   '/default/images/1x1-pixel.png';
+        const ONE_BY_ONE_PIXEL_IMAGE_PATH               =   '/default/images/1x1-pixel.png';
+
+        const TRANSPARENT_IMAGE_PATH                    =   '/default/images/email-builder/transparent.gif';
 
         public static function resolveOneByOnePixelImageUrl($absolute = true)
         {
@@ -51,7 +53,17 @@
             return Yii::app()->themeManager->basePath . static::ONE_BY_ONE_PIXEL_IMAGE_PATH;
         }
 
-        protected static function resolveUrlForThemeFile($filePath, $absolute = true)
+        public static function resolveTransparentImageUrl($absolute = true)
+        {
+            return static::resolveUrlForThemeFile(static::TRANSPARENT_IMAGE_PATH, $absolute);
+        }
+
+        public static function resolveTransparentImagePath()
+        {
+            return Yii::app()->themeManager->basePath . static::TRANSPARENT_IMAGE_PATH;
+        }
+
+        public static function resolveUrlForThemeFile($filePath, $absolute = true)
         {
             if (strpos($filePath, '/') !== 0)
             {

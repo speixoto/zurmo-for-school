@@ -146,6 +146,25 @@
                                                                     'static::filterMungableModels');
         }
 
+        public static function getAllEmailTemplateElementClassNames($filter = null)
+        {
+            $emailTemplatePathAliases  = 'application.modules.emailTemplates.elements';
+            $elements   = array_values(static::getAllClassNamesByPathAlias($emailTemplatePathAliases));
+            if ($filter && is_callable($filter))
+            {
+                $elements = array_filter($elements, $filter);
+            }
+            $elements = array_unique(array_values($elements));
+            return $elements;
+        }
+
+        public static function getAllUIAccessibleBuilderElementClassNames()
+        {
+            return static::getAllEmailTemplateElementClassNamesWithFilterFromCache(
+                                                                'uiAccessibleBuilderElementClassNames',
+                                                                'static::filterUIAccessibleBuilderElementClassNames');
+        }
+
         protected static function getAllModelClassNamesWithFilterFromCache($identifier, $filter)
         {
             try
@@ -173,6 +192,25 @@
         protected static function filterMungableModels($model)
         {
             return (is_subclass_of($model, 'SecurableItem') && $model::hasReadPermissionsOptimization());
+        }
+
+        protected static function getAllEmailTemplateElementClassNamesWithFilterFromCache($identifier, $filter)
+        {
+            try
+            {
+                $filteredElementClassNames = GeneralCache::getEntry($identifier);
+            }
+            catch (NotFoundException $e)
+            {
+                $filteredElementClassNames = static::getAllEmailTemplateElementClassNames($filter);
+                GeneralCache::cacheEntry($identifier, $filteredElementClassNames);
+            }
+            return $filteredElementClassNames;
+        }
+
+        protected static function filterUIAccessibleBuilderElementClassNames($className)
+        {
+            return (is_subclass_of($className, 'BaseBuilderElement') && $className::isUIAccessible());
         }
     }
 ?>

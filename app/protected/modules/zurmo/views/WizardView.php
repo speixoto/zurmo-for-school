@@ -76,12 +76,21 @@
         }
 
         /**
+         * Override in children with correct moduleId
+         * @throws NotImplementedException
+         */
+        public static function getModuleId()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
          * Override in children with correct controllerId
          * @throws NotImplementedException
          */
         public static function getControllerId()
         {
-            throw new NotImplementedException();
+            return 'default';
         }
 
         /**
@@ -95,7 +104,7 @@
             assert('is_string($formName)');
             assert('is_string($componentViewClassName)');
             assert('is_string($reportType)');
-            $url    =  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTree',
+            $url    =  Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/relationsAndAttributesTree',
                 array_merge($_GET, array('type' => $reportType,
                     'treeType' => $componentViewClassName::getTreeType())));
             // Begin Not Coding Standard
@@ -219,10 +228,20 @@
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'beforeValidate'    => $this->getBeforeValidateActionScript(),
                         'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
                     );
+        }
+
+        /**
+         * The script to be triggered before validation action
+         * @see WizardView::getClientOptions
+         * @return string
+         */
+        protected function getBeforeValidateActionScript()
+        {
+            return 'js:$(this).beforeValidateAction';
         }
 
         protected function registerScripts()
@@ -243,37 +262,70 @@
          */
         protected function getFormActionUrl()
         {
-            return Yii::app()->createUrl(static::getControllerId() . '/default/save',
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/save',
                 array('type' => $this->model->type, 'id' => $this->model->id, 'isBeingCopied' => $this->isBeingCopied));
         }
 
         /**
-         * @param string $formName
+         * @param $formName
+         * @param bool $redirectAfterSave
+         * @param array $additionalAjaxOptions
          * @return string
          */
-        protected function getSaveAjaxString($formName)
+        protected function getSaveAjaxString($formName, $redirectAfterSave = true, array $additionalAjaxOptions = array())
         {
             assert('is_string($formName)');
-            $saveRedirectToDetailsUrl = Yii::app()->createUrl(static::getControllerId() . '/default/details');
-            $saveRedirectToListUrl    = Yii::app()->createUrl(static::getControllerId() . '/default/list');
-            return ZurmoHtml::ajax(array(
-                                            'type'     => 'POST',
-                                            'data'     => 'js:$("#' . $formName . '").serialize()',
-                                            'url'      =>  $this->getFormActionUrl(),
-                                            'dataType' => 'json',
-                                            'success'  => 'js:function(data)
+            $ajaxArray              = $this->resolveSaveAjaxArray($formName, $redirectAfterSave, $additionalAjaxOptions);
+            return ZurmoHtml::ajax($ajaxArray);
+        }
+
+        /**
+         * @param $formName
+         * @param bool $redirectAfterSave
+         * @param array $additionalAjaxOptions
+         * @return array
+         */
+        protected function resolveSaveAjaxArray($formName, $redirectAfterSave = true, array $additionalAjaxOptions = array())
+        {
+            $ajaxArray                  = array('type'      => 'POST',
+                                                'cache'     => 'false',
+                                                'data'      => 'js:$("#' . $formName . '").serialize()',
+                                                'url'       =>  'js:$("#' . $formName . '").attr("action")',
+                                                'dataType'  => 'json',
+                                            );
+            if ($redirectAfterSave)
+            {
+                $ajaxArray['success']  = 'js:function(data)
                                             {
                                                 if (data.redirectToList)
                                                 {
-                                                    url = "' . $saveRedirectToListUrl . '";
+                                                    url = "' . $this->resolveSaveRedirectToListUrl() . '";
                                                 }
                                                 else
                                                 {
-                                                    url = "' . $saveRedirectToDetailsUrl . '" + "?id=" + data.id
+                                                    url = "' . $this->resolveSaveRedirectToDetailsUrl() . '" + "?id=" + data.id
                                                 }
                                                 window.location.href = url;
-                                            }'
-                                          ));
+                                            }';
+            }
+            $ajaxArray                  = CMap::mergeArray($ajaxArray, $additionalAjaxOptions);
+            return $ajaxArray;
+        }
+
+        /**
+         * @return string
+         */
+        protected function resolveSaveRedirectToDetailsUrl()
+        {
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/details');
+        }
+
+        /**
+         * @return string
+         */
+        protected function resolveSaveRedirectToListUrl()
+        {
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/list');
         }
 
         protected function registerOperatorOnLoadAndOnChangeScript()

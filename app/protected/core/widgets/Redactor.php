@@ -40,6 +40,8 @@
 
         public $cssFile         = 'redactor.css';
 
+        public $assetFolderName = 'redactor';
+
         public $htmlOptions;
 
         public $content;
@@ -47,7 +49,7 @@
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
                                    'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                                   'horizontalrule']";
+                                   'horizontalrule', '|', 'image']";
 
         public $source          = "false";
 
@@ -67,21 +69,62 @@
 
         public $wym             = "false";
 
+        public $toolbarExternal;
+
+        public $plugins;
+
         public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
+
+        public $allowedTags;
+
+        public $imageUpload;
+
+        public $imageGetJson;
+
+        public $initCallback;
+
+        public $changeCallback;
+
+        public $focusCallback;
+
+        public $syncAfterCallback;
+
+        public $syncBeforeCallback;
+
+        public $textareaKeydownCallback;
 
         public function run()
         {
             $id         = $this->htmlOptions['id'];
             $name       = $this->htmlOptions['name'];
+            unset($this->htmlOptions['name']);
             $javaScript = "
                     $(document).ready(
                         function()
                         {
+                            RedactorPlugins = {};
+                            RedactorPlugins.mergeTags = {
+                                init: function ()
+                                {
+                                    this.buttonAdd('mergeTags', 'Merge Tags', this.mergeTagsButton);
+                                },
+                                mergeTagsButton: function(buttonName, buttonDOM, buttonObj, e)
+                                {
+                                    $('.MergeTagsView').toggle();
+                                }
+                            };
                             $('#{$id}').redactor(
                             {
+                                {$this->renderRedactorParamForInit('initCallback')}
+                                {$this->renderRedactorParamForInit('changeCallback')}
+                                {$this->renderRedactorParamForInit('focusCallback')}
+                                {$this->renderRedactorParamForInit('syncAfterCallback')}
+                                {$this->renderRedactorParamForInit('syncBeforeCallback')}
+                                {$this->renderRedactorParamForInit('textareaKeydownCallback')}
                                 buttons:        {$this->buttons},
                                 cleanup:        {$this->cleanup},
                                 convertDivs:    {$this->convertDivs},
+                                {$this->renderRedactorParamForInit('allowedTags')}
                                 deniedTags:     {$this->deniedTags},
                                 fullpage:       {$this->fullpage},
                                 iframe:         {$this->iframe},
@@ -90,23 +133,31 @@
                                 source:         {$this->source},
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
+                                {$this->renderRedactorParamForInit('toolbarExternal')}
+                                imageUpload:    '{$this->imageUpload}',
+                                imageGetJson:   '{$this->imageGetJson}',
+                                {$this->resolveAndRenderPluginParam()}
                             });
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo "<textarea id='{$id}' name='{$name}'>" . CHtml::encode($this->content) . "</textarea>";
+            echo ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
         }
 
-        protected function resolvePackagePath()
+        protected function renderRedactorParamForInit($paramName)
         {
-            if ($this->scriptUrl === null || $this->themeUrl === null)
+            $paramValue = $this->$paramName;
+            if (isset($paramValue))
             {
-                $cs = Yii::app()->getClientScript();
-                if ($this->scriptUrl === null)
-                {
-                    $this->scriptUrl = Yii::app()->getAssetManager()->publish(
-                                        Yii::getPathOfAlias('application.core.widgets.assets.redactor'));
-                }
+                return "{$paramName}: {$paramValue},";
+            }
+        }
+
+        protected function resolveAndRenderPluginParam()
+        {
+            if ($this->plugins != null)
+            {
+                return "plugins:        {$this->plugins}";
             }
         }
     }

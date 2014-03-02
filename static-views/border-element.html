@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+
+<style>
+	.third{
+		width: 33%;
+		float: left;
+	}
+	.border-element{
+		width: 450px;
+		border: 1px dotted #333;
+		padding: 10px;
+	}
+	.border-element > div:after{
+		content: " ";
+		display: table;
+		clear: both;
+	}
+	.border-position{
+		clear: both;
+	}
+</style>
+
+<script>
+	$(document).ready(function(){
+		$('#cb_all').change(function(){
+			if($(this).is(':checked')){
+				$('#cb_top').prop("checked", true);
+				$('#cb_right').prop("checked", true);
+				$('#cb_bottom').prop("checked", true);
+				$('#cb_left').prop("checked", true);
+				$('#cb_none').prop("checked", false);
+			}
+		});
+
+		$('.cb').change(function(){
+			if($(this).is(':checked') === false){
+				$('#cb_all').prop("checked", false);
+			} else {
+				$('#cb_none').prop("checked", false);
+			}
+		});
+
+		$('#cb_none').change(function(){
+			if($(this).is(':checked')){
+				$('#cb_all').prop("checked", false);
+				$('#cb_top').prop("checked", false);
+				$('#cb_right').prop("checked", false);
+				$('#cb_bottom').prop("checked", false);
+				$('#cb_left').prop("checked", false);
+			}
+		});
+
+	})
+</script>
+
+
+<div class="border-element">
+	<div class="border-style">
+		<p><strong>Border Style</strong></p>
+		<div class="third">
+			<input type="number" placeholder="1" />px
+		</div>
+		<div class="third">
+			<select>
+				<option value="">Style</option>
+				<option value="">Solid</option>
+				<option value="">Dashed</option>
+				<option value="">Dotted</option>
+				<option value="">Double</option>
+				<option value="">Groove</option>
+				<option value="">Ridge</option>
+				<option value="">Inset</option>
+				<option value="">Outset</option>
+			</select>
+		</div>
+		<div class="third">
+			<input type="COLOR_PICKER_HERE" placeholder="#COLOR" />
+		</div>
+	</div>
+
+	<div class="border-position">
+		<p><strong>Border Position</strong></p>
+		<label><input type="checkbox" name="all-none" id="cb_all">All</label>:
+		<label><input type="checkbox" name="all-none" class="cb" id="cb_top">Top</label>
+		<label><input type="checkbox" name="all-none" class="cb" id="cb_right">Right</label>
+		<label><input type="checkbox" name="all-none" class="cb" id="cb_bottom">Bottom</label>
+		<label><input type="checkbox" name="all-none" class="cb" id="cb_left">Left</label>
+		<br>
+		<label><input type="checkbox" name="all-none" id="cb_none">None</label>
+	</div>
+
+
+</div>
+
+
+
+</body>
+</html>

@@ -270,7 +270,7 @@
         protected function renderLoadChartSeriesAndRangesScriptContent($formName)
         {
             assert('is_string($formName)');
-            $url    =  Yii::app()->createUrl('reports/default/getAvailableSeriesAndRangesForChart',
+            $url    =  Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/getAvailableSeriesAndRangesForChart',
                        array_merge($_GET, array('type' => $this->model->type)));
             // Begin Not Coding Standard
             $script = "

@@ -51,10 +51,10 @@
 
         protected function getDropDownArray()
         {
-            return $this->getAvailableModelNamesArray();
+            return static::getAvailableModelNamesArray();
         }
 
-        protected function getAvailableModelNamesArray()
+        public static function getAvailableModelNamesArray()
         {
             $modules = Module::getModuleObjects();
             $availableModels = array();

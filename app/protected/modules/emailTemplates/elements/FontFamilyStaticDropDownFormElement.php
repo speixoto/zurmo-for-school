@@ -34,17 +34,23 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Element for displaying the available contact email templates
-     */
-    class EmailTemplatesForMarketingStaticDropDownElement extends StaticDropDownFormElement
+    class FontFamilyStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
         /**
          * @return array
          */
         protected function getDropDownArray()
         {
-            return EmailTemplate::getDataAndLabelsByType(EmailTemplate::TYPE_CONTACT);
+            $fonts     = $this->resolveAvailableFonts();
+            return $fonts;
+        }
+
+        protected function resolveAvailableFonts()
+        {
+            // TODO: @Shoaibi: Critical: Need better font styles here.
+            $fonts = array('Arial', 'Verdana', 'Tahoma', 'Times New Roman', 'Georgia', 'Courier New');
+            $fonts  = array_combine($fonts, $fonts);
+            return $fonts;
         }
     }
 ?>

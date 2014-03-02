@@ -253,6 +253,7 @@
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
                 'excludeCsrfValidationRoutes' => array(
                     array('route' => 'contacts/external/', 'tokenEnabled' => true),
+                    array('route' => 'zurmo/imageModel/upload/', 'tokenEnabled' => false), //TODO: @sergio: Remove this when implemented outside redactor
                 ),
             ),
             'sanitizer' => array(
@@ -357,7 +358,8 @@
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
-                    'webforms-external.less'
+                    'webforms-external.less',
+                    'builder-iframe-tools.less'
                 ),
             ),
         ),

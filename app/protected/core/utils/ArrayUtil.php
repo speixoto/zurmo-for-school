@@ -242,5 +242,60 @@
             assert('is_array($data)');
             $sortFunctionName($data, array($className, $compareFunction));
         }
+
+        /**
+         * Find the last key in an array
+         * @param array $array
+         * @return mixed
+         */
+        public static function findLastKey(array & $array)
+        {
+            end($array);
+            $lastKey    = key($array);
+            // reset point back to start for any code that follows.
+            reset($array);
+            return $lastKey;
+        }
+
+        /**
+         * Returns nested value. Key could be like, key, key[subkey], key['subkey']
+         * @param array $array
+         * @param $key
+         * @return array|null
+         */
+        public static function getNestedValue(array $array, $key)
+        {
+            $key    = str_replace(array("]", "'", '"'), '', $key);
+            $pieces = explode('[', $key);
+            foreach ($pieces as $piece) {
+                if (!is_array($array) || !array_key_exists($piece, $array))
+                {
+                    return null;
+                }
+                $array = $array[$piece];
+            }
+            return $array;
+        }
+
+        /**
+         * Remove all empty values
+         * @param array $haystack
+         * @return array
+         */
+        public static function recursivelyRemoveEmptyValues(array $haystack)
+        {
+            foreach ($haystack as $key => $value) {
+                if (is_array($value))
+                {
+                    $haystack[$key] = static::recursivelyRemoveEmptyValues($haystack[$key]);
+                }
+
+                if (empty($haystack[$key]))
+                {
+                    unset($haystack[$key]);
+                }
+            }
+            return $haystack;
+        }
     }
 ?>
