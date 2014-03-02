@@ -82,7 +82,7 @@
             $modelClassNames = PathUtil::getAllMungableModelClassNames();
             $compareData = array('Account', 'Campaign', 'Contact', 'Conversation', 'EmailMessage', 'EmailTemplate', 'GameReward',
                 'MarketingList', 'Meeting', 'Mission',
-                'Note', 'Opportunity', 'SavedReport', 'Product', 'SocialItem', 'Task', 'ContactWebForm', 'Project');
+                'Note', 'Opportunity', 'SavedReport', 'Product', 'SocialItem', 'Task', 'ContactWebForm', 'Project', 'SavedCalendar');
             $this->assertEquals($compareData, $modelClassNames);
             $modelClassNames2 = PathUtil::getAllMungableModelClassNames();
             $this->assertEquals($modelClassNames, $modelClassNames2);

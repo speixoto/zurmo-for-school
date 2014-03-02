@@ -90,7 +90,7 @@
                                             'elements' => array(
                                                 array('attributeName'   => 'null',
                                                       'type'            => 'MultipleAccountsForProjects',
-                                                      'inputPrefix'     => 'ProjectAccountsForm'),
+                                                ),
                                             ),
                                         ),
                                     )
@@ -101,7 +101,7 @@
                                             'elements' => array(
                                                 array('attributeName'   => 'null',
                                                       'type'            => 'MultipleContactsForProjects',
-                                                      'inputPrefix'     => 'ProjectContactsForm'),
+                                                ),
                                             ),
                                         ),
                                     )
@@ -112,7 +112,7 @@
                                             'elements' => array(
                                                 array('attributeName'   => 'null',
                                                       'type'            => 'MultipleOpportunitiesForProjects',
-                                                      'inputPrefix'     => 'ProjectOpportunitiesForm'),
+                                                ),
                                             ),
                                         ),
                                     )

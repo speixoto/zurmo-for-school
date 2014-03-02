@@ -72,6 +72,11 @@
             return $type;
         }
 
+        protected function getFormName()
+        {
+            return get_class($this->model);
+        }
+
         protected function assertModelType()
         {
             assert('$this->model instanceof CreateEmailMessageForm');

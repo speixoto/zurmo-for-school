@@ -352,7 +352,8 @@
             'lessCompiler' => array(
                 'class'                 => 'application.extensions.lessphp.LessCompiler',
                 'formatterName'         => 'lessjs',
-                'mainLessFileToCompile' => 'zurmo.less',
+                'primaryLessFileToCompile' => 'zurmo.less',
+                'secondaryLessFileToCompile' => 'imports.less',
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
@@ -430,7 +431,8 @@
             'users',
             'maps',
             'contactWebForms',
-            'projects'
+            'projects',
+            'calendars'
         ),
 
         'params' => array(

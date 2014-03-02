@@ -680,7 +680,6 @@
             if (isset($_POST['ajax']) &&
                 ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
             {
-                $oldStatus = $task->status;
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
                 echo CJSON::encode($errorData);
