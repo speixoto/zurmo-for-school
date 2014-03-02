@@ -179,7 +179,7 @@
             $right = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
             $right = ZurmoHtml::tag('td', array(), $right);
             //todo: placed last so redactor is already initialized first. just a trick for the css right now
-            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags Guide'));
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
             $left = $this->renderMergeTagsView();
             $left = ZurmoHtml::tag('th', array(), $title . $left);
             $content .= $left . $right;

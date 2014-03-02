@@ -151,7 +151,7 @@
 
         protected function renderMergeTagsView()
         {
-            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags Guide'));
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
             $view = new MergeTagsView('EmailTemplate', 'EmailTemplate_textContent', 'EmailTemplate_htmlContent'); //todo: get these last 2 values dynamically
             $view = ZurmoHtml::tag('div', array('class' => 'wizard-merge-tags'), $view->render());
             $content = $title . $view;
