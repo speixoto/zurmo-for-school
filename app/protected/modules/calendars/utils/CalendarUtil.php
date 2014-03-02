@@ -1011,10 +1011,7 @@
                 $fullCalendarItem['modelClass'] = $calItem->getModelClass();
                 $fullCalendarItem['modelId']    = $calItem->getModelId();
                 $fullCalendarItem['calendarId'] = $calItem->getCalendarId();
-                if($calItem->getModelClass() == 'Meeting')
-                {
-                    $fullCalendarItem['allDay'] = false;
-                }
+                $fullCalendarItem['allDay']     = true;
                 $fullCalendarItems[] = $fullCalendarItem;
             }
             if(count($fullCalendarItems) >  0)
