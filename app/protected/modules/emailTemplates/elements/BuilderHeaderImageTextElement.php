@@ -48,13 +48,17 @@
         protected function adjustContentWhenEmpty()
         {
             $this->content   = array();
-            $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas);
+            $defaultContent  = array('image' => Zurmo::t('EmailTemplatesModule', '<img src="http://placehold.it/200x50">'));
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas, null, null, $defaultContent);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
             $this->content[$columnElement->id] = $columnData[$columnElement->id];
             $defaultContent  = array('text' => Zurmo::t('EmailTemplatesModule', 'Your header description'));
-            $element         = BuilderElementRenderUtil::resolveElement('BuilderTextElement', $this->renderForCanvas, null, null, $defaultContent);
+            $defaultProperties = array('frontend' => array('inlineStyles' => array('text-align' => 'right',
+                                                                                   'color' => '#ffffff',
+                                                                                   'font-weight' => 'bold')));
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderTextElement', $this->renderForCanvas, null, $defaultProperties, $defaultContent);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
