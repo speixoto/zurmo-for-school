@@ -76,12 +76,12 @@
             $content    =   null;
             foreach ($this->properties['backend']['services'] as $serviceName => $serviceDetails)
             {
-                if (ArrayUtil::getArrayValue($serviceDetails, 'enabled'))
+                if (ArrayUtil::getArrayValue($serviceDetails, 'enabled') and ArrayUtil::getArrayValue($serviceDetails, 'url'))
                 {
                     $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
-                    $htmlOptions['class']   .= ' ' . $serviceName;
+                    $htmlOptions['class']  .= ' ' . $serviceName;
                     $label                  = ZurmoHtml::tag('span', array(), $serviceName);
-                    $content                .= ZurmoHtml::link($label, $serviceDetails['url'], $htmlOptions);
+                    $content               .= ZurmoHtml::link($label, $serviceDetails['url'], $htmlOptions);
                 }
             }
             return $content;
