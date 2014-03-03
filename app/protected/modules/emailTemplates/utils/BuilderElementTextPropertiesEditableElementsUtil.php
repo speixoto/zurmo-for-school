@@ -65,7 +65,7 @@
                                                 Zurmo::t('EmailTemplatesModule', 'Text Weight')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'TextAlignmentStaticDropDownFormElement',
+                                            'AlignmentStaticDropDownFormElement',
                                             'text-align',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Text Alignment')));

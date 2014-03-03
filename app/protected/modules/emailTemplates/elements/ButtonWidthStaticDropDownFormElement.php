@@ -34,22 +34,22 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class TextAlignmentStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class ButtonWidthStaticDropDownFormElement extends StaticDropDownFormElement
     {
         /**
          * @return array
          */
         protected function getDropDownArray()
         {
-            $alignments     = $this->resolveAvailableAlignments();
-            return $alignments;
+            $widths     = $this->resolveAvailableFonts();
+            return $widths;
         }
 
-        protected function resolveAvailableAlignments()
+        protected function resolveAvailableFonts()
         {
-            $alignments = array('left', 'right', 'center', 'justify');
-            $alignments    = array_combine(array_values($alignments), array_map('ucfirst', array_values($alignments)));
-            return $alignments;
+            $widths  = array('100%'     => Zurmo::t('EmailTemplatesModule', 'Full'),
+                            ''          => Zurmo::t('EmailTemplatesModule', 'Fit To Text'));
+            return $widths;
         }
     }
 ?>
