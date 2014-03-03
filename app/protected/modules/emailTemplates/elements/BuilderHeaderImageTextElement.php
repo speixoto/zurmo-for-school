@@ -54,11 +54,11 @@
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
             $this->content[$columnElement->id] = $columnData[$columnElement->id];
-            $defaultContent  = array('text' => Zurmo::t('EmailTemplatesModule', 'Your header description'));
+            $defaultContent  = array('text' => Zurmo::t('EmailTemplatesModule', 'Type your header description here'));
             $defaultProperties = array('frontend' => array('inlineStyles' => array('text-align' => 'right',
                                                                                    'color' => '#ffffff',
                                                                                    'font-weight' => 'bold')));
-            $element         = BuilderElementRenderUtil::resolveElement('BuilderTextElement', $this->renderForCanvas, null, $defaultProperties, $defaultContent);
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderRawTextElement', $this->renderForCanvas, null, $defaultProperties, $defaultContent);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
