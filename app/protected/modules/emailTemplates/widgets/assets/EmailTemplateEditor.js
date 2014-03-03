@@ -393,7 +393,7 @@ var emailTemplateEditor = {
         };
 
         var data    = {};
-        var elementDataArray = contents.find('.element-data');
+        var elementDataArray = $(emailTemplateEditor.settings.iframeSelector).contents().find('.element-data');
         for (var i = 0; i < elementDataArray.length; i++){
             var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
             if (parentsElementData.length == 0)
