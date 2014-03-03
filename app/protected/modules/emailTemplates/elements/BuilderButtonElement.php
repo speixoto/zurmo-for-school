@@ -51,7 +51,7 @@
             $properties              = array(
                 'backend'       => array(
                     'sizeClass'         => 'medium-button',
-                    'text'              => Yii::app()->name,
+                    'text'              => Yii::app()->label,
                     'align'             => 'left',
                     'width'             => '',
                 ),
