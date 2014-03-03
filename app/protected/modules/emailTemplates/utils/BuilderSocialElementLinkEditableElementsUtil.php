@@ -36,7 +36,7 @@
 
     class BuilderSocialElementLinkEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
-        protected static $enabledServices  = array('Twitter', 'Facebook', 'G+', 'YouTube', 'Instagram');
+        protected static $enabledServices  = array('Twitter', 'Facebook', 'GooglePlus', 'YouTube', 'Instagram');
 
         protected static function resolveConfiguration()
         {
