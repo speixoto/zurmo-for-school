@@ -297,8 +297,6 @@
             }
             if ($emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
             {
-                $emailTemplateData['htmlContent'] = EmailTemplateSerializedDataToHtmlUtil::
-                        resolveHtmlBySerializedData($emailTemplateData['serializedData'], false);
                 unset($emailTemplateData['serializedData']);
             }
             $emailTemplateJson = CJSON::encode($emailTemplateData);
