@@ -811,8 +811,7 @@
          */
         protected function resolveApplyLinkHtmlOptions()
         {
-            return array('id' => $this->resolveApplyLinkId(), 'class' => 'attachLoading z-button',
-                         'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            return array('id' => $this->resolveApplyLinkId());
         }
 
         /**
@@ -906,9 +905,8 @@
             if ($this->isContainerType())
             {
                 $ajaxScript = "emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
-                        emailTemplateEditor.settings.sortableElementsSelector,
-                        $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID ."').
-                        contents());";
+                                    emailTemplateEditor.settings.sortableElementsSelector,
+                                    $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID ."').contents());";
             }
             return $ajaxScript;
         }

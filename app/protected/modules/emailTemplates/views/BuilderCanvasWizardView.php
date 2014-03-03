@@ -514,9 +514,7 @@
 
         public static function resolveAdditionalAjaxOptionsForFinish($formName)
         {
-            $ajaxArray = static::resolveAdditionalAjaxOptions($formName);
-            unset($ajaxArray['success']);
-            return $ajaxArray;
+            return array();
         }
     }
 ?>
