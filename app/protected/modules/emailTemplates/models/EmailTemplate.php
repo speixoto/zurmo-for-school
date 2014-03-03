@@ -380,7 +380,7 @@
 
         protected function beforeValidate()
         {
-            if (isset($this->originalAttributeValues['serializedData']))
+            if (isset($this->originalAttributeValues['serializedData']) && $this->isBuilderTemplate())
             {
                 $this->htmlContent  = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($this->serializedData, false);
             }
