@@ -107,9 +107,10 @@
         {
             $htmlOptions            = $this->resolveNonEditableContentWrappingTdHtmlOptions();
             $htmlOptions['align']   = $this->properties['backend']['align'];
-            if (isset($this->properties['backend']['width']))
+            $width                  = ArrayUtil::getNestedValue($this->properties, "backend['width']");
+            if ($width)
             {
-                $htmlOptions['width']   = $this->properties['backend']['width'];
+                $htmlOptions['width']   = $width;
             }
             return $htmlOptions;
         }

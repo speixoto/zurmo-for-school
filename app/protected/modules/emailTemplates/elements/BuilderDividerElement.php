@@ -68,12 +68,12 @@
             $src            = $this->resolveDividerImageUrl();
             $alt            = static::resolveLabel();
             $imageOptions   = array();
-            if (isset($this->properties['frontend']['inlineStyles']['border-top-width']))
+            $imageHeight    = ArrayUtil::getNestedValue($this->properties, "frontend['inlineStyles']['border-top-width']");
+            if (isset($imageHeight))
             {
-                $height         = $this->properties['frontend']['inlineStyles']['border-top-width'];
                 // get rid of px as for border-top-width we have to save it with px(it appears in style property).
-                $height         = substr($height, 0, -2);
-                $imageOptions   = array('height' => $height);
+                $imageHeight    = substr($imageHeight, 0, -2);
+                $imageOptions   = array('height' => $imageHeight);
             }
             $content        = ZurmoHtml::image($src, $alt, $imageOptions);
             return $content;
