@@ -46,11 +46,11 @@
         public function renderGridViewData()
         {
             $data  = parent::renderGridViewData();
-            if($this->attribute == 'start')
+            if ($this->attribute == 'start')
             {
                 $data['header'] = Zurmo::t('CalendarsModule', 'Start Date');
             }
-            elseif($this->attribute == 'end')
+            elseif ($this->attribute == 'end')
             {
                 $data['header'] = Zurmo::t('CalendarsModule', 'End Date');
             }
@@ -80,7 +80,7 @@
         public function renderValue($value)
         {
             $value      = strtotime($value);
-            if($value == ZurmoTimeZoneHelper::getTimeZoneOffset())
+            if ($value == ZurmoTimeZoneHelper::getTimeZoneOffset())
             {
                 return Zurmo::t('Core', '(None)');
             }
