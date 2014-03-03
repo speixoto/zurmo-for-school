@@ -42,7 +42,7 @@
             $configurationItems[]       = static::resolveConfigurationItem(
                 'BuilderElementInlineStylePropertiesEditableElementUtil',
                 'ImageAlignmentStaticDropDownFormElement',
-                'text-align',
+                'float',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Image Alignment')));
             return $configurationItems;

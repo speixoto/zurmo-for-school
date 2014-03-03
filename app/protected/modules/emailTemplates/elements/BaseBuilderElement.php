@@ -540,11 +540,12 @@
         protected function renderFormInputsContent(ZurmoActiveForm $form)
         {
             $contentTabContent  = $this->renderContentTab($form);
-            //AMIT: NOT SURE WE CURRENTLY NEED THIS TO BE ALSO WRAPPED IN THE FORM_-FIELDS TABLE
-            //$contentTabContent      = $this->wrapEditableContentFormContentInTable($contentTabContent);
 
             $settingsTabContent  = $this->renderSettingsTab($form);
-            $settingsTabContent  = $this->wrapEditableContentFormContentInTable($settingsTabContent);
+            if (isset($settingsTabContent))
+            {
+                $settingsTabContent  = $this->wrapEditableContentFormContentInTable($settingsTabContent);
+            }
 
             $content             = $this->renderBeforeFormLayout($form);
             if (isset($contentTabContent, $settingsTabContent))
