@@ -605,7 +605,9 @@
             $emailMessage->subject              = $emailTemplate->subject;
             $emailContent                       = new EmailMessageContent();
             $emailContent->textContent          = $emailTemplate->textContent;
-            $emailContent->htmlContent          = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
+            // we do not need to do : EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
+            // check beforeValidate of EmailTemplate.
+            $emailContent->htmlContent          = $emailTemplate->htmlContent;
             $emailMessage->content              = $emailContent;
             $emailMessage->sender               = static::resolveSender();
             static::resolveRecipient($emailMessage, $contact);
