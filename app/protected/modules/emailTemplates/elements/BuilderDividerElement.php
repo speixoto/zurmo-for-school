@@ -54,9 +54,9 @@
                 ),
                 'frontend'   => array(
                     'inlineStyles'  => array(
-                        'border-top-width'              => '15px',
-                        'border-top-style'              => 'dotted',
-                        'border-top-color'              => '#0000ff',
+                        'border-top-width'              => '1px',
+                        'border-top-style'              => 'solid',
+                        'border-top-color'              => '#000000',
                         ),
                     )
             );
