@@ -164,34 +164,41 @@
                 Yii::app()->end(0, false);
             }
             assert('is_int($builtType) || is_string($builtType)');
+            $breadCrumbLink             = null;
             $builtType                  = intval($builtType);
-            $viewUtil                   = static::getViewUtilByType($type);
-            $breadCrumbView             = static::getBreadCrumbViewByType($type);
-            $breadCrumbLinks            = static::getBreadCrumbLinksByType($type);
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->type        = $type;
             $emailTemplate->builtType   = $builtType;
-            $progressBarAndStepsView    = EmailTemplateWizardViewFactory::makeStepsAndProgressBarViewFromEmailTemplate($emailTemplate);
-            if ($emailTemplate->isContactTemplate())
-            {
-                $emailTemplate->modelClassName = 'Contact';
-            }
-
-            // TODO: @Shoaibi: Critical99: port this code for edit, how?
-            // TODO: @Shoaibi: Critical99: Edit hides the "select a base template part"
-            if ($builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY ||
-                    $builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
+            $breadCrumbLink             = Zurmo::t('Core', 'Create');
+            if ($emailTemplate->isPlainTextTemplate()|| $emailTemplate->isPastedHtmlTemplate())
             {
                 $emailTemplate->isDraft     = false;
-                $breadCrumbLinks[]          = Zurmo::t('Core', 'Create');
             }
+            $this->actionRenderWizardForModel($emailTemplate, $breadCrumbLink);
+        }
+
+        public function actionEdit($id) // , $redirectUrl = null
+        {
+            $emailTemplate      = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
+            $breadCrumbLink     = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+            $this->actionRenderWizardForModel($emailTemplate, $breadCrumbLink);
+        }
+
+        protected function actionRenderWizardForModel(EmailTemplate $emailTemplate, $breadCrumbsLink)
+        {
+            $viewUtil                   = static::getViewUtilByType($emailTemplate->type);
+            $breadCrumbView             = static::getBreadCrumbViewByType($emailTemplate->type);
+            $breadCrumbLinks            = static::getBreadCrumbLinksByType($emailTemplate->type);
+            $breadCrumbLinks[]          = $breadCrumbsLink;
+            $progressBarAndStepsView    = EmailTemplateWizardViewFactory::makeStepsAndProgressBarViewFromEmailTemplate($emailTemplate);
             $wizardView                 = EmailTemplateWizardViewFactory::makeViewFromEmailTemplate($emailTemplate);
             $view                       = new EmailTemplatesPageView($viewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
-                                                                                                $this,
-                                                                                                $progressBarAndStepsView,
-                                                                                                $wizardView,
-                                                                                                $breadCrumbLinks,
-                                                                                                $breadCrumbView));
+                                                                        $this,
+                                                                        $progressBarAndStepsView,
+                                                                        $wizardView,
+                                                                        $breadCrumbLinks,
+                                                                        $breadCrumbView));
             echo $view->render();
         }
 
@@ -217,65 +224,6 @@
             {
                 throw new FailedToSaveModelException();
             }
-        }
-
-        public function actionCreateOld($type)
-        {
-            $type = (int)$type;
-            $emailTemplate       = new EmailTemplate();
-            $emailTemplate->type = $type;
-            $editAndDetailsView  = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate), 'Edit');
-            if ($emailTemplate->isWorkflowTemplate())
-            {
-                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
-                $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                    makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                        $breadCrumbLinks, 'WorkflowBreadCrumbView'));
-            }
-            elseif ($emailTemplate->isContactTemplate())
-            {
-                $emailTemplate->modelClassName = 'Contact';
-                $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
-                $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                    makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                        $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            echo $view->render();
-        }
-
-        public function actionEdit($id, $redirectUrl = null)
-        {
-            $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
-
-            $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate, $redirectUrl), 'Edit');
-            if ($emailTemplate->isWorkflowTemplate())
-            {
-                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadCrumbLinks, 'WorkflowBreadCrumbView'));
-            }
-            elseif ($emailTemplate->isContactTemplate())
-            {
-                $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            echo $view->render();
         }
 
         public function actionDetails($id, $renderJson = false, $includeFilesInJson = false, $contactId = null)
