@@ -140,7 +140,7 @@
         protected function resolveTableCssClassNames($columnWrappingTable = false)
         {
             $cssClasses = null;
-            $isHeader   = boolval(ArrayUtil::getNestedValue($this->properties, "backend['header']"));
+            $isHeader   = (bool)ArrayUtil::getNestedValue($this->properties, "backend['header']");
             // $columnWrappingTable = true, $header = true      : container
             // $columnWrappingTable = false, $header = false    : container
             if (($columnWrappingTable && $isHeader) ||
