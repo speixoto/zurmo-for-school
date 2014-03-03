@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class PixelSizeStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class PercentSizeStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
         /**
          * @return array
@@ -47,19 +47,21 @@
 
         protected function resolveAvailableSizes()
         {
-            for ($availableSize = 1; $availableSize <= 10; $availableSize++)
+            $sizes = array(100, 115, 125, 140, 150, 200);
+            $resolvedSizesForUnits = array();
+            foreach($sizes as $size)
             {
-                $size           = $this->resolveSizeForUnits($availableSize);
-                $sizes[$size]   = $size;
+                $size = $this->resolveSizeForUnits($size);
+                $resolvedSizesForUnits[$size]   = $size;
             }
-            return $sizes;
+            return $resolvedSizesForUnits;
         }
 
         protected function resolveSizeForUnits($size)
         {
             if (!isset($this->params['inline']) || !$this->params['inline'])
             {
-                $size   .= "px";
+                $size   .= "%";
             }
             return $size;
         }

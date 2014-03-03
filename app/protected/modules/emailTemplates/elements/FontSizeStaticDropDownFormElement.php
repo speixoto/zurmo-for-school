@@ -34,34 +34,19 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class PixelSizeStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class FontSizeStaticDropDownFormElement extends PixelSizeStaticDropDownFormElement
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
-        {
-            $sizes     = $this->resolveAvailableSizes();
-            return $sizes;
-        }
-
         protected function resolveAvailableSizes()
         {
-            for ($availableSize = 1; $availableSize <= 10; $availableSize++)
+            $sizes  = array($this->resolveSizeForUnits(8)  => $this->resolveSizeForUnits(8),
+                            $this->resolveSizeForUnits(9)  => $this->resolveSizeForUnits(9),
+                            $this->resolveSizeForUnits(10) => $this->resolveSizeForUnits(10));
+            for ($availableSize = 12; $availableSize <= 26; $availableSize = $availableSize + 2)
             {
                 $size           = $this->resolveSizeForUnits($availableSize);
                 $sizes[$size]   = $size;
             }
             return $sizes;
-        }
-
-        protected function resolveSizeForUnits($size)
-        {
-            if (!isset($this->params['inline']) || !$this->params['inline'])
-            {
-                $size   .= "px";
-            }
-            return $size;
         }
     }
 ?>
