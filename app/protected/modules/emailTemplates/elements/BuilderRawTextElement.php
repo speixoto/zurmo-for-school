@@ -34,62 +34,16 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderRawTextElement extends BaseBuilderElement
+    class BuilderRawTextElement extends BuilderTextElement
     {
         public static function isUIAccessible()
         {
-            return true;
-        }
-
-        protected static function resolveLabel()
-        {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
-        }
-
-        protected function resolveDefaultContent()
-        {
-            return array('text' => 'Type your text here');
-        }
-
-        protected function renderSettingsTab(ZurmoActiveForm $form)
-        {
-            $propertiesForm     = BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm    .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm    .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
-            return $propertiesForm;
+            return false;
         }
 
         protected function resolveContentElementClassName()
         {
             return 'TextElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
-            // it would give an error saying we are trying to convert an array to string.
-            return 'content[text]';
-        }
-
-        protected function resolveContentElementParams()
-        {
-            $params                     = parent::resolveContentElementParams();
-            $params['labelHtmlOptions'] = array('label' => 'Text');
-            return $params;
-        }
-
-        protected function renderAfterFormLayout(ZurmoActiveForm $form)
-        {
-            $content = parent::renderAfterFormLayout($form);
-            return  $content. $this->renderMergeTagsView();
-        }
-
-        protected function renderMergeTagsView()
-        {
-            $view = new MergeTagsView('BuilderElementEditable', null,
-                'BuilderElementEditableModelForm_content_text'); //todo: get this value values dynamically
-            $view->setCssClasses(array('clearfix wizard-merge-tags'));
-            return $view->render();
         }
     }
 ?>
