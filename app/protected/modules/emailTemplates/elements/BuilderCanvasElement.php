@@ -65,7 +65,7 @@
 
         protected function resolveAvailableNonEditableActionsArray()
         {
-            return array(static::OVERLAY_ACTION_EDIT);
+            return array();
         }
 
         /**

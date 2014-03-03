@@ -444,6 +444,10 @@
                 return null;
             }
             $overlayLinksContent    = $this->resolveAvailableNonEditableActionLinkContent();
+            if (!$overlayLinksContent)
+            {
+                return null;
+            }
             $overlayContent         = ZurmoHtml::tag('div', $this->resolveNonEditableActionsHtmlOptions(), $overlayLinksContent);
             return $overlayContent;
         }
