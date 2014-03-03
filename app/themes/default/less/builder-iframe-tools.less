@@ -42,6 +42,12 @@
 
 @import "variables.less";
 
+body:hover{
+	.element-wrapper{
+		box-shadow: inset 0 0 0 1px #fefefe;
+	}
+}
+
 .element-wrapper{
 	position: relative;
 	display:block;
@@ -97,6 +103,10 @@ td.sortable-elements.ui-sortable{
 	padding: 0;
 }
 
+td.wrapper{
+	vertical-align: middle;
+}
+
 .icon-action-move:before  { content: ")"; }
 .icon-action-edit:before  { content: "n"; }
 .icon-action-delete:before { content: "_"; }
@@ -112,19 +122,22 @@ td.sortable-elements.ui-sortable{
 }
 
 .editing-element{
-	box-shadow: inset 0 0 5px 0 @themeColor !important;
+	box-shadow: inset 0 0 8px 0 @themeColor  !important;
 }
 
 .ghost{
 	display: block;
-	background: rgba(237, 237, 237, 0.8);
-	box-shadow:inset 0 0 5px 0 #ccc;
-	color: #9b9b9a;
-	text-shadow:0 1px 0 #fff;
-	padding: 10px 0;
-	text-align: center;
-	width: 100%;
-	letter-spacing: 1px;
+	span{
+		display: block;
+		background: rgba(255, 255, 255, 0.5);
+		border:2px dashed @themeColor;
+		color: @themeColor;
+		padding: 10px 0;
+		text-align: center;
+		width: 100%;
+		letter-spacing: 1px;
+		font-size: 16px;
+	}
 }
 
 .element-wrapper{

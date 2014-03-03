@@ -151,7 +151,7 @@ var emailTemplateEditor = {
         var mostTopElement;
         var mostTopElementHalf = 0;
         var positions = [];
-        emailTemplateEditor.settings.ghost = $('<div class="ghost">' +  emailTemplateEditor.settings.dropHereMessage + '</div>');
+        emailTemplateEditor.settings.ghost = $('<div class="ghost"><span>' +  emailTemplateEditor.settings.dropHereMessage + '</span></div>');
 
         $('#building-blocks').on('mousedown', onBodyMouseDown);
         $(emailTemplateEditor.settings.iframeSelector).contents().find('body').on('mousemove', onIFrameBodyMouseMove);

@@ -2183,7 +2183,6 @@ table.configuration-list tr:last-child td {
 .texture-swatch [id*="theme-color-tooltip"],
 .texture-swatch [id*="background-texture-tooltip"] {
   width: auto !important;
-  position: relative;
   left: -25px;
   font-size: 18px;
   top: -5px;
@@ -2236,11 +2235,6 @@ table.configuration-list tr:last-child td {
 }
 #customThemeColorPicker > div:first-child {
   margin-left: 0;
-}
-#customThemeColorPicker .iris-picker {
-  position: absolute;
-  left: 0;
-  top: 100%;
 }
 #theme-color-configuration {
   clear: left;
