@@ -34,60 +34,22 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementEditableModelForm extends ModelForm
+    class LayoutDirectionStaticDropDownFormElement extends StaticDropDownFormElement
     {
-        public $content;
-        public $properties;
-
-        public function __construct(array $content, array $properties)
+        /**
+         * @return array
+         */
+        protected function getDropDownArray()
         {
-            $this->content      = $content;
-            $this->properties   = $properties;
+            $layouts     = $this->resolveAvailableAlignments();
+            return $layouts;
         }
 
-        public function __get($name)
+        protected function resolveAvailableAlignments()
         {
-            if (strpos($name, '['))
-            {
-                $basePropertyName   = substr($name, 0, strpos($name, '['));
-                $index              = substr($name, strpos($name, '[') + 1);
-                if (property_exists($this, $basePropertyName))
-                {
-                    return ArrayUtil::getNestedValue($this->{$basePropertyName}, $index);
-                }
-            }
-            return parent::__get($name);
-        }
-
-        public function setAttributes($values, $safeOnly = true)
-        {
-            $formValues  = array();
-            $modelValues = array();
-            foreach ($values as $name => $value)
-            {
-                $basePropertyName   = substr($name, 0, strpos($name, '['));
-                $index              = substr($name, strpos($name, '[') + 1, -1);
-                if (property_exists($this, $basePropertyName))
-                {
-                    return $this->{$basePropertyName}[$index] = $value;
-                }
-                else
-                {
-                    $modelValues[$name] = $value;
-                }
-            }
-            parent::setAttributes($formValues, $safeOnly);
-            $this->model->setAttributes($modelValues, $safeOnly);
-        }
-
-        public function isAttributeRequired($attribute)
-        {
-            return false;
-        }
-
-        public function getValidators($attribute = null)
-        {
-            return array();
+            $layouts = array('horizontal', 'vertical');
+            $layouts    = array_combine(array_values($layouts), array_map('ucfirst', array_values($layouts)));
+            return $layouts;
         }
     }
 ?>

@@ -34,60 +34,35 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementEditableModelForm extends ModelForm
+    class BuilderSocialElementLinkEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
-        public $content;
-        public $properties;
+        protected static $enabledServices  = array('Twitter', 'Facebook', 'GooglePlus', 'YouTube', 'Instagram');
 
-        public function __construct(array $content, array $properties)
+        protected static function resolveConfiguration()
         {
-            $this->content      = $content;
-            $this->properties   = $properties;
-        }
-
-        public function __get($name)
-        {
-            if (strpos($name, '['))
+            $configurationItems         = array();
+            foreach (static::$enabledServices as $serviceName)
             {
-                $basePropertyName   = substr($name, 0, strpos($name, '['));
-                $index              = substr($name, strpos($name, '[') + 1);
-                if (property_exists($this, $basePropertyName))
-                {
-                    return ArrayUtil::getNestedValue($this->{$basePropertyName}, $index);
-                }
+                $configurationItems[]       = static::resolveConfigurationItem(
+                                                'BuilderElementBackendPropertiesEditableElementUtil',
+                                                'CheckBoxElement',
+                                                "services][${serviceName}][enabled",
+                                                static::resolveDefaultParams($serviceName)); // we can't translate service names
+                $configurationItems[]       = static::resolveConfigurationItem(
+                                                'BuilderElementBackendPropertiesEditableElementUtil',
+                                                'TextElement',
+                                                "services][${serviceName}][url",
+                                                static::resolveDefaultParams(
+                                                    Zurmo::t('EmailTemplatesModule', 'Url')));
             }
-            return parent::__get($name);
+            return $configurationItems;
         }
 
-        public function setAttributes($values, $safeOnly = true)
+        protected static function registerScripts(ZurmoActiveForm $form)
         {
-            $formValues  = array();
-            $modelValues = array();
-            foreach ($values as $name => $value)
-            {
-                $basePropertyName   = substr($name, 0, strpos($name, '['));
-                $index              = substr($name, strpos($name, '[') + 1, -1);
-                if (property_exists($this, $basePropertyName))
-                {
-                    return $this->{$basePropertyName}[$index] = $value;
-                }
-                else
-                {
-                    $modelValues[$name] = $value;
-                }
-            }
-            parent::setAttributes($formValues, $safeOnly);
-            $this->model->setAttributes($modelValues, $safeOnly);
-        }
+            // TODO: @Shoaibi/@Jason: Critical: Shall we disable textbox if checkbox is unchecked, enable it if its checked and (dis|en)able text boxes on page load too?
 
-        public function isAttributeRequired($attribute)
-        {
-            return false;
-        }
-
-        public function getValidators($attribute = null)
-        {
-            return array();
         }
     }
+
 ?>

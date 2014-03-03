@@ -75,10 +75,11 @@
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $parentOptions          = parent::resolveNonEditableWrapperHtmlOptions();
-            $columnLength           = NumberToWordsUtil::convert(BuilderRowElement::MAX_COLUMN_WIDTH);
-            if (isset($this->params[static::TABLE_CSS_CLASSES_PARAM_KEY]))
+            $columnLength           = ArrayUtil::getArrayValue($this->params, static::TABLE_CSS_CLASSES_PARAM_KEY);
+            if (!isset($columnLength))
             {
-                $columnLength       = $this->params[static::TABLE_CSS_CLASSES_PARAM_KEY];
+                $columnLength           = BuilderRowElement::MAX_COLUMN_WIDTH;
+                $columnLength           = NumberToWordsUtil::convert($columnLength);
             }
             $parentOptions['class'] .= " ${columnLength} columns";
             return $parentOptions;

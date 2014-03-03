@@ -36,12 +36,10 @@
 
     class BuilderElementFrontendPropertiesEditableElementUtil extends BuilderElementPropertiesEditableElementUtil
     {
-        public static function render($elementClassName, CModel $model, $property, ZurmoActiveForm $form,
-                                      array $params = array(), $wrapInTr = true, array $trOptions = array())
+        protected static function resolveAttributeName($property)
         {
             $property   = "[frontend]$property";
-            $content    = parent::render($elementClassName, $model, $property, $form, $params, $wrapInTr, $trOptions);
-            return $content;
+            return parent::resolveAttributeName($property);
         }
     }
 ?>

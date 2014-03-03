@@ -351,11 +351,12 @@
         protected final function resolveFrontendPropertiesNonEditable()
         {
             $properties = array();
-            if (isset($this->properties['frontend']))
+            $frontendProperties = ArrayUtil::getArrayValue($this->properties, 'frontend');
+            if ($frontendProperties)
             {
                 // we are not on canvas, may be preview or just generating final newsletter.
                 // do not render backend properties.
-                $properties = $this->properties['frontend'];
+                $properties = $frontendProperties;
             }
             $this->resolveInlineStylePropertiesNonEditable($properties);
             return $properties;
@@ -367,9 +368,10 @@
          */
         protected final function resolveInlineStylePropertiesNonEditable(array & $mergedProperties)
         {
-            if (isset($mergedProperties['inlineStyles']))
+            $inlineStyles   = ArrayUtil::getArrayValue($mergedProperties, 'inlineStyles');
+            if ($inlineStyles)
             {
-                $mergedProperties['style']  = $this->stringifyProperties($mergedProperties['inlineStyles'], null, null, ':', ';');
+                $mergedProperties['style']  = $this->stringifyProperties($inlineStyles, null, null, ':', ';');
                 unset($mergedProperties['inlineStyles']);
             }
         }
@@ -1053,7 +1055,7 @@
          */
         protected function cleanUpProperties()
         {
-            if (!isset($this->params['doNotCleanUpProperties']))
+            if (!ArrayUtil::getArrayValue($this->params, 'doNotCleanUpProperties'))
             {
                 $this->properties   = ArrayUtil::recursivelyRemoveEmptyValues($this->properties);
             }
@@ -1083,7 +1085,7 @@
             {
                 $params     = $defaultParams;
             }
-            else if (isset($params['mergeDefault']) && $params['mergeDefault'] === true)
+            else if (ArrayUtil::getArrayValue($params, 'mergeDefault'))
             {
                 $params     = CMap::mergeArray($defaultParams, $params);
             }

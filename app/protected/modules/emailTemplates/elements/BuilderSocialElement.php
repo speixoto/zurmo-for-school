@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderButtonElement extends BaseBuilderTableWrappedElement
+    class BuilderSocialElement extends BaseBuilderTableWrappedElement
     {
         public static function isUIAccessible()
         {
@@ -43,46 +43,53 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Button');
+            return Zurmo::t('EmailTemplatesModule', 'Social');
         }
 
         protected function resolveDefaultProperties()
         {
             $properties              = array(
                 'backend'       => array(
-                    'sizeClass'         => 'medium-button',
-                    'text'              => Yii::app()->name,
-                    'align'             => 'left',
-                    'width'             => '',
+                    'layout'    => 'vertical',
+                    'services'  => array(
+                        'Twitter'   =>  array(
+                            'enabled'   => 1,
+                            'url'       => 'http://www.twitter.com/!#err404notfound',
+                        ),
+                        'Facebook'  => array(
+                            'enabled'   => 0,
+                            'url'       => 'http://www.facebook.com/',
+                        ),
+
+                    ),
                 ),
-                'frontend'      => array(
-                    'href'              => Yii::app()->createAbsoluteUrl('/'),
-                    'target'            => '_blank',
-                )
             );
             return $properties;
         }
 
         protected function renderControlContentNonEditable()
         {
-            $target                 = null;
-            $href                   = null;
-            extract($this->properties['frontend']);
-            $text                   = $this->properties['backend']['text'];
-            $label                  = ZurmoHtml::tag('span', array(), $text);
-            $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
-            $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
-            $options                = CMap::mergeArray($htmlOptions, $frontendOptions);
-            $content                = ZurmoHtml::link($label, $href, $options);
+            if (!isset($this->properties['backend']['services']))
+            {
+                return null;
+            }
+            $content    =   null;
+            foreach ($this->properties['backend']['services'] as $serviceName => $serviceDetails)
+            {
+                if (ArrayUtil::getArrayValue($serviceDetails, 'enabled'))
+                {
+                    $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
+                    $htmlOptions['class']   .= ' ' . $serviceName;
+                    $label                  = ZurmoHtml::tag('span', array(), $serviceName);
+                    $content                .= ZurmoHtml::link($label, $serviceDetails['url'], $htmlOptions);
+                }
+            }
             return $content;
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $propertiesForm     = BuilderButtonElementPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     = BuilderSocialElementPropertiesEditableElementsUtil::render($this->model, $form);
             return $propertiesForm;
         }
 
@@ -93,25 +100,14 @@
 
         protected function resolveDefaultHtmlOptionsForLink()
         {
-            return array('class' => 'newsletter-button');
+            return array('class' => 'newsletter-button', 'target' => '_blank');
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
-            $htmlOptions['class']   .= ' ' . $this->properties['backend']['sizeClass'];
-            return $htmlOptions;
-        }
-
-        protected function resolveNonEditableContentWrappingTdOptions()
-        {
-            $htmlOptions            = $this->resolveNonEditableContentWrappingTdHtmlOptions();
-            $htmlOptions['align']   = $this->properties['backend']['align'];
-            $width                  = ArrayUtil::getNestedValue($this->properties, "backend['width']");
-            if ($width)
-            {
-                $htmlOptions['width']   = $width;
-            }
+            $htmlOptions['class']   .= ' button ';
+            $htmlOptions['class']   .= $this->properties['backend']['layout'];
             return $htmlOptions;
         }
 

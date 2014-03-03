@@ -38,6 +38,7 @@
     {
         public static function render(CModel $model, ZurmoActiveForm $form, $wrapInTr = true, array $trOptions = array())
         {
+            static::registerScripts($form);
             $content                = null;
             $configurationItems     = static::resolveConfiguration();
             foreach ($configurationItems as $configurationItem)
@@ -85,6 +86,14 @@
             $params = array();
             $params['labelHtmlOptions'] = array('label' => $label);
             return $params;
+        }
+
+        /**
+         * @param ZurmoActiveForm $form
+         */
+        protected static function registerScripts(ZurmoActiveForm $form)
+        {
+
         }
   }
 ?>
