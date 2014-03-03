@@ -121,12 +121,12 @@
 
         protected function renderType(& $hiddenElements)
         {
-            $this->renderHiddenField($hiddenElements, 'type', Yii::app()->request->getQuery('type'));
+            $this->renderHiddenField($hiddenElements, 'type', $this->model->type);
         }
 
         protected function renderBuiltType(& $hiddenElements)
         {
-            $this->renderHiddenField($hiddenElements, 'builtType', Yii::app()->request->getQuery('builtType'));
+            $this->renderHiddenField($hiddenElements, 'builtType', $this->model->builtType);
         }
 
         protected function renderIsDraft(& $hiddenElements)
