@@ -154,11 +154,12 @@ var emailTemplateEditor = {
         emailTemplateEditor.settings.ghost = $('<div class="ghost">' +  emailTemplateEditor.settings.dropHereMessage + '</div>');
 
         $('#building-blocks').on('mousedown', onBodyMouseDown);
+        $(emailTemplateEditor.settings.iframeSelector).contents().find('body').on('mousemove', onIFrameBodyMouseMove);
 
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             iframeRect = iframeElement.getBoundingClientRect();
-            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');//'.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
+            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
             emailTemplateEditor.settings.isDragging = true;
             $('body').on('mousemove', onBodyMouseMove);
             $('body').on('mouseup', onBodyMouseUp);
@@ -175,12 +176,12 @@ var emailTemplateEditor = {
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
             if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
-                var wrapInRow       = elementDragged.data('wrap');
+                var wrapInRow = elementDragged.data('wrap');
                 if (typeof wrapInRow == 'undefined') {
                     if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
-                        wrapInRow   = emailTemplateEditor.settings.wrapInRow;
+                        wrapInRow = emailTemplateEditor.settings.wrapInRow;
                     } else {
-                        wrapInRow   = emailTemplateEditor.settings.doNotWrapInRow;
+                        wrapInRow = emailTemplateEditor.settings.doNotWrapInRow;
                     }
                 }
                 emailTemplateEditor.placeNewElement(elementDraggedClass, wrapInRow, iframeContents, innerElements);
@@ -202,7 +203,8 @@ var emailTemplateEditor = {
                     if( point.left > positions[i].left && point.left < positions[i].right &&
                         point.top > positions[i].top && point.top < positions[i].bottom ){
                         //Only make container for sortable-elements if the elementDragged is cellDroppable
-                        if (($(containers[i]).closest('td').hasClass('sortable-elements') && $(elementDragged).hasClass(emailTemplateEditor.settings.cellDroppableClass))) {
+                        if (($(containers[i]).closest('td').hasClass('sortable-elements') &&
+                             $(elementDragged).hasClass(emailTemplateEditor.settings.cellDroppableClass))) {
                             innerElements.push(containers[i]);
                         } else if (($(containers[i]).closest('td').hasClass('sortable-rows'))) {
                             innerElements.push(containers[i]);
@@ -211,7 +213,7 @@ var emailTemplateEditor = {
                 }
                 if(innerElements.length > 0){
                     mostTopElement = $(innerElements[innerElements.length-1]);
-                    $(mostTopElement).addClass('hover');
+                    mostTopElement.addClass('hover');
                     mostTopElementHalf = mostTopElement.outerHeight(true) / 2;
                     if(event.pageY < mostTopElement.offset().top + offset.top + mostTopElementHalf){
                         mostTopElement.before(emailTemplateEditor.settings.ghost);
@@ -220,6 +222,11 @@ var emailTemplateEditor = {
                     }
                 }
             }
+        }
+
+        function onIFrameBodyMouseMove(event){
+            $(emailTemplateEditor.settings.iframeSelector).contents().find('.hover').removeClass('hover');
+            $(event.target).closest('.element-wrapper').addClass('hover');
         }
     },
     //Init the cells to be sortable
@@ -316,10 +323,10 @@ var emailTemplateEditor = {
         elementClass        = element.data('class');
         //Extract serializedData and assign to JS vars e.g. content, properties
         elementProperties   = $.extend({}, element.data('properties'));
-        var serializedData = $.parseJSON(emailTemplateEditor.compileSerializedData());
+        var serializedData  = $.parseJSON(emailTemplateEditor.compileSerializedData());
         elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
         postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
-                                content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
+                               content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
         postData            = decodeURIComponent($.param(postData));
         //Send an ajax to resolveElementEditableActionUrl()
         $.ajax({

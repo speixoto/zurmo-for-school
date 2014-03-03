@@ -817,7 +817,7 @@
          */
         protected function resolveApplyLinkHtmlOptions()
         {
-            return array('id' => $this->resolveApplyLinkId());
+            return array('id' => $this->resolveApplyLinkId(), 'class' => 'z-button');
         }
 
         /**

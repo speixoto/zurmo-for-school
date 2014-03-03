@@ -84,10 +84,10 @@
             $data       = array();
             foreach ($templates as $template)
             {
-                $thumbnailUrl           = $this->resolveThumbnailUrl($template);
-                $thumbnail              = ZurmoHtml::image($thumbnailUrl, null, array('class' => 'template-thumbnail'));
-                $label                  = ZurmoHtml::tag('h4', array('class' => 'name'),  $template->name);
-                $data[$template->id]    = $thumbnail . $label;
+                //there are 1->5 template icon types
+                $thumbnail           = ZurmoHtml::tag('i', array('class' => 'icon-template-1'), '');
+                $label               = ZurmoHtml::tag('h4', array('class' => 'name'),  $template->name);
+                $data[$template->id] = $thumbnail . $label;
             }
             return $data;
         }
