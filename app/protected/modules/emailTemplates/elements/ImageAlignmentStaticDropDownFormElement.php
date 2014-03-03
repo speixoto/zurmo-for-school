@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,49 +31,25 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderImageElement extends BaseBuilderElement
+    class ImageAlignmentStaticDropDownFormElement extends BuilderStaticDropDownFormElement
     {
-        public static function isUIAccessible()
+        /**
+         * @return array
+         */
+        protected function getDropDownArray()
         {
-            return true;
+            $alignments     = $this->resolveAvailableAlignments();
+            return $alignments;
         }
 
-        protected static function resolveLabel()
+        protected function resolveAvailableAlignments()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Image');
-        }
-
-        protected function resolveDefaultContent()
-        {
-            return array('image' => '<img src="http://placehold.it/200x200"></img>');
-        }
-
-        protected function renderSettingsTab(ZurmoActiveForm $form)
-        {
-            $propertiesForm = BuilderElementImagePropertiesEditableElementsUtil::render($this->model, $form);
-            return $propertiesForm;
-        }
-
-        protected function resolveContentElementClassName()
-        {
-            return 'BuilderImageRedactorElement';
-        }
-
-        protected function resolveContentElementAttributeName()
-        {
-            // no, we can't use array here. Element classes use $this->model{$this->attribute} a lot.
-            // it would give an error saying we are trying to convert an array to string.
-            return 'content[image]';
-        }
-
-        protected function resolveContentElementParams()
-        {
-            $params                     = parent::resolveContentElementParams();
-            $params['labelHtmlOptions'] = array('label' => 'Image');
-            return $params;
+            $alignments = array('left', 'right', 'center');
+            $alignments    = array_combine(array_values($alignments), array_map('ucfirst', array_values($alignments)));
+            return $alignments;
         }
     }
 ?>
