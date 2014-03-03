@@ -125,7 +125,7 @@
             else
             {
                 Yii::app()->clientScript->registerScript($scriptName, "
-                        $('.tabs-nav a:not(.simple-link)').click( function()
+                        $('.tabs-nav a:not(.simple-link)').click( function(event)
                         {
                             //the menu items
                             $('.active-tab', $(this).parent()).removeClass('active-tab');
