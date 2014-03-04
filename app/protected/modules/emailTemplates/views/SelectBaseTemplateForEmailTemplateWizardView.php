@@ -310,13 +310,25 @@
             $ajaxArray                                      = parent::resolveAdditionalAjaxOptions($formName);
             $ajaxArray['success']       = "js:function(data)
                                             {
-                                                originalBaseTemplateId  = $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
-                                                selectedBaseTemplateId  = $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
-                                                if (selectedBaseTemplateId != originalBaseTemplateId)
+                                                // update canvas url
+                                                var canvasSourceUrl = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src');
+                                                if (canvasSourceUrl == 'about:blank')
                                                 {
+                                                    canvasSourceUrl		= '" . GeneralDataForEmailTemplateWizardView::resolveCanvasActionUrl() . "';
+                                                    canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
+                                                    $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
                                                     $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
                                                 }
-                                                $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val(selectedBaseTemplateId);
+                                                else
+                                                {
+                                                    originalBaseTemplateId  = $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
+                                                    selectedBaseTemplateId  = $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
+                                                    if (selectedBaseTemplateId != originalBaseTemplateId)
+                                                    {
+                                                        $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
+                                                    }
+                                                    $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val(selectedBaseTemplateId);
+                                                }
                                             }";
             return $ajaxArray;
         }
