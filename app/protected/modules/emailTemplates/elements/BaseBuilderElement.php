@@ -919,16 +919,64 @@
         protected function resolveFormClientOptions()
         {
             return array('beforeValidate'    => 'js:$(this).beforeValidateAction',
-                         'afterValidate'     => 'js:$(this).afterValidateAction',
-                         'afterValidateAjax' => $this->afterValidateAjax(),
+                         'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
+                         'afterValidateAjax' => $this->renderConfigSaveAjax(),
                          'validateOnSubmit'  => true,
                          'validateOnChange'  => false);
         }
 
-        protected function afterValidateAjax()
+        protected function renderConfigSaveAjax()
         {
-            $scriptExpression = new CJavaScriptExpression("function() {console.log('asssa')}");
-            return $scriptExpression;
+
+            $ajaxOptions = $this->resolveAjaxPostForApplyClickAjaxOptions();
+            return ZurmoHtml::ajax($ajaxOptions);
+            /**
+            return ZurmoHtml::ajax(array(
+                'type' => 'POST',
+                'data' => 'js:$("#theformnameorclosest").serialize()',
+                'url'  =>  $this->resolveFormActionUrl(),
+                'update' => '#' . $this->uniquePageId,
+            ));
+             * **/
+        }
+
+        /**
+         * Resolve Ajax options for when clicking apply on editable form.
+         * @return array
+         */
+        protected function resolveAjaxPostForApplyClickAjaxOptions()
+        {
+            // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
+            $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
+            $ajaxArray                  = array();
+            $ajaxArray['cache']         = 'false';
+            $ajaxArray['url']           = "js:$('#" .  $this->resolveApplyLinkId() . "').closest('form').attr('action')";
+            $ajaxArray['type']          = 'POST';
+            $ajaxArray['data']          = "js:(function()
+                                            {
+                                                formData    = $('#" .  $this->resolveApplyLinkId() . "')
+                                                                .closest('form').serialize();
+                                                // we want to reuse same action so lets get rid of form prefixes
+                                                formData    = formData.replace(/" . static::getModelClassName() . "%5B(\w*)%5D/g, '$1');
+                                                return formData;
+                                            })()";
+            $ajaxArray['beforeSend']    = "js:function()
+                                        {
+                                            emailTemplateEditor.freezeLayoutEditor();
+                                        }";
+            $ajaxArray['success']       = "js:function (html)
+                                        {
+                                            var replaceElementId        = $('#" . $hiddenInputId . "').val();
+                                            var replaceElementInIframe  = $('#" .
+                BuilderCanvasWizardView::CANVAS_IFRAME_ID .
+                "').contents().find('#' + replaceElementId)
+                .parent();
+replaceElementInIframe.replaceWith(html);
+" . $this->getAjaxScriptForInitSortableElements() . "
+                                            emailTemplateEditor.unfreezeLayoutEditor();
+                                            emailTemplateEditor.canvasChanged();
+                                        }";
+            return $ajaxArray;
         }
 
         /**
