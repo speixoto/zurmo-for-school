@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementEditableModelForm extends ModelForm
+    class BuilderElementEditableModelForm extends CModel
     {
         public $content;
         public $properties;
@@ -43,6 +43,11 @@
         {
             $this->content      = $content;
             $this->properties   = $properties;
+        }
+
+        public function attributeNames()
+        {
+            array('content', 'properties');
         }
 
         public function __get($name)
@@ -59,35 +64,32 @@
             return parent::__get($name);
         }
 
-        public function setAttributes($values, $safeOnly = true)
+        public function rules()
         {
-            $formValues  = array();
-            $modelValues = array();
-            foreach ($values as $name => $value)
+            return array_merge(parent::rules(), array(
+                array('content', 'safe'),
+                array('content', 'validateContent',),
+                array('properties',   'safe'),
+                array('properties',   'validateProperties')
+            ));
+        }
+
+        public function validateProperties($attribute, $params)
+        {
+            //if ($this->$attribute == null)
             {
-                $basePropertyName   = substr($name, 0, strpos($name, '['));
-                $index              = substr($name, strpos($name, '[') + 1, -1);
-                if (property_exists($this, $basePropertyName))
-                {
-                    return $this->{$basePropertyName}[$index] = $value;
-                }
-                else
-                {
-                    $modelValues[$name] = $value;
-                }
+                //$this->addError('savedSearchName', Zurmo::t('Core', '{attribute} cannot be blank.',
+                //    array('{attribute}' => Zurmo::t('Core', 'Name'))));
             }
-            parent::setAttributes($formValues, $safeOnly);
-            $this->model->setAttributes($modelValues, $safeOnly);
         }
 
-        public function isAttributeRequired($attribute)
+        public function validateContent($attribute, $params)
         {
-            return false;
-        }
-
-        public function getValidators($attribute = null)
-        {
-            return array();
+            //if ($this->$attribute == null)
+            {
+                //$this->addError('savedSearchName', Zurmo::t('Core', '{attribute} cannot be blank.',
+                //    array('{attribute}' => Zurmo::t('Core', 'Name'))));
+            }
         }
     }
 ?>

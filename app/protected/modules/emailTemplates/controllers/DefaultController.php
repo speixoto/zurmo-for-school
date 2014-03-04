@@ -506,16 +506,22 @@
 
         public function actionRenderElementNonEditable()
         {
+            $ajax = Yii::app()->request->getPost('ajax');
+            if (isset($ajax))
+            {
+                BuilderElementRenderUtil::validateEditableForm();
+            }
             $this->actionRenderElement(false);
         }
 
         protected function actionRenderElement($editable = false)
         {
             Yii::app()->clientScript->setToAjaxMode();
-            $className          = Yii::app()->request->getPost('className');
-            $id                 = Yii::app()->request->getPost('id');
-            $properties         = Yii::app()->request->getPost('properties');
-            $content            = Yii::app()->request->getPost('content');
+            $editableForm       = Yii::app()->request->getPost('BuilderElementEditableModelForm');
+            $className          = ArrayUtil::getArrayValue($editableForm, 'className');
+            $id                 = ArrayUtil::getArrayValue($editableForm, 'id');
+            $properties         = ArrayUtil::getArrayValue($editableForm, 'properties');
+            $content            = ArrayUtil::getArrayValue($editableForm, 'content');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
             $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW);
 

@@ -800,7 +800,7 @@
          */
         protected function renderApplyLink()
         {
-            $this->registerAjaxPostForApplyClickScript();
+            $this->registerApplyClickScript();
             $label                      = $this->renderApplyLinkLabel();
             $htmlOptions                = $this->resolveApplyLinkHtmlOptions();
             $wrappedLabel               = ZurmoHtml::wrapLink($label);
@@ -846,56 +846,15 @@
         /**
          * Register javascript snippet to handle clicking apply link
          */
-        protected function registerAjaxPostForApplyClickScript()
+        protected function registerApplyClickScript()
         {
-            $ajaxOptions        = $this->resolveAjaxPostForApplyClickAjaxOptions();
-            Yii::app()->clientScript->registerScript('ajaxPostForApplyClick', "
-                $('#" . $this->resolveApplyLinkId() . "').unbind('click.ajaxPostForApplyClick');
-                $('#" . $this->resolveApplyLinkId() . "').bind('click.ajaxPostForApplyClick', function()
+            Yii::app()->clientScript->registerScript('applyClick', "
+                $('#" . $this->resolveApplyLinkId() . "').unbind('click');
+                $('#" . $this->resolveApplyLinkId() . "').bind('click', function()
                 {
-                    " . ZurmoHtml::ajax($ajaxOptions) . "
+                    jQuery.yii.submitForm(this, '', {}); return false;
                 });
             ");
-        }
-
-        /**
-         * Resolve Ajax options for when clicking apply on editable form.
-         * @return array
-         */
-        protected function resolveAjaxPostForApplyClickAjaxOptions()
-        {
-            // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
-            $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
-            $ajaxArray                  = array();
-            $ajaxArray['cache']         = 'false';
-            $ajaxArray['url']           = "js:$('#" .  $this->resolveApplyLinkId() . "').closest('form').attr('action')";
-            $ajaxArray['type']          = 'POST';
-            $ajaxArray['data']          = "js:(function()
-                                            {
-                                                formData    = $('#" .  $this->resolveApplyLinkId() . "')
-                                                                .closest('form').serialize();
-                                                // we want to reuse same action so lets get rid of form prefixes
-                                                formData    = formData.replace(/" . static::getModelClassName() . "%5B(\w*)%5D/g, '$1');
-                                                return formData;
-                                            })()";
-            $ajaxArray['beforeSend']    = "js:function()
-                                        {
-                                            emailTemplateEditor.freezeLayoutEditor();
-                                        }";
-            $ajaxArray['success']       = "js:function (html)
-                                        {
-                                            var replaceElementId        = $('#" . $hiddenInputId . "').val();
-                                            var replaceElementInIframe  = $('#" .
-                                                                            BuilderCanvasWizardView::CANVAS_IFRAME_ID .
-                                                                            "').contents().find('#' + replaceElementId)
-                                                                            .parent();
-                                            replaceElementInIframe.replaceWith(html);
-                                            " . $this->getAjaxScriptForInitSortableElements() . "
-                                            emailTemplateEditor.unfreezeLayoutEditor();
-                                            emailTemplateEditor.canvasChanged();
-                                        }";
-            return $ajaxArray;
-
         }
 
         /**
@@ -950,7 +909,7 @@
          */
         protected function resolveEnableAjaxValidation()
         {
-            return false;
+            return true;
         }
 
         /**
@@ -959,7 +918,17 @@
          */
         protected function resolveFormClientOptions()
         {
-            return array();
+            return array('beforeValidate'    => 'js:$(this).beforeValidateAction',
+                         'afterValidate'     => 'js:$(this).afterValidateAction',
+                         'afterValidateAjax' => $this->afterValidateAjax(),
+                         'validateOnSubmit'  => true,
+                         'validateOnChange'  => false);
+        }
+
+        protected function afterValidateAjax()
+        {
+            $scriptExpression = new CJavaScriptExpression("function() {console.log('asssa')}");
+            return $scriptExpression;
         }
 
         /**
@@ -968,7 +937,7 @@
          */
         protected function resolveFormHtmlOptions()
         {
-            return array('class' => 'element-edit-form');
+            return array('class' => 'element-edit-form', 'onsubmit' => "return false;");
         }
 
         /**
