@@ -543,14 +543,18 @@
             echo $element->render();
         }
 
-        public function actionSendTestEmail($id = null, $contactId = null)
+        public function actionSendTestEmail($id, $contactId = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
-            $contact        = Contact::getById(intval($contactId));
+            $contact        = null;
+            if (isset($contactId))
+            {
+                $contact    = Contact::getById(intval($contactId));
+            }
             $this->resolveEmailMessage($emailTemplate, $contact);
         }
 
-        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact)
+        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null)
         {
             // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
             $emailMessage                       = new EmailMessage();
@@ -584,9 +588,14 @@
             return $sender;
         }
 
-        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact)
+        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact = null)
         {
-            if ($contact->primaryEmail->emailAddress != null)
+            if ($contact === null)
+            {
+                $contact  = static::resolveDefaultRecipient();
+            }
+            $primaryEmailAddress    = $contact->primaryEmail->emailAddress;
+            if ($primaryEmailAddress != null)
             {
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;
@@ -595,6 +604,11 @@
                 $recipient->personsOrAccounts->add($contact);
                 $emailMessage->recipients->add($recipient);
             }
+        }
+
+        protected static function resolveDefaultRecipient()
+        {
+            return Yii::app()->user->userModel;
         }
     }
 ?>
