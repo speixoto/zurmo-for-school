@@ -3967,7 +3967,7 @@ div.wide.form label.hasCheckBox {
   color: #525252 !important;
 }
 .has-color-picker .iris-picker {
-  z-index: 9999;
+  z-index: 99999;
   position: absolute;
 }
 .has-model-select {
@@ -6714,6 +6714,9 @@ i[class^="icon"] {
   content: '\0112';
 }
 .icon-text:after {
+  content: '\01CF';
+}
+.icon-plaintext:after {
   content: '\00CD';
 }
 .icon-boxed-text:after {
