@@ -47,7 +47,7 @@
             );
             return $styles;
         }
-        
+
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
@@ -78,7 +78,7 @@
             $htmlOptions = array(
                 'name'      => $this->getEditableInputName(),
                 'id'        => $this->getEditableInputId(),
-                'separator' => '',
+                'separator' => '<br/>',
                 'template'  => '{input}{label}',
             );
             return $htmlOptions;
