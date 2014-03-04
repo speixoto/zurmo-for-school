@@ -56,14 +56,10 @@
             return Zurmo::t('EmailTemplatesModule', 'Email Template Wizard');
         }
 
-        /**
-         * @return string
-         */
-        protected function renderContent()
+        protected function renderAfterFormContent()
         {
-            $content  = parent::renderContent();
-            $content .= $this->renderElementEditContainerAndContent();
-            return $content;
+            $content = parent::renderAfterFormContent();
+            return $content . $this->renderElementEditContainerAndContent();
         }
 
         protected function renderElementEditContainerAndContent()
