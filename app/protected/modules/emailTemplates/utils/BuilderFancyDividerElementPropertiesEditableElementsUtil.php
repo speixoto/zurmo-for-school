@@ -41,7 +41,7 @@
             $configurationItems         = array();
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
-                                            'FancyDividerStyleStaticDropDownFormElement',
+                                            'FancyDividerStyleRadioElement',
                                             'image',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Style')));
