@@ -161,7 +161,11 @@
         {
             $builderModelForm   = Yii::app()->request->getPost('BuilderElementEditableModelForm');
             $properties         = $builderModelForm['properties'];
-            $content            = $builderModelForm['content'];
+            $content            = ArrayUtil::getArrayValue($builderModelForm, 'content');
+            if($content === null)
+            {
+                $content = array();
+            }
             if (is_string($content))
             {
                 $content = CJSON::decode($content);
