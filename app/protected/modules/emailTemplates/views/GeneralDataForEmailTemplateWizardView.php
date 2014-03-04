@@ -291,16 +291,16 @@
                                             {
                                                 if ('create' == '" . Yii::app()->getController()->getAction()->getId() . "')
                                                 {
-                                                    // update canvas url
-                                                    var canvasSourceUrl = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src');
-                                                    canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                                    $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
-
                                                     //update id
                                                     $('" . static::resolveTemplateIdHiddenInputJQuerySelector() . "').val(data.id);
                                                 }
                                             }";
             return $ajaxArray;
+        }
+
+        public static function resolveCanvasActionUrl()
+        {
+            return Yii::app()->createUrl('emailTemplates/default/renderCanvas', array('id' => 0));
         }
     }
 ?>

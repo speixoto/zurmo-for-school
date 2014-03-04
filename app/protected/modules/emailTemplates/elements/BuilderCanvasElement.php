@@ -109,7 +109,14 @@
 
         protected function renderHtmlHead()
         {
-            $headContent    = $this->renderCss() . $this->renderLess();
+            $headContent    = $this->renderCss();
+            if (MINIFY_SCRIPTS){
+                $headContent .= $this->renderBuilderCssTools();
+            }
+            else
+            {
+                $headContent .= $this->renderLess();
+            }
             $headContent    = ZurmoHtml::tag('head', array(), $headContent);
             return $headContent;
         }
@@ -117,8 +124,15 @@
         protected function renderCss()
         {
             $css    = $this->renderIconFontCss();
-            $css    .= $this->resolveCanvasGlobalCssContent();
+            $css   .= $this->resolveCanvasGlobalCssContent();
             return $css;
+        }
+
+        protected function renderBuilderCssTools()
+        {
+            $cs = Yii::app()->getClientScript();
+            $baseUrl = Yii::app()->themeManager->baseUrl . '/default';
+            $cs->registerCssFile($baseUrl . '/css/builder-iframe-tools.css');
         }
 
         protected function renderLess()

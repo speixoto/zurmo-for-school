@@ -256,7 +256,7 @@
         protected function resolveCanvasIFrameHtmlOptions()
         {
             return array('id' => static::CANVAS_IFRAME_ID,
-                            'src' => $this->resolveCanvasActionUrl(),
+                            'src' => 'about:blank',
                             'width' => '100%',
                             'height'    => '100%',
                             'frameborder' => 0);
@@ -288,11 +288,6 @@
             return array('id'    => static::PREVIEW_IFRAME_CONTAINER_ID,
                          'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
                          'style' => 'display:none');
-        }
-
-        protected function resolveCanvasActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderCanvas', array('id' => $this->model->id));
         }
 
         protected function resolvePreviewActionUrl()
