@@ -380,7 +380,8 @@
 
         public function __set($attributeName, $value)
         {
-            if ($attributeName == 'serializedData' && $this->isBuilderTemplate())
+            if ($attributeName == 'serializedData' && $this->isBuilderTemplate() &&
+                ArrayUtil::getArrayValue($this->serializedData, 'dom'))
             {
                 $this->htmlContent  = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($this->serializedData, false);
             }
