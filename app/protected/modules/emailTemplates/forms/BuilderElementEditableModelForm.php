@@ -36,6 +36,7 @@
 
     class BuilderElementEditableModelForm extends CModel
     {
+        public $className;
         public $content;
         public $properties;
 
@@ -67,28 +68,40 @@
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('content', 'safe'),
-                array('content', 'validateContent',),
-                array('properties',   'safe'),
-                array('properties',   'validateProperties')
+                array('className',  'safe'),
+                array('content',    'safe'),
+                array('content',    'validateContent'),
+                array('properties', 'safe'),
+                array('properties', 'validateProperties')
             ));
         }
 
         public function validateProperties($attribute, $params)
         {
-            //if ($this->$attribute == null)
+            if (!isset($this->className))
             {
-                //$this->addError('savedSearchName', Zurmo::t('Core', '{attribute} cannot be blank.',
-                //    array('{attribute}' => Zurmo::t('Core', 'Name'))));
+                throw new NotSupportedException();
             }
+            $hasErrors = false;
+            foreach (ArrayUtil::flatten($this->$attribute, true) as $key => $value)
+            {
+                $elementClassName = $this->className;
+                $element = new $elementClassName();
+                $error = $element->validate($key, $value);
+                if (!($error === true))
+                {
+                    $this->addError($attribute, $error);
+                    $hasErrors = true;
+                }
+            }
+            return !$hasErrors;
         }
 
         public function validateContent($attribute, $params)
         {
-            //if ($this->$attribute == null)
+            if (!isset($this->className))
             {
-                //$this->addError('savedSearchName', Zurmo::t('Core', '{attribute} cannot be blank.',
-                //    array('{attribute}' => Zurmo::t('Core', 'Name'))));
+                throw new NotSupportedException();
             }
         }
     }

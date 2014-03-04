@@ -91,5 +91,10 @@
             $view->setCssClasses(array('clearfix wizard-merge-tags'));
             return $view->render();
         }
+
+        protected function getRules()
+        {
+            return array('font-size' => 'validateSize');
+        }
     }
 ?>

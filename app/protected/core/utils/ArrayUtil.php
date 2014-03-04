@@ -117,18 +117,27 @@
         /**
          * Convert multi-dimenision array into flat(one dimension) array
          */
-        public static function flatten($array)
+        public static function flatten($array, $preserveKeys = false)
         {
+            //TODO: @Sergio: Add test for the preserveKeys
+            assert('is_bool($preserveKeys)');
             $flatternArray = array();
-            foreach ($array as $element)
+            foreach ($array as $key => $element)
             {
                 if (is_array($element))
                 {
-                    $flatternArray = array_merge($flatternArray, self::flatten($element));
+                    $flatternArray = array_merge($flatternArray, self::flatten($element, $preserveKeys));
                 }
                 else
                 {
-                    $flatternArray[] = $element;
+                    if ($preserveKeys)
+                    {
+                        $flatternArray[$key] = $element;
+                    }
+                    else
+                    {
+                        $flatternArray[] = $element;
+                    }
                 }
             }
             return $flatternArray;

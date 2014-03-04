@@ -160,13 +160,28 @@
         public static function validateEditableForm()
         {
             $builderModelForm   = Yii::app()->request->getPost('BuilderElementEditableModelForm');
-            $properties         = $builderModelForm['properties'];
-            $content            = $builderModelForm['content'];
+            if (isset($builderModelForm['properties']))
+            {
+                $properties = $builderModelForm['properties'];
+            }
+            else
+            {
+                $properties = array();
+            }
+            if (isset($builderModelForm['content']))
+            {
+                $content = $builderModelForm['content'];
+            }
+            else
+            {
+                $content = array();
+            }
             if (is_string($content))
             {
                 $content = CJSON::decode($content);
             }
             $modelForm          = new BuilderElementEditableModelForm($content, $properties);
+            $modelForm->setAttributes($builderModelForm);
             if (!$modelForm->validate())
             {
                 $errorData = array();
@@ -177,6 +192,7 @@
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
+
         }
     }
 ?>

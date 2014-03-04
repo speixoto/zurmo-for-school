@@ -47,7 +47,7 @@
                                                 Zurmo::t('EmailTemplatesModule', 'Text Color')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'FontSizeStaticDropDownFormElement',
+                                            'TextElement',
                                             'font-size',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Text Size')));
