@@ -59,6 +59,31 @@
         /**
          * @return string
          */
+        protected function renderContent()
+        {
+            $content  = parent::renderContent();
+            $content .= $this->renderElementEditContainerAndContent();
+            return $content;
+        }
+
+        protected function renderElementEditContainerAndContent()
+        {
+            $editFormContent        = $this->resolveEditFormContent();
+            $content                = ZurmoHtml::tag('div', array('id'    => BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER_ID,
+                                                                  'style' => 'display:none'),
+                                                     $editFormContent);
+            return $content;
+        }
+
+        protected function resolveEditFormContent()
+        {
+            $content = ZurmoHtml::tag('div', array('id' => BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
+            return $content;
+        }
+
+        /**
+         * @return string
+         */
         protected static function getStartingValidationScenario()
         {
             return EmailTemplateWizardForm::GENERAL_DATA_VALIDATION_SCENARIO;
