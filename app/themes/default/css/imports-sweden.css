@@ -11095,6 +11095,9 @@ a + .project-stats {
   width: 30%;
   z-index: 999;
 }
+#element-edit-container h3 {
+  margin-bottom: 15px;
+}
 #element-edit-form-overlay-container {
   position: relative;
   padding: 10px;

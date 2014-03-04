@@ -112,7 +112,7 @@
         protected function resolveWrapperTdNonEditableByContent($content)
         {
             $options            = $this->resolveNonEditableContentWrappingTdOptions();
-            $content            = ZurmoHtml::tag('td', $options, $content);
+            $content            = ZurmoHtml::tag('tr', array(), ZurmoHtml::tag('td', $options, $content));
             $content            = $this->resolveContentForPaddingTds($content);
             return $content;
         }
