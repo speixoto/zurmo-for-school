@@ -230,16 +230,7 @@
             $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
             $uiAccessibleContent    = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
             $this->wrapContentInDiv($uiAccessibleContent, $this->resolveElementsSidebarHtmlOptions());
-            $editFormContent        = $this->resolveEditFormContent();
-            $content                = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_CONTAINER_ID, 'style' => 'display:none'),
-                                                $editFormContent);
-            return $uiAccessibleContent . $content;
-        }
-
-        protected function resolveEditFormContent()
-        {
-            $content = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
-            return $content;
+            return $uiAccessibleContent;
         }
 
         protected function resolveElementsSidebarHtmlOptions()
