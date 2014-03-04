@@ -48,16 +48,26 @@
         protected function adjustContentWhenEmpty()
         {
             $this->content   = array();
-            $defaultContent  = array('image' => Zurmo::t('EmailTemplatesModule', '<img src="http://placehold.it/200x50">'));
+            $this->resolveDefaultLogoColumn();
+            $this->resolveDefaultTitleColumn();
+        }
+
+        protected function resolveDefaultLogoColumn()
+        {
+            $defaultContent  = array('image' => '<img src="http://placehold.it/200x50">');
             $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas, null, null, $defaultContent);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
             $this->content[$columnElement->id] = $columnData[$columnElement->id];
+        }
+
+        protected function resolveDefaultTitleColumn()
+        {
             $defaultContent  = array('text' => Zurmo::t('EmailTemplatesModule', 'Type your header description here'));
             $defaultProperties = array('frontend' => array('inlineStyles' => array('text-align' => 'right',
-                                                                                   'color' => '#ffffff',
-                                                                                   'font-weight' => 'bold')));
+                'color' => '#ffffff',
+                'font-weight' => 'bold')));
             $element         = BuilderElementRenderUtil::resolveElement('BuilderPlainTextElement', $this->renderForCanvas, null, $defaultProperties, $defaultContent);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
