@@ -1291,5 +1291,42 @@ replaceElementInIframe.replaceWith(html);
         {
             return $this->params;
         }
+
+        public function validate($attribute, $value)
+        {
+            if (isset($this->getRules()[$attribute]))
+            {
+                try
+                {
+                    return call_user_func(array($this, $this->getRules()[$attribute]), $value);
+                }
+                catch (Exception $exception)
+                {
+                    throw new NotImplementedException();
+                }
+
+            }
+            return true;
+        }
+
+        protected function getRules()
+        {
+            array();
+        }
+
+        protected function validateSize($value)
+        {
+            if ($value == null)
+            {
+                return true;
+            }
+            $count = 0;
+            str_replace(array('px', '%'), '', $value, $count);
+            if ($value != null && $count == 0)
+            {
+                return Zurmo::t('EmailTemplatesModule', 'Please use px or % as units.');
+            }
+            return true;
+        }
     }
 ?>

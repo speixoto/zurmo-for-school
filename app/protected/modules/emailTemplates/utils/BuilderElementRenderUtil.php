@@ -160,9 +160,19 @@
         public static function validateEditableForm()
         {
             $builderModelForm   = Yii::app()->request->getPost('BuilderElementEditableModelForm');
-            $properties         = $builderModelForm['properties'];
-            $content            = ArrayUtil::getArrayValue($builderModelForm, 'content');
-            if($content === null)
+            if (isset($builderModelForm['properties']))
+            {
+                $properties = $builderModelForm['properties'];
+            }
+            else
+            {
+                $properties = array();
+            }
+            if (isset($builderModelForm['content']))
+            {
+                $content = $builderModelForm['content'];
+            }
+            else
             {
                 $content = array();
             }
@@ -172,6 +182,7 @@
             }
             $modelForm = new BuilderElementEditableModelForm($content, $properties);
             $errorData = array();
+            $modelForm->setAttributes($builderModelForm);
             if (!$modelForm->validate())
             {
 
