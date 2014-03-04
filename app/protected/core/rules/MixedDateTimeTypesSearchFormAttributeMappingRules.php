@@ -158,9 +158,8 @@
                 }
                 elseif ($value['type'] == self::TYPE_LAST_MONTH)
                 {
-                    $firstDateValue  = date('Y-m', strtotime('-1 month'));
-                    $secondDateValue = date('Y-m', strtotime('-1 month'));
-                    
+                    $firstDateValue  = date('Y-m-1', strtotime('-1 month'));
+                    $secondDateValue = date('Y-m-t', strtotime('-1 month'));
                     if ($firstDateValue == null)
                     {
                         $greaterThanValue  = null;
@@ -182,8 +181,8 @@
                 }
                 elseif ($value['type'] == self::TYPE_NEXT_MONTH)
                 {
-                    $firstDateValue  = date('Y-m', strtotime('+1 month'));
-                    $secondDateValue = date('Y-m', strtotime('+1 month'));
+                    $firstDateValue  = date('Y-m-1', strtotime('+1 month'));
+                    $secondDateValue = date('Y-m-t', strtotime('+1 month'));
                     
                     if ($firstDateValue == null)
                     {
