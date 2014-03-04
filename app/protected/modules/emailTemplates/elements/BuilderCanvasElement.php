@@ -93,15 +93,45 @@
          */
         protected function normalizeHtmlContent($content)
         {
-            $doctype    = '<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-            $html       = ZurmoHtml::tag('head', array(), $this->renderIconFont() . $this->renderLess());
-            $html      .= ZurmoHtml::tag('body', array(), $content);
-            $html       = ZurmoHtml::tag('html', array('xmlns' => 'http://www.w3.org/1999/xhtml'), $html);
-            $content    = $doctype . $html;
+            $doctype        = '<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+            $headContent    = $this->renderHtmlHead();
+            $bodyContent    = $this->renderHtmlBody($content);
+            $html           = ZurmoHtml::tag('html', array('xmlns' => 'http://www.w3.org/1999/xhtml'), $headContent . $bodyContent);
+            $content        = $doctype . $html;
             return $content;
         }
 
-        protected function renderIconFont(){
+        protected function renderHtmlBody($content)
+        {
+            $bodyContent    = ZurmoHtml::tag('body', array(), $content);
+            return $bodyContent;
+        }
+
+        protected function renderHtmlHead()
+        {
+            $headContent    = $this->renderCss() . $this->renderLess();
+            $headContent    = ZurmoHtml::tag('head', array(), $headContent);
+            return $headContent;
+        }
+
+        protected function renderCss()
+        {
+            $css    = $this->renderIconFontCss();
+            $css    .= $this->resolveCanvasGlobalCssContent();
+            return $css;
+        }
+
+        protected function renderLess()
+        {
+            $baseUrl = Yii::app()->themeManager->baseUrl . '/default';
+            $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets"));
+            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' . $baseUrl . '/less/builder-iframe-tools.less"/>
+                     <script type="text/javascript" src="' . $publishedAssetsPath . '/less-1.2.0.min.js"></script>';
+            return $less;
+        }
+
+        protected function renderIconFontCss()
+        {
             $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets.fonts"));
             $iconsFont = "<style>" .
                 "@font-face" .
@@ -120,24 +150,6 @@
             return $iconsFont;
         }
 
-        protected function renderLess(){
-            $baseUrl = Yii::app()->themeManager->baseUrl . '/default';
-            $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets"));
-            $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' . $baseUrl . '/less/builder-iframe-tools.less"/>
-                     <script type="text/javascript" src="' . $publishedAssetsPath . '/less-1.2.0.min.js"></script>';
-            return $less;
-        }
-
-        protected function registerNonEditableCss()
-        {
-            parent::registerNonEditableCss();
-            $this->registerCanvasGlobalCss();
-        }
-
-        protected function registerCanvasGlobalCss()
-        {
-            Yii::app()->clientScript->registerCss('canvasCss', $this->resolveCanvasGlobalCssContent());
-        }
         protected function resolveCanvasGlobalCssPath()
         {
             // TODO: @Shoaibi/Amit: Critical0: Implement.
