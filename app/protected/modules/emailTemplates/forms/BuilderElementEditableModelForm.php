@@ -90,11 +90,25 @@
                 $error = $element->validate($key, $value);
                 if (!($error === true))
                 {
-                    $this->addError($attribute, $error);
+                    $prefix = null;
+                    $this->resolveErrorPrefixForProperties($this->$attribute, $prefix);
+                    $this->addError( $attribute . '_' . $prefix . $key, $error);
                     $hasErrors = true;
                 }
             }
             return !$hasErrors;
+        }
+//todo: probably make static
+        protected function resolveErrorPrefixForProperties($data, & $prefix)
+        {
+            foreach($data as $key => $element)
+            {
+                if(is_array($element))
+                {
+                    $prefix .= $key . '_';
+                    $this->resolveErrorPrefixForProperties($element, $prefix);
+                }
+            }
         }
 
         public function validateContent($attribute, $params)
