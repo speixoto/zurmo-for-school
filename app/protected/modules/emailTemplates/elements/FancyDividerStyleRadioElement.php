@@ -34,17 +34,8 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class FancyDividerStyleStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class FancyDividerStyleRadioElement extends Element
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
-        {
-            $dividerStyles     = $this->resolveAvailableStyles();
-            return $dividerStyles;
-        }
-
         protected function resolveAvailableStyles()
         {
             // TODO: @Shoaibi: Critical1: We need actual images and styles here.
@@ -55,6 +46,42 @@
                 'transparent.gif'    => 'Fancy 4',
             );
             return $styles;
+        }
+
+        /**
+         * Renders the setting as a radio list.
+         * @return A string containing the element's content.
+         */
+        protected function renderControlEditable()
+        {
+            $content = $this->form->radioButtonList(
+                $this->model,
+                $this->attribute,
+                $this->resolveAvailableStyles(),
+                $this->getEditableHtmlOptions()
+            );
+            return $content;
+        }
+
+        protected function renderControlNonEditable()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected function resolveIdForLabel()
+        {
+            return ZurmoHtml::ID_PREFIX . $this->getEditableInputId();
+        }
+
+        public function getEditableHtmlOptions()
+        {
+            $htmlOptions = array(
+                'name'      => $this->getEditableInputName(),
+                'id'        => $this->getEditableInputId(),
+                'separator' => '<br/>',
+                'template'  => '{input}{label}',
+            );
+            return $htmlOptions;
         }
     }
 ?>

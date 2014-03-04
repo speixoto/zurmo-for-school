@@ -43,7 +43,7 @@
 
         protected function resolveDefaultContent()
         {
-            return array('text' => '[[APPLICATION^NAME]]');
+            return array('text' => '<h1>[[APPLICATION^NAME]]</h1>');
         }
 
         protected function resolveContentElementClassName()

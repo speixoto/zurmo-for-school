@@ -53,9 +53,8 @@
             $properties             = array(
                 'frontend'  => array(
                     'inlineStyles'  => array(
-                        'font-size'         =>  '8px',
-                        'color'             => '#cccccc',
-                        'text-align'        => 'center',
+                        'font-size'             =>  '11px',
+                        'background-color'      => '#ebebeb',
                     )
                 )
             );
