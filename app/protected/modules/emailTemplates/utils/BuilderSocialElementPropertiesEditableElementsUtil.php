@@ -36,10 +36,10 @@
 
     class BuilderSocialElementPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
-        public static function render(CModel $model, ZurmoActiveForm $form, $wrapInTr = true, array $trOptions = array())
+        public static function render(CModel $model, ZurmoActiveForm $form, array $excludeItems = array(), $wrapInTr = true, array $trOptions = array())
         {
-            $content    = parent::render($model, $form, $wrapInTr, $trOptions);
-            $content    .= BuilderSocialElementLinkEditableElementsUtil::render($model, $form, $wrapInTr, $trOptions);
+            $content    = parent::render($model, $form, $excludeItems, $wrapInTr, $trOptions);
+            $content    .= BuilderSocialElementLinkEditableElementsUtil::render($model, $form, $excludeItems, $wrapInTr, $trOptions);
             return $content;
         }
 

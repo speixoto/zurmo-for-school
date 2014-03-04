@@ -64,11 +64,7 @@
 
         protected function resolveDefaultTitleColumn()
         {
-            $defaultContent  = array('text' => Zurmo::t('EmailTemplatesModule', 'Type your header description here'));
-            $defaultProperties = array('frontend' => array('inlineStyles' => array('text-align' => 'right',
-                'color' => '#ffffff',
-                'font-weight' => 'bold')));
-            $element         = BuilderElementRenderUtil::resolveElement('BuilderTitleElement', $this->renderForCanvas, null, $defaultProperties, $defaultContent);
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderHeaderTextElement', $this->renderForCanvas);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);

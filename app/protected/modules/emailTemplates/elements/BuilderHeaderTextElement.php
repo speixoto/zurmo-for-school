@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,72 +31,46 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2014. All rights reserved".
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementPropertiesEditableElementsUtil
+    class BuilderHeaderTextElement extends BuilderPlainTextElement
     {
-        public static function render(CModel $model, ZurmoActiveForm $form, array $excludeItems = array(), $wrapInTr = true, array $trOptions = array())
+        public static function isUIAccessible()
         {
-            static::registerScripts($form);
-            $content                = null;
-            $configurationItems     = static::resolveConfiguration();
-            foreach ($configurationItems as $configurationItem)
-            {
-                $util           = null;
-                $elementClass   = null;
-                $property       = null;
-                $params         = array();
-                extract($configurationItem);
-                if (!in_array($property, $excludeItems))
-                {
-                    $property       = "[${property}]";
-                    $content        .= $util::render($elementClass, $model, $property, $form, $params, $wrapInTr, $trOptions);
-                }
-
-            }
-            return $content;
+            return false;
         }
 
-
-        /**
-         * @return array
-         */
-        protected static function resolveConfiguration()
+        protected static function resolveLabel()
         {
-            return array();
+            return Zurmo::t('EmailTemplatesModule', 'Header Text');
         }
 
-        /**
-         * @param $util
-         * @param $elementClass
-         * @param $property
-         * @param $params
-         * @return array
-         */
-        protected static function resolveConfigurationItem($util, $elementClass, $property, $params)
+        protected function resolveDefaultContent()
         {
-            return compact('util', 'elementClass', 'property', 'params');
+            return array('text' => Zurmo::t('EmailTemplatesModule', 'Type your header description here'));
         }
 
-
-        /**
-         * @param string $label
-         * @return array
-         */
-        protected static function resolveDefaultParams($label = '')
+        protected function resolveDefaultProperties()
         {
-            $params = array();
-            $params['labelHtmlOptions'] = array('label' => $label);
-            return $params;
+            $properties             = array(
+                'frontend' => array(
+                    'inlineStyles' => array(
+                        'text-align' => 'right',
+                        'color' => '#ffffff',
+                        'font-weight' => 'bold'
+                    )
+                )
+            );
+            return $properties;
         }
 
-        /**
-         * @param ZurmoActiveForm $form
-         */
-        protected static function registerScripts(ZurmoActiveForm $form)
+        protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-
+            // no line height, no bg color
+            $excludedTextItems  = array('line-height');
+            $propertiesForm     = BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form, $excludedTextItems);
+            return $propertiesForm;
         }
-  }
+    }
 ?>
