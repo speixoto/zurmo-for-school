@@ -169,13 +169,21 @@
         {
             $path          = Yii::getPathOfAlias('application.modules.emailTemplates.widgets.assets');
             Yii::app()->getAssetManager()->publish($path);
-            return $path . '/EmailTemplateEditor.css';
+            return $path . '/zurb.css';
+        }
+
+        protected function resolveCanvasOverrideCssPath()
+        {
+            $path          = Yii::getPathOfAlias('application.modules.emailTemplates.widgets.assets');
+            Yii::app()->getAssetManager()->publish($path);
+            return $path . '/zurmo-zurb.css';
         }
 
         protected function resolveCanvasGlobalCssContent()
         {
             $path   = $this->resolveCanvasGlobalCssPath();
-            $css    = ZurmoHtml::tag('style', array(), file_get_contents($path));
+            $overridePath = $this->resolveCanvasOverrideCssPath();
+            $css    = ZurmoHtml::tag('style', array(), file_get_contents($path) . file_get_contents($overridePath));
             return $css;
         }
     }
