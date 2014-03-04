@@ -928,16 +928,16 @@
         protected function renderConfigSaveAjax()
         {
 
-            $ajaxOptions = $this->resolveAjaxPostForApplyClickAjaxOptions();
+            $ajaxOptions = $this->resolveAjaxPostForApplyClickAjaxOptions(); //todo; remove
             return ZurmoHtml::ajax($ajaxOptions);
-            /**
+/**
             return ZurmoHtml::ajax(array(
                 'type' => 'POST',
-                'data' => 'js:$("#theformnameorclosest").serialize()',
+                'data' => 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()',
                 'url'  =>  $this->resolveFormActionUrl(),
-                'update' => '#' . $this->uniquePageId,
+                //'update' => '#' . $this->uniquePageId,
             ));
-             * **/
+**/
         }
 
         /**
@@ -949,9 +949,11 @@
             // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
             $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
             $ajaxArray                  = array();
-            $ajaxArray['cache']         = 'false';
-            $ajaxArray['url']           = "js:$('#" .  $this->resolveApplyLinkId() . "').closest('form').attr('action')";
+            //$ajaxArray['cache']         = 'false'; //todo: should by default be used.
+            $ajaxArray['url']           = $this->resolveFormActionUrl();
             $ajaxArray['type']          = 'POST';
+            $ajaxArray['data'] = 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()';
+            /**
             $ajaxArray['data']          = "js:(function()
                                             {
                                                 formData    = $('#" .  $this->resolveApplyLinkId() . "')
@@ -959,11 +961,12 @@
                                                 // we want to reuse same action so lets get rid of form prefixes
                                                 formData    = formData.replace(/" . static::getModelClassName() . "%5B(\w*)%5D/g, '$1');
                                                 return formData;
-                                            })()";
+                                            })()";**/
             $ajaxArray['beforeSend']    = "js:function()
                                         {
                                             emailTemplateEditor.freezeLayoutEditor();
                                         }";
+
             $ajaxArray['success']       = "js:function (html)
                                         {
                                             var replaceElementId        = $('#" . $hiddenInputId . "').val();
@@ -976,6 +979,7 @@ replaceElementInIframe.replaceWith(html);
                                             emailTemplateEditor.unfreezeLayoutEditor();
                                             emailTemplateEditor.canvasChanged();
                                         }";
+
             return $ajaxArray;
         }
 

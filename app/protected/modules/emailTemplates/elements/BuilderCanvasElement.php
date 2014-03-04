@@ -141,7 +141,6 @@
             $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets"));
             $less = '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' . $baseUrl . '/less/builder-iframe-tools.less"/>
                      <script type="text/javascript" src="' . $publishedAssetsPath . '/less-1.2.0.min.js"></script>';
-            //todo: add zurmo-zurb.
             return $less;
         }
 
