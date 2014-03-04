@@ -162,6 +162,7 @@
             //$css    = file_get_contents($path);
             // TODO: @Shoaibi: Critical0: Disable.
             $css    = <<<CSS
+            <style>
 /**********************************************
 * Ink v1.0.5 - Copyright 2013 ZURB Inc        *
 **********************************************/
@@ -924,7 +925,7 @@ table.columns .right-text-pad {
     padding-right: 10px !important;
   }
 }
-
+</style>
 CSS;
             return $css;
 
