@@ -562,7 +562,7 @@
             $emailContent                       = new EmailMessageContent();
             $emailContent->textContent          = $emailTemplate->textContent;
             // we do not need to do : EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
-            // check beforeValidate of EmailTemplate.
+            // check __set of EmailTemplate.
             $emailContent->htmlContent          = $emailTemplate->htmlContent;
             $emailMessage->content              = $emailContent;
             $emailMessage->sender               = static::resolveSender();
