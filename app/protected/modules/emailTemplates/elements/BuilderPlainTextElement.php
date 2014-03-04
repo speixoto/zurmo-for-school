@@ -34,11 +34,11 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderRawTextElement extends BuilderTextElement
+    class BuilderPlainTextElement extends BuilderTextElement
     {
-        public static function isUIAccessible()
+        protected static function resolveLabel()
         {
-            return false;
+            return Zurmo::t('EmailTemplatesModule', 'Plain Text');
         }
 
         protected function resolveContentElementClassName()

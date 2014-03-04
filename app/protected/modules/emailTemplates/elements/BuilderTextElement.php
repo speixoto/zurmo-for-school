@@ -43,7 +43,7 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
+            return Zurmo::t('EmailTemplatesModule', 'Rich Text');
         }
 
         protected function resolveDefaultContent()
