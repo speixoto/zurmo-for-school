@@ -46,6 +46,11 @@
             return array('text' => '<h1>[[APPLICATION^NAME]]</h1>');
         }
 
+        protected function resolveContentElementClassName()
+        {
+            return 'TextElement';
+        }
+
         protected function resolveDefaultProperties()
         {
             $properties             = array(
