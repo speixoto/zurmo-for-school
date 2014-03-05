@@ -136,7 +136,7 @@
 
         protected function resolveIsDraftDefault(EmailTemplateWizardForm $formModel)
         {
-            if (empty($formModel->isDraft))
+            if (!isset($formModel->isDraft))
             {
                 $formModel->isDraft  = $this->emailTemplate->isBuilderTemplate();
             }
