@@ -367,9 +367,10 @@ var emailTemplateEditor = {
         }
     },
     addPlaceHolderForEmptyCells: function () {
+        $('.empty-element-wrapper').remove();
         $(emailTemplateEditor.settings.iframeSelector).contents().
             find(emailTemplateEditor.settings.sortableElementsSelector + ':empty').html(
-                '<div class="element-wrapper"></div>'
+                '<div class="element-wrapper empty-element-wrapper"></div>'
         );
     },
     reloadCanvas: function () {

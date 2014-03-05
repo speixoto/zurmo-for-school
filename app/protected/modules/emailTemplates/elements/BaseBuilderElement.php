@@ -989,6 +989,7 @@ replaceElementInIframe.replaceWith(html);
 " . $this->getAjaxScriptForInitSortableElements() . "
                                             emailTemplateEditor.unfreezeLayoutEditor();
                                             emailTemplateEditor.canvasChanged();
+                                            emailTemplateEditor.addPlaceHolderForEmptyCells();
                                         }";
 
             return $ajaxArray;
