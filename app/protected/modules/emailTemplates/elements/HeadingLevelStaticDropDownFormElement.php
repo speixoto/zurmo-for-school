@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,24 +31,32 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderPlainTextElement extends BuilderTextElement
+    class HeadingLevelStaticDropDownFormElement extends StaticDropDownFormElement
     {
-        protected static function resolveLabel()
+        /**
+         * @return array
+         */
+        protected function getDropDownArray()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Plain Text');
+            $levels     = $this->resolveAvailableHeadingLevels();
+            return $levels;
         }
 
-        protected function resolveContentElementClassName()
+        protected function resolveAvailableHeadingLevels()
         {
-            return 'TextAreaElement';
+            $levels         = array(
+                'h1'    => 'Heading Level 1',
+                'h2'    => 'Heading Level 2',
+                'h3'    => 'Heading Level 3',
+                'h4'    => 'Heading Level 4',
+                'h5'    => 'Heading Level 5',
+                'h6'    => 'Heading Level 6',
+            );
+            return $levels;
         }
 
-        protected function renderAfterFormLayout(ZurmoActiveForm $form)
-        {
-            // we don't need that merge tag view.
-        }
     }
 ?>

@@ -208,8 +208,10 @@
             $content .= $this->renderContainingViews($form);
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderAfterFormContent();
             $content .= $this->renderUIOverLayBlock();
-            $content .= '</div></div>';
+            $content .= '</div>';
+            $content .= '</div>';
             $content .= $this->renderModalContainer();
             return $content;
         }
@@ -218,6 +220,10 @@
         {
             $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
             return ZurmoHtml::tag('div', array('class' => 'ui-overlay-block'), $spinner);
+        }
+
+        protected function renderAfterFormContent()
+        {
         }
 
         /**

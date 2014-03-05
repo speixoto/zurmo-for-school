@@ -36,7 +36,7 @@
 
     class BuilderElementPropertiesEditableElementsUtil
     {
-        public static function render(CModel $model, ZurmoActiveForm $form, $wrapInTr = true, array $trOptions = array())
+        public static function render(CModel $model, ZurmoActiveForm $form, array $excludeItems = array(), $wrapInTr = true, array $trOptions = array())
         {
             static::registerScripts($form);
             $content                = null;
@@ -48,8 +48,11 @@
                 $property       = null;
                 $params         = array();
                 extract($configurationItem);
-                $property       = "[${property}]";
-                $content        .= $util::render($elementClass, $model, $property, $form, $params, $wrapInTr, $trOptions);
+                if (!in_array($property, $excludeItems))
+                {
+                    $property       = "[${property}]";
+                    $content        .= $util::render($elementClass, $model, $property, $form, $params, $wrapInTr, $trOptions);
+                }
 
             }
             return $content;

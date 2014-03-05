@@ -378,13 +378,14 @@
             return ($this->builtType == static::BUILT_TYPE_BUILDER_TEMPLATE);
         }
 
-        protected function beforeValidate()
+        public function __set($attributeName, $value)
         {
-            if (isset($this->originalAttributeValues['serializedData']) && $this->isBuilderTemplate())
+            if ($attributeName == 'serializedData' && $this->isBuilderTemplate() &&
+                ArrayUtil::getArrayValue($this->serializedData, 'dom'))
             {
                 $this->htmlContent  = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($this->serializedData, false);
             }
-            return parent::beforeValidate();
+            parent::__set($attributeName, $value);
         }
     }
 ?>

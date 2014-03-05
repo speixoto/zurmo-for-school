@@ -34,21 +34,43 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderPlainTextElement extends BuilderTextElement
+    class BuilderHeaderTextElement extends BuilderPlainTextElement
     {
+        public static function isUIAccessible()
+        {
+            return false;
+        }
+
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Plain Text');
+            return Zurmo::t('EmailTemplatesModule', 'Header Text');
         }
 
-        protected function resolveContentElementClassName()
+        protected function resolveDefaultContent()
         {
-            return 'TextAreaElement';
+            return array('text' => Zurmo::t('EmailTemplatesModule', 'Type your header description here'));
         }
 
-        protected function renderAfterFormLayout(ZurmoActiveForm $form)
+        protected function resolveDefaultProperties()
         {
-            // we don't need that merge tag view.
+            $properties             = array(
+                'frontend' => array(
+                    'inlineStyles' => array(
+                        'text-align' => 'right',
+                        'color' => '#ffffff',
+                        'font-weight' => 'bold'
+                    )
+                )
+            );
+            return $properties;
+        }
+
+        protected function renderSettingsTab(ZurmoActiveForm $form)
+        {
+            // no line height, no bg color
+            $excludedTextItems  = array('line-height');
+            $propertiesForm     = BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form, $excludedTextItems);
+            return $propertiesForm;
         }
     }
 ?>

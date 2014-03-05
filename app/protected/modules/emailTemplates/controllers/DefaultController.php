@@ -482,7 +482,8 @@
             Yii::app()->clientScript->setToAjaxMode();
             if (isset($id))
             {
-                $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, false);
+                $emailTemplate  = EmailTemplate::getById(intval($id));
+                $content        = $emailTemplate->htmlContent;
                 Yii::app()->clientScript->render($content);
                 echo $content;
                 Yii::app()->end(0, false);
@@ -505,16 +506,22 @@
 
         public function actionRenderElementNonEditable()
         {
+            $ajax = Yii::app()->request->getPost('ajax');
+            if (isset($ajax))
+            {
+                BuilderElementRenderUtil::validateEditableForm();
+            }
             $this->actionRenderElement(false);
         }
 
         protected function actionRenderElement($editable = false)
         {
             Yii::app()->clientScript->setToAjaxMode();
-            $className          = Yii::app()->request->getPost('className');
-            $id                 = Yii::app()->request->getPost('id');
-            $properties         = Yii::app()->request->getPost('properties');
-            $content            = Yii::app()->request->getPost('content');
+            $editableForm       = Yii::app()->request->getPost('BuilderElementEditableModelForm');
+            $className          = ArrayUtil::getArrayValue($editableForm, 'className');
+            $id                 = ArrayUtil::getArrayValue($editableForm, 'id');
+            $properties         = ArrayUtil::getArrayValue($editableForm, 'properties');
+            $content            = ArrayUtil::getArrayValue($editableForm, 'content');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
             $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW);
 
@@ -543,14 +550,18 @@
             echo $element->render();
         }
 
-        public function actionSendTestEmail($id = null, $contactId = null)
+        public function actionSendTestEmail($id, $contactId = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
-            $contact        = Contact::getById(intval($contactId));
+            $contact        = null;
+            if (isset($contactId))
+            {
+                $contact    = Contact::getById(intval($contactId));
+            }
             $this->resolveEmailMessage($emailTemplate, $contact);
         }
 
-        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact)
+        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null)
         {
             // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
             $emailMessage                       = new EmailMessage();
@@ -558,7 +569,7 @@
             $emailContent                       = new EmailMessageContent();
             $emailContent->textContent          = $emailTemplate->textContent;
             // we do not need to do : EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
-            // check beforeValidate of EmailTemplate.
+            // check __set of EmailTemplate.
             $emailContent->htmlContent          = $emailTemplate->htmlContent;
             $emailMessage->content              = $emailContent;
             $emailMessage->sender               = static::resolveSender();
@@ -584,9 +595,14 @@
             return $sender;
         }
 
-        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact)
+        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact = null)
         {
-            if ($contact->primaryEmail->emailAddress != null)
+            if ($contact === null)
+            {
+                $contact  = static::resolveDefaultRecipient();
+            }
+            $primaryEmailAddress    = $contact->primaryEmail->emailAddress;
+            if ($primaryEmailAddress != null)
             {
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $contact->primaryEmail->emailAddress;
@@ -595,6 +611,11 @@
                 $recipient->personsOrAccounts->add($contact);
                 $emailMessage->recipients->add($recipient);
             }
+        }
+
+        protected static function resolveDefaultRecipient()
+        {
+            return Yii::app()->user->userModel;
         }
     }
 ?>
