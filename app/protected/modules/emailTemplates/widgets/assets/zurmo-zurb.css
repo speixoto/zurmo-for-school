@@ -1,5 +1,5 @@
 div img {
-  float: none;
+	float: none;
 }
 .builder-element-non-editable h1,
 .builder-element-non-editable h2,
@@ -8,73 +8,96 @@ div img {
 .builder-element-non-editable h5,
 .builder-element-non-editable h6,
 .builder-element-non-editable p {
-  font-size: inherit;
-  line-height: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  color: inherit;
-  text-align: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	color: inherit;
+	text-align: inherit;
 }
 .simple-divider,
 .fancy-divider {
-  width: 100%;
+	width: 100%;
 }
 td.wrapper {
-  vertical-align: middle;
+	vertical-align: middle;
+}
+td.button-container {
+	text-align: center;
 }
 a.newsletter-button {
-  display: block;
-  width: 100%;
-  height: 100%;
-  line-height: 1;
-  padding: 10px 20px;
+	display: block;
+	width: 100%;
+	height: 100%;
+	line-height: 1;
+	padding: 10px 20px;
+}
+table.button,
+table.tiny-button,
+table.small-button,
+table.medium-button,
+table.large-button {
+	width: auto;
+	overflow: visible;
 }
 table.button td,
 table.tiny-button td,
 table.small-button td,
 table.medium-button td,
 table.large-button td {
-  padding: 0;
-  background-color: none;
-  border: none;
+	padding: 0;
+	background: none;
+	border: none;
 }
 table.tiny-button a {
-  padding: 5px 0 4px;
+	padding: 5px 5px 4px 5px;
 }
 table.small-button a {
-  padding: 8px 0 7px;
+	padding: 8px 8px 7px 8px;
 }
 table.medium-button a {
-  padding: 12px 0 10px;
+	padding: 12px 12px 10px 12px;
 }
 table.large-button a {
-  padding: 21px 0 18px;
+	padding: 21px 21px 18px 21px;
 }
 a.Facebook {
-  background: #3b5998;
-  border-color: #2d4473;
+	color: #ffffff;
+	background: #3b5998;
+	border-color: #2d4473;
 }
 a.Facebook:hover {
-  background: #2d4473 !important;
+	background: #2d4473 !important;
 }
 a.Twitter {
-  background: #00acee;
-  border-color: #0087bb;
+	color: #ffffff;
+	background: #00acee;
+	border-color: #0087bb;
 }
 a.Twitter:hover {
-  background: #0087bb !important;
+	background: #0087bb !important;
 }
 a.Google-plus {
-  background-color: #DB4A39;
-  border-color: #CC0000;
+	color: #ffffff;
+	background-color: #DB4A39;
+	border-color: #CC0000;
 }
 a.Google-plus:hover {
-  background: #CC0000 !important;
+	background: #CC0000 !important;
 }
 a.Instagram {
-  background: #00acee;
-  border-color: #0087bb;
+	color: #ffffff;
+	background: #7b4829;
+	border-color: #773424;
 }
 a.Instagram:hover {
-  background: #0087bb !important;
+	background: #773424 !important;
+}
+a.Website {
+	color: #ffffff;
+	background: #7d098b;
+	border-color: #560861;
+}
+a.Website:hover {
+	background: #560861 !important;
 }
