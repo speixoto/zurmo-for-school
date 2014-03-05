@@ -41,7 +41,7 @@
             $configurationItems         = array();
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'PixelSizeStaticDropDownFormElement',
+                                            'TextElement',
                                             'border-top-width',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Height')));
@@ -61,7 +61,7 @@
             $paddingParams['inline']    = true;
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
-                                            'PixelSizeStaticDropDownFormElement',
+                                            'TextElement',
                                             'divider-padding',
                                             $paddingParams);
 

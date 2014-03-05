@@ -49,7 +49,7 @@
         {
             $properties              = array(
                 'backend'   => array(
-                    'divider-padding'           => '10px',
+                    'divider-padding'           => '10',
                     'image'                     => static::DEFAULT_STYLE_IMAGE_PATH,
                 ),
             );

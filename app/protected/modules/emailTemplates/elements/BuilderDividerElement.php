@@ -54,7 +54,7 @@
                 ),
                 'frontend'   => array(
                     'inlineStyles'  => array(
-                        'border-top-width'              => '1px',
+                        'border-top-width'              => '1',
                         'border-top-style'              => 'solid',
                         'border-top-color'              => '#000000',
                         ),
@@ -112,7 +112,7 @@
         protected function resolveWrapperTdNonEditableByContent($content)
         {
             $options            = $this->resolveNonEditableContentWrappingTdOptions();
-            $content            = ZurmoHtml::tag('td', $options, $content);
+            $content            = ZurmoHtml::tag('tr', array(), ZurmoHtml::tag('td', $options, $content));
             $content            = $this->resolveContentForPaddingTds($content);
             return $content;
         }
@@ -137,7 +137,15 @@
         {
             $src            = $this->resolveDummyDividerImageUrl();
             $alt            = static::resolveLabel();
-            $imageOptions   = array('height' => $this->properties['backend']['divider-padding']);
+            if(isset($this->properties['backend']) && isset($this->properties['backend']['divider-padding']))
+            {
+                $height = $this->properties['backend']['divider-padding'];
+            }
+            else
+            {
+                $height = 0;
+            }
+            $imageOptions   = array('height' => $height);
             $content        = ZurmoHtml::image($src, $alt, $imageOptions);
             $content        = ZurmoHtml::tag('td', array(), $content);
             return $content;

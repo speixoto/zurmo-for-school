@@ -47,7 +47,7 @@
                                                 Zurmo::t('EmailTemplatesModule', 'Style')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
-                                            'PixelSizeStaticDropDownFormElement',
+                                            'TextElement',
                                             'divider-padding',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Padding')));

@@ -270,7 +270,7 @@ var emailTemplateEditor = {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',
-            data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
+            data: {BuilderElementEditableModelForm: {className: elementClass}, renderForCanvas: 1, wrapElementInRow: wrapElement, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
             beforeSend: function() {
                     //Show an overlay with loading spinner
                     emailTemplateEditor.freezeLayoutEditor();
@@ -325,8 +325,9 @@ var emailTemplateEditor = {
         elementProperties   = $.extend({}, element.data('properties'));
         var serializedData  = $.parseJSON(emailTemplateEditor.compileSerializedData());
         elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
-        postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
-                               content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
+        //TODO: @sergio: Move the BuilderElementEditableModelForm as a params on settings
+        postData            = {BuilderElementEditableModelForm: {id: id, className: elementClass, properties: elementProperties,
+                               content: elementContent}, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken, renderForCanvas: 1};
         postData            = decodeURIComponent($.param(postData));
         //Send an ajax to resolveElementEditableActionUrl()
         $.ajax({

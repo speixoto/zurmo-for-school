@@ -53,7 +53,7 @@
             $properties             = array(
                 'frontend'  => array(
                     'inlineStyles'  => array(
-                        'font-size'             =>  '11px',
+                        'font-size'             =>  '11',
                         'background-color'      => '#ebebeb',
                     )
                 )

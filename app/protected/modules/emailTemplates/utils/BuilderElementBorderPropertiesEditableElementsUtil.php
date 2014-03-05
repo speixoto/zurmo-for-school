@@ -48,13 +48,13 @@
             // TODO: @Shoaibi: Critical2: Border width does not make sense to start with 8 here.
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'PixelSizeStaticDropDownFormElement',
+                                            'TextElement',
                                             'border-width',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Border Width')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'PixelSizeStaticDropDownFormElement',
+                                            'TextElement',
                                             'border-radius',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Border Radius')));
