@@ -167,7 +167,9 @@ var emailTemplateEditor = {
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             iframeRect = iframeElement.getBoundingClientRect();
-            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find(emailTemplateEditor.settings.sortableElementsSelector + ' > .element-wrapper' + ', ' + emailTemplateEditor.settings.sortableRowsSelector + ' > .element-wrapper');
+            containers = $(emailTemplateEditor.settings.iframeSelector).contents().
+                         find(emailTemplateEditor.settings.sortableElementsSelector + ' > .element-wrapper' + ', ' +
+                         emailTemplateEditor.settings.sortableRowsSelector + ' > .element-wrapper');
             emailTemplateEditor.settings.isDragging = true;
             $('body').on('mousemove', onBodyMouseMove);
             $('body').on('mouseup', onBodyMouseUp);
@@ -297,6 +299,8 @@ var emailTemplateEditor = {
                 emailTemplateEditor.canvasChanged();
                 //Hide the overlay with loading spinner
                 emailTemplateEditor.unfreezeLayoutEditor();
+                //remove empty place holder if present (on empty TD's)
+                emailTemplateEditor.settings.ghost.siblings('.empty-element-wrapper').remove();
                 //Remove the ghost element
                 emailTemplateEditor.settings.ghost.detach();
                 //Remove any class 'hover' for elements
