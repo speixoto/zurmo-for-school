@@ -52,7 +52,7 @@
 
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
-            return array('class' => 'sortable-rows ui-sortable', 'align' => 'center', 'valign' => 'top');
+            return array('class' => BaseBuilderElement::BUILDER_ELEMENT_SORTABLE_ROWS_CLASS . ' ui-sortable', 'align' => 'center', 'valign' => 'top');
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
@@ -146,6 +146,7 @@
 
         protected function renderIconFontCss()
         {
+            //TODO: @sergio: Shouldnt we move this thing to a file too?
             $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets.fonts"));
             $iconsFont = "<style>" .
                 "@font-face" .

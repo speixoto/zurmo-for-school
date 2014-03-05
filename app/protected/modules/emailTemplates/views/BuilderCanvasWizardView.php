@@ -333,6 +333,8 @@
             $editActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
             $moveActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
             $deleteActionSelector               = 'span.' . BaseBuilderElement::OVERLAY_ACTION_DELETE;
+            $sortableRowsClass                  = BaseBuilderElement::BUILDER_ELEMENT_SORTABLE_ROWS_CLASS;
+            $sortableElementsClass              = BaseBuilderElement::BUILDER_ELEMENT_SORTABLE_ELEMENTS_CLASS;
             $cellDroppableClass                 = BaseBuilderElement::BUILDER_ELEMENT_CELL_DROPPABLE_CLASS;
             $iframeOverlaySelector              = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
             $cachedSerializedSelector           = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
@@ -342,6 +344,7 @@
             $doNotWrapInRow                     = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
             $wrapInRow                          = BuilderElementRenderUtil::WRAP_IN_ROW;
             $wrapInHeaderRow                    = BuilderElementRenderUtil::WRAP_IN_HEADER_ROW;
+            $modelClassName                     = BaseBuilderElement::getModelClassName();
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
@@ -353,6 +356,8 @@
                         '{$editActionSelector}',
                         '{$moveActionSelector}',
                         '{$deleteActionSelector}',
+                        '{$sortableRowsClass}',
+                        '{$sortableElementsClass}',
                         '{$cellDroppableClass}',
                         '{$iframeOverlaySelector}',
                         '{$cachedSerializedSelector}',
@@ -363,7 +368,8 @@
                         '{$csrfToken}',
                         {$doNotWrapInRow},
                         {$wrapInRow},
-                        {$wrapInHeaderRow}
+                        {$wrapInHeaderRow},
+                        '{$modelClassName}'
                     );
                 };
                 ", CClientScript::POS_END);
