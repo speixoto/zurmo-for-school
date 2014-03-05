@@ -53,7 +53,6 @@
                 'deniedTags'            => CJSON::encode(array()),
                 'buttons'               => $this->resolveRedactorButtons(),
                 'plugins'               => CJSON::encode($this->resolvePlugins()),
-                'dynamicButtonPlugins'  => CJSON::encode($this->resolveDynamicButtonPlugins()),
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;
@@ -66,20 +65,14 @@
 
         protected function resolvePlugins()
         {
-            return array('mergeTags');
-        }
-
-        protected function resolveDynamicButtonPlugins()
-        {
-            return array('fontfamily', 'fontsize', 'fullscreen');
+            return array('textdirection', 'fontfamily', 'fontsize', 'fontcolor', 'mergetags', 'fullscreen');
         }
 
         protected function resolveRedactorButtons()
         {
             $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
                                     'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link',
-                                    '|', '|', 'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter',
-                                    'alignright', 'justify', '|', 'horizontalrule');
+                                    '|', 'horizontalrule');
             return CJSON::encode($buttons);
         }
     }

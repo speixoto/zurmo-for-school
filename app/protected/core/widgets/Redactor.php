@@ -93,8 +93,6 @@
 
         public $textareaKeydownCallback;
 
-        public $dynamicButtonPlugins;
-
         public function run()
         {
             $id         = $this->htmlOptions['id'];
@@ -104,17 +102,6 @@
                     $(document).ready(
                         function()
                         {
-                            RedactorPlugins = {};
-                            RedactorPlugins.mergeTags = {
-                                init: function ()
-                                {
-                                    this.buttonAdd('mergeTags', 'Merge Tags', this.mergeTagsButton);
-                                },
-                                mergeTagsButton: function(buttonName, buttonDOM, buttonObj, e)
-                                {
-                                    $('.MergeTagsView').toggle();
-                                }
-                            };
                             $('#{$id}').redactor(
                             {
                                 {$this->renderRedactorParamForInit('initCallback')}
@@ -177,17 +164,21 @@
                 $plugins    = array();
             }
             $buttons        = CJSON::decode($this->buttons);
+            $this->resolveSelectedButtonDependentPluginLoad($buttons, $plugins);
+            $this->registerPluginScriptFiles($plugins);
+            $this->plugins  = CJSON::encode($plugins);
+        }
+
+        protected function resolveSelectedButtonDependentPluginLoad(array $buttons, array & $plugins)
+        {
             if (!empty($buttons))
             {
                 $this->resolveFontColorPlugins($buttons, $plugins);
                 $this->resolveTextDirectionPlugins($buttons, $plugins);
-                $this->registerDynamicButtonPlugins($plugins);
             }
-            $this->plugins  = CJSON::encode($plugins);
-            $this->buttons  = CJSON::encode($buttons);
         }
 
-        protected function resolveFontColorPlugins(array & $buttons, array & $plugins)
+        protected function resolveFontColorPlugins(array $buttons, array & $plugins)
         {
             $relevantButtons    = array('fontcolor', 'backcolor');
             $pluginNames        = array('fontcolor');
@@ -201,29 +192,19 @@
             $this->registerPluginsIfRequired($pluginNames, $relevantButtons, $buttons, $plugins);
         }
 
-        protected function registerDynamicButtonPlugins(array & $plugins)
-        {
-            $dynamicPluginNames = CJSON::decode($this->dynamicButtonPlugins);
-            if (!empty($dynamicPluginNames))
-            {
-                $this->registerPluginsWithScriptFiles($dynamicPluginNames, $plugins);
-            }
-        }
-
         protected function registerPluginsIfRequired(array $pluginNames, array $relevantButtons,array $buttons, array & $plugins)
         {
             $commonButtons  = array_intersect($relevantButtons, $buttons);
             if (!empty($commonButtons))
             {
-                $this->registerPluginsWithScriptFiles($pluginNames, $plugins);
+                $plugins            = CMap::mergeArray($plugins, $pluginNames);
             }
         }
 
-        protected function registerPluginsWithScriptFiles(array $pluginNames, array & $plugins)
+        protected function registerPluginScriptFiles(array $plugins)
         {
-            $plugins            = CMap::mergeArray($plugins, $pluginNames);
-            $this->resolvePluginScriptNames($pluginNames);
-            $this->scriptFile   = CMap::mergeArray($this->scriptFile, $pluginNames);
+            $this->resolvePluginScriptNames($plugins);
+            $this->scriptFile   = CMap::mergeArray($plugins, $this->scriptFile);
         }
 
         protected function resolvePluginScriptNames(array & $pluginNames)

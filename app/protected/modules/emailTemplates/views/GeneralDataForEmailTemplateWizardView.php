@@ -173,7 +173,7 @@
 
         protected function renderPlainTextAndHtmlContent(& $content)
         {
-            $params  = array('redactorPlugins' => "['mergeTags']");
+            $params  = array('redactorPlugins' => CJSON::encode(array('mergetags')));
             $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
             $element->editableTemplate  = '{label}{content}';
             $right = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
