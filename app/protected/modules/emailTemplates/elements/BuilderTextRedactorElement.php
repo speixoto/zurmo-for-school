@@ -71,8 +71,8 @@
         protected function resolveRedactorButtons()
         {
             $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
-                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link',
-                                    '|', 'horizontalrule');
+                                    'unorderedlist', 'orderedlist', 'outdent', 'indent','|', 'alignleft', 'aligncenter',
+                                    'alignright', '|', 'table', 'link', '|', 'horizontalrule');
             return CJSON::encode($buttons);
         }
     }

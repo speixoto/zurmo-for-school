@@ -48,8 +48,7 @@
 
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
-                                   'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                                   'horizontalrule', '|', 'image']";
+                                   'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
 
         public $source          = "false";
 
@@ -152,52 +151,16 @@
 
         public function init()
         {
-            $this->resolveSelectivePluginLoad();
+            $this->resolveSelectivePluginScriptLoad();
             parent::init();
         }
 
-        protected function resolveSelectivePluginLoad()
+        protected function resolveSelectivePluginScriptLoad()
         {
             $plugins        = CJSON::decode($this->plugins);
-            if (empty($plugins))
+            if (!empty($plugins))
             {
-                $plugins    = array();
-            }
-            $buttons        = CJSON::decode($this->buttons);
-            $this->resolveSelectedButtonDependentPluginLoad($buttons, $plugins);
-            $this->registerPluginScriptFiles($plugins);
-            $this->plugins  = CJSON::encode($plugins);
-        }
-
-        protected function resolveSelectedButtonDependentPluginLoad(array $buttons, array & $plugins)
-        {
-            if (!empty($buttons))
-            {
-                $this->resolveFontColorPlugins($buttons, $plugins);
-                $this->resolveTextDirectionPlugins($buttons, $plugins);
-            }
-        }
-
-        protected function resolveFontColorPlugins(array $buttons, array & $plugins)
-        {
-            $relevantButtons    = array('fontcolor', 'backcolor');
-            $pluginNames        = array('fontcolor');
-            $this->registerPluginsIfRequired($pluginNames, $relevantButtons, $buttons, $plugins);
-        }
-
-        protected function resolveTextDirectionPlugins(array $buttons, array & $plugins)
-        {
-            $relevantButtons    = array('alignleft', 'aligncenter', 'alignright', 'justify', 'alignment');
-            $pluginNames        = array('textdirection');
-            $this->registerPluginsIfRequired($pluginNames, $relevantButtons, $buttons, $plugins);
-        }
-
-        protected function registerPluginsIfRequired(array $pluginNames, array $relevantButtons,array $buttons, array & $plugins)
-        {
-            $commonButtons  = array_intersect($relevantButtons, $buttons);
-            if (!empty($commonButtons))
-            {
-                $plugins            = CMap::mergeArray($plugins, $pluginNames);
+                $this->registerPluginScriptFiles($plugins);
             }
         }
 
