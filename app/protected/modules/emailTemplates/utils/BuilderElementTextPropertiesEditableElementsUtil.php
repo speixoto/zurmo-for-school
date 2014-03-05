@@ -72,7 +72,7 @@
             // TODO: @Shoaibi: Critical2: Line height does not make sense to start with 8 here.
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
-                                            'PercentSizeStaticDropDownFormElement',
+                                            'TextElement',
                                             'line-height',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Line Height')));
