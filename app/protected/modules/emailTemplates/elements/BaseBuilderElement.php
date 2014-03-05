@@ -388,6 +388,7 @@
         protected final function stringifyProperties(array $properties, $keyPrefix = null, $keySuffix = null,
                                                         $valuePrefix = null, $valueSuffix = null)
         {
+            $this->sanitizeProperties($properties);
             $content    = $this->stringifyArray($properties, $keyPrefix, $keySuffix, $valuePrefix, $valueSuffix);
             return $content;
         }
@@ -1334,6 +1335,30 @@ replaceElementInIframe.replaceWith(html);
             else
             {
                 return true;
+            }
+        }
+
+        protected function getPropertiesSuffixMappedArray()
+        {
+            $mappedArray = array(
+                'line-height'       => '%',
+                'font-size'         => 'px',
+                'border-radius'     => 'px',
+                'border-width'      => 'px',
+                'border-top-width'  => 'px',
+                'divider-padding'   => 'px',
+            );
+            return $mappedArray;
+        }
+
+        protected function sanitizeProperties(array & $properties)
+        {
+            foreach($properties as $key => $value)
+            {
+                if (isset($this->getPropertiesSuffixMappedArray()[$key]))
+                {
+                    $properties[$key] .= $this->getPropertiesSuffixMappedArray()[$key];
+                }
             }
         }
     }
