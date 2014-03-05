@@ -36,9 +36,9 @@
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile      = 'redactor.min.js';
+        public $scriptFile      = array('redactor.min.js');
 
-        public $cssFile         = 'redactor.css';
+        public $cssFile         = array('redactor.css');
 
         public $assetFolderName = 'redactor';
 
@@ -92,6 +92,8 @@
         public $syncBeforeCallback;
 
         public $textareaKeydownCallback;
+
+        public $dynamicButtonPlugins;
 
         public function run()
         {
@@ -159,6 +161,77 @@
             {
                 return "plugins:        {$this->plugins}";
             }
+        }
+
+        public function init()
+        {
+            $this->resolveSelectivePluginLoad();
+            parent::init();
+        }
+
+        protected function resolveSelectivePluginLoad()
+        {
+            $plugins        = CJSON::decode($this->plugins);
+            if (empty($plugins))
+            {
+                $plugins    = array();
+            }
+            $buttons        = CJSON::decode($this->buttons);
+            if (!empty($buttons))
+            {
+                $this->resolveFontColorPlugins($buttons, $plugins);
+                $this->resolveTextDirectionPlugins($buttons, $plugins);
+                $this->registerDynamicButtonPlugins($plugins);
+            }
+            $this->plugins  = CJSON::encode($plugins);
+            $this->buttons  = CJSON::encode($buttons);
+        }
+
+        protected function resolveFontColorPlugins(array & $buttons, array & $plugins)
+        {
+            $relevantButtons    = array('fontcolor', 'backcolor');
+            $pluginNames        = array('fontcolor');
+            $this->registerPluginsIfRequired($pluginNames, $relevantButtons, $buttons, $plugins);
+        }
+
+        protected function resolveTextDirectionPlugins(array $buttons, array & $plugins)
+        {
+            $relevantButtons    = array('alignleft', 'aligncenter', 'alignright', 'justify', 'alignment');
+            $pluginNames        = array('textdirection');
+            $this->registerPluginsIfRequired($pluginNames, $relevantButtons, $buttons, $plugins);
+        }
+
+        protected function registerDynamicButtonPlugins(array & $plugins)
+        {
+            $dynamicPluginNames = CJSON::decode($this->dynamicButtonPlugins);
+            if (!empty($dynamicPluginNames))
+            {
+                $this->registerPluginsWithScriptFiles($dynamicPluginNames, $plugins);
+            }
+        }
+
+        protected function registerPluginsIfRequired(array $pluginNames, array $relevantButtons,array $buttons, array & $plugins)
+        {
+            $commonButtons  = array_intersect($relevantButtons, $buttons);
+            if (!empty($commonButtons))
+            {
+                $this->registerPluginsWithScriptFiles($pluginNames, $plugins);
+            }
+        }
+
+        protected function registerPluginsWithScriptFiles(array $pluginNames, array & $plugins)
+        {
+            $plugins            = CMap::mergeArray($plugins, $pluginNames);
+            $this->resolvePluginScriptNames($pluginNames);
+            $this->scriptFile   = CMap::mergeArray($this->scriptFile, $pluginNames);
+        }
+
+        protected function resolvePluginScriptNames(array & $pluginNames)
+        {
+            array_walk($pluginNames, function(&$pluginName)
+                                        {
+                                            $pluginName .= '.js';
+                                        });
         }
     }
 ?>

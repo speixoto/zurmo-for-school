@@ -49,10 +49,11 @@
         {
             $parentOptions      = parent::resolveRedactorOptions();
             $options            = array(
-                'paragraphy'    => 'false',
-                'deniedTags'    => json_encode(array()),
-                'buttons'       => $this->resolveRedactorButtons(),
-                'plugins'       => "['mergeTags']"
+                'paragraphy'            => 'false',
+                'deniedTags'            => CJSON::encode(array()),
+                'buttons'               => $this->resolveRedactorButtons(),
+                'plugins'               => CJSON::encode($this->resolvePlugins()),
+                'dynamicButtonPlugins'  => CJSON::encode($this->resolveDynamicButtonPlugins()),
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;
@@ -61,6 +62,16 @@
         protected function resolveDeniedTags()
         {
             return CJSON::encode(array());
+        }
+
+        protected function resolvePlugins()
+        {
+            return array('mergeTags');
+        }
+
+        protected function resolveDynamicButtonPlugins()
+        {
+            return array('fontfamily', 'fontsize', 'fullscreen');
         }
 
         protected function resolveRedactorButtons()
