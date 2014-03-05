@@ -257,7 +257,7 @@
             {
                 $itemClass = isset($item['className']) ? $item['className']:null;
                 //If not more events
-                if($itemClass != 'more-events')
+                if ($itemClass != 'more-events')
                 {
                     $item['description']     = Yii::app()->createUrl('calendars/default/getCalendarItemDetail',
                                                                      array(
@@ -397,11 +397,11 @@
                                                                                                false);
             $items                      = CalendarUtil::processDataProviderAndGetCalendarItems($dataProvider);
             $modifiedItems = array();
-            foreach($items as $item)
+            foreach ($items as $item)
             {
                 $item['start'] = CalendarUtil::getFullCalendarFormattedDateTimeElement($item['start']);
                 $startDateTime = strtotime($item['start']);
-                if(date('Y-m-d', $startDateTime) == $startDate)
+                if (date('Y-m-d', $startDateTime) == $startDate)
                 {
                     $item['end'] = CalendarUtil::getFullCalendarFormattedDateTimeElement($item['end']);
                     $modifiedItems[] = $item;
