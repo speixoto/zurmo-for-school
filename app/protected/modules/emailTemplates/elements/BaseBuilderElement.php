@@ -1320,13 +1320,14 @@ replaceElementInIframe.replaceWith(html);
             {
                 return true;
             }
-            $count = 0;
-            str_replace(array('px', '%'), '', $value, $count);
-            if ($value != null && $count == 0)
+            if (!preg_match('/^[0-9]*$/', $value))
             {
-                return Zurmo::t('EmailTemplatesModule', 'Please use px or % as units.');
+                return Zurmo::t('EmailTemplatesModule', 'Use only integers');
             }
-            return true;
+            else
+            {
+                return true;
+            }
         }
     }
 ?>
