@@ -54,6 +54,9 @@
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
             return null;
+            //TODO: @sergio: When we remove redactor we should implement all the image properties like float, height, width...
+            //$propertiesForm = BuilderElementImagePropertiesEditableElementsUtil::render($this->model, $form);
+            //return $propertiesForm;
         }
 
         protected function resolveContentElementClassName()

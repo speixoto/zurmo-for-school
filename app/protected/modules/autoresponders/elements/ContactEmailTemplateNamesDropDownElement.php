@@ -85,6 +85,7 @@
                             }
                             updateElementWithData(textContentElement, data.textContent);
                             updateElementWithData(subjectElement, data.subject);
+                            $(htmlContentElement).redactor("selectionAll");
                             $(htmlContentElement).redactor("insertHtml", data.htmlContent);
                         }
 
@@ -194,9 +195,9 @@
                                                         $(this).makeLargeLoadingSpinner(false, ".email-template-content");
                                                         $(".email-template-content .big-spinner").remove();
                                                         updateContentElementsWithData(textContentElement,
-                                                                                        htmlContentElement,
-                                                                                        subjectElement,
-                                                                                        data);
+                                                                                      htmlContentElement,
+                                                                                      subjectElement,
+                                                                                      data);
                                                         subjectElement.focus();
                                                         updateAddFilesWithDataFromAjax(data.filesIds, notificationBarId);
                                                     },

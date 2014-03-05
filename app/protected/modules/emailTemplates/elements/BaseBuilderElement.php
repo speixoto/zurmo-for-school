@@ -57,6 +57,11 @@
         const OVERLAY_ACTIONS_CONTAINER_CLASS   = 'builder-element-toolbar';
 
         /**
+         * class used for builder elements that can be dropped in cells
+         */
+        const BUILDER_ELEMENT_CELL_DROPPABLE_CLASS   = 'builder-element-cell-droppable';
+
+        /**
          * @var string Id of current element, unique.
          */
         protected $id;
@@ -165,7 +170,17 @@
          */
         protected static function resolveWidgetHtmlOptions()
         {
-            return  array('data-class' => get_called_class(), 'class' => 'builder-element builder-element-droppable');
+            return  array('data-class' => get_called_class(), 'class' => static::resolveWidgetClassesForHtmlOptions());
+        }
+
+        protected static function resolveWidgetClassesForHtmlOptions()
+        {
+            $classes = 'builder-element builder-element-droppable';
+            if (!static::isContainerType())
+            {
+                $classes .= ' ' . static::BUILDER_ELEMENT_CELL_DROPPABLE_CLASS;
+            }
+            return $classes;
         }
 
         /**
@@ -336,11 +351,12 @@
         protected final function resolveFrontendPropertiesNonEditable()
         {
             $properties = array();
-            if (isset($this->properties['frontend']))
+            $frontendProperties = ArrayUtil::getArrayValue($this->properties, 'frontend');
+            if ($frontendProperties)
             {
                 // we are not on canvas, may be preview or just generating final newsletter.
                 // do not render backend properties.
-                $properties = $this->properties['frontend'];
+                $properties = $frontendProperties;
             }
             $this->resolveInlineStylePropertiesNonEditable($properties);
             return $properties;
@@ -352,9 +368,10 @@
          */
         protected final function resolveInlineStylePropertiesNonEditable(array & $mergedProperties)
         {
-            if (isset($mergedProperties['inlineStyles']))
+            $inlineStyles   = ArrayUtil::getArrayValue($mergedProperties, 'inlineStyles');
+            if ($inlineStyles)
             {
-                $mergedProperties['style']  = $this->stringifyProperties($mergedProperties['inlineStyles'], null, null, ':', ';');
+                $mergedProperties['style']  = $this->stringifyProperties($inlineStyles, null, null, ':', ';');
                 unset($mergedProperties['inlineStyles']);
             }
         }
@@ -371,6 +388,7 @@
         protected final function stringifyProperties(array $properties, $keyPrefix = null, $keySuffix = null,
                                                         $valuePrefix = null, $valueSuffix = null)
         {
+            $this->sanitizeProperties($properties);
             $content    = $this->stringifyArray($properties, $keyPrefix, $keySuffix, $valuePrefix, $valueSuffix);
             return $content;
         }
@@ -523,11 +541,12 @@
         protected function renderFormInputsContent(ZurmoActiveForm $form)
         {
             $contentTabContent  = $this->renderContentTab($form);
-            //AMIT: NOT SURE WE CURRENTLY NEED THIS TO BE ALSO WRAPPED IN THE FORM_-FIELDS TABLE
-            //$contentTabContent      = $this->wrapEditableContentFormContentInTable($contentTabContent);
 
             $settingsTabContent  = $this->renderSettingsTab($form);
-            $settingsTabContent  = $this->wrapEditableContentFormContentInTable($settingsTabContent);
+            if (isset($settingsTabContent))
+            {
+                $settingsTabContent  = $this->wrapEditableContentFormContentInTable($settingsTabContent);
+            }
 
             $content             = $this->renderBeforeFormLayout($form);
             if (isset($contentTabContent, $settingsTabContent))
@@ -782,7 +801,7 @@
          */
         protected function renderApplyLink()
         {
-            $this->registerAjaxPostForApplyClickScript();
+            $this->registerApplyClickScript();
             $label                      = $this->renderApplyLinkLabel();
             $htmlOptions                = $this->resolveApplyLinkHtmlOptions();
             $wrappedLabel               = ZurmoHtml::wrapLink($label);
@@ -796,8 +815,7 @@
          */
         protected function resolveApplyLinkHtmlOptions()
         {
-            return array('id' => $this->resolveApplyLinkId(), 'class' => 'attachLoading z-button',
-                         'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            return array('id' => $this->resolveApplyLinkId(), 'class' => 'z-button');
         }
 
         /**
@@ -829,56 +847,15 @@
         /**
          * Register javascript snippet to handle clicking apply link
          */
-        protected function registerAjaxPostForApplyClickScript()
+        protected function registerApplyClickScript()
         {
-            $ajaxOptions        = $this->resolveAjaxPostForApplyClickAjaxOptions();
-            Yii::app()->clientScript->registerScript('ajaxPostForApplyClick', "
-                $('#" . $this->resolveApplyLinkId() . "').unbind('click.ajaxPostForApplyClick');
-                $('#" . $this->resolveApplyLinkId() . "').bind('click.ajaxPostForApplyClick', function()
+            Yii::app()->clientScript->registerScript('applyClick', "
+                $('#" . $this->resolveApplyLinkId() . "').unbind('click');
+                $('#" . $this->resolveApplyLinkId() . "').bind('click', function()
                 {
-                    " . ZurmoHtml::ajax($ajaxOptions) . "
+                    jQuery.yii.submitForm(this, '', {}); return false;
                 });
             ");
-        }
-
-        /**
-         * Resolve Ajax options for when clicking apply on editable form.
-         * @return array
-         */
-        protected function resolveAjaxPostForApplyClickAjaxOptions()
-        {
-            // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
-            $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
-            $ajaxArray                  = array();
-            $ajaxArray['cache']         = 'false';
-            $ajaxArray['url']           = "js:$('#" .  $this->resolveApplyLinkId() . "').closest('form').attr('action')";
-            $ajaxArray['type']          = 'POST';
-            $ajaxArray['data']          = "js:(function()
-                                            {
-                                                formData    = $('#" .  $this->resolveApplyLinkId() . "')
-                                                                .closest('form').serialize();
-                                                // we want to reuse same action so lets get rid of form prefixes
-                                                formData    = formData.replace(/" . static::getModelClassName() . "%5B(\w*)%5D/g, '$1');
-                                                return formData;
-                                            })()";
-            $ajaxArray['beforeSend']    = "js:function()
-                                        {
-                                            emailTemplateEditor.freezeLayoutEditor();
-                                        }";
-            $ajaxArray['success']       = "js:function (html)
-                                        {
-                                            var replaceElementId        = $('#" . $hiddenInputId . "').val();
-                                            var replaceElementInIframe  = $('#" .
-                                                                            BuilderCanvasWizardView::CANVAS_IFRAME_ID .
-                                                                            "').contents().find('#' + replaceElementId)
-                                                                            .parent();
-                                            replaceElementInIframe.replaceWith(html);
-                                            " . $this->getAjaxScriptForInitSortableElements() . "
-                                            emailTemplateEditor.unfreezeLayoutEditor();
-                                            emailTemplateEditor.canvasChanged();
-                                        }";
-            return $ajaxArray;
-
         }
 
         /**
@@ -891,9 +868,8 @@
             if ($this->isContainerType())
             {
                 $ajaxScript = "emailTemplateEditor.initSortableElements(emailTemplateEditor.settings.sortableElementsSelector,
-                        emailTemplateEditor.settings.sortableElementsSelector,
-                        $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID ."').
-                        contents());";
+                                    emailTemplateEditor.settings.sortableElementsSelector,
+                                    $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID ."').contents());";
             }
             return $ajaxScript;
         }
@@ -934,7 +910,7 @@
          */
         protected function resolveEnableAjaxValidation()
         {
-            return false;
+            return true;
         }
 
         /**
@@ -943,7 +919,69 @@
          */
         protected function resolveFormClientOptions()
         {
-            return array();
+            return array('beforeValidate'    => 'js:$(this).beforeValidateAction',
+                         'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
+                         'afterValidateAjax' => $this->renderConfigSaveAjax(),
+                         'validateOnSubmit'  => true,
+                         'validateOnChange'  => false);
+        }
+
+        protected function renderConfigSaveAjax()
+        {
+
+            $ajaxOptions = $this->resolveAjaxPostForApplyClickAjaxOptions(); //todo; remove
+            return ZurmoHtml::ajax($ajaxOptions);
+/**
+            return ZurmoHtml::ajax(array(
+                'type' => 'POST',
+                'data' => 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()',
+                'url'  =>  $this->resolveFormActionUrl(),
+                //'update' => '#' . $this->uniquePageId,
+            ));
+**/
+        }
+
+        /**
+         * Resolve Ajax options for when clicking apply on editable form.
+         * @return array
+         */
+        protected function resolveAjaxPostForApplyClickAjaxOptions()
+        {
+            // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
+            $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
+            $ajaxArray                  = array();
+            //$ajaxArray['cache']         = 'false'; //todo: should by default be used.
+            $ajaxArray['url']           = $this->resolveFormActionUrl();
+            $ajaxArray['type']          = 'POST';
+            $ajaxArray['data'] = 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()';
+            /**
+            $ajaxArray['data']          = "js:(function()
+                                            {
+                                                formData    = $('#" .  $this->resolveApplyLinkId() . "')
+                                                                .closest('form').serialize();
+                                                // we want to reuse same action so lets get rid of form prefixes
+                                                formData    = formData.replace(/" . static::getModelClassName() . "%5B(\w*)%5D/g, '$1');
+                                                return formData;
+                                            })()";**/
+            $ajaxArray['beforeSend']    = "js:function()
+                                        {
+                                            emailTemplateEditor.freezeLayoutEditor();
+                                        }";
+
+            $ajaxArray['success']       = "js:function (html)
+                                        {
+                                            var replaceElementId        = $('#" . $hiddenInputId . "').val();
+                                            var replaceElementInIframe  = $('#" .
+                BuilderCanvasWizardView::CANVAS_IFRAME_ID .
+                "').contents().find('#' + replaceElementId)
+                .parent();
+replaceElementInIframe.replaceWith(html);
+" . $this->getAjaxScriptForInitSortableElements() . "
+                                            emailTemplateEditor.unfreezeLayoutEditor();
+                                            emailTemplateEditor.canvasChanged();
+                                        }";
+
+            return $ajaxArray;
         }
 
         /**
@@ -952,7 +990,7 @@
          */
         protected function resolveFormHtmlOptions()
         {
-            return array('class' => 'element-edit-form');
+            return array('class' => 'element-edit-form', 'onsubmit' => "return false;");
         }
 
         /**
@@ -1040,7 +1078,7 @@
          */
         protected function cleanUpProperties()
         {
-            if (!isset($this->params['doNotCleanUpProperties']))
+            if (!ArrayUtil::getArrayValue($this->params, 'doNotCleanUpProperties'))
             {
                 $this->properties   = ArrayUtil::recursivelyRemoveEmptyValues($this->properties);
             }
@@ -1070,7 +1108,7 @@
             {
                 $params     = $defaultParams;
             }
-            else if (isset($params['mergeDefault']) && $params['mergeDefault'] === true)
+            else if (ArrayUtil::getArrayValue($params, 'mergeDefault'))
             {
                 $params     = CMap::mergeArray($defaultParams, $params);
             }
@@ -1253,6 +1291,75 @@
         public function getParams()
         {
             return $this->params;
+        }
+
+        public function validate($attribute, $value)
+        {
+            if (isset($this->getRules()[$attribute]))
+            {
+                try
+                {
+                    return call_user_func(array($this, $this->getRules()[$attribute]), $value);
+                }
+                catch (Exception $exception)
+                {
+                    throw new NotImplementedException();
+                }
+
+            }
+            return true;
+        }
+
+        protected function getRules()
+        {
+            return array('font-size'        => 'validateInteger',
+                         'border-radius'    => 'validateInteger',
+                         'border-width'     => 'validateInteger',
+                         'line-height'      => 'validateInteger',
+                         'border-top-width' => 'validateInteger',
+                         'divider-padding'  => 'validateInteger',
+                         'height'           => 'validateInteger');
+        }
+
+//todo: properly use Cvalidator for this
+        protected function validateInteger($value)
+        {
+            if ($value == null)
+            {
+                return true;
+            }
+            if (!preg_match('/^[0-9]*$/', $value))
+            {
+                return Zurmo::t('EmailTemplatesModule', 'Use only integers');
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        protected function getPropertiesSuffixMappedArray()
+        {
+            $mappedArray = array(
+                'line-height'       => '%',
+                'font-size'         => 'px',
+                'border-radius'     => 'px',
+                'border-width'      => 'px',
+                'border-top-width'  => 'px',
+                'divider-padding'   => 'px',
+            );
+            return $mappedArray;
+        }
+
+        protected function sanitizeProperties(array & $properties)
+        {
+            foreach($properties as $key => $value)
+            {
+                if (isset($this->getPropertiesSuffixMappedArray()[$key]))
+                {
+                    $properties[$key] .= $this->getPropertiesSuffixMappedArray()[$key];
+                }
+            }
         }
     }
 ?>

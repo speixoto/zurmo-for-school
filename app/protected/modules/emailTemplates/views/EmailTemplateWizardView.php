@@ -56,6 +56,27 @@
             return Zurmo::t('EmailTemplatesModule', 'Email Template Wizard');
         }
 
+        protected function renderAfterFormContent()
+        {
+            $content = parent::renderAfterFormContent();
+            return $content . $this->renderElementEditContainerAndContent();
+        }
+
+        protected function renderElementEditContainerAndContent()
+        {
+            $editFormContent        = $this->resolveEditFormContent();
+            $content                = ZurmoHtml::tag('div', array('id'    => BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER_ID,
+                                                                  'style' => 'display:none'),
+                                                     $editFormContent);
+            return $content;
+        }
+
+        protected function resolveEditFormContent()
+        {
+            $content = ZurmoHtml::tag('div', array('id' => BuilderCanvasWizardView::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
+            return $content;
+        }
+
         /**
          * @return string
          */

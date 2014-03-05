@@ -81,7 +81,11 @@
         public static function resolveHtmlBySerializedData($serializedData, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
         {
             $unserializedData   = CJSON::decode($serializedData);
-            $resolvedHtml       = static::resolveHtmlByUnserializedData($unserializedData, $renderForCanvas, $attachedMergeTagModel, $type, $language);
+            $resolvedHtml       = null;
+            if (!empty($unserializedData))
+            {
+                $resolvedHtml       = static::resolveHtmlByUnserializedData($unserializedData, $renderForCanvas, $attachedMergeTagModel, $type, $language);
+            }
             return $resolvedHtml;
         }
 
@@ -97,16 +101,17 @@
         public static function resolveHtmlByUnserializedData(array $unserializedData, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null, $type = null, $language = null)
         {
             $resolvedHtml   = null;
-            if (empty($unserializedData['dom']))
+            $dom            = ArrayUtil::getArrayValue($unserializedData, 'dom');
+            if (empty($dom))
             {
                 return null;
             }
             $class          = null;
             $properties     = null;
             $content        = null;
-            $canvasData     = reset($unserializedData['dom']);
+            $canvasData     = reset($dom);
             extract($canvasData);
-            $id             = key($unserializedData['dom']);
+            $id             = key($dom);
             $resolvedHtml   = BuilderElementRenderUtil::renderNonEditable($class, $renderForCanvas, false, $id, $properties, $content);
             if (empty($resolvedHtml))
             {

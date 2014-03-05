@@ -230,16 +230,7 @@
             $uiAccessibleElements   = PathUtil::getAllUIAccessibleBuilderElementClassNames();
             $uiAccessibleContent    = $this->generateWidgetTagsForUIAccessibleElements($uiAccessibleElements);
             $this->wrapContentInDiv($uiAccessibleContent, $this->resolveElementsSidebarHtmlOptions());
-            $editFormContent        = $this->resolveEditFormContent();
-            $content                = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_CONTAINER_ID, 'style' => 'display:none'),
-                                                $editFormContent);
-            return $uiAccessibleContent . $content;
-        }
-
-        protected function resolveEditFormContent()
-        {
-            $content = ZurmoHtml::tag('div', array('id' => static::ELEMENT_EDIT_FORM_OVERLAY_CONTAINER_ID), '');
-            return $content;
+            return $uiAccessibleContent;
         }
 
         protected function resolveElementsSidebarHtmlOptions()
@@ -256,7 +247,7 @@
         protected function resolveCanvasIFrameHtmlOptions()
         {
             return array('id' => static::CANVAS_IFRAME_ID,
-                            'src' => $this->resolveCanvasActionUrl(),
+                            'src' => 'about:blank',
                             'width' => '100%',
                             'height'    => '100%',
                             'frameborder' => 0);
@@ -288,11 +279,6 @@
             return array('id'    => static::PREVIEW_IFRAME_CONTAINER_ID,
                          'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
                          'style' => 'display:none');
-        }
-
-        protected function resolveCanvasActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderCanvas', array('id' => $this->model->id));
         }
 
         protected function resolvePreviewActionUrl()
@@ -347,6 +333,7 @@
             $editActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
             $moveActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
             $deleteActionSelector               = 'span.' . BaseBuilderElement::OVERLAY_ACTION_DELETE;
+            $cellDroppableClass                 = BaseBuilderElement::BUILDER_ELEMENT_CELL_DROPPABLE_CLASS;
             $iframeOverlaySelector              = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
             $cachedSerializedSelector           = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
             $errorOnDeleteMessage               = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
@@ -366,6 +353,7 @@
                         '{$editActionSelector}',
                         '{$moveActionSelector}',
                         '{$deleteActionSelector}',
+                        '{$cellDroppableClass}',
                         '{$iframeOverlaySelector}',
                         '{$cachedSerializedSelector}',
                         '{$this->resolveElementEditableActionUrl()}',
@@ -512,9 +500,7 @@
 
         public static function resolveAdditionalAjaxOptionsForFinish($formName)
         {
-            $ajaxArray = static::resolveAdditionalAjaxOptions($formName);
-            unset($ajaxArray['success']);
-            return $ajaxArray;
+            return array();
         }
     }
 ?>

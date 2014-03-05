@@ -47,9 +47,7 @@
 
         protected function resolveAvailableSizes()
         {
-            // TODO: @Shoaibi: Critical2: Are these sizes ok?
-            $sizes  = array();
-            for ($availableSize = 8; $availableSize <= 20; $availableSize++)
+            for ($availableSize = 1; $availableSize <= 10; $availableSize++)
             {
                 $size           = $this->resolveSizeForUnits($availableSize);
                 $sizes[$size]   = $size;

@@ -34,8 +34,9 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderElementEditableModelForm extends ModelForm
+    class BuilderElementEditableModelForm extends CModel
     {
+        public $className;
         public $content;
         public $properties;
 
@@ -45,12 +46,17 @@
             $this->properties   = $properties;
         }
 
+        public function attributeNames()
+        {
+            array('content', 'properties');
+        }
+
         public function __get($name)
         {
             if (strpos($name, '['))
             {
                 $basePropertyName   = substr($name, 0, strpos($name, '['));
-                $index              = substr($name, strpos($name, '[') + 1, -1);
+                $index              = substr($name, strpos($name, '[') + 1);
                 if (property_exists($this, $basePropertyName))
                 {
                     return ArrayUtil::getNestedValue($this->{$basePropertyName}, $index);
@@ -59,35 +65,58 @@
             return parent::__get($name);
         }
 
-        public function setAttributes($values, $safeOnly = true)
+        public function rules()
         {
-            $formValues  = array();
-            $modelValues = array();
-            foreach ($values as $name => $value)
+            return array_merge(parent::rules(), array(
+                array('className',  'safe'),
+                array('content',    'safe'),
+                array('content',    'validateContent'),
+                array('properties', 'safe'),
+                array('properties', 'validateProperties')
+            ));
+        }
+
+        public function validateProperties($attribute, $params)
+        {
+            if (!isset($this->className))
             {
-                $basePropertyName   = substr($name, 0, strpos($name, '['));
-                $index              = substr($name, strpos($name, '[') + 1, -1);
-                if (property_exists($this, $basePropertyName))
+                throw new NotSupportedException();
+            }
+            $hasErrors = false;
+            foreach (ArrayUtil::flatten($this->$attribute, true) as $key => $value)
+            {
+                $elementClassName = $this->className;
+                $element = new $elementClassName();
+                $error = $element->validate($key, $value);
+                if (!($error === true))
                 {
-                    return $this->{$basePropertyName}[$index] = $value;
-                }
-                else
-                {
-                    $modelValues[$name] = $value;
+                    $prefix = null;
+                    $this->resolveErrorPrefixForProperties($this->$attribute, $prefix);
+                    $this->addError( $attribute . '_' . $prefix . $key, $error);
+                    $hasErrors = true;
                 }
             }
-            parent::setAttributes($formValues, $safeOnly);
-            $this->model->setAttributes($modelValues, $safeOnly);
+            return !$hasErrors;
+        }
+//todo: probably make static
+        protected function resolveErrorPrefixForProperties($data, & $prefix)
+        {
+            foreach($data as $key => $element)
+            {
+                if(is_array($element))
+                {
+                    $prefix .= $key . '_';
+                    $this->resolveErrorPrefixForProperties($element, $prefix);
+                }
+            }
         }
 
-        public function isAttributeRequired($attribute)
+        public function validateContent($attribute, $params)
         {
-            return false;
-        }
-
-        public function getValidators($attribute = null)
-        {
-            return array();
+            if (!isset($this->className))
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

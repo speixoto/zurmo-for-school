@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,25 +31,24 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2014. All rights reserved".
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class TextAlignmentStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class BuilderPlainTextElement extends BuilderTextElement
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
+        protected static function resolveLabel()
         {
-            $alignments     = $this->resolveAvailableAlignments();
-            return $alignments;
+            return Zurmo::t('EmailTemplatesModule', 'Plain Text');
         }
 
-        protected function resolveAvailableAlignments()
+        protected function resolveContentElementClassName()
         {
-            $alignments = array('left', 'right', 'center', 'justify');
-            $alignments    = array_combine(array_values($alignments), array_map('ucfirst', array_values($alignments)));
-            return $alignments;
+            return 'TextAreaElement';
+        }
+
+        protected function renderAfterFormLayout(ZurmoActiveForm $form)
+        {
+            // we don't need that merge tag view.
         }
     }
 ?>

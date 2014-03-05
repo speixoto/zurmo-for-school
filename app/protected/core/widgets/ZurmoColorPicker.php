@@ -78,7 +78,9 @@
             // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $javaScript, CClientScript::POS_END);
             $this->htmlOptions['id'] = $this->inputId;
-            echo ZurmoHtml::textField($this->inputName, $this->inputValue, $this->htmlOptions);
+            $inputField = ZurmoHtml::textField($this->inputName, $this->inputValue, $this->htmlOptions);
+            $icon = ZurmoHtml::icon('icon-color-picker');
+            echo ZurmoHtml::tag('div', array('class' => 'has-color-picker'), $inputField . $icon);
         }
     }
 ?>

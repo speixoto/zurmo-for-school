@@ -185,7 +185,7 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)

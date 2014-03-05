@@ -41,12 +41,7 @@
     {
         protected function renderLabel()
         {
-            if ($this->form === null)
-            {
-                return $this->getFormattedAttributeLabel();
-            }
-            $id = $this->getIdForSelectInput();
-            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
+            return Zurmo::t('EmailTemplates', 'Module');
         }
 
         protected function getDropDownArray()

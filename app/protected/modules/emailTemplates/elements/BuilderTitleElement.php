@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderTitleElement extends BuilderTextElement
+    class BuilderTitleElement extends BuilderPlainTextElement
     {
         protected static function resolveLabel()
         {
@@ -49,15 +49,38 @@
         protected function resolveDefaultProperties()
         {
             $properties             = array(
-                'frontend'  => array(
-                    'inlineStyles'  => array(
-                        'font-size'         =>  '18px',
-                        'color'             => '#aaaaaa',
-                        'text-align'        => 'left',
-                    )
+                'backend'   => array(
+                    'headingLevel'  => 'h1',
                 )
             );
             return $properties;
+        }
+
+        protected function renderControlContentNonEditable()
+        {
+            $content                = ZurmoHtml::tag($this->properties['backend']['headingLevel'], array(), $this->content['text']);
+            return $content;
+        }
+
+        protected function renderSettingsTab(ZurmoActiveForm $form)
+        {
+            $propertiesForm     = $this->renderHeadingLevelDropdownContent($form);
+            $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
+            return $propertiesForm;
+        }
+
+        protected function renderHeadingLevelDropdownContent(ZurmoActiveForm $form)
+        {
+            $property       = '[headingLevel]';
+            $label          = Zurmo::t('EmailTemplatesModule', 'Heading Level');
+            $params         = static::resolveDefaultElementParamsForEditableForm($label);
+            $content        = BuilderElementBackendPropertiesEditableElementUtil::render('HeadingLevelStaticDropDownFormElement',
+                                                                                    $this->model,
+                                                                                    $property,
+                                                                                    $form,
+                                                                                    $params);
+            return $content;
         }
     }
 ?>

@@ -125,7 +125,7 @@
             else
             {
                 Yii::app()->clientScript->registerScript($scriptName, "
-                        $('.tabs-nav a:not(.simple-link)').click( function()
+                        $('.tabs-nav a:not(.simple-link)').click( function(event)
                         {
                             //the menu items
                             $('.active-tab', $(this).parent()).removeClass('active-tab');
@@ -139,7 +139,7 @@
                                     _old.removeClass('active-tab');
                                     _new.addClass('active-tab');
                             });
-                            return false;
+                            event.preventDefault();
                         });
                     ");
             }
@@ -184,7 +184,7 @@
 
         protected function renderNonEditableHtmlContentArea()
         {
-            if ($this->isPastedHtmlTemplate())
+            if (!$this->isPlainTextTemplate())
             {
                 $url            = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
                                     array('id' => $this->model->id, 'className' => get_class($this->model)));

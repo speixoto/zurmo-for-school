@@ -57,6 +57,24 @@
                                             'target',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Open in')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'ButtonSizeStaticDropDownFormElement',
+                                            'sizeClass',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Size')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'ButtonWidthStaticDropDownFormElement',
+                                            'width',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Width')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'AlignmentStaticDropDownFormElement',
+                                            'align',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Alignment')));
             return $configurationItems;
         }
     }

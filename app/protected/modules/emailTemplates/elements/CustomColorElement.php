@@ -38,7 +38,7 @@
     {
         protected function renderControlEditable()
         {
-            $this->registerScript();
+            $this->registerScripts();
             $content = $this->renderCustomColorChooser();
             return $content;
         }
@@ -77,7 +77,13 @@
             );
         }
 
-        public function registerScript()
+        protected function registerScripts()
+        {
+            $this->registerPickerVisibilityScripts();
+            $this->registerPresetBorderColorScript();
+        }
+
+        protected function registerPickerVisibilityScripts()
         {
             // Begin Not Coding Standard
             $script = "
@@ -93,6 +99,16 @@
                       ";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('customColor', $script);
+        }
+
+        protected function registerPresetBorderColorScript()
+        {
+            // Begin Not Coding Standard
+            $script = "$('.color-picker').each(function(picker){
+                            $(this).css('border-color', $(this).val());
+                        });";
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('customColor-presetBorderColor', $script);
         }
     }
 ?>

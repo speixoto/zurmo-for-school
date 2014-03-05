@@ -43,13 +43,12 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Text');
+            return Zurmo::t('EmailTemplatesModule', 'Rich Text');
         }
 
         protected function resolveDefaultContent()
         {
-            // TODO: @Shoaibi: Critical3: Better default content.
-            return array('text' => '<u>This is default dummy content.</u>');
+            return array('text' => 'Type your text here');
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)

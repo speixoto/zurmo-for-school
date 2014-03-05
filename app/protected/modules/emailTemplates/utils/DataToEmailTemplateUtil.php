@@ -121,6 +121,10 @@
             else if ($templateUnserializedData != $postUnserializedData)
             {
                 // baseTemplateId remains same, probably a post from canvas
+                if (isset($postUnserializedData['dom']) && isset($templateUnserializedData['dom']))
+                {
+                    unset($templateUnserializedData['dom']);
+                }
                 $unserializedData     = CMap::mergeArray($templateUnserializedData, $postUnserializedData);
             }
 

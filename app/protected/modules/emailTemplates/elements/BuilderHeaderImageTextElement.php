@@ -48,17 +48,23 @@
         protected function adjustContentWhenEmpty()
         {
             $this->content   = array();
-            $defaultContent  = array('image' => Zurmo::t('EmailTemplatesModule', '<img src="http://placehold.it/200x50">'));
+            $this->resolveDefaultLogoColumn();
+            $this->resolveDefaultTitleColumn();
+        }
+
+        protected function resolveDefaultLogoColumn()
+        {
+            $defaultContent  = array('image' => '<img src="http://placehold.it/200x50">');
             $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas, null, null, $defaultContent);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
             $this->content[$columnElement->id] = $columnData[$columnElement->id];
-            $defaultContent  = array('text' => Zurmo::t('EmailTemplatesModule', 'Your header description'));
-            $defaultProperties = array('frontend' => array('inlineStyles' => array('text-align' => 'right',
-                                                                                   'color' => '#ffffff',
-                                                                                   'font-weight' => 'bold')));
-            $element         = BuilderElementRenderUtil::resolveElement('BuilderTextElement', $this->renderForCanvas, null, $defaultProperties, $defaultContent);
+        }
+
+        protected function resolveDefaultTitleColumn()
+        {
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderHeaderTextElement', $this->renderForCanvas);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);

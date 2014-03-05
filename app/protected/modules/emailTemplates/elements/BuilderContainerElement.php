@@ -118,9 +118,10 @@
         protected function resolveNestedElementParamsById($id, $lastKey, array $paramMapping)
         {
             $elementParams  = array();
-            if (isset($paramMapping[$id]))
+            $mappedParams   = ArrayUtil::getArrayValue($paramMapping, $id);
+            if (isset($mappedParams))
             {
-                $elementParams  = $paramMapping[$id];
+                $elementParams  = $mappedParams;
             }
             if ($lastKey == $id)
             {

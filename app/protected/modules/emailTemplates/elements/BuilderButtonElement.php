@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderButtonElement extends BaseBuilderElement
+    class BuilderButtonElement extends BaseBuilderTableWrappedElement
     {
         public static function isUIAccessible()
         {
@@ -50,11 +50,13 @@
         {
             $properties              = array(
                 'backend'       => array(
-                    'sizeClass'         => null,
-                    'text'              => 'Button',
+                    'sizeClass'         => 'medium-button',
+                    'text'              => Yii::app()->label,
+                    'align'             => 'left',
+                    'width'             => '',
                 ),
                 'frontend'      => array(
-                    'href'              => null,
+                    'href'              => Yii::app()->createAbsoluteUrl('/'),
                     'target'            => '_blank',
                 )
             );
@@ -63,16 +65,13 @@
 
         protected function renderControlContentNonEditable()
         {
-            $sizeClass              = null;
-            $text                   = null;
-            extract($this->properties['backend']);
             $target                 = null;
             $href                   = null;
             extract($this->properties['frontend']);
+            $text                   = $this->properties['backend']['text'];
             $label                  = ZurmoHtml::tag('span', array(), $text);
             $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
             $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
-            $htmlOptions['class']   .= ' ' . $sizeClass;
             $options                = CMap::mergeArray($htmlOptions, $frontendOptions);
             $content                = ZurmoHtml::link($label, $href, $options);
             return $content;
@@ -92,17 +91,33 @@
             return null;
         }
 
-        protected function resolveNonEditableWrapperOptions(array $customDataAttributes)
-        {
-            // frontend options are rendered directly on the element in this case.
-            $htmlOptions        = $this->resolveNonEditableWrapperHtmlOptions();
-            $options            = CMap::mergeArray($htmlOptions, $customDataAttributes);
-            return $options;
-        }
-
         protected function resolveDefaultHtmlOptionsForLink()
         {
             return array('class' => 'newsletter-button');
+        }
+
+        protected function resolveNonEditableWrapperHtmlOptions()
+        {
+            $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
+            $htmlOptions['class']   .= ' ' . $this->properties['backend']['sizeClass'];
+            return $htmlOptions;
+        }
+
+        protected function resolveNonEditableContentWrappingTdOptions()
+        {
+            $htmlOptions            = $this->resolveNonEditableContentWrappingTdHtmlOptions();
+            $htmlOptions['align']   = $this->properties['backend']['align'];
+            $width                  = ArrayUtil::getNestedValue($this->properties, "backend['width']");
+            if ($width)
+            {
+                $htmlOptions['width']   = $width;
+            }
+            return $htmlOptions;
+        }
+
+        protected function resolveNonEditableContentWrappingTdHtmlOptions()
+        {
+            return array('class' => 'button-container');
         }
     }
 ?>

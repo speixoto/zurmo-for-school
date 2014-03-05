@@ -42,9 +42,10 @@
 
 @import "variables.less";
 
-
-body{
-	padding: 20px 0 !important;
+body:hover{
+	.element-wrapper{
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+	}
 }
 
 .element-wrapper{
@@ -52,28 +53,19 @@ body{
 	display:block;
 	width: 100%;
 	height: 100%;
-	//box-shadow: inset 0 0 0 2px #545454;
 	&:hover{
-		//box-shadow: inset 0 0 0 2px #545454;
-		box-shadow: inset 0 0 0 2px #ccc;
 		> .builder-element-toolbar{
 			visibility: visible;
 		}
 	}
 }
 
-.hoverz{
-	font-weight: bold !important;
-	font-style: italic !important;
-	text-decoration: line-through !important;
-}
-
 .builder-element-toolbar{
 	display: block;
 	visibility: hidden;
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 1px;
+	right: 1px;
 	z-index: 1000;
 	span{
 		width: 24px;
@@ -81,7 +73,6 @@ body{
 		display: inline-block;
 		border: 1px solid #ccc;
 		text-align: center;
-		//background: #efefef;
 		background:rgb(255, 255, 255);
 	}
 	i{
@@ -108,19 +99,12 @@ table.builder-element-non-editable{
 	display: table;
 }
 
-.row,
-.sortable-elements{
-	&:hover{
-		//box-shadow: inset 0 0 0 2px #545454;
-		.builder-element-toolbar{
-		//	visibility: visible;
-		}
-	}
+td.sortable-elements.ui-sortable{
+	padding: 0;
 }
 
-
-td.sortable-elements.ui-sortable{
-	padding: 10px 0;
+td.wrapper{
+	vertical-align: middle;
 }
 
 .icon-action-move:before  { content: ")"; }
@@ -133,23 +117,27 @@ td.sortable-elements.ui-sortable{
 	min-height: 60px;
 }
 
-.editing-element,
 .hover{
-	box-shadow: inset 0 0 5px 0 @themeColor !important;
+	box-shadow: inset 0 0 0 2px #ccc !important;
+}
+
+.editing-element{
+	box-shadow: inset 0 0 8px 0 @themeColor  !important;
 }
 
 .ghost{
 	display: block;
-	background: rgba(237, 237, 237, 0.8);
-	box-shadow:inset 0 0 5px 0 #ccc;
-	color: #9b9b9a;
-	text-shadow:0 1px 0 #fff;
-	padding: 10px 0;
-	//height: 20px;
-	//line-height: 20px;
-	text-align: center;
-	width: 100%;
-	letter-spacing: 1px;
+	span{
+		display: block;
+		background: rgba(255, 255, 255, 0.5);
+		border:2px dashed @themeColor;
+		color: @themeColor;
+		padding: 10px 0;
+		text-align: center;
+		width: 100%;
+		letter-spacing: 1px;
+		font-size: 16px;
+	}
 }
 
 .element-wrapper{

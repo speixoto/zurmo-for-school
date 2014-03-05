@@ -60,7 +60,7 @@ var emailTemplateEditor = {
         isInited: false
     },
     init : function (elementsContainerId, elementsToPlaceSelector, iframeSelector, editSelector, editFormSelector,
-                     editActionSelector, moveActionSelector, deleteActionSelector, iframeOverlaySelector,
+                     editActionSelector, moveActionSelector, deleteActionSelector, cellDroppableClass, iframeOverlaySelector,
                      cachedSerializedDataSelector, editElementUrl, getNewElementUrl, alertErrorOnDelete,
                      dropHereMessage, csrfToken, doNotWrapInRow, wrapInRow, wrapInHeaderRow) {
         if (!this.settings.isInited)
@@ -73,6 +73,7 @@ var emailTemplateEditor = {
             this.settings.editActionSelector            = editActionSelector;
             this.settings.moveActionSelector            = moveActionSelector;
             this.settings.deleteActionSelector          = deleteActionSelector;
+            this.settings.cellDroppableClass            = cellDroppableClass;
             this.settings.iframeOverlaySelector         = iframeOverlaySelector;
             this.settings.cachedSerializedDataSelector  = cachedSerializedDataSelector;
             this.settings.editElementUrl                = editElementUrl;
@@ -132,7 +133,7 @@ var emailTemplateEditor = {
             revert: 'invalid',
             cursorAt: { left:  -10, top: -10 },
             helper: function(event, ui){
-                elementDragged      = $(event.currentTarget),
+                elementDragged      = $(event.currentTarget);
                 elementDraggedClass = $(event.currentTarget).data('class');
                 clone = $('<div class="draggable-element-clone">' + $(event.currentTarget).html() + '</div>');
                 return clone;
@@ -150,14 +151,15 @@ var emailTemplateEditor = {
         var mostTopElement;
         var mostTopElementHalf = 0;
         var positions = [];
-        emailTemplateEditor.settings.ghost = $('<div class="ghost">' +  emailTemplateEditor.settings.dropHereMessage + '</div>');
+        emailTemplateEditor.settings.ghost = $('<div class="ghost"><span>' +  emailTemplateEditor.settings.dropHereMessage + '</span></div>');
 
         $('#building-blocks').on('mousedown', onBodyMouseDown);
+        $(emailTemplateEditor.settings.iframeSelector).contents().find('body').on('mousemove', onIFrameBodyMouseMove);
 
         function onBodyMouseDown(event){
             offset = $(emailTemplateEditor.settings.iframeSelector).offset();
             iframeRect = iframeElement.getBoundingClientRect();
-            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');//'.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
+            containers = $(emailTemplateEditor.settings.iframeSelector).contents().find('.sortable-elements > .element-wrapper, .sortable-rows > .element-wrapper');
             emailTemplateEditor.settings.isDragging = true;
             $('body').on('mousemove', onBodyMouseMove);
             $('body').on('mouseup', onBodyMouseUp);
@@ -174,12 +176,12 @@ var emailTemplateEditor = {
             $('body').off('mouseup', onBodyMouseUp);
             emailTemplateEditor.settings.isDragging = false;
             if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
-                var wrapInRow       = elementDragged.data('wrap');
+                var wrapInRow = elementDragged.data('wrap');
                 if (typeof wrapInRow == 'undefined') {
                     if( emailTemplateEditor.settings.ghost.parent().hasClass('sortable-rows') === true ){
-                        wrapInRow   = emailTemplateEditor.settings.wrapInRow;
+                        wrapInRow = emailTemplateEditor.settings.wrapInRow;
                     } else {
-                        wrapInRow   = emailTemplateEditor.settings.doNotWrapInRow;
+                        wrapInRow = emailTemplateEditor.settings.doNotWrapInRow;
                     }
                 }
                 emailTemplateEditor.placeNewElement(elementDraggedClass, wrapInRow, iframeContents, innerElements);
@@ -200,13 +202,18 @@ var emailTemplateEditor = {
                 for(i = 0; i < positions.length; i++){
                     if( point.left > positions[i].left && point.left < positions[i].right &&
                         point.top > positions[i].top && point.top < positions[i].bottom ){
-                        innerElements.push(containers[i]);
+                        //Only make container for sortable-elements if the elementDragged is cellDroppable
+                        if (($(containers[i]).closest('td').hasClass('sortable-elements') &&
+                             $(elementDragged).hasClass(emailTemplateEditor.settings.cellDroppableClass))) {
+                            innerElements.push(containers[i]);
+                        } else if (($(containers[i]).closest('td').hasClass('sortable-rows'))) {
+                            innerElements.push(containers[i]);
+                        }
                     }
                 }
-                console.log(innerElements);
                 if(innerElements.length > 0){
                     mostTopElement = $(innerElements[innerElements.length-1]);
-                    $(mostTopElement).addClass('hover');
+                    mostTopElement.addClass('hover');
                     mostTopElementHalf = mostTopElement.outerHeight(true) / 2;
                     if(event.pageY < mostTopElement.offset().top + offset.top + mostTopElementHalf){
                         mostTopElement.before(emailTemplateEditor.settings.ghost);
@@ -215,6 +222,11 @@ var emailTemplateEditor = {
                     }
                 }
             }
+        }
+
+        function onIFrameBodyMouseMove(event){
+            $(emailTemplateEditor.settings.iframeSelector).contents().find('.hover').removeClass('hover');
+            $(event.target).closest('.element-wrapper').addClass('hover');
         }
     },
     //Init the cells to be sortable
@@ -258,7 +270,7 @@ var emailTemplateEditor = {
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',
-            data: {className: elementClass, renderForCanvas: 1, wrapElementInRow: wrapElement, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
+            data: {BuilderElementEditableModelForm: {className: elementClass}, renderForCanvas: 1, wrapElementInRow: wrapElement, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken},
             beforeSend: function() {
                     //Show an overlay with loading spinner
                     emailTemplateEditor.freezeLayoutEditor();
@@ -311,10 +323,11 @@ var emailTemplateEditor = {
         elementClass        = element.data('class');
         //Extract serializedData and assign to JS vars e.g. content, properties
         elementProperties   = $.extend({}, element.data('properties'));
-        var serializedData = $.parseJSON(emailTemplateEditor.compileSerializedData());
+        var serializedData  = $.parseJSON(emailTemplateEditor.compileSerializedData());
         elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
-        postData            = {id: id, className: elementClass, renderForCanvas: 1, properties: elementProperties,
-                                content: elementContent, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken};
+        //TODO: @sergio: Move the BuilderElementEditableModelForm as a params on settings
+        postData            = {BuilderElementEditableModelForm: {id: id, className: elementClass, properties: elementProperties,
+                               content: elementContent}, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken, renderForCanvas: 1};
         postData            = decodeURIComponent($.param(postData));
         //Send an ajax to resolveElementEditableActionUrl()
         $.ajax({
@@ -388,7 +401,7 @@ var emailTemplateEditor = {
         };
 
         var data    = {};
-        var elementDataArray = contents.find('.element-data');
+        var elementDataArray = $(emailTemplateEditor.settings.iframeSelector).contents().find('.element-data');
         for (var i = 0; i < elementDataArray.length; i++){
             var parentsElementData = $(elementDataArray[i]).parents('.element-data:first');
             if (parentsElementData.length == 0)

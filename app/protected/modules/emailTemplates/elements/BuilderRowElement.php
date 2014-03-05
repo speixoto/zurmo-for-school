@@ -72,16 +72,17 @@
         {
             $extraColumns           = array_splice($this->content, $count);
             $lastKey                = ArrayUtil::findLastKey($this->content);
-            $lastKeyContent         = array();
-            if (isset($this->content[$lastKey]['content']))
+            $lastKeyContent         = ArrayUtil::getNestedValue($this->content, "${lastKey}['content']");
+            if (!isset($lastKeyContent))
             {
-                $lastKeyContent         = $this->content[$lastKey]['content'];
+                $lastKeyContent = array();
             }
             foreach ($extraColumns as $extraColumn)
             {
-                if (isset($extraColumn['content']))
+                $extraColumnContent     = ArrayUtil::getArrayValue($extraColumn, 'content');
+                if (isset($extraColumnContent))
                 {
-                    $lastKeyContent   = CMap::mergeArray($lastKeyContent, $extraColumn['content']);
+                    $lastKeyContent   = CMap::mergeArray($lastKeyContent, $extraColumnContent);
                 }
             }
             $this->content[$lastKey]['content'] = $lastKeyContent;
@@ -100,11 +101,12 @@
 
         protected function resolveColumnCountConfiguration()
         {
-            if (isset($this->properties['backend']['configuration']))
+            $configuration  = ArrayUtil::getNestedValue($this->properties, "backend['configuration']");
+            if (isset($configuration))
             {
-                if (strpos($this->properties['backend']['configuration'], ':') === false)
+                if (strpos($configuration, ':') === false)
                 {
-                    return intval($this->properties['backend']['configuration']);
+                    return intval($configuration);
                 }
                 return 2;
             }
@@ -138,11 +140,7 @@
         protected function resolveTableCssClassNames($columnWrappingTable = false)
         {
             $cssClasses = null;
-            $isHeader   = false;
-            if (isset($this->properties['backend']['header']) && $this->properties['backend']['header'])
-            {
-                $isHeader = true;
-            }
+            $isHeader   = (bool)ArrayUtil::getNestedValue($this->properties, "backend['header']");
             // $columnWrappingTable = true, $header = true      : container
             // $columnWrappingTable = false, $header = false    : container
             if (($columnWrappingTable && $isHeader) ||
@@ -190,7 +188,8 @@
 
         protected function resolveColumnCssClassesByRowConfiguration()
         {
-            if (!isset($this->properties['backend']['configuration']))
+            $configuration  = ArrayUtil::getNestedValue($this->properties, "backend['configuration']");
+            if (!isset($configuration))
             {
                 return array();
             }
@@ -198,9 +197,9 @@
             $columnCssClasses           = null;
             $columnKeysAndCssClasses    = null;
             $columnKeys                 = array_keys($this->content);
-            if (strpos($this->properties['backend']['configuration'], ':') == false)
+            if (strpos($configuration, ':') == false)
             {
-                $columnCount                = intval($this->properties['backend']['configuration']);
+                $columnCount                = intval($configuration);
                 $columnWidth                = NumberToWordsUtil::convert(static::MAX_COLUMN_WIDTH / $columnCount);
                 $columnCssClasses           = array(BuilderColumnElement::TABLE_CSS_CLASSES_PARAM_KEY => $columnWidth);
                 $columnCssClasses           = array_fill(0, count($columnKeys), $columnCssClasses);
@@ -208,7 +207,7 @@
             }
             else
             {
-                $ratios                     = explode(':', $this->properties['backend']['configuration']);
+                $ratios                     = explode(':', $configuration);
                 $total                      = array_sum($ratios);
                 $unitRatioWidth             = static::MAX_COLUMN_WIDTH / $total;
                 foreach ($ratios as $ratio)
