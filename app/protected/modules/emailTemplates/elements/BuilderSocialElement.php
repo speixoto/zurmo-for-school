@@ -106,8 +106,7 @@
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
-            //$htmlOptions['class']   .= ' button ';
-            $htmlOptions['class']   .= $this->properties['backend']['layout'];
+            $htmlOptions['class']   .= ' ' .$this->properties['backend']['layout'];
             return $htmlOptions;
         }
 
