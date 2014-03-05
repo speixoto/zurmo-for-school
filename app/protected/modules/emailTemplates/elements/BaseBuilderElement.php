@@ -1311,10 +1311,17 @@ replaceElementInIframe.replaceWith(html);
 
         protected function getRules()
         {
-            array();
+            return array('font-size'        => 'validateInteger',
+                         'border-radius'    => 'validateInteger',
+                         'border-width'     => 'validateInteger',
+                         'line-height'      => 'validateInteger',
+                         'border-top-width' => 'validateInteger',
+                         'divider-padding'  => 'validateInteger',
+                         'height'           => 'validateInteger');
         }
 
-        protected function validateSize($value)
+//todo: properly use Cvalidator for this
+        protected function validateInteger($value)
         {
             if ($value == null)
             {
