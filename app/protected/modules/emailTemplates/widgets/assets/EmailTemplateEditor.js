@@ -253,9 +253,14 @@ var emailTemplateEditor = {
                 emailTemplateEditor.addPlaceHolderForEmptyCells();
                 emailTemplateEditor.canvasChanged();
             },
-            cursorAt: { top: 0, left: 0 },
+            cursorAt: { top: -10, right: 60 },
             cursor: 'move',
-            connectWith: iframeContents.find(connectToSelector)
+            connectWith: iframeContents.find(connectToSelector),
+            zIndex: 999999,
+            appendTo: $(emailTemplateEditor.settings.iframeSelector).contents().find('body'),
+            helper: function(event, ui){
+                return $('<div class="draggable-builder-element">' + $(ui).html() + '</div>')
+            }
         });
     },
     //Init the rows to be sortable
@@ -271,8 +276,12 @@ var emailTemplateEditor = {
             stop: function( event, ui ) {
                 emailTemplateEditor.canvasChanged();
             },
-            cursorAt: { top: 0, left: 0 },
-            cursor: 'move'
+            cursorAt: { top: -10, right: 60 },
+            cursor: 'move',
+            zIndex: 999999,
+            appendTo: $(emailTemplateEditor.settings.iframeSelector).contents().find('body'),
+            helper: function(event, ui){
+                return $('<div class="draggable-builder-element">' + $(ui).html() + '</div>')            }
         });
     },
     //Used on a new element is dragged and dropped from outside iframe
