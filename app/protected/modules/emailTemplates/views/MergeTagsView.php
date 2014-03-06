@@ -139,6 +139,7 @@
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('treeview');
             $cs->registerCoreScript('bbq');
+            $cs->registerCssFile(Yii::app()->getClientScript()->getCoreScriptUrl() . '/treeview/jquery.treeview.css');
             Yii::app()->clientScript->registerScript('mergeTagsScript' . $this->uniqueId,
                                                      $this->renderTreeViewAjaxScriptContent());
             $script = '

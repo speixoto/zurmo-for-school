@@ -123,7 +123,7 @@
         protected function renderAfterFormLayout($form)
         {
             $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column strong-right'), $content);
         }
 
         protected function renderAfterFormLayoutForDetailsContent($form = null)
@@ -139,9 +139,9 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            $content  = $this->renderMergeTagsContent();
-            $content .= $element->render();
-            return ZurmoHtml::tag('div', array('class' => 'autoresponder-combined-content'), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderMergeTagsContent());
+            $content .= ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            return $content;
         }
 
         protected function renderMergeTagsContent()
