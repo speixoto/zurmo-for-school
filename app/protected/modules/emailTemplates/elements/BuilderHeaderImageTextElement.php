@@ -46,8 +46,7 @@
 
         protected function resolveDefaultLogoColumn(& $content)
         {
-            $defaultContent  = array('image' => '<img src="http://placehold.it/200x50">');
-            $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas, null, null, $defaultContent);
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);

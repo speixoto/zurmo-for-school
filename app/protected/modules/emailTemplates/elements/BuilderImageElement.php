@@ -48,7 +48,12 @@
 
         protected function resolveDefaultContent()
         {
-            return array('image' => '<img src="http://placehold.it/200x200"></img>');
+            return array('image' => ZurmoHtml::image($this->resolveDefaultImageUrl()));
+        }
+
+        protected function resolveDefaultImageUrl()
+        {
+            return PlaceholderImageUtil::resolvePlaceholderImageUrl();
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
