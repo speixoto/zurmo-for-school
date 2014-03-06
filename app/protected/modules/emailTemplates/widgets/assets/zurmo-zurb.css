@@ -19,8 +19,11 @@ div img {
 .fancy-divider {
 	width: 100%;
 }
-td.wrapper {
+table.header td.wrapper {
 	vertical-align: middle;
+}
+td.wrapper{
+	vertical-align: top;
 }
 td.button-container {
 	text-align: center;
@@ -30,6 +33,10 @@ a.newsletter-button {
 	width: 100%;
 	height: 100%;
 	line-height: 1;
+}
+a.newsletter-button span {
+	display: inline-block;
+	line-height: 1;
 	padding: 10px 20px;
 }
 table.button,
@@ -37,8 +44,10 @@ table.tiny-button,
 table.small-button,
 table.medium-button,
 table.large-button {
-	width: auto;
-	overflow: visible;
+	/*width: auto;*/
+	width: 100%;
+	/*overflow: visible;*/
+	overflow:hidden;
 }
 table.button td,
 table.tiny-button td,
@@ -77,13 +86,21 @@ a.Twitter {
 a.Twitter:hover {
 	background: #0087bb !important;
 }
-a.Google-plus {
-	color: #ffffff;
-	background-color: #DB4A39;
-	border-color: #CC0000;
-}
-a.Google-plus:hover {
+a.GooglePlus {
+	 color: #ffffff;
+	 background-color: #DB4A39;
+	 border-color: #CC0000;
+ }
+a.GooglePlus:hover {
 	background: #CC0000 !important;
+}
+a.YouTube {
+	color: #ffffff;
+	background-color: #db1925;
+	border-color: #cc0f29;
+}
+a.YouTube:hover {
+	background: #cc0f29 !important;
 }
 a.Instagram {
 	color: #ffffff;
@@ -100,4 +117,39 @@ a.Website {
 }
 a.Website:hover {
 	background: #560861 !important;
+}
+
+table.horizontal, table.vertical{
+	width: 100%;
+}
+
+table.horizontal a.Facebook,
+table.horizontal a.Twitter,
+table.horizontal a.GooglePlus,
+table.horizontal a.YouTube,
+table.horizontal a.Instagram,
+table.horizontal a.Website{
+	display:inline-block;
+	margin: 0 5px;
+	width: auto;
+}
+
+table.vertical a.Facebook,
+table.vertical a.Twitter,
+table.vertical a.GooglePlus,
+table.vertical a.YouTube,
+table.vertical a.Instagram,
+table.vertical a.Website{
+	display:block;
+	margin:5px 0;
+	width: 100%;
+}
+
+a.Facebook:visited,
+a.Twitter:visited,
+a.GooglePlus:visited,
+a.YouTube:visited,
+a.Instagram:visited,
+a.Website:visited{
+	color:#ffffff !important;
 }

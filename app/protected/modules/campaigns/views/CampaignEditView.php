@@ -42,8 +42,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'    => 'CancelLink'),
                             array('type'    => 'SaveButton', 'label' => 'eval:static::renderLabelForSaveButton()'),
+                            array('type'    => 'CancelLink'),
                             array('type'    => 'CampaignDeleteLink'),
                         ),
                     ),
@@ -160,7 +160,7 @@
         protected function renderAfterFormLayout($form)
         {
             $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column strong-right'), $content);
         }
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
@@ -172,15 +172,15 @@
             }
             else
             {
-                $content .= $this->renderMergeTagsContent();
+                $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderMergeTagsContent());
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
             }
             if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            $content .= $element->render();
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $content);
+            $content .= ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            return $content;
         }
 
         protected function renderMergeTagsContent()

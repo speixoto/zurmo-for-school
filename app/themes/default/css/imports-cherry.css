@@ -7495,7 +7495,7 @@ body .overlay-view .after-form-details-content a:hover {
 }
 .autoresponder-combined-content,
 .email-template-combined-content {
-  padding: 0 15px;
+  padding: 0;
   position: relative;
 }
 .autoresponder-combined-content .big-spinner,
@@ -7514,8 +7514,9 @@ body .overlay-view .after-form-details-content a:hover {
   left: 0 !important;
   top: 0 !important;
 }
-.email-template-combined-content {
-  padding: 0;
+.autoresponder-combined-content.strong-right,
+.email-template-combined-content.strong-right {
+  padding-left: 15px;
 }
 .email-template-content .big-spinner {
   position: absolute;
@@ -11261,6 +11262,12 @@ a + .project-stats {
   -ms-border-radius: 6px;
   -o-border-radius: 6px;
   border-radius: 6px;
+}
+.redactor_toolbar li a.re-mergetags {
+  background-image: url("../images/merge-tags.png");
+}
+.redactor_toolbar li a.re-mergetags:hover {
+  background-image: url("../images/merge-tags.png");
 }
 .merge-view {
   width: 100% !important;
