@@ -66,7 +66,7 @@
             $this->assertEquals(1, $gamePoint->transactions->count());
             $gamePoint->addValue(50, false);
             $this->assertTrue($gamePoint->save());
-            GamePointTransaction::addTransactionForPerformance($gamePoint, 50);
+            GamePointTransaction::addTransactionResolvedForOptimization($gamePoint, 50);
             $this->assertEquals(60, $gamePoint->value);
             $gamePoint::forgetAll();
             $gamePoint = GamePoint::getById($id);

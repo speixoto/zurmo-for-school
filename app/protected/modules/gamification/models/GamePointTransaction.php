@@ -80,7 +80,7 @@
             return $metadata;
         }
 
-        public static function addTransactionForPerformance($gamePoint, $value)
+        public static function addTransactionResolvedForOptimization($gamePoint, $value)
         {
             $transaction = new GamePointTransaction();
             $transaction->value = $value;

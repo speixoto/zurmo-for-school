@@ -221,6 +221,7 @@
         public function addValue($value, $createTransaction = true)
         {
             assert('is_int($value)');
+            assert('is_bool($createTransaction)');
             $this->unrestrictedSet('value', $this->value + $value);
             if ($createTransaction)
             {
