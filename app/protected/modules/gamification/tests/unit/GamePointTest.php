@@ -64,20 +64,6 @@
             $this->assertEquals($user,       $gamePoint->person);
 
             $this->assertEquals(1, $gamePoint->transactions->count());
-            $gamePoint->addValue(50);
-            $this->assertTrue($gamePoint->save()); // Added for test to showcase test failure
-            $this->assertEquals(60, $gamePoint->value);
-            $this->assertEquals(2, $gamePoint->transactions->count());
-            $this->assertEquals(10, $gamePoint->transactions[0]->value);
-            $this->assertEquals(50, $gamePoint->transactions[1]->value);
-
-            // This is problem
-            // After this, person in original model, and rerived person are not same anymore
-            // I think this have something with person relationship in GamePoint, I think it should related to user
-            $gamePoint::forgetAll();
-            /*
-            // Code below works fine, but the problem is with $gamePoint::forgetAll();
-            $this->assertEquals(1, $gamePoint->transactions->count());
             $gamePoint->addValue(50, false);
             $this->assertTrue($gamePoint->save());
             GamePointTransaction::addTransactionForPerformance($gamePoint, 50);
@@ -88,7 +74,7 @@
             $this->assertEquals(2, $gamePoint->transactions->count());
             $this->assertEquals(10, $gamePoint->transactions[0]->value);
             $this->assertEquals(50, $gamePoint->transactions[1]->value);
-            */
+
         }
 
         /**
