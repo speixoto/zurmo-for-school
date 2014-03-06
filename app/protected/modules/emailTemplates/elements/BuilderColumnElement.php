@@ -69,7 +69,7 @@
 
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
-            return array('class' => 'sortable-elements');
+            return array('class' => BaseBuilderElement::BUILDER_ELEMENT_SORTABLE_ELEMENTS_CLASS);
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()

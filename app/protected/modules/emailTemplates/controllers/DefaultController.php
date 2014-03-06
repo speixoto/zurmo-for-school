@@ -517,7 +517,7 @@
         protected function actionRenderElement($editable = false)
         {
             Yii::app()->clientScript->setToAjaxMode();
-            $editableForm       = Yii::app()->request->getPost('BuilderElementEditableModelForm');
+            $editableForm       = Yii::app()->request->getPost(BaseBuilderElement::getModelClassName());
             $className          = ArrayUtil::getArrayValue($editableForm, 'className');
             $id                 = ArrayUtil::getArrayValue($editableForm, 'id');
             $properties         = ArrayUtil::getArrayValue($editableForm, 'properties');

@@ -83,30 +83,30 @@
                 throw new NotSupportedException();
             }
             $hasErrors = false;
-            foreach (ArrayUtil::flatten($this->$attribute, true) as $key => $value)
-            {
-                $elementClassName = $this->className;
-                $element = new $elementClassName();
-                $error = $element->validate($key, $value);
-                if (!($error === true))
-                {
-                    $prefix = null;
-                    $this->resolveErrorPrefixForProperties($this->$attribute, $prefix);
-                    $this->addError( $attribute . '_' . $prefix . $key, $error);
-                    $hasErrors = true;
-                }
-            }
+            $elementClassName = $this->className;
+            $element = new $elementClassName();
+            $prefix = 'properties';
+            $this->validatePropertiesByElement($this->$attribute, $element, $prefix, $hasErrors, $attribute, null);
+            $hasErrors = true;
             return !$hasErrors;
         }
-//todo: probably make static
-        protected function resolveErrorPrefixForProperties($data, & $prefix)
+
+        protected function validatePropertiesByElement($properties, $element, $prefix, & $hasErrors, $attribute, $key)
         {
-            foreach($data as $key => $element)
+            if(is_array($properties))
             {
-                if(is_array($element))
+                foreach ($properties as $key => $value)
                 {
-                    $prefix .= $key . '_';
-                    $this->resolveErrorPrefixForProperties($element, $prefix);
+                    $this->validatePropertiesByElement($value, $element, $prefix . '_' . $key, $hasErrors, $attribute, $key);
+                }
+            }
+            else
+            {
+                $error = $element->validate($key, $properties);
+                if (!($error === true))
+                {
+                    $this->addError($prefix, $error);
+                    $hasErrors = true;
                 }
             }
         }

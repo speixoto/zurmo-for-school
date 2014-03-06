@@ -62,6 +62,16 @@
         const BUILDER_ELEMENT_CELL_DROPPABLE_CLASS   = 'builder-element-cell-droppable';
 
         /**
+         * class used for builder placeholder of sortable cells
+         */
+        const BUILDER_ELEMENT_SORTABLE_ELEMENTS_CLASS   = 'sortable-elements';
+
+        /**
+         * class used for builder placeholder for sortable rows
+         */
+        const BUILDER_ELEMENT_SORTABLE_ROWS_CLASS   = 'sortable-rows';
+
+        /**
          * @var string Id of current element, unique.
          */
         protected $id;
@@ -1003,6 +1013,7 @@ replaceElementInIframe.replaceWith(html);
 " . $this->getAjaxScriptForInitSortableElements() . "
                                             emailTemplateEditor.unfreezeLayoutEditor();
                                             emailTemplateEditor.canvasChanged();
+                                            emailTemplateEditor.addPlaceHolderForEmptyCells();
                                         }";
 
             return $ajaxArray;
