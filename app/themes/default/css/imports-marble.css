@@ -7517,6 +7517,11 @@ body .overlay-view .after-form-details-content a:hover {
 .autoresponder-combined-content.strong-right,
 .email-template-combined-content.strong-right {
   padding-left: 15px;
+  padding-bottom: 15px;
+}
+.autoresponder-combined-content.full-width,
+.email-template-combined-content.full-width {
+  padding-right: 15px;
 }
 .email-template-content .big-spinner {
   position: absolute;

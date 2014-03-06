@@ -43,8 +43,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'    => 'AutorespondersCancelLink', 'renderType' => 'Edit'),
                             array('type'    => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type'    => 'AutorespondersCancelLink', 'renderType' => 'Edit'),
                             array('type'    => 'EditLink', 'renderType' => 'Details'),
                             array('type'    => 'AutoresponderDeleteLink'),
                         ),
@@ -57,7 +57,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'operationType',
-                                                                                'type' => 'AutoresponderOperationType'),
+                                                      'type' => 'AutoresponderOperationType'),
                                             ),
                                         ),
                                     )
@@ -123,7 +123,7 @@
         protected function renderAfterFormLayout($form)
         {
             $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column strong-right'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column full-width strong-right clearfix'), $content);
         }
 
         protected function renderAfterFormLayoutForDetailsContent($form = null)

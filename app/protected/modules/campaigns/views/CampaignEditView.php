@@ -160,7 +160,7 @@
         protected function renderAfterFormLayout($form)
         {
             $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column strong-right'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column strong-right clearfix'), $content);
         }
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
