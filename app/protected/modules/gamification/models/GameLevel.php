@@ -251,8 +251,9 @@
             }
             if ($gamePoint != null && $value > 0)
             {
-                $gamePoint->addValue($value);
+                $gamePoint->addValue($value, false);
                 $saved          = $gamePoint->save();
+                GamePointTransaction::addTransactionForPerformance($gamePoint, $value);
                 if (!$saved)
                 {
                     throw new NotSupportedException();

@@ -156,7 +156,8 @@
             }
             if ($gamePoint != null && $value > 0)
             {
-                $gamePoint->addValue($value);
+                $gamePoint->addValue($value, false);
+                GamePointTransaction::addTransactionForPerformance($gamePoint, $value);
                 $saved          = $gamePoint->save();
                 if (!$saved)
                 {
