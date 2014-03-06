@@ -119,6 +119,7 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" . BuilderEmailTemplateWizardForm::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO . "');
                         $('#SelectBaseTemplateForEmailTemplateWizardView').show();
                         $('#BuilderCanvasWizardView').hide();
+                        $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER_ID . "').hide();
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('66%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
                         return false;
