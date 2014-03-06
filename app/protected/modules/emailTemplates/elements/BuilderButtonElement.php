@@ -79,9 +79,9 @@
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $propertiesForm     = BuilderButtonElementPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm      = BuilderButtonElementPropertiesEditableElementsUtil::render($this->model, $form);
             $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form, array('line-height'));
             $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
             return $propertiesForm;
         }
