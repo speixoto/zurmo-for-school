@@ -157,8 +157,8 @@
             if ($gamePoint != null && $value > 0)
             {
                 $gamePoint->addValue($value, false);
-                GamePointTransaction::addTransactionResolvedForOptimization($gamePoint, $value);
                 $saved          = $gamePoint->save();
+                GamePointTransaction::addTransactionResolvedForOptimization($gamePoint, $value);
                 if (!$saved)
                 {
                     throw new NotSupportedException();

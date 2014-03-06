@@ -203,6 +203,7 @@
                     'type',
                     'value',
                     'person',
+                    'transactions'
                 ),
             );
             return $metadata;
