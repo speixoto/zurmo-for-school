@@ -136,7 +136,9 @@
 
         protected function registerScriptContent()
         {
-            Yii::app()->getClientScript()->registerCoreScript('treeview');
+            $cs = Yii::app()->getClientScript();
+            $cs->registerCoreScript('treeview');
+            $cs->registerCoreScript('bbq');
             Yii::app()->clientScript->registerScript('mergeTagsScript' . $this->uniqueId,
                                                      $this->renderTreeViewAjaxScriptContent());
             $script = '

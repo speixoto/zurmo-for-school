@@ -139,8 +139,23 @@
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            return ZurmoHtml::tag('div', array('class' => 'autoresponder-combined-content'), $element->render());
+            $content  = $this->renderMergeTagsContent();
+            $content .= $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'autoresponder-combined-content'), $content);
         }
+
+        protected function renderMergeTagsContent()
+        {
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $view = new MergeTagsView('Autoresponder',
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'textContent')),
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'htmlContent')),
+                            false);
+            $content = $view->render();
+            return $title . $content;
+        }
+
+
 
         protected function resolveElementDuringFormLayoutRender(& $element)
         {

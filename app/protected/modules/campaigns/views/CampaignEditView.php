@@ -165,20 +165,33 @@
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
+            $content = null;
             if (!$this->isCampaignEditable())
             {
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute);
             }
             else
             {
+                $content .= $this->renderMergeTagsContent();
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
             }
             if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            $spinner = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            $content .= $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $content);
+        }
+
+        protected function renderMergeTagsContent()
+        {
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $view = new MergeTagsView('Campaign',
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'textContent')),
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'htmlContent')),
+                            false);
+            $content = $view->render();
+            return $title . $content;
         }
 
         /**
