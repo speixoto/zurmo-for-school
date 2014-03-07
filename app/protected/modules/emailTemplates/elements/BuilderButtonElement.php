@@ -105,7 +105,7 @@
         protected function resolveNonEditableContentWrappingTdOptions()
         {
             $htmlOptions            = $this->resolveNonEditableContentWrappingTdHtmlOptions();
-            $htmlOptions['align']   = $this->properties['backend']['align'];
+            $htmlOptions['align']   = ArrayUtil::getArrayValue($this->properties['backend'], 'align');
             $width                  = ArrayUtil::getNestedValue($this->properties, "backend['width']");
             if ($width)
             {
