@@ -190,6 +190,25 @@
 
 .element-edit-form{
 	position: relative;
+	th{
+		width: 35%;
+	}
+	td{
+		width: 65%;
+	}
+}
+
+.builder-position-checkbox{
+	width: 50%;
+	display: inline-block;
+	label.hasCheckBox + label{
+		margin-left: 4px;
+	}
+}
+
+.builder-fancy-divider-radio{
+	width: 100%;
+	display: inline-block;
 }
 
 #element-settings{
@@ -304,9 +323,10 @@
 	.radius(6px);
 }
 
-.redactor_toolbar li a.re-mergetags {
-	background-image: url("@{path}merge-tags.png");
-}
-.redactor_toolbar li a.re-mergetags:hover {
-	background-image: url("@{path}merge-tags.png");
+.redactor_toolbar li a.re-mergeTags {
+	background-image: url("@{path}email-builder/merge-tags.png");
+	width: 80px !important;
+	&:hover {
+		background-image: url("@{path}email-builder/merge-tags-hover.png");
+	}
 }

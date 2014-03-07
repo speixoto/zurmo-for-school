@@ -74,14 +74,15 @@
         {
             $checkboxConfigurations = array(
                 'border-top'    => Zurmo::t('Core', 'Top'),
-                'border-right'  => Zurmo::t('Core', 'Right'),
                 'border-bottom' => Zurmo::t('Core', 'Bottom'),
                 'border-left'   => Zurmo::t('Core', 'Left'),
+                'border-right'  => Zurmo::t('Core', 'Right')
             );
             $content        = null;
             foreach ($checkboxConfigurations as $attribute => $label)
             {
-                $content            .= $this->renderCheckboxWithHiddenInput($label, $attribute, true);
+                $content            .= ZurmoHtml::tag('span', array('class' => 'builder-position-checkbox'),
+                                       $this->renderCheckboxWithHiddenInput($label, $attribute, true));
             }
             return $content;
         }

@@ -40,10 +40,10 @@
         {
             // TODO: @Shoaibi: Critical1: We need actual images and styles here.
             $styles    = array(
-                'transparent.gif'   => 'Fancy 1',
-                'transparent1.gif'   => 'Fancy 2',
-                'transparent2.gif'   => 'Fancy 3',
-                'transparent3.gif'    => 'Fancy 4',
+                'fancy-divider-1.png'   => 'Fancy 1',
+                'fancy-divider-2.png'   => 'Fancy 2',
+                'fancy-divider-3.png'   => 'Fancy 3',
+                'fancy-divider-4.png'   => 'Fancy 4',
             );
             return $styles;
         }
@@ -75,11 +75,12 @@
 
         public function getEditableHtmlOptions()
         {
+            //TODO @Shoaibi/Jason this should be handled html-wise like texture in user-ui-config
             $htmlOptions = array(
                 'name'      => $this->getEditableInputName(),
                 'id'        => $this->getEditableInputId(),
-                'separator' => '<br/>',
-                'template'  => '{input}{label}',
+                'separator' => '',
+                'template'  => '<div class="radio-input texture-swatch">{input}{label}</div>',
             );
             return $htmlOptions;
         }
