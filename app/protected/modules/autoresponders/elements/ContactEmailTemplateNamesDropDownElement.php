@@ -87,6 +87,8 @@
                             updateElementWithData(subjectElement, data.subject);
                             $(htmlContentElement).redactor("selectionAll");
                             $(htmlContentElement).redactor("insertHtml", data.htmlContent);
+                            var contentHeight = $(".redactor_box iframe").contents().find("body").outerHeight();
+                            $(".redactor_box iframe").height(contentHeight + 50);
                         }
 
                         function updateElementWithData(element, data)
