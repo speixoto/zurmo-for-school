@@ -53,7 +53,7 @@
             $name              = 'Blank';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'thumbnailUrl' => '',
+                'icon' => 'icon-template-1',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -108,7 +108,7 @@
             $name              = '1 Column';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'thumbnailUrl' => '',
+                'icon' => 'icon-template-2',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -427,7 +427,7 @@
             $name              = '2 Columns';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'thumbnailUrl' => '',
+                'icon' => 'icon-template-3',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -842,7 +842,7 @@
             $name              = '2 Columns strong right';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'thumbnailUrl' => '',
+                'icon' => 'icon-template-4',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -1256,7 +1256,7 @@
             $name              = '3 Columns';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'thumbnailUrl' => '',
+                'icon' => 'icon-template-5',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -1705,7 +1705,7 @@
             $name              = '3 Columns with hero';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'thumbnailUrl' => '',
+                'icon' => 'icon-template-6',
                 'dom' =>
                     array (
                         'canvas1' =>

@@ -42,6 +42,8 @@
 
         abstract protected function resolveBaseTemplates();
 
+        abstract protected function resolveThumbnailByModel(EmailTemplate $template);
+
         protected function renderControlEditable()
         {
             $content = null;
@@ -85,21 +87,27 @@
             foreach ($templates as $template)
             {
                 //there are 1->5 template icon types
-                $thumbnail           = ZurmoHtml::tag('i', array('class' => 'icon-template-1'), '');
+                $thumbnail           = $this->resolveThumbnail($template);
                 $label               = ZurmoHtml::tag('h4', array('class' => 'name'),  $template->name);
                 $data[$template->id] = $thumbnail . $label;
             }
             return $data;
         }
 
-        protected function resolveThumbnailUrl(EmailTemplate $template)
+        protected function resolveThumbnail(EmailTemplate $template)
         {
-            $unserializedData = CJSON::decode($template->serializedData);
-            if (!empty($unserializedData['thumbnailUrl']))
+            $thumbnail  = $this->resolveThumbnailByModel($template);
+            if (empty($thumbnail))
             {
-                return $unserializedData['thumbnailUrl'];
+                $thumbnail  = $this->resolveGenericThumbnail();
             }
-            return $this->resolveGenericThumbnailUrl();
+            return $thumbnail;
+        }
+
+
+        protected function resolveGenericThumbnail()
+        {
+            return ZurmoHtml::image($this->resolveGenericThumbnailUrl());
         }
 
         protected function resolveGenericThumbnailUrl()

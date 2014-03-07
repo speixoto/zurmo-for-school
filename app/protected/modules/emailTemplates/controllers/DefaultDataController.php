@@ -69,16 +69,24 @@
         protected function resolveMakeTemplateFunctionDefinitionById($id, & $functionDefinitions, array & $functionNames)
         {
             $name                   = null;
+            $builttype              = null;
             $serializeddata         = null;
-            $emailTemplate          =  ZurmoRedBean::getRow('select name,serializeddata from emailtemplate where id =' . $id);
+            $emailTemplate          =  ZurmoRedBean::getRow('select name,builttype,serializeddata from emailtemplate where id =' . $id);
+            if (empty($emailTemplate))
+            {
+                throw new NotFoundException("Unable to load model for id: ${id}");
+            }
             extract($emailTemplate);
+            if ($builttype != EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            {
+                throw new NotSupportedException("id: {$id} is not a builder template");
+            }
             $unserializedData       = CJSON::decode($serializeddata);
             if (json_last_error() != JSON_ERROR_NONE || empty($unserializedData))
             {
                 throw new NotSupportedException("JSON could not be translated");
             }
             $unserializedData['baseTemplateId'] = '';
-            $unserializedData['thumbnailUrl']   = '';
             $unserializedData       = var_export($unserializedData, true);
             $functionName           = $this->resolveFunctionNameFromTemplateName($name);
             $functionNames[]        = $functionName;

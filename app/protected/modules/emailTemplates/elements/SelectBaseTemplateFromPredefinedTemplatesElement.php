@@ -40,5 +40,15 @@
         {
             return EmailTemplate::getPredefinedBuilderTemplates();
         }
+
+        protected function resolveThumbnailByModel(EmailTemplate $template)
+        {
+            $unserializedData   = CJSON::decode($template->serializedData);
+            $icon               = ArrayUtil::getArrayValue($unserializedData, 'icon');
+            if (!empty($icon))
+            {
+                return ZurmoHtml::tag('i', array('class' => $icon), '');
+            }
+        }
     }
 ?>
