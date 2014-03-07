@@ -65,9 +65,9 @@
             return Yii::app()->themeManager->basePath . static::TRANSPARENT_IMAGE_PATH;
         }
 
-        public static function resolvePlaceholderImageUrl()
+        public static function resolvePlaceholderImageUrl($absolute = true)
         {
-            return static::resolveAbsoluteUrlForFile(static::PLACEHOLDER_IMAGE_PATH);
+            return static::resolveUrlForThemeFile(static::PLACEHOLDER_IMAGE_PATH, $absolute);
         }
 
         public static function resolveUrlForThemeFile($filePath, $absolute = true)
