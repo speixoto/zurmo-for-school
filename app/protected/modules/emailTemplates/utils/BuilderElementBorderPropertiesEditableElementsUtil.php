@@ -36,6 +36,16 @@
 
     class BuilderElementBorderPropertiesEditableElementsUtil extends BuilderElementPropertiesEditableElementsUtil
     {
+        public static function render(CModel $model, ZurmoActiveForm $form, array $excludeItems = array(), $wrapInTr = true, array $trOptions = array())
+        {
+            $content                               = parent::render($model, $form, $excludeItems, $wrapInTr, $trOptions);
+            $positionParams                        = static::resolveDefaultParams(Zurmo::t('Core', 'Position'));
+            $positionParams['checkboxInputPrefix'] = 'properties[backend][border-negation]';
+            $positionElement                        = new BorderPositionElement($model, null, $form, $positionParams);
+            $content                               .= $positionElement->render();
+            return $content;
+        }
+
         protected static function resolveConfiguration()
         {
             $configurationItems         = array();
@@ -45,7 +55,6 @@
                                             'border-color',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Border Color')));
-            // TODO: @Shoaibi: Critical2: Border width does not make sense to start with 8 here.
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
                                             'TextElement',

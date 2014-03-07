@@ -49,10 +49,10 @@
         {
             $parentOptions      = parent::resolveRedactorOptions();
             $options            = array(
-                'paragraphy'    => 'false',
-                'deniedTags'    => json_encode(array()),
-                'buttons'       => $this->resolveRedactorButtons(),
-                'plugins'       => "['mergeTags']"
+                'paragraphy'            => 'false',
+                'deniedTags'            => CJSON::encode(array()),
+                'buttons'               => $this->resolveRedactorButtons(),
+                'plugins'               => CJSON::encode($this->resolvePlugins()),
             );
             $options            = CMap::mergeArray($parentOptions, $options);
             return $options;
@@ -63,12 +63,16 @@
             return CJSON::encode(array());
         }
 
+        protected function resolvePlugins()
+        {
+            return array('fontfamily', 'fontsize', 'fontcolor', 'mergetags');
+        }
+
         protected function resolveRedactorButtons()
         {
             $buttons         = array('html', '|', 'formatting', 'under', 'bold', 'italic', 'deleted', '|',
-                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link',
-                                    '|', '|', 'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter',
-                                    'alignright', 'justify', '|', 'horizontalrule');
+                                    'unorderedlist', 'orderedlist', 'outdent', 'indent','|', 'alignleft', 'aligncenter',
+                                    'alignright', '|', 'table', 'link', '|', 'horizontalrule');
             return CJSON::encode($buttons);
         }
     }

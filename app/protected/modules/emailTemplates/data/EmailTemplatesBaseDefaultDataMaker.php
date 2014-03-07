@@ -34,44 +34,37 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class PocEmailTemplateEditAndDetailsView extends View
+    abstract class EmailTemplatesBaseDefaultDataMaker extends DefaultDataMaker
     {
-        //TODO: @sergio: Remove this view, its for the PoC only
-
-        protected function renderContent()
+        protected function makeBuilderPredefinedEmailTemplate($name, $unserializedData, $subject = null, $modelClassName = null,
+                                                    $language = null, $type = null, $isDraft = 0, $textContent = null,
+                                                    $htmlContent = null)
         {
-            $content = $this->renderForm();
-            return $content;
-        }
-
-        protected function renderForm()
-        {
-            $content = ZurmoHtml::openTag('div', array('class' => 'wide form'));
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                'ZurmoActiveForm',
-                array_merge(
-                    array('id' => 'edit-form'),
-                    array('enableAjaxValidation' => false)
-                )
-            );
-            $content .= $formStart;
-            $content .= ZurmoHtml::openTag('div', array('class' => 'attributesContainer'));
-            $content .= $this->renderDesignerLayoutEditorWidget();
-            $content .= ZurmoHtml::closeTag('div');
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $content .= ZurmoHtml::closeTag('div');
-            return $content;
-        }
-
-        protected function renderDesignerLayoutEditorWidget()
-        {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("emailTemplateEditor");
-            $cClipWidget->widget('application.modules.emailTemplates.widgets.EmailTemplateEditor', array());
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['emailTemplateEditor'];
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = $type;//EmailTemplate::TYPE_WORKFLOW;
+            $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE;
+            $emailTemplate->isDraft         = $isDraft;
+            $emailTemplate->modelClassName  = $modelClassName;
+            $emailTemplate->name            = $name;
+            if (empty($subject))
+            {
+                $subject                    = $name;
+            }
+            $emailTemplate->subject         = $subject;
+            if (!isset($language))
+            {
+                $language           = Yii::app()->languageHelper-> getForCurrentUser();
+            }
+            $emailTemplate->language        = $language;
+            $emailTemplate->htmlContent     = $htmlContent;
+            $emailTemplate->textContent     = $textContent;
+            $emailTemplate->serializedData  = CJSON::encode($unserializedData);
+            $saved                          = $emailTemplate->save(false);
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            assert('$saved');
         }
     }
 ?>

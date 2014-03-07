@@ -210,7 +210,7 @@
                                 'deniedTags'            => CJSON::encode(array()),
                                 'observeImages'         => 'true',
                                 'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),
-                                'imageGetJson'          => ImageFileModelUtil::getUrlForActionGetUploaded()
+                                'imageGetJson'          => ImageFileModelUtil::getUrlForActionGetUploaded(),
             ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);

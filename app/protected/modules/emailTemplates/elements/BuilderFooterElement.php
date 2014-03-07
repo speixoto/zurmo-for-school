@@ -47,18 +47,5 @@
                                     <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
                                     This email was sent to [[PRIMARY^EMAIL]].</p>');
         }
-
-        protected function resolveDefaultProperties()
-        {
-            $properties             = array(
-                'frontend'  => array(
-                    'inlineStyles'  => array(
-                        'font-size'             =>  '11',
-                        'background-color'      => '#ebebeb',
-                    )
-                )
-            );
-            return $properties;
-        }
     }
 ?>

@@ -380,12 +380,12 @@
 
         public function __set($attributeName, $value)
         {
+            parent::__set($attributeName, $value);
             if ($attributeName == 'serializedData' && $this->isBuilderTemplate() &&
-                ArrayUtil::getArrayValue($this->serializedData, 'dom'))
+                ArrayUtil::getArrayValue(CJSON::decode($this->serializedData), 'dom'))
             {
                 $this->htmlContent  = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($this->serializedData, false);
             }
-            parent::__set($attributeName, $value);
         }
     }
 ?>

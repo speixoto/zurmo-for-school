@@ -173,7 +173,7 @@
 
         protected function renderPlainTextAndHtmlContent(& $content)
         {
-            $params  = array('redactorPlugins' => "['mergeTags']");
+            $params  = array('redactorPlugins' => CJSON::encode(array('mergetags')));
             $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
             $element->editableTemplate  = '{label}{content}';
             $right = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
@@ -256,17 +256,15 @@
                 return;
             }
             Yii::app()->clientScript->registerScript('trashSomeDataOnModuleChangeScript', "
-                $('" . $this->resolveModuleClassNameJQuerySelector() . "').unbind('change.trashSomeDataOnModuleChange');
-                $('" . $this->resolveModuleClassNameJQuerySelector() . "').bind('change.trashSomeDataOnModuleChange', function()
+                $('" . $this->resolveModuleClassNameJQuerySelector() . "').unbind('change.trashSomeDataOnModuleChange')
+                                                                .bind('change.trashSomeDataOnModuleChange', function()
                 {
                     $('#" . ZurmoHtml::activeId($this->model, 'textContent') . "').val('');
                     if (" . intval($this->model->isPastedHtmlTemplate()) . ")
                     {
-                        // TODO: @Shoaibi/@Sergio: Critical2: How to do this.
-                        //var htmlContentId       = '" . ZurmoHtml::activeId($this->model, 'htmlContent') . "';
-                        //var htmlContentElement  = $('#' + htmlContentId);
-                        //htmlContentElement.val('');
-                        //$('.redactor_editor').html('');
+                        var htmlContentElement  = $('#" . ZurmoHtml::activeId($this->model, 'htmlContent') . "');
+                        $(htmlContentElement).redactor('selectionAll');
+                        $(htmlContentElement).redactor('insertHtml', '');
                     }
 
                     else if (" . intval($this->model->isBuilderTemplate()) . ")
@@ -285,7 +283,6 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
             $ajaxArray                  = parent::resolveAdditionalAjaxOptions($formName);
             $ajaxArray['success']       = "js:function(data)
                                             {

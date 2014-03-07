@@ -115,7 +115,7 @@
                 // baseTemplateId has changed.
                 $baseTemplateModel  = EmailTemplate::getById(intval($postUnserializedData['baseTemplateId']));
                 $unserializedData   = CJSON::decode($baseTemplateModel->serializedData);
-                unset($unserializedData['thumbnailUrl']);
+                unset($unserializedData['icon']);
                 $unserializedData['baseTemplateId'] = $postUnserializedData['baseTemplateId'];
             }
             else if ($templateUnserializedData != $postUnserializedData)

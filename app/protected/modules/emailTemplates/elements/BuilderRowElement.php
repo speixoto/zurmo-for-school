@@ -43,6 +43,15 @@
             return Zurmo::t('EmailTemplatesModule', 'Row');
         }
 
+        protected function resolveDefaultProperties()
+        {
+            return array(
+                'backend' => array(
+                    'configuration' => 1
+                )
+            );
+        }
+
         public function __construct($renderForCanvas = false, $id = null, $properties = null, $content = null, $params = null)
         {
             parent::__construct($renderForCanvas, $id, $properties, $content, $params);

@@ -1,5 +1,5 @@
 div img {
-  float: none;
+	float: none;
 }
 .builder-element-non-editable h1,
 .builder-element-non-editable h2,
@@ -8,73 +8,177 @@ div img {
 .builder-element-non-editable h5,
 .builder-element-non-editable h6,
 .builder-element-non-editable p {
-  font-size: inherit;
-  line-height: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  color: inherit;
-  text-align: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	font-family: inherit;
+	font-weight: inherit;
+	color: inherit;
+	text-align: inherit;
 }
 .simple-divider,
 .fancy-divider {
-  width: 100%;
+	width: 100%;
 }
-td.wrapper {
-  vertical-align: middle;
+table.header td.wrapper {
+	vertical-align: middle;
+}
+td.wrapper{
+	vertical-align: top;
+}
+td.button-container {
+	text-align: center;
 }
 a.newsletter-button {
-  display: block;
-  width: 100%;
-  height: 100%;
-  line-height: 1;
-  padding: 10px 20px;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	line-height: 1;
+	background: #2ba6cb;
+	border: 1px solid #2284a1;
+}
+a.newsletter-button span {
+	display: inline-block;
+	line-height: 1;
+	padding: 10px 20px;
+}
+a.social-button {
+	display: inline-block;
+	width: 100%;
+	line-height: 1;
+	text-align: center;
+}
+a.social-button span {
+	display: inline-block;
+	line-height: 1;
+	padding: 10px 20px;
+}
+table.button,
+table.tiny-button,
+table.small-button,
+table.medium-button,
+table.large-button {
+	width: auto;
+	/*width: 100%;*/
+	/*overflow: visible;*/
+	overflow:visible;
 }
 table.button td,
 table.tiny-button td,
 table.small-button td,
 table.medium-button td,
 table.large-button td {
-  padding: 0;
-  background-color: none;
-  border: none;
+	background: none;
+	border: none;
 }
-table.tiny-button a {
-  padding: 5px 0 4px;
+table.button:hover td,
+table.tiny-button:hover td,
+table.small-button:hover td,
+table.medium-button:hover td,
+table.large-button:hover td {
+	background: none !important;
+	border: none;
 }
-table.small-button a {
-  padding: 8px 0 7px;
+td.container{
+	text-align: center;
+	width: 100%;
 }
-table.medium-button a {
-  padding: 12px 0 10px;
+.button-container{
+	text-align: center;
+	width: 100%;
+	overflow: hidden;
 }
-table.large-button a {
-  padding: 21px 0 18px;
+table.tiny-button td {
+	padding: 5px 5px 4px 5px;
+}
+table.small-button td {
+	padding: 8px 8px 7px 8px;
+}
+table.medium-button td {
+	padding: 12px 12px 10px 12px;
+}
+table.large-button td {
+	padding: 21px 21px 18px 21px;
 }
 a.Facebook {
-  background: #3b5998;
-  border-color: #2d4473;
+	color: #ffffff;
+	background: #3b5998;
+	border-color: #2d4473;
 }
 a.Facebook:hover {
-  background: #2d4473 !important;
+	background: #2d4473 !important;
 }
 a.Twitter {
-  background: #00acee;
-  border-color: #0087bb;
+	color: #ffffff;
+	background: #00acee;
+	border-color: #0087bb;
 }
 a.Twitter:hover {
-  background: #0087bb !important;
+	background: #0087bb !important;
 }
-a.Google-plus {
-  background-color: #DB4A39;
-  border-color: #CC0000;
+a.GooglePlus {
+	 color: #ffffff;
+	 background-color: #DB4A39;
+	 border-color: #CC0000;
+ }
+a.GooglePlus:hover {
+	background: #CC0000 !important;
 }
-a.Google-plus:hover {
-  background: #CC0000 !important;
+a.YouTube {
+	color: #ffffff;
+	background-color: #db1925;
+	border-color: #cc0f29;
+}
+a.YouTube:hover {
+	background: #cc0f29 !important;
 }
 a.Instagram {
-  background: #00acee;
-  border-color: #0087bb;
+	color: #ffffff;
+	background: #7b4829;
+	border-color: #773424;
 }
 a.Instagram:hover {
-  background: #0087bb !important;
+	background: #773424 !important;
+}
+a.Website {
+	color: #ffffff;
+	background: #7d098b;
+	border-color: #560861;
+}
+a.Website:hover {
+	background: #560861 !important;
+}
+
+table.horizontal, table.vertical{
+	width: 100%;
+}
+
+table.horizontal a.Facebook,
+table.horizontal a.Twitter,
+table.horizontal a.GooglePlus,
+table.horizontal a.YouTube,
+table.horizontal a.Instagram,
+table.horizontal a.Website{
+	display:inline-block;
+	margin: 0 5px 5px 0;
+	width: auto;
+}
+
+table.vertical a.Facebook,
+table.vertical a.Twitter,
+table.vertical a.GooglePlus,
+table.vertical a.YouTube,
+table.vertical a.Instagram,
+table.vertical a.Website{
+	display:block;
+	margin:5px 0;
+	width: 100%;
+}
+
+a.Facebook:visited,
+a.Twitter:visited,
+a.GooglePlus:visited,
+a.YouTube:visited,
+a.Instagram:visited,
+a.Website:visited{
+	color:#ffffff !important;
 }

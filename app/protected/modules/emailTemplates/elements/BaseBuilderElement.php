@@ -62,6 +62,16 @@
         const BUILDER_ELEMENT_CELL_DROPPABLE_CLASS   = 'builder-element-cell-droppable';
 
         /**
+         * class used for builder placeholder of sortable cells
+         */
+        const BUILDER_ELEMENT_SORTABLE_ELEMENTS_CLASS   = 'sortable-elements';
+
+        /**
+         * class used for builder placeholder for sortable rows
+         */
+        const BUILDER_ELEMENT_SORTABLE_ROWS_CLASS   = 'sortable-rows';
+
+        /**
          * @var string Id of current element, unique.
          */
         protected $id;
@@ -368,11 +378,35 @@
          */
         protected final function resolveInlineStylePropertiesNonEditable(array & $mergedProperties)
         {
+            $mergedProperties['style'] = '';
             $inlineStyles   = ArrayUtil::getArrayValue($mergedProperties, 'inlineStyles');
             if ($inlineStyles)
             {
-                $mergedProperties['style']  = $this->stringifyProperties($inlineStyles, null, null, ':', ';');
                 unset($mergedProperties['inlineStyles']);
+                $mergedProperties['style']  = $this->stringifyProperties($inlineStyles, null, null, ':', ';');
+            }
+            $this->resolveInlineStylesFromBackendPropertiesNonEditable($mergedProperties);
+        }
+
+        /**
+         * Resolve any inlineStyles we had to put in backend properties
+         * @param array $mergedProperties
+         */
+        protected function resolveInlineStylesFromBackendPropertiesNonEditable(array & $mergedProperties)
+        {
+            $this->resolveInlineStylesForBorderDirectionNegationFromBackendPropertiesNonEditable($mergedProperties);
+        }
+
+        protected function resolveInlineStylesForBorderDirectionNegationFromBackendPropertiesNonEditable(array & $mergedProperties)
+        {
+            $borderNegationStyles       = ArrayUtil::getNestedValue($this->properties, 'backend[border-negation]');
+            if (!empty($borderNegationStyles))
+            {
+                $borderNegationKeys     = array_keys($borderNegationStyles, 'none');
+                foreach ($borderNegationKeys as $borderNegationKey)
+                {
+                    $mergedProperties['style'] .= "${borderNegationKey}:none;";
+                }
             }
         }
 
@@ -850,8 +884,7 @@
         protected function registerApplyClickScript()
         {
             Yii::app()->clientScript->registerScript('applyClick', "
-                $('#" . $this->resolveApplyLinkId() . "').unbind('click');
-                $('#" . $this->resolveApplyLinkId() . "').bind('click', function()
+                $('#" . $this->resolveApplyLinkId() . "').unbind('click').bind('click', function()
                 {
                     jQuery.yii.submitForm(this, '', {}); return false;
                 });
@@ -880,8 +913,7 @@
         protected function registerCancelScript()
         {
             Yii::app()->clientScript->registerScript('cancelLinkClick', "
-                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick');
-                $('#" . $this->resolveCancelLinkId() . "').bind('click.cancelLinkClick', function()
+                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick').bind('click.cancelLinkClick', function()
                 {
                     hideElementEditFormOverlay();
                     $('#" . BuilderCanvasWizardView::ELEMENTS_CONTAINER_ID . "').show();
@@ -979,6 +1011,7 @@ replaceElementInIframe.replaceWith(html);
 " . $this->getAjaxScriptForInitSortableElements() . "
                                             emailTemplateEditor.unfreezeLayoutEditor();
                                             emailTemplateEditor.canvasChanged();
+                                            emailTemplateEditor.addPlaceHolderForEmptyCells();
                                         }";
 
             return $ajaxArray;
@@ -1190,14 +1223,7 @@ replaceElementInIframe.replaceWith(html);
          */
         protected function resolveDefaultElementParamsForEditableForm($label = '')
         {
-            $params = array();
-            // we set label to an empty string as a default value.
-            // we already hide label in non-editable representation of content element.
-            // it is only shown in editable representation, which can also be overriden to hide it.
-            // setting it to empty string here isn't to hide it.
-            // it is rather to avoid Element trying to do ask ModelForm's model for a label.
-            // BuilderElementEditableModelForm does not set a model so we would see an error there.
-            $params['labelHtmlOptions'] = array('label' => $label);
+            $params = BuilderElementPropertiesEditableElementsUtil::resolveDefaultParams($label);
             return $params;
         }
 

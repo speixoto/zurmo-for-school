@@ -34,41 +34,32 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderHeaderImageTextElement extends BuilderRowElement
+    class BuilderHeaderImageTextElement extends BuilderHeaderRowElement
     {
-        protected function adjustContentColumnDataForConfiguration()
+        protected function resolveDefaultContent()
         {
-            if (count($this->content) == 0)
-            {
-                $this->adjustContentWhenEmpty();
-            }
-            parent::adjustContentColumnDataForConfiguration();
+            $content = array();
+            $this->resolveDefaultLogoColumn($content);
+            $this->resolveDefaultTitleColumn($content);
+            return $content;
         }
 
-        protected function adjustContentWhenEmpty()
+        protected function resolveDefaultLogoColumn(& $content)
         {
-            $this->content   = array();
-            $this->resolveDefaultLogoColumn();
-            $this->resolveDefaultTitleColumn();
-        }
-
-        protected function resolveDefaultLogoColumn()
-        {
-            $defaultContent  = array('image' => '<img src="http://placehold.it/200x50">');
-            $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas, null, null, $defaultContent);
+            $element         = BuilderElementRenderUtil::resolveElement('BuilderImageElement', $this->renderForCanvas);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
-            $this->content[$columnElement->id] = $columnData[$columnElement->id];
+            $content[$columnElement->id] = $columnData[$columnElement->id];
         }
 
-        protected function resolveDefaultTitleColumn()
+        protected function resolveDefaultTitleColumn(& $content)
         {
             $element         = BuilderElementRenderUtil::resolveElement('BuilderHeaderTextElement', $this->renderForCanvas);
             $elementData     = BuilderElementRenderUtil::resolveSerializedDataByElement($element);
             $columnElement   = BuilderElementRenderUtil::resolveElement('BuilderColumnElement', $this->renderForCanvas, null, null, $elementData);
             $columnData      = BuilderElementRenderUtil::resolveSerializedDataByElement($columnElement);
-            $this->content[$columnElement->id] = $columnData[$columnElement->id];
+            $content[$columnElement->id] = $columnData[$columnElement->id];
         }
 
         public static function isUIAccessible()
@@ -79,17 +70,6 @@
         protected static function resolveLabel()
         {
             return Zurmo::t('EmailTemplatesModule', 'Header');
-        }
-
-        protected function resolveDefaultProperties()
-        {
-            $properties = array(
-                'backend'   => array(
-                    'header'        => 1,
-                    'configuration' => '1:2',
-                ),
-            );
-            return $properties;
         }
 
         protected static function resolveWidgetHtmlOptions()

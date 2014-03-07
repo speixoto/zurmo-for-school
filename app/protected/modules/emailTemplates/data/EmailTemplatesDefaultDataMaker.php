@@ -34,703 +34,2161 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplatesDefaultDataMaker extends DefaultDataMaker
+    class EmailTemplatesDefaultDataMaker extends EmailTemplatesBaseDefaultDataMaker
     {
+
         public function make()
         {
-            $this->makeBuilderEmailTemplate('Template with styles', $this->resolveSerializedDataForDummyTemplateWithStyles());
-            $this->makeBuilderEmailTemplate('Template without styles', $this->resolveSerializedDataForDummyTemplateWithoutStyles());
+            $this->makeBlank();
+            $this->makeOneColumn();
+            $this->makeTwoColumns();
+            $this->makeTwoColumnsWithStrongRight();
+            $this->makeThreeColumns();
+            $this->makeThreeColumnsWithHero();
+            return true;
         }
 
-        protected function makeBuilderEmailTemplate($name, $serializedData, $subject = null, $modelClassName = null, $language = null, $type = null, $isDraft = 0, $textContent = null, $htmlContent = null)
+        protected function makeBlank()
         {
-            $emailTemplate                  = new EmailTemplate();
-            $emailTemplate->type            = $type;//EmailTemplate::TYPE_WORKFLOW;
-            $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE;
-            $emailTemplate->isDraft         = $isDraft;
-            $emailTemplate->modelClassName  = $modelClassName;
-            $emailTemplate->name            = $name;
-            if (empty($subject))
-            {
-                $subject                    = $name;
-            }
-            $emailTemplate->subject         = $subject;
-            if (!isset($language))
-            {
-                $language           = Yii::app()->languageHelper-> getForCurrentUser();
-            }
-            $emailTemplate->language        = $language;
-            $emailTemplate->htmlContent     = $htmlContent;
-            $emailTemplate->textContent     = $textContent;
-            $emailTemplate->serializedData  = CJSON::encode($serializedData);
-            $saved      = $emailTemplate->save(false);
-            assert('$saved');
-        }
-
-        protected function resolveSerializedDataForDummyTemplateWithStyles()
-        {
-            return array(
-                'baseTemplateId'    => null,
-                // TODO: @Shoaibi/@Amit: Critical: thumbnails
-                'thumbnailUrl'      => 'some-thumbnail-url-here',
-                'dom'               => array(
-                    'canvas1'     => array(
-                        'class'       => 'BuilderCanvasElement',
-                        'properties'  => array('frontend' => array('inlineStyles' => array('background-color' =>  '#aaaaaa', 'color' => '#ff0000', 'font-size' => '18px'))),
-                        'content'     => array(
-                            'row1'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 1), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
-                                'content'       => array(
-                                    'row1column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row1column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 1 Col 1 Text 1</strong>',
-                                                ),
+            $name              = 'Blank';
+            $unserializedData  = array (
+                'baseTemplateId' => '',
+                'icon' => 'icon-template-0',
+                'dom' =>
+                    array (
+                        'canvas1' =>
+                            array (
+                                'content' =>
+                                    array (
+                                        'builderrowelement_1393965668_53163a6448794' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965668_53163a644866d' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '1',
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderRowElement',
                                             ),
-                                            'row1column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' =>  '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 1 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
                                     ),
-                                ),
+                                'properties' =>
+                                    array (
+                                        'frontend' =>
+                                            array (
+                                                'inlineStyles' =>
+                                                    array (
+                                                        'background-color' => '#ffffff',
+                                                        'color' => '#545454',
+                                                    ),
+                                            ),
+                                    ),
+                                'class' => 'BuilderCanvasElement',
                             ),
-                            'row2'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 2), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#fff000', 'font-size' => '16px'))),
-                                'content'       => array(
-                                    'row2column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row2column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 2 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row2column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row2column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row2column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 2 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row2column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row3'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 3), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
-                                'content'       => array(
-                                    'row3column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row3column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 3 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row3column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row3column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row3column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 3 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row3column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row3column3'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row3column3text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 3 Col 3 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row3column3text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 3 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row4'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 4), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
-                                'content'       => array(
-                                    'row4column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row4column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row4column3'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column3text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 3 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column3text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 3 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row4column4'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column4text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 4 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column4text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 4 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row5'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '1:2'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '16px'))),
-                                'content'       => array(
-                                    'row5column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row5column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 5 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row5column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row5column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row5column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 5 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row5column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row6'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '2:1'), 'frontend' => array('inlineStyles' => array('background-color' =>  '#dddddd', 'color' => '#0fff00', 'font-size' => '14px'))),
-                                'content'       => array(
-                                    'row6column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row6column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 6 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row6column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row6column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row6column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 6 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row6column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array('frontend' => array('inlineStyles'=> array('background-color' => '#555555','color' => '#0000ff', 'font-size' => '10px'))),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
                     ),
-                ),
             );
+            $this->makeBuilderPredefinedEmailTemplate($name, $unserializedData);
         }
 
-        protected function resolveSerializedDataForDummyTemplateWithoutStyles()
+        protected function makeOneColumn()
         {
-            return array(
-                'baseTemplateId'    => null,
-                // TODO: @Shoaibi/@Amit: Critical: thumbnails
-                'thumbnailUrl'      => 'some-thumbnail-url-here',
-                'dom'               => array(
-                    'canvas1'     => array(
-                        'class'       => 'BuilderCanvasElement',
-                        'properties'  => array(),
-                        'content'     => array(
-                            'row1'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 1)),
-                                'content'       => array(
-                                    'row1column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row1column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 1 Col 1 Text 1</strong>',
-                                                ),
+            $name              = '1 Column';
+            $unserializedData  = array (
+                'baseTemplateId' => '',
+                'icon' => 'icon-template-5',
+                'dom' =>
+                    array (
+                        'canvas1' =>
+                            array (
+                                'content' =>
+                                    array (
+                                        'builderheaderimagetextelement_1393965594_53163a1a0eb53' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965594_53163a1a0ef48' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1393965594_53163a1a0ee52' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x50">',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1393965594_53163a1a145cc' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderheadertextelement_1393965594_53163a1a14515' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Acme Inc. Newsletter',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#ffffff',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'text-align' => 'right',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderHeaderTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '1:2',
+                                                                'header' => '1',
+                                                            ),
+                                                        'frontend' =>
+                                                            array (
+                                                                'inlineStyles' =>
+                                                                    array (
+                                                                        'background-color' => '#282a76',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderHeaderImageTextElement',
                                             ),
-                                            'row1column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 1 Col 1 Text 2</li></ul>',
-                                                ),
+                                        'builderrowelement_1393965668_53163a6448794' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965668_53163a644866d' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertitleelement_1393965668_53163a6447762' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Hello there William S...',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h3',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#666666',
+                                                                                                        'font-size' => '24px',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'text-align' => 'center',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'builderimageelement_1393970522_53164d5a3787a' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/580x180">',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                        'builderexpanderelement_1393970557_53164d7d2881e' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'height' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderExpanderElement',
+                                                                            ),
+                                                                        'buildertextelement_1393965781_53163ad53b77c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<html>
+<head>
+</head>
+<body>
+<p>
+	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
+</p>
+</body>
+</html>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderTextElement',
+                                                                            ),
+                                                                        'builderbuttonelement_1393965942_53163b76e666c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'text' => 'Call Me',
+                                                                                                'sizeClass' => 'medium-button',
+                                                                                                'align' => 'left',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'href' => 'http://localhost/Zurmo/app/index.php',
+                                                                                                'target' => '_blank',
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'background-color' => '#97c43d',
+                                                                                                        'border-color' => '#7cb830',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderButtonElement',
+                                                                            ),
+                                                                        'builderdividerelement_1393965948_53163b7cb98ae' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'border-top-width' => '1',
+                                                                                                        'border-top-style' => 'solid',
+                                                                                                        'border-top-color' => '#cccccc',
+                                                                                                    ),
+                                                                                            ),
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'divider-padding' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderDividerElement',
+                                                                            ),
+                                                                        'buildersocialelement_1394060039_5317ab07cf03d' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'layout' => 'vertical',
+                                                                                                'services' =>
+                                                                                                    array (
+                                                                                                        'Twitter' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.twitter.com/',
+                                                                                                            ),
+                                                                                                        'Facebook' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.facebook.com/',
+                                                                                                            ),
+                                                                                                        'GooglePlus' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://gplus.com',
+                                                                                                            ),
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderSocialElement',
+                                                                            ),
+                                                                        'builderexpanderelement_1393970592_53164da0bd137' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'height' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderExpanderElement',
+                                                                            ),
+                                                                        'builderfooterelement_1393966090_53163c0ac51bd' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<html>
+<head>
+</head>
+<body>
+<p>
+	 {{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}
+</p>
+<p>
+	 © [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
+	                                      This email was sent to [[PRIMARY^EMAIL]].
+</p>
+</body>
+</html>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'background-color' => '#efefef',
+                                                                                                        'font-size' => '10px',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderFooterElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
                                             ),
-                                        ),
                                     ),
-                                ),
+                                'properties' =>
+                                    array (
+                                        'frontend' =>
+                                            array (
+                                                'inlineStyles' =>
+                                                    array (
+                                                        'background-color' => '#ffffff',
+                                                        'color' => '#545454',
+                                                    ),
+                                            ),
+                                    ),
+                                'class' => 'BuilderCanvasElement',
                             ),
-                            'row2'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 2)),
-                                'content'       => array(
-                                    'row2column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row2column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 2 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row2column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row2column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row2column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 2 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row2column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 2 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row3'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 3)),
-                                'content'       => array(
-                                    'row3column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row3column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 3 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row3column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row3column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row3column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 3 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row3column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row3column3'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row3column3text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 3 Col 3 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row3column3text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 3 Col 3 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row4'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => 4)),
-                                'content'       => array(
-                                    'row4column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row4column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row4column3'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column3text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 3 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column3text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 3 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row4column4'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row4column4text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 4 Col 4 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row4column4text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 4 Col 4 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row5'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '1:2')),
-                                'content'       => array(
-                                    'row5column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row5column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 5 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row5column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row5column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row5column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 5 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row5column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 5 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                            'row6'    => array(
-                                'class'         => 'BuilderRowElement',
-                                'properties'    =>  array('backend' => array('configuration' => '2:1')),
-                                'content'       => array(
-                                    'row6column1'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row6column1text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 6 Col 1 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row6column1text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 1 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                    'row6column2'   => array(
-                                        'class'         => 'BuilderColumnElement',
-                                        'properties'    => array(),
-                                        'content'       => array(
-                                            'row6column2text1'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<strong>Row 6 Col 2 Text 1</strong>',
-                                                ),
-                                            ),
-                                            'row6column2text2'     => array(
-                                                'class'         => 'BuilderTextElement',
-                                                'properties'    => array(),
-                                                'content'       => array(
-                                                    'text'      => '<ul><li>Row 6 Col 2 Text 2</li></ul>',
-                                                ),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
                     ),
-                ),
             );
+            $this->makeBuilderPredefinedEmailTemplate($name, $unserializedData);
+        }
+
+        protected function makeTwoColumns()
+        {
+            $name              = '2 Columns';
+            $unserializedData  = array (
+                'baseTemplateId' => '',
+                'icon' => 'icon-template-2',
+                'dom' =>
+                    array (
+                        'canvas1' =>
+                            array (
+                                'content' =>
+                                    array (
+                                        'builderheaderimagetextelement_1393965594_53163a1a0eb53' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965594_53163a1a0ef48' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1393965594_53163a1a0ee52' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x50">',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1393965594_53163a1a145cc' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderheadertextelement_1393965594_53163a1a14515' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Acme Inc. Newsletter',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#ffffff',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'text-align' => 'right',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderHeaderTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '1:2',
+                                                                'header' => '1',
+                                                            ),
+                                                        'frontend' =>
+                                                            array (
+                                                                'inlineStyles' =>
+                                                                    array (
+                                                                        'background-color' => '#282a76',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderHeaderImageTextElement',
+                                            ),
+                                        'builderrowelement_1394062546_5317b4d264a62' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062546_5317b4d26488b' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertitleelement_1394062546_5317b4d263942' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Hello there William S...',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h1',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#666666',
+                                                                                                        'font-size' => '28',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'line-height' => '200',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1393965668_53163a6448794' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965668_53163a644866d' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertextelement_1393965781_53163ad53b77c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<html>
+<head>
+</head>
+<body>
+<p>
+	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
+</p>
+</body>
+</html>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderTextElement',
+                                                                            ),
+                                                                        'builderbuttonelement_1393965942_53163b76e666c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'text' => 'Contact Us Now',
+                                                                                                'sizeClass' => 'medium-button',
+                                                                                                'align' => 'left',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'href' => 'http://localhost/Zurmo/app/index.php',
+                                                                                                'target' => '_blank',
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'background-color' => '#97c43d',
+                                                                                                        'border-color' => '#7cb830',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderButtonElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1394061698_5317b182c1f19' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertextelement_1394061967_5317b28fc8088' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<html>
+<head>
+</head>
+<body>
+<b>New Articles</b>
+<ul>
+	<li>Article Name about something</li>
+	<li>10 ways to create email templates</li>
+	<li>Great new marketing tools from Acme</li>
+	<li>Best blog post of the year</li>
+	<li>Meet our new chef</li>
+</ul>
+</body>
+</html>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'background-color' => '#f6f6f7',
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '16',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTextElement',
+                                                                            ),
+                                                                        'builderexpanderelement_1394062193_5317b37137abc' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'height' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderExpanderElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394062361_5317b419e1c51' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Acme Elsewhere',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h3',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#6c1d1d',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'line-height' => '200',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'buildersocialelement_1394060039_5317ab07cf03d' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'layout' => 'vertical',
+                                                                                                'services' =>
+                                                                                                    array (
+                                                                                                        'Twitter' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.twitter.com/',
+                                                                                                            ),
+                                                                                                        'Facebook' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.facebook.com/',
+                                                                                                            ),
+                                                                                                        'GooglePlus' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://gplus.com',
+                                                                                                            ),
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderSocialElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '2',
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394062652_5317b53c906f9' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062652_5317b53c90615' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderdividerelement_1394062652_5317b53c901fc' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'border-top-width' => '1',
+                                                                                                        'border-top-style' => 'dotted',
+                                                                                                        'border-top-color' => '#efefef',
+                                                                                                    ),
+                                                                                            ),
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'divider-padding' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderDividerElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394062641_5317b53112a36' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062641_5317b5311291a' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderfooterelement_1394062641_5317b5311226e' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
+                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
+                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'font-size' => '11',
+                                                                                                        'background-color' => '#ebebeb',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderFooterElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                    ),
+                                'properties' =>
+                                    array (
+                                        'frontend' =>
+                                            array (
+                                                'inlineStyles' =>
+                                                    array (
+                                                        'background-color' => '#ffffff',
+                                                        'color' => '#545454',
+                                                    ),
+                                            ),
+                                    ),
+                                'class' => 'BuilderCanvasElement',
+                            ),
+                    ),
+            );
+            $this->makeBuilderPredefinedEmailTemplate($name, $unserializedData);
+        }
+
+        protected function makeTwoColumnsWithStrongRight()
+        {
+            $name              = '2 Columns with strong right';
+            $unserializedData  = array (
+                'baseTemplateId' => '',
+                'icon' => 'icon-template-3',
+                'dom' =>
+                    array (
+                        'canvas1' =>
+                            array (
+                                'content' =>
+                                    array (
+                                        'builderheaderimagetextelement_1393965594_53163a1a0eb53' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965594_53163a1a0ef48' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1393965594_53163a1a0ee52' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x50">',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1393965594_53163a1a145cc' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderheadertextelement_1393965594_53163a1a14515' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Acme Inc. Newsletter',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#ffffff',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'text-align' => 'right',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderHeaderTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '1:2',
+                                                                'header' => '1',
+                                                            ),
+                                                        'frontend' =>
+                                                            array (
+                                                                'inlineStyles' =>
+                                                                    array (
+                                                                        'background-color' => '#282a76',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderHeaderImageTextElement',
+                                            ),
+                                        'builderrowelement_1394062546_5317b4d264a62' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062546_5317b4d26488b' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertitleelement_1394062546_5317b4d263942' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Hello there William S...',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h1',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#666666',
+                                                                                                        'font-size' => '28',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'line-height' => '200',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1393965668_53163a6448794' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965668_53163a644866d' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertextelement_1394061967_5317b28fc8088' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<html>
+<head>
+</head>
+<body>
+ <b>New Products</b>
+<ul>
+	<li><a href="#" target="_blank">AcmeMaster 10,000</a></li>
+	<li><a href="#">ProAcme 5,000</a></li>
+	<li><a href="#">AcmeMaster++</a></li>
+	<li><a href="#" target="_blank">The Acme Beginner pro</a></li>
+</ul>
+</body>
+</html>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'background-color' => '#f6f6f7',
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '16',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTextElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394062361_5317b419e1c51' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Follow Us!',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h3',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#6c1d1d',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'line-height' => '200',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'buildersocialelement_1394060039_5317ab07cf03d' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'layout' => 'vertical',
+                                                                                                'services' =>
+                                                                                                    array (
+                                                                                                        'Twitter' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.twitter.com/',
+                                                                                                            ),
+                                                                                                        'Facebook' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.facebook.com/',
+                                                                                                            ),
+                                                                                                        'GooglePlus' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://gplus.com',
+                                                                                                            ),
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderSocialElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1394061698_5317b182c1f19' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertextelement_1393965781_53163ad53b77c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<html>
+<head>
+</head>
+<body>
+<p>
+	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
+</p>
+</body>
+</html>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderTextElement',
+                                                                            ),
+                                                                        'builderbuttonelement_1393965942_53163b76e666c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'text' => 'Contact Us Now',
+                                                                                                'sizeClass' => 'medium-button',
+                                                                                                'align' => 'left',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'href' => 'http://localhost/Zurmo/app/index.php',
+                                                                                                'target' => '_blank',
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'background-color' => '#97c43d',
+                                                                                                        'border-color' => '#7cb830',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderButtonElement',
+                                                                            ),
+                                                                        'builderexpanderelement_1394062193_5317b37137abc' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'height' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderExpanderElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '1:2',
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394062652_5317b53c906f9' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062652_5317b53c90615' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderdividerelement_1394062652_5317b53c901fc' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'border-top-width' => '1',
+                                                                                                        'border-top-style' => 'dotted',
+                                                                                                        'border-top-color' => '#efefef',
+                                                                                                    ),
+                                                                                            ),
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'divider-padding' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderDividerElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394062641_5317b53112a36' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062641_5317b5311291a' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderfooterelement_1394062641_5317b5311226e' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
+                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
+                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'font-size' => '11',
+                                                                                                        'background-color' => '#ebebeb',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderFooterElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                    ),
+                                'properties' =>
+                                    array (
+                                        'frontend' =>
+                                            array (
+                                                'inlineStyles' =>
+                                                    array (
+                                                        'background-color' => '#ffffff',
+                                                        'color' => '#545454',
+                                                    ),
+                                            ),
+                                    ),
+                                'class' => 'BuilderCanvasElement',
+                            ),
+                    ),
+            );
+            $this->makeBuilderPredefinedEmailTemplate($name, $unserializedData);
+        }
+
+        protected function makeThreeColumns()
+        {
+            $name              = '3 Columns';
+            $unserializedData  = array (
+                'baseTemplateId' => '',
+                'icon' => 'icon-template-4',
+                'dom' =>
+                    array (
+                        'canvas1' =>
+                            array (
+                                'content' =>
+                                    array (
+                                        'builderheaderimagetextelement_1393965594_53163a1a0eb53' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965594_53163a1a0ef48' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1393965594_53163a1a0ee52' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x50">',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1393965594_53163a1a145cc' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderheadertextelement_1393965594_53163a1a14515' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Acme Inc. Newsletter',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#ffffff',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'text-align' => 'right',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderHeaderTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '1:2',
+                                                            ),
+                                                        'frontend' =>
+                                                            array (
+                                                                'inlineStyles' =>
+                                                                    array (
+                                                                        'background-color' => '#282a76',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderHeaderImageTextElement',
+                                            ),
+                                        'builderrowelement_1394062546_5317b4d264a62' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062546_5317b4d26488b' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertitleelement_1394062546_5317b4d263942' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Latest entries on our database',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h1',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#666666',
+                                                                                                        'font-size' => '28',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'line-height' => '200',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1393965668_53163a6448794' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965668_53163a644866d' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1394063801_5317b9b9eedc5' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x200"></img>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394063416_5317b838c6ce1' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Property at NYC',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h2',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '18',
+                                                                                                        'font-family' => 'Georgia',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'builderplaintextelement_1394063772_5317b99cab31e' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Orsino, the Duke of Illyria, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that Olivia plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderPlainTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1394061698_5317b182c1f19' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1394063806_5317b9be406a3' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x200"></img>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394063420_5317b83cb81a3' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Chalet in Bs. As.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h3',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '18',
+                                                                                                        'font-family' => 'Georgia',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'builderplaintextelement_1394063737_5317b979ce2a3' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Orsino, the Duke of Illyria, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that Olivia plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderPlainTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1394063404_5317b82c72b5c' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1394063809_5317b9c1da156' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x200"></img>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394063425_5317b8410f24b' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Tiny Island',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h3',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '18',
+                                                                                                        'font-family' => 'Georgia',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'builderplaintextelement_1394063741_5317b97d68d8d' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Orsino, the Duke of Illyria, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that Olivia plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderPlainTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '3',
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394062652_5317b53c906f9' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062652_5317b53c90615' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderbuttonelement_1394063832_5317b9d8a797c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'text' => 'Click for more details',
+                                                                                                'sizeClass' => 'large-button',
+                                                                                                'width' => '100%',
+                                                                                                'align' => 'center',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'href' => 'http://google.com',
+                                                                                                'target' => '_blank',
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'background-color' => '#8224e3',
+                                                                                                        'color' => '#ffffff',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'text-align' => 'center',
+                                                                                                        'border-color' => '#8224e3',
+                                                                                                        'border-width' => '1',
+                                                                                                        'border-style' => 'solid',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderButtonElement',
+                                                                            ),
+                                                                        'builderdividerelement_1394062652_5317b53c901fc' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'border-top-width' => '1',
+                                                                                                        'border-top-style' => 'dotted',
+                                                                                                        'border-top-color' => '#efefef',
+                                                                                                    ),
+                                                                                            ),
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'divider-padding' => '10',
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderDividerElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394062641_5317b53112a36' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062641_5317b5311291a' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderfooterelement_1394062641_5317b5311226e' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
+                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
+                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'font-size' => '11',
+                                                                                                        'background-color' => '#ebebeb',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderFooterElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                    ),
+                                'properties' =>
+                                    array (
+                                        'frontend' =>
+                                            array (
+                                                'inlineStyles' =>
+                                                    array (
+                                                        'background-color' => '#ffffff',
+                                                        'color' => '#545454',
+                                                    ),
+                                            ),
+                                    ),
+                                'class' => 'BuilderCanvasElement',
+                            ),
+                    ),
+            );
+            $this->makeBuilderPredefinedEmailTemplate($name, $unserializedData);
+        }
+
+        protected function makeThreeColumnsWithHero()
+        {
+            $name              = '3 Columns with Hero';
+            $unserializedData  = array (
+                'baseTemplateId' => '',
+                'icon' => 'icon-template-1',
+                'dom' =>
+                    array (
+                        'canvas1' =>
+                            array (
+                                'content' =>
+                                    array (
+                                        'builderheaderimagetextelement_1393965594_53163a1a0eb53' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965594_53163a1a0ef48' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1393965594_53163a1a0ee52' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x50">',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1393965594_53163a1a145cc' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderheadertextelement_1393965594_53163a1a14515' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Acme Real Estate',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#ffffff',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'text-align' => 'right',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderHeaderTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '1:2',
+                                                                'header' => '1',
+                                                                'border-negation' =>
+                                                                    array (
+                                                                        'border-top' => 'none',
+                                                                        'border-right' => 'none',
+                                                                        'border-bottom' => 'none',
+                                                                        'border-left' => 'none',
+                                                                    ),
+                                                            ),
+                                                        'frontend' =>
+                                                            array (
+                                                                'inlineStyles' =>
+                                                                    array (
+                                                                        'background-color' => '#282a76',
+                                                                    ),
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderHeaderImageTextElement',
+                                            ),
+                                        'builderrowelement_1394062546_5317b4d264a62' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062546_5317b4d26488b' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildertitleelement_1394062546_5317b4d263942' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'New on our Downtown NYC locations',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h1',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '28',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                        'line-height' => '100',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394122137_53189d999cade' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394122137_53189d999c769' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1394122137_53189d999b21b' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&amp;zoom=13&amp;size=580x180&amp;maptype=roadmap &amp;markers=color:blue%7Clabel:S%7C40.702147,-74.015794&amp;markers=color:green%7Clabel:G%7C40.711614,-74.012318 &amp;markers=color:red%7Clabel:C%7C40.718217,-73.998284&amp;sensor=false">',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1393965668_53163a6448794' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1393965668_53163a644866d' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1394063801_5317b9b9eedc5' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x200"></img>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394063416_5317b838c6ce1' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Property at NYC',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h2',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '18',
+                                                                                                        'font-family' => 'Georgia',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'builderplaintextelement_1394063772_5317b99cab31e' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'With its welcoming fireplace, wood-paneled ceiling, limestone floor, and luminous
+view into a stunning courtyard, The Sterling Mason lobby imparts the intimate warmth of home.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'border-negation' =>
+                                                                                                    array (
+                                                                                                        'border-top' => 'none',
+                                                                                                        'border-right' => 'none',
+                                                                                                        'border-bottom' => 'none',
+                                                                                                        'border-left' => 'none',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderPlainTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1394061698_5317b182c1f19' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1394063806_5317b9be406a3' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x200"></img>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394063420_5317b83cb81a3' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Chalet in Bs. As.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h3',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '18',
+                                                                                                        'font-family' => 'Georgia',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'builderplaintextelement_1394063737_5317b979ce2a3' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'With its welcoming fireplace, wood-paneled ceiling, limestone floor, and luminous
+view into a stunning courtyard, The Sterling Mason lobby imparts the intimate warmth of home.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'border-negation' =>
+                                                                                                    array (
+                                                                                                        'border-top' => 'none',
+                                                                                                        'border-right' => 'none',
+                                                                                                        'border-bottom' => 'none',
+                                                                                                        'border-left' => 'none',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderPlainTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                        'buildercolumnelement_1394063404_5317b82c72b5c' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'builderimageelement_1394063809_5317b9c1da156' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'image' => '<img src="http://placehold.it/200x200"></img>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'class' => 'BuilderImageElement',
+                                                                            ),
+                                                                        'buildertitleelement_1394063425_5317b8410f24b' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'Luminus Loft',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'headingLevel' => 'h3',
+                                                                                            ),
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'color' => '#323232',
+                                                                                                        'font-size' => '18',
+                                                                                                        'font-family' => 'Georgia',
+                                                                                                        'font-weight' => 'bold',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderTitleElement',
+                                                                            ),
+                                                                        'builderplaintextelement_1394063741_5317b97d68d8d' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => 'With its welcoming fireplace, wood-paneled ceiling, limestone floor, and luminous
+view into a stunning courtyard, The Sterling Mason lobby imparts the intimate warmth of home.',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'border-negation' =>
+                                                                                                    array (
+                                                                                                        'border-top' => 'none',
+                                                                                                        'border-right' => 'none',
+                                                                                                        'border-bottom' => 'none',
+                                                                                                        'border-left' => 'none',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderPlainTextElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                        'backend' =>
+                                                            array (
+                                                                'configuration' => '3',
+                                                            ),
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                        'builderrowelement_1394062641_5317b53112a36' =>
+                                            array (
+                                                'content' =>
+                                                    array (
+                                                        'buildercolumnelement_1394062641_5317b5311291a' =>
+                                                            array (
+                                                                'content' =>
+                                                                    array (
+                                                                        'buildersocialelement_1394121396_53189ab49a77c' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'backend' =>
+                                                                                            array (
+                                                                                                'layout' => 'horizontal',
+                                                                                                'services' =>
+                                                                                                    array (
+                                                                                                        'Facebook' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.facebook.com/',
+                                                                                                            ),
+                                                                                                        'GooglePlus' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://gplus.con',
+                                                                                                            ),
+                                                                                                        'Instagram' =>
+                                                                                                            array (
+                                                                                                                'enabled' => '1',
+                                                                                                                'url' => 'http://www.instagram.com/',
+                                                                                                            ),
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderSocialElement',
+                                                                            ),
+                                                                        'builderfooterelement_1394062641_5317b5311226e' =>
+                                                                            array (
+                                                                                'content' =>
+                                                                                    array (
+                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
+                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
+                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                    ),
+                                                                                'properties' =>
+                                                                                    array (
+                                                                                        'frontend' =>
+                                                                                            array (
+                                                                                                'inlineStyles' =>
+                                                                                                    array (
+                                                                                                        'font-size' => '11',
+                                                                                                        'background-color' => '#ebebeb',
+                                                                                                    ),
+                                                                                            ),
+                                                                                    ),
+                                                                                'class' => 'BuilderFooterElement',
+                                                                            ),
+                                                                    ),
+                                                                'properties' =>
+                                                                    array (
+                                                                    ),
+                                                                'class' => 'BuilderColumnElement',
+                                                            ),
+                                                    ),
+                                                'properties' =>
+                                                    array (
+                                                    ),
+                                                'class' => 'BuilderRowElement',
+                                            ),
+                                    ),
+                                'properties' =>
+                                    array (
+                                        'frontend' =>
+                                            array (
+                                                'inlineStyles' =>
+                                                    array (
+                                                        'background-color' => '#fefefe',
+                                                        'color' => '#545454',
+                                                        'border-color' => '#284b7d',
+                                                        'border-width' => '10',
+                                                        'border-style' => 'solid',
+                                                    ),
+                                            ),
+                                        'backend' =>
+                                            array (
+                                                'border-negation' =>
+                                                    array (
+                                                        'border-top' => 'none',
+                                                        'border-right' => 'none',
+                                                        'border-bottom' => 'none',
+                                                        'border-left' => 'none',
+                                                    ),
+                                            ),
+                                    ),
+                                'class' => 'BuilderCanvasElement',
+                            ),
+                    ),
+            );
+            $this->makeBuilderPredefinedEmailTemplate($name, $unserializedData);
         }
     }
 ?>

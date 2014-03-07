@@ -42,8 +42,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'    => 'CancelLink'),
                             array('type'    => 'SaveButton', 'label' => 'eval:static::renderLabelForSaveButton()'),
+                            array('type'    => 'CancelLink'),
                             array('type'    => 'CampaignDeleteLink'),
                         ),
                     ),
@@ -160,25 +160,38 @@
         protected function renderAfterFormLayout($form)
         {
             $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column strong-right clearfix'), $content);
         }
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
+            $content = null;
             if (!$this->isCampaignEditable())
             {
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute);
             }
             else
             {
+                $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderMergeTagsContent());
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
             }
             if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            $spinner = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            $content .= ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            return $content;
+        }
+
+        protected function renderMergeTagsContent()
+        {
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $view = new MergeTagsView('Campaign',
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'textContent')),
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'htmlContent')),
+                            false);
+            $content = $view->render();
+            return $title . $content;
         }
 
         /**

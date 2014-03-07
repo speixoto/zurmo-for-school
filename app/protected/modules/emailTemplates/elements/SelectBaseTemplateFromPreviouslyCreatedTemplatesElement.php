@@ -61,5 +61,14 @@
             }
             return 'Contact';
         }
+
+        protected function resolveThumbnailByModel(EmailTemplate $template)
+        {
+            // add custom logic here to load user template specific thumbnails
+            // once we have the ability to generate those.
+            // these could be stored in serializedData, or a column.
+            // a column would be better because we would love to have thumbnails for
+            // html and plaintext templates too.
+        }
     }
 ?>

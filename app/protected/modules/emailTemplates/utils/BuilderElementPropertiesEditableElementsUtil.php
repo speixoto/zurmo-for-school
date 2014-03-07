@@ -84,9 +84,15 @@
          * @param string $label
          * @return array
          */
-        protected static function resolveDefaultParams($label = '')
+        public static function resolveDefaultParams($label = '')
         {
             $params = array();
+            // we set label to an empty string as a default value.
+            // we already hide label in non-editable representation of content element.
+            // it is only shown in editable representation, which can also be overriden to hide it.
+            // setting it to empty string here isn't to hide it.
+            // it is rather to avoid Element trying to do ask ModelForm's model for a label.
+            // BuilderElementEditableModelForm does not set a model so we would see an error there.
             $params['labelHtmlOptions'] = array('label' => $label);
             return $params;
         }

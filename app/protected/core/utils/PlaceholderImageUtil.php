@@ -43,6 +43,8 @@
 
         const TRANSPARENT_IMAGE_PATH                    =   '/default/images/email-builder/transparent.gif';
 
+        const PLACEHOLDER_IMAGE_PATH                    =   '/default/images/email-builder/image-placeholder.png';
+
         public static function resolveOneByOnePixelImageUrl($absolute = true)
         {
             return static::resolveUrlForThemeFile(static::ONE_BY_ONE_PIXEL_IMAGE_PATH, $absolute);
@@ -61,6 +63,11 @@
         public static function resolveTransparentImagePath()
         {
             return Yii::app()->themeManager->basePath . static::TRANSPARENT_IMAGE_PATH;
+        }
+
+        public static function resolvePlaceholderImageUrl()
+        {
+            return static::resolveAbsoluteUrlForFile(static::PLACEHOLDER_IMAGE_PATH);
         }
 
         public static function resolveUrlForThemeFile($filePath, $absolute = true)

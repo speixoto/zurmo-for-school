@@ -36,9 +36,9 @@
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile      = 'redactor.min.js';
+        public $scriptFile      = array('redactor.min.js');
 
-        public $cssFile         = 'redactor.css';
+        public $cssFile         = array('redactor.css');
 
         public $assetFolderName = 'redactor';
 
@@ -48,8 +48,7 @@
 
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
-                                   'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                                   'horizontalrule', '|', 'image']";
+                                   'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
 
         public $source          = "false";
 
@@ -102,17 +101,6 @@
                     $(document).ready(
                         function()
                         {
-                            RedactorPlugins = {};
-                            RedactorPlugins.mergeTags = {
-                                init: function ()
-                                {
-                                    this.buttonAdd('mergeTags', 'Merge Tags', this.mergeTagsButton);
-                                },
-                                mergeTagsButton: function(buttonName, buttonDOM, buttonObj, e)
-                                {
-                                    $('.MergeTagsView').toggle();
-                                }
-                            };
                             $('#{$id}').redactor(
                             {
                                 {$this->renderRedactorParamForInit('initCallback')}
@@ -159,6 +147,35 @@
             {
                 return "plugins:        {$this->plugins}";
             }
+        }
+
+        public function init()
+        {
+            $this->resolveSelectivePluginScriptLoad();
+            parent::init();
+        }
+
+        protected function resolveSelectivePluginScriptLoad()
+        {
+            $plugins        = CJSON::decode($this->plugins);
+            if (!empty($plugins))
+            {
+                $this->registerPluginScriptFiles($plugins);
+            }
+        }
+
+        protected function registerPluginScriptFiles(array $plugins)
+        {
+            $this->resolvePluginScriptNames($plugins);
+            $this->scriptFile   = CMap::mergeArray($plugins, $this->scriptFile);
+        }
+
+        protected function resolvePluginScriptNames(array & $pluginNames)
+        {
+            array_walk($pluginNames, function(&$pluginName)
+                                        {
+                                            $pluginName .= '.js';
+                                        });
         }
     }
 ?>

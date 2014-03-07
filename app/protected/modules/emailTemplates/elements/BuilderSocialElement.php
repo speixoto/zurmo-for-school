@@ -50,17 +50,12 @@
         {
             $properties              = array(
                 'backend'       => array(
-                    'layout'    => 'vertical',
+                    'layout'    => 'horizontal',
                     'services'  => array(
-                        'Twitter'   =>  array(
+                        'Website'   =>  array(
                             'enabled'   => 1,
-                            'url'       => 'http://www.twitter.com/!#err404notfound',
+                            'url'       => Yii::app()->createAbsoluteUrl('/'),
                         ),
-                        'Facebook'  => array(
-                            'enabled'   => 0,
-                            'url'       => 'http://www.facebook.com/',
-                        ),
-
                     ),
                 ),
             );
@@ -100,20 +95,19 @@
 
         protected function resolveDefaultHtmlOptionsForLink()
         {
-            return array('class' => 'newsletter-button', 'target' => '_blank');
+            return array('class' => 'social-button', 'target' => '_blank');
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
-            //$htmlOptions['class']   .= ' button ';
-            $htmlOptions['class']   .= $this->properties['backend']['layout'];
+            $htmlOptions['class']   .= ' ' .$this->properties['backend']['layout'];
             return $htmlOptions;
         }
 
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
-            return array('class' => 'button-container');
+            return array('class' => 'social-container');
         }
     }
 ?>

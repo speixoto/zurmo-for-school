@@ -131,7 +131,6 @@
 
         protected function renderLeftSidebarContent()
         {
-            // TODO: @Shoaibi: Critical1: Hidden elements for all serializedData Indexes?
             $hiddenElements      = null;
             $leftSidebarContent  = $this->renderLeftSidebarToolbarContent();
             $leftSidebarContent .= $this->resolveElementsSidebarContent();
@@ -333,6 +332,8 @@
             $editActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_EDIT;
             $moveActionSelector                 = 'span.' . BaseBuilderElement::OVERLAY_ACTION_MOVE;
             $deleteActionSelector               = 'span.' . BaseBuilderElement::OVERLAY_ACTION_DELETE;
+            $sortableRowsClass                  = BaseBuilderElement::BUILDER_ELEMENT_SORTABLE_ROWS_CLASS;
+            $sortableElementsClass              = BaseBuilderElement::BUILDER_ELEMENT_SORTABLE_ELEMENTS_CLASS;
             $cellDroppableClass                 = BaseBuilderElement::BUILDER_ELEMENT_CELL_DROPPABLE_CLASS;
             $iframeOverlaySelector              = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
             $cachedSerializedSelector           = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
@@ -342,6 +343,7 @@
             $doNotWrapInRow                     = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
             $wrapInRow                          = BuilderElementRenderUtil::WRAP_IN_ROW;
             $wrapInHeaderRow                    = BuilderElementRenderUtil::WRAP_IN_HEADER_ROW;
+            $modelClassName                     = BaseBuilderElement::getModelClassName();
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
@@ -353,6 +355,8 @@
                         '{$editActionSelector}',
                         '{$moveActionSelector}',
                         '{$deleteActionSelector}',
+                        '{$sortableRowsClass}',
+                        '{$sortableElementsClass}',
                         '{$cellDroppableClass}',
                         '{$iframeOverlaySelector}',
                         '{$cachedSerializedSelector}',
@@ -363,7 +367,8 @@
                         '{$csrfToken}',
                         {$doNotWrapInRow},
                         {$wrapInRow},
-                        {$wrapInHeaderRow}
+                        {$wrapInHeaderRow},
+                        '{$modelClassName}'
                     );
                 };
                 ", CClientScript::POS_END);
@@ -372,8 +377,7 @@
         protected function registerRefreshCanvasFromSavedTemplateScript()
         {
             Yii::app()->clientScript->registerScript('refreshCanvasFromSavedTemplateScript', "
-                $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').unbind('click');
-                $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').bind('click', function(event)
+                $('#" . static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').unbind('click').bind('click', function(event)
                 {
                     emailTemplateEditor.reloadCanvas();
                     event.preventDefault();
@@ -392,7 +396,8 @@
         protected function registerElementsMenuButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('elementsMenuButtonClickScript', '
-                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").on("click.elementsMenuButtonClickScript", function(event)
+                $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").unbind("click.elementsMenuButtonClickScript")
+                                                        .bind("click.elementsMenuButtonClickScript", function(event)
                  {
                     if(!$("#' . static::ELEMENTS_MENU_BUTTON_ID . '").hasClass("active"))
                     {
@@ -408,7 +413,8 @@
         protected function registerCanvasConfigurationMenuButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('canvasConfigurationMenuButtonClickScript', '
-                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").on("click.canvasConfigurationMenuButtonClick", function(event)
+                $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").unbind("click.canvasConfigurationMenuButtonClick")
+                                                    .bind("click.canvasConfigurationMenuButtonClick", function(event)
                  {
                     if(!$("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").hasClass("active"))
                     {
@@ -428,7 +434,8 @@
         {
             $ajaxOption     = $this->resolvePreviewAjaxOptions();
             Yii::app()->clientScript->registerScript('previewMenuButtonClickScript', '
-                $("#' . static::PREVIEW_MENU_BUTTON_ID . '").on("click.previewMenuButtonClick", function(event)
+                $("#' . static::PREVIEW_MENU_BUTTON_ID . '").unbind("click.previewMenuButtonClick")
+                                                            .bind("click.previewMenuButtonClick", function(event)
                  {
                     ' . ZurmoHtml::ajax($ajaxOption) . '
                     event.preventDefault();
@@ -461,7 +468,8 @@
         protected function registerPreviewIFrameContainerCloserLinkClick()
         {
             Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
-                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").on("click.reviewIFrameContainerCloserLinkClick", function(event)
+                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").unbind("click.reviewIFrameContainerCloserLinkClick")
+                                                    .bind("click.reviewIFrameContainerCloserLinkClick", function(event)
                  {
                     $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
                     event.preventDefault();

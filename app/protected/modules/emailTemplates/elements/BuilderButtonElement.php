@@ -50,10 +50,9 @@
         {
             $properties              = array(
                 'backend'       => array(
-                    'sizeClass'         => 'medium-button',
-                    'text'              => Yii::app()->label,
-                    'align'             => 'left',
-                    'width'             => '',
+                    'sizeClass'         => 'button',
+                    'text'              => Zurmo::t('EmailTemplatesModule', 'Click Here'),
+                    'width'             => '100%',
                 ),
                 'frontend'      => array(
                     'href'              => Yii::app()->createAbsoluteUrl('/'),
@@ -79,9 +78,9 @@
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
-            $propertiesForm     = BuilderButtonElementPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm      = BuilderButtonElementPropertiesEditableElementsUtil::render($this->model, $form);
             $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form);
+            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form, array('line-height', 'text-align'));
             $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
             return $propertiesForm;
         }
@@ -106,7 +105,7 @@
         protected function resolveNonEditableContentWrappingTdOptions()
         {
             $htmlOptions            = $this->resolveNonEditableContentWrappingTdHtmlOptions();
-            $htmlOptions['align']   = $this->properties['backend']['align'];
+            $htmlOptions['align']   = ArrayUtil::getArrayValue($this->properties['backend'], 'align');
             $width                  = ArrayUtil::getNestedValue($this->properties, "backend['width']");
             if ($width)
             {
