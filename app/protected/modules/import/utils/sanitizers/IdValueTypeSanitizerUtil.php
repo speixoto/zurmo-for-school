@@ -138,9 +138,18 @@
                     $this->mappingRuleData["type"] == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID');
         }
 
+        protected function resolveMappingRuleDataType()
+        {
+            if (!isset($this->mappingRuleData["type"]) || $this->mappingRuleData["type"] == null)
+            {
+                $this->mappingRuleData["type"] = IdValueTypeMappingRuleForm::ZURMO_MODEL_ID;
+            }
+        }
+
         protected function init()
         {
             parent::init();
+            $this->resolveMappingRuleDataType();
             $modelClassName                = $this->modelClassName;
             $model                         = new $modelClassName(false);
             $this->attributeModelClassName = $this->resolveAttributeModelClassName($model, $this->attributeName);

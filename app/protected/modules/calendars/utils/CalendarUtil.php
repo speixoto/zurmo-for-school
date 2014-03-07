@@ -204,14 +204,14 @@
             $modifiedCalendarItems          = array();
             $dateToCalendarItemsCountData   = array();
             $moreEventsItemCreatedByDate    = array();
-            foreach($fullCalendarItems as $key => $fullCalItem)
+            foreach ($fullCalendarItems as $key => $fullCalItem)
             {
                 $startDate       = date('Y-m-d', strtotime($fullCalItem['start']));
                 //Check for the count of cal items on a given start date and if more than max add more events
-                if(isset($dateToCalendarItemsCountData[$startDate])
+                if (isset($dateToCalendarItemsCountData[$startDate])
                             && (count($dateToCalendarItemsCountData[$startDate]) >= CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE))
                 {
-                    if(in_array($startDate, $moreEventsItemCreatedByDate) === false)
+                    if (in_array($startDate, $moreEventsItemCreatedByDate) === false)
                     {
                         $fullCalItem           = self::createMoreEventsCalendarItem($fullCalItem, $key, $fullCalendarItems);
                         $moreEventsItemCreatedByDate[] = $startDate;
@@ -222,7 +222,7 @@
                     }
                 }
                 $fullCalItem['start'] = self::getFullCalendarFormattedDateTimeElement($fullCalItem['start']);
-                if(isset($fullCalItem['end']))
+                if (isset($fullCalItem['end']))
                 {
                     $fullCalItem['end'] = self::getFullCalendarFormattedDateTimeElement($fullCalItem['end']);
                 }
@@ -274,14 +274,14 @@
             //The reason its put because timezone can vary from -12:00 to +12:00 max so
             //if we offset the gmt date by timezoneoffset, on applying offset, correct results
             //would come.
-            if(DateTimeUtil::isValidDbFormattedDate($dateTime))
+            if (DateTimeUtil::isValidDbFormattedDate($dateTime))
             {
                 $dateTime = DateTimeUtil::convertDateToDateTimeByTimeZoneOffset($dateTime);
             }
             $dateTimeObject  = new DateTime();
             $dateTimeObject->setTimestamp(strtotime($dateTime));
             $offset          = ZurmoTimeZoneHelper::getTimeZoneOffset();
-            if($offset < 0)
+            if ($offset < 0)
             {
                 $offset = abs($offset);
                 $dateTimeObject->sub(new DateInterval('PT' . $offset . 'S'));
@@ -322,9 +322,9 @@
             $sql     = SQLQueryUtil::makeQuery($modelClassName::getTableName(), $selectQueryAdapter, $joinTablesAdapter, null, null, $where);
             $records = ZurmoRedBean::getAll($sql);
             $colors  = array();
-            foreach($records as $record)
+            foreach ($records as $record)
             {
-                if($record['color'] != null && $record['color'] != '')
+                if ($record['color'] != null && $record['color'] != '')
                 {
                     $colors[] = $record['color'];
                 }
@@ -415,10 +415,10 @@
             assert('is_string($itemClass)');
             assert('is_string($type)');
             $itemsContent = null;
-            foreach($data as $calendarArray)
+            foreach ($data as $calendarArray)
             {
                 $isChecked = false;
-                if($calendarArray[1] === true)
+                if ($calendarArray[1] === true)
                 {
                     $isChecked = true;
                 }
@@ -428,7 +428,7 @@
                                                             'class' => $itemClass));
                 $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
                                                                                                         $calendarArray[0]->color), '');
-                if($type == 'saved')
+                if ($type == 'saved')
                 {
                     $label          = $calendarArray[0]->name;
                     $options        = self::getSavedCalendarOptions($calendarArray[0]->id);
@@ -535,7 +535,7 @@
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('SavedCalendarSubscription');
             $where  = RedBeanModelDataProvider::makeWhere('SavedCalendarSubscription', $searchAttributeData, $joinTablesAdapter);
             $models = SavedCalendarSubscription::getSubset($joinTablesAdapter, null, null, $where, null);
-            foreach($models as $model)
+            foreach ($models as $model)
             {
                 $users[] = $model->user;
             }
@@ -887,7 +887,7 @@
                                                                       $dateRangeType = null,
                                                                       $isSticky = true)
         {
-            if($isSticky)
+            if ($isSticky)
             {
                 ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
                                                                    'CalendarsModule',
@@ -993,13 +993,13 @@
         {
             $calendarItems = $dataProvider->getData(true);
             $fullCalendarItems = array();
-            for($k = 0; $k < count($calendarItems); $k++)
+            for ($k = 0; $k < count($calendarItems); $k++)
             {
                 $fullCalendarItem = array();
                 $calItem = $calendarItems[$k];
                 $fullCalendarItem['title'] = $calItem->getTitle();
                 $fullCalendarItem['start'] = $calItem->getStartDateTime();
-                if($calItem->getEndDateTime() != null)
+                if ($calItem->getEndDateTime() != null)
                 {
                     $fullCalendarItem['end'] = $calItem->getEndDateTime();
                 }
@@ -1011,13 +1011,10 @@
                 $fullCalendarItem['modelClass'] = $calItem->getModelClass();
                 $fullCalendarItem['modelId']    = $calItem->getModelId();
                 $fullCalendarItem['calendarId'] = $calItem->getCalendarId();
-                if($calItem->getModelClass() == 'Meeting')
-                {
-                    $fullCalendarItem['allDay'] = false;
-                }
+                $fullCalendarItem['allDay']     = true;
                 $fullCalendarItems[] = $fullCalendarItem;
             }
-            if(count($fullCalendarItems) >  0)
+            if (count($fullCalendarItems) >  0)
             {
                 ArrayUtil::sortArrayByElementField('compareCalendarItemsByDateTime', 'usort', $fullCalendarItems, 'CalendarUtil');
             }
@@ -1033,12 +1030,12 @@
         {
             assert('is_array($items)');
             $moduleClassNames           = CalendarUtil::getAvailableModulesForCalendar();
-            foreach($items as $index => $item)
+            foreach ($items as $index => $item)
             {
-                foreach($moduleClassNames as $moduleClassName)
+                foreach ($moduleClassNames as $moduleClassName)
                 {
                     $moduleClassName = $moduleClassName . 'Module';
-                    if($moduleClassName::getPrimaryModelName() == $item['modelClass'])
+                    if ($moduleClassName::getPrimaryModelName() == $item['modelClass'])
                     {
                         $moduleId           = $moduleClassName::getDirectoryName();
                         $item['detailsUrl'] = Yii::app()->createUrl($moduleId . '/default/details', array('id' => $item['modelId']));

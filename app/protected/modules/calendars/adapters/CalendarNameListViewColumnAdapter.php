@@ -40,10 +40,10 @@
         {
             $params      = LabelUtil::getTranslationParamsForAllModules();
             return array(
-                'name'  => $this->attribute,
-                'header'=> Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params),
-                'value' => 'CalendarNameListViewColumnAdapter::getCalendarName($data)',
-                'type'  => 'raw',
+                'name'     => $this->attribute,
+                'header'   => Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params),
+                'value'    => 'CalendarNameListViewColumnAdapter::getCalendarName($data)',
+                'type'     => 'raw',
                 'sortable' => false,
             );
         }

@@ -71,6 +71,7 @@ function getCalendarEvents(url, inputId, maxCount)
             dataType: 'json',
             beforeSend: function(xhr)
                        {
+                           $('.mycalendar,.sharedcalendar').attr("disabled", true);
                            $('#calItemCountResult').hide();
                        },
             data:
@@ -114,6 +115,7 @@ function getCalendarEvents(url, inputId, maxCount)
                     }
                 });
                 callback(events);
+                $('.mycalendar,.sharedcalendar').removeAttr('disabled');
             }
         });
     }

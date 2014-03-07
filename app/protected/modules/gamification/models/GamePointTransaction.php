@@ -80,6 +80,17 @@
             return $metadata;
         }
 
+        public static function addTransactionResolvedForOptimization($gamePoint, $value)
+        {
+            $transaction = new GamePointTransaction();
+            $transaction->value = $value;
+            $transaction->unrestrictedSave();
+            $tableName = GamePointTransaction::getTableName();
+            $sql = "UPDATE $tableName SET gamepoint_id = '" . $gamePoint->id . "'
+                    WHERE id = '" . $transaction->id . "'";
+            ZurmoRedBean::exec($sql);
+        }
+
         public function onCreated()
         {
             $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));

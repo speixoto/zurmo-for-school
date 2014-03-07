@@ -58,5 +58,16 @@
         {
             return new RedBeanModelSelectQueryAdapter(false);
         }
+
+        /**
+         * By default report is returing only 10 items for any calendar thus overriding it here
+         * to remove limit so that all items would be returned and pagination would be handled by
+         * calendars module.
+         * @return array
+         */
+        protected function fetchData()
+        {
+            return $this->runQueryAndGetResolveResultsData(null, null);
+        }
     }
 ?>

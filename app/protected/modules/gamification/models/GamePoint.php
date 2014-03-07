@@ -203,6 +203,7 @@
                     'type',
                     'value',
                     'person',
+                    'transactions'
                 ),
             );
             return $metadata;
@@ -215,15 +216,20 @@
 
         /**
          * Add specified value.
-         * @param int $value
+         * @param $value
+         * @param bool $createTransaction
          */
-        public function addValue($value)
+        public function addValue($value, $createTransaction = true)
         {
             assert('is_int($value)');
+            assert('is_bool($createTransaction)');
             $this->unrestrictedSet('value', $this->value + $value);
-            $gamePointTransaction                   = new GamePointTransaction();
-            $gamePointTransaction->value            = $value;
-            $this->transactions->add($gamePointTransaction);
+            if ($createTransaction)
+            {
+                $gamePointTransaction                   = new GamePointTransaction();
+                $gamePointTransaction->value            = $value;
+                $this->transactions->add($gamePointTransaction);
+            }
         }
 
         /**
