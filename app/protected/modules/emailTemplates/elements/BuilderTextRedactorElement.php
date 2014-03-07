@@ -65,7 +65,7 @@
 
         protected function resolvePlugins()
         {
-            return array('textdirection', 'fontfamily', 'fontsize', 'fontcolor', 'mergetags', 'fullscreen');
+            return array('fontfamily', 'fontsize', 'fontcolor', 'mergetags');
         }
 
         protected function resolveRedactorButtons()
