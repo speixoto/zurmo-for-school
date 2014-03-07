@@ -57,7 +57,6 @@
                 'frontend' => array(
                     'inlineStyles' => array(
                         'text-align' => 'right',
-                        'color' => '#ffffff',
                         'font-weight' => 'bold'
                     )
                 )

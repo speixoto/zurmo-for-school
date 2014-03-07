@@ -56,7 +56,7 @@
                     'inlineStyles'  => array(
                         'border-top-width'              => '1',
                         'border-top-style'              => 'solid',
-                        'border-top-color'              => '#000000',
+                        'border-top-color'              => '#333333',
                         ),
                     )
             );

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class BuilderHeaderImageTextElement extends BuilderRowElement
+    class BuilderHeaderImageTextElement extends BuilderHeaderRowElement
     {
         protected function resolveDefaultContent()
         {
@@ -70,17 +70,6 @@
         protected static function resolveLabel()
         {
             return Zurmo::t('EmailTemplatesModule', 'Header');
-        }
-
-        protected function resolveDefaultProperties()
-        {
-            $properties = array(
-                'backend'   => array(
-                    'header'        => 1,
-                    'configuration' => '1:2',
-                ),
-            );
-            return $properties;
         }
 
         protected static function resolveWidgetHtmlOptions()

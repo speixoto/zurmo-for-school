@@ -47,7 +47,8 @@
         {
             $properties = array(
                 'backend'   => array(
-                    'header'    => 1,
+                    'header'        => 1,
+                    'configuration' => '1:2',
                 ),
             );
             return $properties;

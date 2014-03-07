@@ -50,17 +50,12 @@
         {
             $properties              = array(
                 'backend'       => array(
-                    'layout'    => 'vertical',
+                    'layout'    => 'horizontal',
                     'services'  => array(
-                        'Twitter'   =>  array(
+                        'Website'   =>  array(
                             'enabled'   => 1,
-                            'url'       => 'http://www.twitter.com/!#err404notfound',
+                            'url'       => Yii::app()->createAbsoluteUrl('/'),
                         ),
-                        'Facebook'  => array(
-                            'enabled'   => 0,
-                            'url'       => 'http://www.facebook.com/',
-                        ),
-
                     ),
                 ),
             );

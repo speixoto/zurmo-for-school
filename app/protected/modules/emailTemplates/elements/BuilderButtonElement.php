@@ -50,10 +50,9 @@
         {
             $properties              = array(
                 'backend'       => array(
-                    'sizeClass'         => 'medium-button',
-                    'text'              => Yii::app()->label,
-                    'align'             => 'left',
-                    'width'             => '',
+                    'sizeClass'         => 'button',
+                    'text'              => Zurmo::t('EmailTemplatesModule', 'Click Here'),
+                    'width'             => '100%',
                 ),
                 'frontend'      => array(
                     'href'              => Yii::app()->createAbsoluteUrl('/'),
@@ -81,7 +80,7 @@
         {
             $propertiesForm      = BuilderButtonElementPropertiesEditableElementsUtil::render($this->model, $form);
             $propertiesForm     .= BuilderElementBackgroundPropertiesEditableElementsUtil::render($this->model, $form);
-            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form, array('line-height'));
+            $propertiesForm     .= BuilderElementTextPropertiesEditableElementsUtil::render($this->model, $form, array('line-height', 'text-align'));
             $propertiesForm     .= BuilderElementBorderPropertiesEditableElementsUtil::render($this->model, $form);
             return $propertiesForm;
         }

@@ -40,10 +40,10 @@
         {
             // TODO: @Shoaibi: Critical1: We need actual images and styles here.
             $styles    = array(
-                'transparent1.gif'   => 'Fancy 1',
-                'transparent2.gif'   => 'Fancy 2',
-                'transparent3.gif'   => 'Fancy 3',
-                'transparent.gif'    => 'Fancy 4',
+                'transparent.gif'   => 'Fancy 1',
+                'transparent1.gif'   => 'Fancy 2',
+                'transparent2.gif'   => 'Fancy 3',
+                'transparent3.gif'    => 'Fancy 4',
             );
             return $styles;
         }
