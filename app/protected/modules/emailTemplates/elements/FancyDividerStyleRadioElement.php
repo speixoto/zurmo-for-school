@@ -44,6 +44,7 @@
                 'fancy-divider-2.png'   => 'Fancy 2',
                 'fancy-divider-3.png'   => 'Fancy 3',
                 'fancy-divider-4.png'   => 'Fancy 4',
+                'fancy-divider-5.png'   => 'Fancy 5',
             );
             return $styles;
         }
