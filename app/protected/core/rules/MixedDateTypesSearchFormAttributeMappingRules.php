@@ -56,13 +56,13 @@
         const TYPE_NEXT_7_DAYS     = 'Next 7 Days';
 
         const TYPE_LAST_7_DAYS     = 'Last 7 Days';
-        
+
         const TYPE_LAST_30_DAYS     = 'Last 30 Days';
-        
+
         const TYPE_THIS_MONTH     = 'This Month';
-        
+
         const TYPE_LAST_MONTH     = 'Last Month';
-        
+
         const TYPE_NEXT_MONTH     = 'Next Month';
 
         const TYPE_IS_TIME_FOR     = 'Is Time For';
