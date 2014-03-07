@@ -54,7 +54,7 @@
         {
             $functionNames          = array();
             $functionDefinitions    = null;
-            for ($i = $start; $i < $last; $i++)
+            for ($i = $start; $i <= $last; $i++)
             {
                 $this->resolveMakeTemplateFunctionDefinitionById($i, $functionDefinitions, $functionNames);
             }
@@ -101,8 +101,7 @@ protected function $functionName()
             }
             $content    = PHP_EOL . "
 public function make()
-{
-$content
+{ $content
 \treturn true;
 }";
             return $content;
