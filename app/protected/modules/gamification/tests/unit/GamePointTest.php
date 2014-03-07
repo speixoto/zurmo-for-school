@@ -64,7 +64,12 @@
             $this->assertEquals($user,       $gamePoint->person);
 
             $this->assertEquals(1, $gamePoint->transactions->count());
-            $gamePoint->addValue(50);
+            $gamePoint->addValue(50, false);
+            $this->assertTrue($gamePoint->save());
+            GamePointTransaction::addTransactionResolvedForOptimization($gamePoint, 50);
+            $this->assertEquals(60, $gamePoint->value);
+            $gamePoint::forgetAll();
+            $gamePoint = GamePoint::getById($id);
             $this->assertEquals(60, $gamePoint->value);
             $this->assertEquals(2, $gamePoint->transactions->count());
             $this->assertEquals(10, $gamePoint->transactions[0]->value);
@@ -93,7 +98,7 @@
             $gamePoint = GamePoint::resolveToGetByTypeAndPerson('SomeType',  Yii::app()->user->userModel);
             $this->assertEquals('SomeType',                   $gamePoint->type);
             $this->assertEquals(60,                           $gamePoint->value);
-            $this->assertEquals(Yii::app()->user->userModel,  $gamePoint->person);
+            $this->assertEquals(Yii::app()->user->userModel->getClassId('Item'),  $gamePoint->person->getClassId('Item'));
 
             $gamePoint = GamePoint::resolveToGetByTypeAndPerson('SomeType2',  Yii::app()->user->userModel);
             $this->assertTrue($gamePoint->id < 0);
