@@ -94,6 +94,7 @@
             if (isset($htmlContent))
             {
                 $this->registerTabbedContentScripts();
+                $this->registerRedactorIframeHeightScripts();
                 $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(),
                                                           '#tab2',
                                                           array('class' => $htmlClass));
@@ -140,6 +141,24 @@
                                     _new.addClass('active-tab');
                             });
                             event.preventDefault();
+                        });
+                    ");
+            }
+        }
+
+        protected function registerRedactorIframeHeightScripts()
+        {
+            $scriptName = 'redactor-iframe-height';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('.redactor-iframe').load(function(){
+                            var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
+                            $('.redactor-iframe').height(contentHeight + 50);
                         });
                     ");
             }
