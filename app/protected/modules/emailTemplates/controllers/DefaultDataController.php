@@ -36,6 +36,16 @@
 
     class EmailTemplatesDefaultDataController extends ZurmoModuleController
     {
+        protected $templateNameToIconMapping    = array(
+                'Blank'                         => 'icon-template-0',
+                '1 Column'                      => 'icon-template-5',
+                '2 Columns'                     => 'icon-template-2',
+                '2 Columns with strong right'   => 'icon-template-3',
+                '3 Columns'                     => 'icon-template-4',
+                '3 Columns with Hero'           => 'icon-template-1',
+                'Kitchen Sink'                  => 'icon-template-6'
+        );
+
         public function actionLoad()
         {
             $defaultDataMaker   = new EmailTemplatesDefaultDataMaker();
@@ -68,10 +78,10 @@
 
         protected function resolveMakeTemplateFunctionDefinitionById($id, & $functionDefinitions, array & $functionNames)
         {
-            $name                   = null;
-            $builttype              = null;
-            $serializeddata         = null;
-            $emailTemplate          =  ZurmoRedBean::getRow('select name,builttype,serializeddata from emailtemplate where id =' . $id);
+            $name                           = null;
+            $builttype                      = null;
+            $serializeddata                 = null;
+            $emailTemplate                  =  ZurmoRedBean::getRow('select name,builttype,serializeddata from emailtemplate where id =' . $id);
             if (empty($emailTemplate))
             {
                 throw new NotFoundException("Unable to load model for id: ${id}");
@@ -81,16 +91,17 @@
             {
                 throw new NotSupportedException("id: {$id} is not a builder template");
             }
-            $unserializedData       = CJSON::decode($serializeddata);
+            $unserializedData               = CJSON::decode($serializeddata);
             if (json_last_error() != JSON_ERROR_NONE || empty($unserializedData))
             {
                 throw new NotSupportedException("JSON could not be translated");
             }
             $unserializedData['baseTemplateId'] = '';
-            $unserializedData       = var_export($unserializedData, true);
-            $functionName           = $this->resolveFunctionNameFromTemplateName($name);
-            $functionNames[]        = $functionName;
-            $functionDefinitions    .= "
+            $unserializedData['icon']           = ArrayUtil::getArrayValue($this->templateNameToIconMapping, $name);
+            $unserializedData                   = var_export($unserializedData, true);
+            $functionName                       = $this->resolveFunctionNameFromTemplateName($name);
+            $functionNames[]                    = $functionName;
+            $functionDefinitions                .= "
 
 protected function $functionName()
 {

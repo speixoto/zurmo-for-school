@@ -36,13 +36,13 @@
 
     class EmailTemplatesDefaultDataMaker extends EmailTemplatesBaseDefaultDataMaker
     {
+
         public function make()
         {
-
             $this->makeBlank();
             $this->makeOneColumn();
             $this->makeTwoColumns();
-            $this->makeTwoColumnsStrongRight();
+            $this->makeTwoColumnsWithStrongRight();
             $this->makeThreeColumns();
             $this->makeThreeColumnsWithHero();
             return true;
@@ -53,7 +53,7 @@
             $name              = 'Blank';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'icon' => 'icon-template-1',
+                'icon' => 'icon-template-0',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -108,7 +108,7 @@
             $name              = '1 Column';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'icon' => 'icon-template-2',
+                'icon' => 'icon-template-5',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -427,7 +427,7 @@
             $name              = '2 Columns';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'icon' => 'icon-template-3',
+                'icon' => 'icon-template-2',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -837,12 +837,12 @@
             $this->makeBuilderPredefinedEmailTemplate($name, $unserializedData);
         }
 
-        protected function makeTwoColumnsStrongRight()
+        protected function makeTwoColumnsWithStrongRight()
         {
-            $name              = '2 Columns strong right';
+            $name              = '2 Columns with strong right';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'icon' => 'icon-template-4',
+                'icon' => 'icon-template-3',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -1256,7 +1256,7 @@
             $name              = '3 Columns';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'icon' => 'icon-template-5',
+                'icon' => 'icon-template-4',
                 'dom' =>
                     array (
                         'canvas1' =>
@@ -1702,10 +1702,10 @@
 
         protected function makeThreeColumnsWithHero()
         {
-            $name              = '3 Columns with hero';
+            $name              = '3 Columns with Hero';
             $unserializedData  = array (
                 'baseTemplateId' => '',
-                'icon' => 'icon-template-6',
+                'icon' => 'icon-template-1',
                 'dom' =>
                     array (
                         'canvas1' =>
