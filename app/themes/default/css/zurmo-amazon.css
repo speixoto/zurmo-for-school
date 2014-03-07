@@ -6770,6 +6770,9 @@ i[class^="icon"] {
 .icon-border-bottom:after {
   content: '\00E3';
 }
+.icon-template-0:after {
+  content: '\016A';
+}
 .icon-template-1:after {
   content: '\01D7';
 }
@@ -6784,6 +6787,9 @@ i[class^="icon"] {
 }
 .icon-template-5:after {
   content: '\00D9';
+}
+.icon-user-template:after {
+  content: '\00DD';
 }
 .pillbox .icon-projects-list {
   font-size: 22px;

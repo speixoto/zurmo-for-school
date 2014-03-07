@@ -43,7 +43,7 @@
                 '2 Columns with strong right'   => 'icon-template-3',
                 '3 Columns'                     => 'icon-template-4',
                 '3 Columns with Hero'           => 'icon-template-1',
-                'Kitchen Sink'                  => 'icon-template-6'
+                'Kitchen Sink'                  => 'icon-elements'
         );
 
         public function actionLoad()
