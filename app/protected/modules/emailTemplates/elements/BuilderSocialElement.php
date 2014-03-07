@@ -100,7 +100,7 @@
 
         protected function resolveDefaultHtmlOptionsForLink()
         {
-            return array('class' => 'newsletter-button', 'target' => '_blank');
+            return array('class' => 'social-button', 'target' => '_blank');
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()
@@ -112,7 +112,7 @@
 
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
-            return array('class' => 'button-container');
+            return array('class' => 'social-container');
         }
     }
 ?>
