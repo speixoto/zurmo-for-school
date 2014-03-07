@@ -40,10 +40,10 @@
         {
             $params      = LabelUtil::getTranslationParamsForAllModules();
             return array(
-                'name'  => $this->attribute,
-                'header'=> Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params),
-                'value' => 'CalendarColorListViewColumnAdapter::getCalendarColor($data)',
-                'type'  => 'html',
+                'name'     => $this->attribute,
+                'header'   => Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params),
+                'value'    => 'CalendarColorListViewColumnAdapter::getCalendarColor($data)',
+                'type'     => 'html',
                 'sortable' => false,
             );
         }

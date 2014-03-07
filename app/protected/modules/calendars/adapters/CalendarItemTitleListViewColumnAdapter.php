@@ -39,10 +39,10 @@
         public function renderGridViewData()
         {
             return array(
-                'name'  => $this->attribute,
-                'header'=> Zurmo::t('CalendarsModule', 'Title'),
-                'value' => 'Yii::app()->format->text(strval($data["' . $this->attribute . '"]))',
-                'type'  => 'raw',
+                'name'     => $this->attribute,
+                'header'   => Zurmo::t('CalendarsModule', 'Title'),
+                'value'    => 'Yii::app()->format->text(strval($data["' . $this->attribute . '"]))',
+                'type'     => 'raw',
                 'sortable' => false,
             );
         }

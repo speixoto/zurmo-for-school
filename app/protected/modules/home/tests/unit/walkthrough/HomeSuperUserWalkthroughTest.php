@@ -422,14 +422,14 @@
             //Add new dashboard using dashboard add action
             $this->resetGetArray();
             $this->setPostArray(array('Dashboard' => array('name'       => 'myDataDashboard',
-                                                           'layoutType' => '50,50')));
+                                                           'layoutType' => '50,50'))); // Not Coding Standard
             $this->runControllerWithRedirectExceptionAndGetContent('home/default/createDashboard');
             $dashboards = Dashboard::getAll();
             $this->assertEquals(intval($dashboardCount + 1), count($dashboards));
             $myDataDashboard = $dashboards[$dashboardCount];
             $this->assertEquals('myDataDashboard', $myDataDashboard->name);
             $this->assertEquals($super, $myDataDashboard->owner);
-            $this->assertEquals('50,50', $myDataDashboard->layoutType);
+            $this->assertEquals('50,50', $myDataDashboard->layoutType); // Not Coding Standard
             //Add portlet on 2nd column of recently added dashboard
             $uniqueLayoutId = 'HomeDashboard' . $myDataDashboard->layoutId;
             $this->setGetArray(array(
