@@ -262,10 +262,9 @@
                     $('#" . ZurmoHtml::activeId($this->model, 'textContent') . "').val('');
                     if (" . intval($this->model->isPastedHtmlTemplate()) . ")
                     {
-                        //var htmlContentId       = '" . ZurmoHtml::activeId($this->model, 'htmlContent') . "';
-                        //var htmlContentElement  = $('#' + htmlContentId);
-                        //htmlContentElement.val('');
-                        //$('.redactor_editor').html('');
+                        var htmlContentElement  = $('#" . ZurmoHtml::activeId($this->model, 'htmlContent') . "');
+                        $(htmlContentElement).redactor('selectionAll');
+                        $(htmlContentElement).redactor('insertHtml', '');
                     }
 
                     else if (" . intval($this->model->isBuilderTemplate()) . ")
