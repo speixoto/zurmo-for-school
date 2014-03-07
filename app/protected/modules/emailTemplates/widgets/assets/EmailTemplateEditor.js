@@ -348,7 +348,6 @@ var emailTemplateEditor = {
         elementContent      = emailTemplateEditor.getElementContent(id, serializedData);
         postData            = {BuilderElementEditableModelForm: {id: id, className: elementClass, properties: elementProperties,
                                content: elementContent}, 'YII_CSRF_TOKEN': emailTemplateEditor.settings.csrfToken, renderForCanvas: 1};
-        postData            = decodeURIComponent($.param(postData));
         //Send an ajax to resolveElementEditableActionUrl()
         $.ajax({
             url: emailTemplateEditor.settings.editElementUrl,
