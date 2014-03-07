@@ -256,13 +256,12 @@
                 return;
             }
             Yii::app()->clientScript->registerScript('trashSomeDataOnModuleChangeScript', "
-                $('" . $this->resolveModuleClassNameJQuerySelector() . "').unbind('change.trashSomeDataOnModuleChange');
-                $('" . $this->resolveModuleClassNameJQuerySelector() . "').bind('change.trashSomeDataOnModuleChange', function()
+                $('" . $this->resolveModuleClassNameJQuerySelector() . "').unbind('change.trashSomeDataOnModuleChange')
+                                                                .bind('change.trashSomeDataOnModuleChange', function()
                 {
                     $('#" . ZurmoHtml::activeId($this->model, 'textContent') . "').val('');
                     if (" . intval($this->model->isPastedHtmlTemplate()) . ")
                     {
-                        // TODO: @Shoaibi/@Sergio: Critical2: How to do this.
                         //var htmlContentId       = '" . ZurmoHtml::activeId($this->model, 'htmlContent') . "';
                         //var htmlContentElement  = $('#' + htmlContentId);
                         //htmlContentElement.val('');
@@ -285,7 +284,6 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
             $ajaxArray                  = parent::resolveAdditionalAjaxOptions($formName);
             $ajaxArray['success']       = "js:function(data)
                                             {

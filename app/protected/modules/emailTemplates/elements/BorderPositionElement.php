@@ -39,9 +39,13 @@
         protected function renderControlEditable()
         {
             $this->registerScripts();
-            $content                = $this->renderAllCheckbox();
-            $content                .= "<br />";
-            $content                .= $this->renderNoneCheckbox();
+            // TODO: @Shoaibi: High: Enable all and none once we figure out following:
+            // what to do if none is unchecked?
+            // what to do is all is unchecked?
+            //$content                = $this->renderAllCheckbox();
+            $content                = $this->renderDirectionalCheckboxes();
+            //$content                .= "<br />";
+            //$content                .= $this->renderNoneCheckbox();
             return $content;
         }
 
@@ -55,8 +59,6 @@
             $attribute              = 'border-all';
             $label                  = Zurmo::t('Core', 'All');
             $all                    = $this->renderCheckboxWithHiddenInput($label, $attribute);
-            $directionalCheckBoxes  = $this->renderDirectionalCheckboxes();
-            $all                    = $all . $directionalCheckBoxes;
             return $all;
         }
 
@@ -128,7 +130,7 @@
         protected function registerScripts()
         {
             $this->registerDirectionalCheckboxScript();
-            $this->registerAllOrNoneCheckboxScript();
+            //$this->registerAllOrNoneCheckboxScript();
         }
 
         protected function registerDirectionalCheckboxScript()
@@ -166,20 +168,20 @@
                             }
                         }
 
-                        $(directionalCheckBoxSelector).on("change", function()
+                        $(directionalCheckBoxSelector).unbind("change").bind("change", function()
                         {
                             if ($(this).is(":checked"))
                             {
-                                toggleCheckBoxState(noneCheckboxSelector, false);
-                                checkAllIfAllDirectionalCheckboxesChecked();
+                                //toggleCheckBoxState(noneCheckboxSelector, false);
+                                //checkAllIfAllDirectionalCheckboxesChecked();
                             }
                             else
                             {
-                                toggleCheckBoxState(allCheckboxSelector, false);
-                                checkNoneIfAllDirectionalCheckboxesUnchecked();
+                                //toggleCheckBoxState(allCheckboxSelector, false);
+                                //checkNoneIfAllDirectionalCheckboxesUnchecked();
                             }
                         });
-                        checkNoneIfAllDirectionalCheckboxesUnchecked() || checkAllIfAllDirectionalCheckboxesChecked();
+                        //checkNoneIfAllDirectionalCheckboxesUnchecked() || checkAllIfAllDirectionalCheckboxesChecked();
                         ';
             Yii::app()->clientScript->registerScript('directionalCheckboxClickScript', $script);
         }
@@ -209,7 +211,7 @@
                             changeAllDirectionalCheckboxesAndRaiseEvents(false);
                         }
 
-                        $(".border-checkbox:checkbox").on("change", function()
+                        $(".border-checkbox:checkbox").unbind("change").bind("change", function()
                         {
                             if ($(this).is(":checked"))
                             {

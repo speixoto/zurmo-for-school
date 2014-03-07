@@ -884,8 +884,7 @@
         protected function registerApplyClickScript()
         {
             Yii::app()->clientScript->registerScript('applyClick', "
-                $('#" . $this->resolveApplyLinkId() . "').unbind('click');
-                $('#" . $this->resolveApplyLinkId() . "').bind('click', function()
+                $('#" . $this->resolveApplyLinkId() . "').unbind('click').bind('click', function()
                 {
                     jQuery.yii.submitForm(this, '', {}); return false;
                 });
@@ -914,8 +913,7 @@
         protected function registerCancelScript()
         {
             Yii::app()->clientScript->registerScript('cancelLinkClick', "
-                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick');
-                $('#" . $this->resolveCancelLinkId() . "').bind('click.cancelLinkClick', function()
+                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick').bind('click.cancelLinkClick', function()
                 {
                     hideElementEditFormOverlay();
                     $('#" . BuilderCanvasWizardView::ELEMENTS_CONTAINER_ID . "').show();

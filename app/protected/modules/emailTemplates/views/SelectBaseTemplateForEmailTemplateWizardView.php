@@ -199,8 +199,8 @@
                     $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val(value);
                 }
 
-                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('click');
-                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').bind('click', function()
+                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('click')
+                                                                                            .bind('click', function()
                 {
                     originalBaseTemplateId  = $('" . $this->resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
                     currentSelectedValue    = $(this).val();
@@ -306,7 +306,6 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            // TODO: @Shoaibi/@Amit/@Sergio/@Jason: Critical0: Shall we lock the page till success/error happens?
             $ajaxArray                                      = parent::resolveAdditionalAjaxOptions($formName);
             $ajaxArray['success']       = "js:function(data)
                                             {
