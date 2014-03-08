@@ -114,7 +114,7 @@
                                             'elements' => array(
                                                 array('attributeName'   => 'null',
                                                       'type'            => 'MultipleContactsForMeeting',
-                                                      'inputPrefix'     => 'ActivityItemForm'),
+                                                ),
                                             ),
                                         ),
                                     )

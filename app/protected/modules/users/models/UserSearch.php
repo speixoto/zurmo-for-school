@@ -68,14 +68,17 @@
          * @param null|string $operatorType
          * @param bool $filterOutHideFromSelecting
          * @param $autoCompleteOptions
+         * @param null|int $pageSize
          * @return Array
          */
         public static function getUsersByEmailAddress($emailAddress, $operatorType = null,
-                                                  $filterOutHideFromSelecting = false, $autoCompleteOptions = null)
+                                                      $filterOutHideFromSelecting = false, $autoCompleteOptions = null,
+                                                      $pageSize = null)
         {
             assert('is_string($emailAddress)');
             assert('$operatorType == null || is_string($operatorType)');
             assert('is_bool($filterOutHideFromSelecting)');
+            assert('is_int($pageSize) || $pageSize === null');
             if ($operatorType == null)
             {
               $operatorType = 'equals';
@@ -108,7 +111,7 @@
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('User');
             $where  = RedBeanModelDataProvider::makeWhere('User', $metadata, $joinTablesAdapter);
             static::handleAutoCompleteOptions($joinTablesAdapter, $where, $autoCompleteOptions);
-            $users = User::getSubset($joinTablesAdapter, null, null, $where);
+            $users = User::getSubset($joinTablesAdapter, null, $pageSize, $where);
             return $users;
         }
 

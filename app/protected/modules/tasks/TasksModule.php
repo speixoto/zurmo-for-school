@@ -208,5 +208,10 @@
         {
             return Zurmo::t('TasksModule', 'Tasks', array(), null, $language);
         }
+
+        public static function canShowOnCalendar()
+        {
+            return true;
+        }
     }
 ?>

@@ -41,6 +41,11 @@
      */
     class MultipleProductCategoriesForProductTemplateElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
+        protected function getFormName()
+        {
+            return 'ProductTemplateCategoriesForm';
+        }
+
         /**
          * @return string
          */

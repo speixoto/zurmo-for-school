@@ -41,6 +41,11 @@
      */
     class MultipleAccountsForProjectsElement extends MultiSelectRelatedModelsAutoCompleteElement
     {
+        protected function getFormName()
+        {
+            return 'ProjectAccountsForm';
+        }
+
         protected function getUnqualifiedNameForIdField()
         {
             return '[accountIds]';

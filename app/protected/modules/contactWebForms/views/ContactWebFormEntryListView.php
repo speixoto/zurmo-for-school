@@ -73,7 +73,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'contact', 'type' => 'Contact', 'isLink' => false),
+                                                array('attributeName' => 'contact', 'type' => 'ContactOrLead', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -93,6 +93,39 @@
                 ),
             );
             return $metadata;
+        }
+
+        public function resolveLinkStringForContactOrLead()
+        {
+            return 'ContactWebFormEntryListView::resolveLinkStringWithModuleIdForContactOrLead($data)';
+        }
+
+        public static function resolveLinkStringWithModuleIdForContactOrLead(ContactWebFormEntry $contactWebFormEntry)
+        {
+            $content  = static::resolveModuleIdWithLinkContentForContactOrLead($contactWebFormEntry->contact);
+            return $content;
+        }
+
+        /**
+         * @param Contact $contact
+         * @return string
+         */
+        public static function resolveModuleIdWithLinkContentForContactOrLead(Contact $contact)
+        {
+            $linkContent = null;
+            if (ActionSecurityUtil::canCurrentUserPerformAction('Details', $contact))
+            {
+                $moduleClassName = $contact->getModuleClassName();
+                $moduleId        = ContactWebFormsUtil::getResolvedModuleIdForContactWebFormEntry($contact);
+                $linkRoute       = '/' . $moduleId . '/default/details';
+                $link            = ActionSecurityUtil::resolveLinkToModelForCurrentUser(strval($contact), $contact,
+                                   $moduleClassName, $linkRoute);
+                if ($link != null)
+                {
+                    $linkContent = $link;
+                }
+                return ZurmoHtml::tag('div', array(), $linkContent);
+            }
         }
     }
 ?>

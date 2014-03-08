@@ -414,5 +414,42 @@
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('home/default/dashboardDetails');
         }
+
+        public function testCreateAndEditDashboardByChangingLayoutType()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $dashboardCount = Dashboard::getCount();
+            //Add new dashboard using dashboard add action
+            $this->resetGetArray();
+            $this->setPostArray(array('Dashboard' => array('name'       => 'myDataDashboard',
+                                                           'layoutType' => '50,50'))); // Not Coding Standard
+            $this->runControllerWithRedirectExceptionAndGetContent('home/default/createDashboard');
+            $dashboards = Dashboard::getAll();
+            $this->assertEquals(intval($dashboardCount + 1), count($dashboards));
+            $myDataDashboard = $dashboards[$dashboardCount];
+            $this->assertEquals('myDataDashboard', $myDataDashboard->name);
+            $this->assertEquals($super, $myDataDashboard->owner);
+            $this->assertEquals('50,50', $myDataDashboard->layoutType); // Not Coding Standard
+            //Add portlet on 2nd column of recently added dashboard
+            $uniqueLayoutId = 'HomeDashboard' . $myDataDashboard->layoutId;
+            $this->setGetArray(array(
+                'dashboardId'    => $myDataDashboard->id,
+                'portletType'    => 'ContactsMyList',
+                'uniqueLayoutId' => $uniqueLayoutId));
+            $this->resetPostArray();
+            $this->runControllerWithRedirectExceptionAndGetContent('home/defaultPortlet/add');
+            //Edit dashboard and change it to one column layout
+            $this->resetGetArray();
+            $this->setGetArray(array('id' => $myDataDashboard->id));
+            $this->runControllerWithNoExceptionsAndGetContent('home/default/editDashboard');
+            $this->setPostArray(array('Dashboard' => array('layoutType' => '100')));
+            $editActionContent = $this->runControllerWithRedirectExceptionAndGetContent('home/default/editDashboard');
+            $this->assertTrue(strpos($editActionContent, 'Undefined variable: maxPositionInColumn1') === false);
+            $this->resetGetArray();
+            $this->setGetArray(array('id' => $myDataDashboard->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/default/dashboardDetails');
+            $this->assertTrue(strpos($editActionContent, 'Undefined offset: 2') === false);
+        }
     }
 ?>
