@@ -652,10 +652,10 @@
         protected final function resolveActiveFormOptions()
         {
             $options = array('id'                       => $this->resolveFormId(),
-                            'action'                    => $this->resolveFormActionUrl(),
-                            'enableAjaxValidation'      => $this->resolveEnableAjaxValidation(),
-                            'clientOptions'             => $this->resolveFormClientOptions(),
-                            'htmlOptions'               => $this->resolveFormHtmlOptions());
+                             'action'                   => $this->resolveFormActionUrl(),
+                             'enableAjaxValidation'     => $this->resolveEnableAjaxValidation(),
+                             'clientOptions'            => $this->resolveFormClientOptions(),
+                             'htmlOptions'              => $this->resolveFormHtmlOptions());
             $customActiveFormOptions    = $this->resolveActiveFormCustomOptions();
             $options    = CMap::mergeArray($options, $customActiveFormOptions);
             return $options;
@@ -952,25 +952,35 @@
         protected function resolveFormClientOptions()
         {
             return array('beforeValidate'    => 'js:$(this).beforeValidateAction',
-                         'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
+                         'afterValidate'     => $this->renderAfterValidateScript(),
                          'afterValidateAjax' => $this->renderConfigSaveAjax(),
                          'validateOnSubmit'  => true,
                          'validateOnChange'  => false);
         }
 
+        /**
+         * This is used to remove the error class for all the settings tab when the last input had an error
+         * @return string
+         */
+        protected function renderAfterValidateScript()
+        {
+            $script = "js:function(form, data, hasError){
+                            if(!$(this).afterValidateAction(form, data, hasError)) {
+                                $('#element-settings').removeClass('error');
+                                    return false;
+                            }
+                            if(!hasError) {
+                                eval($(form).data('settings').afterValidateAjax);
+                            }
+                            return false;
+                     }";
+            return $script;
+        }
+
         protected function renderConfigSaveAjax()
         {
-
             $ajaxOptions = $this->resolveAjaxPostForApplyClickAjaxOptions(); //todo; remove
             return ZurmoHtml::ajax($ajaxOptions);
-/**
-            return ZurmoHtml::ajax(array(
-                'type' => 'POST',
-                'data' => 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()',
-                'url'  =>  $this->resolveFormActionUrl(),
-                //'update' => '#' . $this->uniquePageId,
-            ));
-**/
         }
 
         /**
@@ -986,34 +996,21 @@
             $ajaxArray['url']           = $this->resolveFormActionUrl();
             $ajaxArray['type']          = 'POST';
             $ajaxArray['data'] = 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()';
-            /**
-            $ajaxArray['data']          = "js:(function()
-                                            {
-                                                formData    = $('#" .  $this->resolveApplyLinkId() . "')
-                                                                .closest('form').serialize();
-                                                // we want to reuse same action so lets get rid of form prefixes
-                                                formData    = formData.replace(/" . static::getModelClassName() . "%5B(\w*)%5D/g, '$1');
-                                                return formData;
-                                            })()";**/
             $ajaxArray['beforeSend']    = "js:function()
                                         {
                                             emailTemplateEditor.freezeLayoutEditor();
                                         }";
-
             $ajaxArray['success']       = "js:function (html)
                                         {
                                             var replaceElementId        = $('#" . $hiddenInputId . "').val();
-                                            var replaceElementInIframe  = $('#" .
-                BuilderCanvasWizardView::CANVAS_IFRAME_ID .
-                "').contents().find('#' + replaceElementId)
-                .parent();
-replaceElementInIframe.replaceWith(html);
-" . $this->getAjaxScriptForInitSortableElements() . "
+                                            var replaceElementInIframe  = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "')
+                                                                            .contents().find('#' + replaceElementId).parent();
+                                            replaceElementInIframe.replaceWith(html);
+                                            " . $this->getAjaxScriptForInitSortableElements() . "
                                             emailTemplateEditor.unfreezeLayoutEditor();
                                             emailTemplateEditor.canvasChanged();
                                             emailTemplateEditor.addPlaceHolderForEmptyCells();
                                         }";
-
             return $ajaxArray;
         }
 
