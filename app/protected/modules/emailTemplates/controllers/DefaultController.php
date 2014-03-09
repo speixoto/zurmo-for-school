@@ -85,44 +85,29 @@
             $this->actionListForMarketing();
         }
 
-        // TODO: @Shoaibi: Critical999: Refactor list actions
         public function actionListForMarketing()
         {
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                                            'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForMarketingMenuActionElement::getType();
-            $emailTemplate                  = new EmailTemplate(false);
-            $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
-            $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
-                                              'EmailTemplatesForMarketingStateMetadataAdapter',
-                                              'EmailTemplatesSearchView');
-            $breadCrumbLinks                = static::getListBreadcrumbLinks();
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-            {
-                $mixedView = $this->makeListView($searchForm, $dataProvider);
-                $view = new EmailTemplatesPageView($mixedView);
-            }
-            else
-            {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForMarketingListsSearchAndListView', null, $activeActionElementType);
-                $view      = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            echo $view->render();
+            $this->actionListByType(EmailTemplate::TYPE_CONTACT);
         }
 
         public function actionListForWorkflow()
         {
+            $this->actionListByType(EmailTemplate::TYPE_WORKFLOW);
+        }
+
+        protected function actionListByType($type)
+        {
+            assert('is_int($type) || is_string($type)');
+            $type               = intval($type);
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForWorkflowMenuActionElement::getType();
+                                                                        'listPageSize', get_class($this->getModule()));
             $emailTemplate                  = new EmailTemplate(false);
-            $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
+            $emailSearchFormClassName       = static::getSearchFormClassName();
+            $searchForm                     = new $emailSearchFormClassName($emailTemplate);
+            $stateMetadataAdapter           = static::getStateMetadataAdapterByType($type);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
-                                              'EmailTemplatesForWorkflowStateMetadataAdapter',
-                                              'EmailTemplatesSearchView');
-            $breadCrumbLinks                = static::getListBreadcrumbLinks();
+                                                                                $stateMetadataAdapter,
+                                                                                'EmailTemplatesSearchView');
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView($searchForm, $dataProvider);
@@ -130,10 +115,20 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
-                $view      = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'WorkflowBreadCrumbView'));
+                $activeActionElementType        = static::getMenuActionElementTypeByType($type);
+                $breadCrumbLinks                = static::getListBreadcrumbLinks();
+                $breadCrumbsView                = static::getBreadCrumbViewByType($type);
+                $viewUtil                       = static::getViewUtilByType($type);
+                $actionBar                      = static::getActionBarByType($type);
+                $mixedView                      = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                                        $actionBar, null,
+                                                                                        $activeActionElementType);
+                $view                           = new EmailTemplatesPageView($viewUtil::
+                                                                                makeViewWithBreadcrumbsForCurrentUser(
+                                                                                                    $this,
+                                                                                                    $mixedView,
+                                                                                                    $breadCrumbLinks,
+                                                                                                    $breadCrumbsView));
             }
             echo $view->render();
         }
@@ -389,6 +384,37 @@
                 $viewUtil = 'WorkflowDefaultAdminViewUtil';
             }
             return $viewUtil;
+        }
+
+        protected static function getStateMetadataAdapterByType($type)
+        {
+            $adapterClass   = 'EmailTemplatesForMarketingStateMetadataAdapter';
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $adapterClass   = 'EmailTemplatesForWorkflowStateMetadataAdapter';
+            }
+            return $adapterClass;
+        }
+
+        protected static function getActionBarByType($type)
+        {
+            $actionBar  = 'SecuredActionBarForMarketingListsSearchAndListView';
+            if ($actionBar == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $actionBar  = 'SecuredActionBarForWorkflowsSearchAndListView';
+            }
+            return $actionBar;
+        }
+
+        protected static function getMenuActionElementTypeByType($type)
+        {
+            $menuActionElement  = 'EmailTemplatesForMarketingMenuActionElement';
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $menuActionElement  = 'EmailTemplatesForWorkflowMenuActionElement';
+            }
+            $menuActionElementType  = $menuActionElement::getType();
+            return $menuActionElementType;
         }
 
         protected static function getBreadCrumbLinksByType($type)
