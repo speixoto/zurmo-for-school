@@ -215,7 +215,9 @@
             {
                 $this->actionValidate($postData, $model);
             }
-            if ($emailTemplate->save())
+            // we have false here to avoid any issues with EmailTemplateAtLeastOneContentAreaRequiredValidator
+            // throwing errors for content being empty. Plus we already validate it using the wizard form.
+            if ($emailTemplate->save(false))
             {
                 echo CJSON::encode(array('id' => $emailTemplate->id, 'redirectToList' => false));
                 Yii::app()->end(0, false);

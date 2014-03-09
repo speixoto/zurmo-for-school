@@ -415,19 +415,7 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            $successMessage = Zurmo::t('EmailTemplatesModule',
-                                                                'EmailTemplatesModuleSingularLabel was successfully saved.',
-                                                                LabelUtil::getTranslationParamsForAllModules());
             $ajaxArray                      = parent::resolveAdditionalAjaxOptions($formName);
-            $ajaxArray['success']           = "js:function(data)
-                                            {
-                                                $('#FlashMessageBar').jnotifyAddMessage({
-                                                    text: '" . $successMessage . "',
-                                                    permanent: true,
-                                                    clickOverlay : true,
-                                                    showIcon: false,
-                                                });
-                                            }";
             $ajaxArray['complete']          = "js:function()
                                             {
                                                 emailTemplateEditor.unfreezeLayoutEditor();

@@ -34,15 +34,17 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateAtLeastOneContentAreaRequiredValidator extends AtLeastOneContentAreaRequiredValidator
+    /**
+     * Progress bar and steps for the builder emailTemplate wizard
+     */
+    class ClassicEmailTemplateStepsAndProgressBarForWizardView extends StepsAndProgressBarForWizardView
     {
-        protected function resolveErrorMessage($object)
+        protected function getSpanLabels()
         {
-            if ($object->isPlainTextTemplate())
-            {
-                return Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
-            }
-            return parent::resolveErrorMessage($object);
+            $spanLabels = array(
+                            Zurmo::t('Core', 'General'),
+                            Zurmo::t('EmailTemplatesModule', 'Content'));
+            return $spanLabels;
         }
     }
 ?>

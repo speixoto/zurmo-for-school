@@ -48,6 +48,7 @@
         {
             $views              = array();
             $views[]            = new GeneralDataForEmailTemplateWizardView($this->model, $form);
+            $views[]            = new ContentForEmailTemplateWizardView($this->model, $form, true);
             return $views;
         }
 
@@ -56,15 +57,43 @@
             return "
                     if (linkId == '" . GeneralDataForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName) . "
+                        " . $this->getSaveAjaxString($formName, false, GeneralDataForEmailTemplateWizardView::resolveAdditionalAjaxOptions($formName)) . "
+                        $('#" . static::getValidationScenarioInputId() . "').val('" .
+                                        BuilderEmailTemplateWizardForm::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO. "');
+                        $('#GeneralDataForEmailTemplateWizardView').hide();
+                        $('#ContentForEmailTemplateWizardView').show();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                     }
-                    else
+                    $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading');
+                    $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
+                    $('#" . $formName . "').find('.attachLoadingTarget').removeClass('attachLoadingTarget');
+                    ";
+        }
+
+        protected function renderPreGeneralDataNextPageLinkScript($formName)
+        {
+            return "
+                    if (linkId == '" . ContentForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
-                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading');
-                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
-                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('attachLoadingTarget');
+                        " . $this->getSaveAjaxString($formName, true, ContentForEmailTemplateWizardView::resolveAdditionalAjaxOptions($formName)) . "
                     }
                     ";
+        }
+
+        protected function registerPostGeneralDataPreviousLinkScript()
+        {
+            Yii::app()->clientScript->registerScript('clickflow.contentPreviousLink', "
+                $('#" . ContentForEmailTemplateWizardView::getPreviousPageLinkId() . "').unbind('click').bind('click', function()
+                    {
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . BuilderEmailTemplateWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
+                        $('#GeneralDataForEmailTemplateWizardView').show();
+                        $('#ContentForEmailTemplateWizardView').hide();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').prev().addClass('current-step');
+                        return false;
+                    }
+                );");
         }
     }
 ?>

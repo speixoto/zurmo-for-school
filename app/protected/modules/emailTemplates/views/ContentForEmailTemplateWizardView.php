@@ -34,44 +34,68 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Factory for creating emailTemplate wizard views of
-     * the appropriate type.
-     */
-    class EmailTemplateWizardViewFactory
+    class ContentForEmailTemplateWizardView extends ComponentForEmailTemplateWizardView
     {
         /**
-         * @param EmailTemplate $emailTemplate
-         * @return View
+         * @return string
          */
-        public static function makeViewFromEmailTemplate(EmailTemplate $emailTemplate)
+        public static function getWizardStepTitle()
         {
-            $viewClassName                      = static::getViewFromEmailTemplateBuiltType($emailTemplate);
-            $emailTemplateToWizardFormAdapter   = new EmailTemplateToWizardFormAdapter($emailTemplate);
-            $form                               = $emailTemplateToWizardFormAdapter->makeFormByBuiltType();
-            return new $viewClassName($form);
+            return Zurmo::t('Core', 'Content');
         }
 
         /**
-         * @param EmailTemplate $emailTemplate
-         * @return BuilderEmailTemplateStepsAndProgressBarForWizardView|ClassicEmailTemplateStepsAndProgressBarForWizardView
+         * @return string
          */
-        public static function makeStepsAndProgressBarViewFromEmailTemplate(EmailTemplate $emailTemplate)
+        public static function getPreviousPageLinkId()
         {
-            if ($emailTemplate->isBuilderTemplate())
-            {
-                return new BuilderEmailTemplateStepsAndProgressBarForWizardView();
-            }
-            return new ClassicEmailTemplateStepsAndProgressBarForWizardView();
+            return 'contentCancelLink';
         }
 
-        protected static function getViewFromEmailTemplateBuiltType(EmailTemplate $emailTemplate)
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
         {
-            if ($emailTemplate->isBuilderTemplate())
-            {
-                return 'BuilderEmailTemplateWizardView';
-            }
-            return 'ClassicEmailTemplateWizardView';
+            return 'contentFinishLink';
+        }
+
+        protected function renderNextPageLinkLabel()
+        {
+            return Zurmo::t('Core', 'Finish');
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderFormContent()
+        {
+            $leftSideContent    = null;
+            $this->renderPlainTextAndHtmlContent($leftSideContent);
+            $content            = $this->renderLeftAndRightSideBarContentWithWrappers($leftSideContent);
+            return $content;
+        }
+
+        protected function renderPlainTextAndHtmlContent(& $content)
+        {
+            $params  = array('redactorPlugins' => CJSON::encode(array('mergetags')));
+            $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
+            $element->editableTemplate  = '{label}{content}';
+            $right = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            $right = ZurmoHtml::tag('td', array(), $right);
+            //todo: placed last so redactor is already initialized first. just a trick for the css right now
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $left = $this->renderMergeTagsView();
+            $left = ZurmoHtml::tag('th', array(), $title . $left);
+            $content .= $left . $right;
+        }
+
+        protected function renderMergeTagsView()
+        {
+            $view = new MergeTagsView('EmailTemplate',
+                                      get_class($this->model) . '_textContent',
+                                      get_class($this->model) . '_htmlContent', false); //todo: get these last 2 values dynamically
+            return $view->render();
         }
     }
 ?>
