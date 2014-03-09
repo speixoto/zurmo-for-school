@@ -88,30 +88,6 @@
             return 'builderCanvasSaveLink';
         }
 
-        protected function renderNextPageLinkContent()
-        {
-            //todo: temporary. removed save button for now. eventually we can add this back in
-            return null;
-        }
-
-        /**
-         * @return string
-         */
-        public static function getFinishLinkId()
-        {
-            return 'builderCanvasFinishLink';
-        }
-
-        protected function renderNextPageLinkLabel()
-        {
-            return Zurmo::t('Core', 'Save');
-        }
-
-        protected function renderFinishLinkLabel()
-        {
-            return Zurmo::t('Core', 'Finish');
-        }
-
         /**
          * @return string
          */
@@ -185,27 +161,6 @@
         protected function resolveRefreshCanvasLinkHtmlOptions()
         {
             return array('id' => static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID, 'style' => 'display:none');
-        }
-
-        protected function renderActionLinksContent()
-        {
-            $content    = parent::renderActionLinksContent();
-            $content    .= $this->renderFinishLinkContent();
-            return $content;
-        }
-
-        protected function renderFinishLinkContent()
-        {
-            $params                = array();
-            $params['label']       = $this->renderFinishLinkLabel();
-            $params['htmlOptions'] = $this->resolveFinishLinkHtmlOptions();
-            $element               = new SaveButtonActionElement(null, null, null, $params);
-            return $element->render();
-        }
-
-        protected function resolveFinishLinkHtmlOptions()
-        {
-            return array('id' => static::getFinishLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
         }
 
         protected function generateWidgetTagsForUIAccessibleElements($uiAccessibleElements)
@@ -478,11 +433,6 @@
                                                 emailTemplateEditor.unfreezeLayoutEditor();
                                             }";
             return $ajaxArray;
-        }
-
-        public static function resolveAdditionalAjaxOptionsForFinish($formName)
-        {
-            return array();
         }
     }
 ?>

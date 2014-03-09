@@ -88,12 +88,8 @@
                     }
                     if (linkId == '" . BuilderCanvasWizardView::getNextPageLinkId() . "')
                     {
-                        " . $this->getSaveAjaxString($formName, false, BuilderCanvasWizardView::resolveAdditionalAjaxOptions($formName)) . "
-                    }
-                    if (linkId == '" . BuilderCanvasWizardView::getFinishLinkId() . "')
-                    {
                         setIsDraftToZero()
-                        " . $this->getSaveAjaxString($formName, true, BuilderCanvasWizardView::resolveAdditionalAjaxOptionsForFinish($formName)) . "
+                        " . $this->getSaveAjaxString($formName, false, BuilderCanvasWizardView::resolveAdditionalAjaxOptions($formName)) . "
                     }
                     ";
         }
