@@ -34,53 +34,23 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplatesListView extends SecuredListView
+    class EmailTemplateBuiltTypeListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function getDefaultMetadata()
+        public function renderGridViewData()
         {
-            $metadata = array(
-                'global' => array(
-                     'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'EmailTemplateBuiltType'),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
+            $className = get_class($this);
+            $value      = $className . '::resolveValueFromBuiltType($data->builtType)';
+            return array(
+                'name'  => 'Type',
+                'value' => $value,
+                'type'  => 'raw',
             );
-            return $metadata;
         }
 
-        protected function getListActionId()
+        public static function resolveValueFromBuiltType($builtType)
         {
-            return Yii::app()->getController()->getAction()->getId();
+            $builtTypesAndLabels    = EmailTemplate::getBuiltTypeDropDownArray();
+            return $builtTypesAndLabels[$builtType];
         }
     }
 ?>
