@@ -134,6 +134,7 @@
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
             $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
+            $element->plugins = array('fontfamily', 'fontsize', 'fontcolor');
             if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
