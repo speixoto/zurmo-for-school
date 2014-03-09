@@ -989,7 +989,6 @@
          */
         protected function resolveAjaxPostForApplyClickAjaxOptions()
         {
-            // TODO: @Shoaibi/@Jason: Critical: What to do for failures?
             $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
             $ajaxArray                  = array();
             //$ajaxArray['cache']         = 'false'; //todo: should by default be used.

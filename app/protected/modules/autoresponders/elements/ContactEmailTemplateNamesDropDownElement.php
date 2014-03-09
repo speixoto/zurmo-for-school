@@ -154,7 +154,7 @@
                             {
                                 var dropDown            = $(this);
                                 var notificationBarId   = "' . static::NOTIFICATION_BAR_ID . '";
-                                var url                 = "' . $this->getEmailTemplateDetailsUrl() . '";
+                                var url                 = "' . $this->getEmailTemplateDetailsJsonUrl() . '";
                                 var disableDropDown     = "' . static::DISABLE_DROPDOWN_WHEN_AJAX_IN_PROGRESS . '";
                                 var disableTextBox      = "' . static::DISABLE_TEXTBOX_WHEN_AJAX_IN_PROGRESS. '";
                                 var textContentId       = "' . $this->getTextContentId() . '";
@@ -293,9 +293,9 @@
             return $htmlOptions;
         }
 
-        protected function getEmailTemplateDetailsUrl()
+        protected function getEmailTemplateDetailsJsonUrl()
         {
-            return Yii::app()->createUrl('/emailTemplates/default/details');
+            return Yii::app()->createUrl('/emailTemplates/default/detailsJson');
         }
 
         protected function getTextContentId()

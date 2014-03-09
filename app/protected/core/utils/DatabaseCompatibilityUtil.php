@@ -869,7 +869,7 @@
             {
                 throw new NotSupportedException();
             }
-            // TODO: @Shoaibi: Critical: @see: https://www.pivotaltracker.com/s/projects/380027/stories/59409504
+            // TODO: @Shoaibi: Critical: @see: https://www.pivotaltracker.com/story/show/59409504
             return '0';
             switch ($databaseType)
             {

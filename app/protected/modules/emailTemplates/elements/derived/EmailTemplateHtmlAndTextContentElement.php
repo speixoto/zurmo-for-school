@@ -35,7 +35,8 @@
      ********************************************************************************/
 
     /**
-     * Element used to display text and html areas on EmailTemplateEditAndDetailsView
+     * Element used to display text and html areas on email template,
+     * autoresponder and campaign edit and detail views
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {

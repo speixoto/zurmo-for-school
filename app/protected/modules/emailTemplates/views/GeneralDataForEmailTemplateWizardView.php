@@ -74,7 +74,6 @@
          */
         protected function renderFormContent()
         {
-            // TODO: @Shoaibi/@Jason/@Amit: Critical: Everything red, property set on panel, wrong.
             $leftSideContentPrefix                      = $this->form->errorSummary($this->model);
             $leftSideContent                            = null;
             $hiddenElements                             = null;

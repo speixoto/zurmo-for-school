@@ -69,7 +69,6 @@
                                             'text-align',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Text Alignment')));
-            // TODO: @Shoaibi: Critical2: Line height does not make sense to start with 8 here.
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
                                             'TextElement',

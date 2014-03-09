@@ -36,7 +36,6 @@
 
     class AutoresponderEditAndDetailsView extends SecuredEditAndDetailsView
     {
-        // TODO: @Shoaibi: Low: Refactor this and EmailTemplateEditAndDetailsView
         public static function getDefaultMetadata()
         {
             $metadata = array(

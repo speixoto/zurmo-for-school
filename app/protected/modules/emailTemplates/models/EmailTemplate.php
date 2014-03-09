@@ -191,7 +191,8 @@
 
         /**
          * @param $type
-         * @return Array of EmailTemplate models
+         * @param bool $includeDrafts
+         * @return An
          */
         public static function getByType($type, $includeDrafts = false)
         {
@@ -259,10 +260,9 @@
         }
 
         /**
-         * Returns $limit number of previously created templates
          * @param null $modelClassName
-         * @param false $includeDrafts
-         * @param null $limit
+         * @param bool $includeDrafts
+         * @param null $limit number of previously created templates
          * @return Array of EmailTemplate models
          */
         public static function getPreviouslyCreatedBuilderTemplates($modelClassName = null, $includeDrafts = false, $limit = null)
@@ -381,11 +381,22 @@
         public function __set($attributeName, $value)
         {
             parent::__set($attributeName, $value);
-            if ($attributeName == 'serializedData' && $this->isBuilderTemplate() &&
+            // we exclude predefined because:
+            // a- we don't want htmlContent compiled for those. It wont be used anywhere anyway.
+            // b- Using console installer we get errors due to getAssetManager(used in BuilderCanvasElement)
+            //    not being available in CConsoleApplication
+            if ($attributeName == 'serializedData' &&
+                $this->isBuilderTemplate() &&
+                !$this->isPredefinedBuilderTemplate() &&
                 ArrayUtil::getArrayValue(CJSON::decode($this->serializedData), 'dom'))
             {
                 $this->htmlContent  = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($this->serializedData, false);
             }
+        }
+
+        protected function isPredefinedBuilderTemplate()
+        {
+            return ($this->isBuilderTemplate() && empty($this->modelClassName));
         }
     }
 ?>

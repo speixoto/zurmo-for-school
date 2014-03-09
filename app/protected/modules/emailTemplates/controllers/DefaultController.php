@@ -204,7 +204,6 @@
 
         public function actionSave($builtType)
         {
-            // TODO: @Shoaibi/@Jason: Critical: No data sanitization?
             $postData                   = PostUtil::getData();
             $emailTemplate              = null;
             $this->resolveEmailTemplateByPostData($postData, $emailTemplate, $builtType);
@@ -228,61 +227,52 @@
             }
         }
 
-        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false, $contactId = null)
+        public function actionDetails($id)
+        {
+            $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
+                                                                                'EmailTemplatesModule'), $emailTemplate);
+            $detailsView                = new EmailTemplateDetailsView($this->getId(), $this->getModule()->getId(),
+                                                                        $emailTemplate, strval($emailTemplate));
+            $viewUtil                   = static::getViewUtilByType($emailTemplate->type);
+            $breadCrumbView             = static::getBreadCrumbViewByType($emailTemplate->type);
+            $breadCrumbLinks            = static::getBreadCrumbLinksByType($emailTemplate->type);
+            $breadCrumbLinks[]          = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+            $view                       = new EmailTemplatesPageView($viewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                                                                                                    $this,
+                                                                                                    $detailsView,
+                                                                                                    $breadCrumbLinks,
+                                                                                                    $breadCrumbView));
+            echo $view->render();
+        }
+
+        public function actionDetailsJson($id, $includeFilesInJson = false, $contactId = null)
         {
             $contactId     = (int) $contactId;
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
-            if ($renderJson)
+            header('Content-type: application/json');
+            if ($contactId != null)
             {
-                header('Content-type: application/json');
-                if ($contactId != null)
-                {
-                    $contact     = Contact::getById($contactId);
-                    $textContent = $emailTemplate->textContent;
-                    $htmlContent = $emailTemplate->htmlContent;
-                    AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-                    $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
-                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
-                    $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
-                                                            MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-                    $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
-                                               null, $textContent);
-                    $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
-                                               null, $htmlContent);
-                    $emailTemplate->textContent = $textContent;
-                    $emailTemplate->htmlContent = $htmlContent;
-                }
-                $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
-                echo $emailTemplate;
-                Yii::app()->end(0, false);
+                $contact        = Contact::getById($contactId);
+                $textContent    = $emailTemplate->textContent;
+                $htmlContent    = $emailTemplate->htmlContent;
+                AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+                $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
+                $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+                $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
+                                                                                                            $textContent);
+                $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
+                                                                                                        $htmlContent);
+                $emailTemplate->textContent = $textContent;
+                $emailTemplate->htmlContent = $htmlContent;
             }
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
-                                        'EmailTemplatesModule'), $emailTemplate);
-            $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
-                                                                            $this->getModule()->getId(), $emailTemplate);
-
-            if ($emailTemplate->isWorkflowTemplate())
-            {
-                $breadCrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view                     = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                                            makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                            $breadCrumbLinks, 'WorkflowBreadCrumbView'));
-            }
-            elseif ($emailTemplate->isContactTemplate())
-            {
-                $breadCrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view                     = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                                            makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                            $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            echo $view->render();
+            $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+            echo $emailTemplate;
+            Yii::app()->end(0, false);
         }
 
         protected function resolveEmailTemplateAsJson(EmailTemplate $emailTemplate, $includeFilesInJson)

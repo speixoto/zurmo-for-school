@@ -46,7 +46,6 @@
          */
         public static function resolveWorkflowByWizardPostData(Workflow $workflow, $postData, $wizardFormClassName)
         {
-            // TODO: @Shoaibi/@Jason: Critical: No purification for this, reports and emailTemplates take place.
             assert('is_array($postData)');
             assert('is_string($wizardFormClassName)');
             $data = ArrayUtil::getArrayValue($postData, $wizardFormClassName);

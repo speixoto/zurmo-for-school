@@ -34,7 +34,6 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    // TODO: @Shoaibi: Critical: is this even used?
     /**
      * Element for displaying the available contact email templates
      */

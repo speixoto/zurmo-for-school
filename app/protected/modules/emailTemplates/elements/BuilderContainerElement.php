@@ -53,7 +53,6 @@
 
         protected function renderHiddenFields(ZurmoActiveForm $form)
         {
-            // TODO: @Shoaibi: Critical5: we have to check for unserialization in BuilderElementRendererUtil just because of this.
             $content    = $this->renderHiddenField('content', CJSON::encode($this->content));
             $content    .= parent::renderHiddenFields($form);
             return $content;
