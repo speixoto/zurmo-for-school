@@ -677,7 +677,7 @@
          */
         protected function resolveFormActionUrl()
         {
-            return Yii::app()->createUrl('emailTemplates/default/renderElementNonEditable');
+            return ComponentForEmailTemplateWizardView::resolveElementNonEditableActionUrl();
         }
 
         /**

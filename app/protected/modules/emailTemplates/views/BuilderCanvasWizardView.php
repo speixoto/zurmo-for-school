@@ -280,26 +280,6 @@
                          'style' => 'display:none');
         }
 
-        protected function resolvePreviewActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderPreview');
-        }
-
-        protected function resolveElementEditableActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderElementEditable');
-        }
-
-        protected function resolveElementNonEditableActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderElementNonEditable');
-        }
-
-        protected function resolveRelativeUrl($action, $params = array())
-        {
-            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action, $params);
-        }
-
         protected function registerScripts()
         {
             parent::registerScripts();
@@ -344,6 +324,8 @@
             $wrapInRow                          = BuilderElementRenderUtil::WRAP_IN_ROW;
             $wrapInHeaderRow                    = BuilderElementRenderUtil::WRAP_IN_HEADER_ROW;
             $modelClassName                     = BaseBuilderElement::getModelClassName();
+            $editableActionUrl                  = static::resolveElementEditableActionUrl();
+            $nonEditableActionUrl               = static::resolveElementNonEditableActionUrl();
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
@@ -360,8 +342,8 @@
                         '{$cellDroppableClass}',
                         '{$iframeOverlaySelector}',
                         '{$cachedSerializedSelector}',
-                        '{$this->resolveElementEditableActionUrl()}',
-                        '{$this->resolveElementNonEditableActionUrl()}',
+                        '{$editableActionUrl}',
+                        '{$nonEditableActionUrl}',
                         '{$errorOnDeleteMessage}',
                         '{$dropHereMessage}',
                         '{$csrfToken}',
@@ -446,7 +428,7 @@
         {
             $ajaxArray                  = array();
             $ajaxArray['cache']         = 'false';
-            $ajaxArray['url']           = $this->resolvePreviewActionUrl();
+            $ajaxArray['url']           = static::resolvePreviewActionUrl();
             $ajaxArray['type']          = 'POST';
             $ajaxArray['data']          = 'js:(function(){
                                                 jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
@@ -474,14 +456,6 @@
                     $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
                     event.preventDefault();
                  });');
-        }
-
-        /**
-         * @return string
-         */
-        protected static function resolveSaveRedirectToDetailsUrl()
-        {
-            return Yii::app()->createUrl('emailTemplates/default/details');
         }
 
         public static function resolveAdditionalAjaxOptions($formName)

@@ -294,10 +294,5 @@
                                             }";
             return $ajaxArray;
         }
-
-        public static function resolveCanvasActionUrl()
-        {
-            return Yii::app()->createUrl('emailTemplates/default/renderCanvas', array('id' => 0));
-        }
     }
 ?>
