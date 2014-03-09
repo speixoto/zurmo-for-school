@@ -230,8 +230,7 @@
                     if (" . intval($this->model->isPastedHtmlTemplate()) . ")
                     {
                         var htmlContentElement  = $('#" . ZurmoHtml::activeId($this->model, 'htmlContent') . "');
-                        $(htmlContentElement).redactor('selectionAll');
-                        $(htmlContentElement).redactor('insertHtml', '');
+                        $(htmlContentElement).redactor('set', '');
                     }
 
                     else if (" . intval($this->model->isBuilderTemplate()) . ")
