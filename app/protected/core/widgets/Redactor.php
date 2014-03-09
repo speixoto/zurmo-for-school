@@ -58,7 +58,7 @@
 
         public $fullpage        = "true";
 
-        public $iframe          = "false";
+        public $iframe          = "true";
 
         public $minHeight       = 100;
 

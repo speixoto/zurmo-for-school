@@ -227,7 +227,8 @@
                                 'htmlOptions'           => $htmlOptions,
                                 'content'               => $htmlContent,
                                 'paragraphy'            => "false",
-                                'deniedTags'            => CJSON::encode(array()),
+                                'deniedTags'            => CJSON::encode($this->resolveDeniedTags()),
+                                'plugins'               => CJSON::encode($this->resolvePlugins()),
                                 'observeImages'         => 'true',
                                 'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),
                                 'imageGetJson'          => ImageFileModelUtil::getUrlForActionGetUploaded(),
@@ -305,6 +306,16 @@
                 return $this->model->$method();
             }
             return true;
+        }
+
+        protected function resolveDeniedTags()
+        {
+            return array();
+        }
+
+        protected function resolvePlugins()
+        {
+            return array('fontfamily', 'fontsize', 'fontcolor', 'mergetags');
         }
     }
 ?>
