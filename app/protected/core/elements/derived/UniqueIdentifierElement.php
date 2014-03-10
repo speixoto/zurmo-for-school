@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Display the fullName of a person
+     * Display the unique identifier for the model
      */
     class UniqueIdentifierElement extends Element implements DerivedElementInterface
     {
