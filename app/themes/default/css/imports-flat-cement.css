@@ -7523,6 +7523,10 @@ body .overlay-view .after-form-details-content a:hover {
 .email-template-combined-content.full-width {
   padding-right: 15px;
 }
+.autoresponder-combined-content.right-column,
+.email-template-combined-content.right-column {
+  overflow: visible;
+}
 .email-template-content .big-spinner {
   position: absolute;
   top: 0;

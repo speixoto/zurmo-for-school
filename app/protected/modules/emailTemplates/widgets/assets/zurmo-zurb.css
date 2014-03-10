@@ -1,12 +1,12 @@
 div img {
 	float: none;
 }
-.builder-element-non-editable h1,
+/*.builder-element-non-editable h1,
 .builder-element-non-editable h2,
 .builder-element-non-editable h3,
 .builder-element-non-editable h4,
 .builder-element-non-editable h5,
-.builder-element-non-editable h6,
+.builder-element-non-editable h6,*/
 .builder-element-non-editable p {
 	font-size: inherit;
 	line-height: inherit;
