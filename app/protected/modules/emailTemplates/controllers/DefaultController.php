@@ -502,7 +502,6 @@
             {
                 $emailTemplate  = EmailTemplate::getById(intval($id));
                 $content        = $emailTemplate->htmlContent;
-                Yii::app()->clientScript->render($content);
                 echo $content;
                 Yii::app()->end(0, false);
             }
