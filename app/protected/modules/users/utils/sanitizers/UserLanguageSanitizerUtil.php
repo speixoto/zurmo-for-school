@@ -61,11 +61,22 @@
         public function sanitizeValue($value)
         {
             $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
-            if (!in_array(strtolower($value), $resolvedAcceptableValues))
+            if ($value != null)
             {
-                return null;
+                if (!in_array(strtolower($value), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                return $value;
             }
-            return $value;
+            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
+            {
+                if (!in_array(strtolower($this->mappingRuleData['defaultValue']), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                return $this->mappingRuleData['defaultValue'];
+            }
         }
 
         protected static function getAcceptableValues()

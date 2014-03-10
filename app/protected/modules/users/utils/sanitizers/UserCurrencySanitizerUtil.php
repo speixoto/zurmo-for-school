@@ -61,13 +61,25 @@
         public function sanitizeValue($value)
         {
             $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
-            if (!in_array(strtolower($value), $resolvedAcceptableValues))
-            {
-                return null;
-            }
             if ($value != null)
             {
-                $currency = Currency::getById(intval($value));
+                if (!in_array(strtolower($value), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                $currency = Currency::getById($value);
+                if ($currency != null)
+                {
+                    return $currency;
+                }
+            }
+            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
+            {
+                if (!in_array(strtolower($this->mappingRuleData['defaultValue']), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                $currency = Currency::getByCode($this->mappingRuleData['defaultValue']);
                 if ($currency != null)
                 {
                     return $currency;
@@ -77,7 +89,7 @@
 
         protected static function getAcceptableValues()
         {
-            return array_keys(Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(null));
+            return array_values(Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(null));
         }
     }
 ?>
