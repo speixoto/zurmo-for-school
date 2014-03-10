@@ -91,6 +91,7 @@
                     {
                         " . $this->getSaveAjaxString($formName, false, BuilderCanvasWizardView::resolveAdditionalAjaxOptions($formName)) . "
                         $('#BuilderCanvasWizardView').hide();
+                        $('#" . BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER_ID . "').hide();
                         $('#ContentForEmailTemplateWizardView').show();
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
