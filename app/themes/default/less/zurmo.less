@@ -80,6 +80,7 @@
 html.zurmo,
 html.zurmo body{
 	min-height:100%;
+	height: 100%;
 }
 
 html.zurmo{
@@ -266,8 +267,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	position:relative;
 	top:3px;
 	color:#fff;
-	font-size:18px;
-	//font-weight:100;
+	font-size:14px;
+	font-weight:500;
 	display: block;
 	img{
 		max-height:32px;
@@ -874,7 +875,7 @@ body > .ui-autocomplete{
 	border-top:none;
 	z-index: 0;
 	position:relative;
-	margin-top: @headerHeight !important;
+	//margin-top: @headerHeight !important;
 }
 
 /*
@@ -1139,7 +1140,7 @@ body > .ui-autocomplete{
 		&:hover{
 			color: #fff !important;
 			background-color: @themeColor2;
-			.b-shadow(inset 0 0 25px 5px rgba(0, 0, 0, 0.4));
+			.b-shadow(inset 0 0 20px 5px rgba(0, 0, 0, 0.3));
 			.t-shadow( 0px 1px 0 darken(@themeColorBtnDefault, 15%) ) !important;
 			i{
 				color: darken(@themeColorBtnDefault, 35%) !important;
@@ -1149,7 +1150,7 @@ body > .ui-autocomplete{
 	}
 	i{
 		font-style:normal;
-		.symbly(28px);
+		.symbly(24px);
 		width:24px;
 		height:24px;
 		line-height:22px;
@@ -1255,12 +1256,12 @@ body > .ui-autocomplete{
 /*=Content*/
 @speed : 0.28s;
 
+#ErrorView,
 .AppContent{
-	padding:20px 20px 0 20px;
-
+	min-height: 100%;
+	padding:65px 20px 0 20px;
 	margin-left:@navWidth;
 	.animateAll(0.28s);
-
 	#gradient > .vertical-three-colors( #f6f6f6, #ffffff, 50%, #ffffff );
 	background-attachment: fixed;
 	.clearfix();
@@ -1286,6 +1287,29 @@ body > .ui-autocomplete{
 		#inline-edit-form .panel{
 			width:100%;
 		}
+	}
+}
+
+#ErrorView{
+	margin-left: 0;
+	padding: 75px 15% 15px 15%;
+	p{
+		font-size: 14px;
+		line-height: 1.5;
+	}
+	div{
+		font-weight: bold;
+		font-size: 18px;
+		margin-top: 30px;
+		color: #a82d31;
+	}
+	#ZurmoLogo{
+		margin: 0 0 15px 0;
+	}
+	+ #credit-link{
+		position: absolute;
+		left: 15%;
+		bottom: 10px;
 	}
 }
 
@@ -1584,7 +1608,7 @@ form,
 /*=Footer*/
 #FooterView{
 	margin:0 0 0 @navWidth;
-	padding:0 0 10px 20px;
+	padding:20px 0 10px 20px;
 	.animateAll(0.28s);
 }
 

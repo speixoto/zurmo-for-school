@@ -738,10 +738,10 @@ $(window).ready(function(){
     };
 
     $(window).resize(function(){
-      $(this).resizeWhiteArea();
+      //$(this).resizeWhiteArea();
     });
 
-    $(this).resizeWhiteArea();
+    //$(this).resizeWhiteArea();
 
     /*Autogrow text areas*/
     $('textarea').autogrow();
@@ -752,15 +752,13 @@ $(window).ready(function(){
     });
 
     $(".overlay-label-field > input").live('blur', function(){
-        if($(this).val() == "")
-        {
+        if($(this).val() == ""){
             $(this).prev().fadeIn(250);
         }
     });
 
     $(".overlay-label-field input").live('change', function(){
-        if($(this).val() != "")
-        {
+        if($(this).val() != ""){
             $(this).prev().fadeOut(250);
         }
     });

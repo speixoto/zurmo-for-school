@@ -40,3 +40,6 @@
 #zurmoExternalWebForm .ui-datepicker-prev {
   color: #fff !important;
 }
+#ContactExternalEditAndDetailsView {
+  margin-left: 0;
+}
