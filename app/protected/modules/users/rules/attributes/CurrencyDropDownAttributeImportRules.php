@@ -35,56 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the users module.
+     * Specific rules for handling the user currency attribute for import process
      */
-    class UsersImportRules extends ImportRules
+    class CurrencyDropDownAttributeImportRules extends DropDownAttributeImportRules
     {
-        /**
-         * Override to handle the password setting as well as not showing all the derived types that are available
-         * in other models. This is why this override does not call the parent first.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return array('Password', 'UserStatus');
+            return array('DefaultValueModelAttribute' => 'ImportMappingRuleCurrencyStaticDropDown');
         }
 
-        /**
-         * Override to block out additional attributes that are not importable
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('isActive', 'hash', 'createdByUser',
-                               'modifiedByUser', 'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
-                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
-        }
-
-        public static function getModelClassName()
-        {
-            return 'User';
-        }
-
-        /**
-         * Override to add Password as a default field for mapping
-         * @param Array $attributesCollection
-         */
-        protected static function resolveRequiredDerivedAttributesCollection(& $attributesCollection)
-        {
-            $modelClassName = static::getModelClassName();
-            $model          = new $modelClassName(false);
-            $attributeImportRulesClassName = 'PasswordAttributeImportRules';
-            $attributeImportRules          = new $attributeImportRulesClassName($model);
-            $displayLabel                  = $attributeImportRules->getDisplayLabel();
-            ModelAttributeImportMappingCollectionUtil::populateCollection(
-                $attributesCollection,
-                'hash',
-                $displayLabel,
-                'hash',
-                'Password',
-                null,
-                true
-            );
+            return array('UserCurrency');
         }
     }
 ?>
