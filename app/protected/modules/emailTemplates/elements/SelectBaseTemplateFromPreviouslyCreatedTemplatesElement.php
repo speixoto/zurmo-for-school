@@ -69,6 +69,7 @@
             // these could be stored in serializedData, or a column.
             // a column would be better because we would love to have thumbnails for
             // html and plaintext templates too.
+            return ZurmoHtml::tag('i', array('class' => 'icon-user-template'), '');
         }
     }
 ?>

@@ -368,14 +368,14 @@
             $this->assertNotEmpty($emailTemplateDetailsArray);
             $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
             // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
             $emailTemplateDetailsResolvedArray = CJSON::decode($content);
             $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
             $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
 
             $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true, 'includeFilesInJson' => true));
             // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
             $emailTemplateDetailsResolvedArray = CJSON::decode($content);
             $emailTemplateDetailsResolvedArrayWithoutFiles = $emailTemplateDetailsResolvedArray;
             unset($emailTemplateDetailsResolvedArrayWithoutFiles['filesIds']);
@@ -421,7 +421,7 @@
             $this->assertNotEmpty($emailTemplateDetailsArray);
             $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
             // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
             $emailTemplateDetailsResolvedArray = CJSON::decode($content);
             $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
             $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
@@ -447,7 +447,7 @@
                                      'includeFilesInJson' => false,
                                      'contactId'          => $contact->id));
             // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/details');
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
             $emailTemplateDetailsResolvedArray = CJSON::decode($content);
             $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
             $this->assertEquals('Test text content with contact tag: test ', $emailTemplateDetailsResolvedArray['textContent']);

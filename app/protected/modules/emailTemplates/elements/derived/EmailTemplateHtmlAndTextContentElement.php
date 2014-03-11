@@ -35,13 +35,16 @@
      ********************************************************************************/
 
     /**
-     * Element used to display text and html areas on EmailTemplateEditAndDetailsView
+     * Element used to display text and html areas on email template,
+     * autoresponder and campaign edit and detail views
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
         const HTML_CONTENT_INPUT_NAME = 'htmlContent';
 
         const TEXT_CONTENT_INPUT_NAME = 'textContent';
+
+        public $plugins = array('fontfamily', 'fontsize', 'fontcolor', 'mergetags');
 
         public static function getModelAttributeNames()
         {
@@ -94,6 +97,7 @@
             if (isset($htmlContent))
             {
                 $this->registerTabbedContentScripts();
+                $this->registerRedactorIframeHeightScripts();
                 $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(),
                                                           '#tab2',
                                                           array('class' => $htmlClass));
@@ -140,6 +144,24 @@
                                     _new.addClass('active-tab');
                             });
                             event.preventDefault();
+                        });
+                    ");
+            }
+        }
+
+        protected function registerRedactorIframeHeightScripts()
+        {
+            $scriptName = 'redactor-iframe-height';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('.redactor-iframe').load(function(){
+                            var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
+                            $('.redactor-iframe').height(contentHeight + 50);
                         });
                     ");
             }
@@ -207,7 +229,8 @@
                                 'htmlOptions'           => $htmlOptions,
                                 'content'               => $htmlContent,
                                 'paragraphy'            => "false",
-                                'deniedTags'            => CJSON::encode(array()),
+                                'deniedTags'            => CJSON::encode($this->resolveDeniedTags()),
+                                'plugins'               => CJSON::encode($this->resolvePlugins()),
                                 'observeImages'         => 'true',
                                 'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),
                                 'imageGetJson'          => ImageFileModelUtil::getUrlForActionGetUploaded(),
@@ -285,6 +308,16 @@
                 return $this->model->$method();
             }
             return true;
+        }
+
+        protected function resolveDeniedTags()
+        {
+            return array();
+        }
+
+        protected function resolvePlugins()
+        {
+            return $this->plugins;
         }
     }
 ?>

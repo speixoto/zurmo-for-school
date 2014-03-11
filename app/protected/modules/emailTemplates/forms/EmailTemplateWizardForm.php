@@ -42,6 +42,8 @@
 
         const SERIALIZED_DATA_VALIDATION_SCENARIO           = 'ValidateForSerializedData';
 
+        const PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO    = 'ValidateForPlainAndRichContent';
+
         /**
          * @var integer
          */
@@ -156,15 +158,15 @@
                 array('htmlContent',        'type',    'type' => 'string'),
                 array('textContent',        'type',    'type' => 'string'),
                 array('htmlContent',        'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator',
-                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO),
                 array('htmlContent',        'EmailTemplateAtLeastOneContentAreaRequiredValidator',
-                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO),
                 array('textContent',        'EmailTemplateAtLeastOneContentAreaRequiredValidator',
-                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO),
                 array('htmlContent',        'EmailTemplateMergeTagsValidator',
-                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO),
                 array('textContent',        'EmailTemplateMergeTagsValidator',
-                                                                        'on' => static::GENERAL_DATA_VALIDATION_SCENARIO),
+                                                                        'on' => static::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO),
                 array('baseTemplateId',     'type',     'type' => 'integer'),
                 array('baseTemplateId',     'required', 'on' => static::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO),
                 array('serializedData',     'required', 'on' => static::SERIALIZED_DATA_VALIDATION_SCENARIO),

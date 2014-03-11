@@ -46,10 +46,6 @@
                 {
                     return true;
                 }
-
-                // TODO: @Shoaibi: Critical5: Disable this once we have predefined templates.
-                return true;
-
                 if (count($unserialized) == 2 || count($unserialized) == 3 &&
                         isset($unserialized['baseTemplate'], $unserialized['dom']) &&
                         is_array($unserialized['dom']) &&

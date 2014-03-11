@@ -47,8 +47,7 @@
 
         protected function resolveAvailableFonts()
         {
-            // TODO: @Shoaibi: Critical: Need better font styles here.
-            $fonts = array('Arial', 'Verdana', 'Tahoma', 'Times New Roman', 'Georgia', 'Courier New');
+            $fonts = array('Arial', 'Georgia', 'Helvetica', 'Monospace', 'Times New Roman');
             $fonts  = array_combine($fonts, $fonts);
             return $fonts;
         }

@@ -38,7 +38,6 @@
     {
         protected function resolveAvailableStyles()
         {
-            // TODO: @Shoaibi: Critical1: We need actual images and styles here.
             $styles    = array(
                 'fancy-divider-1.png'   => 'Fancy 1',
                 'fancy-divider-2.png'   => 'Fancy 2',

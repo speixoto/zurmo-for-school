@@ -171,6 +171,10 @@
                       'label'     => Zurmo::t('EmailTemplatesModule', 'Owner\'s Avatar Large'),
                       'dataValue' => MergeTagsUtil::TAG_PREFIX . 'OWNERS' . MergeTagsUtil::CAPITAL_DELIMITER . 'AVATAR' .
                                      MergeTagsUtil::CAPITAL_DELIMITER . 'LARGE' . MergeTagsUtil::TAG_SUFFIX),
+                array('id'        => 'ownersEmailSignature',
+                    'label'     => Zurmo::t('EmailTemplatesModule', 'Owner\'s Email Signature'),
+                    'dataValue' => MergeTagsUtil::TAG_PREFIX . 'OWNERS' . MergeTagsUtil::CAPITAL_DELIMITER . 'EMAIL' .
+                        MergeTagsUtil::CAPITAL_DELIMITER . 'SIGNATURE' . MergeTagsUtil::TAG_SUFFIX),
                 array('id'        => 'unsubscribeUrl',
                       'label'     => Zurmo::t('EmailTemplatesModule', 'Unsubscribe URL'),
                       'dataValue' => '{{UNSUBSCRIBE_URL}}'),

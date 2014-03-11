@@ -34,43 +34,23 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ColorStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class EmailTemplateBuiltTypeListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        //TODO: @Sergio: Can we remove this since we are using CustomColorElement
-
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
+        public function renderGridViewData()
         {
-            $colors     = $this->resolveAvailableColors();
-            return $colors;
+            $className = get_class($this);
+            $value      = $className . '::resolveValueFromBuiltType($data->builtType)';
+            return array(
+                'name'  => 'Type',
+                'value' => $value,
+                'type'  => 'raw',
+            );
         }
 
-        protected function resolveAvailableColors()
+        public static function resolveValueFromBuiltType($builtType)
         {
-            // TODO: @Shoaibi: Critical2: This should be color picker.
-            return array(
-                '#ff0000' => Zurmo::t('EmailTemplatesModule', 'Red'),
-                '#00ff00' => Zurmo::t('EmailTemplatesModule', 'Green'),
-                '#0000ff' => Zurmo::t('EmailTemplatesModule', 'Blue'),
-                '#000000' => Zurmo::t('EmailTemplatesModule', '6x0s'),
-                '#111111' => Zurmo::t('EmailTemplatesModule', '6x1s'),
-                '#222222' => Zurmo::t('EmailTemplatesModule', '6x2s'),
-                '#333333' => Zurmo::t('EmailTemplatesModule', '6x3s'),
-                '#444444' => Zurmo::t('EmailTemplatesModule', '6x4s'),
-                '#555555' => Zurmo::t('EmailTemplatesModule', '6x5s'),
-                '#666666' => Zurmo::t('EmailTemplatesModule', '6x6s'),
-                '#777777' => Zurmo::t('EmailTemplatesModule', '6x7s'),
-                '#888888' => Zurmo::t('EmailTemplatesModule', '6x8s'),
-                '#999999' => Zurmo::t('EmailTemplatesModule', '6x9s'),
-                '#aaaaaa' => Zurmo::t('EmailTemplatesModule', '6xAs'),
-                '#bbbbbb' => Zurmo::t('EmailTemplatesModule', '6xBs'),
-                '#cccccc' => Zurmo::t('EmailTemplatesModule', '6xCs'),
-                '#dddddd' => Zurmo::t('EmailTemplatesModule', '6xDs'),
-                '#eeeeee' => Zurmo::t('EmailTemplatesModule', '6xEs'),
-                '#ffffff' => Zurmo::t('EmailTemplatesModule', '6xFs'),
-            );
+            $builtTypesAndLabels    = EmailTemplate::getBuiltTypeDropDownArray();
+            return $builtTypesAndLabels[$builtType];
         }
     }
 ?>

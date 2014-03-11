@@ -88,30 +88,6 @@
             return 'builderCanvasSaveLink';
         }
 
-        protected function renderNextPageLinkContent()
-        {
-            //todo: temporary. removed save button for now. eventually we can add this back in
-            return null;
-        }
-
-        /**
-         * @return string
-         */
-        public static function getFinishLinkId()
-        {
-            return 'builderCanvasFinishLink';
-        }
-
-        protected function renderNextPageLinkLabel()
-        {
-            return Zurmo::t('Core', 'Save');
-        }
-
-        protected function renderFinishLinkLabel()
-        {
-            return Zurmo::t('Core', 'Finish');
-        }
-
         /**
          * @return string
          */
@@ -187,27 +163,6 @@
             return array('id' => static::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID, 'style' => 'display:none');
         }
 
-        protected function renderActionLinksContent()
-        {
-            $content    = parent::renderActionLinksContent();
-            $content    .= $this->renderFinishLinkContent();
-            return $content;
-        }
-
-        protected function renderFinishLinkContent()
-        {
-            $params                = array();
-            $params['label']       = $this->renderFinishLinkLabel();
-            $params['htmlOptions'] = $this->resolveFinishLinkHtmlOptions();
-            $element               = new SaveButtonActionElement(null, null, null, $params);
-            return $element->render();
-        }
-
-        protected function resolveFinishLinkHtmlOptions()
-        {
-            return array('id' => static::getFinishLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-        }
-
         protected function generateWidgetTagsForUIAccessibleElements($uiAccessibleElements)
         {
             $content    = null;
@@ -280,26 +235,6 @@
                          'style' => 'display:none');
         }
 
-        protected function resolvePreviewActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderPreview');
-        }
-
-        protected function resolveElementEditableActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderElementEditable');
-        }
-
-        protected function resolveElementNonEditableActionUrl()
-        {
-            return $this->resolveRelativeUrl('renderElementNonEditable');
-        }
-
-        protected function resolveRelativeUrl($action, $params = array())
-        {
-            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action, $params);
-        }
-
         protected function registerScripts()
         {
             parent::registerScripts();
@@ -344,6 +279,8 @@
             $wrapInRow                          = BuilderElementRenderUtil::WRAP_IN_ROW;
             $wrapInHeaderRow                    = BuilderElementRenderUtil::WRAP_IN_HEADER_ROW;
             $modelClassName                     = BaseBuilderElement::getModelClassName();
+            $editableActionUrl                  = static::resolveElementEditableActionUrl();
+            $nonEditableActionUrl               = static::resolveElementNonEditableActionUrl();
             Yii::app()->getClientScript()->registerScript('initializeEmailTemplateEditor', "
                 initEmailTemplateEditor = function () {
                     emailTemplateEditor.init(
@@ -360,8 +297,8 @@
                         '{$cellDroppableClass}',
                         '{$iframeOverlaySelector}',
                         '{$cachedSerializedSelector}',
-                        '{$this->resolveElementEditableActionUrl()}',
-                        '{$this->resolveElementNonEditableActionUrl()}',
+                        '{$editableActionUrl}',
+                        '{$nonEditableActionUrl}',
                         '{$errorOnDeleteMessage}',
                         '{$dropHereMessage}',
                         '{$csrfToken}',
@@ -446,7 +383,7 @@
         {
             $ajaxArray                  = array();
             $ajaxArray['cache']         = 'false';
-            $ajaxArray['url']           = $this->resolvePreviewActionUrl();
+            $ajaxArray['url']           = static::resolvePreviewActionUrl();
             $ajaxArray['type']          = 'POST';
             $ajaxArray['data']          = 'js:(function(){
                                                 jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
@@ -476,39 +413,14 @@
                  });');
         }
 
-        /**
-         * @return string
-         */
-        protected static function resolveSaveRedirectToDetailsUrl()
-        {
-            return Yii::app()->createUrl('emailTemplates/default/details');
-        }
-
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            $successMessage = Zurmo::t('EmailTemplatesModule',
-                                                                'EmailTemplatesModuleSingularLabel was successfully saved.',
-                                                                LabelUtil::getTranslationParamsForAllModules());
             $ajaxArray                      = parent::resolveAdditionalAjaxOptions($formName);
-            $ajaxArray['success']           = "js:function(data)
-                                            {
-                                                $('#FlashMessageBar').jnotifyAddMessage({
-                                                    text: '" . $successMessage . "',
-                                                    permanent: true,
-                                                    clickOverlay : true,
-                                                    showIcon: false,
-                                                });
-                                            }";
             $ajaxArray['complete']          = "js:function()
                                             {
                                                 emailTemplateEditor.unfreezeLayoutEditor();
                                             }";
             return $ajaxArray;
-        }
-
-        public static function resolveAdditionalAjaxOptionsForFinish($formName)
-        {
-            return array();
         }
     }
 ?>

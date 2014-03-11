@@ -233,7 +233,7 @@
         {
             $ajaxArray                  = array();
             $ajaxArray['cache']         = 'false';
-            $ajaxArray['url']           = $this->resolveBaseTemplateOptionsUrl();
+            $ajaxArray['url']           = static::resolveBaseTemplateOptionsUrl();
             $ajaxArray['type']          = 'GET';
             $ajaxArray['data']          = "js:requestData";
             $ajaxArray['success']       = "js:function(data, status, request)
@@ -264,11 +264,6 @@
                     divId                   = '" . static::PREVIOUSLY_CREATED_TEMPLATES_DIV_ID . "';
                     populateBaseTemplates(elementClassName, elementModelClassName, elementAttributeName, elementFormClassName, elementParams, divId);
                 }", CClientScript::POS_HEAD);
-        }
-
-        protected function resolveBaseTemplateOptionsUrl()
-        {
-            return $this->resolveRelativeUrl('renderBaseTemplateOptions');
         }
 
         protected function resolveBaseTemplateIdInputNameWithoutSerializedData()
@@ -311,7 +306,7 @@
                                                 var canvasSourceUrl = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src');
                                                 if (canvasSourceUrl == 'about:blank')
                                                 {
-                                                    canvasSourceUrl		= '" . GeneralDataForEmailTemplateWizardView::resolveCanvasActionUrl() . "';
+                                                    canvasSourceUrl		= '" . static::resolveCanvasActionUrl() . "';
                                                     canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
                                                     $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
                                                     $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');

@@ -86,12 +86,12 @@
             return Zurmo::t('Core', 'Next');
         }
 
-        protected function getControllerId()
+        protected static function getControllerId()
         {
             return 'default';
         }
 
-        protected function getModuleId()
+        protected static function getModuleId()
         {
             return 'emailTemplates';
         }
@@ -188,9 +188,34 @@
             return $ajaxArray;
         }
 
-        protected function resolveRelativeUrl($action, $params = array())
+        protected static function resolveRelativeUrl($action, $params = array())
         {
-            return Yii::app()->createUrl($this->getModuleId() . '/' . $this->getControllerId() . '/' . $action, $params);
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/' . $action, $params);
+        }
+
+        protected static function resolveCanvasActionUrl($id = 0)
+        {
+            return static::resolveRelativeUrl('renderCanvas', array('id' => $id));
+        }
+
+        protected static function resolveBaseTemplateOptionsUrl()
+        {
+            return static::resolveRelativeUrl('renderBaseTemplateOptions');
+        }
+
+        protected static function resolvePreviewActionUrl()
+        {
+            return static::resolveRelativeUrl('renderPreview');
+        }
+
+        protected static function resolveElementEditableActionUrl()
+        {
+            return static::resolveRelativeUrl('renderElementEditable');
+        }
+
+        public static function resolveElementNonEditableActionUrl()
+        {
+            return static::resolveRelativeUrl('renderElementNonEditable');
         }
     }
 ?>

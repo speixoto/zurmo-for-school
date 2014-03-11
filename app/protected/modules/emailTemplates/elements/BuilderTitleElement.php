@@ -56,10 +56,27 @@
             return $properties;
         }
 
+        /**
+         * Override to render the style properties on the heading tag
+         * @return string
+         */
         protected function renderControlContentNonEditable()
         {
-            $content                = ZurmoHtml::tag($this->properties['backend']['headingLevel'], array(), $this->content['text']);
+            $properties = $this->resolveFrontendPropertiesNonEditable();
+            $content                = ZurmoHtml::tag($this->properties['backend']['headingLevel'], $properties, $this->content['text']);
             return $content;
+        }
+
+        /**
+         * Override since we dont need to render the style properties @see BuilderTitleElement::renderControlContentNonEditable
+         * @param array $customDataAttributes
+         * @return array|mixed
+         */
+        protected function resolveNonEditableWrapperOptions(array $customDataAttributes)
+        {
+            $htmlOptions        = $this->resolveNonEditableWrapperHtmlOptions();
+            $options            = CMap::mergeArray($htmlOptions, array(), $customDataAttributes);
+            return $options;
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)

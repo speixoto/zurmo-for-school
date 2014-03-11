@@ -44,7 +44,8 @@
             $spanLabels = array(
                             Zurmo::t('Core', 'General'),
                             Zurmo::t('EmailTemplatesModule', 'Select a Base Template'),
-                            Zurmo::t('EmailTemplates', 'Canvas'));
+                            Zurmo::t('EmailTemplatesModule', 'Canvas'),
+                            Zurmo::t('EmailTemplatesModule', 'Content'));
             return $spanLabels;
         }
     }

@@ -57,12 +57,6 @@
             }
             return $configurationItems;
         }
-
-        protected static function registerScripts(ZurmoActiveForm $form)
-        {
-            // TODO: @Shoaibi/@Jason: Critical: Shall we disable textbox if checkbox is unchecked, enable it if its checked and (dis|en)able text boxes on page load too?
-
-        }
     }
 
 ?>

@@ -36,22 +36,13 @@
 
     class EmailTemplateAtLeastOneContentAreaRequiredValidator extends AtLeastOneContentAreaRequiredValidator
     {
-        protected function validateAttribute($object, $attribute)
+        protected function resolveErrorMessage($object)
         {
-            // TODO: @Shoaibi: Critical99: For builder: how do we validate that at least one content was provided?
-            // TODO: @Shoaibi: Critical99: we may have to disable this validator and then validate that user does put something on canvas.
-            if ($object->isBuilderTemplate())
+            if ($object->isPlainTextTemplate())
             {
-                return true;
+                return Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
             }
-            $textContent = $this->textContentPropertyName;
-            if ($object->isPlainTextTemplate() && (empty($object->$textContent) && ($attribute == $textContent)))
-            {
-                $message = Zurmo::t('EmailTemplatesModule', 'Text Content cannot be blank.');
-                $this->addError($object, $attribute, $message);
-                return false;
-            }
-            return parent::validateAttribute($object, $attribute);
+            return parent::resolveErrorMessage($object);
         }
     }
 ?>
