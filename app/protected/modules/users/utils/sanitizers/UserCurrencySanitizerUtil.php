@@ -58,6 +58,11 @@
             }
         }
 
+        public static function getLinkedMappingRuleType()
+        {
+            return 'DefaultValueModelAttribute';
+        }
+
         public function sanitizeValue($value)
         {
             $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
@@ -67,7 +72,7 @@
                 {
                     return null;
                 }
-                $currency = Currency::getById($value);
+                $currency = Currency::getByCode($value);
                 if ($currency != null)
                 {
                     return $currency;
@@ -79,7 +84,7 @@
                 {
                     return null;
                 }
-                $currency = Currency::getByCode($this->mappingRuleData['defaultValue']);
+                $currency = Currency::getById(intval($this->mappingRuleData['defaultValue']));
                 if ($currency != null)
                 {
                     return $currency;

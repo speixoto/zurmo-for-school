@@ -58,6 +58,11 @@
             }
         }
 
+        public static function getLinkedMappingRuleType()
+        {
+            return 'DefaultValueModelAttribute';
+        }
+
         public function sanitizeValue($value)
         {
             $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
