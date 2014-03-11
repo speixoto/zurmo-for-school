@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AccountsOrgGraphModalView extends View
+    class AccountOrgChartModalView extends View
     {
         public function renderContent()
         {
@@ -43,7 +43,7 @@
             $cClipWidget->widget('application.core.widgets.OrgChart');
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['OrgChart'];
-        
+
         }
     }
 ?>

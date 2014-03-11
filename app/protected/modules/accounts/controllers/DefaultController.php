@@ -403,7 +403,7 @@
 
         public function actionOrgGraph()
         {
-            $renderOrgGraphModalView = new AccountsOrgGraphModalView();
+            $renderOrgGraphModalView = new AccountOrgChartModalView();
             $view = new ModalView($this, $renderOrgGraphModalView);
             return $view->render();
         }

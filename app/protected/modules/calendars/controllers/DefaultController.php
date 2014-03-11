@@ -434,8 +434,8 @@
 
         public function actionOrgGraph()
         {
-            $renderOrgGraphModalView = new AccountsOrgGraphModalView();
-            $view = new ModalView($this, $renderOrgGraphModalView);
+            $renderOrgChartModalView = new AccountOrgChartModalView();
+            $view = new ModalView($this, $renderOrgChartModalView);
             return $view->render();
         }
     }
