@@ -41,7 +41,7 @@
             assert('$this->model->{$this->attribute} instanceof User');
             if ($this->model->{$this->attribute}->id > 0)
             {
-                $data[] = $this->model->{$this->attribute}->username;
+                $data[] = $this->model->{$this->attribute}->firstName.' '.$this->model->{$this->attribute}->lastName;
             }
             else
             {
