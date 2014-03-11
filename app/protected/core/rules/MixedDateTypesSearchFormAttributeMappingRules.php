@@ -65,7 +65,7 @@
 
         const TYPE_NEXT_MONTH       = 'Next Month';
         
-        const TYPE_ALL_BEFORE_TODAY = 'All Before Today';
+        const TYPE_BEFORE_TODAY     = 'Before Today';
 
         const TYPE_IS_TIME_FOR      = 'Is Time For';
 
@@ -185,7 +185,7 @@
                             self::TYPE_THIS_MONTH,
                             self::TYPE_LAST_MONTH,
                             self::TYPE_NEXT_MONTH,
-                            self::TYPE_ALL_BEFORE_TODAY,
+                            self::TYPE_BEFORE_TODAY,
                             self::TYPE_IS_TIME_FOR,
                             self::TYPE_IS_EMPTY,
                             self::TYPE_IS_NOT_EMPTY,
@@ -214,7 +214,7 @@
                          self::TYPE_THIS_MONTH => Zurmo::t('Core', 'This Month'),
                          self::TYPE_LAST_MONTH => Zurmo::t('Core', 'Last Month'),
                          self::TYPE_NEXT_MONTH => Zurmo::t('Core', 'Next Month'),
-                         self::TYPE_ALL_BEFORE_TODAY => Zurmo::t('Core', 'All Before Today'),
+                         self::TYPE_BEFORE_TODAY => Zurmo::t('Core', 'Before Today'),
             );
         }
 
@@ -361,7 +361,7 @@
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $firstDateValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $secondDateValue, true));
                 }
-                elseif ($value['type'] == self::TYPE_ALL_BEFORE_TODAY)
+                elseif ($value['type'] == self::TYPE_BEFORE_TODAY)
                 {
                     $attributeAndRelations = array(array($realAttributeName, null, 'lessThanOrEqualTo', 'resolveValueByRules'));
                 }
