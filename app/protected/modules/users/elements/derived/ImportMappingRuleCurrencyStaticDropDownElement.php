@@ -35,56 +35,24 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the users module.
+     * Display a drop down of currency specifically for mapping rules during the import process.
      */
-    class UsersImportRules extends ImportRules
+    class ImportMappingRuleCurrencyStaticDropDownElement extends ImportMappingRuleStaticDropDownFormElement
     {
-        /**
-         * Override to handle the password setting as well as not showing all the derived types that are available
-         * in other models. This is why this override does not call the parent first.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            return array('Password', 'UserStatus');
+            assert('$model instanceof DefaultValueModelAttributeMappingRuleForm');
+            parent::__construct($model, $attribute, $form, $params);
         }
 
-        /**
-         * Override to block out additional attributes that are not importable
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        protected function getAddBlank()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('isActive', 'hash', 'createdByUser',
-                               'modifiedByUser', 'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
-                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
+            return true;
         }
 
-        public static function getModelClassName()
+        protected function getDropDownArray()
         {
-            return 'User';
-        }
-
-        /**
-         * Override to add Password as a default field for mapping
-         * @param Array $attributesCollection
-         */
-        protected static function resolveRequiredDerivedAttributesCollection(& $attributesCollection)
-        {
-            $modelClassName = static::getModelClassName();
-            $model          = new $modelClassName(false);
-            $attributeImportRulesClassName = 'PasswordAttributeImportRules';
-            $attributeImportRules          = new $attributeImportRulesClassName($model);
-            $displayLabel                  = $attributeImportRules->getDisplayLabel();
-            ModelAttributeImportMappingCollectionUtil::populateCollection(
-                $attributesCollection,
-                'hash',
-                $displayLabel,
-                'hash',
-                'Password',
-                null,
-                true
-            );
+            return Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(null);
         }
     }
 ?>

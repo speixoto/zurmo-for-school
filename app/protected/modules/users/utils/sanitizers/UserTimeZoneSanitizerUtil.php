@@ -35,56 +35,58 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the users module.
+     * Sanitizer for handling user timeZone.
      */
-    class UsersImportRules extends ImportRules
+    class UserTimeZoneSanitizerUtil extends SanitizerUtil
     {
         /**
-         * Override to handle the password setting as well as not showing all the derived types that are available
-         * in other models. This is why this override does not call the parent first.
-         * @return array
+         * @param RedBean_OODBBean $rowBean
          */
-        public static function getDerivedAttributeTypes()
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            return array('Password', 'UserStatus');
+            if ($rowBean->{$this->columnName} != null)
+            {
+                $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+                if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
+                {
+                    $label = Zurmo::t('ImportModule',
+                                      '{attributeLabel} specified is invalid.',
+                                      array('{attributeLabel}' => User::getAnAttributeLabel('timeZone')));
+                    $this->shouldSkipRow      = false;
+                    $this->analysisMessages[] = $label;
+                }
+            }
         }
 
-        /**
-         * Override to block out additional attributes that are not importable
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        public static function getLinkedMappingRuleType()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('isActive', 'hash', 'createdByUser',
-                               'modifiedByUser', 'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
-                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
+            return 'DefaultValueModelAttribute';
         }
 
-        public static function getModelClassName()
+        public function sanitizeValue($value)
         {
-            return 'User';
+            $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+            if ($value != null)
+            {
+                if (!in_array(strtolower($value), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                return $value;
+            }
+            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
+            {
+                if (!in_array(strtolower($this->mappingRuleData['defaultValue']), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                return $this->mappingRuleData['defaultValue'];
+            }
         }
 
-        /**
-         * Override to add Password as a default field for mapping
-         * @param Array $attributesCollection
-         */
-        protected static function resolveRequiredDerivedAttributesCollection(& $attributesCollection)
+        protected static function getAcceptableValues()
         {
-            $modelClassName = static::getModelClassName();
-            $model          = new $modelClassName(false);
-            $attributeImportRulesClassName = 'PasswordAttributeImportRules';
-            $attributeImportRules          = new $attributeImportRulesClassName($model);
-            $displayLabel                  = $attributeImportRules->getDisplayLabel();
-            ModelAttributeImportMappingCollectionUtil::populateCollection(
-                $attributesCollection,
-                'hash',
-                $displayLabel,
-                'hash',
-                'Password',
-                null,
-                true
-            );
+            return DateTimeZone::listIdentifiers();
         }
     }
 ?>
