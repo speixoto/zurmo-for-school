@@ -142,7 +142,7 @@
             $model                                   = new $modelClassName(false);
             foreach ($attributesCollection as $attributeIndex => $attributeData)
             {
-                if (!in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()) &&
+                if (!static::resolveIsAttributeANonImportableAttributeName($attributeData) &&
                     !in_array($attributeData['attributeImportRulesType'], static::getNonImportableAttributeImportRulesTypes()))
                 {
                     $mappableAttributeIndicesAndDerivedTypes[$attributeIndex] = $attributeData['attributeLabel'];
@@ -157,6 +157,27 @@
             }
             natcasesort($mappableAttributeIndicesAndDerivedTypes);
             return $mappableAttributeIndicesAndDerivedTypes;
+        }
+
+        /**
+         * Resolves for relationAttributeNames as well.
+         * Inside static::getNonImportableAttributeNames() you could have billingAddress__latitude for example,
+         * and this would resolve correctly against the attributeName as billingAddress and the relationAttributeName
+         * as latitude
+         */
+        protected static function resolveIsAttributeANonImportableAttributeName($attributeData)
+        {
+            if(in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()))
+            {
+                return true;
+            }
+            if(isset($attributeData['relationAttributeName']) &&
+               in_array($attributeData['attributeName'] . FormModelUtil::DELIMITER . $attributeData['relationAttributeName'],
+                        static::getNonImportableAttributeNames()))
+            {
+                return true;
+            }
+            return false;
         }
 
         /**
