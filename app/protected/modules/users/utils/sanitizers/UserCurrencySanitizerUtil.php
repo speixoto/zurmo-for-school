@@ -80,10 +80,6 @@
             }
             if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
             {
-                if (!in_array(strtolower($this->mappingRuleData['defaultValue']), $resolvedAcceptableValues))
-                {
-                    return null;
-                }
                 $currency = Currency::getById(intval($this->mappingRuleData['defaultValue']));
                 if ($currency != null)
                 {

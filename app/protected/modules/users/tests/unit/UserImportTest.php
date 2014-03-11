@@ -60,6 +60,15 @@
 
             $this->assertEquals(11, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
 
+            $defaultLanguage = Yii::app()->language;
+            $localeIds       = ZurmoLocale::getSelectableLocaleIds();
+            $defaultLocale   = $localeIds[0];
+
+            $timezoneIdentifiers = DateTimeZone::listIdentifiers();
+            $defaultTimeZone     = $timezoneIdentifiers[0];
+            $defaultCurrency     = Yii::app()->currencyHelper->getActiveCurrencyForCurrentUser();
+            $defaultCurrencyId   = $defaultCurrency->id;
+
             $mappingData = array(
                 'column_0'  => array('attributeIndexOrDerivedType' => 'username',
                                          'type' => 'importColumn',
@@ -83,7 +92,27 @@
                                         'DefaultModelNameIdMappingRuleForm'    =>
                                         array('defaultModelId' => null),
                                         'RelatedModelValueTypeMappingRuleForm' =>
-                                        array('type' => RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)))
+                                        array('type' => RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID))),
+                'column_6'  => array('attributeIndexOrDerivedType' => 'language',
+                                     'type' => 'importColumn',
+                                     'mappingRulesData' => array(
+                                     'DefaultValueModelAttributeMappingRuleForm' =>
+                                     array('defaultValue' => $defaultLanguage))),
+                'column_7'  => array('attributeIndexOrDerivedType' => 'locale',
+                                    'type' => 'importColumn',
+                                    'mappingRulesData' => array(
+                                    'DefaultValueModelAttributeMappingRuleForm' =>
+                                    array('defaultValue' => $defaultLocale))),
+                'column_8'  => array('attributeIndexOrDerivedType' => 'timeZone',
+                                    'type' => 'importColumn',
+                                    'mappingRulesData' => array(
+                                    'DefaultValueModelAttributeMappingRuleForm' =>
+                                    array('defaultValue' => $defaultTimeZone))),
+                'column_9'  => array('attributeIndexOrDerivedType' => 'currency',
+                                     'type' => 'importColumn',
+                                     'mappingRulesData' => array(
+                                     'DefaultValueModelAttributeMappingRuleForm' =>
+                                     array('defaultValue' => $defaultCurrencyId))),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Users');
@@ -107,8 +136,16 @@
             $activeUser   = User::getByUsername('myusername7');
             $userStatus   = UserStatusUtil::makeByUser($activeUser);
             $this->assertTrue($userStatus->isActive());
+            $this->assetEqual($defaultLanguage, $activeUser->language);
+            $this->assetEqual($defaultLocale,   $activeUser->locale);
+            $this->assetEqual($defaultTimeZone, $activeUser->timeZone);
+            $this->assetEqual($defaultCurrency, $activeUser->currency);
             $inactiveUser = User::getByUsername('myusername8');
             $userStatus   = UserStatusUtil::makeByUser($inactiveUser);
+            $this->assetEqual($defaultLanguage, $inactiveUser->language);
+            $this->assetEqual($defaultLocale,   $inactiveUser->locale);
+            $this->assetEqual($defaultTimeZone, $inactiveUser->timeZone);
+            $this->assetEqual($defaultCurrency, $inactiveUser->currency);
             $this->assertFalse($userStatus->isActive());
 
             //Confirm 10 rows were processed as 'created'.
