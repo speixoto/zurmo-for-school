@@ -159,6 +159,12 @@
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
                 }
+                elseif ($value['type'] == self::TYPE_ALL_BEFORE_TODAY)
+                {
+                    $today                 = static::calculateNewDateByDaysFromNow(0);
+                    $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'lessThanOrEqualTo', $lessThanValue));
+                }
                 else
                 {
                     throw new NotSupportedException();
