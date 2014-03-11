@@ -55,9 +55,8 @@
          */
         public static function getNonImportableAttributeNames()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('currency', 'isActive', 'language', 'locale',
-                               'timeZone', 'manager', 'hash', 'createdByUser', 'modifiedByUser',
-                               'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
+            return array_merge(parent::getNonImportableAttributeNames(), array('isActive', 'hash', 'createdByUser',
+                               'modifiedByUser', 'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
                                'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
         }
 

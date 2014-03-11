@@ -33,14 +33,18 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Class to make default data that needs to be created upon an installation.
-     */
-    class ProjectsDefaultDataMaker extends DefaultDataMaker
+     /**
+      * Dropdown to fetch date and datetime fields for the module selected in the saved calendar form.
+      */
+    class CalendarDateAttributeStaticDropDownElement extends StaticDropDownFormElement
     {
-        public function make()
+        /**
+         * Gets dropdown array for date and datetime fields.
+         * @return array
+         */
+        protected function getDropDownArray()
         {
+            return CalendarUtil::getModelAttributesForSelectedModule($this->model->moduleClassName);
         }
     }
 ?>

@@ -37,7 +37,7 @@
     /**
      * Class to help evaluate TaskStatusField triggers against model values.
      */
-    class TaskStatusDropDownTriggerRules extends StatusDropDownTriggerRules
+    class TaskStatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
     {
     }
 ?>

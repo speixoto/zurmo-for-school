@@ -75,6 +75,18 @@
             ));
         }
 
+        public function isAttributeSafe($attribute)
+        {
+                if (parent::isAttributeSafe($attribute) || $this->model->isAttributeSafe($attribute))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+        }
+
         public function afterValidate()
         {
             parent::afterValidate();

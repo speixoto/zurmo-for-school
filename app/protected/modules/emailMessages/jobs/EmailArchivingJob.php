@@ -129,7 +129,7 @@
             {
                 $notificationMessage                    = new NotificationMessage();
                 $notificationMessage->textContent       = $textContent;
-                $notificationMessage->htmlContent       = $htmlContent;
+                $notificationMessage->htmlContent       = DataUtil::purifyHtml($htmlContent);
                 $rules                                  = new EmailMessageOwnerNotExistNotificationRules();
                 NotificationsUtil::submit($notificationMessage, $rules);
             }
@@ -184,7 +184,10 @@
         {
             $recipient                 = new EmailMessageRecipient();
             $recipient->toAddress      = $recipientInfo['email'];
-            $recipient->toName         = $recipientInfo['name'];
+            if (isset($recipientInfo['name']))
+            {
+                $recipient->toName = $recipientInfo['name'];
+            }
             $recipient->type           = $recipientInfo['type'];
 
             $personsOrAccounts = EmailArchivingUtil::getPersonsAndAccountsByEmailAddress(
@@ -249,7 +252,7 @@
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
                 return false;
             }
-            $emailSenderOrRecipientEmailNotFoundInSystem = false;
+            $emailSenderOrRecipientEmailFoundInSystem = false;
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $emailOwner);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    $emailOwner);
             $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', $emailOwner);
@@ -265,9 +268,9 @@
                 $sender = $this->createEmailMessageSender($senderInfo, $userCanAccessContacts,
                               $userCanAccessLeads, $userCanAccessAccounts);
 
-                if ($sender->personsOrAccounts->count() == 0)
+                if ($sender->personsOrAccounts->count() > 0)
                 {
-                    $emailSenderOrRecipientEmailNotFoundInSystem = true;
+                    $emailSenderOrRecipientEmailFoundInSystem = true;
                 }
             }
 
@@ -288,7 +291,7 @@
             $emailMessage->content     = $emailContent;
             $emailMessage->sender      = $sender;
 
-            $emailRecipientNotFoundInSystem = true;
+            $emailRecipientFoundInSystem = false;
             foreach ($recipientsInfo as $recipientInfo)
             {
                 $recipient = $this->createEmailMessageRecipient($recipientInfo, $userCanAccessContacts,
@@ -299,14 +302,14 @@
                 // be able to match emails with items(Contacts, Accounts...) emails in systems
                 if ($recipient->personsOrAccounts->count() > 0)
                 {
-                    $emailRecipientNotFoundInSystem = false;
+                    $emailRecipientFoundInSystem = true;
                 }
             }
 
-            // Override $emailSenderOrRecipientEmailNotFoundInSystem only if there are no errors
-            if ($emailSenderOrRecipientEmailNotFoundInSystem == false)
+            // Override $emailSenderOrRecipientEmailFoundInSystem only if there are no errors
+            if ($emailSenderOrRecipientEmailFoundInSystem == true)
             {
-                $emailSenderOrRecipientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
+                $emailSenderOrRecipientEmailFoundInSystem = $emailRecipientFoundInSystem;
             }
             if ($emailOwner instanceof User)
             {
@@ -316,7 +319,7 @@
             {
                 $box = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             }
-            if ($emailSenderOrRecipientEmailNotFoundInSystem)
+            if (!$emailSenderOrRecipientEmailFoundInSystem)
             {
                 $emailMessage->folder  = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
                 $notificationMessage                    = new NotificationMessage();

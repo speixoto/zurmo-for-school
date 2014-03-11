@@ -112,7 +112,9 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleContactsForMeeting'),
+                                                array('attributeName'   => 'null',
+                                                      'type'            => 'MultipleContactsForMeeting',
+                                                ),
                                             ),
                                         ),
                                     )

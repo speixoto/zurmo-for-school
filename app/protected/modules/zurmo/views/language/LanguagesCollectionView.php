@@ -92,7 +92,7 @@
 
         protected function registerJavaScript()
         {
-            $commonErrorMessage = Zurmo::t('ZurmoModule', 'Unexpected error during the AJAX call');
+            $commonErrorMessage = ZurmoHtml::encode(Zurmo::t('ZurmoModule', 'Unexpected error during the AJAX call'));
             // Begin Not Coding Standard
             $script = <<<EOD
 $(document).on('click', ".action-button", function(event) {

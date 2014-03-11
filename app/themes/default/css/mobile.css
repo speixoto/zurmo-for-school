@@ -55,7 +55,7 @@
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -663,7 +663,7 @@ body > div {
   -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
-  z-index: 9999;
+  z-index: 99999;
   min-width: 110px;
   display: none;
   position: absolute;
@@ -671,6 +671,7 @@ body > div {
   top: 32px;
   padding-top: 3px;
   padding-bottom: 3px;
+  z-index: 9999;
   left: 43px !important;
   top: -75px !important;
   padding: 3px 0 !important;
