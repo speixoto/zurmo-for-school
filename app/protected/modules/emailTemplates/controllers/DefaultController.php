@@ -503,6 +503,7 @@
                 $emailTemplate  = EmailTemplate::getById(intval($id));
                 $content        = $emailTemplate->htmlContent;
                 echo $content;
+                Yii::app()->clientScript->render($content);
                 Yii::app()->end(0, false);
             }
             // serializedData['dom'] = json_encoded_dom

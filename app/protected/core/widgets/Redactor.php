@@ -56,7 +56,7 @@
 
         public $cleanup         = "true";
 
-        public $fullpage        = "true";
+        public $fullpage;
 
         public $iframe          = "true";
 
@@ -72,7 +72,7 @@
 
         public $plugins;
 
-        public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
+        public $deniedTags;
 
         public $allowedTags;
 
@@ -113,8 +113,8 @@
                                 cleanup:        {$this->cleanup},
                                 convertDivs:    {$this->convertDivs},
                                 {$this->renderRedactorParamForInit('allowedTags')}
-                                deniedTags:     {$this->deniedTags},
-                                fullpage:       {$this->fullpage},
+                                {$this->renderRedactorParamForInit('deniedTags')}
+                                {$this->renderRedactorParamForInit('fullpage')}
                                 iframe:         {$this->iframe},
                                 minHeight:      {$this->minHeight},
                                 observeImages:  {$this->observeImages},
