@@ -265,7 +265,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	float:left;
 	height:32px;
 	position:relative;
-	top:3px;
+	top:5px;
 	color:#fff;
 	font-size:14px;
 	font-weight:500;
@@ -323,7 +323,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	border:1px solid #444;
 	background: #252525;
 	.b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
-
 	li{
 		line-height: 100%;
 	}
@@ -342,6 +341,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		display:block;
 		padding:6px 10px 6px 10px;
 		margin:0;
+		&:hover{
+			color: lighten(@themeColorBtn, 75%) !important;
+			#gradient > .vertical( @themeColorBtn, darken(@themeColorBtn, 20%) ) !important;
+			.t-shadow( 0px -1px 0 darken(@themeColorBtn, 25%) ) !important;
+		}
 	}
 }
 
@@ -664,7 +668,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 #app-search{
-	width:341px;
+	max-width:340px;
 	display:block;
 	position:relative;
 	float: left;
@@ -688,7 +692,6 @@ body > .ui-autocomplete{
 #globalSearchInput{
 	font-style:italic;
 	color:#999 !important;
-	height:23px;
 	text-indent:10px !important;
 	line-height:26px !important;
 	height:25px;
@@ -700,11 +703,16 @@ body > .ui-autocomplete{
 	background: url("@{path}search-bar-gradient.png") left top repeat-x;
 	.radius(0);
 	.b-shadow(none);
-
 	&:focus{
 		outline: 0;
 		color:@textColor;
 		font-style:normal;
+	}
+	&.overlay{
+		display: block;
+		position: absolute;
+		z-index: 999;
+		left: 42px;
 	}
 }
 
@@ -861,7 +869,7 @@ body > .ui-autocomplete{
 }
 
 .AppContainer{
-	min-width:900px;
+	//min-width:900px;
 	//max-width: 1600px;
 	//height:100%;
 	//margin:0 3% 0 3%;
@@ -872,6 +880,7 @@ body > .ui-autocomplete{
 	//position:relative;
 
 	height:100%;
+	height: e( "calc(100% - 50px)" );
 	border-top:none;
 	z-index: 0;
 	position:relative;
@@ -890,10 +899,9 @@ body > .ui-autocomplete{
 
 .container{
 	margin: 0;
-	min-width:900px;
-	max-width: 1600px;
+	//min-width:900px;
+	//max-width: 1600px;
 }
-
 
 @headerHeight : 50px;
 @headerHeight2 : 46px;
@@ -917,8 +925,10 @@ body > .ui-autocomplete{
 }
 
 .logo-and-search{
-	float: left;
-	padding: 0 0 0 15px;
+	position: absolute;
+	top: 0;
+	left: 15px;
+	z-index: 999;
 }
 
 .user-actions{
@@ -1016,7 +1026,6 @@ body > .ui-autocomplete{
 	.symbly(30px);
 }
 
-
 @navWidth : 170px;
 
 .AppNavigation{
@@ -1032,33 +1041,12 @@ body > .ui-autocomplete{
 	position: fixed;
 	top: 0;
 	bottom:0;
+	z-index: 9999;
 	//margin-top: @headerHeight;
 	li{
 		list-style:none;
 	}
-	.ui-chooser{
-		z-index: 999999;
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		width: 168px;
-		padding:8px 10px;
-		margin: 0 1px;
-		border-top:1px solid #ccc;
-		.b-shadow(inset 0 1px 0 0 #F9F9FA);
-		//background-color: #e3e3e3;
-		#gradient > .vertical(#dcdcdc, #e3e3e3);
-		a{
-			margin: 0 5px 0 0;
-		}
-		div{
-			display: inline-block;
-			float: right;
-		}
-	}
 }
-
-
 
 .hidden-nav-item{
 	display: none;
@@ -1067,24 +1055,22 @@ body > .ui-autocomplete{
 .toggle-hidden-nav-items{
 	display: block;
 	text-align: center;
-	padding: 5px 0 5px 0;
-	margin: 0 0 0 0;
+	padding: 0;
+	margin: 0;
 	cursor:pointer;
-	position: relative;
-	top: 8px;
+	line-height: 1;
 	&:after{
 		content: "···";
 		font-size: 26px;
 		font-weight: bold;
-		//content:'\00F7';
-		//.symbly(20px);
 		line-height: 1;
 		.t-shadow(0 1px 0 #fff);
 	}
-}
-
-.toggle-hidden-nav-items.point-up:after{
-	//content:'\00A1'; //A1
+	&:hover{
+		color: #333 !important;
+		background:none !important;
+		.b-shadow(none) !important;
+	}
 }
 
 /*
@@ -1103,11 +1089,53 @@ body > .ui-autocomplete{
 */
 
 /*=Menu+Recently Viewed*/
+
+.nav-collapsed{
+	@newWidth : 40px;
+	.AppNavigation{
+		z-index: 99;
+		width: @newWidth;
+		.animateAll(0.1s);
+		&:hover{
+			width: @navWidth;
+			.b-shadow(2px 0 5px 0 rgba(102, 102, 102, 0.3));
+			.ui-chooser{
+				width: 167px;
+				padding:8px 10px;
+				text-align: left;
+			}
+			.device{
+				float: right !important;
+			}
+		}
+	}
+	#RecentlyViewedView{
+		> h3{
+			display: none;
+		}
+	}
+	.ui-chooser{
+		width: auto;
+		padding:8px 0;
+		text-align: center;
+	}
+	.device{
+		float: none !important;
+	}
+	.AppContent,
+	#FooterView{
+		margin-left: @newWidth;
+	}
+	.hideme{
+		display: none !important;
+	}
+}
+
 #MenuView,
 #RecentlyViewedView{
 	#gradient > .vertical(#dcdcdc, #e3e3e3);
 	border-top:1px solid #F9F9FA;
-	padding:20px 0;
+	padding:20px 5px;
 	h3{
 		color:#666;
 		font-size:10px;
@@ -1118,11 +1146,10 @@ body > .ui-autocomplete{
 		font-size:12px;
 		font-weight: bold;
 		color:#555;
-		margin:0;
-		padding:0 5px;
+		margin:0 0 5px 0;
 	}
 	a{
-		line-height: 33px;
+		line-height: 28px;
 		display:block;
 		position: relative;
 		.radius( 4px );
@@ -1131,21 +1158,24 @@ body > .ui-autocomplete{
 		.text-overflow();
 		span{
 			display: inline-block;
-			//.text-overflow();
+			.text-overflow();
 			line-height: 1;
 			position: relative;
-			top: 0px;
-			left: 15px;
+			top: 2px;
+			left: 8px;
+			padding-right: 2px;
+			width: 80%;
 		}
-		&:hover{
-			color: #fff !important;
-			background-color: @themeColor2;
-			.b-shadow(inset 0 0 20px 5px rgba(0, 0, 0, 0.3));
-			.t-shadow( 0px 1px 0 darken(@themeColorBtnDefault, 15%) ) !important;
-			i{
-				color: darken(@themeColorBtnDefault, 35%) !important;
-				.t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
-			}
+	}
+	.active a,
+	a:hover{
+		color: #fff !important;
+		background-color: @themeColor2;
+		.b-shadow(inset 0 0 20px 5px rgba(0, 0, 0, 0.3));
+		.t-shadow( 0px 1px 0 darken(@themeColorBtnDefault, 15%) ) !important;
+		i{
+			color: darken(@themeColorBtnDefault, 35%) !important;
+			.t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
 		}
 	}
 	i{
@@ -1155,12 +1185,13 @@ body > .ui-autocomplete{
 		height:24px;
 		line-height:22px;
 		background:#FFF;
+		#gradient > .vertical(#f5f5f5, #ffffff);
 		.radius(4px);
 		display:inline-block;
 		text-align:center;
 		position:relative;
 		top:2px;
-		left: 5px;
+		left: 2px;
 	}
 	/*deafult for if an icon doesnt exist*/
 	li{
@@ -1226,7 +1257,9 @@ body > .ui-autocomplete{
 			content: "3";
 		}
 	}
-
+	.toggle-hidden-nav-items:hover{
+		color: #333 !important;
+	}
 }
 
 #MenuView{
@@ -1242,6 +1275,82 @@ body > .ui-autocomplete{
 	i{
 		background: none;
 		color: #999;
+	}
+	.unread-inbox-count{
+		display: inline-block;
+		.radius(4px);
+		font-size: 11px;
+		width: auto;
+		padding: 1px 4px 3px 4px;
+		line-height: 1;
+		color:#fff !important;
+		@topColor: #c43d53;
+		@bottomColor: #a82d31;
+		#gradient > .vertical(@topColor, @bottomColor ) !important;
+	}
+	//we need to find some ID for admin
+}
+
+.admin-menu .parent ul{
+	display: none;
+	position: absolute;
+	left: 100%;
+	margin-top: -28px;
+	z-index: 999;
+	color:#EFEFEF;
+	list-style: none;
+	min-width: 100px;
+	white-space: nowrap;
+	border:1px solid #444;
+	background: #252525;
+	.b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
+	.radius(2px);
+	a:hover{
+		color: lighten(@themeColorBtn, 75%) !important;
+		#gradient > .vertical( @themeColorBtn, darken(@themeColorBtn, 20%) ) !important;
+		.t-shadow( 0px -1px 0 darken(@themeColorBtn, 25%) ) !important;
+	}
+	&:hover, &.stayOpen, &.nav-open{
+		display: block;
+	}
+	li{
+		line-height: 1;
+		margin: 0;
+	}
+	li:first-child{
+		border-top:none;
+	}
+	li:last-child{
+		border-bottom:none;
+	}
+	.divider{
+		border-top:1px solid darken(#252525, 5%);
+		border-bottom: 1px solid lighten(#252525, 5%);
+		margin:5px 5px;
+	}
+	li > a{
+		color:#EFEFEF;
+		.smaller();
+		font-weight:normal;
+		line-height: 1;
+
+		display:block;
+		width: auto;
+		padding:6px 10px 6px 10px;
+		margin:1px;
+		.t-shadow(none);
+		.radius(0);
+		span{
+			width: 100%;
+			left: 0;
+			top: 0;
+		}
+	}
+	label{
+		color:#EFEFEF;
+	}
+	i{
+		display: none;
 	}
 }
 
@@ -1404,6 +1513,7 @@ h1 + .view-toolbar-container{
 }
 
 .widgets-lock{
+	z-index: 0;
 	position: relative;
 	margin-top: -36px;
 	margin-bottom: 15px;
@@ -1413,13 +1523,13 @@ h1 + .view-toolbar-container{
 		margin-bottom: 0 !important;
 	}
 }
+
 #AddPortletLink{
 	i{
 		top:-2px;
 		margin-right: 5px;
 	}
 }
-
 
 .juiportlet-widget-head{
 	.view-toolbar-container{
@@ -1607,6 +1717,8 @@ form,
 
 /*=Footer*/
 #FooterView{
+	//position: relative;
+	z-index: -1;
 	margin:0 0 0 @navWidth;
 	padding:20px 0 10px 20px;
 	.animateAll(0.28s);
@@ -1634,6 +1746,16 @@ form,
 .ui-chooser{
 	float: right;
 	display: block;
+	z-index: 999999;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 168px;
+	padding:8px 10px;
+	margin: 0 1px;
+	border-top:1px solid #ccc;
+	.b-shadow(inset 0 1px 0 0 #F9F9FA);
+	#gradient > .vertical(#dcdcdc, #e3e3e3);
 	span{
 		text-indent: -9999px;
 		display: none;
@@ -1645,12 +1767,10 @@ form,
 		text-align: center;
 		cursor: pointer;
 		.opacity(50);
-		margin: 0 0 0 5px;
-		font-weight: bold;
+		margin: 0 5px 0 0;
 		color: #656565;
-		font-style: normal;
 		font-size:24px;
-		font-family: "zurmo_gamification_symbly_rRg";
+		line-height: 22px;
 		vertical-align:middle;
 		padding:0 0 0 0;//3px;
 		position: relative;
@@ -1659,6 +1779,14 @@ form,
 		color:#7CB830;
 		.opacity(100);
 		.t-shadow(0 0 15px #7CB830);
+	}
+	.icon-mobile:after,
+	.icon-desktop:after{
+		font-weight: bold;
+	}
+	.device{
+		display: inline-block;
+		float: right;
 	}
 }
 
@@ -4042,6 +4170,8 @@ div.radio-input{
 	&+div{
 		position: relative;
 		z-index: 1;
+		float: left;
+		width: 100%;
 	}
 	.spinner{
 		margin-top:-10px;
@@ -4664,7 +4794,7 @@ div.radio-input{
 #GameRewardsSearchForm_filteredBy_area{
 	display: inline-block;
 	margin-left: 15px;
-	left: 320px;
+	left: 420px;
 	top: 21px !important;
 	label{
 		float: none;

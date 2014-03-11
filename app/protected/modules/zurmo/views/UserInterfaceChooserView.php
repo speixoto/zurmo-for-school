@@ -57,15 +57,20 @@
                 $mobileActive  = null;
                 $desktopActive = ' active';
             }
-            $content = ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Mobile')),
-                            Yii::app()->createUrl('zurmo/default/userInterface',
-                            array('userInterface' => UserInterface::MOBILE)),
-                            array('class' => 'icon-mobile' . $mobileActive));
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Full')),
-                            Yii::app()->createUrl('zurmo/default/userInterface',
-                                array('userInterface' => UserInterface::DESKTOP)),
-                            array('class' => 'icon-desktop' . $desktopActive));
-            return $content;
+            $content   = ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-mobile' . $mobileActive), ''),
+                         Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::MOBILE)),
+                         array('title' => Zurmo::t('ZurmoModule', 'Show Mobile')));
+
+            $content  .= ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-desktop' . $desktopActive), ''),
+                         Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::DESKTOP)),
+                         array('title' => Zurmo::t('ZurmoModule', 'Show Full')));
+
+            $content   = ZurmoHtml::tag('div', array('class' => 'device'), $content);
+
+            $collapser = ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-collapse'), ''), '#',
+                         array('id' => 'nav-collapser', 'title' => Zurmo::t('ZurmoModule', 'Collapse or Expand')));
+
+            return $collapser . $content;
         }
 
         protected function renderContainerWrapperId()

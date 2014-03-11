@@ -701,6 +701,19 @@ $(window).ready(function(){
         }
     );
 
+    //show/collapse left nav
+    $('#nav-collapser').click(
+        function(event){
+            $('body').toggleClass('nav-collapsed');
+            if($('body').hasClass('nav-collapsed')){
+                $('#nav-collapser i').addClass('icon-expand');
+            } else {
+                $('#nav-collapser i').removeClass('icon-expand');
+            }
+            event.preventDefault();
+        }
+    );
+
     $.fn.resizeWhiteArea = function(){
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();

@@ -34,7 +34,7 @@
  ********************************************************************************/
 
 @media screen and (min-width: 1601px) {
-    .AppContainer{
+   /* .AppContainer{
         margin:0 auto !important;
     }
     #HeaderLinksView > div {
@@ -47,7 +47,7 @@
         position: relative !important;
         top:-25px !important;
         right:0 !important;
-    }
+    }*/
 }
 
 @media screen and (max-width: 1000px) {
@@ -60,16 +60,27 @@
 			}
 		}
 	}
+	#HeaderView{
+		.container{
+			min-width: 0;
+			max-width: 100%;
+		}
+	}
 }
 
 @media all and (max-width: 900px) {
 	.AppContainer{
-		min-width:0 !important;
+		//min-width:0 !important;
 	}
 	#HeaderView{
-		width:100%;
+		//width:100%;
 		min-width:0 !important;
 	}
+
+	#corp-logo span{
+		display: none;
+	}
+
 	.juiportlet-column{
 		width:100%;
 		float:none;
@@ -104,7 +115,6 @@
 	}
 
 	.right-side-edit-view-panel{
-		padding: 0;
 		padding: 0 0 0 0;
 		background: none;
 	}
@@ -129,11 +139,11 @@
 	}
 }
 
+
 @media all and (max-width: 801px){ /*and (max-height: 451px)*/
 	#LoginPageView{
 		padding-top:0;
 		> div{
-			
 			padding:10px;
 			display: -ms-flex;
 			display: -moz-flex;
@@ -204,4 +214,38 @@
 	#login-form{
 		padding:0 20px !important;
 	}
+
+
+}
+
+@media all and (max-width: 500px){
+
+	.logo-and-search{
+		left: 5px;
+	}
+	#app-search{
+		margin-left: 0;
+	}
+
+	#corp-log{
+		img{
+			margin-right: 4px;
+		}
+	}
+
+	.global-search-loopa{
+		border-right:1px solid #d5d4d4;
+	}
+
+	#globalSearchInput{
+		display: none;
+	}
+
+	.user-actions{
+		padding-right: 0;
+	}
+
+    .AppContent{
+	    padding: 65px 10px 0 10px;
+    }
 }
