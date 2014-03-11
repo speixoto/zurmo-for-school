@@ -213,7 +213,7 @@
                                                                                                 'inlineStyles' =>
                                                                                                     array (
                                                                                                         'color' => '#666666',
-                                                                                                        'font-size' => '24px',
+                                                                                                        'font-size' => '24',
                                                                                                         'font-weight' => 'bold',
                                                                                                         'text-align' => 'center',
                                                                                                     ),
@@ -385,7 +385,7 @@
                                                                                                 'inlineStyles' =>
                                                                                                     array (
                                                                                                         'background-color' => '#efefef',
-                                                                                                        'font-size' => '10px',
+                                                                                                        'font-size' => '10',
                                                                                                     ),
                                                                                             ),
                                                                                     ),
