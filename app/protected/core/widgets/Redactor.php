@@ -36,9 +36,11 @@
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile      = 'redactor.min.js';
+        public $scriptFile      = array('redactor.min.js');
 
-        public $cssFile         = 'redactor.css';
+        public $cssFile         = array('redactor.css');
+
+        public $assetFolderName = 'redactor';
 
         public $htmlOptions;
 
@@ -46,8 +48,7 @@
 
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
-                                   'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                                   'horizontalrule']";
+                                   'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
 
         public $source          = "false";
 
@@ -55,9 +56,9 @@
 
         public $cleanup         = "true";
 
-        public $fullpage        = "true";
+        public $fullpage;
 
-        public $iframe          = "false";
+        public $iframe          = "true";
 
         public $minHeight       = 100;
 
@@ -67,47 +68,114 @@
 
         public $wym             = "false";
 
-        public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
+        public $toolbarExternal;
+
+        public $plugins;
+
+        public $deniedTags;
+
+        public $allowedTags;
+
+        public $imageUpload;
+
+        public $imageGetJson;
+
+        public $initCallback;
+
+        public $changeCallback;
+
+        public $focusCallback;
+
+        public $syncAfterCallback;
+
+        public $syncBeforeCallback;
+
+        public $textareaKeydownCallback;
 
         public function run()
         {
             $id         = $this->htmlOptions['id'];
             $name       = $this->htmlOptions['name'];
+            unset($this->htmlOptions['name']);
             $javaScript = "
                     $(document).ready(
                         function()
                         {
                             $('#{$id}').redactor(
                             {
+                                {$this->renderRedactorParamForInit('initCallback')}
+                                {$this->renderRedactorParamForInit('changeCallback')}
+                                {$this->renderRedactorParamForInit('focusCallback')}
+                                {$this->renderRedactorParamForInit('syncAfterCallback')}
+                                {$this->renderRedactorParamForInit('syncBeforeCallback')}
+                                {$this->renderRedactorParamForInit('textareaKeydownCallback')}
                                 buttons:        {$this->buttons},
                                 cleanup:        {$this->cleanup},
                                 convertDivs:    {$this->convertDivs},
-                                deniedTags:     {$this->deniedTags},
-                                fullpage:       {$this->fullpage},
+                                {$this->renderRedactorParamForInit('allowedTags')}
+                                {$this->renderRedactorParamForInit('deniedTags')}
+                                {$this->renderRedactorParamForInit('fullpage')}
                                 iframe:         {$this->iframe},
                                 minHeight:      {$this->minHeight},
                                 observeImages:  {$this->observeImages},
                                 source:         {$this->source},
                                 paragraphy:     {$this->paragraphy},
                                 wym:            {$this->wym},
+                                {$this->renderRedactorParamForInit('toolbarExternal')}
+                                imageUpload:    '{$this->imageUpload}',
+                                imageGetJson:   '{$this->imageGetJson}',
+                                {$this->resolveAndRenderPluginParam()}
                             });
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo "<textarea id='{$id}' name='{$name}'>" . CHtml::encode($this->content) . "</textarea>";
+            echo ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
         }
 
-        protected function resolvePackagePath()
+        protected function renderRedactorParamForInit($paramName)
         {
-            if ($this->scriptUrl === null || $this->themeUrl === null)
+            $paramValue = $this->$paramName;
+            if (isset($paramValue))
             {
-                $cs = Yii::app()->getClientScript();
-                if ($this->scriptUrl === null)
-                {
-                    $this->scriptUrl = Yii::app()->getAssetManager()->publish(
-                                        Yii::getPathOfAlias('application.core.widgets.assets.redactor'));
-                }
+                return "{$paramName}: {$paramValue},";
             }
+        }
+
+        protected function resolveAndRenderPluginParam()
+        {
+            if ($this->plugins != null)
+            {
+                return "plugins:        {$this->plugins}";
+            }
+        }
+
+        public function init()
+        {
+            $this->resolveSelectivePluginScriptLoad();
+            parent::init();
+        }
+
+        protected function resolveSelectivePluginScriptLoad()
+        {
+            $plugins        = CJSON::decode($this->plugins);
+            if (!empty($plugins))
+            {
+                $this->registerPluginScriptFiles($plugins);
+            }
+        }
+
+        protected function registerPluginScriptFiles(array $plugins)
+        {
+            $this->resolvePluginScriptNames($plugins);
+            $this->scriptFile   = CMap::mergeArray($plugins, $this->scriptFile);
+        }
+
+        protected function resolvePluginScriptNames(array & $pluginNames)
+        {
+            array_walk($pluginNames, function(&$pluginName)
+                                        {
+                                            $pluginName .= '.js';
+                                        });
         }
     }
 ?>

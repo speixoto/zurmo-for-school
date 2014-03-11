@@ -591,6 +591,23 @@
         /**
          * @depends testPrimaryEmailMergeTag
          */
+        public function testOwnerEmailMergeTag()
+        {
+            $content                        = 'owner: [[OWNER]]';
+            $compareContent                 = 'owner: Clark Kent';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($compareContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnerEmailMergeTag
+         */
         public function testSecondaryEmailMergeTag()
         {
             $content                        = 'secondaryEmail: [[SECONDARY^EMAIL]] [[SECONDARY^EMAIL__EMAIL^ADDRESS]] ' .

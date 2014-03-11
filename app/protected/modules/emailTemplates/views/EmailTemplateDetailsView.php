@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateEditAndDetailsView extends SecuredEditAndDetailsView
+    class EmailTemplateDetailsView extends SecuredDetailsView
     {
         public static function getDefaultMetadata()
         {
@@ -42,8 +42,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'    => 'EmailTemplateCancelLink', 'renderType' => 'Edit', 'modelType' => 'eval:$this->getModelType()'),
-                            array('type'    => 'SaveButton', 'renderType' => 'Edit'),
                             array('type'    => 'EditLink', 'renderType' => 'Details'),
                             array('type'    => 'EmailTemplateDeleteLink'),
                         ),
@@ -102,87 +100,24 @@
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
             if ($elementInformation['attributeName'] == 'modelClassName' &&
-               $this->model->type == EmailTemplate::TYPE_CONTACT)
+               $this->model->isContactTemplate())
             {
                 $elementInformation['attributeName'] = null;
                 $elementInformation['type']          = 'NoCellNull'; // Not Coding Standard
             }
         }
 
-        protected function renderAfterFormLayout($form)
-        {
-            // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
-                        $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
-                        {
-                            selectedOptionValue                 = $(this).find(':selected').val();
-                            modelClassNameDropDown              = $('#EmailTemplate_modelClassName_value');
-                            modelClassNameTr                    = modelClassNameDropDown.parent().parent().parent();
-                            animationSpeed                      = 400;
-                            if (selectedOptionValue == " . EmailTemplate::TYPE_WORKFLOW . ")
-                            {
-                                modelClassNameTr.show(animationSpeed);
-                            }
-                            else if (selectedOptionValue == " . EmailTemplate::TYPE_CONTACT . ")
-                            {
-                                modelClassNameTr.hide(animationSpeed, function()
-                                    {
-                                    modelClassNameDropDown.val('Contact');
-                                    });
-                            }
-                            else
-                            {
-                            }
-                        }
-                        );
-                    ");
-            // End Not Coding Standard
-            $content  = $this->resolveRenderHiddenModelClassNameElement($form);
-            $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return $content;
-        }
-
-        protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)
-        {
-            if ($this->model->type == EmailTemplate::TYPE_CONTACT)
-            {
-                return $form->hiddenField($this->model, 'modelClassName', array());
-            }
-        }
-
-        protected function getNewModelTitleLabel()
-        {
-            return Zurmo::t('Default', 'Create EmailTemplatesModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
-        }
-
         protected function renderAfterFormLayoutForDetailsContent($form = null)
         {
-            return $this->renderHtmlAndTextContentElement($this->model, null, $form) .
-                        parent::renderAfterFormLayout($form);
+            $content    = $this->renderHtmlAndTextContentElement($this->model, null, $form);
+            $content    .= parent::renderAfterFormLayoutForDetailsContent($form);
+            return $content;
         }
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
             $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
-            if ($form !== null)
-            {
-                $this->resolveElementDuringFormLayoutRender($element);
-            }
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
-        }
-
-        protected function resolveElementDuringFormLayoutRender(& $element)
-        {
-            if ($this->alwaysShowErrorSummary())
-            {
-                $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
-            }
-        }
-
-        protected function alwaysShowErrorSummary()
-        {
-            return true;
         }
 
         protected function getModelType()

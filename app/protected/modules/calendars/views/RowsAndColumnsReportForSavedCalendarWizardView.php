@@ -42,9 +42,17 @@
         /**
          * @return string
          */
-        public static function getControllerId()
+        public static function getModuleId()
         {
             return 'calendars';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getControllerId()
+        {
+            return 'default';
         }
     }
 ?>

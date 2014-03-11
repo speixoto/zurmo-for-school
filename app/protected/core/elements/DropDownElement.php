@@ -53,14 +53,9 @@
             );
         }
 
-        protected function renderLabel()
+        protected function resolveIdForLabel()
         {
-            if ($this->form === null)
-            {
-                return $this->getFormattedAttributeLabel();
-            }
-            $id = $this->getIdForSelectInput();
-            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
+            return $this->getIdForSelectInput();
         }
 
         /**

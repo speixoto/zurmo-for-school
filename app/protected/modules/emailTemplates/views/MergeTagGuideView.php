@@ -139,16 +139,16 @@
                                       " : prints the owner's small avatar image (32x32).";
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^AVATAR^MEDIUM ' .
                                       MergeTagsUtil::TAG_SUFFIX) .
-                                      " : prints the owner's medium avatar image (32x32).";
+                                      " : prints the owner's medium avatar image (64x64).";
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^AVATAR^LARGE' .
                                       MergeTagsUtil::TAG_SUFFIX) .
-                                      " : prints the owner's large avatar image (32x32).";
+                                      " : prints the owner's large avatar image (128x128).";
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^EMAIL^SIGNATURE' .
                                       MergeTagsUtil::TAG_SUFFIX) .
                                       " : prints the owner's email signature.";
             $specialTagsItems[]     = $this->renderBoldMergeTag('{{UNSUBSCRIBE_URL}}') .
                                         " : prints unsubscribe url.";
-            $specialTagsItems[]     = $this->renderBoldMergeTag('{{MANAGE_SUBSCRIPTIONS_URL]]') .
+            $specialTagsItems[]     = $this->renderBoldMergeTag('{{MANAGE_SUBSCRIPTIONS_URL}}') .
                                         " : prints manage subscriptions url.";
             foreach ($specialTagsItems as $specialTagsItem)
             {

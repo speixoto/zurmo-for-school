@@ -60,11 +60,16 @@
                 }
                 else
                 {
-                    $message = Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
+                    $message = $this->resolveErrorMessage($object);
                 }
                 $this->addError($object, $attribute, $message);
             }
             return true;
+        }
+
+        protected function resolveErrorMessage($object)
+        {
+            return Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.');
         }
     }
 ?>

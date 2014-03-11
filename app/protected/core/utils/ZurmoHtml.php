@@ -179,6 +179,11 @@
 
             $items  = array();
             $baseID = self::getIdByName($name);
+            if(isset($htmlOptions['dataInputPrefix']))
+            {
+                $baseID = $htmlOptions['dataInputPrefix'] . $baseID;
+                unset($htmlOptions['dataInputPrefix']);
+            }
             $id     = 0;
             foreach ($data as $value => $label)
             {
@@ -698,6 +703,12 @@ EOD;
         {
             $clearFixContent = ZurmoHtml::tag('div', array('class' => 'clearfix'), $content);
             return ZurmoHtml::tag('div', array('class' => 'continuum'), $clearFixContent);
+        }
+
+        public static function icon($class)
+        {
+            $icon = ZurmoHtml::tag('i', array('class' => $class), '');
+            return ZurmoHtml::tag('span', array(), $icon);
         }
     }
 ?>
