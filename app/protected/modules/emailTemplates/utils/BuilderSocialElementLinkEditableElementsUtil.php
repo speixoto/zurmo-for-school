@@ -66,7 +66,7 @@
                 {
                     var id                  = checkbox.id;
                     var checked             = checkbox.checked;
-                    var textBoxIdSelector   = "#" + checkbox.id.replace("_enabled", "_url");
+                    var textBoxIdSelector   = "#" + id.replace("_enabled", "_url");
                     $(textBoxIdSelector).parent().parent().toggle(checked);
                 }
 
