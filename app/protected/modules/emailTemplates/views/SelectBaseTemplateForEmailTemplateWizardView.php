@@ -231,7 +231,10 @@
 
         protected function resolvePopulateBaseTemplateAjaxOptions()
         {
-            $ajaxArray                  = array();
+            $message   = Zurmo::t('EmailTemplatesModule',
+                                            'There was an error retrieving relevant EmailTemplatesModulePluralLabel',
+                                            LabelUtil::getTranslationParamsForAllModules());
+            $ajaxArray                  = static::resolveErrorAjaxCallback($message);
             $ajaxArray['cache']         = 'false';
             $ajaxArray['url']           = static::resolveBaseTemplateOptionsUrl();
             $ajaxArray['type']          = 'GET';

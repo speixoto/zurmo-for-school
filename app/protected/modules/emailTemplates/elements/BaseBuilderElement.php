@@ -990,7 +990,8 @@
         protected function resolveAjaxPostForApplyClickAjaxOptions()
         {
             $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
-            $ajaxArray                  = array();
+            $message                    = Zurmo::t('EmailTemplatesModule', 'There was an error applying changes');
+            $ajaxArray                  = static::resolveErrorAjaxCallback($message);
             //$ajaxArray['cache']         = 'false'; //todo: should by default be used.
             $ajaxArray['url']           = $this->resolveFormActionUrl();
             $ajaxArray['type']          = 'POST';
