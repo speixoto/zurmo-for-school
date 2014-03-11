@@ -116,7 +116,10 @@
             }
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
             $content            = ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
-            $content           .= $this->renderTextAndHtmlContentAreaError();
+            if ($this->form)
+            {
+                $content           .= $this->renderTextAndHtmlContentAreaError();
+            }
             return $content;
         }
 
