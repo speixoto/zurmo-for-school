@@ -123,6 +123,42 @@
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
                 }
+                elseif ($value['type'] == self::TYPE_LAST_30_DAYS)
+                {
+                    $today                 = static::calculateNewDateByDaysFromNow(0);
+                    $todayMinusThirtyDays   = static::calculateNewDateByDaysFromNow(-30);
+                    $greaterThanValue      = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($todayMinusThirtyDays);
+                    $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_THIS_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfAMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfAMonthDate();
+                    $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_LAST_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfLastMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfLastMonthDate();
+                    $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_NEXT_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfNextMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfNextMonthDate();
+                    $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
                 else
                 {
                     throw new NotSupportedException();
