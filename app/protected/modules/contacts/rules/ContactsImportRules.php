@@ -59,7 +59,8 @@
          */
         public static function getNonImportableAttributeNames()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName'));
+            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName',
+                               'billingAddress__latitude', 'billingAddress__longitude', 'billingAddress__invalid'));
         }
 
         /**
