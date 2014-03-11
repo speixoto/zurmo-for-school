@@ -39,47 +39,47 @@
      */
     class MixedDateTypesSearchFormAttributeMappingRules extends SearchFormAttributeMappingRules
     {
-        const TYPE_YESTERDAY       = 'Yesterday';
+        const TYPE_YESTERDAY        = 'Yesterday';
 
-        const TYPE_TODAY           = 'Today';
+        const TYPE_TODAY            = 'Today';
 
-        const TYPE_TOMORROW        = 'Tomorrow';
+        const TYPE_TOMORROW         = 'Tomorrow';
 
-        const TYPE_BEFORE          = 'Before';
+        const TYPE_BEFORE           = 'Before';
 
-        const TYPE_AFTER           = 'After';
+        const TYPE_AFTER            = 'After';
 
-        const TYPE_ON              = 'On';
+        const TYPE_ON               = 'On';
 
-        const TYPE_BETWEEN         = 'Between';
+        const TYPE_BETWEEN          = 'Between';
 
-        const TYPE_NEXT_7_DAYS     = 'Next 7 Days';
+        const TYPE_NEXT_7_DAYS      = 'Next 7 Days';
 
-        const TYPE_LAST_7_DAYS     = 'Last 7 Days';
+        const TYPE_LAST_7_DAYS      = 'Last 7 Days';
 
         const TYPE_LAST_30_DAYS     = 'Last 30 Days';
 
-        const TYPE_THIS_MONTH     = 'This Month';
+        const TYPE_THIS_MONTH       = 'This Month';
 
-        const TYPE_LAST_MONTH     = 'Last Month';
+        const TYPE_LAST_MONTH       = 'Last Month';
 
-        const TYPE_NEXT_MONTH     = 'Next Month';
+        const TYPE_NEXT_MONTH       = 'Next Month';
         
-        const TYPE_ALL_BEFORE_TODAY     = 'All Before Today';
+        const TYPE_ALL_BEFORE_TODAY = 'All Before Today';
 
-        const TYPE_IS_TIME_FOR     = 'Is Time For';
+        const TYPE_IS_TIME_FOR      = 'Is Time For';
 
-        const TYPE_IS_EMPTY        = 'Is Empty';
+        const TYPE_IS_EMPTY         = 'Is Empty';
 
-        const TYPE_IS_NOT_EMPTY    = 'Is Not Empty';
+        const TYPE_IS_NOT_EMPTY     = 'Is Not Empty';
 
-        const TYPE_WAS_ON          = 'Was On';
+        const TYPE_WAS_ON           = 'Was On';
 
-        const TYPE_BECOMES_ON      = 'Becomes On';
+        const TYPE_BECOMES_ON       = 'Becomes On';
 
-        const TYPE_CHANGES         = 'Changes';
+        const TYPE_CHANGES          = 'Changes';
 
-        const TYPE_DOES_NOT_CHANGE = 'Does Not Change';
+        const TYPE_DOES_NOT_CHANGE  = 'Does Not Change';
 
         /**
          * In the event that the type is BEFORE or AFTER, and the firstDate value is not populated, it will be treated
