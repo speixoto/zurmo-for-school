@@ -38,7 +38,7 @@
     {
         public static function render(CModel $model, ZurmoActiveForm $form, array $excludeItems = array(), $wrapInTr = true, array $trOptions = array())
         {
-            static::registerScripts($form);
+            static::registerScripts($form, $model);
             $content                = null;
             $configurationItems     = static::resolveConfiguration();
             foreach ($configurationItems as $configurationItem)
@@ -99,8 +99,9 @@
 
         /**
          * @param ZurmoActiveForm $form
+         * @param CModel $model
          */
-        protected static function registerScripts(ZurmoActiveForm $form)
+        protected static function registerScripts(ZurmoActiveForm $form, CModel $model)
         {
 
         }

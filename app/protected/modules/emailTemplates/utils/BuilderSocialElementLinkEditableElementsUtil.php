@@ -57,6 +57,32 @@
             }
             return $configurationItems;
         }
-    }
 
+        protected static function registerScripts(ZurmoActiveForm $form, CModel $model)
+        {
+            $idPrefix   = get_class($model) . "_properties_backend_services_";
+            Yii::app()->clientScript->registerScript('toggleUrlTextBoxStateOnEnabledCheckboxChangeEvent', '
+                function toggleUrlTextBoxState(checkbox)
+                {
+                    var id                  = checkbox.id;
+                    var checked             = checkbox.checked;
+                    var textBoxIdSelector   = "#" + checkbox.id.replace("_enabled", "_url");
+                    $(textBoxIdSelector).parent().parent().toggle(checked);
+                }
+
+                var servicesCheckboxIdSelector  = ":checkbox[id*=\'' . $idPrefix . '\'][id$=\'_enabled\']";
+
+                // set the textBox state correctly on page load.
+                $(servicesCheckboxIdSelector).each(function()
+                    {
+                        toggleUrlTextBoxState(this);
+                    });
+
+                $(servicesCheckboxIdSelector).unbind("change.toggleUrlTextBox").bind("change.toggleUrlTextBox", function(event)
+                {
+                    toggleUrlTextBoxState(this);
+                });
+            ');
+        }
+    }
 ?>
