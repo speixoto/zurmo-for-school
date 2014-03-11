@@ -60,12 +60,12 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('Core', 'UniqueIdentifier');
+            return Zurmo::t('Core', 'Unique ID');
         }
 
         public static function getDisplayName()
         {
-            return Zurmo::t('Core', 'Unique Identifier');
+            return Zurmo::t('Core', 'Unique ID');
         }
 
         public static function getModelAttributeNames()
