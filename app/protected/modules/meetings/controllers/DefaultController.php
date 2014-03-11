@@ -36,6 +36,11 @@
 
     class MeetingsDefaultController extends ActivityModelsDefaultController
     {
+        protected static function getZurmoControllerUtil()
+        {
+            return new MeetingHasRelatedItemsZurmoControllerUtil('activityItems', 'ActivityItemForm');
+        }
+
         public function actionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl)
         {
             if (isset($_GET['ownerOnly']))
@@ -103,31 +108,6 @@
             {
                 $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
             }
-
-            $postData = PostUtil::getData();
-            if (isset($postData['ActivityItemForm']['Contact']['ids']))
-            {
-                $contactActivityItems = array();
-                $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
-                $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
-                $attendees = explode(',', $postData['ActivityItemForm']['Contact']['ids']);
-                foreach ($attendees as $item)
-                {
-                    if (strpos($item, $contactItemPrefix) !== false)
-                    {
-                        $contactActivityItems[] = substr($item,
-                        strpos($item, $contactItemPrefix) + strlen($contactItemPrefix), strlen($item));
-                    }
-                    elseif (strpos($item, $userItemPrefix) !== false)
-                    {
-                        $userId = intval(substr($item,
-                                  strpos($item, $userItemPrefix) + strlen($userItemPrefix), strlen($item)));
-                        $user   = User::getById($userId);
-                        $meeting->userAttendees->add($user);
-                    }
-                }
-                $_POST['ActivityItemForm']['Contact']['ids'] = implode(',', $contactActivityItems);
-            }
             $this->actionCreateByModel($meeting, $redirectUrl);
         }
 
@@ -135,31 +115,6 @@
         {
             $meeting = Meeting::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($meeting);
-            $postData = PostUtil::getData();
-            if (isset($postData['ActivityItemForm']['Contact']['ids']))
-            {
-                $meeting->userAttendees->removeAll();
-                $contactActivityItems = array();
-                $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
-                $userItemPrefix       = Meeting::USER_ATTENDEE_PREFIX;
-                $attendees = explode(',', $postData['ActivityItemForm']['Contact']['ids']);
-                foreach ($attendees as $item)
-                {
-                    if (strpos($item, $contactItemPrefix) !== false)
-                    {
-                        $contactActivityItems[] = substr($item,
-                        strpos($item, $contactItemPrefix) + strlen($contactItemPrefix), strlen($item));
-                    }
-                    elseif (strpos($item, $userItemPrefix) !== false)
-                    {
-                        $userId = intval(substr($item,
-                                  strpos($item, $userItemPrefix) + strlen($userItemPrefix), strlen($item)));
-                        $user   = User::getById($userId);
-                        $meeting->userAttendees->add($user);
-                    }
-                }
-                $_POST['ActivityItemForm']['Contact']['ids'] = implode(',', $contactActivityItems);
-            }
             $this->processEdit($meeting, $redirectUrl);
         }
 

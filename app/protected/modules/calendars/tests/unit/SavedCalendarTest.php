@@ -108,6 +108,9 @@
             $this->assertEquals(1, count($savedCalendars));
         }
 
+        /**
+         * @covers SavedCalendarToReportAdapter::makeReportBySavedCalendar
+         */
         public function testMakeReportBySavedCalendar()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -142,5 +145,35 @@
             $this->assertEquals(0, count($savedCalendars));
         }
 
+        /**
+         * @covers CalendarItemsDataProviderFactory::getDataProviderByDateRangeType
+         * @covers CalendarItemsDataProvider::fetchData
+         * @covers CalendarRowsAndColumnsReportDataProvider::makeSelectQueryAdapter
+         * @covers CalendarRowsAndColumnsReportDataProvider::resolveSqlQueryAdapterForCount
+         * @covers CalendarRowsAndColumnsReportDataProvider::getData
+         */
+        public function testGetDataProviderByDateRangeType()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $product                    = ProductTestHelper::createProductByNameForOwner('Test Product', Yii::app()->user->userModel);
+            $savedCalendar              = CalendarTestHelper::createSavedCalendarByName('Test Cal', '#315AB0');
+            $currentDateTime            = new DateTime('NOW');
+            $currentDateTime->add(new DateInterval('P1D'));
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel, $savedCalendar->id);
+            $dp                         = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
+                                                                                                           '2014-01-01',
+                                                                                                           $currentDateTime->format('Y-m-d'),
+                                                                                                           SavedCalendar::DATERANGE_TYPE_MONTH);
+            $this->assertInstanceOf('CalendarItemsDataProvider', $dp);
+            $this->assertEquals('2014-01-01', $dp->getStartDate());
+            $this->assertEquals($currentDateTime->format('Y-m-d'), $dp->getEndDate());
+            $this->assertEquals(SavedCalendar::DATERANGE_TYPE_MONTH, $dp->getDateRangeType());
+            $savedCalendarsData         = $dp->getSavedCalendarSubscriptions()->getMySavedCalendarsAndSelected();
+            $keys                       = array_keys($savedCalendarsData);
+            $this->assertEquals($savedCalendar->id, $keys[0]);
+            $items                      = CalendarUtil::getFullCalendarItems($dp);
+            $this->assertCount(1, $items);
+            $this->assertEquals($product, $items[0]['model']);
+        }
     }
 ?>

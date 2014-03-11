@@ -33,7 +33,9 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Model for saved calendar subscription in the system.
+      */
     class SavedCalendarSubscription extends RedBeanModel
     {
         /**

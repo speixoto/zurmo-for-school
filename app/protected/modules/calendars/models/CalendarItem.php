@@ -33,37 +33,48 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Model representing a calendar item to be displayed in the calendar view.
+      */
     class CalendarItem
     {
+        const MAXIMUM_TITLE_LENGTH = 30;
+
         /**
          * @var string
          */
         protected $title;
+
         /**
          * @var string
          */
         protected $startDateTime;
+
         /**
          * @var string
          */
         protected $endDateTime;
+
         /**
          * @var int
          */
         protected $calendarId;
+
         /**
          * @var string
          */
         protected $modelClass;
+
         /**
          * @var int
          */
         protected $modelId;
+
         /**
          * @var string
          */
         protected $moduleClassName;
+
         /**
          * @var string
          */

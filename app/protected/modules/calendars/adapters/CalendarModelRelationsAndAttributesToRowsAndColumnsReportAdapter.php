@@ -35,20 +35,16 @@
      ********************************************************************************/
 
     /**
-     * Helper class for managing adapting model relations and attributes into a rows and columns report
+     * Override the getSelectableRelationsData method so that only owned relations are rendered.
      */
     class CalendarModelRelationsAndAttributesToRowsAndColumnsReportAdapter extends ModelRelationsAndAttributesToRowsAndColumnsReportAdapter
     {
         /**
-         * Returns the array of selectable relations for creating a report.  Does not include relations that are
-         * marked as nonReportable in the rules and also excludes relations that are marked as relations
-         * reportedAsAttributes by the rules.  Includes relations marked as derivedRelationsViaCastedUpModel.
+         * Returns the array of selectable relations for creating a report.  It returns data for owned relations only.
          *
-         * Public for testing only
          * @param RedBeanModel $precedingModel
          * @param null $precedingRelation
          * @return array
-         * @throws NotSupportedException
          */
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
@@ -57,11 +53,6 @@
             {
                 throw new NotSupportedException();
             }
-            $onlyIncludeOwnedRelations = false;
-            if (($precedingModel != null && $precedingRelation != null))
-            {
-                $onlyIncludeOwnedRelations = true;
-            }
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
@@ -69,17 +60,11 @@
                     !$this->rules->relationIsReportedAsAttribute($this->model, $attribute) &&
                     $this->rules->attributeIsReportable($this->model, $attribute) &&
                     !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
-                    (!$onlyIncludeOwnedRelations ||
-                        ($onlyIncludeOwnedRelations && $this->model->isOwnedRelation($attribute)))
+                    $this->model->isOwnedRelation($attribute)
                     )
                 {
                     $this->resolveRelationToSelectableRelationData($attributes, $attribute);
                 }
-            }
-            if (!$onlyIncludeOwnedRelations)
-            {
-                $attributes       = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
-                $attributes       = array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
             }
             $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
             return $sortedAttributes;

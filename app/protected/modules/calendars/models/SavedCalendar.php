@@ -33,14 +33,19 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Model for saved calendar in the system.
+      */
     class SavedCalendar extends OwnedSecurableItem
     {
+        /**
+         * Constants mapping the date range type in FullCalendar widget
+         */
         const DATERANGE_TYPE_MONTH = 'month';
 
-        const DATERANGE_TYPE_DAY   = 'agendaDay';
+        const DATERANGE_TYPE_DAY   = 'basicDay';
 
-        const DATERANGE_TYPE_WEEK  = 'agendaWeek';
+        const DATERANGE_TYPE_WEEK  = 'basicWeek';
 
         public static $colorsArray = array('#315AB0', '#66367b', '#2c3e50', '#269a55', '#c0392b',
                                        '#e67e22', '#3498db', '#501a27', '#0c5b3f', '#c05d91');
@@ -97,13 +102,13 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'description'       => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
-                'endAttributeName'  => Zurmo::t('CalendarsModule', 'End Attribute Name',    array(), null, $language),
-                'location'          => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
-                'name'              => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
-                'startAttributeName'=> Zurmo::t('CalendarsModule', 'Start Attribute Name',  array(), null, $language),
-                'timeZone'          => Zurmo::t('ZurmoModule',    'Time Zone',      array(), null, $language),
-                'moduleClassName'   => Zurmo::t('CalendarsModule',    'Module',      array(), null, $language),
+                'description'        => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                'endAttributeName'   => Zurmo::t('CalendarsModule', 'End Attribute Field',    array(), null, $language),
+                'location'           => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
+                'name'               => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
+                'startAttributeName' => Zurmo::t('CalendarsModule', 'Start Attribute Field',  array(), null, $language),
+                'timeZone'           => Zurmo::t('ZurmoModule',    'Time Zone',      array(), null, $language),
+                'moduleClassName'    => Zurmo::t('CalendarsModule',    'Module',      array(), null, $language),
                 ));
         }
 

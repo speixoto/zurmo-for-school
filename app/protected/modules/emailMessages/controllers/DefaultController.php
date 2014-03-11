@@ -248,13 +248,24 @@
                         }
                         else
                         {
+                            //todo: refactor to use ZurmoHtml::errorSummary after this supports that method
+                            //todo: supports nested messages better.
                             $errors = $emailMessage->getErrors();
-                            $data = array();
                             foreach ($errors as $attributeNameWithErrors)
                             {
                                 foreach ($attributeNameWithErrors as $attributeError)
                                 {
-                                    $messageContent .= reset($attributeError) . "\n";
+                                    if (is_array($attributeError))
+                                    {
+                                        foreach ($attributeError as $nestedAttributeError)
+                                        {
+                                            $messageContent .= reset($nestedAttributeError) . "\n";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $messageContent .= reset($attributeError) . "\n";
+                                    }
                                 }
                             }
                         }
@@ -594,8 +605,10 @@
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
             $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true, $autoCompleteOptions);
-            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains', $autoCompleteOptions);
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true,
+                                      $autoCompleteOptions, $pageSize);
+            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress(
+                                      $term, $pageSize, null, 'contains', $autoCompleteOptions);
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
             {

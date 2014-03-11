@@ -33,34 +33,78 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Class that builds demo calendars.
-     */
-    class CalendarsDemoDataMaker extends DemoDataMaker
+     /**
+      * Calendar items list view designer rules.
+      */
+    class CalendarItemsListViewDesignerRules extends ListViewDesignerRules
     {
-        protected $ratioToLoad = 1;
-
-        public static function getDependencies()
+        /**
+         * @return boolean
+         */
+        public function allowEditInLayoutTool()
         {
-            return array('users');
+            return false;
         }
 
         /**
-         * @param DemoDataHelper $demoDataHelper
+         * @return int
          */
-        public function makeAll(& $demoDataHelper)
+        public function maxCellsPerRow()
         {
-            assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("User")');
+            return 1;
         }
 
         /**
-         * @param RedBeanModel $model
+         * @return boolean
          */
-        public function populateModel(& $model)
+        public function canMergeAndSplitCells()
         {
+            return false;
+        }
 
+        /**
+         * @return boolean
+         */
+        public function canConfigureLayoutPanelsType()
+        {
+            return false;
+        }
+
+        /**
+         * @return array
+         */
+        public function getNonPlaceableLayoutAttributeNames()
+        {
+            return array();
+        }
+
+        /**
+         * @return boolean
+         */
+        public function canAddPanels()
+        {
+            return false;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function canMovePanels()
+        {
+            return false;
+        }
+
+        /**
+         * @return boolean
+         */
+        public function canRemovePanels()
+        {
+            return false;
+        }
+
+        public function getSavableMetadataRules()
+        {
+            return array();
         }
     }
 ?>

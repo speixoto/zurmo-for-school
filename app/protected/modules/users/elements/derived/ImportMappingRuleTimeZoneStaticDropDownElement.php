@@ -35,12 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Class to make default data that needs to be created upon an installation.
+     * Display a drop down of time zone specifically for mapping rules during the import process.
      */
-    class ProjectsDefaultDataMaker extends DefaultDataMaker
+    class ImportMappingRuleTimeZoneStaticDropDownElement extends ImportMappingRuleStaticDropDownFormElement
     {
-        public function make()
+        public function __construct($model, $attribute, $form = null, array $params = array())
         {
+            assert('$model instanceof DefaultValueModelAttributeMappingRuleForm');
+            parent::__construct($model, $attribute, $form, $params);
+        }
+
+        protected function getAddBlank()
+        {
+            return true;
+        }
+
+        protected function getDropDownArray()
+        {
+            $timezoneIdentifiers = DateTimeZone::listIdentifiers();
+            return array_combine($timezoneIdentifiers, $timezoneIdentifiers);
         }
     }
 ?>

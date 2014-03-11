@@ -35,7 +35,7 @@
      ********************************************************************************/
 
     /**
-     * Class for working with the row and column reports in the report wizard
+     * Class for working with the row and column report in the saved calendar edit view
      */
     class RowsAndColumnsReportForSavedCalendarWizardView extends RowsAndColumnsReportWizardView
     {

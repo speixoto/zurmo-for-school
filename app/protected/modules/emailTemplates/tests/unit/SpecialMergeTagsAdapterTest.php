@@ -113,5 +113,42 @@
             $this->assertNotNull($resolvedLastYear);
             $this->assertEquals($expectedLastYear, $resolvedLastYear);
         }
+
+        public function testResolveAvatars()
+        {
+            $super = User::getByUsername('super');
+            $contact = new Contact();
+            $contact->owner = $super;
+            $resolvedAvatarImage = SpecialMergeTagsAdapter::resolve('ownersAvatarSmall', $contact);
+            $expectedAvatarImage = '<img class="gravatar" width="32" height="32" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $this->assertEquals($expectedAvatarImage, $resolvedAvatarImage);
+
+            $resolvedAvatarImage = SpecialMergeTagsAdapter::resolve('ownersAvatarMedium', $contact);
+            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $this->assertEquals($expectedAvatarImage, $resolvedAvatarImage);
+
+            $resolvedAvatarImage = SpecialMergeTagsAdapter::resolve('ownersAvatarLarge', $contact);
+            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $this->assertEquals($expectedAvatarImage, $resolvedAvatarImage);
+        }
+
+        /**
+         * @depends testResolveAvatars
+         */
+        public function testResolveOwnersEmailSignature()
+        {
+            $super = User::getByUsername('super');
+            $emailSignature = new EmailSignature();
+            $emailSignature->htmlContent = 'my email signature';
+            $super->emailSignatures->add($emailSignature);
+            $super->save();
+            $super->forget();
+            $super = User::getByUsername('super');
+            $contact = new Contact();
+            $contact->owner = $super;
+            $resolvedEmailSignature = SpecialMergeTagsAdapter::resolve('ownersEmailSignature', $contact);
+            $expectedEmailSignature = 'my email signature';
+            $this->assertEquals($expectedEmailSignature, $resolvedEmailSignature);
+        }
     }
 ?>

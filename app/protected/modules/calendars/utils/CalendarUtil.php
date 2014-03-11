@@ -47,9 +47,9 @@
             $calendarItem   = new CalendarItem();
             $startAttribute = $savedCalendar->startAttributeName;
             $endAttribute   = $savedCalendar->endAttributeName;
-            $calendarItem->setTitle($model->name);
+            $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
             $calendarItem->setStartDateTime($model->$startAttribute);
-            if($endAttribute != null)
+            if ($endAttribute != null)
             {
                 $calendarItem->setEndDateTime($model->$endAttribute);
             }
@@ -143,7 +143,11 @@
 
         /**
          * Process user calendars and get data provider.
-         * @param mixed $myCalendarIds
+         * @param null|string $myCalendarIds
+         * @param null|string $mySubscribedCalendarIds
+         * @param null|string $dateRangeType
+         * @param null|string $startDate
+         * @param null|string $endDate
          * @return CalendarItemsDataProvider
          */
         public static function processUserCalendarsAndMakeDataProviderForCombinedView($myCalendarIds = null,
@@ -187,32 +191,76 @@
          */
         public static function getFullCalendarItems(CalendarItemsDataProvider $dataProvider)
         {
-            $calendarItems = $dataProvider->getData();
-            $fullCalendarItems = array();
-            for($k = 0; $k < count($calendarItems); $k++)
+            $fullCalendarItems     = self::processDataProviderAndGetCalendarItems($dataProvider);
+            return self::processCalendarItemsAndAddMoreEventsIfRequired($fullCalendarItems);
+        }
+
+        /**
+         * Process full calendar items and render more events button if required.
+         * @param array $fullCalendarItems
+         */
+        public static function processCalendarItemsAndAddMoreEventsIfRequired($fullCalendarItems)
+        {
+            $modifiedCalendarItems          = array();
+            $dateToCalendarItemsCountData   = array();
+            $moreEventsItemCreatedByDate    = array();
+            foreach ($fullCalendarItems as $key => $fullCalItem)
             {
-                $fullCalendarItem = array();
-                $calItem = $calendarItems[$k];
-                $fullCalendarItem['title'] = $calItem->getTitle();
-                $fullCalendarItem['start'] = self::getFullCalendarFormattedDateTimeElement($calItem->getStartDateTime());
-                if($calItem->getEndDateTime() != null)
+                $startDate       = date('Y-m-d', strtotime($fullCalItem['start']));
+                //Check for the count of cal items on a given start date and if more than max add more events
+                if (isset($dateToCalendarItemsCountData[$startDate])
+                            && (count($dateToCalendarItemsCountData[$startDate]) >= CalendarItemsDataProvider::MAXIMUM_CALENDAR_ITEMS_DISPLAYED_FOR_ANY_DATE))
                 {
-                    $fullCalendarItem['end'] = self::getFullCalendarFormattedDateTimeElement($calItem->getEndDateTime());
+                    if (in_array($startDate, $moreEventsItemCreatedByDate) === false)
+                    {
+                        $fullCalItem           = self::createMoreEventsCalendarItem($fullCalItem, $key, $fullCalendarItems);
+                        $moreEventsItemCreatedByDate[] = $startDate;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
-                $fullCalendarItem['color'] = $calItem->getColor();
-                $modelClass                = $calItem->getModelClass();
-                $model                     = $modelClass::getById($calItem->getModelId());
-//                if($model instanceof CalendarItemInterface)
-//                {
-//                    $fullCalendarItem['description'] = self::renderFullCalendarItems($model);
-//                }
-//                else
-//                {
-                    $fullCalendarItem['description'] = '';
-                //}
-                $fullCalendarItems[] = $fullCalendarItem;
+                $fullCalItem['start'] = self::getFullCalendarFormattedDateTimeElement($fullCalItem['start']);
+                if (isset($fullCalItem['end']))
+                {
+                    $fullCalItem['end'] = self::getFullCalendarFormattedDateTimeElement($fullCalItem['end']);
+                }
+                $dateToCalendarItemsCountData[$startDate][] = $fullCalItem;
+                $modifiedCalendarItems[] = $fullCalItem;
             }
-            return $fullCalendarItems;
+            return $modifiedCalendarItems;
+        }
+
+        /**
+         * Create more events calendar item.
+         * @param array $fullCalItem
+         * @return string
+         */
+        public static function createMoreEventsCalendarItem($fullCalItem, $key, $fullCalendarItems)
+        {
+            $moreEventsCalItem = array();
+            $moreEventsCalItem['title'] = Zurmo::t('CalendarsModule', 'More Events..');
+            $moreEventsCalItem['start'] = $fullCalItem['start'];
+            $moreEventsCalItem['end']   = $fullCalItem['end'];
+            $moreEventsCalItem['color'] = '#cccccc';
+            $moreEventsCalItem['className'] = 'more-events';
+            return $moreEventsCalItem;
+        }
+
+        /**
+         * Compare datetime.
+         *
+         * @param array $firstDate
+         * @param array $secondDate
+         */
+        public static function compareCalendarItemsByDateTime($firstDate, $secondDate)
+        {
+            assert('is_array($firstDate)');
+            assert('is_array($secondDate)');
+            $firstDateUnixTimestamp = strtotime($firstDate['start']);
+            $secondDateUnixTimestamp = strtotime($secondDate['start']);
+            return $firstDateUnixTimestamp - $secondDateUnixTimestamp;
         }
 
         /**
@@ -223,15 +271,33 @@
         public static function getFullCalendarFormattedDateTimeElement($dateTime)
         {
             assert('is_string($dateTime)');
-            $dateTimeObject = new DateTime($dateTime);
-            return Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm',
-                        $dateTimeObject->getTimestamp());
+            //The reason its put because timezone can vary from -12:00 to +12:00 max so
+            //if we offset the gmt date by timezoneoffset, on applying offset, correct results
+            //would come.
+            if (DateTimeUtil::isValidDbFormattedDate($dateTime))
+            {
+                $dateTime = DateTimeUtil::convertDateToDateTimeByTimeZoneOffset($dateTime);
+            }
+            $dateTimeObject  = new DateTime();
+            $dateTimeObject->setTimestamp(strtotime($dateTime));
+            $offset          = ZurmoTimeZoneHelper::getTimeZoneOffset();
+            if ($offset < 0)
+            {
+                $offset = abs($offset);
+                $dateTimeObject->sub(new DateInterval('PT' . $offset . 'S'));
+            }
+            else
+            {
+                $dateTimeObject->add(new DateInterval('PT' . $offset . 'S'));
+            }
+            return $dateTimeObject->format('c');
         }
 
         /**
          * Gets used color by user.
-         *
          * @param User $user
+         * @param string $modelClassName
+         * @param string $attributeName
          * @return array
          */
         public static function getUsedCalendarColorsByUser(User $user, $modelClassName, $attributeName)
@@ -256,9 +322,9 @@
             $sql     = SQLQueryUtil::makeQuery($modelClassName::getTableName(), $selectQueryAdapter, $joinTablesAdapter, null, null, $where);
             $records = ZurmoRedBean::getAll($sql);
             $colors  = array();
-            foreach($records as $record)
+            foreach ($records as $record)
             {
-                if($record['color'] != null && $record['color'] != '')
+                if ($record['color'] != null && $record['color'] != '')
                 {
                     $colors[] = $record['color'];
                 }
@@ -285,7 +351,7 @@
         }
 
         /**
-         * Get task modal script
+         * Register shared calendar modal script
          * @param string $url
          * @param string $selector
          * @return string
@@ -312,7 +378,7 @@
         }
 
         /**
-         * Get the items by user
+         * Get the calendars user has subscribed for.
          * @param User $user
          * @return integer
          */
@@ -349,10 +415,10 @@
             assert('is_string($itemClass)');
             assert('is_string($type)');
             $itemsContent = null;
-            foreach($data as $calendarArray)
+            foreach ($data as $calendarArray)
             {
                 $isChecked = false;
-                if($calendarArray[1] === true)
+                if ($calendarArray[1] === true)
                 {
                     $isChecked = true;
                 }
@@ -362,7 +428,7 @@
                                                             'class' => $itemClass));
                 $color          = ZurmoHtml::tag('span', array('class' => 'cal-color', 'style' => 'background:' .
                                                                                                         $calendarArray[0]->color), '');
-                if($type == 'saved')
+                if ($type == 'saved')
                 {
                     $label          = $calendarArray[0]->name;
                     $options        = self::getSavedCalendarOptions($calendarArray[0]->id);
@@ -426,19 +492,20 @@
 
         /**
          * Get calendar items data provider.
+         * @param User $user
          * @return CalendarItemsDataProvider
          */
-        public static function getCalendarItemsDataProvider()
+        public static function getCalendarItemsDataProvider(User $user)
         {
-            $mySavedCalendarIds         = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+            $mySavedCalendarIds         = ZurmoConfigurationUtil::getByUserAndModuleName($user,
                                                                                         'CalendarsModule', 'myCalendarSelections');
-            $mySubscribedCalendarIds    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+            $mySubscribedCalendarIds    = ZurmoConfigurationUtil::getByUserAndModuleName($user,
                                                                                         'CalendarsModule', 'mySubscribedCalendarSelections');
-            $dateRangeType              = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+            $dateRangeType              = ZurmoConfigurationUtil::getByUserAndModuleName($user,
                                                                                         'CalendarsModule', 'myCalendarDateRangeType');
-            $startDate                  = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+            $startDate                  = ZurmoConfigurationUtil::getByUserAndModuleName($user,
                                                                                         'CalendarsModule', 'myCalendarStartDate');
-            $endDate                    = ZurmoConfigurationUtil::getByUserAndModuleName(Yii::app()->user->userModel,
+            $endDate                    = ZurmoConfigurationUtil::getByUserAndModuleName($user,
                                                                                         'CalendarsModule', 'myCalendarEndDate');
             return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($mySavedCalendarIds,
                                                                                         $mySubscribedCalendarIds,
@@ -468,7 +535,7 @@
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('SavedCalendarSubscription');
             $where  = RedBeanModelDataProvider::makeWhere('SavedCalendarSubscription', $searchAttributeData, $joinTablesAdapter);
             $models = SavedCalendarSubscription::getSubset($joinTablesAdapter, null, null, $where, null);
-            foreach($models as $model)
+            foreach ($models as $model)
             {
                 $users[] = $model->user;
             }
@@ -476,8 +543,8 @@
         }
 
         /**
-         * Get shared calendar subscriber data
-         * @param Task $task
+         * Get shared calendar subscriber data.
+         * @param SavedCalendar $subscribedCalendar
          * @return string
          */
         public static function getCalendarSubscriberData(SavedCalendar $subscribedCalendar)
@@ -529,13 +596,14 @@
 
         /**
          * Sets my calendar color.
+         * @param User $user
          * @param SavedCalendar $savedCalendar
          */
-        public static function setMyCalendarColor(SavedCalendar $savedCalendar)
+        public static function setMyCalendarColor(SavedCalendar $savedCalendar, User $user)
         {
             if($savedCalendar->color == null)
             {
-                $usedColors      = CalendarUtil::getAlreadyUsedColorsByUser(Yii::app()->user->userModel);
+                $usedColors      = CalendarUtil::getAlreadyUsedColorsByUser($user);
                 self::processAndSaveColor($savedCalendar, $usedColors);
             }
         }
@@ -570,7 +638,9 @@
         }
 
         /**
-         * Register my calendar delete script
+         * Register saved calendar delete script
+         * @param string $startDate
+         * @param string $endDate
          */
         public static function registerSavedCalendarDeleteScript($startDate, $endDate)
         {
@@ -580,7 +650,9 @@
             $eventsUrl  = Yii::app()->createUrl('calendars/default/getEvents');
             $params = LabelUtil::getTranslationParamsForAllModules();
             $confirmTitle  = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
-                                                        array('{modelLabel}' => Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params)));
+            array('{modelLabel}' => Zurmo::t('CalendarsModule', 'CalendarsModuleSingularLabel', $params)));
+            // Begin Not Coding Standard
+
             $script = "$(document).on('click', '.my-cal-delete', function()
                          {
                             if (!confirm('{$confirmTitle}'))
@@ -608,6 +680,8 @@
 
                           }
                         );";
+
+             // End Not Coding Standard
              $cs         = Yii::app()->getClientScript();
              if($cs->isScriptRegistered('calDeleteScript', ClientScript::POS_END) === false)
              {
@@ -626,6 +700,8 @@
             assert('is_string($endDate)');
             $url        = Yii::app()->createUrl('/calendars/default/unsubscribe');
             $eventsUrl  = Yii::app()->createUrl('calendars/default/getEvents');
+            // Begin Not Coding Standard
+
             $script     = "$(document).on('click', '.shared-cal-unsubscribe', function(){
                             $.ajax(
                             {
@@ -647,6 +723,8 @@
                             }
                             );
                       })";
+
+            // End Not Coding Standard
             $cs         = Yii::app()->getClientScript();
             $cs->registerScript('calunsubscribescript', $script, ClientScript::POS_END);
         }
@@ -662,9 +740,9 @@
             $adapter                = new ModelAttributesAdapter(new $modelClassName(false));
             $attributes             = $adapter->getAttributes();
             $selectedAttributes     = array();
-            foreach($attributes as $attribute => $value)
+            foreach ($attributes as $attribute => $value)
             {
-                if($value['elementType'] == 'DateTime' || $value['elementType'] == 'Date')
+                if ($value['elementType'] == 'DateTime' || $value['elementType'] == 'Date')
                 {
                     $selectedAttributes[$attribute] = $value['attributeLabel'];
                 }
@@ -673,6 +751,7 @@
         }
 
         /**
+         * Makes component form and populate report from the data.
          * @param array $componentFormsData
          * @param Report $report
          * @param null|string $componentPrefix
@@ -707,7 +786,7 @@
         public static function saveCalendarWithSerializedData(Report $report, SavedCalendar $savedCalendar, $wizardFormPostData)
         {
             $filtersData          = ArrayUtil::getArrayValue($wizardFormPostData, ComponentForReportForm::TYPE_FILTERS);
-            if($filtersData != null)
+            if ($filtersData != null)
             {
                 $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
                                                                               $report->getType(),
@@ -716,22 +795,23 @@
                                         'filtersStructure' => $report->getFiltersStructure());
                 $savedCalendar->serializedData = serialize($unserializedData);
             }
-            if(!$savedCalendar->save())
+            if (!$savedCalendar->save())
             {
                 throw new FailedToSaveModelException();
             }
         }
 
         /**
-         * Resolve report by saved calendar post data
+         * Resolve report by saved calendar post data.
          * @param string $type
          * @param int $id
+         * @param array $postData
          * @return Report
          */
-        public static function resolveReportBySavedCalendarPostData($type, $id = null)
+        public static function resolveReportBySavedCalendarPostData($type, $id = null, $postData)
         {
             assert('is_string($type)');
-            $postData = PostUtil::getData();
+            assert('is_array($postData)');
             if ($id == null)
             {
                 $report = new Report();
@@ -743,14 +823,14 @@
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedCalendar);
                 $report                     = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
             }
-            if(isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
+            if (isset($postData['SavedCalendar']) && isset($postData['SavedCalendar']['moduleClassName']))
             {
                 $report->setModuleClassName($postData['SavedCalendar']['moduleClassName']);
             }
-//            else
-//            {
-//                throw new NotSupportedException();
-//            }
+            else
+            {
+                throw new NotSupportedException();
+            }
             DataToReportUtil::resolveReportByWizardPostData($report, $postData,
                                                                 ReportToWizardFormAdapter::getFormClassNameByType($type));
             return $report;
@@ -792,20 +872,178 @@
         }
 
         /**
-         * Render full calendar items for a model.
-         * @param Object $model
-         * @return string
+         * Process and get data provider for events data.
+         * @param null|string $myCalendarIds
+         * @param null|string $mySubscribedCalendarIds
+         * @param null|string $dateRangeType
+         * @param null|string $startDate
+         * @param null|string $endDate
+         * @return CalendarItemsDataProvider
          */
-        public static function renderFullCalendarItems($model)
+        public static function processAndGetDataProviderForEventsData($selectedMyCalendarIds = null,
+                                                                      $selectedSharedCalendarIds = null,
+                                                                      $startDate = null,
+                                                                      $endDate = null,
+                                                                      $dateRangeType = null,
+                                                                      $isSticky = true)
         {
-            assert('$model instanceof CalendarItemInterface');
-            $descriptionArray = $model->getCalendarItemData();
-            $content          = ZurmoHtml::tag('div', array('class' => 'itemDescription'), '');
-            foreach($descriptionArray as $key => $value)
+            if ($isSticky)
             {
-                $content .= ZurmoHtml::tag('span', array(), $key . ':' . $value) . "<br/>";
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                                   'CalendarsModule',
+                                                                   'myCalendarStartDate', $startDate);
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                                   'CalendarsModule',
+                                                                   'myCalendarEndDate', $endDate);
+                ZurmoConfigurationUtil::setByUserAndModuleName(Yii::app()->user->userModel,
+                                                                   'CalendarsModule',
+                                                                   'myCalendarDateRangeType', $dateRangeType);
             }
-            return $content;
+            return CalendarUtil::processUserCalendarsAndMakeDataProviderForCombinedView($selectedMyCalendarIds,
+                                                                                        $selectedSharedCalendarIds,
+                                                                                        $dateRangeType,
+                                                                                        $startDate,
+                                                                                        $endDate);
+        }
+
+        /**
+         * Checks and load default calendars for the user.
+         * @param User $user
+         */
+        public static function loadDefaultCalendars(User $user)
+        {
+            $name           = Zurmo::t('CalendarsModule', 'My Meetings');
+            $mtgCalendar    = self::populateSavedCalendar($user, $name, 'MeetingsModule', 'startDateTime', 'endDateTime');
+            $name           = Zurmo::t('CalendarsModule', 'My Tasks');
+            $taskCalendar   = self::populateSavedCalendar($user, $name, 'TasksModule', 'createdDateTime');
+            return array($mtgCalendar, $taskCalendar);
+        }
+
+        /**
+         * Populate saved calendar module.
+         *
+         * @param User $user
+         * @param string $name
+         * @param string $moduleClassName
+         * @param string $startAttributeName
+         * @param string $endAttributeName
+         */
+        public static function populateSavedCalendar(User $user,
+                                                     $name,
+                                                     $moduleClassName,
+                                                     $startAttributeName,
+                                                     $endAttributeName = '')
+        {
+            $savedCalendar                      = new SavedCalendar();
+            $savedCalendar->name                = $name;
+            $savedCalendar->timeZone            = $user->timeZone;
+            $savedCalendar->location            = 'Chicago';
+            $savedCalendar->moduleClassName     = $moduleClassName;
+            $savedCalendar->startAttributeName  = $startAttributeName;
+            $savedCalendar->endAttributeName    = $endAttributeName;
+            assert($savedCalendar->save()); // Not Coding Standard
+            CalendarUtil::setMyCalendarColor($savedCalendar, $user);
+            $filtersData                        = array('filtersStructure' => '1',
+                                                        'Filters' => array(
+                                                                            array('attributeIndexOrDerivedType' => 'owner__User',
+                                                                            'structurePosition'  => '1',
+                                                                            'operator'           => 'equals',
+                                                                            'value'              => $user->id,
+                                                                            'stringifiedModelForValue'  => strval($user),
+                                                                            'availableAtRunTime' => '0')
+                                                                          )
+                                                       );
+            CalendarUtil::populateFiltersDataInModel($savedCalendar, $filtersData);
+            assert($savedCalendar->save()); // Not Coding Standard
+            return $savedCalendar;
+        }
+
+        /**
+         * Populate filters data in model.
+         *
+         * @param SavedCalendar $model
+         * @param array $data
+         */
+        public static function populateFiltersDataInModel(SavedCalendar $model, $data)
+        {
+            $report        = SavedCalendarToReportAdapter::makeReportBySavedCalendar($model);
+            DataToReportUtil::resolveFiltersStructure($data, $report);
+            DataToReportUtil::resolveFilters($data, $report);
+            if (count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
+            {
+                $sanitizedFiltersData  = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
+                                                                              $report->getType(),
+                                                                              $filtersData);
+                $unserializedData      = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData,
+                                        'filtersStructure' => $report->getFiltersStructure());
+                $model->serializedData = serialize($unserializedData);
+            }
+            else
+            {
+                $model->serializedData = null;
+            }
+        }
+
+        /**
+         * Process data provider and get calendar items.
+         * @param CalendarItemsDataProvider $dataProvider
+         * @return boolean
+         */
+        public static function processDataProviderAndGetCalendarItems(CalendarItemsDataProvider $dataProvider)
+        {
+            $calendarItems = $dataProvider->getData(true);
+            $fullCalendarItems = array();
+            for ($k = 0; $k < count($calendarItems); $k++)
+            {
+                $fullCalendarItem = array();
+                $calItem = $calendarItems[$k];
+                $fullCalendarItem['title'] = $calItem->getTitle();
+                $fullCalendarItem['start'] = $calItem->getStartDateTime();
+                if ($calItem->getEndDateTime() != null)
+                {
+                    $fullCalendarItem['end'] = $calItem->getEndDateTime();
+                }
+                else
+                {
+                    $fullCalendarItem['end'] = '';
+                }
+                $fullCalendarItem['color']      = $calItem->getColor();
+                $fullCalendarItem['modelClass'] = $calItem->getModelClass();
+                $fullCalendarItem['modelId']    = $calItem->getModelId();
+                $fullCalendarItem['calendarId'] = $calItem->getCalendarId();
+                $fullCalendarItem['allDay']     = true;
+                $fullCalendarItems[] = $fullCalendarItem;
+            }
+            if (count($fullCalendarItems) >  0)
+            {
+                ArrayUtil::sortArrayByElementField('compareCalendarItemsByDateTime', 'usort', $fullCalendarItems, 'CalendarUtil');
+            }
+            return $fullCalendarItems;
+        }
+
+        /**
+         * Populate details url for calendar items.
+         * @param array $items
+         * @return array
+         */
+        public static function populateDetailsUrlForCalendarItems($items)
+        {
+            assert('is_array($items)');
+            $moduleClassNames           = CalendarUtil::getAvailableModulesForCalendar();
+            foreach ($items as $index => $item)
+            {
+                foreach ($moduleClassNames as $moduleClassName)
+                {
+                    $moduleClassName = $moduleClassName . 'Module';
+                    if ($moduleClassName::getPrimaryModelName() == $item['modelClass'])
+                    {
+                        $moduleId           = $moduleClassName::getDirectoryName();
+                        $item['detailsUrl'] = Yii::app()->createUrl($moduleId . '/default/details', array('id' => $item['modelId']));
+                        $items[$index]      = $item;
+                    }
+                }
+            }
+            return $items;
         }
     }
 ?>

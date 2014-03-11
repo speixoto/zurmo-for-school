@@ -59,23 +59,65 @@ function getModuleDateTimeAttributes(moduleName, url, targetId, attributeName)
         });
 }
 
-function getCalendarEvents(url, inputId)
+function getCalendarEvents(url, inputId, maxCount)
 {
-    var events = {
-        url : url,
-        data :function()
-        {
-            var view                    = $('#' + inputId).fullCalendar('getView');
-            var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
-            var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
-            return {
+    $('#' + inputId).fullCalendar('removeEvents');
+    var events = function(start, end, callback) {
+        var view                    = $('#' + inputId).fullCalendar('getView');
+        var selectedMyCalendars     = getSelectedCalendars('.mycalendar');
+        var selectedSharedCalendars = getSelectedCalendars('.sharedcalendar');
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            beforeSend: function(xhr)
+                       {
+                           $('.mycalendar,.sharedcalendar').attr("disabled", true);
+                           $('#calItemCountResult').hide();
+                       },
+            data:
+            {
                 selectedMyCalendarIds : selectedMyCalendars,
                 selectedSharedCalendarIds : selectedSharedCalendars,
                 startDate      : $.fullCalendar.formatDate(view.start, 'yyyy-MM-dd'),
                 endDate        : $.fullCalendar.formatDate(view.end, 'yyyy-MM-dd'),
                 dateRangeType  : view.name
-                }
-        }
-    };
+            },
+            success: function(data) {
+                var events = [];
+                $(data).each(function() {
+                    var endDateTime = '';
+                    var allDay = false;
+                    var className = '';
+                    if ($(this).attr('end') !== undefined)
+                    {
+                        endDateTime = $(this).attr('end');
+                    }
+                    if ($(this).attr('allDay') !== undefined)
+                    {
+                        allDay = true;
+                    }
+                    if ($(this).attr('className') !== undefined)
+                    {
+                        className = $(this).attr('className');
+                    }
+                    events.push({
+                        title: $(this).attr('title'),
+                        start: $(this).attr('start'), // will be parsed
+                        end  : endDateTime,
+                        color : $(this).attr('color'),
+                        description : $(this).attr('description'),
+                        className : className,
+                        allDay: allDay
+                    });
+                    if(events.length == parseInt(maxCount))
+                    {
+                        $('#calItemCountResult').show();
+                    }
+                });
+                callback(events);
+                $('.mycalendar,.sharedcalendar').removeAttr('disabled');
+            }
+        });
+    }
     return events;
 }

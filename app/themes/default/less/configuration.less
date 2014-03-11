@@ -605,7 +605,14 @@ table.configuration-list{
 		top:auto;
 		left:auto;
 		right:auto;
-		.form-toolbar();
+		//.form-toolbar();
+		padding-top:13px;
+		text-align:center;
+		border-top:1px solid #fff;
+		a{
+			display:inline-block;
+			margin:0 10px;
+		}
 	}
 	.view-toolbar-container{
 		margin-bottom:5px;
@@ -1456,7 +1463,10 @@ table.configuration-list{
 
 /*Queues*/
 #QueuesListView{
-	.SecuredListView();
+	float:left;
+	width:100%;
+	margin-bottom:20px;
+	position: relative;
 }
 
 #queue-search-element{

@@ -35,13 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Class to make default data that needs to be created upon an installation.
+     * Specific rules for handling the user locale attribute for import process
      */
-    class CalendarsDefaultDataMaker extends DefaultDataMaker
+    class LocaleStaticDropDownAttributeImportRules extends DropDownAttributeImportRules
     {
-        public function make()
+        protected static function getAllModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            
+            return array('DefaultValueModelAttribute' => 'ImportMappingRuleLocaleStaticDropDown');
+        }
+
+        public static function getSanitizerUtilTypesInProcessingOrder()
+        {
+            return array('UserLocale');
         }
     }
 ?>

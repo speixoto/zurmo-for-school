@@ -378,12 +378,48 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
-
+        
         public static function getLastDayOfAMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
             $dateTime = new DateTime($stringTime);
             $dateTime->modify('last day of this month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+        
+        public static function getFirstDayOfLastMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('first day of last month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+        
+        public static function getLastDayOfLastMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('last day of last month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+        
+        public static function getFirstDayOfNextMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('first day of next month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+        
+        public static function getLastDayOfNextMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('last day of next month');
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
@@ -428,7 +464,7 @@
 
         public static function resolveDateTimeAsDate($dateTime)
         {
-            assert('is_string($date)');
+            assert('is_string($dateTime)');
             if ($dateTime == '0000-00-00 00:00:00')
             {
                 return '0000-00-00';
@@ -616,6 +652,29 @@
             $dateTime->modify('tomorrow');
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
+        }
+
+        /**
+         * Convert date to datetime by setting the h:i:s as offset hours, minutes and seconds.
+         * @param string $date
+         * @return string
+         */
+        public static function convertDateToDateTimeByTimeZoneOffset($date)
+        {
+            $offset          = ZurmoTimeZoneHelper::getTimeZoneOffset();
+            $absOffset       = abs($offset);
+            $hours           = floor($absOffset / (60 * 60));
+            $absOffset       -= $hours * (60 * 60);
+
+            $minutes         = floor($absOffset / 60);
+            $absOffset       -= $minutes * 60;
+
+            $seconds         = floor($absOffset);
+            $absOffset       -= $seconds;
+            $hours           = ($hours < 10)? '0' . $hours : $hours;
+            $minutes         = ($minutes < 10)? '0' . $minutes : $minutes;
+            $seconds         = ($seconds < 10)? '0' . $seconds : $seconds;
+            return $date . ' ' . $hours . ':' . $minutes . ':' . $seconds;
         }
     }
 ?>

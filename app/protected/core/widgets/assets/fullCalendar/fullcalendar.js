@@ -908,7 +908,8 @@ function EventManager(options, _sources) {
 	t.clientEvents = clientEvents;
 	t.normalizeEvent = normalizeEvent;
 
-    // imports
+
+	// imports
 	var trigger = t.trigger;
 	var getView = t.getView;
 	var reportEvents = t.reportEvents;
@@ -1109,6 +1110,8 @@ function EventManager(options, _sources) {
 		});
 		reportEvents(cache);
 	}
+
+
 
 	/* Manipulation
 	-----------------------------------------------------------------------------*/

@@ -42,8 +42,6 @@
             SecurityTestHelper::createSuperAdmin();
             Yii::import('application.core.data.*');
             Yii::import('application.modules.projects.data.*');
-            $defaultDataMaker = new ProjectsDefaultDataMaker();
-            $defaultDataMaker->make();
         }
 
         public function testSimpleUserImportWhereAllRowsSucceed()

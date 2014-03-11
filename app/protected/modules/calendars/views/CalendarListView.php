@@ -43,24 +43,29 @@
          * @var array
          */
         protected $data;
+
         /**
          * Field name
          * @var string
          */
         protected $field;
+
         /**
          * Css class for the item.
          * @var string
          */
         protected $itemClass;
+
         /**
          * @var string
          */
         protected $controllerId;
+
         /**
          * @var string
          */
         protected $moduleId;
+
         /**
          * @var string
          */

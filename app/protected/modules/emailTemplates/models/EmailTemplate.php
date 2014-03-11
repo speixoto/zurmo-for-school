@@ -197,7 +197,7 @@
         {
             if (empty($this->$attribute))
             {
-                $this->$attribute = Yii::app()->user->userModel->language;
+                $this->$attribute = Yii::app()->languageHelper->getForCurrentUser();
             }
             return true;
         }

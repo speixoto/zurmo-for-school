@@ -34,7 +34,30 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CalendarsModuleForm extends GlobalSearchEnabledModuleForm
+    class UniqueIdentifierListViewColumnAdapter extends TextListViewColumnAdapter
     {
+        /**
+         * Renders grid view data for unique identifier.
+         *
+         * @return array
+         */
+        public function renderGridViewData()
+        {
+            if ($this->getIsLink())
+            {
+                return array(
+                'name'   => 'id',
+                'header' => Zurmo::t('Core', 'Unique ID'),
+                'type'   => 'raw',
+                'value'  => $this->view->getLinkString('$data->' . $this->attribute, $this->attribute),
+                );
+            }
+            else
+            {
+                return array(
+                    'name' => $this->attribute
+                );
+            }
+        }
     }
 ?>
