@@ -338,22 +338,22 @@
                 }
                 elseif ($value['type'] == self::TYPE_THIS_MONTH)
                 {
-                    $firstDateValue  = date('Y-m-1');
-                    $secondDateValue = date('Y-m-t');
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfAMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfAMonthDate();
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $firstDateValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $secondDateValue, true));
                 }
                 elseif ($value['type'] == self::TYPE_LAST_MONTH)
                 {
-                    $firstDateValue  = date('Y-m', strtotime('-1 month'));
-                    $secondDateValue = date('Y-m', strtotime('-1 month'));
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfLastMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfLastMonthDate();
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $firstDateValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $secondDateValue, true));
                 }
                 elseif ($value['type'] == self::TYPE_NEXT_MONTH)
                 {
-                    $firstDateValue  = date('Y-m', strtotime('+1 month'));
-                    $secondDateValue = date('Y-m', strtotime('+1 month'));
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfNextMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfNextMonthDate();
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $firstDateValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $secondDateValue, true));
                 }
