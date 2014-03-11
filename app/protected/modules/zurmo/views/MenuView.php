@@ -44,13 +44,14 @@
 
         protected $showCount;
 
-        public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false, $showCount = 6)
+        public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false, $showCount = 6, $cssClasses = array())
         {
             assert('is_int($showCount)');
+            assert('is_array($cssClasses)');
             $this->items = $items;
             $this->useMinimalDynamicLabelMbMenu = $useMinimalDynamicLabelMbMenu;
             $this->showCount  = $showCount;
-            $this->cssClasses = $this->resolveMenuClassForNoHiddenItems();
+            $this->cssClasses = array_merge($cssClasses, $this->resolveMenuClassForNoHiddenItems());
         }
 
         /**
