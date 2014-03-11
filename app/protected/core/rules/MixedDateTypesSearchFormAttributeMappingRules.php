@@ -57,6 +57,14 @@
 
         const TYPE_LAST_7_DAYS     = 'Last 7 Days';
 
+        const TYPE_LAST_30_DAYS     = 'Last 30 Days';
+
+        const TYPE_THIS_MONTH     = 'This Month';
+
+        const TYPE_LAST_MONTH     = 'Last Month';
+
+        const TYPE_NEXT_MONTH     = 'Next Month';
+
         const TYPE_IS_TIME_FOR     = 'Is Time For';
 
         const TYPE_IS_EMPTY        = 'Is Empty';
@@ -171,6 +179,10 @@
                             self::TYPE_BETWEEN,
                             self::TYPE_NEXT_7_DAYS,
                             self::TYPE_LAST_7_DAYS,
+                            self::TYPE_LAST_30_DAYS,
+                            self::TYPE_THIS_MONTH,
+                            self::TYPE_LAST_MONTH,
+                            self::TYPE_NEXT_MONTH,
                             self::TYPE_IS_TIME_FOR,
                             self::TYPE_IS_EMPTY,
                             self::TYPE_IS_NOT_EMPTY,
@@ -186,15 +198,19 @@
          */
         public static function getValueTypesAndLabels()
         {
-            return array(self::TYPE_YESTERDAY   => Zurmo::t('Core', 'Yesterday'),
-                         self::TYPE_TODAY       => Zurmo::t('Core', 'Today'),
-                         self::TYPE_TOMORROW    => Zurmo::t('Core', 'Tomorrow'),
-                         self::TYPE_BEFORE      => Zurmo::t('Core', 'Before'),
-                         self::TYPE_AFTER       => Zurmo::t('Core', 'After'),
-                         self::TYPE_ON          => Zurmo::t('Core', 'On{date}', array('{date}' => null)),
-                         self::TYPE_BETWEEN     => Zurmo::t('Core', 'Between'),
-                         self::TYPE_NEXT_7_DAYS => Zurmo::t('Core', 'Next 7 Days'),
-                         self::TYPE_LAST_7_DAYS => Zurmo::t('Core', 'Last 7 Days'),
+            return array(self::TYPE_YESTERDAY    => Zurmo::t('Core', 'Yesterday'),
+                         self::TYPE_TODAY        => Zurmo::t('Core', 'Today'),
+                         self::TYPE_TOMORROW     => Zurmo::t('Core', 'Tomorrow'),
+                         self::TYPE_BEFORE       => Zurmo::t('Core', 'Before'),
+                         self::TYPE_AFTER        => Zurmo::t('Core', 'After'),
+                         self::TYPE_ON           => Zurmo::t('Core', 'On{date}', array('{date}' => null)),
+                         self::TYPE_BETWEEN      => Zurmo::t('Core', 'Between'),
+                         self::TYPE_NEXT_7_DAYS  => Zurmo::t('Core', 'Next 7 Days'),
+                         self::TYPE_LAST_7_DAYS  => Zurmo::t('Core', 'Last 7 Days'),
+                         self::TYPE_LAST_30_DAYS => Zurmo::t('Core', 'Last 30 Days'),
+                         self::TYPE_THIS_MONTH => Zurmo::t('Core', 'This Month'),
+                         self::TYPE_LAST_MONTH => Zurmo::t('Core', 'Last Month'),
+                         self::TYPE_NEXT_MONTH => Zurmo::t('Core', 'Next Month'),
             );
         }
 
@@ -312,6 +328,34 @@
                     $todayMinusSevenDays   = static::calculateNewDateByDaysFromNow(-7);
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $todayMinusSevenDays, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $today, true));
+                }
+                elseif ($value['type'] == self::TYPE_LAST_30_DAYS)
+                {
+                    $today                 = static::calculateNewDateByDaysFromNow(0);
+                    $todayMinusThirtyDays   = static::calculateNewDateByDaysFromNow(-30);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $todayMinusThirtyDays, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $today, true));
+                }
+                elseif ($value['type'] == self::TYPE_THIS_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfAMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfAMonthDate();
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $firstDateValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $secondDateValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_LAST_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfLastMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfLastMonthDate();
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $firstDateValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $secondDateValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_NEXT_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfNextMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfNextMonthDate();
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $firstDateValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $secondDateValue, true));
                 }
                 else
                 {
