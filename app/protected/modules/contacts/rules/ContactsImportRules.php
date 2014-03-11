@@ -60,7 +60,8 @@
         public static function getNonImportableAttributeNames()
         {
             return array_merge(parent::getNonImportableAttributeNames(), array('state', 'companyName',
-                               'billingAddress__latitude', 'billingAddress__longitude', 'billingAddress__invalid'));
+                               'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
+                               'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
         }
 
         /**

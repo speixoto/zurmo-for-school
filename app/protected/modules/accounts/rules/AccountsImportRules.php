@@ -48,7 +48,8 @@
         {
 
             return array_merge(parent::getNonImportableAttributeNames(),
-                        array('billingAddress__latitude', 'billingAddress__longitude', 'billingAddress__invalid'));
+                        array('billingAddress__latitude', 'billingAddress__longitude', 'billingAddress__invalid',
+                              'shippingAddress__latitude', 'shippingAddress__longitude', 'shippingAddress__invalid'));
         }
 
 
