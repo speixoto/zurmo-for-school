@@ -34,25 +34,16 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AccountsForAccountRelatedListView extends AccountsRelatedListView
+    class AccountsOrgGraphModalView extends View
     {
-        protected function getRelationAttributeName()
+        public function renderContent()
         {
-            return 'account';
-        }
-
-        public static function getDisplayDescription()
-        {
-            return Zurmo::t('AccountsModule', 'AccountsModulePluralLabel For AccountsModuleSingularLabel',
-                        LabelUtil::getTranslationParamsForAllModules());
-        }
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("OrgChart");
+            $cClipWidget->widget('application.core.widgets.OrgChart');
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['OrgChart'];
         
-        /**
-         * @return array
-         */
-        public static function getAllowedOnPortletViewClassNames()
-        {
-            return array('AccountDetailsAndRelationsView');
         }
     }
 ?>

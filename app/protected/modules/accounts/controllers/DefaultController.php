@@ -400,5 +400,12 @@
                                         'AccountsMerged', 'AccountsPageView',
                                         '/accounts/default/list');
         }
+
+        public function actionOrgGraph()
+        {
+            $renderOrgGraphModalView = new AccountsOrgGraphModalView();
+            $view = new ModalView($this, $renderOrgGraphModalView);
+            return $view->render();
+        }
     }
 ?>

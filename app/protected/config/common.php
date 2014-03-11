@@ -176,7 +176,9 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.iframe-transport.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/treeView/jquery.treeview.async.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.min.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js'
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/orgChart/org-chart.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/orgChart/d3.v3.min.js'
                     )
                 ),
                 //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
@@ -209,7 +211,9 @@
                     array('application.core.widgets.assets',            '/fileUpload/jquery.iframe-transport.js'),
                     array('application.core.widgets.assets',            '/treeView/jquery.treeview.async.js'),
                     array('application.extensions.timepicker.assets',   '/jquery-ui-timepicker-addon.min.js'),
-                    array('application.core.widgets.assets',            '/calendar/Calendar.js')
+                    array('application.core.widgets.assets',            '/calendar/Calendar.js'),
+                    array('application.core.widgets.assets',            '/orgChart/org-chart.js'),
+                    array('application.core.widgets.assets',            '/orgChart/d3.v3.min.js')
                 ),
             ),
             'languageHelper' => array(
