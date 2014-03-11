@@ -136,16 +136,16 @@
             $activeUser   = User::getByUsername('myusername7');
             $userStatus   = UserStatusUtil::makeByUser($activeUser);
             $this->assertTrue($userStatus->isActive());
-            $this->assetEqual($defaultLanguage, $activeUser->language);
-            $this->assetEqual($defaultLocale,   $activeUser->locale);
-            $this->assetEqual($defaultTimeZone, $activeUser->timeZone);
-            $this->assetEqual($defaultCurrency, $activeUser->currency);
+            $this->assertEquals($defaultLanguage, $activeUser->language);
+            $this->assertEquals($defaultLocale,   $activeUser->locale);
+            $this->assertEquals($defaultTimeZone, $activeUser->timeZone);
+            $this->assertEquals($defaultCurrency, $activeUser->currency);
             $inactiveUser = User::getByUsername('myusername8');
             $userStatus   = UserStatusUtil::makeByUser($inactiveUser);
-            $this->assetEqual($defaultLanguage, $inactiveUser->language);
-            $this->assetEqual($defaultLocale,   $inactiveUser->locale);
-            $this->assetEqual($defaultTimeZone, $inactiveUser->timeZone);
-            $this->assetEqual($defaultCurrency, $inactiveUser->currency);
+            $this->assertEquals($defaultLanguage, $inactiveUser->language);
+            $this->assertEquals($defaultLocale,   $inactiveUser->locale);
+            $this->assertEquals($defaultTimeZone, $inactiveUser->timeZone);
+            $this->assertEquals($defaultCurrency, $inactiveUser->currency);
             $this->assertFalse($userStatus->isActive());
 
             //Confirm 10 rows were processed as 'created'.
