@@ -429,7 +429,7 @@ a.simple-link {
 }
 a.simple-link:before,
 a.simple-link:after {
-  content: "" !important;
+  display: none !important;
 }
 a.simple-link:hover {
   color: #565656 !important;
@@ -477,6 +477,10 @@ a.simple-link .icon-x {
   top: -1px;
   color: #7CB830;
 }
+.action-take,
+.action-type-finish {
+  border: 1px solid #e4b600;
+}
 .action-take .z-label,
 .action-type-finish .z-label {
   background-color: #e4b600 !important;
@@ -504,6 +508,11 @@ a.simple-link .icon-x {
   -ms-text-shadow: 0px -1px 0 #ffdb4d !important;
   -o-text-shadow: 0px -1px 0 #ffdb4d !important;
   text-shadow: 0px -1px 0 #ffdb4d !important;
+}
+.action-type-accept,
+.action-accept,
+.action-complete {
+  border: 1px solid #6fa82d;
 }
 .action-type-accept .z-label,
 .action-accept .z-label,
@@ -535,6 +544,10 @@ a.simple-link .icon-x {
   -o-text-shadow: 0px -1px 0 #b6d678 !important;
   text-shadow: 0px -1px 0 #b6d678 !important;
 }
+.action-type-reject,
+.action-reject {
+  border: 1px solid #a82d31;
+}
 .action-type-reject .z-label,
 .action-reject .z-label {
   background-color: #a82d31 !important;
@@ -562,6 +575,9 @@ a.simple-link .icon-x {
   -ms-text-shadow: 0px -1px 0 #d67887 !important;
   -o-text-shadow: 0px -1px 0 #d67887 !important;
   text-shadow: 0px -1px 0 #d67887 !important;
+}
+.action-type-restart {
+  border: 1px solid #4d6c87;
 }
 .action-type-restart .button-label {
   color: #ffffff;
@@ -1018,6 +1034,10 @@ table.configuration-list tr:last-child td {
 #ActionBarForGroupsEditAndDetailsView .view-toolbar {
   margin-top: 0;
 }
+.AdministrativeArea > div {
+  float: left;
+  width: 100%;
+}
 .AdministrativeArea #edit-form table {
   width: 100%;
   float: none;
@@ -1380,6 +1400,9 @@ table.configuration-list tr:last-child td {
 }
 #LanguagesCollectionView .configuration-list {
   border-top: 1px solid #ccc;
+}
+#LanguagesCollectionView .configuration-list li {
+  padding-right: 15px;
 }
 #LanguagesCollectionView .configuration-list li:first-child {
   border-top: 1px solid #fff;
@@ -8228,15 +8251,23 @@ a + .autoresponder-stats {
   position: relative;
   top: 4px;
 }
+#MarketingListsManageSubscriptionsListView,
+#MarketingListsExternalActionsPreviewView,
 #MarketingListsExternalActionsPageView,
 #MarketingListsManageSubscriptionsPageView {
-  max-width: 900px;
-  margin: 30px auto;
+  margin-left: 0;
+  padding: 75px 15% 15px 15%;
 }
+#MarketingListsManageSubscriptionsListView > .GridView,
+#MarketingListsExternalActionsPreviewView > .GridView,
 #MarketingListsExternalActionsPageView > .GridView,
 #MarketingListsManageSubscriptionsPageView > .GridView {
   *zoom: 1;
 }
+#MarketingListsManageSubscriptionsListView > .GridView:before,
+#MarketingListsManageSubscriptionsListView > .GridView:after,
+#MarketingListsExternalActionsPreviewView > .GridView:before,
+#MarketingListsExternalActionsPreviewView > .GridView:after,
 #MarketingListsExternalActionsPageView > .GridView:before,
 #MarketingListsExternalActionsPageView > .GridView:after,
 #MarketingListsManageSubscriptionsPageView > .GridView:before,
@@ -8244,18 +8275,26 @@ a + .autoresponder-stats {
   content: " ";
   display: table;
 }
+#MarketingListsManageSubscriptionsListView > .GridView:after,
+#MarketingListsExternalActionsPreviewView > .GridView:after,
 #MarketingListsExternalActionsPageView > .GridView:after,
 #MarketingListsManageSubscriptionsPageView > .GridView:after {
   clear: both;
 }
+#MarketingListsManageSubscriptionsListView #HeaderLinksView,
+#MarketingListsExternalActionsPreviewView #HeaderLinksView,
 #MarketingListsExternalActionsPageView #HeaderLinksView,
 #MarketingListsManageSubscriptionsPageView #HeaderLinksView {
   margin: 0 0 20px 0;
 }
+#MarketingListsManageSubscriptionsListView #HeaderLinksView > div,
+#MarketingListsExternalActionsPreviewView #HeaderLinksView > div,
 #MarketingListsExternalActionsPageView #HeaderLinksView > div,
 #MarketingListsManageSubscriptionsPageView #HeaderLinksView > div {
   margin: 0;
 }
+#MarketingListsManageSubscriptionsListView #HeaderLinksView + div,
+#MarketingListsExternalActionsPreviewView #HeaderLinksView + div,
 #MarketingListsExternalActionsPageView #HeaderLinksView + div,
 #MarketingListsManageSubscriptionsPageView #HeaderLinksView + div {
   background: none;
@@ -8269,10 +8308,16 @@ a + .autoresponder-stats {
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
+#MarketingListsManageSubscriptionsListView #corp-logo span,
+#MarketingListsExternalActionsPreviewView #corp-logo span,
 #MarketingListsExternalActionsPageView #corp-logo span,
 #MarketingListsManageSubscriptionsPageView #corp-logo span {
   color: #545454;
 }
+#MarketingListsManageSubscriptionsListView .Warning,
+#MarketingListsManageSubscriptionsListView .wrapper,
+#MarketingListsExternalActionsPreviewView .Warning,
+#MarketingListsExternalActionsPreviewView .wrapper,
 #MarketingListsExternalActionsPageView .Warning,
 #MarketingListsExternalActionsPageView .wrapper,
 #MarketingListsManageSubscriptionsPageView .Warning,
@@ -8289,27 +8334,37 @@ a + .autoresponder-stats {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   float: none;
 }
+#MarketingListsManageSubscriptionsListView .Warning,
+#MarketingListsManageSubscriptionsListView .wrapper,
+#MarketingListsExternalActionsPreviewView .Warning,
+#MarketingListsExternalActionsPreviewView .wrapper,
 #MarketingListsExternalActionsPageView .Warning,
 #MarketingListsExternalActionsPageView .wrapper,
 #MarketingListsManageSubscriptionsPageView .Warning,
 #MarketingListsManageSubscriptionsPageView .wrapper {
   background: #fff;
-  -webkit-box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
-  -moz-box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
-  -ms-box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
-  -o-box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
-  box-shadow: 0 0 12px 5px rgba(153,153,153,0.3);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
+  -webkit-box-shadow: 0 0 5px 0px rgba(153,153,153,0.3);
+  -moz-box-shadow: 0 0 5px 0px rgba(153,153,153,0.3);
+  -ms-box-shadow: 0 0 5px 0px rgba(153,153,153,0.3);
+  -o-box-shadow: 0 0 5px 0px rgba(153,153,153,0.3);
+  box-shadow: 0 0 5px 0px rgba(153,153,153,0.3);
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
 }
+#MarketingListsManageSubscriptionsListView .Warning,
+#MarketingListsExternalActionsPreviewView .Warning,
 #MarketingListsExternalActionsPageView .Warning,
 #MarketingListsManageSubscriptionsPageView .Warning {
   *zoom: 1;
   padding: 15px 0 30px 0;
 }
+#MarketingListsManageSubscriptionsListView .Warning:before,
+#MarketingListsManageSubscriptionsListView .Warning:after,
+#MarketingListsExternalActionsPreviewView .Warning:before,
+#MarketingListsExternalActionsPreviewView .Warning:after,
 #MarketingListsExternalActionsPageView .Warning:before,
 #MarketingListsExternalActionsPageView .Warning:after,
 #MarketingListsManageSubscriptionsPageView .Warning:before,
@@ -8317,10 +8372,18 @@ a + .autoresponder-stats {
   content: " ";
   display: table;
 }
+#MarketingListsManageSubscriptionsListView .Warning:after,
+#MarketingListsExternalActionsPreviewView .Warning:after,
 #MarketingListsExternalActionsPageView .Warning:after,
 #MarketingListsManageSubscriptionsPageView .Warning:after {
   clear: both;
 }
+#MarketingListsManageSubscriptionsListView .Warning h2,
+#MarketingListsManageSubscriptionsListView .Warning div,
+#MarketingListsManageSubscriptionsListView .Warning p,
+#MarketingListsExternalActionsPreviewView .Warning h2,
+#MarketingListsExternalActionsPreviewView .Warning div,
+#MarketingListsExternalActionsPreviewView .Warning p,
 #MarketingListsExternalActionsPageView .Warning h2,
 #MarketingListsExternalActionsPageView .Warning div,
 #MarketingListsExternalActionsPageView .Warning p,
@@ -8332,25 +8395,33 @@ a + .autoresponder-stats {
   width: 100%;
   text-align: center;
 }
+#MarketingListsManageSubscriptionsListView .Warning h2,
+#MarketingListsExternalActionsPreviewView .Warning h2,
 #MarketingListsExternalActionsPageView .Warning h2,
 #MarketingListsManageSubscriptionsPageView .Warning h2 {
   padding: 0;
 }
+#MarketingListsManageSubscriptionsListView .Warning div,
+#MarketingListsExternalActionsPreviewView .Warning div,
 #MarketingListsExternalActionsPageView .Warning div,
 #MarketingListsManageSubscriptionsPageView .Warning div {
   margin: 15px 0 20px 0;
   border: 0;
 }
-#MarketingListsExternalActionsPageView #FooterView,
-#MarketingListsManageSubscriptionsPageView #FooterView {
-  margin: 20px 0;
-  padding-bottom: 20px;
+#MarketingListsManageSubscriptionsListView ~ #FooterView,
+#MarketingListsExternalActionsPreviewView ~ #FooterView,
+#MarketingListsExternalActionsPageView ~ #FooterView,
+#MarketingListsManageSubscriptionsPageView ~ #FooterView {
+  margin: 20px 0 20px 15%;
+  padding: 0 0 0 15px;
   clear: both;
 }
+#MarketingListsManageSubscriptionsListView h1,
+#MarketingListsExternalActionsPreviewView h1,
 #MarketingListsExternalActionsPageView h1,
 #MarketingListsManageSubscriptionsPageView h1 {
-  background: none;
   border: none;
+  background: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -ms-box-shadow: none;
@@ -8359,11 +8430,18 @@ a + .autoresponder-stats {
   padding: 0;
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  font-size: 25px;
+  margin-bottom: 30px;
+  text-indent: 0;
 }
+#MarketingListsManageSubscriptionsListView #marketingLists-manageSubscriptionsList table,
+#MarketingListsExternalActionsPreviewView #marketingLists-manageSubscriptionsList table,
 #MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table,
 #MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table {
   width: 100%;
 }
+#MarketingListsManageSubscriptionsListView #marketingLists-manageSubscriptionsList table th,
+#MarketingListsExternalActionsPreviewView #marketingLists-manageSubscriptionsList table th,
 #MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table th,
 #MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table th {
   font-weight: bold !important;
@@ -8372,13 +8450,25 @@ a + .autoresponder-stats {
   padding: 0 5px;
   white-space: nowrap;
 }
+#MarketingListsManageSubscriptionsListView #marketingLists-manageSubscriptionsList table td,
+#MarketingListsExternalActionsPreviewView #marketingLists-manageSubscriptionsList table td,
 #MarketingListsExternalActionsPageView #marketingLists-manageSubscriptionsList table td,
 #MarketingListsManageSubscriptionsPageView #marketingLists-manageSubscriptionsList table td {
   padding-bottom: 15px;
 }
+#MarketingListsManageSubscriptionsListView .switch,
+#MarketingListsExternalActionsPreviewView .switch,
 #MarketingListsExternalActionsPageView .switch,
 #MarketingListsManageSubscriptionsPageView .switch {
   margin-right: 15px;
+  float: none;
+}
+#MarketingListsManageSubscriptionsListView .simple-link,
+#MarketingListsExternalActionsPreviewView .simple-link,
+#MarketingListsExternalActionsPageView .simple-link,
+#MarketingListsManageSubscriptionsPageView .simple-link {
+  display: block;
+  margin-top: 15px;
 }
 #kanban-holder {
   background-color: #f0f0f0;
@@ -8663,11 +8753,17 @@ a + .autoresponder-stats {
   text-indent: -9999px;
   height: 3px;
   width: 0;
-  -webkit-transition: all 0.5s ease-out;
-  -moz-transition: all 0.5s ease-out;
-  -ms-transition: all 0.5s ease-out;
-  -o-transition: all 0.5s ease-out;
-  transition: all 0.5s ease-out;
+  -webkit-transition: all 0.5s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.5s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.5s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.5s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.5s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   background-color: #97c43d;
   background-repeat: repeat-x;
   background-image: -ms-linear-gradient(left,#6fa82d,#97c43d);
@@ -9626,7 +9722,7 @@ div.special-pager .hidden.next:after {
   padding-top: 78px;
 }
 #gd-overlay {
-  top: 78px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -9637,7 +9733,7 @@ div.special-pager .hidden.next:after {
 }
 #gd-container {
   z-index: 100;
-  top: 78px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -9938,11 +10034,17 @@ div.special-pager .hidden.next:after {
   cursor: default;
   color: #e2b321;
   background: url("../images/game-dashboard/coin.png") left top no-repeat;
-  -webkit-transition: all 1s ease-out;
-  -moz-transition: all 1s ease-out;
-  -ms-transition: all 1s ease-out;
-  -o-transition: all 1s ease-out;
-  transition: all 1s ease-out;
+  -webkit-transition: all 1s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 1s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 1s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 1s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 1s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   -webkit-transform: rotateY(0deg);
   -moz-transform: rotateY(0deg);
   -o-transform: rotateY(0deg);
@@ -11717,4 +11819,164 @@ body.fabric-plaid,
 body.cartographer-light,
 .texture-swatch.cartographer-light .background-texture-1 {
   background: url("../images/patterns/cartographer-light/cartographer-light.png") left top repeat !important;
+}
+@media screen and (max-width: 1000px) {
+  .view-toolbar > a,
+  .view-toolbar .parent > a {
+    padding-left: 10px;
+  }
+  .view-toolbar > a:before,
+  .view-toolbar .parent > a:before {
+    display: none;
+  }
+  #HeaderView .container {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+@media all and (max-width: 900px) {
+  #HeaderView {
+    min-width: 0 !important;
+  }
+  #corp-logo span {
+    display: none;
+  }
+  .juiportlet-column {
+    width: 100%;
+    float: none;
+  }
+  .juiportlet-widget {
+    min-width: auto;
+    margin-right: 0px;
+  }
+  .DetailsAndRelationsView > div {
+    float: none;
+    width: 100% !important;
+  }
+  .breadcrumbs {
+    padding-bottom: 10px;
+  }
+  .details-table {
+    margin-right: 0;
+  }
+  .juiportlet-widget {
+    margin-right: 0 !important;
+  }
+  .right-column,
+  .left-column {
+    width: 100%;
+  }
+  .right-side-edit-view-panel {
+    padding: 0 0 0 0;
+    background: none;
+  }
+  .module-intro-steps > div {
+    width: 100%;
+    float: none;
+    margin: 0 0 15px 0;
+  }
+  #AboutView #rightCol,
+  #AboutView #leftCol {
+    width: 100%;
+    float: none;
+    padding: 15px 15px 0 15px;
+  }
+  #AboutView #rightCol > div,
+  #AboutView #leftCol > div {
+    float: none;
+  }
+}
+@media all and (max-width: 801px) {
+  #LoginPageView {
+    padding-top: 0;
+  }
+  #LoginPageView > div {
+    padding: 10px;
+    display: -ms-flex;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-direction: column;
+    -ms-flex-wrap: wrap;
+    -moz-flex-flow: column wrap;
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+    -ms-flex-pack: start;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+  #LoginPageView #FooterView {
+    -ms-flex: 1 0 auto;
+    -moz-flex: 1 0 auto;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+    margin: 10px 10px 5px 10px;
+  }
+  #LoginPageView #credit-link {
+    margin-left: 0;
+  }
+  #LoginView {
+    min-width: 0 !important;
+    margin: 0;
+    background-position: left bottom;
+    height: auto;
+    -ms-flex: 1 0 auto;
+    -moz-flex: 1 0 auto;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
+  }
+  #login-box {
+    width: 100%;
+    height: auto;
+    float: none;
+    margin: 10px 0 0 0;
+    top: 0;
+    left: 0;
+  }
+  #login-box .form {
+    float: none;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  #login-box .form form {
+    border: none;
+    padding: 0 10px 10px 10px;
+  }
+  #login-box #LoginLogo {
+    float: none;
+    width: 100%;
+    height: 80px;
+    padding: 0;
+    background-position: 50% 50%;
+  }
+  #login-form {
+    padding: 0 20px !important;
+  }
+}
+@media all and (max-width: 500px) {
+  .logo-and-search {
+    left: 5px;
+  }
+  #app-search {
+    margin-left: 0;
+  }
+  #corp-log img {
+    margin-right: 4px;
+  }
+  .global-search-loopa {
+    border-right: 1px solid #d5d4d4;
+  }
+  #globalSearchInput {
+    display: none;
+  }
+  .user-actions {
+    padding-right: 0;
+  }
+  .AppContent {
+    padding: 65px 10px 0 10px;
+  }
 }
