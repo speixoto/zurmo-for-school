@@ -41,7 +41,7 @@
             $model = $this->model->getModel($this->attribute);
             if ($model !== null && $model->id > 0)
             {
-                $data[] = strval($model->owner);
+                $data[] = strval($model);
             }
             else
             {
