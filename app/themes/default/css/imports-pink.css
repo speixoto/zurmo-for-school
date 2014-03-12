@@ -11298,8 +11298,13 @@ a + .project-stats {
 }
 #ContentForEmailTemplateWizardView .email-template-content,
 #ContentForEmailTemplateWizardView .tab,
+#ContentForEmailTemplateWizardView .redactor_box,
+#ContentForEmailTemplateWizardView .redactor_box iframe,
 #ContentForEmailTemplateWizardView #BuilderEmailTemplateWizardForm_textContent {
   height: 100% !important;
+}
+#ContentForEmailTemplateWizardView .tab {
+  overflow: hidden;
 }
 .merge-view {
   width: 100% !important;
