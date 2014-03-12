@@ -204,6 +204,7 @@
 @media all and (max-width: 500px){
 	.logo-and-search{
 		left: 5px;
+		padding-right: 15px;
 	}
 	#app-search{
 		margin-left: 0;
@@ -225,4 +226,68 @@
     .AppContent{
 	    padding: 65px 10px 0 10px;
     }
+    .list-view-items-summary-clone,
+    .search-form-tools{
+	    display: none;
+    }
+    .view-toolbar-container{
+	    .pillbox:first-child{
+		    display: flex;
+		    width: 100%;
+		    background-size: auto 100%;
+		    .split-button,
+		    .default-button{
+			    flex: 1 auto;
+			    //float: none;
+			    //width: 100%;
+			    + .default-button,
+			    + .split-button{
+				    //border-left: none;
+				    //border-top: 1px solid #d7d7d7;
+			    }
+			    > a{
+				    float: none;
+				    width: 100%;
+				    text-align: center;
+				    line-height: 40px;
+			    }
+			    .button-label{
+				    padding:0;
+				    //display: none;
+				    width: 100%;
+				    position: absolute;
+				    top: 13px;
+				    left: 0;
+			    }
+			    i{
+				    //display: none;
+				    top:-10px
+			    }
+			    .icon-trigger:before{
+				    top: 28px;
+			    }
+		    }
+	    }
+    }
+	/*
+    .pillbox + .pillbox{
+	    float: none;
+	    z-index: 0;
+	    .split-button,
+	    .default-button{
+		    float: left;
+		    width: auto;
+		    + .default-button,
+		    + .split-button{
+			    border-left: 1px solid #bababa;
+			    border-top: none;
+		    }
+		    > a{
+			    float: left;
+			    width: 100%;
+			    text-align: left;
+		    }
+	    }
+    }
+    */
 }
