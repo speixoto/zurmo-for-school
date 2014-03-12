@@ -40,7 +40,9 @@
     {
         public $formatterName = 'compressed';
 
-        public $mainLessFileToCompile;
+        public $primaryLessFileToCompile;
+
+        public $secondaryLessFileToCompile;
 
         public $lessFilesToCompile;
 
@@ -73,8 +75,9 @@
          */
         protected function setCompiledCssPath()
         {
-            $themePath = Yii::app()->themeManager->getBasePath() . DIRECTORY_SEPARATOR . Yii::app()->theme->name;
-            $this->compiledCssPath = $themePath . DIRECTORY_SEPARATOR . 'css';
+            $themePath                = Yii::app()->themeManager->getBasePath() . DIRECTORY_SEPARATOR .
+                                        Yii::app()->theme->name;
+            $this->compiledCssPath    = $themePath . DIRECTORY_SEPARATOR . 'css';
             $this->compiledImagesPath = $themePath . DIRECTORY_SEPARATOR . 'images';
         }
 
@@ -217,22 +220,28 @@
         public function compile()
         {
             $imagesPath = "'../images/'";
-            if (isset($this->mainLessFileToCompile))
+            if (isset($this->primaryLessFileToCompile))
             {
                 foreach ($this->getThemeColors() as $colorName => $themeColors)
                 {
                     if (is_string($colorName) && count($themeColors) == 5 && $colorName != ThemeManager::CUSTOM_NAME)
                     {
-                        $lessCompiler = $this->initializeLessCompiler($this->formatterName,
-                            $themeColors[0], $themeColors[1], $themeColors[2], $themeColors[3], $themeColors[4],$imagesPath);
-                        $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $this->mainLessFileToCompile;
-                        $cssFileName  = str_replace('.less', '', $this->mainLessFileToCompile) . '-' . $colorName . '.css';
-                        $cssFilePath  = $this->getCompiledCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
-                        $lessCompiler->compileFile($lessFilePath, $cssFilePath);
+                        $this->resolveCompiledFile($this->primaryLessFileToCompile, $this->getCompiledCssPath(),
+                                                   $themeColors, $colorName, $imagesPath);
                     }
                 }
             }
-
+            if (isset($this->secondaryLessFileToCompile))
+            {
+                foreach ($this->getThemeColors() as $colorName => $themeColors)
+                {
+                    if (is_string($colorName) && count($themeColors) == 5 && $colorName != ThemeManager::CUSTOM_NAME)
+                    {
+                        $this->resolveCompiledFile($this->secondaryLessFileToCompile, $this->getCompiledCssPath(),
+                            $themeColors, $colorName, $imagesPath);
+                    }
+                }
+            }
             if (is_array($this->lessFilesToCompile) && !empty($this->lessFilesToCompile))
             {
                 foreach ($this->lessFilesToCompile as $lessFile)
@@ -254,21 +263,38 @@
         public function compileCustom()
         {
             $customThemeColorNameAndColors = Yii::app()->themeManager->getCustomThemeColorNameAndColors();
-            if (isset($this->mainLessFileToCompile) && !empty($customThemeColorNameAndColors))
+            if (isset($this->primaryLessFileToCompile) && !empty($customThemeColorNameAndColors))
             {
                 foreach ($customThemeColorNameAndColors as $colorName => $themeColors)
                 {
                     if (is_string($colorName) && count($themeColors) == 5)
                     {
-                        $lessCompiler = $this->initializeLessCompiler($this->formatterName,
-                            $themeColors[0], $themeColors[1], $themeColors[2], $themeColors[3], $themeColors[4], $this->getCustomCompiledImagesUrl());
-                        $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $this->mainLessFileToCompile;
-                        $cssFileName  = str_replace('.less', '', $this->mainLessFileToCompile) . '-' . $colorName . '.css';
-                        $cssFilePath  = $this->getCompiledCustomCssPath() . DIRECTORY_SEPARATOR . $cssFileName;
-                        $lessCompiler->compileFile($lessFilePath, $cssFilePath);
+                        $this->resolveCompiledFile($this->primaryLessFileToCompile, $this->getCompiledCustomCssPath(),
+                                                   $themeColors, $colorName, $this->getCustomCompiledImagesUrl());
                     }
                 }
             }
+            if (isset($this->secondaryLessFileToCompile) && !empty($customThemeColorNameAndColors))
+            {
+                foreach ($customThemeColorNameAndColors as $colorName => $themeColors)
+                {
+                    if (is_string($colorName) && count($themeColors) == 5)
+                    {
+                        $this->resolveCompiledFile($this->secondaryLessFileToCompile, $this->getCompiledCustomCssPath(),
+                                                   $themeColors, $colorName, $this->getCustomCompiledImagesUrl());
+                    }
+                }
+            }
+        }
+
+        protected function resolveCompiledFile($fileToCompile, $compiledCssPath, $themeColors, $colorName, $imagesPath)
+        {
+            $lessCompiler = $this->initializeLessCompiler($this->formatterName,
+                            $themeColors[0], $themeColors[1], $themeColors[2], $themeColors[3], $themeColors[4], $imagesPath);
+            $lessFilePath = $this->getLessFilesPath() . DIRECTORY_SEPARATOR . $fileToCompile;
+            $cssFileName  = str_replace('.less', '', $fileToCompile) . '-' . $colorName . '.css';
+            $cssFilePath  = $compiledCssPath . DIRECTORY_SEPARATOR . $cssFileName;
+            $lessCompiler->compileFile($lessFilePath, $cssFilePath);
         }
     }
 ?>

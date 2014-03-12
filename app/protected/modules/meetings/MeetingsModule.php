@@ -153,5 +153,10 @@
         {
             return Zurmo::t('MeetingsModule', 'Meetings', array(), null, $language);
         }
+
+        public static function canShowOnCalendar()
+        {
+            return true;
+        }
     }
 ?>

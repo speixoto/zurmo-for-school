@@ -63,7 +63,7 @@
 
         public function getSavableMetadataRules()
         {
-            return array();
+            return array('AddBlankForDropDown');
         }
 
         public function getNonPlaceableLayoutAttributeNames()

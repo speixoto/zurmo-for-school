@@ -46,8 +46,13 @@
                                                             'modelUrl'  => 'resolveModelUrlByModel',
                                                             );
 
-        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language = 'en', $errorOnFirstMissing = false)
+        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language, $errorOnFirstMissing = false)
         {
+            assert('$language == null || is_string($language)');
+            if ($language == null)
+            {
+                $language = Yii::app()->language;
+            }
             $resolvedMergeTags = array();
             foreach ($mergeTags as $mergeTag)
             {
@@ -124,7 +129,6 @@
                                     if (ucfirst($attributeName) == get_class($castedDownModel))
                                     {
                                         $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
-                                        $attributeAccessorString;
                                         return static::resolveMergeTagToStandardOrRelatedAttribute(
                                             $attributeAccessorString,
                                             $castedDownModel,

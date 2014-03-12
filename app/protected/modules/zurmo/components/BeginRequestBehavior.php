@@ -539,6 +539,7 @@
 
         public function handleDisableGamification($event)
         {
+            Yii::app()->gameHelper->enabled = false;
             Yii::app()->gamificationObserver->enabled = false;
         }
 

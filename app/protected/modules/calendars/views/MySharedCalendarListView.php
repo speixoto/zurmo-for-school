@@ -33,14 +33,35 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    /**
-     * Class to make default data that needs to be created upon an installation.
-     */
-    class ProjectsDefaultDataMaker extends DefaultDataMaker
+     /**
+      * List view for subscribed calendars in the left column.
+      */
+    class MySharedCalendarListView extends CalendarListView
     {
-        public function make()
+        /**
+         * Renders title.
+         * @return string
+         */
+        protected function renderTitleContent()
         {
+            $title   = ZurmoHtml::tag('h3', array(), Zurmo::t('CalendarsModule', 'My Shared Calendars'));
+            $link    = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), 'Y'), '#',
+                       array('class' => 'white-button selectsharedcal'));
+            $content = ZurmoHtml::tag('div', array('class' => 'cal-list-header clearfix'), $title . $link);
+            $script  = CalendarUtil::registerSharedCalendarModalScript(Yii::app()->createUrl('calendars/default/modalList'),
+                       '.selectsharedcal');
+            Yii::app()->clientScript->registerScript('selectsharedcalscript', $script, ClientScript::POS_END);
+            return $content;
+        }
+
+        /**
+         * Wraps content in a container.
+         * @param string $content
+         * @return string
+         */
+        protected function wrapContent($content)
+        {
+            return ZurmoHtml::tag('div', array('id' => 'shared-calendars-list'), $content);
         }
     }
 ?>

@@ -33,17 +33,18 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    class AccountsOrgGraphModalView extends View
+     /**
+      * Dropdown to fetch date and datetime fields for the module selected in the saved calendar form.
+      */
+    class CalendarDateAttributeStaticDropDownElement extends StaticDropDownFormElement
     {
-        public function renderContent()
+        /**
+         * Gets dropdown array for date and datetime fields.
+         * @return array
+         */
+        protected function getDropDownArray()
         {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("OrgChart");
-            $cClipWidget->widget('application.core.widgets.OrgChart');
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['OrgChart'];
-        
+            return CalendarUtil::getModelAttributesForSelectedModule($this->model->moduleClassName);
         }
     }
 ?>

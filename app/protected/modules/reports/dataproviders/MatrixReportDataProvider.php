@@ -682,6 +682,10 @@
             $headingColumns = array();
             $this->resolveHeadingColumns($headerDataRows, $headingColumns);
             $totalRowsData                  = parent::getGrandTotalsRowsData();
+            if (empty($totalRowsData))
+            {
+                $totalRowsData = array(array());
+            }
             $adjustedTotalsRowsData         = array();
             $keys                           = array_reverse(array_keys($totalRowsData[0]));
             $keysColumnArray                = array();

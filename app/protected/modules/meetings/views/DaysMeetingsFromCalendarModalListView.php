@@ -270,7 +270,7 @@
                 Yii::app()->user->userModel))
             {
                 $spanContent = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('MeetingsModule', 'Create Meeting'));
-                $linkContent = ZurmoHtml::link($spanContent, $this->getCreateMeetingUrl(), array());
+                $linkContent = ZurmoHtml::link($spanContent, $this->getCreateMeetingUrl(), array('class' => 'secondary-button'));
                 $divContent = ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $linkContent);
                 $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $divContent);
             }

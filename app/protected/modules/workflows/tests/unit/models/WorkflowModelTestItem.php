@@ -105,6 +105,7 @@
                     'string',
                     'textArea',
                     'url',
+                    'status'
             ),
                 'relations' => array(
                     'currencyValue'       => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED),
@@ -171,6 +172,7 @@
                     array('string',    'length',  'min'  => 1, 'max' => 64),
                     array('textArea',  'type',    'type' => 'string'),
                     array('url',       'url'),
+                    array('status',    'type',    'type' => 'integer')
                 ),
                 'elements' => array(
                     'currencyValue'       => 'CurrencyValue',
@@ -197,6 +199,7 @@
                     'tagCloud'            => 'TagCloud',
                     'user'                => 'User',
                     'user2'               => 'User',
+                    'status'              => 'StatusDropDown'
                 ),
                 'customFields' => array(
                     'dropDown'        => 'WorkflowTestDropDown',

@@ -35,9 +35,10 @@
      ********************************************************************************/
 
     /**
-     * Class to help evaluate StatusField triggers against model values.
+     * Class to help evaluate ConstantBasedStatic triggers against model values.
+     * For example the status attribute on @see Task or @see Project
      */
-    class StatusDropDownTriggerRules extends DropDownTriggerRules
+    class ConstantBasedStaticDropDownTriggerRules extends DropDownTriggerRules
     {
         /**
          * @param RedBeanModel $model
@@ -51,13 +52,13 @@
             switch($this->trigger->getOperator())
             {
                 case OperatorRules::TYPE_EQUALS:
-                    if (static::sanitize($model->{$attribute}) === static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->{$attribute}) == static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if (static::sanitize($model->{$attribute}) !== static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->{$attribute}) != static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
@@ -86,14 +87,14 @@
                     break;
                 case OperatorRules::TYPE_BECOMES:
                     if (array_key_exists($attribute, $model->originalAttributeValues) &&
-                        static::sanitize($model->{$attribute}) === static::sanitize($this->trigger->value))
+                        static::sanitize($model->{$attribute}) == static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
                     if (array_key_exists($attribute, $model->originalAttributeValues) &&
-                        static::sanitize($model->originalAttributeValues[$attribute]) ===
+                        static::sanitize($model->originalAttributeValues[$attribute]) ==
                         static::sanitize($this->trigger->value))
                     {
                         return true;

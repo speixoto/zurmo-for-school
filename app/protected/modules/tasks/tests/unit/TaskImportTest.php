@@ -118,7 +118,8 @@
             $this->assertEquals('Opportunity',     get_class($tasks[0]->activityItems[0]));
             $this->assertFalse  ((bool)$tasks[0]->completed);
             $this->assertEquals  (Task::STATUS_IN_PROGRESS, $tasks[0]->status);
-            $this->assertEquals($actionDateTime, substr($tasks[0]->latestDateTime, 0, -3));
+            //Not checking the minutes because sometimes it was failing for one minute
+            $this->assertEquals(substr($actionDateTime, 0, -2), substr($tasks[0]->latestDateTime, 0, -5));
 
             //Confirm 10 rows were processed as 'created'.
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "

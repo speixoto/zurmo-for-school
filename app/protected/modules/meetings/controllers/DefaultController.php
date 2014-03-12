@@ -36,6 +36,11 @@
 
     class MeetingsDefaultController extends ActivityModelsDefaultController
     {
+        protected static function getZurmoControllerUtil()
+        {
+            return new MeetingHasRelatedItemsZurmoControllerUtil('activityItems', 'ActivityItemForm');
+        }
+
         public function actionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl)
         {
             if (isset($_GET['ownerOnly']))
@@ -104,6 +109,13 @@
                 $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
             }
             $this->actionCreateByModel($meeting, $redirectUrl);
+        }
+
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $meeting = Meeting::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($meeting);
+            $this->processEdit($meeting, $redirectUrl);
         }
 
         public function actionCreateFromRelationAndStartDate($relationAttributeName, $relationModelId,

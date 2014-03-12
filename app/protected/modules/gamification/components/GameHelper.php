@@ -235,8 +235,9 @@
                     {
                         $gamePoint      = GamePoint::
                                             resolveToGetByTypeAndPerson($type, User::getById($userId));
-                        $gamePoint->addValue($value);
+                        $gamePoint->addValue($value, false);
                         $saved          = $gamePoint->save();
+                        GamePointTransaction::addTransactionResolvedForOptimization($gamePoint, $value);
                         if (!$saved)
                         {
                             throw new NotSupportedException();

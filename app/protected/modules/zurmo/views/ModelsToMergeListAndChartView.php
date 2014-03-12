@@ -63,10 +63,8 @@
         protected function renderContent()
         {
             $leftContent = $this->renderSelectedContactsListWithCardView();
-            $leftContainer = ZurmoHtml::tag('div', array('class' => 'left-column clearfix'), $leftContent);
             $rightContent = $this->renderRightSideContent();
-            $rightContainer = ZurmoHtml::tag('div', array('class' => 'right-column'), $rightContent);
-            return ZurmoHtml::tag('div', array('class' => 'chosen-entries clearfix'), $leftContainer . $rightContainer);
+            return ZurmoHtml::tag('div', array('class' => 'chosen-entries'), $leftContent . $rightContent);
         }
 
         protected function renderSelectedContactsListWithCardView()
@@ -173,7 +171,7 @@
         protected function registerScripts()
         {
             $script = "$('body').on('click', 'li.selectedDupe',
-                        function()
+                        function(event)
                         {
                             var id = $(this).attr('id');
                             var idArray = id.split('-');
@@ -181,6 +179,7 @@
                             $('li.selectedDupe').removeClass('selected');
                             $(this).addClass('selected');
                             $('#dupeDetailsView-' + idArray[1]).show();
+                            event.preventDefault();
                         });
                         $('body').on('change', '.dupeContactsPrimaryModel',
                             {$this->onChangeScript()}
@@ -297,7 +296,7 @@
         protected function resolveRealModuleClassNameLabelByModel(RedBeanModel $model)
         {
             $moduleClassName   = $model::getModuleClassName();
-            $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName();
+            $stateMetadataAdapterClassName = $moduleClassName:: getStateMetadataAdapterClassName();
             if ($stateMetadataAdapterClassName != null)
             {
                 $moduleClassName = $stateMetadataAdapterClassName::getModuleClassNameByModel($model);
