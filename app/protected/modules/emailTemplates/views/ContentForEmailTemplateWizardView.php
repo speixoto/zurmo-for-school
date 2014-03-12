@@ -96,16 +96,6 @@
             return $view->render();
         }
 
-        public static function resolveAdditionalAjaxOptions($formName)
-        {
-            $array = array();
-            $array['complete'] = 'js:function(){
-                                    var templateTextContent = $("#ContentForEmailTemplateWizardView .email-template-combined-content");
-                                    templateTextContent.height(templateTextContent.parent().outerHeight());
-                                 }';
-            return CMap::mergeArray(static::resolveErrorAjaxCallback(), $array);
-        }
-
         protected function wrapContentInLeftColumn($content)
         {
             return ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix strong-right'), $content);
