@@ -34,43 +34,56 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Defines the import rules for importing into the leads module.
-     */
-    class LeadsImportRules extends ImportRules
+    class AccountOrgChartLinkActionElement extends ModalListLinkActionElement
     {
-        public static function getModelClassName()
+        public function render()
         {
-            return 'Contact';
+            $content  = ZurmoHtml::openTag('div', array('class' => 'default-button'));
+            $label    = ZurmoHtml::tag('i', array('class' => $this->params['iconClass']), null);
+            $label   .= ZurmoHtml::tag('span', array('class' => 'button-label'), $this->getLabel());
+            $content .= $ajaxLink = ZurmoHtml::ajaxLink($label, $this->getDefaultRoute(),
+                                                        $this->getAjaxLinkOptions(),
+                                                        $this->getHtmlOptions()
+                                                        );
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
         }
 
-        /**
-         * Get the display label used to describe the import rules.
-         * @return string
-         */
-        public static function getDisplayLabel()
+        protected function getDefaultLabel()
         {
-            return LeadsModule::getModuleLabelByTypeAndLanguage('Plural');
+            return Zurmo::t('ZurmoModule', 'Org Chart');
         }
 
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        protected function getAjaxLinkTitle()
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('LeadState', 'FullName'));
+            return $this->getLabel();
         }
 
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        
+        protected function getRouteAction()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'account',
-                'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
-                'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
+            return '/orgGraph/';
         }
+        /*
+        public function getElementValue()
+        {
+            $eventHandlerName = 'auditEventsModalListLinkActionElementHandler';
+            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
+            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($eventHandlerName, "
+                    function ". $eventHandlerName ."()
+                    {
+                        " . ZurmoHtml::ajax($ajaxOptions)."
+                    }
+                ", CClientScript::POS_HEAD);
+            }
+            return $eventHandlerName;
+        }
+        */
     }
 ?>

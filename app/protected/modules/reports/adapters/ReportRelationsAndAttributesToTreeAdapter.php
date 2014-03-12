@@ -165,7 +165,7 @@
         {
             if ($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
-                return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForFilters();
             }
             elseif ($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {

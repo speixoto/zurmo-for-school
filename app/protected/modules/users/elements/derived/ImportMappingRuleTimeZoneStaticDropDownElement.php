@@ -35,42 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the leads module.
+     * Display a drop down of time zone specifically for mapping rules during the import process.
      */
-    class LeadsImportRules extends ImportRules
+    class ImportMappingRuleTimeZoneStaticDropDownElement extends ImportMappingRuleStaticDropDownFormElement
     {
-        public static function getModelClassName()
+        public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            return 'Contact';
+            assert('$model instanceof DefaultValueModelAttributeMappingRuleForm');
+            parent::__construct($model, $attribute, $form, $params);
         }
 
-        /**
-         * Get the display label used to describe the import rules.
-         * @return string
-         */
-        public static function getDisplayLabel()
+        protected function getAddBlank()
         {
-            return LeadsModule::getModuleLabelByTypeAndLanguage('Plural');
+            return true;
         }
 
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        protected function getDropDownArray()
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('LeadState', 'FullName'));
-        }
-
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
-        {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'account',
-                'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
-                'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
+            $timezoneIdentifiers = DateTimeZone::listIdentifiers();
+            return array_combine($timezoneIdentifiers, $timezoneIdentifiers);
         }
     }
 ?>

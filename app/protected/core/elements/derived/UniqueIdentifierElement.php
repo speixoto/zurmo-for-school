@@ -35,42 +35,42 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the leads module.
+     * Display the unique identifier for the model
      */
-    class LeadsImportRules extends ImportRules
+    class UniqueIdentifierElement extends Element implements DerivedElementInterface
     {
-        public static function getModelClassName()
+        protected function renderEditable()
         {
-            return 'Contact';
+            throw new NotSupportedException();
+        }
+
+        protected function renderControlEditable()
+        {
+            throw new NotSupportedException();
         }
 
         /**
-         * Get the display label used to describe the import rules.
-         * @return string
+         * Render the id as a non-editable display
+         * @return The element's content.
          */
-        public static function getDisplayLabel()
+        protected function renderControlNonEditable()
         {
-            return LeadsModule::getModuleLabelByTypeAndLanguage('Plural');
+            return $this->model->id;
         }
 
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        protected function renderLabel()
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('LeadState', 'FullName'));
+            return Zurmo::t('Core', 'Unique ID');
         }
 
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        public static function getDisplayName()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'account',
-                'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
-                'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
+            return Zurmo::t('Core', 'Unique ID');
         }
-    }
+
+        public static function getModelAttributeNames()
+        {
+            return array();
+        }
+}
 ?>

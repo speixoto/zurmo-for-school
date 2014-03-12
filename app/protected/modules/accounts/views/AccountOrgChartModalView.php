@@ -34,43 +34,16 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Defines the import rules for importing into the leads module.
-     */
-    class LeadsImportRules extends ImportRules
+    class AccountOrgChartModalView extends View
     {
-        public static function getModelClassName()
+        public function renderContent()
         {
-            return 'Contact';
-        }
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("OrgChart");
+            $cClipWidget->widget('application.core.widgets.OrgChart');
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['OrgChart'];
 
-        /**
-         * Get the display label used to describe the import rules.
-         * @return string
-         */
-        public static function getDisplayLabel()
-        {
-            return LeadsModule::getModuleLabelByTypeAndLanguage('Plural');
-        }
-
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
-        {
-            return array_merge(parent::getDerivedAttributeTypes(), array('LeadState', 'FullName'));
-        }
-
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
-        {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'account',
-                'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
-                'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
         }
     }
 ?>

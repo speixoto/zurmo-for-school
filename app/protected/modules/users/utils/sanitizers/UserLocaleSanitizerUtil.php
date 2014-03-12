@@ -35,42 +35,58 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the leads module.
+     * Sanitizer for handling user locale.
      */
-    class LeadsImportRules extends ImportRules
+    class UserLocaleSanitizerUtil extends SanitizerUtil
     {
-        public static function getModelClassName()
+        /**
+         * @param RedBean_OODBBean $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            return 'Contact';
+            if ($rowBean->{$this->columnName} != null)
+            {
+                $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+                if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
+                {
+                    $label = Zurmo::t('ImportModule',
+                                      '{attributeLabel} specified is invalid.',
+                                      array('{attributeLabel}' => User::getAnAttributeLabel('locale')));
+                    $this->shouldSkipRow      = false;
+                    $this->analysisMessages[] = $label;
+                }
+            }
         }
 
-        /**
-         * Get the display label used to describe the import rules.
-         * @return string
-         */
-        public static function getDisplayLabel()
+        public static function getLinkedMappingRuleType()
         {
-            return LeadsModule::getModuleLabelByTypeAndLanguage('Plural');
+            return 'DefaultValueModelAttribute';
         }
 
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
-         * @return array
-         */
-        public static function getDerivedAttributeTypes()
+        public function sanitizeValue($value)
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('LeadState', 'FullName'));
+            $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
+            if ($value != null)
+            {
+                if (!in_array(strtolower($value), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                return $value;
+            }
+            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
+            {
+                if (!in_array(strtolower($this->mappingRuleData['defaultValue']), $resolvedAcceptableValues))
+                {
+                    return null;
+                }
+                return $this->mappingRuleData['defaultValue'];
+            }
         }
 
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        protected static function getAcceptableValues()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'account',
-                'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
-                'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
+            return ZurmoLocale::getSelectableLocaleIds();
         }
     }
 ?>

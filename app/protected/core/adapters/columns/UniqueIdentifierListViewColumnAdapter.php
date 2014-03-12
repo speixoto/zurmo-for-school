@@ -34,43 +34,30 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Defines the import rules for importing into the leads module.
-     */
-    class LeadsImportRules extends ImportRules
+    class UniqueIdentifierListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function getModelClassName()
-        {
-            return 'Contact';
-        }
-
         /**
-         * Get the display label used to describe the import rules.
-         * @return string
-         */
-        public static function getDisplayLabel()
-        {
-            return LeadsModule::getModuleLabelByTypeAndLanguage('Plural');
-        }
-
-        /**
-         * Get the array of available derived attribute types that can be mapped when using these import rules.
+         * Renders grid view data for unique identifier.
+         *
          * @return array
          */
-        public static function getDerivedAttributeTypes()
+        public function renderGridViewData()
         {
-            return array_merge(parent::getDerivedAttributeTypes(), array('LeadState', 'FullName'));
-        }
-
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
-        {
-            return array_merge(parent::getNonImportableAttributeNames(), array('state', 'account',
-                'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
-                'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
+            if ($this->getIsLink())
+            {
+                return array(
+                'name'   => 'id',
+                'header' => Zurmo::t('Core', 'Unique ID'),
+                'type'   => 'raw',
+                'value'  => $this->view->getLinkString('$data->' . $this->attribute, $this->attribute),
+                );
+            }
+            else
+            {
+                return array(
+                    'name' => $this->attribute
+                );
+            }
         }
     }
 ?>
