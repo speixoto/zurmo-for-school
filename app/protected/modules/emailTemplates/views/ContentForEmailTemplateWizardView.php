@@ -79,7 +79,7 @@
         {
             $params   = array('redactorPlugins' => CJSON::encode(array('mergetags')));
             $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
-            $element->editableTemplate  = '{label}{content}';
+            $element->editableTemplate  = '{label}{content}{error}';
             $right    = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
             //todo: placed last so redactor is already initialized first. just a trick for the css right now
             $title    = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
