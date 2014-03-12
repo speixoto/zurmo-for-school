@@ -47,7 +47,7 @@
             {
                 return array(
                 'name'   => 'id',
-                'header' => Zurmo::t('Core', 'Unique ID'),
+                'header' => Zurmo::t('Core', 'ID'),
                 'type'   => 'raw',
                 'value'  => $this->view->getLinkString('$data->' . $this->attribute, $this->attribute),
                 );
