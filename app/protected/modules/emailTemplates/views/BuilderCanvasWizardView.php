@@ -420,8 +420,6 @@
             $ajaxArray['complete']          = "js:function()
                                             {
                                                 emailTemplateEditor.unfreezeLayoutEditor();
-                                                var templateTextContent = $('#ContentForEmailTemplateWizardView .email-template-combined-content');
-                                                templateTextContent.height(templateTextContent.parent().outerHeight() - 100);
                                             }";
             return $ajaxArray;
         }

@@ -285,11 +285,6 @@
                                                 }
                                                 $('" . static::resolveModuleClassNameHiddenInputJQuerySelector() . "').val(data.moduleClassName);
                                             }";
-            $ajaxArray['complete']          = "js:function()
-                                            {
-                                                var templateTextContent = $('#ContentForEmailTemplateWizardView .email-template-combined-content');
-                                                templateTextContent.height(templateTextContent.parent().outerHeight() - 100);
-                                            }";
             return $ajaxArray;
         }
     }

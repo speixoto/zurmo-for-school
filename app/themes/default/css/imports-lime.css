@@ -7570,6 +7570,10 @@ body .overlay-view .after-form-details-content a:hover {
   top: 1px;
   color: #2B434F;
 }
+.tabs-nav .simple-link {
+  position: relative;
+  bottom: -9px;
+}
 .mergetag-guide-modal {
   padding: 15px;
   line-height: 140%;
@@ -11305,6 +11309,28 @@ a + .project-stats {
 }
 #ContentForEmailTemplateWizardView .tab {
   overflow: hidden;
+}
+#ContentForEmailTemplateWizardView .email-template-content {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+#ContentForEmailTemplateWizardView .email-template-content + .errorMessage {
+  margin-top: 32px;
+}
+#ContentForEmailTemplateWizardView .email-template-combined-content {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  min-height: 600px;
+}
+.email-template-textContent {
+  line-height: 1.4 !important;
+  font-size: 16px !important;
+  padding: 10px 15px !important;
+}
+.email-template-textContent textarea {
+  line-height: 1.4 !important;
+  font-size: 16px !important;
+  min-height: 600px;
 }
 .merge-view {
   width: 100% !important;
