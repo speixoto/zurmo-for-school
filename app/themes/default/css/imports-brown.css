@@ -11296,6 +11296,11 @@ a + .project-stats {
 .redactor_toolbar li a.re-mergeTags:hover {
   background-image: url("../images/email-builder/merge-tags-hover.png");
 }
+#ContentForEmailTemplateWizardView .email-template-content,
+#ContentForEmailTemplateWizardView .tab,
+#ContentForEmailTemplateWizardView #BuilderEmailTemplateWizardForm_textContent {
+  height: 100% !important;
+}
 .merge-view {
   width: 100% !important;
   margin: 0 auto !important;

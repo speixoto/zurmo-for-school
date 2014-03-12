@@ -31,14 +31,6 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
-
-.AppNavigation{
-	//display: none;
-}
-.AppContent{
-	//margin-left: 0;
-}
-
 #builder{
 	.view-toolbar-container{
 		border-top:none;
@@ -328,5 +320,13 @@
 	width: 80px !important;
 	&:hover {
 		background-image: url("@{path}email-builder/merge-tags-hover.png");
+	}
+}
+
+#ContentForEmailTemplateWizardView{
+	.email-template-content,
+	.tab,
+	#BuilderEmailTemplateWizardForm_textContent{
+		height: 100% !important;
 	}
 }
