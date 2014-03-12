@@ -70,7 +70,6 @@
          */
         protected function renderFormContent()
         {
-            $this->registerTextareaHeightScripts();
             $content = null;
             $this->renderPlainTextAndHtmlContent($content);
             return $content;
@@ -97,22 +96,19 @@
             return $view->render();
         }
 
-        //todo: Amit says: I need this to fire _after_ the wizard goes into step 4.
-        protected function registerTextareaHeightScripts()
+        public static function resolveAdditionalAjaxOptions($formName)
         {
-            $scriptName = 'textarea-height';
-            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
-            {
-                return;
-            }
-            else
-            {
-                Yii::app()->clientScript->registerScript($scriptName, "
-                    var templateTextContent = $('#ContentForEmailTemplateWizardView .email-template-combined-content');
-                    templateTextContent.height(templateTextContent.parent().outerHeight());
-                    console.log(templateTextContent.height());
-                    ");
-            }
+            $array = array();
+            $array['complete'] = 'js:function(){
+                                    var templateTextContent = $("#ContentForEmailTemplateWizardView .email-template-combined-content");
+                                    templateTextContent.height(templateTextContent.parent().outerHeight());
+                                 }';
+            return CMap::mergeArray(static::resolveErrorAjaxCallback(), $array);
+        }
+
+        protected function wrapContentInLeftColumn($content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix strong-right'), $content);
         }
     }
 ?>
