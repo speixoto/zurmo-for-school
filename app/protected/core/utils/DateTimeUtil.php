@@ -370,6 +370,39 @@
             return               static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
         }
 
+        /**
+         * Given a db formatted date string, return the db formatted dateTime stamp representing the first minute of
+         *  the provided date.  This will be adjusted for the current user's timezone.
+         *  Example: date provided is 1980-06-03, the first minute is '1980-06-03 00:00:00'.  If the user is in Chicago
+         *  then the time needs to be adjusted 5 or 6 hours forward depending on daylight savings time
+         * @param string $dateValue - db formatted
+         */
+        public static function convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay2($dateValue)
+        {
+            assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
+            $greaterThanValue = $dateValue . ' 00:00:00';
+            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
+            $adjustedDate = new DateTime($greaterThanValue, $userTimeZone);
+            return $adjustedDate->setTimezone(new DateTimeZone('GMT'));
+        }
+
+        /**
+         *
+         * Given a db formatted date string, return the db formatted dateTime stamp representing the last minute of
+         *  the provided date.  This will be adjusted for the current user's timezone.
+         *  Example: date provided is 1980-06-03, the first minute is '1980-06-03 23:59:59'.  If the user is in Chicago
+         *  then the time needs to be adjusted 5 or 6 hours forward depending on daylight savings time
+         * @param string $dateValue - db formatted
+         */
+        public static function convertDateIntoTimeZoneAdjustedDateTimeEndOfDay2($dateValue)
+        {
+            assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
+            $lessThanValue     = $dateValue . ' 23:59:59';
+            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
+            $adjustedDate = new DateTime($lessThanValue, $userTimeZone);
+            return $adjustedDate->setTimezone(new DateTimeZone('GMT'));
+        }
+
         public static function getFirstDayOfAMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
