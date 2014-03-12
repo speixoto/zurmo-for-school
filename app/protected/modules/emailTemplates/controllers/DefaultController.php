@@ -213,7 +213,11 @@
             // throwing errors for content being empty. Plus we already validate it using the wizard form.
             if ($emailTemplate->save(false))
             {
-                echo CJSON::encode(array('id' => $emailTemplate->id, 'redirectToList' => false));
+                $modelClassName  = $emailTemplate->modelClassName;
+                $moduleClassName = $modelClassName::getModuleClassName();
+                echo CJSON::encode(array('id'              => $emailTemplate->id,
+                                         'redirectToList'  => false,
+                                         'moduleClassName' => $moduleClassName));
                 Yii::app()->end(0, false);
             }
             else

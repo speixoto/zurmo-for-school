@@ -54,6 +54,11 @@
 
         protected function renderGeneralDataNextPageLinkScript($formName)
         {
+            $view = new MergeTagsView('EmailTemplate',
+                                get_class($this->model) . '_textContent',
+                                get_class($this->model) . '_htmlContent', false); //todo: get these last 2 values dynamically
+            $view->moduleClassNameSelector = GeneralDataForEmailTemplateWizardView::
+                resolveModuleClassNameHiddenInputJQuerySelector();
             return "
                     if (linkId == '" . GeneralDataForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
@@ -61,6 +66,7 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" .
                                         BuilderEmailTemplateWizardForm::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO. "');
                         $('#GeneralDataForEmailTemplateWizardView').hide();
+                        " . $view->renderTreeViewAjaxScriptContent() . "
                         $('#ContentForEmailTemplateWizardView').show();
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
