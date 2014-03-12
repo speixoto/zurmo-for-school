@@ -383,7 +383,9 @@
             $greaterThanValue = $dateValue . ' 00:00:00';
             $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
             $adjustedDate = new DateTime($greaterThanValue, $userTimeZone);
-            return $adjustedDate->setTimezone(new DateTimeZone('GMT'));
+            $adjustedDate->setTimezone(new DateTimeZone('GMT'));
+            $adjustedTimeStamp = $adjustedDate->getTimestamp();
+            return static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
         }
 
         /**
@@ -400,7 +402,9 @@
             $lessThanValue     = $dateValue . ' 23:59:59';
             $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
             $adjustedDate = new DateTime($lessThanValue, $userTimeZone);
-            return $adjustedDate->setTimezone(new DateTimeZone('GMT'));
+            $adjustedDate->setTimezone(new DateTimeZone('GMT'));
+            $adjustedTimeStamp = $adjustedDate->getTimestamp();
+            return static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
         }
 
         public static function getFirstDayOfAMonthDate($stringTime = null)
