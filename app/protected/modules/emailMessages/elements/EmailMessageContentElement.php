@@ -65,10 +65,14 @@
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
-                                        'htmlOptions'  => $htmlOptions,
-                                        'content'      => $emailMessageContent->$attribute,
-                                        'imageUpload'  => Yii::app()->createUrl('zurmo/imageModel/upload'),
-                                        'imageGetJson' => Yii::app()->createUrl('zurmo/imageModel/getUploaded')
+                                        'htmlOptions'   => $htmlOptions,
+                                        'content'       => $emailMessageContent->$attribute,
+                                        'paragraphy'    => "false",
+                                        'fullpage'      => "true",
+                                        'observeImages' => 'true',
+                                        'deniedTags'    => CJSON::encode($this->resolveDeniedTags()),
+                                        'imageUpload'   => ImageFileModelUtil::getUrlForActionUpload(),
+                                        'imageGetJson'  => ImageFileModelUtil::getUrlForActionGetUploaded()
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];
@@ -90,6 +94,11 @@
                                             array('for' => $this->getEditableInputId($this->attribute, 'htmlContent'),
                                                   'label' => $label));
             }
+        }
+
+        protected function resolveDeniedTags()
+        {
+            return array();
         }
     }
 ?>

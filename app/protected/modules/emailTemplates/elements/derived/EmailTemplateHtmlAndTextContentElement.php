@@ -233,6 +233,7 @@
                                 'htmlOptions'           => $htmlOptions,
                                 'content'               => $htmlContent,
                                 'paragraphy'            => "false",
+                                'fullpage'              => "true",
                                 'deniedTags'            => CJSON::encode($this->resolveDeniedTags()),
                                 'plugins'               => CJSON::encode($this->resolvePlugins()),
                                 'observeImages'         => 'true',
