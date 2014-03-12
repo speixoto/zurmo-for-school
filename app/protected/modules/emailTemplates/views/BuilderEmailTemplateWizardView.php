@@ -75,11 +75,6 @@
 
         protected function renderPreGeneralDataNextPageLinkScript($formName)
         {
-            $view = new MergeTagsView('EmailTemplate',
-                            get_class($this->model) . '_textContent',
-                            get_class($this->model) . '_htmlContent', false); //todo: get these last 2 values dynamically
-            $view->moduleClassNameSelector = GeneralDataForEmailTemplateWizardView::
-                                                resolveModuleClassNameHiddenInputJQuerySelector();
             return "
                     if (linkId == '" . SelectBaseTemplateForEmailTemplateWizardView::getNextPageLinkId() . "')
                     {
@@ -89,7 +84,7 @@
                         $('#SelectBaseTemplateForEmailTemplateWizardView').hide();
                         $('#BuilderCanvasWizardView').show();
                         initEmailTemplateEditor();
-                        " . $view->renderTreeViewAjaxScriptContent() . "
+                        " . $this->renderTreeViewAjaxScriptContentForMergeTagsView() . "
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('75%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                     }
