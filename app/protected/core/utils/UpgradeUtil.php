@@ -176,6 +176,15 @@
         }
 
         /**
+        * Return path to upgrade folder
+        * @return string
+        */
+        public static function getUpgradeFolderPath()
+        {
+            return Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
+        }
+
+        /**
          * Check if all files are directories are writeable by user.
          * @throws FileNotWriteableException
          * @return boolean
@@ -230,7 +239,7 @@
         protected static function checkForUpgradeZip()
         {
             $numberOfZipFiles = 0;
-            $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
+            $upgradePath = self::getUpgradeFolderPath();
             if (!is_dir($upgradePath))
             {
                 $message = Zurmo::t('Core', 'Please upload upgrade zip file to runtime/upgrade folder.');
