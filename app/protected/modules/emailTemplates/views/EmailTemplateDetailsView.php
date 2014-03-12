@@ -136,9 +136,12 @@
                                                $('.email-template-textContent').closest('.tabs-nav').height() - 100;
                         $('.email-template-textContent').height(remainingHeight);
 
-                        $('.redactor-iframe').load(function(){
-                            var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
-                            $('.redactor-iframe').parent().height(contentHeight + 50);
+                        $('.tab').on('tab-changed', function(event){
+                            if( $('.email-template-htmlContent').hasClass('active-tab') === true  ){
+                                var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
+                                $('.email-template-htmlContent').height(contentHeight + 50);
+                                $('.redactor-iframe').height(contentHeight + 50);
+                            }
                         });
                     ");
             }

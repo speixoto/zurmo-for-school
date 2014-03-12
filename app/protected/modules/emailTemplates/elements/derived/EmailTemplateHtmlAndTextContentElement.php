@@ -146,6 +146,7 @@
                             {
                                     _old.removeClass('active-tab');
                                     _new.addClass('active-tab');
+                                    _new.trigger('tab-changed');
                             });
                             event.preventDefault();
                         });
