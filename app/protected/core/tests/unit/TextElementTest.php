@@ -63,8 +63,8 @@
             $textElement        = new TextElement($model, 'id', $form);
             echo $textElement->render();
             $controller->endWidget();
-            $content     = ob_get_clean();
-            $valPosition = strpos($content, 'value=""');
+            $content            = ob_get_clean();
+            $valPosition        = strpos($content, 'value=""');
             $valInvalidPosition = strpos($content, 'value="' . $model->id . '"');
             $this->assertTrue($valPosition > 0);
             $this->assertFalse($valInvalidPosition > 0);
