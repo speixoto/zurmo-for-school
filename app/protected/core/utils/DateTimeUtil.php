@@ -378,48 +378,12 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
-        
+
         public static function getLastDayOfAMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
             $dateTime = new DateTime($stringTime);
             $dateTime->modify('last day of this month');
-            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                        $dateTime->getTimestamp());
-        }
-        
-        public static function getFirstDayOfLastMonthDate($stringTime = null)
-        {
-            assert('is_string($stringTime) || $stringTime == null');
-            $dateTime = new DateTime($stringTime);
-            $dateTime->modify('first day of last month');
-            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                        $dateTime->getTimestamp());
-        }
-        
-        public static function getLastDayOfLastMonthDate($stringTime = null)
-        {
-            assert('is_string($stringTime) || $stringTime == null');
-            $dateTime = new DateTime($stringTime);
-            $dateTime->modify('last day of last month');
-            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                        $dateTime->getTimestamp());
-        }
-        
-        public static function getFirstDayOfNextMonthDate($stringTime = null)
-        {
-            assert('is_string($stringTime) || $stringTime == null');
-            $dateTime = new DateTime($stringTime);
-            $dateTime->modify('first day of next month');
-            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
-                        $dateTime->getTimestamp());
-        }
-        
-        public static function getLastDayOfNextMonthDate($stringTime = null)
-        {
-            assert('is_string($stringTime) || $stringTime == null');
-            $dateTime = new DateTime($stringTime);
-            $dateTime->modify('last day of next month');
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
