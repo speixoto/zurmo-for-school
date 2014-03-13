@@ -173,5 +173,18 @@
             }
             return $action;
         }
+
+        protected function renderTreeViewAjaxScriptContentForMergeTagsView()
+        {
+            if ($this->model->type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $view = new MergeTagsView('EmailTemplate',
+                    get_class($this->model) . '_textContent',
+                    get_class($this->model) . '_htmlContent', false); //todo: get these last 2 values dynamically
+                $view->moduleClassNameSelector = GeneralDataForEmailTemplateWizardView::
+                    resolveModuleClassNameHiddenInputJQuerySelector();
+                return $view->renderTreeViewAjaxScriptContent();
+            }
+        }
     }
 ?>

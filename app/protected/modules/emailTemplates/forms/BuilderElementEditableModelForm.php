@@ -87,7 +87,6 @@
             $element = new $elementClassName();
             $prefix = 'properties';
             $this->validatePropertiesByElement($this->$attribute, $element, $prefix, $hasErrors, $attribute, null);
-            $hasErrors = true;
             return !$hasErrors;
         }
 

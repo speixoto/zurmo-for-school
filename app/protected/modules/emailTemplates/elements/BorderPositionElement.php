@@ -131,7 +131,7 @@
         protected function registerScripts()
         {
             $this->registerDirectionalCheckboxScript();
-            //$this->registerAllOrNoneCheckboxScript();
+            $this->registerAllOrNoneCheckboxScript();
         }
 
         protected function registerDirectionalCheckboxScript()
@@ -144,15 +144,27 @@
                         {
                             if ($(checkboxSelector).prop("checked") != state)
                             {
+                                console.log("Toggling state of: " + $(checkboxSelector).attr("id") + " to " + state);
                                 $(checkboxSelector).trigger("click");
                             }
                         }
 
-                        function checkAllIfAllDirectionalCheckboxesChecked()
+                        function areAllDirectionalCheckboxesChecked()
                         {
                             allCount        = $(directionalCheckBoxSelector).length;
                             checkedCount    = $(directionalCheckBoxSelector + ":checked").length;
-                            if (allCount == checkedCount)
+                            return (allCount == checkedCount);
+                        }
+
+                        function areAllDirectionalCheckboxesUnchecked()
+                        {
+                            checkedCount    = $(directionalCheckBoxSelector + ":checked").length;
+                            return (checkedCount == 0);
+                        }
+
+                        function checkAllIfAllDirectionalCheckboxesChecked()
+                        {
+                            if (areAllDirectionalCheckboxesChecked())
                             {
                                 toggleCheckBoxState(allCheckboxSelector, true);
                                 return true;
@@ -161,8 +173,7 @@
 
                         function checkNoneIfAllDirectionalCheckboxesUnchecked()
                         {
-                            checkedCount    = $(directionalCheckBoxSelector + ":checked").length;
-                            if (checkedCount == 0)
+                            if (areAllDirectionalCheckboxesUnchecked())
                             {
                                 toggleCheckBoxState(noneCheckboxSelector, true);
                                 return true;
@@ -195,11 +206,7 @@
                             $(directionalCheckBoxSelector)
                                 .each(function()
                                     {
-                                        if ($(this).prop("checked") != checked)
-                                        {
-                                            $(this).trigger("click");
-                                            $(this).trigger("change");
-                                        }
+                                        toggleCheckBoxState(this, "checked");
                                     });
                         }
                         function checkAllDirectionalCheckboxesAndRaiseEvents()

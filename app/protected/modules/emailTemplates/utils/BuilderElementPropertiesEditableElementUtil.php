@@ -40,7 +40,7 @@
          * Render editable element for a property
          * @param $elementClassName
          * @param CModel $model
-         * @param $attribute
+         * @param $property
          * @param ZurmoActiveForm $form
          * @param array $params
          * @param bool $wrapInTr
@@ -61,6 +61,48 @@
         }
 
         /**
+         * Resolve id for a given property
+         * @param CModel $model
+         * @param $property
+         * @param bool $doNotWrapInSquareBrackets
+         * @return string
+         */
+        public static function resolveAttributeId(CModel $model, $property, $doNotWrapInSquareBrackets = false)
+        {
+            static::resolvePropertyWithSquareBrackets($property, $doNotWrapInSquareBrackets);
+            $attribute  = static::resolveAttributeName($property);
+            $attribute  = ZurmoHtml::activeId($model, $attribute);
+            return $attribute;
+        }
+
+        /**
+         * Resolve Attribute Name
+         * @param $property
+         * @return string
+         */
+        public static function resolveAttributeName($property)
+        {
+            $property   = "properties${property}";
+            return $property;
+        }
+
+        /**
+         * Resolve qualified attribute name
+        /**
+         * @param CModel $model
+         * @param $property
+         * @param bool $doNotWrapInSquareBrackets
+         * @return string
+         */
+        public static function resolveQualifiedAttributeName(CModel $model, $property, $doNotWrapInSquareBrackets = false)
+        {
+            static::resolvePropertyWithSquareBrackets($property, $doNotWrapInSquareBrackets);
+            $property   = static::resolveAttributeName($property);
+            $name       = ZurmoHtml::resolveName($model, $property);
+            return $name;
+        }
+
+        /**
          * @param $content
          * @param $trOptions
          */
@@ -70,13 +112,16 @@
         }
 
         /**
-         * Resolve Attribute Name
+         * Wrap property in square brackets if required.
          * @param $property
-         * @return string
+         * @param bool $doNotWrapInSquareBrackets
          */
-        protected static function resolveAttributeName($property)
+        protected static function resolvePropertyWithSquareBrackets(& $property, $doNotWrapInSquareBrackets = false)
         {
-            return "properties${property}";
+            if ($doNotWrapInSquareBrackets === false)
+            {
+                $property   = "[${property}]";
+            }
         }
     }
 ?>

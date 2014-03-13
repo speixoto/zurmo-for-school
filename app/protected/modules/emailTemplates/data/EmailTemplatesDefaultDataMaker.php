@@ -250,15 +250,11 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<html>
-<head>
-</head>
-<body>
+                                                                                        'text' => '
 <p>
 	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
 </p>
-</body>
-</html>',
+',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -364,10 +360,7 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<html>
-<head>
-</head>
-<body>
+                                                                                        'text' => '
 <p>
 	 {{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}
 </p>
@@ -375,8 +368,7 @@
 	 © [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
 	                                      This email was sent to [[PRIMARY^EMAIL]].
 </p>
-</body>
-</html>',
+',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -564,15 +556,11 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<html>
-<head>
-</head>
-<body>
+                                                                                        'text' => '
 <p>
 	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
 </p>
-</body>
-</html>',
+',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -619,10 +607,7 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<html>
-<head>
-</head>
-<body>
+                                                                                        'text' => '
 <b>New Articles</b>
 <ul>
 	<li>Article Name about something</li>
@@ -631,8 +616,7 @@
 	<li>Best blog post of the year</li>
 	<li>Meet our new chef</li>
 </ul>
-</body>
-</html>',
+',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -979,10 +963,7 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<html>
-<head>
-</head>
-<body>
+                                                                                        'text' => '
  <b>New Products</b>
 <ul>
 	<li><a href="#" target="_blank">AcmeMaster 10,000</a></li>
@@ -990,8 +971,7 @@
 	<li><a href="#">AcmeMaster++</a></li>
 	<li><a href="#" target="_blank">The Acme Beginner pro</a></li>
 </ul>
-</body>
-</html>',
+',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -1077,15 +1057,11 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<html>
-<head>
-</head>
-<body>
+                                                                                        'text' => '
 <p>
 	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
 </p>
-</body>
-</html>',
+',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (

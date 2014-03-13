@@ -36,10 +36,11 @@
 
     class BuilderElementBackendPropertiesEditableElementUtil extends BuilderElementPropertiesEditableElementUtil
     {
-        protected static function resolveAttributeName($property)
+        public static function resolveAttributeName($property)
         {
             $property   = "[backend]$property";
-            return parent::resolveAttributeName($property);
+            $property   = parent::resolveAttributeName($property);
+            return $property;
         }
     }
 ?>

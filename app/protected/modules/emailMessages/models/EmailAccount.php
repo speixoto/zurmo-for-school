@@ -200,20 +200,20 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fromAddress'       => Zurmo::t('EmailMessagesModule', 'From Address',  array(), null, $language),
-                    'fromName'          => Zurmo::t('EmailMessagesModule', 'From Name',  array(), null, $language),
-                    'messages'          => Zurmo::t('Core', 'Messages',  array(), null, $language),
-                    'name'              => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
-                    'outboundHost'      => Zurmo::t('EmailMessagesModule', 'Outbound Host',  array(), null, $language),
-                    'outboundPassword'  => Zurmo::t('EmailMessagesModule', 'Outbound Password',  array(), null, $language),
-                    'outboundPort'      => Zurmo::t('EmailMessagesModule', 'Outbound Port',  array(), null, $language),
-                    'outboundSecurity'  => Zurmo::t('EmailMessagesModule', 'Outbound Security',  array(), null, $language),
-                    'outboundType'      => Zurmo::t('EmailMessagesModule', 'Outbound Type',  array(), null, $language),
-                    'outboundUsername'  => Zurmo::t('EmailMessagesModule', 'Outbound Username',  array(), null, $language),
-                    'replyToAddress'    => Zurmo::t('EmailMessagesModule', 'Reply To Address',  array(), null, $language),
-                    'replyToName'       => Zurmo::t('EmailMessagesModule', 'Reply To Name',  array(), null, $language),
+                    'fromAddress'               => Zurmo::t('EmailMessagesModule', 'From Address',                  array(), null, $language),
+                    'fromName'                  => Zurmo::t('EmailMessagesModule', 'From Name',                     array(), null, $language),
+                    'messages'                  => Zurmo::t('Core',                'Messages',                      array(), null, $language),
+                    'name'                      => Zurmo::t('Core',                'Name',                          array(), null, $language),
+                    'outboundHost'              => Zurmo::t('EmailMessagesModule', 'Outbound Host',                 array(), null, $language),
+                    'outboundPassword'          => Zurmo::t('EmailMessagesModule', 'Outbound Password',             array(), null, $language),
+                    'outboundPort'              => Zurmo::t('EmailMessagesModule', 'Outbound Port',                 array(), null, $language),
+                    'outboundSecurity'          => Zurmo::t('EmailMessagesModule', 'Outbound Security',             array(), null, $language),
+                    'outboundType'              => Zurmo::t('EmailMessagesModule', 'Outbound Type',                 array(), null, $language),
+                    'outboundUsername'          => Zurmo::t('EmailMessagesModule', 'Outbound Username',             array(), null, $language),
+                    'replyToAddress'            => Zurmo::t('EmailMessagesModule', 'Reply To Address',              array(), null, $language),
+                    'replyToName'               => Zurmo::t('EmailMessagesModule', 'Reply To Name',                 array(), null, $language),
                     'useCustomOutboundSettings' => Zurmo::t('EmailMessagesModule', 'Use Custom Outbound Settings',  array(), null, $language),
-                    'user'                      => Zurmo::t('UsersModule',         'User',  array(), null, $language),
+                    'user'                      => Zurmo::t('UsersModule',         'User',                          array(), null, $language),
                 )
             );
         }

@@ -687,7 +687,7 @@
         {
             $breadCrumbLinks = array(
                 Zurmo::t('ImportModule', 'Import'),
-                Zurmo::t('ZurmoModule',  'Create')
+                Zurmo::t('Core',         'Create')
             );
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
                 $this,

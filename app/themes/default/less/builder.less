@@ -31,14 +31,6 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
-
-.AppNavigation{
-	//display: none;
-}
-.AppContent{
-	//margin-left: 0;
-}
-
 #builder{
 	.view-toolbar-container{
 		border-top:none;
@@ -328,5 +320,41 @@
 	width: 80px !important;
 	&:hover {
 		background-image: url("@{path}email-builder/merge-tags-hover.png");
+	}
+}
+
+#ContentForEmailTemplateWizardView{
+	.email-template-content,
+	.tab,
+	.redactor_box,
+	.redactor_box iframe,
+	#BuilderEmailTemplateWizardForm_textContent{
+		height: 100% !important;
+	}
+	.tab{
+		overflow: hidden;
+	}
+	.email-template-content{
+		padding-bottom: 0;
+		margin-bottom: 0;
+		+ .errorMessage{
+			margin-top: 32px;
+		}
+	}
+	.email-template-combined-content{
+		padding-bottom: 0;
+		margin-bottom: 0;
+		min-height: 600px;
+	}
+}
+
+.email-template-textContent{
+	line-height: 1.4 !important;
+	font-size: 16px !important;
+	padding: 10px 15px !important;
+	textarea{
+		line-height: 1.4 !important;
+		font-size: 16px !important;
+		min-height: 600px;
 	}
 }

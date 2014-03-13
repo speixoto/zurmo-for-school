@@ -456,7 +456,7 @@
         {
             assert('is_int($savedCalendarSubscriptionId)');
             $elementContent = ZurmoHtml::tag('li', array(),
-                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('CalendarsModule', 'Unsubscribe')), '#',
+                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Unsubscribe')), '#',
                                                     array('data-value'  => $savedCalendarSubscriptionId,
                                                           'class'       => 'shared-cal-unsubscribe')));
             $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);

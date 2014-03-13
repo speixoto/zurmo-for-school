@@ -84,6 +84,7 @@
                         $('#SelectBaseTemplateForEmailTemplateWizardView').hide();
                         $('#BuilderCanvasWizardView').show();
                         initEmailTemplateEditor();
+                        " . $this->renderTreeViewAjaxScriptContentForMergeTagsView() . "
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('75%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
                     }

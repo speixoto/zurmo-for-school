@@ -58,7 +58,6 @@
             return $content;
         }
 
-
         /**
          * @return array
          */

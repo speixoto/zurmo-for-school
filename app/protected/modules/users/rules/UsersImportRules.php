@@ -57,6 +57,7 @@
         {
             return array_merge(parent::getNonImportableAttributeNames(), array('isActive', 'hash', 'createdByUser',
                                'modifiedByUser', 'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
+                               'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
                                'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
         }
 

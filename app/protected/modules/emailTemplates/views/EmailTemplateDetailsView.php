@@ -116,8 +116,35 @@
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
+            $this->registerContentTabsHeightScripts();
             $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+        }
+
+        protected function registerContentTabsHeightScripts()
+        {
+            $scriptName = 'content-tabs-height';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        var remainingHeight =  $('.email-template-textContent').closest('.left-column').height() -
+                                               $('.email-template-textContent').closest('.left-column').find('.panel').height() -
+                                               $('.email-template-textContent').closest('.tabs-nav').height() - 100;
+                        $('.email-template-textContent').height(remainingHeight);
+
+                        $('.tab').on('tab-changed', function(event){
+                            if( $('.email-template-htmlContent').hasClass('active-tab') === true  ){
+                                var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
+                                $('.email-template-htmlContent').height(contentHeight + 50);
+                                $('.redactor-iframe').height(contentHeight + 50);
+                            }
+                        });
+                    ");
+            }
         }
 
         protected function getModelType()
