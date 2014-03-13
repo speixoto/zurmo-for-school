@@ -235,7 +235,7 @@
                                 'content'               => $htmlContent,
                                 'paragraphy'            => "false",
                                 'fullpage'              => "true",
-                                'deniedTags'            => CJSON::encode($this->resolveDeniedTags()),
+                                'deniedTags'            => "false",
                                 'plugins'               => CJSON::encode($this->resolvePlugins()),
                                 'observeImages'         => 'true',
                                 'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),

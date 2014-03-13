@@ -56,8 +56,6 @@
 
         public $cleanup         = "true";
 
-        public $fullpage;
-
         public $iframe          = "true";
 
         public $minHeight       = 100;
@@ -67,6 +65,14 @@
         public $observeImages   = "false";
 
         public $wym             = "false";
+
+        public $removeEmptyTags = "false";
+
+        public $tidyHtml        = "true";
+
+        public $xhtml           = "true";
+
+        public $fullpage;
 
         public $toolbarExternal;
 
@@ -109,22 +115,25 @@
                                 {$this->renderRedactorParamForInit('syncAfterCallback')}
                                 {$this->renderRedactorParamForInit('syncBeforeCallback')}
                                 {$this->renderRedactorParamForInit('textareaKeydownCallback')}
-                                buttons:        {$this->buttons},
-                                cleanup:        {$this->cleanup},
-                                convertDivs:    {$this->convertDivs},
-                                {$this->renderRedactorParamForInit('allowedTags')}
-                                {$this->renderRedactorParamForInit('deniedTags')}
-                                {$this->renderRedactorParamForInit('fullpage')}
-                                iframe:         {$this->iframe},
-                                minHeight:      {$this->minHeight},
-                                observeImages:  {$this->observeImages},
-                                source:         {$this->source},
-                                paragraphy:     {$this->paragraphy},
-                                wym:            {$this->wym},
+                                {$this->renderRedactorParamForInit('plugins')}
                                 {$this->renderRedactorParamForInit('toolbarExternal')}
-                                imageUpload:    '{$this->imageUpload}',
-                                imageGetJson:   '{$this->imageGetJson}',
-                                {$this->resolveAndRenderPluginParam()}
+                                {$this->renderRedactorParamForInit('fullpage')}
+				                {$this->renderRedactorParamForInit('allowedTags')}
+                                {$this->renderRedactorParamForInit('deniedTags')}
+                                buttons:            {$this->buttons},
+                                cleanup:            {$this->cleanup},
+                                convertDivs:        {$this->convertDivs},
+                                iframe:             {$this->iframe},
+                                imageGetJson:       '{$this->imageGetJson}',
+                                imageUpload:        '{$this->imageUpload}',
+                                minHeight:          {$this->minHeight},
+                                observeImages:      {$this->observeImages},
+                                paragraphy:         {$this->paragraphy},
+                                removeEmptyTags:    {$this->removeEmptyTags},
+                                source:             {$this->source},
+                                tidyHtml:           {$this->tidyHtml},
+                                wym:                {$this->wym},
+                                xhtml:              {$this->xhtml},
                             });
                         }
                     );";
@@ -138,14 +147,6 @@
             if (isset($paramValue))
             {
                 return "{$paramName}: {$paramValue},";
-            }
-        }
-
-        protected function resolveAndRenderPluginParam()
-        {
-            if ($this->plugins != null)
-            {
-                return "plugins:        {$this->plugins}";
             }
         }
 
