@@ -35,18 +35,28 @@
      ********************************************************************************/
 
     /**
-     * Import rules for the username attribute
+     * Sanitizer for handling username
      */
-    class UsernameAttributeImportRules extends NonDerivedAttributeImportRules
+
+    class LowercaseSanitizerUtil extends SanitizerUtil
     {
-        public static function getSanitizerUtilTypesInProcessingOrder()
+
+        /**
+         * @param $rowBean
+         */
+        public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            return array('Lowercase', 'Truncate');
+            $pattern = '/^[^A-Z]+$/';
+            if (!preg_match($pattern, $rowBean->{$this->columnName}))
+            {
+                $label = Zurmo::t('ImportModule', 'Is not lowercase. This value will converted to lowercase upon import.');
+                $this->analysisMessages[] = $label;
+            }
         }
 
-        public function getDisplayLabel()
+        public function sanitizeValue($value)
         {
-            return Zurmo::t('ZurmoModule', 'Username');
+            return strtolower($value);
         }
     }
 ?>
