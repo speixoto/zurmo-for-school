@@ -101,7 +101,9 @@ var emailTemplateEditor = {
         $(emailTemplateEditor.settings.iframeSelector).load(function () {
             contents = $(this).contents();
 
+            $( contents.find('body') ).off( "click", emailTemplateEditor.settings.editActionSelector);
             $( contents.find('body') ).on( "click", emailTemplateEditor.settings.editActionSelector, emailTemplateEditor.onClickEditEvent);
+            $( contents.find('body') ).off( "click", emailTemplateEditor.settings.deleteActionSelector);
             $( contents.find('body') ).on( "click", emailTemplateEditor.settings.deleteActionSelector, emailTemplateEditor.onClickDeleteEvent);
 
             contents.find(emailTemplateEditor.settings.sortableElementsSelector + ', ' + emailTemplateEditor.settings.sortableRowsSelector).on({
@@ -160,8 +162,10 @@ var emailTemplateEditor = {
         var mostTopElementHalf = 0;
         var positions = [];
         emailTemplateEditor.settings.ghost = $('<div class="ghost"><span>' +  emailTemplateEditor.settings.dropHereMessage + '</span></div>');
-
+        console.log(emailTemplateEditor.settings.ghost);
+        $('#building-blocks').off('mousedown');
         $('#building-blocks').on('mousedown', onBodyMouseDown);
+        $(emailTemplateEditor.settings.iframeSelector).contents().find('body').off('mousemove');
         $(emailTemplateEditor.settings.iframeSelector).contents().find('body').on('mousemove', onIFrameBodyMouseMove);
 
         function onBodyMouseDown(event){
@@ -171,7 +175,9 @@ var emailTemplateEditor = {
                          find(emailTemplateEditor.settings.sortableElementsSelector + ' > .element-wrapper' + ', ' +
                          emailTemplateEditor.settings.sortableRowsSelector + ' > .element-wrapper');
             emailTemplateEditor.settings.isDragging = true;
+            $('body').off('mousemove');
             $('body').on('mousemove', onBodyMouseMove);
+            $('body').off('mouseup');
             $('body').on('mouseup', onBodyMouseUp);
             //calculate position of droppables on mousedown, ONLY ONCE each time
             positions = [];
@@ -182,8 +188,8 @@ var emailTemplateEditor = {
         }
 
         function onBodyMouseUp(event){
-            $('body').off('mousemove', onBodyMouseMove);
-            $('body').off('mouseup', onBodyMouseUp);
+            $('body').off('mousemove');
+            $('body').off('mouseup');
             emailTemplateEditor.settings.isDragging = false;
             if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
                 var wrapInRow = elementDragged.data('wrap');
