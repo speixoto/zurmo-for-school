@@ -36,6 +36,8 @@
 
     class CustomColorElement extends Element
     {
+        const COLOR_CHANGE_HANDLER_KEY  = 'colorChangeHandler';
+
         protected function renderControlEditable()
         {
             $this->registerScripts();
@@ -50,7 +52,16 @@
 
         protected function renderCustomColorChooser()
         {
-            $inputId     = $this->getEditableInputId();
+            $inputId                            = $this->getEditableInputId();
+            $externalColorChangeEventHandler    = ArrayUtil::getArrayValue($this->params, static::COLOR_CHANGE_HANDLER_KEY);
+            if (!empty($externalColorChangeEventHandler))
+            {
+                $externalColorChangeEventHandler    = "
+                if (typeof ${externalColorChangeEventHandler} == 'function') {
+                    var firstChange = ($(this).val() == '');
+                    ${externalColorChangeEventHandler}(firstChange);
+                }";
+            }
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip($this->attribute);
             // Begin Not Coding Standard
@@ -61,6 +72,7 @@
                 'htmlOptions'          => array('class' => 'color-picker'),
                 'palettes'             => 'true',
                 'change'               => "function(event, ui) {
+                                                    ${externalColorChangeEventHandler}
                                                     $('#{$inputId}').css('border-color', ui.color.toString());
                                           }",
             ));

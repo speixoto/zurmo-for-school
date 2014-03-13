@@ -36,10 +36,11 @@
 
     class BuilderElementInlineStylePropertiesEditableElementUtil extends BuilderElementFrontendPropertiesEditableElementUtil
     {
-        protected static function resolveAttributeName($property)
+        public static function resolveAttributeName($property)
         {
             $property   = "[inlineStyles]$property";
-            return parent::resolveAttributeName($property);
+            $property   = parent::resolveAttributeName($property);
+            return $property;
         }
     }
 ?>

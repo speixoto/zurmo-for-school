@@ -53,8 +53,7 @@
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
                                             'CustomColorElement',
                                             'border-color',
-                                            static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Border Color')));
+                                            static::resolveBorderColorParams());
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
                                             'TextElement',
@@ -75,6 +74,41 @@
                                                 Zurmo::t('EmailTemplatesModule', 'Border Style')));
             return $configurationItems;
         }
-    }
 
+        protected static function registerScripts(ZurmoActiveForm $form, CModel $model)
+        {
+            $borderStyleDropDownName  = BuilderElementInlineStylePropertiesEditableElementUtil::
+                                                            resolveQualifiedAttributeName($model, 'border-style');
+            Yii::app()->clientScript->registerScript('selectBorderTypeAndPositionsOnBorderColorChangeEvent', '
+                function selectBorderTypeAndPositionsOnBorderColorChangeEvent(firstChange)
+                {
+                    if (firstChange)
+                    {
+                        if (areAllDirectionalCheckboxesUnchecked())
+                        {
+                            // only change selection if user has not made one already.
+                            checkAllDirectionalCheckboxesAndRaiseEvents();
+                        }
+                        if ($("[name=\"' . $borderStyleDropDownName . '\"]").val() == "")
+                        {
+                            // first one is "None"
+                            $("[name=\"' . $borderStyleDropDownName . '\"]  option:nth-child(2)").attr("selected", "selected");
+                        }
+                    }
+                }
+            ');
+        }
+
+        protected static function resolveBorderColorParams()
+        {
+            $params     = static::resolveDefaultParams(Zurmo::t('EmailTemplatesModule', 'Border Color'));
+            static::resolveBorderColorParamsForColorChangeHandler($params);
+            return $params;
+        }
+
+        protected static function resolveBorderColorParamsForColorChangeHandler(array & $params)
+        {
+            $params[CustomColorElement::COLOR_CHANGE_HANDLER_KEY] = 'selectBorderTypeAndPositionsOnBorderColorChangeEvent';
+        }
+    }
 ?>
