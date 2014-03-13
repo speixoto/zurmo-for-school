@@ -57,19 +57,5 @@
                 return $dividend / $divisor;
             }
         }
-
-        /**
-         * Gets numeric value of string if a number else returns the string
-         * @param string $content
-         * @return mixed
-         */
-        public static function getNumericValueForString($content)
-        {
-            if(is_numeric($content))
-            {
-                return $content + 0;
-            }
-            return null;
-        }
     }
 ?>

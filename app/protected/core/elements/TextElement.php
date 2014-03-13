@@ -60,7 +60,7 @@
             {
                 $htmlOptions['encode'] = true;
             }
-            $this->resolveInputValue($htmlOptions);
+            $this->resolveEditableHtmlOptionsInputValue($htmlOptions);
             return $this->form->textField($this->model, $this->attribute, $htmlOptions);
         }
 
@@ -77,18 +77,11 @@
          * Resolve input value in case it is numeric and less than zero for id attribute
          * @param string $htmlOptions
          */
-        protected function resolveInputValue(& $htmlOptions)
+        protected function resolveEditableHtmlOptionsInputValue(& $htmlOptions)
         {
-            if($this->attribute == 'id')
+            if($this->attribute == 'id' && (ZurmoHtml::resolveValue($this->model, $this->attribute) < 0))
             {
-                $value   = NumberUtil::getNumericValueForString(ZurmoHtml::resolveValue($this->model, $this->attribute));
-                if($value != null)
-                {
-                    if($value < 0)
-                    {
-                        $htmlOptions['value'] = '';
-                    }
-                }
+                $htmlOptions['value'] = '';
             }
         }
     }
