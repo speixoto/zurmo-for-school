@@ -59,6 +59,8 @@
 
         public function testGetDataWithNoRelationsSet()
         {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
             $values = array(
                 'Test1',
                 'Test2',
@@ -261,14 +263,16 @@
             $compareRowData     = array(array( 'xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                          10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                          'http://www.test.com', 'Test2', '100.00', 'USD', 'someString', 'test@someString.com',
-                                         'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super')); // Not Coding Standard
+                                         'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', $super)); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
             $reportModelTestItem->delete();
         }
-
+        
         public function testExportRelationAttributes()
         {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
             $values = array(
                 'Test1',
                 'Test2',
@@ -489,7 +493,7 @@
             $compareRowData     = array(array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                         10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                         'http://www.test.com', 'Test2', '100.00', 'USD', 'someString', 'test@someString.com',
-                                        'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super')); // Not Coding Standard
+                                        'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', $super)); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
 

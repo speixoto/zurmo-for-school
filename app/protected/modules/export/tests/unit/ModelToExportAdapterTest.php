@@ -72,6 +72,8 @@
 
         public function testGetDataWithEmailAddress()
         {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
             $testItem                               = new ExportTestModelItem5();
             $createStamp = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $testItem->emailAddress                 = 'a@a.com';
@@ -91,9 +93,9 @@
                 $id,
                 'stubDateTime',
                 'stubDateTime',
-                'super',
-                'super',
-                'super',
+                $super,
+                $super,
+                $super,
                 'a@a.com',
                 );
             $compareHeaderData = array(
@@ -170,9 +172,9 @@
                 $id,
                 'stubDateTime',
                 'stubDateTime',
-                'super',
-                'super',
-                'super',
+                $super,
+                $super,
+                $super,
                 'Bob',
                 'Bob',
                 '1',
@@ -318,9 +320,9 @@
                 $id,
                 'stubDateTime',
                 'stubDateTime',
-                'super',
-                'super',
-                'super',
+                $super,
+                $super,
+                $super,
                 'Bob2',
                 'Bob2',
                 '1',
@@ -474,9 +476,9 @@
                 $id,
                 'stubDateTime',
                 'stubDateTime',
-                'super',
-                'super',
-                'super',
+                $super,
+                $super,
+                $super,
                 'Bob3',
                 'Bob3',
                 '1',

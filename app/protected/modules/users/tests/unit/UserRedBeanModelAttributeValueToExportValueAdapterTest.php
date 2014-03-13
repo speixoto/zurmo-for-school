@@ -61,7 +61,8 @@
 
             $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
             $adapter->resolveData($data);
-            $compareData = array($super->username);
+            $compareData = array($super);
+
             $this->assertEquals($compareData, $data);
             $data = array();
             $adapter->resolveHeaderData($data);
