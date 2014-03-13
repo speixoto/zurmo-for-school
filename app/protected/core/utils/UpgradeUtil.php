@@ -176,15 +176,6 @@
         }
 
         /**
-        * Return path to upgrade folder
-        * @return string
-        */
-        public static function getUpgradeFolderPath()
-        {
-            return Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
-        }
-
-        /**
          * Check if all files are directories are writeable by user.
          * @throws FileNotWriteableException
          * @return boolean
@@ -239,7 +230,7 @@
         protected static function checkForUpgradeZip()
         {
             $numberOfZipFiles = 0;
-            $upgradePath = self::getUpgradeFolderPath();
+            $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
             if (!is_dir($upgradePath))
             {
                 $message = Zurmo::t('Core', 'Please upload upgrade zip file to runtime/upgrade folder.');
@@ -309,7 +300,7 @@
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
             if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $upgradeFromVersionMatches) !== false) // Not Coding Standard
             {
-                if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false) // Not Coding Standard
+                if (preg_match('/^(\d+)\.(\d+)\.?(\d+|\w+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false) // Not Coding Standard
                 {
                     $currentZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
                     if (version_compare($currentZurmoVersion, $upgradeFromVersionMatches[0], '>=') &&
