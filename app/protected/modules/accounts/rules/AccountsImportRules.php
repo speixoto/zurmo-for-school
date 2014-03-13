@@ -46,12 +46,10 @@
 
         public static function getNonImportableAttributeNames()
         {
-
             return array_merge(parent::getNonImportableAttributeNames(),
                         array('billingAddress__latitude', 'billingAddress__longitude', 'billingAddress__invalid',
                               'shippingAddress__latitude', 'shippingAddress__longitude', 'shippingAddress__invalid'));
         }
-
 
         /**
          * Get fields for which dedupe ruled would be executed

@@ -167,11 +167,11 @@
          */
         protected static function resolveIsAttributeANonImportableAttributeName($attributeData)
         {
-            if(in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()))
+            if (in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()))
             {
                 return true;
             }
-            if(isset($attributeData['relationAttributeName']) &&
+            if (isset($attributeData['relationAttributeName']) &&
                in_array($attributeData['attributeName'] . FormModelUtil::DELIMITER . $attributeData['relationAttributeName'],
                         static::getNonImportableAttributeNames()))
             {
