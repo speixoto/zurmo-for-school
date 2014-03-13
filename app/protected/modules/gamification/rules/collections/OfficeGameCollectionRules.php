@@ -60,11 +60,11 @@
          */
         public static function getItemTypesAndLabels()
         {
-            return array(   'Calendar'        => Zurmo::t('GamificationModule', 'Calendar'),
+            return array(   'Calendar'        => Zurmo::t('Core',               'Calendar'),
                             'CorrectionFluid' => Zurmo::t('GamificationModule', 'Correction Fluid'),
                             'DeskPlant'       => Zurmo::t('GamificationModule', 'Desk Plant'),
                             'Shredder'        => Zurmo::t('GamificationModule', 'Shredder'),
-                            'CopyMachine'  => Zurmo::t('GamificationModule', 'Copy machine'),
+                            'CopyMachine'     => Zurmo::t('GamificationModule', 'Copy machine'),
             );
         }
 

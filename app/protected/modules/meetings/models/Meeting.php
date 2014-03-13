@@ -135,7 +135,7 @@
                     'description'   => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
                     'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
                     'location'      => Zurmo::t('ZurmoModule',    'Location',    array(), null, $language),
-                    'name'          => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
+                    'name'          => Zurmo::t('Core',           'Name',        array(), null, $language),
                     'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
                 )
             );

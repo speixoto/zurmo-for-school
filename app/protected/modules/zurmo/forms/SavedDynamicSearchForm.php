@@ -73,7 +73,7 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                               'savedSearchId'      => Zurmo::t('ZurmoModule',   'Id'),
+                               'savedSearchId'      => Zurmo::t('Core',   'Id'),
                                'savedSearchName'    => Zurmo::t('Core', 'Name'),
                                'loadSavedSearchUrl' => 'LoadSavedSearchUrl',
             ));

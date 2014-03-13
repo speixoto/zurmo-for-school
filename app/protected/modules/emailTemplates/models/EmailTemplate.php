@@ -342,13 +342,13 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'modelClassName'  => Zurmo::t('Core',                'Module',   null, null, $language),
-                    'language'        => Zurmo::t('ZurmoModule',         'Language',   null, null, $language),
-                    'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content',  null, null, $language),
-                    'name'            => Zurmo::t('ZurmoModule',         'Name',  null, null, $language),
-                    'subject'         => Zurmo::t('Core', 'Subject',  null, null, $language),
-                    'type'            => Zurmo::t('Core',                'Type',  null, null, $language),
-                    'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content',  null, null, $language),
+                    'modelClassName'  => Zurmo::t('Core',                'Module',       null, null, $language),
+                    'language'        => Zurmo::t('Core',                'Language',     null, null, $language),
+                    'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content', null, null, $language),
+                    'name'            => Zurmo::t('Core',                'Name',         null, null, $language),
+                    'subject'         => Zurmo::t('Core',                'Subject',      null, null, $language),
+                    'type'            => Zurmo::t('Core',                'Type',         null, null, $language),
+                    'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content', null, null, $language),
                 )
             );
         }

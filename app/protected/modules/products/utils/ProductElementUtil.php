@@ -87,10 +87,10 @@
                                                                 $currencyValueModel->currency->code);
             $language                  = Yii::app()->languageHelper->getForCurrentUser();
             $translatedAttributeLabels = self::translatedAttributeLabels($language);
-            return array(Zurmo::t('ZurmoModule', 'Name', array(), null, $language)          => $name,
-                         Zurmo::t('ProductsModule', 'Quantity', array(), null, $language)   => $quantity,
-                         $translatedAttributeLabels['priceFrequency']                       => $priceFrequency,
-                         $translatedAttributeLabels['sellPrice']                            => $sellPrice);
+            return array(Zurmo::t('Core', 'Name',     array(), null, $language) => $name,
+                         Zurmo::t('Core', 'Quantity', array(), null, $language) => $quantity,
+                         $translatedAttributeLabels['priceFrequency']           => $priceFrequency,
+                         $translatedAttributeLabels['sellPrice']                => $sellPrice);
         }
     }
 ?>

@@ -412,7 +412,7 @@
         protected function resolveModelAttributeValueForPenultimateRelation(RedBeanModel $model, $attribute,
                                                                             DisplayAttributeForReportForm $displayAttribute)
         {
-            if(($attribute == 'UniqueIdentifier' &&
+            if (($attribute == 'UniqueIdentifier' &&
                 !is_subclass_of($displayAttribute->getResolvedAttributeModelClassName(), 'OwnedModel')))
             {
                 return $model->id;

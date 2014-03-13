@@ -77,11 +77,11 @@
         public static function translatedAttributeLabels($language)
         {
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'cost'                  => Zurmo::t('GameRewardsModule', 'Cost in Coins', array(), null, $language),
-                'description'           => Zurmo::t('ZurmoModule',       'Description', array(), null, $language),
-                'expirationDateTime'    => Zurmo::t('GameRewardsModule', 'Expiration Date Time', array(), null, $language),
-                'name'                  => Zurmo::t('ZurmoModule',       'Name',  array(), null, $language),
-                'quantity'              => Zurmo::t('ZurmoModule',       'Quantity Available', array(), null, $language),
+                'cost'                  => Zurmo::t('GameRewardsModule', 'Cost in Coins',            array(), null, $language),
+                'description'           => Zurmo::t('ZurmoModule',       'Description',              array(), null, $language),
+                'expirationDateTime'    => Zurmo::t('GameRewardsModule', 'Expiration Date Time',     array(), null, $language),
+                'name'                  => Zurmo::t('Core',              'Name',                     array(), null, $language),
+                'quantity'              => Zurmo::t('ZurmoModule',       'Quantity Available',       array(), null, $language),
                 'transactions'          => Zurmo::t('GameRewardsModule', 'Game Reward Transactions', array(), null, $language),
                 ));
         }
