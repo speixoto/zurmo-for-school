@@ -44,6 +44,7 @@
 
         public function run()
         {
+            // Begin Not Coding Standard
             $javaScript = "
                     $(document).ready(function(){
                     $('#graph-btn').click(function(){
@@ -54,6 +55,7 @@
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
             
             echo "<div id='d3'><div id='tree-container'></div></div>";
+            // End Not Coding Standard
         }
     }
 ?>

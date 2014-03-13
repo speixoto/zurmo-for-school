@@ -64,7 +64,7 @@
         const TYPE_LAST_MONTH       = 'Last Month';
 
         const TYPE_NEXT_MONTH       = 'Next Month';
-        
+
         const TYPE_BEFORE_TODAY     = 'Before Today';
 
         const TYPE_IS_TIME_FOR      = 'Is Time For';
