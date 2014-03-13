@@ -60,6 +60,7 @@
             {
                 $htmlOptions['encode'] = true;
             }
+            $this->resolveInputValue($htmlOptions);
             return $this->form->textField($this->model, $this->attribute, $htmlOptions);
         }
 
@@ -70,6 +71,25 @@
         protected function renderControlNonEditable()
         {
             return Yii::app()->format->text($this->model->{$this->attribute});
+        }
+
+        /**
+         * Resolve input value in case it is numeric and less than zero for id attribute
+         * @param string $htmlOptions
+         */
+        protected function resolveInputValue(& $htmlOptions)
+        {
+            if($this->attribute == 'id')
+            {
+                $value   = NumberUtil::getNumericValueForString(ZurmoHtml::resolveValue($this->model, $this->attribute));
+                if(is_numeric($value))
+                {
+                    if($value < 0)
+                    {
+                        $htmlOptions['value'] = '';
+                    }
+                }
+            }
         }
     }
 ?>

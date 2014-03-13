@@ -34,42 +34,41 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper functionality for use working with numbers
-     */
-    class NumberUtil
+    class NumberUtilTest extends BaseTest
     {
-        /**
-         * Given a number and a number to divide by, resolve if 0 since you can't divide when 0.
-         * @param numeric | string $dividend
-         * @param numeric | string  $divisor
-         * @return int
-         */
-        public static function divisionForZero($dividend, $divisor)
+        public static function setUpBeforeClass()
         {
-            assert('is_numeric($dividend) || is_string($dividend)');
-            if ($dividend == 0)
-            {
-                return 0;
-            }
-            else
-            {
-                return $dividend / $divisor;
-            }
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
-        /**
-         * Gets numeric value of string if a number else returns the string
-         * @param string $content
-         * @return mixed
-         */
-        public static function getNumericValueForString($content)
+        public function testGetNumericValueForString()
         {
-            if(is_numeric($content))
+            $tests   = array(
+                            "42",
+                            "Hello",
+                            25,
+                            "-100.25",
+                            -100.25
+                        );
+            $results = array();
+            foreach ($tests as $element)
             {
-                return $content + 0;
+                $results[] = NumberUtil::getNumericValueForString($element);
             }
-            return $content;
+
+            $this->assertInternalType('integer', $results[0]);
+            $this->assertEquals(42, $results[0]);
+            $this->assertInternalType('string', $results[1]);
+            $this->assertEquals("Hello", $results[1]);
+            $this->assertInternalType('integer', $results[2]);
+            $this->assertEquals(25, $results[2]);
+            $this->assertInternalType('float', $results[3]);
+            $this->assertEquals(-100.25, $results[3]);
+            $this->assertInternalType('float', $results[4]);
+            $this->assertEquals(-100.25, $results[4]);
         }
     }
 ?>
