@@ -98,7 +98,7 @@
                 'contacts'    => Zurmo::t('ContactsModule',      'ContactsModulePluralLabel',   $params, null, $language),
                 'description' => Zurmo::t('ZurmoModule',         'Description',  array(), null, $language),
                 'meetings'    => Zurmo::t('MeetingsModule',      'MeetingsModulePluralLabel', $params, null, $language),
-                'name'        => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
+                'name'        => Zurmo::t('Core',                'Name',  array(), null, $language),
                 'notes'       => Zurmo::t('NotesModule',         'NotesModulePluralLabel', $params, null, $language),
                 'probability' => Zurmo::t('OpportunitiesModule', 'Probability',  array(), null, $language),
                 'source'      => Zurmo::t('ContactsModule',      'Source',   array(), null, $language),
