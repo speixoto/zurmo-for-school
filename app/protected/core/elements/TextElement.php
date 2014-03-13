@@ -75,7 +75,7 @@
 
         /**
          * Resolve input value in case it is numeric and less than zero for id attribute
-         * @param string $htmlOptions
+         * @param array $htmlOptions
          */
         protected function resolveEditableHtmlOptionsInputValue(& $htmlOptions)
         {
