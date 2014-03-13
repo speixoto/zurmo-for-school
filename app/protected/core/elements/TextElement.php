@@ -82,7 +82,7 @@
             if($this->attribute == 'id')
             {
                 $value   = NumberUtil::getNumericValueForString(ZurmoHtml::resolveValue($this->model, $this->attribute));
-                if(is_numeric($value))
+                if($value != null)
                 {
                     if($value < 0)
                     {

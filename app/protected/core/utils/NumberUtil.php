@@ -69,7 +69,7 @@
             {
                 return $content + 0;
             }
-            return $content;
+            return null;
         }
     }
 ?>

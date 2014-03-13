@@ -61,8 +61,7 @@
 
             $this->assertInternalType('integer', $results[0]);
             $this->assertEquals(42, $results[0]);
-            $this->assertInternalType('string', $results[1]);
-            $this->assertEquals("Hello", $results[1]);
+            $this->assertNull($results[1]);
             $this->assertInternalType('integer', $results[2]);
             $this->assertEquals(25, $results[2]);
             $this->assertInternalType('float', $results[3]);
