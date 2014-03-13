@@ -636,8 +636,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	line-height: 18px;
 	display: block;
 	height: 20px;
-	//width: 20px;
-	padding: 0 8px;
+	width: 20px;
+	margin:0 8px;
+	//padding: 0 8px;
 	.radius(50%);
 	background: transparent;
 	position: relative;
@@ -1318,11 +1319,20 @@ body > .ui-autocomplete{
 			&:hover, &.stayOpen, &.nav-open{
 				display: block;
 			}
+			&:before{
+				content: "";
+				border: 8px solid #252525;
+				border-top-color: transparent;
+				border-left-color: transparent;
+				border-bottom-color: transparent;
+				position: absolute;
+				left: -16px;
+				top: 5px;
+			}
 			li{
 				line-height: 1;
 				margin: 0;
 			}
-
 			li:first-child{
 				border-top:none;
 			}
@@ -1375,24 +1385,20 @@ body > .ui-autocomplete{
 
 #ErrorView,
 .AppContent{
+	.clearfix();
 	min-height: 100%;
 	padding:65px 20px 0 20px;
 	margin-left:@navWidth;
-	.animateAll(0.28s);
 	#gradient > .vertical-three-colors( #f6f6f6, #ffffff, 50%, #ffffff );
 	background-attachment: fixed;
-	.clearfix();
+	//.animateAll(0.28s);
 	.single-column{
 		padding-right:0 !important;
 		> .GridView{
 			display:block;
 			width:100% !important;
 		}
-		.panel{
-			//width:70%;
-			//float:left;
-			//position: relative;
-		}
+		//.panel{}
 		.juiportlet-widget,
 		.details-table{
 			margin-right:0 !important;
@@ -1485,25 +1491,25 @@ body > .ui-autocomplete{
 	height: 40px;
 	display: block;
 	z-index: 10;
-
 	padding: 0 15px 0 15px;
 	margin-bottom: 15px;
 	.view-toolbar-container{
 		z-index:222222;
 		position:fixed !important;
-		.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3)");
-		#gradient > .vertical-three-colors( #f5f5f5, #f5f5f5, 80%, #ffffff );
-		padding-bottom:15px;
+		width: auto;
+		padding-bottom:10px;
 		margin-left: -20px;
 		left: 50%;
 		bottom: 0;
-		float: left;
-		width: auto;
+		//float: left;
+		border: 1px solid #ccc;
+		.b-shadow(~"inset 0 0 0 1px #ffffff,  0 0 5px 2px rgba(153, 153, 153, 0.3)");
+		#gradient > .vertical-three-colors( #efefef, #efefef, 80%, #f5f5f5 );
 		&.dock{
 			background:none;
-			position:relative !important;
-			bottom:0;
-			left:0;
+			position:static !important; //was relative
+			//bottom:0;
+			//left:0;
 			width: 100%;
 			.unstyle-panel();
 			border-top:1px solid #CCC;
@@ -1531,13 +1537,6 @@ h1 + .view-toolbar-container{
 	.pillbox{
 		float: right;
 		margin-bottom: 0 !important;
-	}
-}
-
-#AddPortletLink{
-	i{
-		top:-2px;
-		margin-right: 5px;
 	}
 }
 
@@ -1863,6 +1862,7 @@ caption, th, td {
 	}
 	tr:hover{
 		#gradient > .vertical(#efefef, #eeeeee);
+		background-color: transparent !important;
 		.pencil{
 			visibility:visible;
 			color: @themeColor;
@@ -3841,24 +3841,29 @@ div.wide.form{
 		list-style: none;
 	}
 	.options-menu > li > a{
-		//padding-left: 10px;
+		.animateAll(0.28s);
 		text-align:center;
-		//width: 60px;
-		color: #666 !important;
-		border-top: 1px solid #e7e7e7;
-		border-left: 1px solid #d7d7d7;
-		border-right: 1px solid #d7d7d7;
-		border-bottom: 1px solid #bababa;
+		border-top:   1px solid rgba(200, 200, 200, 0.4);
+		border-left:  1px solid rgba(185, 185, 185, 0.4) !important;
+		border-right: 1px solid rgba(185, 185, 185, 0.4);
+		border-bottom:1px solid rgba(170, 170, 170, 0.4);
 		line-height: 1;
 		.smaller();
-		.radius(4px);
-		.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
-		.t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
-		background: url("@{path}view-toolbar-gradient.png") left bottom repeat-x !important;
+		.radius(2px);
+		color:#666;
+		.t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
+		#gradient > .vertical( #fefefe, #f5f5f5 );
+		.b-shadow(~"inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15)");
 		span{
 			line-height: 26px;
-			.radius(4px);
+			.radius(2px);
 			.smaller();
+		}
+		&:hover{
+			color: @themeColor2 !important;
+			#gradient > .vertical( #f5f5f5, #fefefe ) !important;
+			.t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
+			.b-shadow(~"inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3)");
 		}
 		&:after{
 			content: "÷";

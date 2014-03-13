@@ -750,9 +750,20 @@ $(window).ready(function(){
         }
     };
 
+    $.fn.checkForResponsiveNav = function(){
+        if ($(document).width() < 600){ // could be also $(window).width()
+            $('body').addClass('nav-collapsed');
+        } else {
+            $('body').removeClass('nav-collapsed');
+        }
+    }
+
     $(window).resize(function(){
-      //$(this).resizeWhiteArea();
+        //$(this).resizeWhiteArea();
+        $(this).checkForResponsiveNav();
     });
+
+    $(this).checkForResponsiveNav();
 
     //$(this).resizeWhiteArea();
 

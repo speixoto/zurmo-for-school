@@ -117,14 +117,14 @@
 a:hover .z-label,
 a:active .z-label {
   color: #27397a !important;
-  background-color: #445fc3;
+  background-color: #91A1DC;
   background-repeat: repeat-x;
-  background-image: -ms-linear-gradient(top,#91A1DC,#445fc3);
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#91A1DC),color-stop(100%,#445fc3));
-  background-image: -webkit-linear-gradient(top,#91A1DC,#445fc3);
-  background-image: -o-linear-gradient(top,#91A1DC,#445fc3);
-  background-image: -moz-linear-gradient(top,#91A1DC,#445fc3);
-  background-image: linear-gradient(top,#91A1DC,#445fc3);
+  background-image: -ms-linear-gradient(top,#6a80d0,#91A1DC);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#6a80d0),color-stop(100%,#91A1DC));
+  background-image: -webkit-linear-gradient(top,#6a80d0,#91A1DC);
+  background-image: -o-linear-gradient(top,#6a80d0,#91A1DC);
+  background-image: -moz-linear-gradient(top,#6a80d0,#91A1DC);
+  background-image: linear-gradient(top,#6a80d0,#91A1DC);
   -webkit-text-shadow: 0px 1px 0 #cbd3ee !important;
   -moz-text-shadow: 0px 1px 0 #cbd3ee !important;
   -ms-text-shadow: 0px 1px 0 #cbd3ee !important;
@@ -139,22 +139,34 @@ a:active .z-label {
   box-shadow: inset 0 5px 12px 0 rgba(0, 0, 0, 0.33), 0 1px 0 0 #FFF;
 }
 .button-layout {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 .button-layout:before,
 .button-layout:after {
@@ -163,6 +175,13 @@ a:active .z-label {
 }
 .button-layout:after {
   clear: both;
+}
+.button-layout:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .button-layout.disabled {
   pointer-events: none;
@@ -179,26 +198,34 @@ a:active .z-label {
 }
 .zButton,
 .z-button {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 .zButton:before,
 .zButton:after,
@@ -210,6 +237,14 @@ a:active .z-label {
 .zButton:after,
 .z-button:after {
   clear: both;
+}
+.zButton:hover,
+.z-button:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .zButton.disabled,
 .z-button.disabled {
@@ -230,22 +265,34 @@ a:active .z-label {
 .white-button,
 .cancel-button,
 .portlet-create-button {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   border-top: 1px solid rgba(200,200,200,0.4);
   border-left: 1px solid rgba(185,185,185,0.4);
   border-right: 1px solid rgba(185,185,185,0.4);
@@ -270,6 +317,17 @@ a:active .z-label {
 .cancel-button:after,
 .portlet-create-button:after {
   clear: both;
+}
+.secondary-button:hover,
+.default-btn:hover,
+.white-button:hover,
+.cancel-button:hover,
+.portlet-create-button:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .secondary-button.disabled,
 .default-btn.disabled,
@@ -299,7 +357,14 @@ a:active .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   -o-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
-  background: transparent url("../images/view-toolbar-gradient.png") left bottom repeat-x;
+  background-color: #f5f5f5;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fefefe),color-stop(100%,#f5f5f5));
+  background-image: -webkit-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -o-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -moz-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: linear-gradient(top,#fefefe,#f5f5f5);
 }
 .secondary-button:hover .z-label,
 .default-btn:hover .z-label,
@@ -308,14 +373,14 @@ a:active .z-label {
 .portlet-create-button:hover .z-label {
   color: #91A1DC !important;
   background-image: none;
-  background-color: #ededed !important;
+  background-color: #fefefe !important;
   background-repeat: repeat-x !important;
-  background-image: -ms-linear-gradient(top,#fefefe,#ededed) !important;
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fefefe),color-stop(100%,#ededed)) !important;
-  background-image: -webkit-linear-gradient(top,#fefefe,#ededed) !important;
-  background-image: -o-linear-gradient(top,#fefefe,#ededed) !important;
-  background-image: -moz-linear-gradient(top,#fefefe,#ededed) !important;
-  background-image: linear-gradient(top,#fefefe,#ededed) !important;
+  background-image: -ms-linear-gradient(top,#f5f5f5,#fefefe) !important;
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f5f5f5),color-stop(100%,#fefefe)) !important;
+  background-image: -webkit-linear-gradient(top,#f5f5f5,#fefefe) !important;
+  background-image: -o-linear-gradient(top,#f5f5f5,#fefefe) !important;
+  background-image: -moz-linear-gradient(top,#f5f5f5,#fefefe) !important;
+  background-image: linear-gradient(top,#f5f5f5,#fefefe) !important;
   -webkit-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   -moz-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   -ms-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
@@ -742,26 +807,34 @@ a.simple-link .icon-x {
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 #InstallPageView #install-form input[type="submit"] {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 #InstallPageView #install-form input[type="submit"]:before,
 #InstallPageView #install-form input[type="submit"]:after {
@@ -770,6 +843,13 @@ a.simple-link .icon-x {
 }
 #InstallPageView #install-form input[type="submit"]:after {
   clear: both;
+}
+#InstallPageView #install-form input[type="submit"]:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 #InstallPageView #install-form input[type="submit"].disabled {
   pointer-events: none;
@@ -1616,26 +1696,34 @@ table.configuration-list tr:last-child td {
   width: 100% !important;
 }
 .EmailTestingButton {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   border-top: 1px solid #e7e7e7;
   border-left: 1px solid #d7d7d7;
   border-right: 1px solid #d7d7d7;
@@ -1648,6 +1736,13 @@ table.configuration-list tr:last-child td {
 }
 .EmailTestingButton:after {
   clear: both;
+}
+.EmailTestingButton:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .EmailTestingButton.disabled {
   pointer-events: none;
@@ -1714,26 +1809,34 @@ table.configuration-list tr:last-child td {
   padding: 0;
 }
 .AppContent.ImportWizardView #addExtraColumnButton {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   margin: 0;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:before,
@@ -1743,6 +1846,13 @@ table.configuration-list tr:last-child td {
 }
 .AppContent.ImportWizardView #addExtraColumnButton:after {
   clear: both;
+}
+.AppContent.ImportWizardView #addExtraColumnButton:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .AppContent.ImportWizardView #addExtraColumnButton.disabled {
   pointer-events: none;
@@ -2708,26 +2818,34 @@ div.wide.form .errorMessage {
   width: 100%;
 }
 .file-upload-box .ui-icon-plusthick {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   padding: 0 5px;
 }
 .file-upload-box .ui-icon-plusthick:before,
@@ -2737,6 +2855,13 @@ div.wide.form .errorMessage {
 }
 .file-upload-box .ui-icon-plusthick:after {
   clear: both;
+}
+.file-upload-box .ui-icon-plusthick:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .file-upload-box .ui-icon-plusthick.disabled {
   pointer-events: none;
@@ -3132,26 +3257,34 @@ div.wide.form .errorMessage {
   clear: both;
 }
 .ui-datepicker .ui-datepicker-current {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   float: left;
   margin: 0 10px;
 }
@@ -3162,6 +3295,13 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-current:after {
   clear: both;
+}
+.ui-datepicker .ui-datepicker-current:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .ui-datepicker .ui-datepicker-current.disabled {
   pointer-events: none;
@@ -3177,26 +3317,34 @@ div.wide.form .errorMessage {
   filter: gray;
 }
 .ui-datepicker .ui-datepicker-close {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   float: right;
   margin: 0 10px;
 }
@@ -3207,6 +3355,13 @@ div.wide.form .errorMessage {
 }
 .ui-datepicker .ui-datepicker-close:after {
   clear: both;
+}
+.ui-datepicker .ui-datepicker-close:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .ui-datepicker .ui-datepicker-close.disabled {
   pointer-events: none;
@@ -3654,26 +3809,34 @@ div.wide.form .errorMessage {
   margin: 0;
 }
 .designer-toolbar input[type="submit"] {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   margin-bottom: 15px;
 }
 .designer-toolbar input[type="submit"]:before,
@@ -3683,6 +3846,13 @@ div.wide.form .errorMessage {
 }
 .designer-toolbar input[type="submit"]:after {
   clear: both;
+}
+.designer-toolbar input[type="submit"]:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 .designer-toolbar input[type="submit"].disabled {
   pointer-events: none;
@@ -4193,26 +4363,34 @@ div.wide.form .errorMessage {
 }
 #contactStatesData_AddInputButton,
 #customFieldDataData_AddInputButton {
+  line-height: 1;
   cursor: pointer;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.15);
-  border-top: 1px solid rgba(184,194,232,0.8);
-  border-left: 1px solid rgba(145,161,220,0.8);
-  border-right: 1px solid rgba(145,161,220,0.8);
-  border-bottom: 1px solid rgba(106,128,208,0.8);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  *zoom: 1;
+  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
   margin: 5px 0 0 0 !important;
   float: left;
   clear: both;
@@ -4227,6 +4405,14 @@ div.wide.form .errorMessage {
 #contactStatesData_AddInputButton:after,
 #customFieldDataData_AddInputButton:after {
   clear: both;
+}
+#contactStatesData_AddInputButton:hover,
+#customFieldDataData_AddInputButton:hover {
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
 }
 #contactStatesData_AddInputButton.disabled,
 #customFieldDataData_AddInputButton.disabled {
@@ -6956,7 +7142,9 @@ a.user-link {
   top: -1px;
 }
 .pillbox {
+  line-height: 1;
   position: relative;
+  display: inline-block;
   z-index: 9999;
   font-size: 11px;
   border: 1px solid #b7b7b7;
@@ -6969,16 +7157,23 @@ a.user-link {
   -o-border-radius: 4px;
   border-radius: 4px;
   margin: 0 0 30px 0;
-  -webkit-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -moz-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -ms-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  -o-box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  box-shadow: 0 0 9px 5px rgba(153,153,153,0.12);
-  background: url("../images/view-toolbar-gradient.png") left bottom repeat-x;
-  display: inline-block;
+  background-color: #f5f5f5;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#ffffff,#f5f5f5);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#ffffff),color-stop(100%,#f5f5f5));
+  background-image: -webkit-linear-gradient(top,#ffffff,#f5f5f5);
+  background-image: -o-linear-gradient(top,#ffffff,#f5f5f5);
+  background-image: -moz-linear-gradient(top,#ffffff,#f5f5f5);
+  background-image: linear-gradient(top,#ffffff,#f5f5f5);
+  -webkit-box-shadow: inset 0 -2px 0 0 rgb(255, 255, 255), 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: inset 0 -2px 0 0 rgb(255, 255, 255), 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: inset 0 -2px 0 0 rgb(255, 255, 255), 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: inset 0 -2px 0 0 rgb(255, 255, 255), 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: inset 0 -2px 0 0 rgb(255, 255, 255), 0 0 9px 5px rgba(153, 153, 153, 0.12);
 }
 .pillbox + .pillbox {
   float: right;
+  z-index: 0;
 }
 .pillbox.empty {
   visibility: hidden;
@@ -7012,6 +7207,7 @@ a.user-link {
   position: relative;
   display: inline-block;
   float: left;
+  line-height: 1;
 }
 .split-button + .default-button,
 .split-button + .split-button,
@@ -7068,6 +7264,7 @@ a.user-link {
 .button-label:empty {
   display: none;
 }
+.button-action,
 .button-action-trigger,
 .button-trigger {
   position: relative;
@@ -7082,6 +7279,7 @@ a.user-link {
   -o-text-shadow: rgba(255,255,255,0.8) 0px 1px;
   text-shadow: rgba(255,255,255,0.8) 0px 1px;
 }
+.button-action:hover,
 .button-action-trigger:hover,
 .button-trigger:hover {
   background-color: #fff ;
@@ -7094,6 +7292,7 @@ a.user-link {
   background-image: linear-gradient(#fff,#ddd 50%,#fff) ;
   border-left: 1px solid #e7e7e7;
 }
+.button-action:hover i,
 .button-action-trigger:hover i,
 .button-trigger:hover i {
   -webkit-box-shadow: none;
@@ -7103,14 +7302,17 @@ a.user-link {
   box-shadow: none;
   border-left: none;
 }
+.button-action:hover .icon-trigger:before,
 .button-action-trigger:hover .icon-trigger:before,
 .button-trigger:hover .icon-trigger:before {
   display: block;
 }
+.button-action:hover + .button-actions,
 .button-action-trigger:hover + .button-actions,
 .button-trigger:hover + .button-actions {
   display: block;
 }
+.button-action .icon-trigger,
 .button-action-trigger .icon-trigger,
 .button-trigger .icon-trigger {
   font-size: 14px !important;
@@ -7130,11 +7332,13 @@ a.user-link {
   padding: 0;
   border-left: 1px solid #e7e7e7;
 }
+.button-action .icon-trigger:after,
 .button-action-trigger .icon-trigger:after,
 .button-trigger .icon-trigger:after {
   content: "÷";
   padding: 0 0 0 6px;
 }
+.button-action .icon-trigger:before,
 .button-action-trigger .icon-trigger:before,
 .button-trigger .icon-trigger:before {
   content: "";
@@ -7149,10 +7353,12 @@ a.user-link {
 .button-trigger {
   padding: 0 8px 0 0 !important;
 }
+.button-action:hover,
 .button-action-trigger:hover {
   background: none;
   border-left: none;
 }
+.button-action:hover i,
 .button-action-trigger:hover i {
   -webkit-text-shadow: none;
   -moz-text-shadow: none;
@@ -7166,9 +7372,11 @@ a.user-link {
   box-shadow: none;
   border-left: none;
 }
+.button-action:hover .icon-trigger:before,
 .button-action-trigger:hover .icon-trigger:before {
   display: block !important;
 }
+.button-action .icon-options:after,
 .button-action-trigger .icon-options:after {
   margin: 0 !important;
   color: #656565;
@@ -7181,18 +7389,21 @@ a.user-link {
   position: relative;
   top: -1px;
 }
+.button-action .icon-trigger,
 .button-action-trigger .icon-trigger {
   border-left: none !important;
 }
+.button-action .icon-trigger:before,
 .button-action-trigger .icon-trigger:before {
   right: 0px;
 }
+.button-action .icon-trigger:after,
 .button-action-trigger .icon-trigger:after {
   padding: 0 3px;
 }
 .button-actions {
   cursor: text;
-  z-index: 999;
+  z-index: 999999;
   color: #EFEFEF;
   display: none;
   list-style: none;
@@ -8838,12 +9049,24 @@ a + .autoresponder-stats {
   overflow: hidden;
   float: right;
   margin: 0 0 10px 5px !important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.task-action-toolbar .default-button {
+  border: none;
+}
+.task-action-toolbar a {
+  line-height: 1;
 }
 .task-action-toolbar .button-label {
   font-size: 11px;
   padding: 0 3px !important;
   line-height: 20px !important;
   z-index: 10;
+  margin: 0;
 }
 .task-action-toolbar .button-label:before {
   content: '';
@@ -9722,13 +9945,6 @@ div.special-pager .hidden.next:after {
   background-image: -moz-linear-gradient(top,#c43d53,#802225);
   background-image: linear-gradient(top,#c43d53,#802225);
 }
-.gd-dashboard-active #HeaderView {
-  position: fixed;
-  width: 100%;
-}
-.gd-dashboard-active .AppContainer {
-  padding-top: 78px;
-}
 #gd-overlay {
   top: 0;
   left: 0;
@@ -9738,6 +9954,7 @@ div.special-pager .hidden.next:after {
   position: absolute;
   width: 100%;
   display: block;
+  z-index: 99;
 }
 #gd-container {
   z-index: 100;
@@ -12180,20 +12397,6 @@ body.cartographer-light,
 .texture-swatch.cartographer-light .background-texture-1 {
   background: url("../images/patterns/cartographer-light/cartographer-light.png") left top repeat !important;
 }
-@media screen and (max-width: 1000px) {
-  .view-toolbar > a,
-  .view-toolbar .parent > a {
-    padding-left: 10px;
-  }
-  .view-toolbar > a:before,
-  .view-toolbar .parent > a:before {
-    display: none;
-  }
-  #HeaderView .container {
-    min-width: 0;
-    max-width: 100%;
-  }
-}
 @media all and (max-width: 900px) {
   #HeaderView {
     min-width: 0 !important;
@@ -12246,80 +12449,13 @@ body.cartographer-light,
     float: none;
   }
 }
-@media all and (max-width: 801px) {
-  #LoginPageView {
-    padding-top: 0;
-  }
-  #LoginPageView > div {
-    padding: 10px;
-    display: -ms-flex;
-    display: -moz-flex;
-    display: -webkit-flex;
-    display: flex;
-    -ms-flex-direction: column;
-    -ms-flex-wrap: wrap;
-    -moz-flex-flow: column wrap;
-    -webkit-flex-flow: column wrap;
-    flex-flow: column wrap;
-    -ms-flex-pack: start;
-    -moz-justify-content: flex-start;
-    -webkit-justify-content: flex-start;
-    justify-content: flex-start;
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
-  }
-  #LoginPageView #FooterView {
-    -ms-flex: 1 0 auto;
-    -moz-flex: 1 0 auto;
-    -webkit-flex: 1 0 auto;
-    flex: 1 0 auto;
-    margin: 10px 10px 5px 10px;
-  }
-  #LoginPageView #credit-link {
-    margin-left: 0;
-  }
-  #LoginView {
-    min-width: 0 !important;
-    margin: 0;
-    background-position: left bottom;
-    height: auto;
-    -ms-flex: 1 0 auto;
-    -moz-flex: 1 0 auto;
-    -webkit-flex: 1 0 auto;
-    flex: 1 0 auto;
-  }
-  #login-box {
-    width: 100%;
-    height: auto;
-    float: none;
-    margin: 10px 0 0 0;
-    top: 0;
-    left: 0;
-  }
-  #login-box .form {
-    float: none;
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  #login-box .form form {
-    border: none;
-    padding: 0 10px 10px 10px;
-  }
-  #login-box #LoginLogo {
-    float: none;
-    width: 100%;
-    height: 80px;
-    padding: 0;
-    background-position: 50% 50%;
-  }
-  #login-form {
-    padding: 0 20px !important;
-  }
-}
 @media all and (max-width: 500px) {
+  body {
+    border-top: 5px solid red;
+  }
   .logo-and-search {
     left: 5px;
+    padding-right: 15px;
   }
   #app-search {
     margin-left: 0;
@@ -12338,5 +12474,44 @@ body.cartographer-light,
   }
   .AppContent {
     padding: 65px 10px 0 10px;
+  }
+  .list-view-items-summary-clone,
+  .search-form-tools {
+    display: none;
+  }
+  .view-toolbar-container .pillbox:first-child {
+    display: flex;
+    width: 100%;
+    background-size: auto 100%;
+  }
+  .view-toolbar-container .pillbox:first-child .split-button,
+  .view-toolbar-container .pillbox:first-child .default-button {
+    flex: 1 auto;
+    float: none;
+  }
+  .view-toolbar-container .pillbox:first-child .split-button > a,
+  .view-toolbar-container .pillbox:first-child .default-button > a {
+    float: none;
+    width: 100%;
+    text-align: center;
+    line-height: 40px;
+  }
+  .view-toolbar-container .pillbox:first-child .split-button .button-label,
+  .view-toolbar-container .pillbox:first-child .default-button .button-label {
+    padding: 0 3px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    top: 13px;
+    left: 0;
+  }
+  .view-toolbar-container .pillbox:first-child .split-button i,
+  .view-toolbar-container .pillbox:first-child .default-button i {
+    top: -10px;
+  }
+  .view-toolbar-container .pillbox:first-child .split-button .icon-trigger:before,
+  .view-toolbar-container .pillbox:first-child .default-button .icon-trigger:before {
+    top: 28px;
   }
 }
