@@ -62,7 +62,7 @@
 
         protected function renderNextPageLinkLabel()
         {
-            return Zurmo::t('Core', 'Finish');
+            return Zurmo::t('Core', 'Save');
         }
 
         /**
