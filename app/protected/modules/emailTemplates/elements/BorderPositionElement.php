@@ -146,6 +146,7 @@
                             {
                                 console.log("Toggling state of: " + $(checkboxSelector).attr("id") + " to " + state);
                                 $(checkboxSelector).trigger("click");
+                                $(checkboxSelector).parent().addClass("c_on");
                             }
                         }
 
@@ -204,8 +205,7 @@
                         function changeAllDirectionalCheckboxesAndRaiseEvents(checked)
                         {
                             $(directionalCheckBoxSelector)
-                                .each(function()
-                                    {
+                                .each(function(){
                                         toggleCheckBoxState(this, "checked");
                                     });
                         }
