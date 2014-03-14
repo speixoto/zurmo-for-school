@@ -66,7 +66,6 @@
             //Valid case
             $model              = User::getByUsername('super');
             $this->assertTrue($model->id > 0);
-            $form               = new ZurmoActiveForm();
             $textElement        = new TextElement($model, 'id', $form);
             $content            = $textElement->render();
             $valInvalidPosition = strpos($content, 'value=""');
