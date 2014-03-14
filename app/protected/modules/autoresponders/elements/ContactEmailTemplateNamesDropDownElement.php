@@ -85,7 +85,7 @@
                             }
                             updateElementWithData(textContentElement, data.textContent);
                             updateElementWithData(subjectElement, data.subject);
-                            $(htmlContentElement).redactor("zurmoSetIFrameHtml", data.htmlContent, false);
+                            $(htmlContentElement).redactor("set", data.htmlContent);
                             var contentHeight = $(".redactor_box iframe").contents().find("html").outerHeight();
                             $(".redactor_box iframe").height(contentHeight + 50);
                         }
