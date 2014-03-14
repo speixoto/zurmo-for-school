@@ -36,21 +36,9 @@
 
     class MobileHeaderView extends HeaderView
     {
-/**
-        public function __construct($settingsMenuItems, $userMenuItems, $applicationName)
-        {
-            assert('is_array($settingsMenuItems)');
-            assert('is_array($userMenuItems)');
-            assert('is_string($applicationName) || $applicationName == null');
-            $this->verticalGridView   = new GridView(1, 1);
-            $this->verticalGridView->setView(
-                                        new HeaderLinksView($settingsMenuItems, $userMenuItems), 0, 0);
-        }
- **/
         public function getId()
         {
             return 'HeaderView';
         }
-
     }
 ?>
