@@ -35,16 +35,25 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the available contact email templates
+     * Display a drop down of time zone specifically for mapping rules during the import process.
      */
-    class EmailTemplatesForMarketingStaticDropDownElement extends StaticDropDownFormElement
+    class ImportMappingRuleTimeZoneStaticDropDownElement extends ImportMappingRuleStaticDropDownFormElement
     {
-        /**
-         * @return array
-         */
+        public function __construct($model, $attribute, $form = null, array $params = array())
+        {
+            assert('$model instanceof DefaultValueModelAttributeMappingRuleForm');
+            parent::__construct($model, $attribute, $form, $params);
+        }
+
+        protected function getAddBlank()
+        {
+            return true;
+        }
+
         protected function getDropDownArray()
         {
-            return EmailTemplate::getDataAndLabelsByType(EmailTemplate::TYPE_CONTACT);
+            $timezoneIdentifiers = DateTimeZone::listIdentifiers();
+            return array_combine($timezoneIdentifiers, $timezoneIdentifiers);
         }
     }
 ?>

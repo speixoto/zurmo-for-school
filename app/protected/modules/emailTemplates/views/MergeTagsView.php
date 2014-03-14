@@ -64,6 +64,12 @@
         protected $hideByDefault = true;
 
         /**
+         * The selector for the input where is stored the related moduleClassName
+         * @var string
+         */
+        public $moduleClassNameSelector;
+
+        /**
          * @return string
          */
         public function getTreeDivId()
@@ -85,10 +91,10 @@
             assert('is_string($textContentId) || $textContentId === null');
             assert('is_string($htmlContentId) || $htmlContentId === null');
             assert('is_bool($hideByDefault)');
-            $this->uniqueId      = $uniqueId;
-            $this->textContentId = $textContentId;
-            $this->htmlContentId = $htmlContentId;
-            $this->hideByDefault = $hideByDefault;
+            $this->uniqueId                 = $uniqueId;
+            $this->textContentId            = $textContentId;
+            $this->htmlContentId            = $htmlContentId;
+            $this->hideByDefault            = $hideByDefault;
         }
 
         public function isUniqueToAPage()
@@ -104,12 +110,13 @@
             $url    =  Yii::app()->createUrl(static::getControllerId() .
                                              '/default/relationsAndAttributesTreeForMergeTags',
                                              array_merge($_GET, array('uniqueId' => $this->uniqueId)));
+            $this->resolveUrl($url);
             // Begin Not Coding Standard
             $script = "
                 $('#" . $this->getTreeDivId() . "').addClass('loading');
                 $(this).makeLargeLoadingSpinner('" . $this->getTreeDivId() . "');
                 $.ajax({
-                    url : '" . $url . "',
+                    url : $url,
                     type : 'GET',
                     success : function(data)
                     {
@@ -123,6 +130,18 @@
             ";
             // End Not Coding Standard
             return $script;
+        }
+
+        protected function resolveUrl(& $url)
+        {
+            if ($this->moduleClassNameSelector !== null)
+            {
+                $url = "'" . $url . "&moduleClassName='+$('{$this->moduleClassNameSelector}').val()";
+            }
+            else
+            {
+                $url = "'" . $url . "'";
+            }
         }
 
         protected function renderContent()

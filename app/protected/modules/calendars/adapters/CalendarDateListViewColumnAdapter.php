@@ -48,11 +48,11 @@
             $data  = parent::renderGridViewData();
             if ($this->attribute == 'start')
             {
-                $data['header'] = Zurmo::t('CalendarsModule', 'Start Date');
+                $data['header'] = Zurmo::t('Core', 'Start Date');
             }
             elseif ($this->attribute == 'end')
             {
-                $data['header'] = Zurmo::t('CalendarsModule', 'End Date');
+                $data['header'] = Zurmo::t('Core', 'End Date');
             }
             else
             {

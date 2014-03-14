@@ -105,7 +105,7 @@
          */
         public static function getCollectionLogoLabel()
         {
-            return Zurmo::t('GamificationModule', 'Calendar');
+            return Zurmo::t('Core', 'Calendar');
         }
     }
 ?>

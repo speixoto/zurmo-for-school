@@ -72,6 +72,7 @@
         public function actionCompileCss()
         {
             Yii::app()->lessCompiler->compile();
+            Yii::app()->lessCompiler->compileCustom();
             Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Less CSS files compiled sucessfully.'));
             $this->actionIndex();
         }

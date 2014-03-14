@@ -381,7 +381,8 @@
 
         protected function resolvePreviewAjaxOptions()
         {
-            $ajaxArray                  = array();
+            $message   = Zurmo::t('EmailTemplatesModule', 'There was an error generating preview');
+            $ajaxArray                  = static::resolveErrorAjaxCallback($message);
             $ajaxArray['cache']         = 'false';
             $ajaxArray['url']           = static::resolvePreviewActionUrl();
             $ajaxArray['type']          = 'POST';

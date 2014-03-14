@@ -93,7 +93,7 @@
             if ($renderHidden)
             {
                 $attribute              = $this->resolveCheckboxInputAttributeName($attribute);
-                $checkboxLabelFor       = ZurmoHtml::activeName($this->model, $attribute);
+                $checkboxLabelFor       = ZurmoHtml::activeId($this->model, $attribute);
             }
             $checkboxLabelHtmlOptions   = array();
             $checkboxLabel              = ZurmoHtml::label($label, $checkboxLabelFor, $checkboxLabelHtmlOptions);
@@ -131,7 +131,7 @@
         protected function registerScripts()
         {
             $this->registerDirectionalCheckboxScript();
-            //$this->registerAllOrNoneCheckboxScript();
+            $this->registerAllOrNoneCheckboxScript();
         }
 
         protected function registerDirectionalCheckboxScript()
@@ -145,14 +145,26 @@
                             if ($(checkboxSelector).prop("checked") != state)
                             {
                                 $(checkboxSelector).trigger("click");
+                                $(checkboxSelector).parent().addClass("c_on");
                             }
+                        }
+
+                        function areAllDirectionalCheckboxesChecked()
+                        {
+                            allCount        = $(directionalCheckBoxSelector).length;
+                            checkedCount    = $(directionalCheckBoxSelector + ":checked").length;
+                            return (allCount == checkedCount);
+                        }
+
+                        function areAllDirectionalCheckboxesUnchecked()
+                        {
+                            checkedCount    = $(directionalCheckBoxSelector + ":checked").length;
+                            return (checkedCount == 0);
                         }
 
                         function checkAllIfAllDirectionalCheckboxesChecked()
                         {
-                            allCount        = $(directionalCheckBoxSelector).length;
-                            checkedCount    = $(directionalCheckBoxSelector + ":checked").length;
-                            if (allCount == checkedCount)
+                            if (areAllDirectionalCheckboxesChecked())
                             {
                                 toggleCheckBoxState(allCheckboxSelector, true);
                                 return true;
@@ -161,8 +173,7 @@
 
                         function checkNoneIfAllDirectionalCheckboxesUnchecked()
                         {
-                            checkedCount    = $(directionalCheckBoxSelector + ":checked").length;
-                            if (checkedCount == 0)
+                            if (areAllDirectionalCheckboxesUnchecked())
                             {
                                 toggleCheckBoxState(noneCheckboxSelector, true);
                                 return true;
@@ -193,13 +204,8 @@
                         function changeAllDirectionalCheckboxesAndRaiseEvents(checked)
                         {
                             $(directionalCheckBoxSelector)
-                                .each(function()
-                                    {
-                                        if ($(this).prop("checked") != checked)
-                                        {
-                                            $(this).trigger("click");
-                                            $(this).trigger("change");
-                                        }
+                                .each(function(){
+                                        toggleCheckBoxState(this, "checked");
                                     });
                         }
                         function checkAllDirectionalCheckboxesAndRaiseEvents()

@@ -62,7 +62,7 @@
 
         protected function renderNextPageLinkLabel()
         {
-            return Zurmo::t('Core', 'Finish');
+            return Zurmo::t('Core', 'Save');
         }
 
         /**
@@ -70,23 +70,21 @@
          */
         protected function renderFormContent()
         {
-            $leftSideContent    = null;
-            $this->renderPlainTextAndHtmlContent($leftSideContent);
-            $content            = $this->renderLeftAndRightSideBarContentWithWrappers($leftSideContent);
+            $content = null;
+            $this->renderPlainTextAndHtmlContent($content);
             return $content;
         }
 
         protected function renderPlainTextAndHtmlContent(& $content)
         {
-            $params  = array('redactorPlugins' => CJSON::encode(array('mergetags')));
-            $element = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
-            $element->editableTemplate  = '{label}{content}';
-            $right = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
-            $right = ZurmoHtml::tag('td', array(), $right);
+            $params   = array('redactorPlugins' => CJSON::encode(array('mergetags')));
+            $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
+            $element->editableTemplate  = '{label}{content}{error}';
+            $right    = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
             //todo: placed last so redactor is already initialized first. just a trick for the css right now
-            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
-            $left = $this->renderMergeTagsView();
-            $left = ZurmoHtml::tag('th', array(), $title . $left);
+            $title    = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $left     = $this->renderMergeTagsView();
+            $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $title . $left);
             $content .= $left . $right;
         }
 
@@ -96,6 +94,11 @@
                                       get_class($this->model) . '_textContent',
                                       get_class($this->model) . '_htmlContent', false); //todo: get these last 2 values dynamically
             return $view->render();
+        }
+
+        protected function wrapContentInLeftColumn($content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix strong-right'), $content);
         }
     }
 ?>

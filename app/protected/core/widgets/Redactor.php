@@ -46,17 +46,18 @@
 
         public $content;
 
+        // this is css property of redactor, not the widget
+        public $css;
+
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
                                    'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
 
-        public $source          = "false";
+        public $visual          = "true";
 
         public $paragraphy      = "true";
 
         public $cleanup         = "true";
-
-        public $fullpage        = "true";
 
         public $iframe          = "true";
 
@@ -68,11 +69,19 @@
 
         public $wym             = "false";
 
+        public $removeEmptyTags = "false";
+
+        public $tidyHtml        = "true";
+
+        public $xhtml           = "true";
+
+        public $fullpage;
+
         public $toolbarExternal;
 
         public $plugins;
 
-        public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
+        public $deniedTags;
 
         public $allowedTags;
 
@@ -109,27 +118,32 @@
                                 {$this->renderRedactorParamForInit('syncAfterCallback')}
                                 {$this->renderRedactorParamForInit('syncBeforeCallback')}
                                 {$this->renderRedactorParamForInit('textareaKeydownCallback')}
-                                buttons:        {$this->buttons},
-                                cleanup:        {$this->cleanup},
-                                convertDivs:    {$this->convertDivs},
-                                {$this->renderRedactorParamForInit('allowedTags')}
-                                deniedTags:     {$this->deniedTags},
-                                fullpage:       {$this->fullpage},
-                                iframe:         {$this->iframe},
-                                minHeight:      {$this->minHeight},
-                                observeImages:  {$this->observeImages},
-                                source:         {$this->source},
-                                paragraphy:     {$this->paragraphy},
-                                wym:            {$this->wym},
+                                {$this->renderRedactorParamForInit('plugins')}
                                 {$this->renderRedactorParamForInit('toolbarExternal')}
-                                imageUpload:    '{$this->imageUpload}',
-                                imageGetJson:   '{$this->imageGetJson}',
-                                {$this->resolveAndRenderPluginParam()}
+                                {$this->renderRedactorParamForInit('fullpage')}
+				                {$this->renderRedactorParamForInit('allowedTags')}
+                                {$this->renderRedactorParamForInit('deniedTags')}
+                                {$this->renderRedactorParamForInit('iframe')}
+                                {$this->renderRedactorParamForInit('css')}
+                                buttons:            {$this->buttons},
+                                cleanup:            {$this->cleanup},
+                                convertDivs:        {$this->convertDivs},
+                                imageGetJson:       '{$this->imageGetJson}',
+                                imageUpload:        '{$this->imageUpload}',
+                                minHeight:          {$this->minHeight},
+                                observeImages:      {$this->observeImages},
+                                paragraphy:         {$this->paragraphy},
+                                removeEmptyTags:    {$this->removeEmptyTags},
+                                visual:             {$this->visual},
+                                tidyHtml:           {$this->tidyHtml},
+                                wym:                {$this->wym},
+                                xhtml:              {$this->xhtml},
                             });
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
+            $content    = ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
+            echo $content;
         }
 
         protected function renderRedactorParamForInit($paramName)
@@ -137,15 +151,8 @@
             $paramValue = $this->$paramName;
             if (isset($paramValue))
             {
-                return "{$paramName}: {$paramValue},";
-            }
-        }
-
-        protected function resolveAndRenderPluginParam()
-        {
-            if ($this->plugins != null)
-            {
-                return "plugins:        {$this->plugins}";
+                $config = "{$paramName}: {$paramValue},";
+                return $config;
             }
         }
 
@@ -153,6 +160,21 @@
         {
             $this->resolveSelectivePluginScriptLoad();
             parent::init();
+            // TODO: @Shoaibi: Critical: Find a better way to deal with this.
+            //$this->resolveSelectiveCssLoad();
+        }
+
+        protected function resolveSelectiveCssLoad()
+        {
+            $this->resolveSelectiveCssLoadForIframeSetting();
+        }
+
+        protected function resolveSelectiveCssLoadForIframeSetting()
+        {
+            if ($this->iframe == 'true')
+            {
+                $this->css  = "'" . $this->scriptUrl . "/css/redactor-iframe.css'";
+            }
         }
 
         protected function resolveSelectivePluginScriptLoad()

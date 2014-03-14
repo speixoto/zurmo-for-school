@@ -115,7 +115,11 @@
                 $tagsGuideLink          = $tagsGuideLinkElement->render();
             }
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
-            $content = ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+            $content            = ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+            if ($this->form)
+            {
+                $content           .= $this->renderTextAndHtmlContentAreaError();
+            }
             return $content;
         }
 
@@ -142,6 +146,7 @@
                             {
                                     _old.removeClass('active-tab');
                                     _new.addClass('active-tab');
+                                    _new.trigger('tab-changed');
                             });
                             event.preventDefault();
                         });
@@ -229,7 +234,8 @@
                                 'htmlOptions'           => $htmlOptions,
                                 'content'               => $htmlContent,
                                 'paragraphy'            => "false",
-                                'deniedTags'            => CJSON::encode($this->resolveDeniedTags()),
+                                'fullpage'              => "true",
+                                'deniedTags'            => "false",
                                 'plugins'               => CJSON::encode($this->resolvePlugins()),
                                 'observeImages'         => 'true',
                                 'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),
@@ -238,22 +244,25 @@
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
             $content                .= $cClipWidget->getController()->clips['Redactor'];
-            $content                .= $this->renderHtmlContentAreaError();
             return $content;
         }
 
          protected function renderTextContentArea()
          {
             $textContentElement                         = new TextAreaElement($this->model, static::TEXT_CONTENT_INPUT_NAME, $this->form);
-            $textContentElement->editableTemplate       = $this->editableTemplate;
+            $textContentElement->editableTemplate       = str_replace('{error}', '', $this->editableTemplate);
             return $textContentElement->render();
          }
 
-        protected function renderHtmlContentAreaError()
+        protected function renderTextAndHtmlContentAreaError()
         {
             if (strpos($this->editableTemplate, '{error}') !== false)
             {
-                return $this->form->error($this->model, static::HTML_CONTENT_INPUT_NAME);
+                $textContentError = $this->form->error($this->model, static::TEXT_CONTENT_INPUT_NAME,
+                    array('inputID' => $this->getEditableInputId(static::TEXT_CONTENT_INPUT_NAME)));
+                $htmlContentError = $this->form->error($this->model, static::HTML_CONTENT_INPUT_NAME,
+                    array('inputID' => $this->getEditableInputId(static::HTML_CONTENT_INPUT_NAME)));
+                return $textContentError . $htmlContentError;
             }
             else
             {

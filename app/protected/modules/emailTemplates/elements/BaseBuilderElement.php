@@ -560,7 +560,10 @@
             $formEnd                = $this->renderFormActionLinks();
             $formEnd                .= $clipWidget->renderEndWidget();
 
-            $content                = $formStart . $formInputContent. $formEnd;
+            $content                = $formStart;
+            $content               .= $form->errorSummary($this->model);
+            $content               .= $formInputContent;
+            $content               .= $formEnd;
             $content                = ZurmoHtml::tag('div', array('class' => 'wide form'), $content);
             $content                = ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
             return $content;
@@ -954,6 +957,7 @@
             return array('beforeValidate'    => 'js:$(this).beforeValidateAction',
                          'afterValidate'     => $this->renderAfterValidateScript(),
                          'afterValidateAjax' => $this->renderConfigSaveAjax(),
+                         'summaryID'         => WizardActiveForm::makeErrorsSummaryId($this->resolveFormId()),
                          'validateOnSubmit'  => true,
                          'validateOnChange'  => false);
         }
@@ -990,7 +994,8 @@
         protected function resolveAjaxPostForApplyClickAjaxOptions()
         {
             $hiddenInputId              = ZurmoHtml::activeId($this->model, 'id');
-            $ajaxArray                  = array();
+            $message                    = Zurmo::t('EmailTemplatesModule', 'There was an error applying changes');
+            $ajaxArray                  = ComponentForEmailTemplateWizardView::resolveErrorAjaxCallback($message);
             //$ajaxArray['cache']         = 'false'; //todo: should by default be used.
             $ajaxArray['url']           = $this->resolveFormActionUrl();
             $ajaxArray['type']          = 'POST';

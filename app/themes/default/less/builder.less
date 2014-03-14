@@ -31,14 +31,6 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
-
-.AppNavigation{
-	//display: none;
-}
-.AppContent{
-	//margin-left: 0;
-}
-
 #builder{
 	.view-toolbar-container{
 		border-top:none;
@@ -329,4 +321,82 @@
 	&:hover {
 		background-image: url("@{path}email-builder/merge-tags-hover.png");
 	}
+}
+
+#ContentForEmailTemplateWizardView{
+	.email-template-content,
+	.tab,
+	.redactor_box,
+	.redactor_box iframe,
+	#BuilderEmailTemplateWizardForm_textContent{
+		height: 100% !important;
+	}
+	.tab{
+		overflow: hidden;
+	}
+	.email-template-content{
+		padding-bottom: 0;
+		margin-bottom: 0;
+		+ .errorMessage{
+			margin-top: 32px;
+		}
+	}
+	.email-template-combined-content{
+		padding-bottom: 0;
+		margin-bottom: 0;
+		min-height: 600px;
+	}
+}
+
+.email-template-textContent{
+	line-height: 1.4 !important;
+	font-size: 16px !important;
+	padding: 10px 15px !important;
+	textarea{
+		line-height: 1.4 !important;
+		font-size: 16px !important;
+		min-height: 600px;
+	}
+}
+
+.divider-swatch{
+	width: 100%;
+	margin-bottom: 20px;
+	input{
+		margin-top:13px !important
+	}
+	label{
+		width: 85%;
+	}
+	.fancy-divider-label{
+		display: none;
+	}
+}
+
+.fancy-divider-1,
+.fancy-divider-2,
+.fancy-divider-3,
+.fancy-divider-4,
+.fancy-divider-5{
+	width: 100%;
+	height: 30px;
+	display: block;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+
+.fancy-divider-1{
+	background-image: url("@{path}email-builder/fancy-divider-1.png");
+}
+.fancy-divider-2{
+	background-image: url("@{path}email-builder/fancy-divider-2.png");
+}
+.fancy-divider-3{
+	background-image: url("@{path}email-builder/fancy-divider-3.png");
+}
+.fancy-divider-4{
+	background-image: url("@{path}email-builder/fancy-divider-4.png");
+}
+.fancy-divider-5{
+	background-image: url("@{path}email-builder/fancy-divider-5.png");
 }

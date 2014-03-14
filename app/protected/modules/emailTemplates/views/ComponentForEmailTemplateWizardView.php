@@ -172,19 +172,27 @@
 
         public static function resolveAdditionalAjaxOptions($formName)
         {
-            $errorMessage   = Zurmo::t('EmailTemplatesModule',
-                                                'There was an error saving EmailTemplatesModuleSingularLabel',
-                                                LabelUtil::getTranslationParamsForAllModules());
+            return static::resolveErrorAjaxCallback();
+        }
+
+        public static function resolveErrorAjaxCallback($message = null)
+        {
+            if ($message === null)
+            {
+                $message   = Zurmo::t('EmailTemplatesModule',
+                                            'There was an error saving EmailTemplatesModuleSingularLabel',
+                                            LabelUtil::getTranslationParamsForAllModules());
+            }
             $ajaxArray                  = array();
             $ajaxArray['error']       = "js:function(data)
-                                            {
-                                                $('#FlashMessageBar').jnotifyAddMessage({
-                                                    text: '" . $errorMessage . "',
-                                                    permanent: true,
-                                                    clickOverlay : true,
-                                                    showIcon: false,
-                                                });
-                                            }";
+                                        {
+                                            $('#FlashMessageBar').jnotifyAddMessage({
+                                                text: '" . $message . "',
+                                                permanent: true,
+                                                clickOverlay : true,
+                                                showIcon: false,
+                                            });
+                                        }";
             return $ajaxArray;
         }
 

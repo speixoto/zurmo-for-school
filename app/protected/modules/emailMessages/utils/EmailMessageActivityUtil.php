@@ -419,10 +419,6 @@ PTN;
             static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
             if ($replaceExisting)
             {
-                if ($preview)
-                {
-                    $content = static::resolveDefaultFooterPlaceholderContentByType($isHtmlContent);
-                }
                 static::resolveUnsubscribeAndManageSubscriptionPlaceholdersToUrls($content,
                                                                                   $unsubscribeUrl,
                                                                                   $manageSubscriptionsUrl);

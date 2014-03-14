@@ -47,7 +47,27 @@
 
         protected function resolveAvailableFonts()
         {
-            $fonts = array('Arial', 'Georgia', 'Helvetica', 'Monospace', 'Times New Roman');
+            $fonts = array('Arial',
+                            'Arial Black',
+                            'Book Antiqua',
+                            'Charcoal',
+                            'Comic Sans',
+                            'Courier New',
+                            'Geneva',
+                            'Georgia',
+                            'Helvetica',
+                            'Impact',
+                            'Lucida Console',
+                            'Lucida Grande',
+                            'Lucida Sans Unicode',
+                            'Monaco.',
+                            'Palatino',
+                            'Palatino Linotype',
+                            'Tahoma',
+                            'Times',
+                            'Times New Roman',
+                            'Trebuchet MS',
+                            'Verdana');
             $fonts  = array_combine($fonts, $fonts);
             return $fonts;
         }

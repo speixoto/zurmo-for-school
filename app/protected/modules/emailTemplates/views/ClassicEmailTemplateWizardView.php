@@ -61,6 +61,7 @@
                         $('#" . static::getValidationScenarioInputId() . "').val('" .
                                         BuilderEmailTemplateWizardForm::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO. "');
                         $('#GeneralDataForEmailTemplateWizardView').hide();
+                        " . $this->renderTreeViewAjaxScriptContentForMergeTagsView() . "
                         $('#ContentForEmailTemplateWizardView').show();
                         $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('100%');
                         $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');

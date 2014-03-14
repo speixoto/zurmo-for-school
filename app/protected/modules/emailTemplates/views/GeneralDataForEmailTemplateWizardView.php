@@ -38,6 +38,8 @@
     {
         const HIDDEN_ID = 'hiddenId';
 
+        const MODULE_CLASS_NAME_ID = 'moduleClassNameForMergeTagsViewId';
+
         protected $defaultTextAndDropDownElementEditableTemplate    = '<th>{label}<span class="required">*</span></th><td colspan="{colspan}">{content}</td>';
 
         /**
@@ -83,6 +85,7 @@
             $this->renderIsDraft($hiddenElements);
             $this->renderLanguage($hiddenElements);
             $this->renderId($hiddenElements);
+            $this->renderModuleClassNameIdForMergeTagsView($hiddenElements);
             $this->renderModelClassName($leftSideContent, $hiddenElements);
             $this->renderName($leftSideContent);
             $this->renderSubject($leftSideContent);
@@ -126,6 +129,24 @@
         protected function renderId(& $hiddenElements)
         {
             $this->renderHiddenField($hiddenElements, static::HIDDEN_ID, (int)$this->model->id);
+        }
+
+        protected function renderModuleClassNameIdForMergeTagsView(& $hiddenElements)
+        {
+            $hiddenElements .= ZurmoHtml::hiddenField(static::MODULE_CLASS_NAME_ID,
+                                                $this->getModuleClassName(),
+                                                array('id' => static::MODULE_CLASS_NAME_ID));
+        }
+
+        protected function getModuleClassName()
+        {
+            $moduleClassName = null;
+            $modelClassName  = $this->model->modelClassName;
+            if ($modelClassName != null)
+            {
+                $moduleClassName = $modelClassName::getModuleClassName();
+            }
+            return $moduleClassName;
         }
 
         protected function renderLanguage(& $hiddenElements)
@@ -216,6 +237,11 @@
             return '#' . $id;
         }
 
+        public static function resolveModuleClassNameHiddenInputJQuerySelector()
+        {
+            return '#' . static::MODULE_CLASS_NAME_ID;
+        }
+
         protected function registerTrashSomeDataOnModuleChangeScript()
         {
             if (!$this->model->isWorkflowTemplate())
@@ -257,6 +283,7 @@
                                                     //update id
                                                     $('" . static::resolveTemplateIdHiddenInputJQuerySelector() . "').val(data.id);
                                                 }
+                                                $('" . static::resolveModuleClassNameHiddenInputJQuerySelector() . "').val(data.moduleClassName);
                                             }";
             return $ajaxArray;
         }

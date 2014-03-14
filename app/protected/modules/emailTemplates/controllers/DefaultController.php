@@ -213,7 +213,11 @@
             // throwing errors for content being empty. Plus we already validate it using the wizard form.
             if ($emailTemplate->save(false))
             {
-                echo CJSON::encode(array('id' => $emailTemplate->id, 'redirectToList' => false));
+                $modelClassName  = $emailTemplate->modelClassName;
+                $moduleClassName = $modelClassName::getModuleClassName();
+                echo CJSON::encode(array('id'              => $emailTemplate->id,
+                                         'redirectToList'  => false,
+                                         'moduleClassName' => $moduleClassName));
                 Yii::app()->end(0, false);
             }
             else
@@ -503,6 +507,7 @@
                 $emailTemplate  = EmailTemplate::getById(intval($id));
                 $content        = $emailTemplate->htmlContent;
                 echo $content;
+                Yii::app()->clientScript->render($content);
                 Yii::app()->end(0, false);
             }
             // serializedData['dom'] = json_encoded_dom

@@ -48,6 +48,20 @@
             return $styles;
         }
 
+        protected function resolveData()
+        {
+            $styles = $this->resolveAvailableStyles();
+            $data   = array();
+            foreach ($styles as $value => $label)
+            {
+                $fancyDividerSpanClass  = substr($value, 0, -4);
+                $dataLabel              = ZurmoHtml::span($fancyDividerSpanClass);
+                $dataLabel              .= ZurmoHtml::tag('span', array('class' => 'fancy-divider-label'), $label);
+                $data[$value]           = $dataLabel;
+            }
+            return $data;
+        }
+
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
@@ -57,7 +71,7 @@
             $content = $this->form->radioButtonList(
                 $this->model,
                 $this->attribute,
-                $this->resolveAvailableStyles(),
+                $this->resolveData(),
                 $this->getEditableHtmlOptions()
             );
             return $content;
@@ -73,14 +87,19 @@
             return ZurmoHtml::ID_PREFIX . $this->getEditableInputId();
         }
 
+        protected function resolveTemplate()
+        {
+            $template   = '<div class="radio-input divider-swatch">{input}{label}</div>';
+            return $template;
+        }
+
         public function getEditableHtmlOptions()
         {
-            //TODO @Shoaibi/Jason this should be handled html-wise like texture in user-ui-config
             $htmlOptions = array(
                 'name'      => $this->getEditableInputName(),
                 'id'        => $this->getEditableInputId(),
                 'separator' => '',
-                'template'  => '<div class="radio-input texture-swatch">{input}{label}</div>',
+                'template'  => $this->resolveTemplate(),
             );
             return $htmlOptions;
         }
