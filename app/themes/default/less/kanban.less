@@ -399,6 +399,9 @@
 	.radius(3px);
 	.default-button{
 		border: none;
+		+ .default-button{
+			bordr-left:1px solid #bababa;
+		}
 	}
 	a{
 		line-height: 1;
@@ -408,7 +411,7 @@
 		padding: 0 3px !important;
 		line-height: 20px !important;
 		z-index: 10;
-		margin: 0;
+		margin: 0 !important;
 		&:before{
 			content:'';
 			position: absolute;
