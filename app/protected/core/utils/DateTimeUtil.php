@@ -235,7 +235,7 @@
         {
             assert('is_string($timeZone)');
             $timeZoneObject = new DateTimeZone($timeZone);
-            $offset = $timeZoneObject->getOffset(new DateTime($utcTimeStamp));
+            $offset = $timeZoneObject->getOffset(new DateTime());
             return $utcTimeStamp - $offset;
         }
 
@@ -348,9 +348,7 @@
         {
             assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
             $greaterThanValue = $dateValue . ' 00:00:00';
-            $adjustedTimeStamp = Yii::app()->timeZoneHelper->convertFromLocalTimeStampForCurrentUser(
-                                 static::convertDbFormatDateTimeToTimestamp($greaterThanValue));
-            return               static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
+            return static::convertDbFormattedDateTimeToTimeZoneAdjustedDateTime($greaterThanValue);
         }
 
         /**
@@ -364,10 +362,8 @@
         public static function convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($dateValue)
         {
             assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
-            $lessThanValue     = $dateValue . ' 23:59:59';
-            $adjustedTimeStamp = Yii::app()->timeZoneHelper->convertFromLocalTimeStampForCurrentUser(
-                                 static::convertDbFormatDateTimeToTimestamp($lessThanValue));
-            return               static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
+            $lessThanValue = $dateValue . ' 23:59:59';
+            return static::convertDbFormattedDateTimeToTimeZoneAdjustedDateTime($lessThanValue);
         }
 
         /**

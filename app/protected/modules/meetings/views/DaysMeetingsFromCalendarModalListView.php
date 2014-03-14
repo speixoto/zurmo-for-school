@@ -178,13 +178,13 @@
                     'attributeName'        => 'startDateTime',
                     'operatorType'         => 'greaterThanOrEqualTo',
                     'value'                => DateTimeUtil::
-                                                convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay2($this->stringTime)
+                                                convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($this->stringTime)
                 ),
                 2 => array(
                     'attributeName'        => 'startDateTime',
                     'operatorType'         => 'lessThanOrEqualTo',
                     'value'                => DateTimeUtil::
-                                                convertDateIntoTimeZoneAdjustedDateTimeEndOfDay2($this->stringTime)
+                                                convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($this->stringTime)
                 )
                 );
             $searchAttributeData['structure'] = '(1 and 2)';
