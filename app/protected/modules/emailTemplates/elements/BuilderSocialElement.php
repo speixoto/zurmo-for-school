@@ -75,7 +75,7 @@
                 {
                     $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
                     $htmlOptions['class']  .= ' ' . $serviceName;
-                    $label                  = ZurmoHtml::tag('span', array(), $serviceName);
+                    $label                  = ZurmoHtml::tag('strong', array(), $serviceName);
                     $content               .= ZurmoHtml::link($label, $serviceDetails['url'], $htmlOptions);
                 }
             }
