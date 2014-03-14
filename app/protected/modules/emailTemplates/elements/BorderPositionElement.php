@@ -144,7 +144,6 @@
                         {
                             if ($(checkboxSelector).prop("checked") != state)
                             {
-                                console.log("Toggling state of: " + $(checkboxSelector).attr("id") + " to " + state);
                                 $(checkboxSelector).trigger("click");
                                 $(checkboxSelector).parent().addClass("c_on");
                             }

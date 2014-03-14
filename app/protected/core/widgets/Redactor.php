@@ -46,11 +46,14 @@
 
         public $content;
 
+        // this is css property of redactor, not the widget
+        public $css;
+
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
                                    'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
 
-        public $source          = "false";
+        public $visual          = "true";
 
         public $paragraphy      = "true";
 
@@ -120,17 +123,18 @@
                                 {$this->renderRedactorParamForInit('fullpage')}
 				                {$this->renderRedactorParamForInit('allowedTags')}
                                 {$this->renderRedactorParamForInit('deniedTags')}
+                                {$this->renderRedactorParamForInit('iframe')}
+                                {$this->renderRedactorParamForInit('css')}
                                 buttons:            {$this->buttons},
                                 cleanup:            {$this->cleanup},
                                 convertDivs:        {$this->convertDivs},
-                                iframe:             {$this->iframe},
                                 imageGetJson:       '{$this->imageGetJson}',
                                 imageUpload:        '{$this->imageUpload}',
                                 minHeight:          {$this->minHeight},
                                 observeImages:      {$this->observeImages},
                                 paragraphy:         {$this->paragraphy},
                                 removeEmptyTags:    {$this->removeEmptyTags},
-                                source:             {$this->source},
+                                visual:             {$this->visual},
                                 tidyHtml:           {$this->tidyHtml},
                                 wym:                {$this->wym},
                                 xhtml:              {$this->xhtml},
@@ -138,7 +142,8 @@
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
+            $content    = ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
+            echo $content;
         }
 
         protected function renderRedactorParamForInit($paramName)
@@ -146,7 +151,8 @@
             $paramValue = $this->$paramName;
             if (isset($paramValue))
             {
-                return "{$paramName}: {$paramValue},";
+                $config = "{$paramName}: {$paramValue},";
+                return $config;
             }
         }
 
@@ -154,6 +160,21 @@
         {
             $this->resolveSelectivePluginScriptLoad();
             parent::init();
+            // TODO: @Shoaibi: Critical: Find a better way to deal with this.
+            //$this->resolveSelectiveCssLoad();
+        }
+
+        protected function resolveSelectiveCssLoad()
+        {
+            $this->resolveSelectiveCssLoadForIframeSetting();
+        }
+
+        protected function resolveSelectiveCssLoadForIframeSetting()
+        {
+            if ($this->iframe == 'true')
+            {
+                $this->css  = "'" . $this->scriptUrl . "/css/redactor-iframe.css'";
+            }
         }
 
         protected function resolveSelectivePluginScriptLoad()
