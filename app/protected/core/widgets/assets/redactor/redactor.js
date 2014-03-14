@@ -779,6 +779,42 @@
 
 			this.sync();
 		},
+        zurmoSetIFrameHtml: function(html, strip, placeholderRemove)
+        {
+
+            html = html.toString();
+            html = html.replace(/\$/g, '&#36;');
+
+            if (strip !== false)
+            {
+                html = this.cleanSavePreCode(html);
+
+                html = this.cleanStripTags(html);
+                html = this.cleanConvertProtected(html);
+                html = this.cleanConvertInlineTags(html, true);
+
+                if (this.opts.linebreaks === false)	html = this.cleanConverters(html);
+                else html = html.replace(/<p(.*?)>([\w\W]*?)<\/p>/gi, '$2<br>');
+            }
+
+            // $ fix
+            html = html.replace(/&amp;#36;/g, '$');
+
+            html = this.cleanEmpty(html);
+
+            this.$editor.parent().html(html);
+
+            // set no editable
+            this.setNonEditable();
+            this.setSpansVerified();
+
+            this.sync();
+
+            if (html == '') placeholderRemove = false;
+            if (placeholderRemove !== false) this.placeholderRemove();
+
+            this.$editor.trigger('content-inserted');
+        },
 		setCodeIframe: function(html)
 		{
 			var doc = this.iframePage();
