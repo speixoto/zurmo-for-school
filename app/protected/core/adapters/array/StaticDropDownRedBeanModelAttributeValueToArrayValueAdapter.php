@@ -34,50 +34,18 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class UserRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
+    class StaticDropDownRedBeanModelAttributeValueToArrayValueAdapter extends DropDownRedBeanModelAttributeValueToArrayValueAdapter
     {
-        public static function setUpBeforeClass()
+        public function resolveData(& $data)
         {
-            parent::setUpBeforeClass();
-            $super = SecurityTestHelper::createSuperAdmin();
-        }
-
-        public static function getDependentTestModelClassNames()
-        {
-            return array('ExportTestModelItem');
-        }
-
-        public function testGetExportValue()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-            $data = array();
-            $model = new ExportTestModelItem();
-            $model->lastName = "Smith";
-            $model->string = "Some Test String";
-            $model->user     = $super;
-            $this->assertTrue($model->save());
-
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
-            $adapter->resolveData($data);
-            $compareData = array('Clark Kent');
-
-            $this->assertEquals($compareData, $data);
-            $data = array();
-            $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('user'));
-            $this->assertEquals($compareData, $data);
-
-            $data = array();
-            $model = new ExportTestModelItem();
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
-            $adapter->resolveData($data);
-            $compareData = array('');
-            $this->assertEquals($compareData, $data);
-            $data = array();
-            $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('user'));
-            $this->assertEquals($compareData, $data);
+            if ($this->model->{$this->attribute} != '')
+            {
+                $data[$this->attribute] = $this->model->{$this->attribute};
+            }
+            else
+            {
+                $data[$this->attribute] = null;
+            }
         }
     }
 ?>
