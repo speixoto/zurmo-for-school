@@ -59,7 +59,7 @@
                     try
                     {
                         $elementClassName = $perClassMetadata['elements'][$attributeName] . 'Element';
-                        if (is_subclass_of($elementClassName, 'StaticDropDownElement'))
+                        if (@class_exists($elementClassName) && is_subclass_of($elementClassName, 'StaticDropDownElement'))
                         {
                             return 'StaticDropDown';
                         }
