@@ -51,7 +51,6 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-
             $data = array();
             $model = new ExportTestModelItem();
             $model->lastName = "Smith";
@@ -61,7 +60,7 @@
 
             $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
             $adapter->resolveData($data);
-            $compareData = array($super);
+            $compareData = array('Clark Kent');
 
             $this->assertEquals($compareData, $data);
             $data = array();
