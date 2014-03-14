@@ -53,8 +53,6 @@
 
         public function testEditableHtmlOptionsInputValue()
         {
-            $path               = Yii::getPathOfAlias('application.modules.zurmo.controllers');
-            include_once $path . DIRECTORY_SEPARATOR . 'TestController.php';
             $model              = new User();
             $this->assertTrue($model->id < 0);
             $form               = new ZurmoActiveForm();
@@ -68,7 +66,6 @@
             //Valid case
             $model              = User::getByUsername('super');
             $this->assertTrue($model->id > 0);
-
             $form               = new ZurmoActiveForm();
             $textElement        = new TextElement($model, 'id', $form);
             $content            = $textElement->render();
