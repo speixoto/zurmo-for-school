@@ -1101,6 +1101,11 @@ body > .ui-autocomplete{
 		&:hover{
 			width: @navWidth;
 			.b-shadow(2px 0 5px 0 rgba(102, 102, 102, 0.3));
+			.nav{
+				> li > a > span{
+					display: inline-block !important;
+				}
+			}
 			.ui-chooser{
 				width: 167px;
 				padding:8px 10px;
@@ -1108,6 +1113,11 @@ body > .ui-autocomplete{
 			}
 			.device{
 				float: right !important;
+			}
+		}
+		.nav{
+			> li > a > span{
+				display: none !important;
 			}
 		}
 	}
@@ -1157,7 +1167,7 @@ body > .ui-autocomplete{
 		.radius( 4px );
 		.t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
 		width: 100%;
-		.text-overflow();
+		//.text-overflow();
 		span{
 			display: inline-block;
 			.text-overflow();
@@ -1165,7 +1175,7 @@ body > .ui-autocomplete{
 			position: relative;
 			top: 2px;
 			left: 8px;
-			padding-right: 2px;
+			padding-right: 5px;
 			width: 80%;
 		}
 	}
@@ -3301,7 +3311,21 @@ div.wide.form{
 	float: right;
 	width: 30%;
 	padding:15px 15px 15px 15px;
+}
 
+.strong-right{
+	position: relative;
+	> .left-column{
+		width: 30%;
+		z-index: 100;
+		position: relative;
+	}
+	> .right-column{
+		width: 70%;
+		z-index: 1;
+		position: relative;
+		overflow: hidden;
+	}
 }
 
 #modal-edit-form,

@@ -751,7 +751,7 @@ $(window).ready(function(){
     };
 
     $.fn.checkForResponsiveNav = function(){
-        if ($(document).width() < 600){ // could be also $(window).width()
+        if ($(window).width() < 700){ // could be also $(window).width()
             $('body').addClass('nav-collapsed');
         } else {
             $('body').removeClass('nav-collapsed');

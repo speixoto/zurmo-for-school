@@ -12750,4 +12750,15 @@ body.cartographer-light,
   .view-toolbar-container .pillbox:first-child .default-button .icon-trigger:before {
     top: 28px;
   }
+  .view-toolbar-container .pillbox:first-child .split-button .button-action {
+    float: left;
+    width: 80%;
+  }
+  .view-toolbar-container .pillbox:first-child .split-button .button-trigger {
+    float: right;
+    width: 20%;
+  }
+  .view-toolbar-container .pillbox:first-child .split-button .button-trigger i {
+    top: 0;
+  }
 }

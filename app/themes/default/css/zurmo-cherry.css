@@ -4146,6 +4146,20 @@ div.wide.form a {
   width: 30%;
   padding: 15px 15px 15px 15px;
 }
+.strong-right {
+  position: relative;
+}
+.strong-right > .left-column {
+  width: 30%;
+  z-index: 100;
+  position: relative;
+}
+.strong-right > .right-column {
+  width: 70%;
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+}
 #modal-edit-form,
 #edit-form,
 #delete-form {

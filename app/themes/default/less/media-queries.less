@@ -129,31 +129,18 @@
 
 
 @media all and (max-width: 801px){ /*and (max-height: 451px)*/
-	/*#LoginPageView{
+	#LoginPageView{
 		padding-top:0;
 		> div{
 			padding:10px;
-			display: -ms-flex;
-			display: -moz-flex;
-			display: -webkit-flex;
+			display:block;
 			display: flex;
-			-ms-flex-direction: column;
-			-ms-flex-wrap: wrap;
-			-moz-flex-flow: column wrap;
-			-webkit-flex-flow: column wrap;
 			flex-flow: column wrap;
-			-ms-flex-pack: start;
-			-moz-justify-content: flex-start;
-			-webkit-justify-content: flex-start;
 			justify-content: flex-start;
 			width:100% !important;
 			height:100% !important;
-			display:block;
 		}
 		#FooterView{
-			-ms-flex: 1 0 auto;
-			-moz-flex: 1 0 auto;
-			-webkit-flex: 1 0 auto;
 			flex: 1 0 auto;
 			margin:10px 10px 5px 10px;
 		}
@@ -164,12 +151,9 @@
 	#LoginView{
 		min-width:0 !important;
 		margin:0;
-		//background-image:none;
+		padding: 50px 0;
 		background-position: left bottom;// 120px;
 		height:auto;
-		-ms-flex: 1 0 auto;
-		-moz-flex: 1 0 auto;
-		-webkit-flex: 1 0 auto;
 		flex: 1 0 auto;
 	}
 	#login-box{
@@ -198,16 +182,17 @@
 	}
 	#login-form{
 		padding:0 20px !important;
-	}*/
+	}
+    #FooterView{
+	    margin-left: 0 !important;
+    }
 }
 
 @media all and (max-width: 500px){
-	body{
-		border-top:5px solid red;
-	}
 	.logo-and-search{
 		left: 5px;
 		padding-right: 15px;
+		padding-bottom: 1px;
 	}
 	#app-search{
 		margin-left: 0;
@@ -225,6 +210,9 @@
 	}
 	.user-actions{
 		padding-right: 0;
+	}
+	#ShortcutsMenu{
+		display: none;
 	}
     .AppContent{
 	    padding: 65px 10px 0 10px;
@@ -249,6 +237,7 @@
 			    > a{
 				    float: none;
 				    width: 100%;
+				    //flex: 1;
 				    text-align: center;
 				    line-height: 40px;
 			    }
@@ -266,6 +255,19 @@
 			    }
 			    .icon-trigger:before{
 				    top: 28px;
+			    }
+		    }
+		    .split-button{
+			    .button-action{
+				    float: left;
+				    width: 80%;
+			    }
+			    .button-trigger{
+				    float: right;
+				    width: 20%;
+				    i{
+					    top: 0;
+				    }
 			    }
 		    }
 	    }
