@@ -779,42 +779,6 @@
 
 			this.sync();
 		},
-        zurmoSetIFrameHtml: function(html, strip, placeholderRemove)
-        {
-
-            html = html.toString();
-            html = html.replace(/\$/g, '&#36;');
-
-            if (strip !== false)
-            {
-                html = this.cleanSavePreCode(html);
-
-                html = this.cleanStripTags(html);
-                html = this.cleanConvertProtected(html);
-                html = this.cleanConvertInlineTags(html, true);
-
-                if (this.opts.linebreaks === false)	html = this.cleanConverters(html);
-                else html = html.replace(/<p(.*?)>([\w\W]*?)<\/p>/gi, '$2<br>');
-            }
-
-            // $ fix
-            html = html.replace(/&amp;#36;/g, '$');
-
-            html = this.cleanEmpty(html);
-
-            this.$editor.parent().html(html);
-
-            // set no editable
-            this.setNonEditable();
-            this.setSpansVerified();
-
-            this.sync();
-
-            if (html == '') placeholderRemove = false;
-            if (placeholderRemove !== false) this.placeholderRemove();
-
-            this.$editor.trigger('content-inserted');
-        },
 		setCodeIframe: function(html)
 		{
 			var doc = this.iframePage();
@@ -3130,7 +3094,10 @@
 			}
 
 			html = html.replace(/<script(.*?)>([\w\W]*?)<\/script>/gi, '<title type="text/javascript" style="display: none;" class="redactor-script-tag"$1>$2</title>');
-			html = html.replace(/<style(.*?)>([\w\W]*?)<\/style>/gi, '<section$1 style="display: none;" rel="redactor-style-tag">$2</section>');
+			if(!this.opts.iframe)
+            {
+                html = html.replace(/<style(.*?)>([\w\W]*?)<\/style>/gi, '<section$1 style="display: none;" rel="redactor-style-tag">$2</section>');
+            }
 			html = html.replace(/<form(.*?)>([\w\W]*?)<\/form>/gi, '<section$1 rel="redactor-form-tag">$2</section>');
 
 			// php tags convertation
@@ -3148,7 +3115,10 @@
 			}
 
 			html = html.replace(/<title type="text\/javascript" style="display: none;" class="redactor-script-tag"(.*?)>([\w\W]*?)<\/title>/gi, '<script$1 type="text/javascript">$2</script>');
-			html = html.replace(/<section(.*?) style="display: none;" rel="redactor-style-tag">([\w\W]*?)<\/section>/gi, '<style$1>$2</style>');
+            if(!this.opts.iframe)
+            {
+                html = html.replace(/<section(.*?) style="display: none;" rel="redactor-style-tag">([\w\W]*?)<\/section>/gi, '<style$1>$2</style>');
+            }
 			html = html.replace(/<section(.*?)rel="redactor-form-tag"(.*?)>([\w\W]*?)<\/section>/gi, '<form$1$2>$3</form>');
 
 			// php tags convertation
