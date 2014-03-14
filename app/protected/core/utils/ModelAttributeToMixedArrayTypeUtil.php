@@ -55,6 +55,18 @@
             {
                 if (isset($perClassMetadata['elements'][$attributeName]))
                 {
+                    // We need try/catch, otherwise in case if attribute is real Elemen, but model, exception will be thrown
+                    try
+                    {
+                        $elementClassName = $perClassMetadata['elements'][$attributeName] . 'Element';
+                        if (is_subclass_of($elementClassName, 'StaticDropDownElement'))
+                        {
+                            return 'StaticDropDown';
+                        }
+                    }
+                    catch (Exception $e)
+                    {
+                    }
                     return $perClassMetadata['elements'][$attributeName];
                 }
             }
