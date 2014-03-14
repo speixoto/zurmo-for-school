@@ -53,11 +53,11 @@
 
         public function testEditableHtmlOptionsInputValue()
         {
-            $model              = new User();
-            $this->assertTrue($model->id < 0);
             $path               = Yii::getPathOfAlias('application.modules.zurmo.controllers');
             include_once $path . DIRECTORY_SEPARATOR . 'TestController.php';
             $controller         = new ZurmoTestController('test');
+            $model              = new User();
+            $this->assertTrue($model->id < 0);
             ob_start();
             $form               = $controller->beginWidget('ZurmoActiveForm', array('id' => 'testform'));
             $textElement        = new TextElement($model, 'id', $form);
@@ -66,6 +66,21 @@
             $content            = ob_get_clean();
             $valPosition        = strpos($content, 'value=""');
             $valInvalidPosition = strpos($content, 'value="' . $model->id . '"');
+            $this->assertTrue($valPosition > 0);
+            $this->assertFalse($valInvalidPosition > 0);
+
+            //Valid case
+            $model              = User::getByUsername('super');
+            $this->assertTrue($model->id > 0);
+
+            ob_start();
+            $form               = $controller->beginWidget('ZurmoActiveForm', array('id' => 'testform1'));
+            $textElement        = new TextElement($model, 'id', $form);
+            echo $textElement->render();
+            $controller->endWidget();
+            $content            = ob_get_clean();
+            $valInvalidPosition = strpos($content, 'value=""');
+            $valPosition        = strpos($content, 'value="' . $model->id . '"');
             $this->assertTrue($valPosition > 0);
             $this->assertFalse($valInvalidPosition > 0);
         }
