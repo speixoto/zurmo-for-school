@@ -65,6 +65,16 @@
             return Zurmo::t('Core', 'Save');
         }
 
+        public static function resolveValidationScenario()
+        {
+            return EmailTemplateWizardForm::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO;
+        }
+
+        public static function redirectAfterSave()
+        {
+            return true;
+        }
+
         /**
          * @return string
          */
@@ -88,6 +98,12 @@
             $content .= $left . $right;
         }
 
+        protected function registerScripts()
+        {
+            parent::registerScripts();
+            $this->registerSetIsDraftToZeroOnSaveScript();
+        }
+
         protected function renderMergeTagsView()
         {
             $view = new MergeTagsView('EmailTemplate',
@@ -100,5 +116,18 @@
         {
             return ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix strong-right'), $content);
         }
+
+        protected function registerSetIsDraftToZeroOnSaveScript()
+        {
+            Yii::app()->clientScript->registerScript('setIsDraftToZeroOnSaveScript', "
+                $('#" . static::getNextPageLinkId() . "').unbind('click.setIsDraftToZeroOnSaveScript')
+                                                .bind('click.setIsDraftToZeroOnSaveScript', function()
+                {
+                    setIsDraftToZero();
+                });
+                ", CClientScript::POS_END);
+        }
+
+
     }
 ?>

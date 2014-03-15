@@ -70,6 +70,11 @@
             return 'selectBaseTemplateNextLink';
         }
 
+        public static function resolveValidationScenario()
+        {
+            return EmailTemplateWizardForm::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */
@@ -251,7 +256,15 @@
             Yii::app()->clientScript->registerScript('updateBaseTemplatesByDivIdScript', "
                 function updateBaseTemplatesByDivId(divId, data)
                 {
-                    $('div#' + divId + ' ul').html(data);
+                    if (data == '')
+                    {
+                        $('div#' + divId).hide();
+                    }
+                    else
+                    {
+                        $('div#' + divId + ' ul').html(data);
+                        $('div#' + divId).show();
+                    }
                 }", CClientScript::POS_HEAD);
         }
 
@@ -300,32 +313,38 @@
             return '#' . $id;
         }
 
-        public static function resolveAdditionalAjaxOptions($formName)
+        protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                              $validationInputId, $progressPerStep,
+                                                                              $stepCount)
         {
-            $ajaxArray                                      = parent::resolveAdditionalAjaxOptions($formName);
-            $ajaxArray['success']       = "js:function(data)
-                                            {
-                                                // update canvas url
-                                                var canvasSourceUrl = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src');
-                                                if (canvasSourceUrl == 'about:blank')
-                                                {
-                                                    canvasSourceUrl		= '" . static::resolveCanvasActionUrl() . "';
-                                                    canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                                    $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
-                                                    $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
-                                                }
-                                                else
-                                                {
-                                                    originalBaseTemplateId  = $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
-                                                    selectedBaseTemplateId  = $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
-                                                    if (selectedBaseTemplateId != originalBaseTemplateId)
-                                                    {
-                                                        $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
-                                                    }
-                                                    $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val(selectedBaseTemplateId);
-                                                }
-                                            }";
-            return $ajaxArray;
+            $canvasIFrameSelector       = "#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID;
+            $canvasActionUrl            =  static::resolveCanvasActionUrl();
+            $refreshCanvasLinkSelector  = "#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID;
+            $originalBaseTemplateIdSelector = static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector();
+            $baseTemplateIdSelector         = static::resolveBaseTemplateIdHiddenInputJQuerySelector();
+            $script         = "
+                                selectedBaseTemplateId  = $('" . $baseTemplateIdSelector . "').val();
+                                originalBaseTemplateId  = $('" . $originalBaseTemplateIdSelector . "').val();
+                                if (canvasSourceUrl == 'about:blank' || selectedBaseTemplateId != originalBaseTemplateId)
+                                {
+                                    // update canvas url
+                                    var canvasSourceUrl = $('" . $canvasIFrameSelector . "').attr('src');
+                                    if (canvasSourceUrl == 'about:blank')
+                                    {
+                                        canvasSourceUrl		= '" . $canvasActionUrl . "';
+                                        canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
+                                        $('" . $canvasIFrameSelector . "').attr('src', canvasSourceUrl);
+                                    }
+                                    $('" . $refreshCanvasLinkSelector . "').trigger('click');
+                                }
+                                $('" . $originalBaseTemplateIdSelector . "').val(selectedBaseTemplateId);
+                                initEmailTemplateEditor();
+                                ";
+            $parentScript   = parent::resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                                    $validationInputId, $progressPerStep,
+                                                                                    $stepCount);
+            $script         = $script . PHP_EOL . $parentScript;
+            return $script;
         }
     }
 ?>

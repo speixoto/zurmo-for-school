@@ -170,9 +170,71 @@
             return $content;
         }
 
-        public static function resolveAdditionalAjaxOptions($formName)
+        public static function resolveAdditionalAjaxOptions($formName, $validationInputId, $progressPerStep,
+                                                            $stepCount, $nextPageClassName)
         {
-            return static::resolveErrorAjaxCallback();
+            $errorCallback          = static::resolveErrorAjaxCallback();
+            $successCallback        = static::resolveSuccessAjaxCallback($formName, $validationInputId, $progressPerStep,
+                                                                            $stepCount, $nextPageClassName);
+            $completeCallback       = static::resolveCompleteAjaxCallback($formName);
+            $ajaxArray              = CMap::mergeArray($errorCallback, $successCallback, $completeCallback);
+            return $ajaxArray;
+        }
+
+        protected static function resolveSuccessAjaxCallback($formName, $validationInputId, $progressPerStep,
+                                                             $stepCount, $nextPageClassName)
+        {
+            $ajaxArray          = array();
+            if (isset($nextPageClassName))
+            {
+                $callback           = static::resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                                            $validationInputId,
+                                                                                            $progressPerStep,
+                                                                                            $stepCount);
+                $callback           = "js:function(data)
+                                        {
+                                            ${callback}
+                                        }";
+                $ajaxArray['success']   = $callback;
+            }
+            return $ajaxArray;
+        }
+
+        protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                              $validationInputId, $progressPerStep,
+                                                                              $stepCount)
+        {
+            $ownClassName   = get_called_class();
+            $progress       = ($stepCount + 1) * $progressPerStep;
+            $script         = "
+                        $('#" . $validationInputId . "').val('" .  $nextPageClassName::resolveValidationScenario() . "');
+                        $('#" . $ownClassName . "').hide();
+                        $('#" . $nextPageClassName . "').show();
+                        $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('" . $progress . "%');
+                        $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step')
+                                                                .next().addClass('current-step');
+                        ";
+            return $script;
+        }
+
+        protected static function resolveCompleteAjaxCallback($formName)
+        {
+            $callback               = static::resolveCompleteAjaxCallbackForSpinnerRemoval($formName);
+            $ajaxArray['complete']  = "js:function()
+                                        {
+                                            ${callback}
+                                        }";
+            return $ajaxArray;
+        }
+
+        protected static function resolveCompleteAjaxCallbackForSpinnerRemoval($formName)
+        {
+            $script = "
+                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading');
+                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('loading-ajax-submit');
+                        $('#" . $formName . "').find('.attachLoadingTarget').removeClass('attachLoadingTarget');
+                        ";
+            return $script;
         }
 
         public static function resolveErrorAjaxCallback($message = null)
@@ -224,6 +286,21 @@
         public static function resolveElementNonEditableActionUrl()
         {
             return static::resolveRelativeUrl('renderElementNonEditable');
+        }
+
+        public static function resolveValidationScenario()
+        {
+
+        }
+
+        public static function redirectAfterSave()
+        {
+            return false;
+        }
+
+        public static function resolvePreviousPageScript(& $script)
+        {
+
         }
     }
 ?>
