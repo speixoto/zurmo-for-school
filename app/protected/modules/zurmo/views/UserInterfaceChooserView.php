@@ -58,19 +58,33 @@
                 $desktopActive = ' active';
             }
             $content   = ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-mobile' . $mobileActive), ''),
-                         Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::MOBILE)),
-                         array('title' => Zurmo::t('ZurmoModule', 'Show Mobile')));
+                            Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::MOBILE)),
+                            array('title' => Zurmo::t('ZurmoModule', 'Show Mobile')));
 
             $content  .= ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-desktop' . $desktopActive), ''),
-                         Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::DESKTOP)),
-                         array('title' => Zurmo::t('ZurmoModule', 'Show Full')));
+                            Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::DESKTOP)),
+                            array('title' => Zurmo::t('ZurmoModule', 'Show Full')));
 
             $content   = ZurmoHtml::tag('div', array('class' => 'device'), $content);
 
-            $collapser = ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-collapse'), ''), '#',
-                         array('id' => 'nav-collapser', 'title' => Zurmo::t('ZurmoModule', 'Collapse or Expand')));
-
+            $collapser = ZurmoHtml::link(ZurmoHtml::tag('i', $this->getCollapserLinkOptions(), ''),
+                            Yii::app()->createUrl('zurmo/default/toggleCollapse', array('returnUrl' => Yii::app()->request->url)),
+                            array('title' => Zurmo::t('ZurmoModule', 'Collapse or Expand')));
             return $collapser . $content;
+        }
+
+        protected function getCollapserLinkOptions()
+        {
+            $options = array();
+            if (Yii::app()->userInterface->isMenuCollapsed())
+            {
+                $options['class'] = 'icon-expand';
+            }
+            else
+            {
+                $options['class'] = 'icon-collapse';
+            }
+            return $options;
         }
 
         protected function renderContainerWrapperId()

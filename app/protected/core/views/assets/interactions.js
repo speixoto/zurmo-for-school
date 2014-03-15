@@ -701,19 +701,6 @@ $(window).ready(function(){
         }
     );
 
-    //show/collapse left nav
-    $('#nav-collapser').click(
-        function(event){
-            $('body').toggleClass('nav-collapsed');
-            if($('body').hasClass('nav-collapsed')){
-                $('#nav-collapser i').addClass('icon-expand');
-            } else {
-                $('#nav-collapser i').removeClass('icon-expand');
-            }
-            event.preventDefault();
-        }
-    );
-
     $.fn.resizeWhiteArea = function(){
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();
@@ -750,13 +737,14 @@ $(window).ready(function(){
         }
     };
 
-    $.fn.checkForResponsiveNav = function(){
-        if ($(window).width() < 700){ // could be also $(window).width()
-            $('body').addClass('nav-collapsed');
-        } else {
-            $('body').removeClass('nav-collapsed');
-        }
-    }
+//  TODO: @amit: Please, fix this because its interfering with the saved option for user
+//    $.fn.checkForResponsiveNav = function(){
+//        if ($(window).width() < 700){ // could be also $(window).width()
+//            $('body').addClass('nav-collapsed');
+//        } else {
+//            $('body').removeClass('nav-collapsed');
+//        }
+//    }
 
     $(window).resize(function(){
         //$(this).resizeWhiteArea();

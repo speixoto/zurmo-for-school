@@ -384,6 +384,7 @@
             {
                 $classContent .= ' mobile-app';
             }
+            Yii::app()->userInterface->resolveCollapseClassForBody($classContent);
             return '<body class="' . $classContent . '">';
         }
 
