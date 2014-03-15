@@ -49,8 +49,8 @@
             $form                                         = new MarketingConfigurationForm();
             $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
             $form->campaignItemsToCreatePageSize          = CampaignItemsUtil::getCreatePageSize();
-            $form->autoresponderOrCampaignFooterPlainText = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false);
-            $form->autoresponderOrCampaignFooterRichText  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true);
+            $form->autoresponderOrCampaignFooterPlainText = GlobalMarketingFooterUtil::getContentByType(false);
+            $form->autoresponderOrCampaignFooterRichText  = GlobalMarketingFooterUtil::getContentByType(true);
             return $form;
         }
 
@@ -64,8 +64,8 @@
                 AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
                 CampaignItemsUtil::setCreatePageSize((int)$form->campaignItemsToCreatePageSize);
             }
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
+            GlobalMarketingFooterUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
+            GlobalMarketingFooterUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
         }
     }
 ?>

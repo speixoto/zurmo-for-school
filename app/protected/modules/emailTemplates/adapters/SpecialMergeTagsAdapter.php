@@ -40,15 +40,17 @@
     class SpecialMergeTagsAdapter
     {
         protected static $specialAttributesResolver = array (
-                                'modelUrl'          => 'resolveModelUrlByModel',
-                                'baseUrl'           => 'resolveBaseUrl',
-                                'applicationName'   => 'resolveApplicationName',
-                                'currentYear'       => 'resolveCurrentYear',
-                                'lastYear'          => 'resolveLastYear',
-                                'ownersAvatarSmall'   => 'resolveOwnersAvatarSmall',
-                                'ownersAvatarMedium'   => 'resolveOwnersAvatarMedium',
-                                'ownersAvatarLarge'  => 'resolveOwnersAvatarLarge',
-                                'ownersEmailSignature'  => 'resolveOwnersEmailSignature',
+                                'modelUrl'                          => 'resolveModelUrlByModel',
+                                'baseUrl'                           => 'resolveBaseUrl',
+                                'applicationName'                   => 'resolveApplicationName',
+                                'currentYear'                       => 'resolveCurrentYear',
+                                'lastYear'                          => 'resolveLastYear',
+                                'ownersAvatarSmall'                 => 'resolveOwnersAvatarSmall',
+                                'ownersAvatarMedium'                => 'resolveOwnersAvatarMedium',
+                                'ownersAvatarLarge'                 => 'resolveOwnersAvatarLarge',
+                                'ownersEmailSignature'              => 'resolveOwnersEmailSignature',
+                                'globalMarketingFooterHtml'         => 'resolveGlobalMarketingFooterHtml',
+                                'globalMarketingFooterPlainText'    => 'resolveGlobalMarketingFooterPlainText',
                                 );
 
         public static function isSpecialMergeTag($attributeName, $timeQualifier)
@@ -143,6 +145,16 @@
                     return $model->owner->emailSignatures[0]->htmlContent;
                 }
             }
+        }
+
+        protected static function resolveGlobalMarketingFooterHtml()
+        {
+            return GlobalMarketingFooterUtil::getContentByType(true, true);
+        }
+
+        protected static function resolveGlobalMarketingFooterPlainText()
+        {
+            return GlobalMarketingFooterUtil::getContentByType(false, true);
         }
     }
 ?>

@@ -146,6 +146,13 @@
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^EMAIL^SIGNATURE' .
                                       MergeTagsUtil::TAG_SUFFIX) .
                                       " : prints the owner's email signature.";
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .
+                                        'GLOBAL^MARKETING^FOOTER^PLAIN^TEXT' .
+                                        MergeTagsUtil::TAG_SUFFIX) .
+                                        " : prints the Global Marketing Footer(Plain Text).";
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'GLOBAL^MARKETING^FOOTER^HTML' .
+                                        MergeTagsUtil::TAG_SUFFIX) .
+                                        " : prints the Global Marketing Footer(Rich Text).";
             $specialTagsItems[]     = $this->renderBoldMergeTag('{{UNSUBSCRIBE_URL}}') .
                                         " : prints unsubscribe url.";
             $specialTagsItems[]     = $this->renderBoldMergeTag('{{MANAGE_SUBSCRIPTIONS_URL}}') .

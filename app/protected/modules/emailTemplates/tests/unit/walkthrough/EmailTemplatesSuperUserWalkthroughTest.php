@@ -435,9 +435,9 @@
             $contact         = ContactTestHelper::createContactByNameForOwner('test', $this->super);
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
             $emailTemplate   = EmailTemplate::getById($emailTemplateId);
-            $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+            $unsubscribePlaceholder         = GlobalMarketingFooterUtil::
                                                     UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+            $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::
                                                     MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             $emailTemplate->textContent = "Test text content with contact tag: [[FIRST^NAME]] {$unsubscribePlaceholder}";
             $emailTemplate->htmlContent = "Test html content with contact tag: [[FIRST^NAME]] {$manageSubscriptionsPlaceholder}";

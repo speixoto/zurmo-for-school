@@ -258,9 +258,9 @@
                 $textContent    = $emailTemplate->textContent;
                 $htmlContent    = $emailTemplate->htmlContent;
                 AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-                $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                $unsubscribePlaceholder         = GlobalMarketingFooterUtil::
                                                                                             UNSUBSCRIBE_URL_PLACEHOLDER;
-                $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::
                                                                                 MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
                 $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
                                                                                                             $textContent);

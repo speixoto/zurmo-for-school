@@ -150,5 +150,27 @@
             $expectedEmailSignature = 'my email signature';
             $this->assertEquals($expectedEmailSignature, $resolvedEmailSignature);
         }
+
+        /**
+         * @depends testIsSpecialMergeTag
+         */
+        public function testResolveGlobalMarketingFooterHtml()
+        {
+            $resolvedFooter        = SpecialMergeTagsAdapter::resolve('globalMarketingFooterHtml', null);
+            $expectedFooter       = GlobalMarketingFooterUtil::getContentByType(true, true);
+            $this->assertNotNull($resolvedFooter);
+            $this->assertEquals($expectedFooter, $resolvedFooter);
+        }
+
+        /**
+         * @depends testIsSpecialMergeTag
+         */
+        public function testResolveGlobalMarketingFooterPlainText()
+        {
+            $resolvedFooter        = SpecialMergeTagsAdapter::resolve('globalMarketingFooterPlainText', null);
+            $expectedFooter       = GlobalMarketingFooterUtil::getContentByType(false, true);
+            $this->assertNotNull($resolvedFooter);
+            $this->assertEquals($expectedFooter, $resolvedFooter);
+        }
     }
 ?>

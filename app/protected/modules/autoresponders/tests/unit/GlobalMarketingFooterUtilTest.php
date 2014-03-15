@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class UnsubscribeAndManageSubscriptionsPlaceholderUtilTest extends ZurmoBaseTest
+    class GlobalMarketingFooterUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -50,9 +50,9 @@
 
         public function testGetByContentTypeReturnsNullWithNoneSetAndNoDefault()
         {
-            $plainTextFooter = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false, false);
+            $plainTextFooter = GlobalMarketingFooterUtil::getContentByType(false, false);
             $this->assertNull($plainTextFooter);
-            $richTextFooter = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true, false);
+            $richTextFooter = GlobalMarketingFooterUtil::getContentByType(true, false);
             $this->assertNull($richTextFooter);
         }
 
@@ -62,22 +62,22 @@
         public function testGetByContentTypeReturnsDefaultWithNoneSet()
         {
             $isHtmlContent                      = false;
-            $unsubscribeUrlPlaceHolder          = UnsubscribeAndManageSubscriptionsPlaceholderUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
             $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
-            $plainTextFooter = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType($isHtmlContent);
+            $plainTextFooter = GlobalMarketingFooterUtil::getContentByType($isHtmlContent);
             $this->assertNotNull($plainTextFooter);
             $this->assertEquals($defaultFooter, $plainTextFooter);
 
             $isHtmlContent                      = true;
-            $unsubscribeUrlPlaceHolder          = UnsubscribeAndManageSubscriptionsPlaceholderUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = UnsubscribeAndManageSubscriptionsPlaceholderUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
             $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
-            $richTextFooter = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType($isHtmlContent);
+            $richTextFooter = GlobalMarketingFooterUtil::getContentByType($isHtmlContent);
             $this->assertNotNull($richTextFooter);
             $this->assertEquals($defaultFooter, $richTextFooter);
         }
@@ -87,12 +87,12 @@
          */
         public function testSetByContentType()
         {
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType('plain', false);
-            $plainTextFooter = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false);
+            GlobalMarketingFooterUtil::setContentByType('plain', false);
+            $plainTextFooter = GlobalMarketingFooterUtil::getContentByType(false);
             $this->assertNotNull($plainTextFooter);
             $this->assertEquals('plain', $plainTextFooter);
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType('rich', true);
-            $richTextFooter = UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true);
+            GlobalMarketingFooterUtil::setContentByType('rich', true);
+            $richTextFooter = GlobalMarketingFooterUtil::getContentByType(true);
             $this->assertNotNull($richTextFooter);
             $this->assertEquals('rich', $richTextFooter);
         }
