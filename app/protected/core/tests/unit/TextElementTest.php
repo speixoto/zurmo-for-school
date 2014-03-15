@@ -33,51 +33,45 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    class UserRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
+    class TextElementTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            $super = SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public static function getDependentTestModelClassNames()
+        public function setUp()
         {
-            return array('ExportTestModelItem');
+            parent::setUp();
         }
 
-        public function testGetExportValue()
+        public function teardown()
         {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-            $data = array();
-            $model = new ExportTestModelItem();
-            $model->lastName = "Smith";
-            $model->string = "Some Test String";
-            $model->user     = $super;
-            $this->assertTrue($model->save());
+            parent::teardown();
+        }
 
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
-            $adapter->resolveData($data);
-            $compareData = array('Clark Kent');
+        public function testEditableHtmlOptionsInputValue()
+        {
+            $model              = new User();
+            $this->assertTrue($model->id < 0);
+            $form               = new ZurmoActiveForm();
+            $textElement        = new TextElement($model, 'id', $form);
+            $content            = $textElement->render();
+            $valPosition        = strpos($content, 'value=""');
+            $valInvalidPosition = strpos($content, 'value="' . $model->id . '"');
+            $this->assertTrue($valPosition > 0);
+            $this->assertFalse($valInvalidPosition > 0);
 
-            $this->assertEquals($compareData, $data);
-            $data = array();
-            $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('user'));
-            $this->assertEquals($compareData, $data);
-
-            $data = array();
-            $model = new ExportTestModelItem();
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
-            $adapter->resolveData($data);
-            $compareData = array('');
-            $this->assertEquals($compareData, $data);
-            $data = array();
-            $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('user'));
-            $this->assertEquals($compareData, $data);
+            //Valid case
+            $model              = User::getByUsername('super');
+            $this->assertTrue($model->id > 0);
+            $textElement        = new TextElement($model, 'id', $form);
+            $content            = $textElement->render();
+            $valInvalidPosition = strpos($content, 'value=""');
+            $valPosition        = strpos($content, 'value="' . $model->id . '"');
+            $this->assertTrue($valPosition > 0);
+            $this->assertFalse($valInvalidPosition > 0);
         }
     }
 ?>

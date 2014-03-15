@@ -36,7 +36,7 @@
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile      = array('redactor.min.js');
+        public $scriptFile      = array('redactor.js');
 
         public $cssFile         = array('redactor.css');
 
