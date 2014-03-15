@@ -12685,13 +12685,70 @@ body.cartographer-light,
     float: none;
   }
 }
-@media all and (max-width: 500px) {
-  body {
-    border-top: 5px solid red;
+@media all and (max-width: 801px) {
+  #LoginPageView {
+    padding-top: 0;
   }
+  #LoginPageView > div {
+    padding: 10px;
+    display: block;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  #LoginPageView #FooterView {
+    flex: 1 0 auto;
+    margin: 10px 10px 5px 10px;
+  }
+  #LoginPageView #credit-link {
+    margin-left: 0;
+  }
+  #LoginView {
+    min-width: 0 !important;
+    margin: 0;
+    padding: 50px 0;
+    background-position: left bottom;
+    height: auto;
+    flex: 1 0 auto;
+  }
+  #login-box {
+    width: 100%;
+    height: auto;
+    float: none;
+    margin: 10px 0 0 0;
+    top: 0;
+    left: 0;
+  }
+  #login-box .form {
+    float: none;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  #login-box .form form {
+    border: none;
+    padding: 0 10px 10px 10px;
+  }
+  #login-box #LoginLogo {
+    float: none;
+    width: 100%;
+    height: 80px;
+    padding: 0;
+    background-position: 50% 50%;
+  }
+  #login-form {
+    padding: 0 20px !important;
+  }
+  #FooterView {
+    margin-left: 0 !important;
+  }
+}
+@media all and (max-width: 500px) {
   .logo-and-search {
     left: 5px;
     padding-right: 15px;
+    padding-bottom: 1px;
   }
   #app-search {
     margin-left: 0;
@@ -12707,6 +12764,9 @@ body.cartographer-light,
   }
   .user-actions {
     padding-right: 0;
+  }
+  #ShortcutsMenu {
+    display: none;
   }
   .AppContent {
     padding: 65px 10px 0 10px;

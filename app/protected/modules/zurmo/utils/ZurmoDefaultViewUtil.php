@@ -135,7 +135,14 @@
          */
         public static function makeStandardViewForCurrentUser(CController $controller, View $containedView)
         {
-            $verticalColumns     = 3;
+            if (static::$showRecentlyViewed)
+            {
+                $verticalColumns = 3;
+            }
+            else
+            {
+                $verticalColumns = 2;
+            }
             $aVerticalGridView   = new GridView($verticalColumns, 1,'nav', false);
             $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
             $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
@@ -152,7 +159,7 @@
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent'))); //the app itself to the right
 
             $horizontalGridView->setView($containedView, 0, 1);
-            $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $cotainedView
+            $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $containedView
 
             $verticalGridView   = new GridView(6, 1, null);
             $verticalGridView->setView(static::makeHeaderView($controller),                 0, 0);
