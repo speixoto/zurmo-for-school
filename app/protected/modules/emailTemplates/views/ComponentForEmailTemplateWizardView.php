@@ -78,7 +78,7 @@
 
         protected function resolveNextPageLinkHtmlOptions()
         {
-            return array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            return array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");$(this).addClass("loading");$(this).makeOrRemoveLoadingSpinner(true);');
         }
 
         protected function renderNextPageLinkLabel()
