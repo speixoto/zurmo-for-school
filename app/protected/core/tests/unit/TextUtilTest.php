@@ -83,6 +83,13 @@
             $textWithLink = TextUtil::textWithUrlToTextWithLink($textWithUrl);
             $this->assertEquals('Please, send an email to <a href="mailto:jonny@zurmo.com">jonny@zurmo.com</a>',
                 $textWithLink);
+
+            $textWithUrl  = "Please, send an email to jonny@zurmo.com
+with a newline";
+            $textWithLink = TextUtil::textWithUrlToTextWithLink($textWithUrl);
+            $expectedResult  = 'Please, send an email to <a href="mailto:jonny@zurmo.com">jonny@zurmo.com</a><br />
+with a newline';
+            $this->assertEquals($expectedResult, $textWithLink);
         }
     }
 ?>
