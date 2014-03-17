@@ -122,9 +122,18 @@
             foreach (array_reverse(RuntimeUtil::getClassHierarchy(
                                    get_class($model), $model::getLastClassInBeanHeirarchy())) as $modelClassName)
             {
-                if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['derivedAttributeTypes']))
+                if (isset($metadata[$modelClassName]))
                 {
-                    foreach ($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
+                    if (isset($metadata[$modelClassName]['derivedAttributeTypes']))
+                    {
+                        $derivedAttributesTypes = $metadata[$modelClassName]['derivedAttributeTypes'];
+                        $derivedAttributesTypes = array_merge($derivedAttributesTypes, array('UniqueIdentifier'));
+                    }
+                    else
+                    {
+                        $derivedAttributesTypes = array('UniqueIdentifier');
+                    }
+                    foreach ($derivedAttributesTypes as $derivedAttributeType)
                     {
                         $elementClassName          = $derivedAttributeType . 'Element';
                         $derivedAttributeTypesData
