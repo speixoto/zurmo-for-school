@@ -35,22 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Defines the import rules for importing into the accountContactAffiliations module.
+     * Import rules for the lastest activity date time attribute.
      */
-    class AccountContactAffiliationsImportRules extends ImportRules
+    class LatestActivityDateTimeAttributeImportRules extends NonDerivedAttributeImportRules
     {
-        public static function getModelClassName()
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            return 'AccountContactAffiliation';
+            return array('ValueFormat' => 'ImportMappingRuleDateTimeFormatDropDown');
         }
 
-        /**
-         * Get the array of attributes that cannot be mapped when using these import rules.
-         * @return array
-         */
-        public static function getNonImportableAttributeNames()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('primary'));
+            return array('DateTime');
+        }
+
+        public function getDisplayLabel()
+        {
+            return Zurmo::t('ZurmoModule', 'Latest Activity Date Time');
         }
     }
 ?>
