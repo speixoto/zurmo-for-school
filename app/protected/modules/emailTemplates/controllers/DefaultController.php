@@ -403,7 +403,7 @@
         protected static function getActionBarByType($type)
         {
             $actionBar  = 'SecuredActionBarForMarketingListsSearchAndListView';
-            if ($actionBar == EmailTemplate::TYPE_WORKFLOW)
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $actionBar  = 'SecuredActionBarForWorkflowsSearchAndListView';
             }
