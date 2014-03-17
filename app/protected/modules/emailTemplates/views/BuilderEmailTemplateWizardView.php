@@ -41,7 +41,7 @@
          */
         public function getTitle()
         {
-            return parent::getTitle() . ' - ' . Zurmo::t('EmailTemplatesModule', 'Builder');
+            return parent::getTitle() . ' - ' . Zurmo::t('EmailTemplatesModule', 'Template Builder');
         }
 
         protected function resolveContainingViews(WizardActiveForm $form)

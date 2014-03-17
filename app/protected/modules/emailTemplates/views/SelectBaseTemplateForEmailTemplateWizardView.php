@@ -51,7 +51,7 @@
          */
         public static function getWizardStepTitle()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Select a Base Template');
+            return Zurmo::t('EmailTemplatesModule', 'Layout');
         }
 
         /**
@@ -91,7 +91,7 @@
         {
             $elementClassName   = static::PREDEFINED_TEMPLATES_ELEMENT_CLASS_NAME;
             $wrapperDivCssId    = static::PREDEFINED_TEMPLATES_DIV_ID;
-            $heading            = Zurmo::t('EmailTemplatesModule', 'Predefined Templates');
+            $heading            = Zurmo::t('EmailTemplatesModule', 'Templates');
             $params             = array('inputPrefix' => 'predefinedTemplate');
             $content            = $this->renderSelectBaseTemplateByElementName($elementClassName, $wrapperDivCssId, $heading, $params);
             return $content;
