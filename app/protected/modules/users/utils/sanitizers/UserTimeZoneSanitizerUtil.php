@@ -88,5 +88,10 @@
         {
             return DateTimeZone::listIdentifiers();
         }
+
+        public function shouldSanitizeValue()
+        {
+            return true;
+        }
     }
 ?>
