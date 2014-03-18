@@ -156,10 +156,43 @@
          */
         public function testResolveGlobalMarketingFooterHtml()
         {
-            $resolvedFooter        = SpecialMergeTagsAdapter::resolve('globalMarketingFooterHtml', null);
-            $expectedFooter       = GlobalMarketingFooterUtil::getContentByType(true, true);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterHtml', null);
+            $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(true, true);
             $this->assertNotNull($resolvedFooter);
             $this->assertEquals($expectedFooter, $resolvedFooter);
+        }
+
+        /**
+        * @depends testResolveGlobalMarketingFooterHtml
+        */
+        public function testResolveGlobalMarketingFooterHtmlWithValidNestedMergeTag()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $footer                 = GlobalMarketingFooterUtil::getContentByType(true, true);
+            $footer                 .= '<br/>This email was sent to [[PRIMARY^EMAIL]].';
+            GlobalMarketingFooterUtil::setContentByType($footer, true);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterHtml', $model);
+            $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(true, false);
+            $this->assertNotNull($resolvedFooter);
+            $this->assertNotEquals($expectedFooter, $resolvedFooter);
+            $this->assertFalse(strpos($resolvedFooter, 'PRIMARY^EMAIL') !== false);
+            $this->assertTrue(strpos($resolvedFooter, '(None)') !== false);
+        }
+
+        /**
+         * @depends testResolveGlobalMarketingFooterHtmlWithValidNestedMergeTag
+         */
+        public function testResolveGlobalMarketingFooterHtmlWithInvalidNestedMergeTag()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $footer                 = GlobalMarketingFooterUtil::getContentByType(true, true);
+            $footer                 .= '<br/>This email was sent to [[INVALID^TAG]].';
+            GlobalMarketingFooterUtil::setContentByType($footer, true);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterHtml', $model);
+            $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(true, false);
+            $this->assertNotNull($resolvedFooter);
+            $this->assertEquals($expectedFooter, $resolvedFooter);
+            $this->assertTrue(strpos($resolvedFooter, 'INVALID^TAG') !== false);
         }
 
         /**
@@ -167,10 +200,43 @@
          */
         public function testResolveGlobalMarketingFooterPlainText()
         {
-            $resolvedFooter        = SpecialMergeTagsAdapter::resolve('globalMarketingFooterPlainText', null);
-            $expectedFooter       = GlobalMarketingFooterUtil::getContentByType(false, true);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterPlainText', null);
+            $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(false, true);
             $this->assertNotNull($resolvedFooter);
             $this->assertEquals($expectedFooter, $resolvedFooter);
+        }
+
+        /**
+         * @depends testResolveGlobalMarketingFooterPlainText
+         */
+        public function testResolveGlobalMarketingFooterPlainTextWithValidNestedMergeTag()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $footer                 = GlobalMarketingFooterUtil::getContentByType(false, true);
+            $footer                 .= ' This email was sent to [[PRIMARY^EMAIL]].';
+            GlobalMarketingFooterUtil::setContentByType($footer, false);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterPlainText', $model);
+            $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(false, false);
+            $this->assertNotNull($resolvedFooter);
+            $this->assertNotEquals($expectedFooter, $resolvedFooter);
+            $this->assertFalse(strpos($resolvedFooter, 'PRIMARY^EMAIL') !== false);
+            $this->assertTrue(strpos($resolvedFooter, '(None)') !== false);
+        }
+
+        /**
+         * @depends testResolveGlobalMarketingFooterPlainTextWithValidNestedMergeTag
+         */
+        public function testResolveGlobalMarketingFooterPlainTextWithInvalidNestedMergeTag()
+        {
+            $model                  = Yii::app()->user->userModel;
+            $footer                 = GlobalMarketingFooterUtil::getContentByType(false, true);
+            $footer                 .= ' This email was sent to [[INVALID^TAG]].';
+            GlobalMarketingFooterUtil::setContentByType($footer, false);
+            $resolvedFooter         = SpecialMergeTagsAdapter::resolve('globalMarketingFooterPlainText', $model);
+            $expectedFooter         = GlobalMarketingFooterUtil::getContentByType(false, false);
+            $this->assertNotNull($resolvedFooter);
+            $this->assertEquals($expectedFooter, $resolvedFooter);
+            $this->assertTrue(strpos($resolvedFooter, 'INVALID^TAG') !== false);
         }
     }
 ?>

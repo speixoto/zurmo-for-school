@@ -37,7 +37,7 @@
     /*
      * Base class that defines Merge Tag delimiters, extracts them, and provides methods for converting them to values.
      */
-    class MergeTagsUtil
+    abstract class MergeTagsUtil
     {
         const TAG_PREFIX            = '[[';
 
@@ -117,6 +117,10 @@
          */
         public function resolveMergeTags($model, & $invalidTags = array(), $language = null, $errorOnFirstMissing = false)
         {
+            if (!isset($language))
+            {
+                $language = $this->language;
+            }
             if (!$this->extractMergeTagsPlaceHolders() ||
                     $this->resolveMergeTagsArrayToAttributes($model, $invalidTags, $language, $errorOnFirstMissing) &&
                     $this->resolveMergeTagsInTemplateToAttributes())

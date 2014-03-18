@@ -103,7 +103,11 @@
             }
             else
             {
-                if (!$model->isAttribute($attributeName))
+                if (!isset($model))
+                {
+                    return static::PROPERTY_NOT_FOUND;
+                }
+                else if (!$model->isAttribute($attributeName))
                 {
                     if ($model instanceof Activity)
                     {

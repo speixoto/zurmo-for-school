@@ -39,6 +39,11 @@
      */
     class SpecialMergeTagsAdapter
     {
+        protected static $containsNestedMergeTags   = array(
+                                'globalMarketingFooterHtml',
+                                'globalMarketingFooterPlainText'
+                                );
+
         protected static $specialAttributesResolver = array (
                                 'modelUrl'                          => 'resolveModelUrlByModel',
                                 'baseUrl'                           => 'resolveBaseUrl',
@@ -60,8 +65,11 @@
 
         public static function resolve($attributeName, $model = null)
         {
-            $methodName = static::$specialAttributesResolver[$attributeName];
-            return static::$methodName($model); // we send $model to all, those which need it use it, other get it as optional param.
+            $methodName                         = static::$specialAttributesResolver[$attributeName];
+            // we send $model to all, those which need it use it, other get it as optional param.
+            $resolvedSpecialMergeTagContent     = static::$methodName($model);
+            static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+            return $resolvedSpecialMergeTagContent;
         }
 
         // individual resolvers
@@ -155,6 +163,22 @@
         protected static function resolveGlobalMarketingFooterPlainText()
         {
             return GlobalMarketingFooterUtil::getContentByType(false, true);
+        }
+
+        protected static function resolveContentForNestedMergeTags(& $resolvedSpecialMergeTagContent, $model = null)
+        {
+            $language   = null;
+            $type       = EmailTemplate::TYPE_WORKFLOW;
+            if ($model instanceof Contact)
+            {
+                $type   = EmailTemplate::TYPE_CONTACT;
+            }
+            $util                           = MergeTagsUtilFactory::make($type, $language, $resolvedSpecialMergeTagContent);
+            $resolvedContent                = $util->resolveMergeTags($model);
+            if ($resolvedContent !== false)
+            {
+                $resolvedSpecialMergeTagContent = $resolvedContent;
+            }
         }
     }
 ?>
