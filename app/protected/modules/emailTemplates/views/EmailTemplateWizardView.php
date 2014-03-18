@@ -36,9 +36,7 @@
 
     abstract class EmailTemplateWizardView extends WizardView
     {
-        abstract protected function resolveContainingViews(WizardActiveForm $form);
-
-        abstract protected function renderGeneralDataNextPageLinkScript($formName);
+        protected $containingViews;
 
         /**
          * @return string|void
@@ -48,12 +46,37 @@
             return 'emailTemplates';
         }
 
+        protected static function resolveContainingViewClassNames()
+        {
+            throw new NotImplementedException();
+        }
+
         /**
          * @return string
          */
         public function getTitle()
         {
             return Zurmo::t('EmailTemplatesModule', 'Email Template Wizard');
+        }
+
+        protected function resolveContainingViews(WizardActiveForm $form)
+        {
+            if (!isset($this->containingViews))
+            {
+                $this->initContainingViews($form);
+            }
+            return $this->containingViews;
+        }
+
+        protected function initContainingViews(WizardActiveForm $form)
+        {
+            $viewClassNames         = static::resolveContainingViewClassNames();
+            $views                  = array();
+            foreach ($viewClassNames as $id => $view)
+            {
+                $views[]                = new $view($this->model, $form, (bool)$id);
+            }
+            $this->containingViews  = $views;
         }
 
         protected function renderAfterFormContent()
@@ -100,56 +123,18 @@
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');
-            $script     = "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');";
-            $script     .= $this->renderPreGeneralDataNextPageLinkScript($formName);
-            $script     .= $this->renderGeneralDataNextPageLinkScript($formName);
-            $script     .= $this->renderPostGeneralDataNextPageLinkScript($formName);
+            $script             = "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');";
+            $script             .= $this->renderTreeViewAjaxScriptContentForMergeTagsView();
+            $viewClassNames		= static::resolveContainingViewClassNames();
+            $progressPerStep	= $this->resolveProgressPerStep();
+            $validationInputId	= static::getValidationScenarioInputId();
+            foreach ($viewClassNames as $id => $viewClassName)
+            {
+                $script         .= $this->resolveNextPageScript($formName, $viewClassName,
+                                                                $validationInputId, $progressPerStep, $id);
+                $this->registerPreviousPageScript($viewClassName, $validationInputId, $progressPerStep, $id);
+            }
             return $script;
-        }
-
-        protected function renderPreGeneralDataNextPageLinkScript($formName)
-        {
-            return;
-        }
-
-        protected function renderPostGeneralDataNextPageLinkScript($formName)
-        {
-            return;
-        }
-
-        protected function registerScripts()
-        {
-            parent::registerScripts();
-            $this->registerClickFlowScript();
-        }
-
-        protected function registerClickFlowScript()
-        {
-            $this->registerPreGeneralDataPreviousPageLinkScript();
-            $this->registerGeneralDataPreviousPageLinkScript();
-            $this->registerPostGeneralDataPreviousLinkScript();
-        }
-
-        protected function registerPreGeneralDataPreviousPageLinkScript()
-        {
-        }
-
-        protected function registerGeneralDataPreviousPageLinkScript()
-        {
-            Yii::app()->clientScript->registerScript('clickflow.generalDataPreviousPageLink', '
-                $("#' . GeneralDataForEmailTemplateWizardView::getPreviousPageLinkId() . '").unbind("click");
-                $("#' . GeneralDataForEmailTemplateWizardView::getPreviousPageLinkId() . '").bind("click", function()
-                    {
-                        url = "' . $this->resolveSaveRedirectToListUrl() . '";
-                        window.location.href = url;
-                        return false;
-                    }
-                );
-          ');
-        }
-
-        protected function registerPostGeneralDataPreviousLinkScript()
-        {
         }
 
         protected function resolveSaveRedirectToListUrl()
@@ -176,7 +161,7 @@
 
         protected function renderTreeViewAjaxScriptContentForMergeTagsView()
         {
-            if ($this->model->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($this->model->isWorkflowTemplate())
             {
                 $view = new MergeTagsView('EmailTemplate',
                     get_class($this->model) . '_textContent',
@@ -185,6 +170,105 @@
                     resolveModuleClassNameHiddenInputJQuerySelector();
                 return $view->renderTreeViewAjaxScriptContent();
             }
+        }
+
+        protected function resolveNextPageScript($formName, $viewClassName, $validationInputId, $progressPerStep, $stepCount)
+        {
+            $scriptPrefix	= 'if';
+            if ($stepCount)
+            {
+                $scriptPrefix	= 'else if';
+            }
+            $ajaxOptions 		= $this->resolveAdditionalAjaxOptions($formName, $viewClassName, $validationInputId,
+                                                                        $progressPerStep, $stepCount);
+            $nextPageLinkId		= $viewClassName::getNextPageLinkId();
+            $redirectAfterSave	= $viewClassName::redirectAfterSave();
+
+            $script 			= $this->getSaveAjaxString($formName, $redirectAfterSave, $ajaxOptions);
+            $script   			= $scriptPrefix . " (linkId == '" . $nextPageLinkId . "')
+                                    {
+                                        " . $script . "
+                                    }";
+            return $script;
+        }
+
+        protected function resolveAdditionalAjaxOptions($formName, $viewClassName, $validationInputId,
+                                                        $progressPerStep, $stepCount)
+        {
+            $nextPageClassName  = static::resolveNextPageClassName($stepCount);
+            $ajaxOptions 		= $viewClassName::resolveAdditionalAjaxOptions($formName, $validationInputId,
+                                                                                $progressPerStep, $stepCount, $nextPageClassName);
+            return $ajaxOptions;
+        }
+
+        protected function registerPreviousPageScript($viewClassName, $validationInput, $progressPerStep, $stepCount)
+        {
+            $previousPageLinkId	        = $viewClassName::getPreviousPageLinkId();
+            $scriptName	                = "clickflow." . $previousPageLinkId;
+            $eventName	                = "click." . $previousPageLinkId;
+            $previousPageClassName	    = static::resolvePreviousPageClassName($stepCount);
+            if (!isset($previousPageClassName))
+            {
+                $script 	= $this->resolvePreviousPageScriptForFirstStep($previousPageLinkId);
+            }
+            else
+            {
+                $script 	= $this->resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInput, $progressPerStep, $stepCount);
+            }
+
+            $script 		= "
+            $('#" . $previousPageLinkId . "').unbind('" . $eventName . "').bind('" . $eventName . "', function()
+            {
+                " . $script . "
+            });";
+            Yii::app()->clientScript->registerScript($scriptName, $script);
+        }
+
+        protected function resolvePreviousPageScriptForFirstStep()
+        {
+            $script 	= "
+                            url = '" . $this->resolveSaveRedirectToListUrl() . "';
+                            window.location.href = url;
+                            return false;";
+            return $script;
+        }
+
+        protected function resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInputId,
+                                                            $progressPerStep, $stepCount)
+        {
+            $validationScenario 	= $previousPageClassName::resolveValidationScenario();
+            $progress 				= $stepCount * $progressPerStep;
+            $script 	            = "
+                            $('#" . $validationInputId . "').val('" . $validationScenario . "');
+                            $('#" . $previousPageClassName . "').show();
+                            $('#" . $viewClassName . "').hide();
+                            $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('" . $progress ."%');
+                            $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step')
+                                                                    .prev().addClass('current-step');
+                            return false;
+					";
+            $viewClassName::resolvePreviousPageScript($script);
+            return $script;
+        }
+
+        protected function resolveProgressPerStep()
+        {
+            return (100 / (count(static::resolveContainingViewClassNames())));
+        }
+
+        protected function registerClickFlowScript()
+        {
+            // this is here just because its abstract in parent.
+        }
+
+        protected function resolveNextPageClassName($currentId)
+        {
+            return ArrayUtil::getArrayValue(static::resolveContainingViewClassNames(), $currentId + 1 );
+        }
+
+        protected function resolvePreviousPageClassName($currentId)
+        {
+            return ArrayUtil::getArrayValue(static::resolveContainingViewClassNames(), $currentId - 1 );
         }
     }
 ?>
