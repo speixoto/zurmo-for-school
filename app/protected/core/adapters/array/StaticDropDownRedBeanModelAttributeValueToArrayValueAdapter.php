@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,35 +31,21 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ClassicEmailTemplateWizardView extends EmailTemplateWizardView
+    class StaticDropDownRedBeanModelAttributeValueToArrayValueAdapter extends DropDownRedBeanModelAttributeValueToArrayValueAdapter
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
+        public function resolveData(& $data)
         {
-            $title = parent::getTitle() .  ' - ';
-            if($this->model->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
+            if ($this->model->{$this->attribute} != '')
             {
-                $title .= Zurmo::t('EmailTemplatesModule', 'Plain Text');
-            }
-            elseif($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
-            {
-                $title .= Zurmo::t('EmailTemplatesModule', 'HTML');
+                $data[$this->attribute] = $this->model->{$this->attribute};
             }
             else
             {
-                throw new NotSupportedException();
+                $data[$this->attribute] = null;
             }
-            return $title;
-        }
-
-        protected static function resolveContainingViewClassNames()
-        {
-            return array('GeneralDataForEmailTemplateWizardView', 'ContentForEmailTemplateWizardView');
         }
     }
 ?>

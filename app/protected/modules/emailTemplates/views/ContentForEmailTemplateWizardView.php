@@ -65,6 +65,16 @@
             return Zurmo::t('Core', 'Save');
         }
 
+        public static function resolveValidationScenario()
+        {
+            return EmailTemplateWizardForm::PLAIN_AND_RICH_CONTENT_VALIDATION_SCENARIO;
+        }
+
+        public static function redirectAfterSave()
+        {
+            return true;
+        }
+
         /**
          * @return string
          */
@@ -77,7 +87,7 @@
 
         protected function renderPlainTextAndHtmlContent(& $content)
         {
-            $params   = array('redactorPlugins' => CJSON::encode(array('mergetags')));
+            $params = array(EmailTemplateHtmlAndTextContentElement::SELECTIVE_TAB_LOAD_KEY => true);
             $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
             $element->editableTemplate  = '{label}{content}{error}';
             $right    = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
@@ -86,6 +96,12 @@
             $left     = $this->renderMergeTagsView();
             $left     = ZurmoHtml::tag('div', array('class' => 'left-column'), $title . $left);
             $content .= $left . $right;
+        }
+
+        protected function registerScripts()
+        {
+            parent::registerScripts();
+            $this->registerSetIsDraftToZeroOnSaveScript();
         }
 
         protected function renderMergeTagsView()
@@ -100,5 +116,18 @@
         {
             return ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix strong-right'), $content);
         }
+
+        protected function registerSetIsDraftToZeroOnSaveScript()
+        {
+            Yii::app()->clientScript->registerScript('setIsDraftToZeroOnSaveScript', "
+                $('#" . static::getNextPageLinkId() . "').unbind('click.setIsDraftToZeroOnSaveScript')
+                                                .bind('click.setIsDraftToZeroOnSaveScript', function()
+                {
+                    setIsDraftToZero();
+                });
+                ", CClientScript::POS_END);
+        }
+
+
     }
 ?>

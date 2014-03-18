@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,35 +31,47 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
-    class ClassicEmailTemplateWizardView extends EmailTemplateWizardView
+    class TextElementTest extends ZurmoBaseTest
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
+        public static function setUpBeforeClass()
         {
-            $title = parent::getTitle() .  ' - ';
-            if($this->model->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
-            {
-                $title .= Zurmo::t('EmailTemplatesModule', 'Plain Text');
-            }
-            elseif($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
-            {
-                $title .= Zurmo::t('EmailTemplatesModule', 'HTML');
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $title;
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        protected static function resolveContainingViewClassNames()
+        public function setUp()
         {
-            return array('GeneralDataForEmailTemplateWizardView', 'ContentForEmailTemplateWizardView');
+            parent::setUp();
+        }
+
+        public function teardown()
+        {
+            parent::teardown();
+        }
+
+        public function testEditableHtmlOptionsInputValue()
+        {
+            $model              = new User();
+            $this->assertTrue($model->id < 0);
+            $form               = new ZurmoActiveForm();
+            $textElement        = new TextElement($model, 'id', $form);
+            $content            = $textElement->render();
+            $valPosition        = strpos($content, 'value=""');
+            $valInvalidPosition = strpos($content, 'value="' . $model->id . '"');
+            $this->assertTrue($valPosition > 0);
+            $this->assertFalse($valInvalidPosition > 0);
+
+            //Valid case
+            $model              = User::getByUsername('super');
+            $this->assertTrue($model->id > 0);
+            $textElement        = new TextElement($model, 'id', $form);
+            $content            = $textElement->render();
+            $valInvalidPosition = strpos($content, 'value=""');
+            $valPosition        = strpos($content, 'value="' . $model->id . '"');
+            $this->assertTrue($valPosition > 0);
+            $this->assertFalse($valInvalidPosition > 0);
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,35 +31,63 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ClassicEmailTemplateWizardView extends EmailTemplateWizardView
+    /**
+     * A job for removing old draft email templates
+     */
+    class DraftEmailTemplateCleanupJob extends BaseJob
     {
+        const DRAFT_LIFE_TIME_IN_DAYS = 7;
+
         /**
-         * @return string
+         * @returns Translated label that describes this job type.
          */
-        public function getTitle()
+        public static function getDisplayName()
         {
-            $title = parent::getTitle() .  ' - ';
-            if($this->model->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
-            {
-                $title .= Zurmo::t('EmailTemplatesModule', 'Plain Text');
-            }
-            elseif($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
-            {
-                $title .= Zurmo::t('EmailTemplatesModule', 'HTML');
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $title;
+            return Zurmo::t('ZurmoModule', 'Draft Email Templates Cleanup Job');
         }
 
-        protected static function resolveContainingViewClassNames()
+        /**
+         * @return The type of the NotificationRules
+         */
+        public static function getType()
         {
-            return array('GeneralDataForEmailTemplateWizardView', 'ContentForEmailTemplateWizardView');
+            return 'DraftEmailTemplateCleanup';
+        }
+
+        public static function getRecommendedRunFrequencyContent()
+        {
+            return Zurmo::t('JobsManagerModule', 'Once a week.');
+        }
+
+        public function run()
+        {
+            $timestamp = time() - static::DRAFT_LIFE_TIME_IN_DAYS * 24 * 60 * 60;
+            $dateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'createdDateTime',
+                    'operatorType'              => 'lessThan',
+                    'value'                     => $dateTime,
+                ),
+                2 => array(
+                    'attributeName'             => 'isDraft',
+                    'operatorType'              => 'equals',
+                    'value'                     => 1,
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailTemplate');
+            $where = RedBeanModelDataProvider::makeWhere('EmailTemplate', $searchAttributeData, $joinTablesAdapter);
+            $models = EmailTemplate::getSubset($joinTablesAdapter, null, null, $where, null);
+            foreach ($models as $model)
+            {
+                $model->delete();
+            }
+            return true;
         }
     }
 ?>

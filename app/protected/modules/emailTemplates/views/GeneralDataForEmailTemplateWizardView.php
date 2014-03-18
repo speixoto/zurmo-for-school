@@ -66,6 +66,11 @@
             return 'generalDataNextLink';
         }
 
+        public static function resolveValidationScenario()
+        {
+            return EmailTemplateWizardForm::GENERAL_DATA_VALIDATION_SCENARIO;
+        }
+
         protected function renderPreviousPageLinkLabel()
         {
             return Zurmo::t('Core', 'Cancel');
@@ -231,7 +236,7 @@
             return $selector;
         }
 
-        protected static function resolveTemplateIdHiddenInputJQuerySelector()
+        public static function resolveTemplateIdHiddenInputJQuerySelector()
         {
             $id = ZurmoHtml::activeId(new BuilderEmailTemplateWizardForm(), static::HIDDEN_ID);
             return '#' . $id;
@@ -273,19 +278,27 @@
                 ");
         }
 
-        public static function resolveAdditionalAjaxOptions($formName)
+        protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                                $validationInputId, $progressPerStep,
+                                                                                    $stepCount)
         {
-            $ajaxArray                  = parent::resolveAdditionalAjaxOptions($formName);
-            $ajaxArray['success']       = "js:function(data)
+            $actionId                   = Yii::app()->getController()->getAction()->getId();
+            $templateIdSelector         = static::resolveTemplateIdHiddenInputJQuerySelector();
+            $moduleClassNameSelector    = static::resolveModuleClassNameHiddenInputJQuerySelector();
+            $script                     = "if ('create' == '" . $actionId . "')
                                             {
-                                                if ('create' == '" . Yii::app()->getController()->getAction()->getId() . "')
-                                                {
-                                                    //update id
-                                                    $('" . static::resolveTemplateIdHiddenInputJQuerySelector() . "').val(data.id);
-                                                }
-                                                $('" . static::resolveModuleClassNameHiddenInputJQuerySelector() . "').val(data.moduleClassName);
-                                            }";
-            return $ajaxArray;
+                                                //update id
+                                                $('" . $templateIdSelector . "').val(data.id);
+                                            }
+                                            $('" . $moduleClassNameSelector . "').val(data.moduleClassName);
+                                            ";
+            $parentScript               = parent::resolveSuccessAjaxCallbackForPageTransition($formName,
+                                                                                                $nextPageClassName,
+                                                                                                $validationInputId,
+                                                                                                $progressPerStep,
+                                                                                                $stepCount);
+            $script                     = $script . PHP_EOL . $parentScript;
+            return $script;
         }
     }
 ?>

@@ -58,7 +58,7 @@
             {
                 return static::SCORE_TYPE_UPDATE_CALL;
             }
-            return parent::resolveCreateScoreTypeByModel($model);
+            return parent::resolveUpdateScoreTypeByModel($model);
         }
 
         public static function getPointTypesAndValuesForCreateModel()

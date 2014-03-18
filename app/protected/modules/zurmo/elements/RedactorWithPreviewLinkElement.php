@@ -46,7 +46,7 @@
             $previewElementParams    = CMap::mergeArray($this->params, $previewElementParams);
             $controllerId            = Yii::app()->controller->id;
             $moduleId                = Yii::app()->controller->module->id;
-            $previewElement          = new AutoresponderOrCampaignFooterTextPreviewElement($controllerId, $moduleId,
+            $previewElement          = new GlobalMarketingFooterConfigurationPreviewElement($controllerId, $moduleId,
                                                                             $this->model->Id, $previewElementParams);
             $content                .= $previewElement->render();
             return $content;

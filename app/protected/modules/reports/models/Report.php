@@ -197,7 +197,6 @@
         public static function getReportableModulesAndLabelsForCurrentUser()
         {
             $moduleClassNamesAndLabels = array();
-            $modules = Module::getModuleObjects();
             foreach (self::getReportableModulesClassNamesCurrentUserHasAccessTo() as $moduleClassName)
             {
                 if ($moduleClassName::getStateMetadataAdapterClassName() != null)

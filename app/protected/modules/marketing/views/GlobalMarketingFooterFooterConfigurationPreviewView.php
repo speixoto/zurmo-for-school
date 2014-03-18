@@ -34,64 +34,52 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Sanitizer for handling user timeZone.
-     */
-    class UserTimeZoneSanitizerUtil extends SanitizerUtil
+    class GlobalMarketingFooterFooterConfigurationPreviewView extends View
     {
-        /**
-         * @param RedBean_OODBBean $rowBean
-         */
-        public function analyzeByRow(RedBean_OODBBean $rowBean)
+        protected $isHtmlContent;
+
+        protected  $placeholderContent;
+
+        public function __construct($isHtmlContent, $content)
         {
-            if ($rowBean->{$this->columnName} != null)
+            $this->isHtmlContent = $isHtmlContent;
+            $this->placeholderContent = $content;
+        }
+
+        protected function renderContent()
+        {
+            $this->resolvePlaceholderContentForMergeTags();
+            $this->resolvePlaceholderContentForUnsubscribeAndManageSubscriptionsUrls();
+
+            $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
+                                                            'class' => 'footer-preview-modal'),
+                                                    $this->placeholderContent);
+            return $content;
+        }
+
+        protected function resolvePlaceholderContentForMergeTags()
+        {
+            $language           = null;
+            $type               = EmailTemplate::TYPE_WORKFLOW;
+            $model              = Yii::app()->user->userModel;
+            $util               = MergeTagsUtilFactory::make($type, $language, $this->placeholderContent);
+            $resolvedContent    = $util->resolveMergeTags($model);
+            if ($resolvedContent !== false)
             {
-                $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
-                if (!in_array(strtolower($rowBean->{$this->columnName}), $resolvedAcceptableValues))
-                {
-                    $label = Zurmo::t('ImportModule',
-                                      '{attributeLabel} specified is invalid.',
-                                      array('{attributeLabel}' => User::getAnAttributeLabel('timeZone')));
-                    $this->shouldSkipRow      = false;
-                    $this->analysisMessages[] = $label;
-                }
+                $this->placeholderContent = $resolvedContent;
             }
         }
 
-        public static function getLinkedMappingRuleType()
+        protected function resolvePlaceholderContentForUnsubscribeAndManageSubscriptionsUrls()
         {
-            return 'DefaultValueModelAttribute';
-        }
-
-        public function sanitizeValue($value)
-        {
-            $resolvedAcceptableValues = ArrayUtil::resolveArrayToLowerCase(static::getAcceptableValues());
-            if ($value != null)
-            {
-                if (!in_array(strtolower($value), $resolvedAcceptableValues))
-                {
-                    return null;
-                }
-                return $value;
-            }
-            if (isset($this->mappingRuleData['defaultValue']) && $this->mappingRuleData['defaultValue'] != null)
-            {
-                if (!in_array(strtolower($this->mappingRuleData['defaultValue']), $resolvedAcceptableValues))
-                {
-                    return null;
-                }
-                return $this->mappingRuleData['defaultValue'];
-            }
-        }
-
-        protected static function getAcceptableValues()
-        {
-            return DateTimeZone::listIdentifiers();
-        }
-
-        public function shouldSanitizeValue()
-        {
-            return true;
+            EmailMessageActivityUtil::resolveUnsubscribeAndManageSubscriptionPlaceholders($this->placeholderContent,
+                                                                                            0,
+                                                                                            0,
+                                                                                            0,
+                                                                                            'AutoresponderItem',
+                                                                                            $this->isHtmlContent,
+                                                                                            true,
+                                                                                            true);
         }
     }
 ?>

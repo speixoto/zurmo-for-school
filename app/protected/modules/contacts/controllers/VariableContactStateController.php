@@ -130,7 +130,7 @@
                                                                                                              $term)
                 );
             }
-            $users = UserSearch::getUsersByPartialFullNameOrAnyEmailAddress($term, $pageSize, $adapterName,
+            $users = UserSearch::getUsersByPartialFullNameOrAnyEmailAddress($term, $pageSize, null,
                      null, $autoCompleteOptions);
             foreach ($users as $user)
             {

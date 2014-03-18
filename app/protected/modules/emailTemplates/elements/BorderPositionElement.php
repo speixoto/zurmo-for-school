@@ -93,7 +93,7 @@
             if ($renderHidden)
             {
                 $attribute              = $this->resolveCheckboxInputAttributeName($attribute);
-                $checkboxLabelFor       = ZurmoHtml::activeName($this->model, $attribute);
+                $checkboxLabelFor       = ZurmoHtml::activeId($this->model, $attribute);
             }
             $checkboxLabelHtmlOptions   = array();
             $checkboxLabel              = ZurmoHtml::label($label, $checkboxLabelFor, $checkboxLabelHtmlOptions);
@@ -144,7 +144,6 @@
                         {
                             if ($(checkboxSelector).prop("checked") != state)
                             {
-                                console.log("Toggling state of: " + $(checkboxSelector).attr("id") + " to " + state);
                                 $(checkboxSelector).trigger("click");
                                 $(checkboxSelector).parent().addClass("c_on");
                             }

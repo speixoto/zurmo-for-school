@@ -88,6 +88,11 @@
             return 'builderCanvasSaveLink';
         }
 
+        public static function resolveValidationScenario()
+        {
+            return EmailTemplateWizardForm::SERIALIZED_DATA_VALIDATION_SCENARIO;
+        }
+
         /**
          * @return string
          */
@@ -414,14 +419,36 @@
                  });');
         }
 
-        public static function resolveAdditionalAjaxOptions($formName)
+        protected static function resolveCompleteAjaxCallbackForSpinnerRemoval($formName)
         {
-            $ajaxArray                      = parent::resolveAdditionalAjaxOptions($formName);
-            $ajaxArray['complete']          = "js:function()
-                                            {
-                                                emailTemplateEditor.unfreezeLayoutEditor();
-                                            }";
-            return $ajaxArray;
+            $script             = "emailTemplateEditor.unfreezeLayoutEditor();";
+            $parentScript       = parent::resolveCompleteAjaxCallbackForSpinnerRemoval($formName);
+            $script             = $script . PHP_EOL . $parentScript;
+            return $script;
+        }
+
+        protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                              $validationInputId, $progressPerStep,
+                                                                              $stepCount)
+        {
+            $script                     = static::resolveHideCanvasScript();
+            $parentScript               = parent::resolveSuccessAjaxCallbackForPageTransition($formName,
+                                                                                                $nextPageClassName,
+                                                                                                $validationInputId,
+                                                                                                $progressPerStep,
+                                                                                                $stepCount);
+            $script                     = $script . PHP_EOL . $parentScript;
+            return $script;
+        }
+
+        public static function resolvePreviousPageScript(& $script)
+        {
+            $script     = static::resolveHideCanvasScript() . PHP_EOL . $script;
+        }
+
+        protected static function resolveHideCanvasScript()
+        {
+            return "$('#" . static::ELEMENT_EDIT_CONTAINER_ID . "').hide();";
         }
     }
 ?>

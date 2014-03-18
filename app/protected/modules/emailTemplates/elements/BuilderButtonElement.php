@@ -68,7 +68,7 @@
             $href                   = null;
             extract($this->properties['frontend']);
             $text                   = $this->properties['backend']['text'];
-            $label                  = ZurmoHtml::tag('span', array(), $text);
+            $label                  = ZurmoHtml::tag('strong', array(), $text);
             $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
             $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
             $options                = CMap::mergeArray($htmlOptions, $frontendOptions);

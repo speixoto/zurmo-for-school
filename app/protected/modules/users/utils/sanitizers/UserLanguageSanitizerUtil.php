@@ -89,5 +89,10 @@
             $activeLanguages = Yii::app()->languageHelper->getActiveLanguagesData();
             return array_keys($activeLanguages);
         }
+
+        public function shouldSanitizeValue()
+        {
+            return true;
+        }
     }
 ?>

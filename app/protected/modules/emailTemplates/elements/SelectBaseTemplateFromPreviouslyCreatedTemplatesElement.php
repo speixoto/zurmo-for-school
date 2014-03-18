@@ -38,7 +38,14 @@
     {
         protected function resolveBaseTemplates()
         {
-            return EmailTemplate::getPreviouslyCreatedBuilderTemplates($this->resolveModelClassName());
+            $templates  = EmailTemplate::getPreviouslyCreatedBuilderTemplates($this->resolveModelClassName());
+            $templates  = array_filter($templates, array($this, 'excludeSelf'));
+            return $templates;
+        }
+
+        protected function excludeSelf($template)
+        {
+            return ($template->id != $this->model->id);
         }
 
         protected function resolveModelClassName()

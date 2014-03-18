@@ -51,7 +51,7 @@
          */
         public static function getWizardStepTitle()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Select a Base Template');
+            return Zurmo::t('EmailTemplatesModule', 'Layout');
         }
 
         /**
@@ -68,6 +68,11 @@
         public static function getNextPageLinkId()
         {
             return 'selectBaseTemplateNextLink';
+        }
+
+        public static function resolveValidationScenario()
+        {
+            return EmailTemplateWizardForm::SELECT_BASE_TEMPLATE_VALIDATION_SCENARIO;
         }
 
         /**
@@ -91,7 +96,7 @@
         {
             $elementClassName   = static::PREDEFINED_TEMPLATES_ELEMENT_CLASS_NAME;
             $wrapperDivCssId    = static::PREDEFINED_TEMPLATES_DIV_ID;
-            $heading            = Zurmo::t('EmailTemplatesModule', 'Predefined Templates');
+            $heading            = Zurmo::t('EmailTemplatesModule', 'Templates');
             $params             = array('inputPrefix' => 'predefinedTemplate');
             $content            = $this->renderSelectBaseTemplateByElementName($elementClassName, $wrapperDivCssId, $heading, $params);
             return $content;
@@ -221,9 +226,14 @@
             Yii::app()->clientScript->registerScript('populateBaseTemplatesScript', "
                 function populateBaseTemplates(elementClassName, elementModelClassName, elementAttributeName, elementFormClassName, elementParams, divId)
                 {
-                    var requestData    = { elementClassName: elementClassName, elementModelClassName: elementModelClassName,
-                                    elementAttributeName: elementAttributeName, elementFormClassName: elementFormClassName,
-                                    elementParams: elementParams };
+                    var templateId     = $('" .
+                                            GeneralDataForEmailTemplateWizardView::
+                                                    resolveTemplateIdHiddenInputJQuerySelector() . "').val();
+                    var requestData    = { templateId: templateId, elementClassName: elementClassName,
+                                            elementModelClassName: elementModelClassName,
+                                            elementAttributeName: elementAttributeName,
+                                             elementFormClassName: elementFormClassName,
+                                             elementParams: elementParams };
 
                     " . ZurmoHtml::ajax($this->resolvePopulateBaseTemplateAjaxOptions()) . "
                 }", CClientScript::POS_HEAD);
@@ -251,7 +261,15 @@
             Yii::app()->clientScript->registerScript('updateBaseTemplatesByDivIdScript', "
                 function updateBaseTemplatesByDivId(divId, data)
                 {
-                    $('div#' + divId + ' ul').html(data);
+                    if (data == '')
+                    {
+                        $('div#' + divId).hide();
+                    }
+                    else
+                    {
+                        $('div#' + divId + ' ul').html(data);
+                        $('div#' + divId).show();
+                    }
                 }", CClientScript::POS_HEAD);
         }
 
@@ -300,32 +318,38 @@
             return '#' . $id;
         }
 
-        public static function resolveAdditionalAjaxOptions($formName)
+        protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                              $validationInputId, $progressPerStep,
+                                                                              $stepCount)
         {
-            $ajaxArray                                      = parent::resolveAdditionalAjaxOptions($formName);
-            $ajaxArray['success']       = "js:function(data)
-                                            {
-                                                // update canvas url
-                                                var canvasSourceUrl = $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src');
-                                                if (canvasSourceUrl == 'about:blank')
-                                                {
-                                                    canvasSourceUrl		= '" . static::resolveCanvasActionUrl() . "';
-                                                    canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
-                                                    $('#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID . "').attr('src', canvasSourceUrl);
-                                                    $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
-                                                }
-                                                else
-                                                {
-                                                    originalBaseTemplateId  = $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
-                                                    selectedBaseTemplateId  = $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
-                                                    if (selectedBaseTemplateId != originalBaseTemplateId)
-                                                    {
-                                                        $('#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID . "').trigger('click');
-                                                    }
-                                                    $('" . static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val(selectedBaseTemplateId);
-                                                }
-                                            }";
-            return $ajaxArray;
+            $canvasIFrameSelector       = "#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID;
+            $canvasActionUrl            =  static::resolveCanvasActionUrl();
+            $refreshCanvasLinkSelector  = "#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID;
+            $originalBaseTemplateIdSelector = static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector();
+            $baseTemplateIdSelector         = static::resolveBaseTemplateIdHiddenInputJQuerySelector();
+            $script         = "
+                                selectedBaseTemplateId  = $('" . $baseTemplateIdSelector . "').val();
+                                originalBaseTemplateId  = $('" . $originalBaseTemplateIdSelector . "').val();
+                                if (canvasSourceUrl == 'about:blank' || selectedBaseTemplateId != originalBaseTemplateId)
+                                {
+                                    // update canvas url
+                                    var canvasSourceUrl = $('" . $canvasIFrameSelector . "').attr('src');
+                                    if (canvasSourceUrl == 'about:blank')
+                                    {
+                                        canvasSourceUrl		= '" . $canvasActionUrl . "';
+                                        canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
+                                        $('" . $canvasIFrameSelector . "').attr('src', canvasSourceUrl);
+                                    }
+                                    $('" . $refreshCanvasLinkSelector . "').trigger('click');
+                                }
+                                $('" . $originalBaseTemplateIdSelector . "').val(selectedBaseTemplateId);
+                                initEmailTemplateEditor();
+                                ";
+            $parentScript   = parent::resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
+                                                                                    $validationInputId, $progressPerStep,
+                                                                                    $stepCount);
+            $script         = $script . PHP_EOL . $parentScript;
+            return $script;
         }
     }
 ?>

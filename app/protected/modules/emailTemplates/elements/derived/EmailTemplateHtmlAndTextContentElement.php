@@ -35,14 +35,16 @@
      ********************************************************************************/
 
     /**
-     * Element used to display text and html areas on email template,
+     * Base Element used to display text and html areas on email template,
      * autoresponder and campaign edit and detail views
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
-        const HTML_CONTENT_INPUT_NAME = 'htmlContent';
+        const SELECTIVE_TAB_LOAD_KEY    = 'selectiveTabLoad';
 
-        const TEXT_CONTENT_INPUT_NAME = 'textContent';
+        const HTML_CONTENT_INPUT_NAME   = 'htmlContent';
+
+        const TEXT_CONTENT_INPUT_NAME   = 'textContent';
 
         public $plugins = array('fontfamily', 'fontsize', 'fontcolor', 'mergetags');
 
@@ -193,7 +195,7 @@
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent) && $this->isPastedHtmlTemplate())
+            if (empty($this->model->textContent) && (!$this->resolveSelectiveLoadOfTabs() || $this->isPastedHtmlTemplate()))
             {
                 return 'html';
             }
@@ -202,7 +204,7 @@
 
         protected function renderEditableHtmlContentArea()
         {
-            if ($this->isPastedHtmlTemplate())
+            if (!$this->resolveSelectiveLoadOfTabs() || $this->isPastedHtmlTemplate())
             {
                 return $this->renderHtmlContentArea();
             }
@@ -211,7 +213,7 @@
 
         protected function renderNonEditableHtmlContentArea()
         {
-            if (!$this->isPlainTextTemplate())
+            if (!$this->resolveSelectiveLoadOfTabs() || !$this->isPlainTextTemplate())
             {
                 $url            = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
                                     array('id' => $this->model->id, 'className' => get_class($this->model)));
@@ -290,11 +292,6 @@
             return 'emailTemplates';
         }
 
-        protected function renderPlainTextOnly()
-        {
-            return ($this->isPlainTextTemplate() || $this->isBuilderTemplate());
-        }
-
         protected function isPastedHtmlTemplate()
         {
             return $this->callMethodIfExistsElseReturnTrue('isPastedHtmlTemplate');
@@ -327,6 +324,11 @@
         protected function resolvePlugins()
         {
             return $this->plugins;
+        }
+
+        protected function resolveSelectiveLoadOfTabs()
+        {
+            return (bool)ArrayUtil::getArrayValue($this->params, static::SELECTIVE_TAB_LOAD_KEY);
         }
     }
 ?>

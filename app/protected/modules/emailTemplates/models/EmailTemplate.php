@@ -88,9 +88,9 @@
         public static function getBuiltTypeDropDownArray()
         {
             return array(
-                static::BUILT_TYPE_PLAIN_TEXT_ONLY  => Zurmo::t('EmailTemplatesModule', 'Plain text only'),
-                static::BUILT_TYPE_PASTED_HTML      => Zurmo::t('EmailTemplatesModule', 'Paste already built html template'),
-                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Use Builder'),
+                static::BUILT_TYPE_PLAIN_TEXT_ONLY  => Zurmo::t('EmailTemplatesModule', 'Use Plain Text'),
+                static::BUILT_TYPE_PASTED_HTML      => Zurmo::t('EmailTemplatesModule', 'Use HTML'),
+                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Use Template Builder'),
             );
         }
 
@@ -192,7 +192,7 @@
         /**
          * @param $type
          * @param bool $includeDrafts
-         * @return An
+         * @return Array
          */
         public static function getByType($type, $includeDrafts = false)
         {
@@ -223,15 +223,6 @@
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
-        }
-
-        public function setToUserDefaultLanguage($attribute, $params)
-        {
-            if (empty($this->$attribute))
-            {
-                $this->$attribute = Yii::app()->languageHelper->getForCurrentUser();
-            }
-            return true;
         }
 
         /**

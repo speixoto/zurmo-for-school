@@ -34,32 +34,24 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignFooterTextPreviewView extends View
+    /**
+     * Import rules for the lastest activity date time attribute.
+     */
+    class LatestActivityDateTimeAttributeImportRules extends NonDerivedAttributeImportRules
     {
-        protected $isHtmlContent;
-
-        protected  $placeholderContent;
-
-        public function __construct($isHtmlContent, $content)
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            $this->isHtmlContent = $isHtmlContent;
-            $this->placeholderContent = $content;
+            return array('ValueFormat' => 'ImportMappingRuleDateTimeFormatDropDown');
         }
 
-        protected function renderContent()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            EmailMessageActivityUtil::resolveUnsubscribeAndManageSubscriptionPlaceholders($this->placeholderContent,
-                                                                                            0,
-                                                                                            0,
-                                                                                            0,
-                                                                                            'AutoresponderItem',
-                                                                                            $this->isHtmlContent,
-                                                                                            true,
-                                                                                            true);
-            $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
-                                                            'class' => 'footer-preview-modal'),
-                                                    $this->placeholderContent);
-            return $content;
+            return array('DateTime');
+        }
+
+        public function getDisplayLabel()
+        {
+            return Zurmo::t('ZurmoModule', 'Latest Activity Date Time');
         }
     }
 ?>

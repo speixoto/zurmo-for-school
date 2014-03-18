@@ -36,10 +36,11 @@ a.newsletter-button {
 	background: #2ba6cb;
 	border: 1px solid #2284a1;
 }
-a.newsletter-button span {
+a.newsletter-button strong {
 	display: inline-block;
 	line-height: 1;
 	padding: 10px 20px;
+	font-weight: inherit;
 }
 a.social-button {
 	display: inline-block;
@@ -47,10 +48,11 @@ a.social-button {
 	line-height: 1;
 	text-align: center;
 }
-a.social-button span {
+a.social-button strong {
 	display: inline-block;
 	line-height: 1;
 	padding: 10px 20px;
+	font-weight: inherit;
 }
 table.button,
 table.tiny-button,
