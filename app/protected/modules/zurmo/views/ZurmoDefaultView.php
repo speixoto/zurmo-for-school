@@ -53,5 +53,10 @@
             }
             return $this->verticalGridView->render();
         }
+
+        protected function getContainerWrapperTag()
+        {
+            return null;
+        }
     }
 ?>

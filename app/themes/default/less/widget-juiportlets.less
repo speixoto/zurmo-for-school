@@ -31,6 +31,10 @@
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
+.juiportlet-columns{
+	.clearfix();
+}
+
 .juiportlet-column {
 	float: left;
 	min-height: 400px;
@@ -81,7 +85,7 @@
 	padding: 0;
 	border:1px solid #CCC;
 	.portlet-gradient();
-	.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12)); /*999*/
+	.b-shadow(0 0 10px 1px rgba(175, 175, 175, 0.15)); /*999*/
 }
 
 .juiportlet-widget-head {
@@ -117,6 +121,16 @@
 
 .collapse ~ h3{
 	//margin-left:0;
+}
+
+.portlet-actions-container{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	padding-left: 10px;
+	#gradient > .vertical(#f6f6f6, #ededed);
+	.b-shadow(inset 0 1px 0 0 #ffffff);
 }
 
 .juiportlet-widget-placeholder {

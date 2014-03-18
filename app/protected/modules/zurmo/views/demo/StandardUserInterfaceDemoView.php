@@ -34,36 +34,14 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Base view for displaying a global search and shortcuts create menu view
-     */
-    class GlobalSearchAndShortcutsCreateMenuView extends View
+    class StandardUserInterfaceDemoView extends View
     {
-        protected $moduleNamesAndLabelsAndAll;
-
-        protected $sourceUrl;
-
-        protected $shortcutsCreateMenuView;
-
-        /**
-         * @param array $moduleNamesAndLabelsAndAll
-         * @param string $sourceUrl
-         * @param ShortcutsCreateMenuView $shortcutsCreateMenuView
-         */
-        public function __construct($moduleNamesAndLabelsAndAll, $sourceUrl, $shortcutsCreateMenuView)
-        {
-            assert('is_array($moduleNamesAndLabelsAndAll)');
-            assert('is_string($sourceUrl)');
-            assert('$shortcutsCreateMenuView instanceof ShortcutsCreateMenuView');
-            $this->moduleNamesAndLabelsAndAll = $moduleNamesAndLabelsAndAll;
-            $this->sourceUrl                  = $sourceUrl;
-            $this->shortcutsCreateMenuView    = $shortcutsCreateMenuView;
-        }
+        public $message;
 
         protected function renderContent()
         {
-            $globalSearchView = new GlobalSearchView($this->moduleNamesAndLabelsAndAll, $this->sourceUrl);
-            return $globalSearchView->render() . $this->shortcutsCreateMenuView->render();
+            $content = 'DEMO VIEW - ' . $this->message;
+            return ZurmoHtml::tag('div', array(), $content);
         }
     }
 ?>

@@ -34,32 +34,67 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoPageView extends PageView
+    class UserInterfaceChooserView extends View
     {
-        /**
-         * Get the global page title value.
-         * @return string - page title.
-         */
-        public function getTitle()
+        protected function renderContent()
         {
-            if (null != $pageTitle = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'pageTitle'))
+            return $this->renderUserInterfaceTypeSelector();
+        }
+
+        /**
+         * Render section for selection user interface type.
+         * Show only if user is using mobile and tablet devices.
+         */
+        protected function renderUserInterfaceTypeSelector()
+        {
+            if (Yii::app()->userInterface->isMobile())
             {
-                return $pageTitle;
+                $mobileActive  = ' active';
+                $desktopActive = null;
             }
             else
             {
-                return Zurmo::t('ZurmoModule', 'ZurmoCRM');
+                $mobileActive  = null;
+                $desktopActive = ' active';
             }
+            $content   = ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-mobile' . $mobileActive), ''),
+                            Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::MOBILE)),
+                            array('title' => Zurmo::t('ZurmoModule', 'Show Mobile')));
+
+            $content  .= ZurmoHtml::link(ZurmoHtml::tag('i', array('class' => 'icon-desktop' . $desktopActive), ''),
+                            Yii::app()->createUrl('zurmo/default/userInterface', array('userInterface' => UserInterface::DESKTOP)),
+                            array('title' => Zurmo::t('ZurmoModule', 'Show Full')));
+
+            $content   = ZurmoHtml::tag('div', array('class' => 'device'), $content);
+
+            $collapser = ZurmoHtml::link(ZurmoHtml::tag('i', $this->getCollapserLinkOptions(), ''),
+                            Yii::app()->createUrl('zurmo/default/toggleCollapse', array('returnUrl' => Yii::app()->request->url)),
+                            array('title' => Zurmo::t('ZurmoModule', 'Collapse or Expand')));
+            return $collapser . $content;
         }
 
-        protected function getStyles()
+        protected function getCollapserLinkOptions()
         {
-            return array();
+            $options = array();
+            if (Yii::app()->userInterface->isMenuCollapsed())
+            {
+                $options['class'] = 'icon-expand';
+            }
+            else
+            {
+                $options['class'] = 'icon-collapse';
+            }
+            return $options;
         }
 
-        protected function getContainerWrapperTag()
+        protected function renderContainerWrapperId()
         {
-            return null;
+            return false;
+        }
+
+        protected function resolveDefaultClasses()
+        {
+            return array('ui-chooser');
         }
     }
 ?>

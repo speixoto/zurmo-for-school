@@ -34,7 +34,7 @@
  ********************************************************************************/
 
 @media screen and (min-width: 1601px) {
-    .AppContainer{
+   /* .AppContainer{
         margin:0 auto !important;
     }
     #HeaderLinksView > div {
@@ -47,11 +47,11 @@
         position: relative !important;
         top:-25px !important;
         right:0 !important;
-    }
+    }*/
 }
 
 @media screen and (max-width: 1000px) {
-	.view-toolbar{
+	/*.view-toolbar{
 		> a,
 		.parent > a {
 			padding-left: 10px;
@@ -60,15 +60,20 @@
 			}
 		}
 	}
+	#HeaderView{
+		.container{
+			min-width: 0;
+			max-width: 100%;
+		}
+	}*/
 }
 
 @media all and (max-width: 900px) {
-	.AppContainer{
+	#HeaderView{
 		min-width:0 !important;
 	}
-	#HeaderView{
-		width:100%;
-		min-width:0 !important;
+	#corp-logo span{
+		display: none;
 	}
 	.juiportlet-column{
 		width:100%;
@@ -94,28 +99,21 @@
 	.juiportlet-widget{
 		margin-right:0 !important;
 	}
-
     //edit view
 	.right-column,
 	.left-column{
-		//float: none;
 		width: 100%;
-		//padding-left: 0;
 	}
-
 	.right-side-edit-view-panel{
-		padding: 0;
 		padding: 0 0 0 0;
 		background: none;
 	}
-
     //intro steps
 	.module-intro-steps > div{
 		width: 100%;
 		float: none;
 		margin:0 0 15px 0;
 	}
-
 	#AboutView{
 		#rightCol,
 		#leftCol{
@@ -129,33 +127,20 @@
 	}
 }
 
+
 @media all and (max-width: 801px){ /*and (max-height: 451px)*/
 	#LoginPageView{
 		padding-top:0;
 		> div{
-			
 			padding:10px;
-			display: -ms-flex;
-			display: -moz-flex;
-			display: -webkit-flex;
+			display:block;
 			display: flex;
-			-ms-flex-direction: column;
-			-ms-flex-wrap: wrap;
-			-moz-flex-flow: column wrap;
-			-webkit-flex-flow: column wrap;
 			flex-flow: column wrap;
-			-ms-flex-pack: start;
-			-moz-justify-content: flex-start;
-			-webkit-justify-content: flex-start;
 			justify-content: flex-start;
 			width:100% !important;
 			height:100% !important;
-			display:block;
 		}
 		#FooterView{
-			-ms-flex: 1 0 auto;
-			-moz-flex: 1 0 auto;
-			-webkit-flex: 1 0 auto;
 			flex: 1 0 auto;
 			margin:10px 10px 5px 10px;
 		}
@@ -163,19 +148,14 @@
 			margin-left:0;
 		}
 	}
-
 	#LoginView{
 		min-width:0 !important;
 		margin:0;
-		//background-image:none;
+		padding: 50px 0;
 		background-position: left bottom;// 120px;
 		height:auto;
-		-ms-flex: 1 0 auto;
-		-moz-flex: 1 0 auto;
-		-webkit-flex: 1 0 auto;
 		flex: 1 0 auto;
 	}
-
 	#login-box{
 		width:100%;
 		height:auto;
@@ -200,8 +180,107 @@
 			background-position:50% 50%;
 		}
 	}
-
 	#login-form{
 		padding:0 20px !important;
 	}
+    #FooterView{
+	    margin-left: 0 !important;
+    }
+    #ShortcutsMenu{
+	    > li > a{
+		    &:before{
+			    content: "Y";
+			    .symbly(24px);
+		    }
+		    > span{
+			    display: none;
+		    }
+	    }
+    }
+}
+
+@media all and (max-width: 500px){
+	.logo-and-search{
+		left: 5px;
+		padding-right: 15px;
+		padding-bottom: 3px;
+	}
+	#app-search{
+		margin-left: 0;
+	}
+	#corp-log{
+		img{
+			margin-right: 4px;
+		}
+	}
+	.global-search-loopa{
+		border-right:1px solid #d5d4d4;
+	}
+	#globalSearchInput{
+		display: none;
+	}
+	.user-actions{
+		padding-right: 0;
+	}
+	#ShortcutsMenu{
+		display: none;
+	}
+    .AppContent{
+	    padding: 65px 10px 0 10px;
+    }
+    .list-view-items-summary-clone,
+    .search-form-tools{
+	    display: none;
+    }
+    .view-toolbar-container{
+	    .pillbox:first-child{
+		    .flexbox();
+		    width: 100%;
+		    background-size: auto 100%;
+		    .split-button,
+		    .default-button{
+			    .flex(1 1 auto);
+			    float: none;
+			    + .default-button,
+			    + .split-button{
+
+			    }
+			    > a{
+				    float: none;
+				    width: 100%;
+				    //flex: 1;
+				    text-align: center;
+				    line-height: 40px;
+			    }
+			    .button-label{
+				    padding:0 3px;
+				    width: 100%;
+				    overflow: hidden;
+				    text-overflow: ellipsis;
+				    position: absolute;
+				    top: 13px;
+				    left: 0;
+			    }
+			    i{
+				    top:-10px
+			    }
+			    .icon-trigger:before{
+				    top: 28px;
+			    }
+		    }
+		    .split-button{
+			    .button-action{
+				    float: left;
+				    width: 80%;
+			    }
+			    .button-trigger{
+				    float: right;
+				    width: 20%;
+				    i{
+					    top: 0;
+				    }
+			    }
+		    }
+	    }
+    }
 }

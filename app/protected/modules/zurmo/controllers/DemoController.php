@@ -58,5 +58,105 @@
             }
             UserInterfaceDevelopmentUtil::makeMassDeleteData();
         }
+
+        public function actionUserInterface($type = null)
+        {
+            if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
+            {
+                throw new NotSupportedException();
+            }
+            if($type == null)
+            {
+                $demoView = new MenuUserInterfaceDemoView();
+                $view     = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
+                                makeStandardViewForCurrentUser($this, $demoView));
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::STANDARD_VIEW)
+            {
+                $demoView          = new StandardUserInterfaceDemoView();
+                $demoView->message = 'Standard View';
+                $view     = new ZurmoConfigurationPageView(ZurmoDefaultViewUtil::
+                                makeStandardViewForCurrentUser($this, $demoView));
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::STANDARD_BREADCRUMBS_VIEW)
+            {
+                $breadCrumbLinks = array(
+                    'Breadcrumb 1' => array('/zurmo/demo/userInterface'),
+                    'Breadcrumb 2',
+                );
+                $demoView          = new StandardUserInterfaceDemoView();
+                $demoView->message = 'Standard View with BreadCrumbs';
+                $view = new ZurmoConfigurationPageView(ZurmoDefaultViewUtil::makeViewWithBreadcrumbsForCurrentUser($this,
+                            $demoView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::GRACEFUL_ERROR_VIEW)
+            {
+                $demoView          = new StandardUserInterfaceDemoView();
+                $demoView->message = 'Graceful Error View';
+                $view     = new ZurmoConfigurationPageView(ZurmoDefaultViewUtil::
+                                    makeErrorViewForCurrentUser($this, $demoView));
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::UNEXPECTED_ERROR_VIEW)
+            {
+                $view        = new ErrorPageView('Unexpected error view');
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::AUTHORIZATION_VIEW)
+            {
+                $demoView          = new StandardUserInterfaceDemoView();
+                $demoView->message = 'Authorization View';
+                $view = new ZurmoConfigurationPageView(ZurmoDefaultViewUtil::makeAuthorizationViewForCurrentUser($this, $demoView));
+                $view->setCssClasses(array_merge($view->getCssClasses(), array('ZurmoAuthorizationPageView')));
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::CONTACT_FORM_EXTERNAL_VIEW)
+            {
+                $containedView = new ContactExternalEditAndDetailsView('Edit',
+                                        $this->getId(),
+                                        $this->getModule()->getId(),
+                                        new ContactWebFormsModelForm(new Contact()),
+                                        ContactExternalEditAndDetailsView::getMetadata());
+                $view          = new ContactWebFormsExternalPageView(ZurmoExternalViewUtil::
+                                        makeExternalViewForCurrentUser($containedView));
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::MARKETING_LISTS_EXTERNAL_PREVIEW_VIEW)
+            {
+                $splashView = new MarketingListsExternalActionsPreviewView();
+                $view       = new MarketingListsExternalActionsPageView($this, $splashView);
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::MARKETING_LISTS_MANAGE_SUBSCRIPTIONS_VIEW)
+            {
+                $marketingListMember = MarketingListMember::getSubset(null, 0, 1);
+                $marketingLists      = MarketingList::getByUnsubscribedAndAnyoneCanSubscribe($marketingListMember[0]->contact->id);
+                $listView = new MarketingListsManageSubscriptionsListView($this->getId(),
+                                    $this->getModule()->getId(),
+                                    $marketingLists,
+                                    -100,
+                                    -100,
+                                    -100,
+                                    'notUsed');
+                $view = new MarketingListsManageSubscriptionsPageView($this, $listView);
+                echo $view->render();
+            }
+            elseif($type == MenuUserInterfaceDemoView::MOBILE_HEADER_VIEW)
+            {
+                Yii::app()->userInterface->setSelectedUserInterfaceType(UserInterface::MOBILE);
+                $demoView          = new StandardUserInterfaceDemoView();
+                $demoView->message = 'Standard View';
+                $view              = new ZurmoConfigurationPageView(ZurmoDefaultViewUtil::
+                                            makeStandardViewForCurrentUser($this, $demoView));
+                echo $view->render();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

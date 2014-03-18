@@ -36,8 +36,6 @@
 
     class MarketingListsExternalController extends ZurmoModuleController
     {
-        const TOGGLE_UNSUBSCRIBED_COOKIE_NAME = 'toggleUnsubscribed_Message';
-
         public function filters()
         {
             return array();

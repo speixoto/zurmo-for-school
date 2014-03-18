@@ -145,14 +145,14 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step6/',
                                            array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), $route, array('class' => 'green-button'));
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel($this->renderNextPageLinkLabel()), $route, array('class' => 'z-button'));
         }
 
         protected function renderReanalyseLinkContent()
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step5/',
                 array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ImportModule', 'Analyze Data')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ImportModule', 'Analyze Data')), $route, array('class' => 'z-button'));
         }
 
         protected function renderPreviousPageLinkContent()
