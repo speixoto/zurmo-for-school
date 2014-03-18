@@ -88,5 +88,10 @@
         {
             return ZurmoLocale::getSelectableLocaleIds();
         }
+
+        public function shouldSanitizeValue()
+        {
+            return true;
+        }
     }
 ?>
