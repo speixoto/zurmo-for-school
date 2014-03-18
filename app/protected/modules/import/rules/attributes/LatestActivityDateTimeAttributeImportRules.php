@@ -35,40 +35,23 @@
      ********************************************************************************/
 
     /**
-     * Class defining rules for Meeting gamification behavior.
+     * Import rules for the lastest activity date time attribute.
      */
-    class MeetingGamificationRules extends GamificationRules
+    class LatestActivityDateTimeAttributeImportRules extends NonDerivedAttributeImportRules
     {
-        const SCORE_TYPE_CREATE_CALL = 'CreateCall';
-
-        const SCORE_TYPE_UPDATE_CALL = 'UpdateCall';
-
-        protected static function resolveCreateScoreTypeByModel($model)
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            if ($model->category->value == Meeting::getCategoryCallValue())
-            {
-                return static::SCORE_TYPE_CREATE_CALL;
-            }
-            return parent::resolveCreateScoreTypeByModel($model);
+            return array('ValueFormat' => 'ImportMappingRuleDateTimeFormatDropDown');
         }
 
-        protected static function resolveUpdateScoreTypeByModel($model)
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            if ($model->category->value == Meeting::getCategoryCallValue())
-            {
-                return static::SCORE_TYPE_UPDATE_CALL;
-            }
-            return parent::resolveUpdateScoreTypeByModel($model);
+            return array('DateTime');
         }
 
-        public static function getPointTypesAndValuesForCreateModel()
+        public function getDisplayLabel()
         {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
-        }
-
-        public static function getPointTypesAndValuesForUpdateModel()
-        {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
+            return Zurmo::t('ZurmoModule', 'Latest Activity Date Time');
         }
     }
 ?>

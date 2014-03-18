@@ -55,7 +55,12 @@
                 'operatorType'  => 'equals',
                 'value'         => EmailTemplate::TYPE_WORKFLOW
             );
-            $structure    .= $startingCount;
+            $metadata['clauses'][$startingCount + 1] = array(
+                'attributeName' => 'isDraft',
+                'operatorType'  => 'equals',
+                'value'         => 0
+            );
+            $structure    .= $startingCount . ' and ' . ($startingCount + 1);
             if (empty($metadata['structure']))
             {
                 $metadata['structure'] = '(' . $structure . ')';

@@ -35,40 +35,11 @@
      ********************************************************************************/
 
     /**
-     * Class defining rules for Meeting gamification behavior.
+     * Report rules to be used with the Calendars module.
      */
-    class MeetingGamificationRules extends GamificationRules
+
+    class CalendarsReportRules extends SecuredReportRules
     {
-        const SCORE_TYPE_CREATE_CALL = 'CreateCall';
 
-        const SCORE_TYPE_UPDATE_CALL = 'UpdateCall';
-
-        protected static function resolveCreateScoreTypeByModel($model)
-        {
-            if ($model->category->value == Meeting::getCategoryCallValue())
-            {
-                return static::SCORE_TYPE_CREATE_CALL;
-            }
-            return parent::resolveCreateScoreTypeByModel($model);
-        }
-
-        protected static function resolveUpdateScoreTypeByModel($model)
-        {
-            if ($model->category->value == Meeting::getCategoryCallValue())
-            {
-                return static::SCORE_TYPE_UPDATE_CALL;
-            }
-            return parent::resolveUpdateScoreTypeByModel($model);
-        }
-
-        public static function getPointTypesAndValuesForCreateModel()
-        {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
-        }
-
-        public static function getPointTypesAndValuesForUpdateModel()
-        {
-            return array(GamePoint::TYPE_COMMUNICATION => 10);
-        }
     }
 ?>

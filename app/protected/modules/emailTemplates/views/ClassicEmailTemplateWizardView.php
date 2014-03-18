@@ -41,7 +41,20 @@
          */
         public function getTitle()
         {
-            return parent::getTitle() . ' - ' . Zurmo::t('EmailTemplatesModule', 'Classic');
+            $title = parent::getTitle() .  ' - ';
+            if($this->model->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
+            {
+                $title .= Zurmo::t('EmailTemplatesModule', 'Plain Text');
+            }
+            elseif($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
+            {
+                $title .= Zurmo::t('EmailTemplatesModule', 'HTML');
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $title;
         }
 
         protected function resolveContainingViews(WizardActiveForm $form)
