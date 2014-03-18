@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignFooterTextPreviewView extends View
+    class GlobalMarketingFooterFooterConfigurationPreviewView extends View
     {
         protected $isHtmlContent;
 
@@ -48,6 +48,30 @@
 
         protected function renderContent()
         {
+            $this->resolvePlaceholderContentForMergeTags();
+            $this->resolvePlaceholderContentForUnsubscribeAndManageSubscriptionsUrls();
+
+            $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
+                                                            'class' => 'footer-preview-modal'),
+                                                    $this->placeholderContent);
+            return $content;
+        }
+
+        protected function resolvePlaceholderContentForMergeTags()
+        {
+            $language           = null;
+            $type               = EmailTemplate::TYPE_WORKFLOW;
+            $model              = Yii::app()->user->userModel;
+            $util               = MergeTagsUtilFactory::make($type, $language, $this->placeholderContent);
+            $resolvedContent    = $util->resolveMergeTags($model);
+            if ($resolvedContent !== false)
+            {
+                $this->placeholderContent = $resolvedContent;
+            }
+        }
+
+        protected function resolvePlaceholderContentForUnsubscribeAndManageSubscriptionsUrls()
+        {
             EmailMessageActivityUtil::resolveUnsubscribeAndManageSubscriptionPlaceholders($this->placeholderContent,
                                                                                             0,
                                                                                             0,
@@ -56,10 +80,6 @@
                                                                                             $this->isHtmlContent,
                                                                                             true,
                                                                                             true);
-            $content        = ZurmoHtml::tag('div', array('id' => 'footer-preview-modal-content',
-                                                            'class' => 'footer-preview-modal'),
-                                                    $this->placeholderContent);
-            return $content;
         }
     }
 ?>

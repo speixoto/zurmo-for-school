@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderOrCampaignFooterTextPreviewElement extends AjaxLinkActionElement
+    class GlobalMarketingFooterConfigurationPreviewElement extends AjaxLinkActionElement
     {
         // TODO: @Shoaibi: Low: Refactor this and MergeTagGuideAjaxLinkActionElement
         public function getActionType()
