@@ -192,7 +192,7 @@
         /**
          * @param $type
          * @param bool $includeDrafts
-         * @return An
+         * @return Array
          */
         public static function getByType($type, $includeDrafts = false)
         {
@@ -223,15 +223,6 @@
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
-        }
-
-        public function setToUserDefaultLanguage($attribute, $params)
-        {
-            if (empty($this->$attribute))
-            {
-                $this->$attribute = Yii::app()->languageHelper->getForCurrentUser();
-            }
-            return true;
         }
 
         /**

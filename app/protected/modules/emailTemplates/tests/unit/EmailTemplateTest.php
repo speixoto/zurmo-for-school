@@ -35,6 +35,7 @@
      ********************************************************************************/
     class EmailTemplateTest extends ZurmoBaseTest
     {
+        // TODO: @Shoaibi: Critical: Ensure validators are working fine too.
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -46,6 +47,32 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testGetTypeDropDownArray()
+        {
+            $types  = EmailTemplate::getTypeDropDownArray();
+            $this->assertCount(2, $types);
+            $this->assertArrayHasKey(EmailTemplate::TYPE_CONTACT, $types);
+            $this->assertArrayHasKey(EmailTemplate::TYPE_WORKFLOW, $types);
+        }
+
+        public function testGetBuiltTypeDropDownArray()
+        {
+            $builtTypes = EmailTemplate::getBuiltTypeDropDownArray();
+            $this->assertCount(3, $builtTypes);
+            $this->assertArrayHasKey(EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY, $builtTypes);
+            $this->assertArrayHasKey(EmailTemplate::BUILT_TYPE_PASTED_HTML, $builtTypes);
+            $this->assertArrayHasKey(EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE, $builtTypes);
+        }
+
+        public function testRenderNonEditableTypeStringContent()
+        {
+            $type                   = EmailTemplate::TYPE_CONTACT;
+            $types                  = EmailTemplate::getTypeDropDownArray();
+            $expectedTypeString     = $types[$type];
+            $resolvedTypeString     = EmailTemplate::renderNonEditableTypeStringContent($type);
+            $this->assertEquals($expectedTypeString, $resolvedTypeString);
         }
 
         public function testCreateAndGetEmailTemplateById()
@@ -88,12 +115,12 @@
             $id             = $emailTemplate->id;
             unset($emailTemplate);
             $emailTemplate  = EmailTemplate::getById($id);
-            $this->assertEquals(EmailTemplate::TYPE_CONTACT,                $emailTemplate->type);
-            $this->assertEquals('Test subject For Language',                $emailTemplate->subject);
-            $this->assertEquals('Test Email Template For Language',         $emailTemplate->name);
-            $this->assertEquals('Test html Content For Language',           $emailTemplate->htmlContent);
-            $this->assertEquals('Test text Content For Language',           $emailTemplate->textContent);
-            $this->assertEquals(Yii::app()->user->userModel->language,      $emailTemplate->language);
+            $this->assertEquals(EmailTemplate::TYPE_CONTACT,                            $emailTemplate->type);
+            $this->assertEquals('Test subject For Language',                            $emailTemplate->subject);
+            $this->assertEquals('Test Email Template For Language',                     $emailTemplate->name);
+            $this->assertEquals('Test html Content For Language',                       $emailTemplate->htmlContent);
+            $this->assertEquals('Test text Content For Language',                       $emailTemplate->textContent);
+            $this->assertEquals(Yii::app()->languageHelper-> getForCurrentUser(),       $emailTemplate->language);
             $this->assertEquals(2, EmailTemplate::getCount());
         }
 
@@ -292,6 +319,16 @@
             $this->assertEquals(1, count($emailTemplate));
             $this->assertEquals('Email Template',  $emailTemplate[0]::getModelLabelByTypeAndLanguage('Singular'));
             $this->assertEquals('Email Templates', $emailTemplate[0]::getModelLabelByTypeAndLanguage('Plural'));
+        }
+
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
+        public function testToString()
+        {
+            $emailTemplate = EmailTemplate::getByName('Test Email Template');
+            $stringValue    = strval($emailTemplate[0]);
+            $this->assertEquals($emailTemplate[0]->name, $stringValue);
         }
 
         /*

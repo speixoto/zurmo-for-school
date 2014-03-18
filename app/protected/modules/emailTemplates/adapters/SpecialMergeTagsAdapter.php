@@ -61,7 +61,7 @@
         public static function resolve($attributeName, $model = null)
         {
             $methodName = static::$specialAttributesResolver[$attributeName];
-            return static::$methodName($model); // we send $model to all, those which need it use it, other gets it as optional param.
+            return static::$methodName($model); // we send $model to all, those which need it use it, other get it as optional param.
         }
 
         // individual resolvers
