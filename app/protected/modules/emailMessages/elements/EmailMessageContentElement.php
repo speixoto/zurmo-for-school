@@ -45,7 +45,9 @@
             $emailMessageContent = $this->model->{$this->attribute};
             if ($emailMessageContent->htmlContent != null)
             {
-                return Yii::app()->format->html($emailMessageContent->htmlContent);
+                // we don't use Yii::app()->format->html because we know its good in terms of
+                // purification. Plus using that messes up html.
+                return $emailMessageContent->htmlContent;
             }
             elseif ($emailMessageContent->textContent != null)
             {
