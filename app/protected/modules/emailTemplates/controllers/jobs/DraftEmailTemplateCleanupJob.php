@@ -34,45 +34,60 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplatesListView extends SecuredListView
+    /**
+     * A job for removing old draft email templates
+     */
+    class DraftEmailTemplateCleanupJob extends BaseJob
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                     'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    ),
-                                ),
+        const DRAFT_LIFE_TIME_IN_DAYS = 7;
 
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+        /**
+         * @returns Translated label that describes this job type.
+         */
+        public static function getDisplayName()
+        {
+            return Zurmo::t('ZurmoModule', 'Draft Email Templates Cleanup Job');
         }
 
-        protected function getListActionId()
+        /**
+         * @return The type of the NotificationRules
+         */
+        public static function getType()
         {
-            return Yii::app()->getController()->getAction()->getId();
+            return 'DraftEmailTemplateCleanup';
+        }
+
+        public static function getRecommendedRunFrequencyContent()
+        {
+            return Zurmo::t('JobsManagerModule', 'Once a week.');
+        }
+
+        public function run()
+        {
+            $timestamp = time() - static::DRAFT_LIFE_TIME_IN_DAYS * 24 * 60 * 60;
+            $dateTime  = DateTimeUtil::convertTimestampToDbFormatDateTime($timestamp);
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'createdDateTime',
+                    'operatorType'              => 'lessThan',
+                    'value'                     => $dateTime,
+                ),
+                2 => array(
+                    'attributeName'             => 'isDraft',
+                    'operatorType'              => 'equal',
+                    'value'                     => 1,
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailTemplate');
+            $where = RedBeanModelDataProvider::makeWhere('EmailTemplate', $searchAttributeData, $joinTablesAdapter);
+            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            foreach ($models as $model)
+            {
+                $model->delete();
+            }
+            return true;
         }
     }
 ?>
