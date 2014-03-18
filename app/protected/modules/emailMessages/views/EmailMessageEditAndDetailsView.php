@@ -117,6 +117,8 @@
                                 array('cells' =>
                                     array(
                                         array(
+                                            // TODO: @Shoaibi: Low: change this to constant after refactoring
+                                            'detailViewOnly' => 2, // using 2 here to mean: "do not render on details"
                                             'elements' => array(
                                                 array('attributeName' => 'content', 'type' => 'EmailMessageContent'),
                                             ),
@@ -143,6 +145,44 @@
         public static function getModuleClassName()
         {
             return 'EmailMessagesModule';
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent($form = null)
+        {
+            $content    = $this->renderEmailMessageContent();
+            $content    .= parent::renderAfterFormLayoutForDetailsContent($form);
+            return $content;
+        }
+
+        protected function renderEmailMessageContent()
+        {
+            $content    = ZurmoHtml::tag('iframe', $this->resolveContentIFrameHtmlOptions(), '');
+            return $content;
+        }
+
+        protected function resolveContentActionUrl()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/renderContent',
+                                                                                    array('id' => $this->model->id));
+        }
+
+        protected function resolveContentIFrameHtmlOptions()
+        {
+            return array('id'   => 'email-message-content-iframe',
+                'src'           => $this->resolveContentActionUrl(),
+                'width'         => '100%',
+                'height'        => '100%',
+                'frameborder'   => 0);
+        }
+
+        protected function shouldDisplayCell($detailViewOnly)
+        {
+            // TODO: @Shoaibi: Low: change this to constant after refactoring and port to parent.
+            if ($detailViewOnly == 2)
+            {
+                return ($this->renderType != 'Details');// this if would only be true for contactEmailTemplateNamesDropDown.
+            }
+            return parent::shouldDisplayCell($detailViewOnly);
         }
     }
 ?>
