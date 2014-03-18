@@ -52,7 +52,15 @@
                                         ),
                                     ),
                                 ),
-
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplateBuiltType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
                                 array('cells' =>
                                     array(
                                         array(
