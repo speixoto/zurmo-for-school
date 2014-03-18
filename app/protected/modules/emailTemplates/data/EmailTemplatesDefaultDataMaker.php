@@ -773,9 +773,7 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
-                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
-                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                        'text' => '[[GLOBAL^MARKETING^FOOTER^HTML]]',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -1179,9 +1177,7 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
-                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
-                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                        'text' => '[[GLOBAL^MARKETING^FOOTER^HTML]]',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -1628,9 +1624,7 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
-                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
-                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                        'text' => '[[GLOBAL^MARKETING^FOOTER^HTML]]',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
@@ -2106,9 +2100,7 @@ view into a stunning courtyard, The Sterling Mason lobby imparts the intimate wa
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
-                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
-                                    This email was sent to [[PRIMARY^EMAIL]].</p>',
+                                                                                        'text' => '[[GLOBAL^MARKETING^FOOTER^HTML]]',
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (

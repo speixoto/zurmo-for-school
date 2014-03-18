@@ -43,9 +43,7 @@
 
         protected function resolveDefaultContent()
         {
-            return array('text' => '<p>{{UNSUBSCRIBE_URL}} | {{MANAGE_SUBSCRIPTIONS_URL}}</p>
-                                    <p>© [[CURRENT^YEAR]] <a href="[[BASE^URL]]">[[APPLICATION^NAME]]</a>. All rights reserved.<br />
-                                    This email was sent to [[PRIMARY^EMAIL]].</p>');
+            return array('text' => '[[GLOBAL^MARKETING^FOOTER^HTML]]');
         }
     }
 ?>

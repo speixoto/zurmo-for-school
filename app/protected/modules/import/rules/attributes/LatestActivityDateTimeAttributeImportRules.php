@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,35 +31,27 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ClassicEmailTemplateWizardView extends EmailTemplateWizardView
+    /**
+     * Import rules for the lastest activity date time attribute.
+     */
+    class LatestActivityDateTimeAttributeImportRules extends NonDerivedAttributeImportRules
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
+        protected static function getImportColumnOnlyModelAttributeMappingRuleFormTypesAndElementTypes()
         {
-            $title = parent::getTitle() .  ' - ';
-            if($this->model->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
-            {
-                $title .= Zurmo::t('EmailTemplatesModule', 'Plain Text');
-            }
-            elseif($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
-            {
-                $title .= Zurmo::t('EmailTemplatesModule', 'HTML');
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            return $title;
+            return array('ValueFormat' => 'ImportMappingRuleDateTimeFormatDropDown');
         }
 
-        protected static function resolveContainingViewClassNames()
+        public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('GeneralDataForEmailTemplateWizardView', 'ContentForEmailTemplateWizardView');
+            return array('DateTime');
+        }
+
+        public function getDisplayLabel()
+        {
+            return Zurmo::t('ZurmoModule', 'Latest Activity Date Time');
         }
     }
 ?>

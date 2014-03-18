@@ -209,10 +209,20 @@
             {
                 $this->actionValidate($postData, $model);
             }
+            $unmuteScoring = false;
+            if($emailTemplate->isBuilderTemplate() && ($emailTemplate->isDraft || !isset($emailTemplate->isDraft)))
+            {
+                Yii::app()->gameHelper->muteScoringModelsOnSave();
+                $unmuteScoring = true;
+            }
             // we have false here to avoid any issues with EmailTemplateAtLeastOneContentAreaRequiredValidator
             // throwing errors for content being empty. Plus we already validate it using the wizard form.
             if ($emailTemplate->save(false))
             {
+                if($unmuteScoring)
+                {
+                    Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+                }
                 $modelClassName  = $emailTemplate->modelClassName;
                 $moduleClassName = $modelClassName::getModuleClassName();
                 echo CJSON::encode(array('id'              => $emailTemplate->id,
@@ -258,9 +268,9 @@
                 $textContent    = $emailTemplate->textContent;
                 $htmlContent    = $emailTemplate->htmlContent;
                 AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-                $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                $unsubscribePlaceholder         = GlobalMarketingFooterUtil::
                                                                                             UNSUBSCRIBE_URL_PLACEHOLDER;
-                $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
+                $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::
                                                                                 MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
                 $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
                                                                                                             $textContent);
@@ -403,7 +413,7 @@
         protected static function getActionBarByType($type)
         {
             $actionBar  = 'SecuredActionBarForMarketingListsSearchAndListView';
-            if ($actionBar == EmailTemplate::TYPE_WORKFLOW)
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $actionBar  = 'SecuredActionBarForWorkflowsSearchAndListView';
             }
