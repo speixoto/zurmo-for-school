@@ -186,6 +186,17 @@
     #FooterView{
 	    margin-left: 0 !important;
     }
+    #ShortcutsMenu{
+	    > li > a{
+		    &:before{
+			    content: "Y";
+			    .symbly(24px);
+		    }
+		    > span{
+			    display: none;
+		    }
+	    }
+    }
 }
 
 @media all and (max-width: 500px){

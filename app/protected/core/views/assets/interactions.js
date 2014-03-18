@@ -701,6 +701,14 @@ $(window).ready(function(){
         }
     );
 
+    $('#app-search').on('click',
+        function(){
+            $('#globalSearchInput').addClass('overlay');
+            $('#app-search .z-spinner').show(0);
+        }
+    );
+
+
     $.fn.resizeWhiteArea = function(){
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();
@@ -737,22 +745,7 @@ $(window).ready(function(){
         }
     };
 
-//  TODO: @amit: Please, fix this because its interfering with the saved option for user
-//    $.fn.checkForResponsiveNav = function(){
-//        if ($(window).width() < 700){ // could be also $(window).width()
-//            $('body').addClass('nav-collapsed');
-//        } else {
-//            $('body').removeClass('nav-collapsed');
-//        }
-//    }
-
-    $(window).resize(function(){
-        //$(this).resizeWhiteArea();
-        //$(this).checkForResponsiveNav();
-    });
-
-    //$(this).checkForResponsiveNav();
-    //$(this).resizeWhiteArea();
+    //$(window).resize(function(){ $(this).resizeWhiteArea(); });
 
     /*Autogrow text areas*/
     $('textarea').autogrow();

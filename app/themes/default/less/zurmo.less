@@ -641,12 +641,16 @@ body > .ui-autocomplete{
 		outline: 0;
 		color:@textColor;
 		font-style:normal;
+		text-indent: 25px !important;
 	}
 	&.overlay{
 		display: block;
 		position: absolute;
 		z-index: 999;
 		left: 42px;
+		~ .z-spinner{
+			left: 35px;
+		}
 	}
 }
 
@@ -980,6 +984,12 @@ body > .ui-autocomplete{
 }
 
 /*=Menu+Recently Viewed*/
+@media all and (max-width: 801px){
+	body{
+		.nav-collapsed();
+	}
+}
+
 .nav-collapsed{
 	@newWidth : 40px;
 	@uiChooserWidth: 38px;
@@ -1069,6 +1079,7 @@ body > .ui-autocomplete{
 			width: 80%;
 		}
 	}
+	.over > a,
 	.active a,
 	a:hover{
 		color: #fff !important;

@@ -842,12 +842,16 @@ body > .ui-autocomplete {
   outline: 0;
   color: #545454;
   font-style: normal;
+  text-indent: 25px !important;
 }
 #globalSearchInput.overlay {
   display: block;
   position: absolute;
   z-index: 999;
   left: 42px;
+}
+#globalSearchInput.overlay ~ .z-spinner {
+  left: 35px;
 }
 .autocomplete-icon-AccountsModule:before {
   content: "P";
@@ -1331,6 +1335,65 @@ body > .ui-autocomplete {
   -o-box-shadow: none !important;
   box-shadow: none !important;
 }
+@media all and (max-width: 801px) {
+  body .AppNavigation {
+    z-index: 99;
+    width: 40px;
+    -webkit-transition: all 0.1s cubic-bezier(0.390,0.575,0.565,1.000);
+    -moz-transition: all 0.1s cubic-bezier(0.390,0.575,0.565,1.000);
+    -ms-transition: all 0.1s cubic-bezier(0.390,0.575,0.565,1.000);
+    -o-transition: all 0.1s cubic-bezier(0.390,0.575,0.565,1.000);
+    transition: all 0.1s cubic-bezier(0.390,0.575,0.565,1.000);
+    -ms-transform: translate(0px,0);
+    -moz-transform: translate(0px,0);
+    -webkit-transform: translate3d(0px,0,0);
+    transform: translate(0px,0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+  }
+  body .AppNavigation:hover {
+    width: 170px;
+    -webkit-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
+    -moz-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
+    -ms-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
+    -o-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
+    box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
+  }
+  body .AppNavigation:hover .nav > li > a > span,
+  body .AppNavigation:hover #RecentlyViewedView ul > li > a > span {
+    display: inline-block !important;
+  }
+  body .AppNavigation:hover .ui-chooser {
+    width: 167px;
+    padding: 8px 10px;
+    text-align: left;
+  }
+  body .AppNavigation:hover .device {
+    float: right !important;
+  }
+  body .AppNavigation .nav > li > a > span,
+  body .AppNavigation #RecentlyViewedView ul > li > a > span {
+    display: none !important;
+  }
+  body #RecentlyViewedView > h3 {
+    display: none;
+  }
+  body .ui-chooser {
+    width: 38px;
+    padding: 8px 0;
+    text-align: center;
+  }
+  body .device {
+    float: none !important;
+  }
+  body .AppContent,
+  body #FooterView {
+    margin-left: 40px !important;
+  }
+  body .hideme {
+    display: none !important;
+  }
+}
 .nav-collapsed .AppNavigation {
   z-index: 99;
   width: 40px;
@@ -1447,8 +1510,10 @@ body > .ui-autocomplete {
   padding-right: 5px;
   width: 80%;
 }
+#MenuView .over > a,
 #MenuView .active a,
 #MenuView a:hover,
+#RecentlyViewedView .over > a,
 #RecentlyViewedView .active a,
 #RecentlyViewedView a:hover {
   color: #fff !important;
@@ -1464,8 +1529,10 @@ body > .ui-autocomplete {
   -o-text-shadow: 0px 1px 0 #2f7673 !important;
   text-shadow: 0px 1px 0 #2f7673 !important;
 }
+#MenuView .over > a i,
 #MenuView .active a i,
 #MenuView a:hover i,
+#RecentlyViewedView .over > a i,
 #RecentlyViewedView .active a i,
 #RecentlyViewedView a:hover i {
   color: #122d2c !important;

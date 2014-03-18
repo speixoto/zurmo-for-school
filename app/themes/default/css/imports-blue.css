@@ -12743,6 +12743,15 @@ body.cartographer-light,
   #FooterView {
     margin-left: 0 !important;
   }
+  #ShortcutsMenu > li > a:before {
+    content: "Y";
+    font-weight: normal !important;
+    font-size: 24px;
+    font-family: "zurmo_gamification_symbly_rRg";
+  }
+  #ShortcutsMenu > li > a > span {
+    display: none;
+  }
 }
 @media all and (max-width: 500px) {
   .logo-and-search {
