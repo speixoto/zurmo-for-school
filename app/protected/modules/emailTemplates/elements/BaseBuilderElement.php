@@ -1365,8 +1365,9 @@
             }
         }
 
-        protected function getPropertiesSuffixMappedArray()
+        public static function getPropertiesSuffixMappedArray()
         {
+            //TODO: @sergio: We need to move this to some rules class
             $mappedArray = array(
                 'line-height'       => '%',
                 'font-size'         => 'px',
@@ -1382,9 +1383,9 @@
         {
             foreach($properties as $key => $value)
             {
-                if (isset($this->getPropertiesSuffixMappedArray()[$key]))
+                if (isset(static::getPropertiesSuffixMappedArray()[$key]))
                 {
-                    $properties[$key] .= $this->getPropertiesSuffixMappedArray()[$key];
+                    $properties[$key] .= static::getPropertiesSuffixMappedArray()[$key];
                 }
             }
         }

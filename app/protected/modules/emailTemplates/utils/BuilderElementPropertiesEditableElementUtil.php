@@ -52,12 +52,41 @@
         {
             $attribute  = static::resolveAttributeName($property);
             $element    = new $elementClassName($model, $attribute, $form, $params);
+            static::resolveEditableTemplateByProperty($element, $property);
             $content    = $element->render();
             if ($wrapInTr)
             {
                 static::wrapContentInTr($content, $trOptions);
             }
             return $content;
+        }
+
+        protected static function resolveEditableTemplateByProperty($element, $property)
+        {
+            $property =str_replace(array('[', ']'), '', $property);
+            $icon = static::getIconByProperty($property);
+            if (isset($icon))
+            {
+                $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}"><div class="has-unit-input">{content}</div>{error}' .
+                    $icon . '</td>';
+            }
+        }
+
+        protected static function getIconByProperty($property)
+        {
+            if (isset(BaseBuilderElement::getPropertiesSuffixMappedArray()[$property]))
+            {
+                $icon = BaseBuilderElement::getPropertiesSuffixMappedArray()[$property];
+                switch ($icon) {
+                    case '%':
+                        $iconClass = 'icon-percentage';
+                        break;
+                    case 'px':
+                        $iconClass = 'icon-pixel';
+                        break;
+                }
+                return ZurmoHtml::icon($iconClass);
+            }
         }
 
         /**
