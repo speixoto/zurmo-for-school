@@ -150,17 +150,17 @@ a:active .z-label {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -177,11 +177,11 @@ a:active .z-label {
   clear: both;
 }
 .button-layout:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .button-layout.disabled {
   pointer-events: none;
@@ -209,17 +209,17 @@ a:active .z-label {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -240,11 +240,11 @@ a:active .z-label {
 }
 .zButton:hover,
 .z-button:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .zButton.disabled,
 .z-button.disabled {
@@ -276,17 +276,17 @@ a:active .z-label {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -323,11 +323,11 @@ a:active .z-label {
 .white-button:hover,
 .cancel-button:hover,
 .portlet-create-button:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .secondary-button.disabled,
 .default-btn.disabled,
@@ -973,17 +973,17 @@ a.simple-link .icon-x {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -1000,11 +1000,11 @@ a.simple-link .icon-x {
   clear: both;
 }
 #InstallPageView #install-form input[type="submit"]:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 #InstallPageView #install-form input[type="submit"].disabled {
   pointer-events: none;
@@ -1862,17 +1862,17 @@ table.configuration-list tr:last-child td {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -1893,11 +1893,11 @@ table.configuration-list tr:last-child td {
   clear: both;
 }
 .EmailTestingButton:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .EmailTestingButton.disabled {
   pointer-events: none;
@@ -1975,17 +1975,17 @@ table.configuration-list tr:last-child td {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -2003,11 +2003,11 @@ table.configuration-list tr:last-child td {
   clear: both;
 }
 .AppContent.ImportWizardView #addExtraColumnButton:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .AppContent.ImportWizardView #addExtraColumnButton.disabled {
   pointer-events: none;
@@ -2984,17 +2984,17 @@ div.wide.form .errorMessage {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -3012,11 +3012,11 @@ div.wide.form .errorMessage {
   clear: both;
 }
 .file-upload-box .ui-icon-plusthick:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .file-upload-box .ui-icon-plusthick.disabled {
   pointer-events: none;
@@ -3423,17 +3423,17 @@ div.wide.form .errorMessage {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -3452,11 +3452,11 @@ div.wide.form .errorMessage {
   clear: both;
 }
 .ui-datepicker .ui-datepicker-current:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .ui-datepicker .ui-datepicker-current.disabled {
   pointer-events: none;
@@ -3483,17 +3483,17 @@ div.wide.form .errorMessage {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -3512,11 +3512,11 @@ div.wide.form .errorMessage {
   clear: both;
 }
 .ui-datepicker .ui-datepicker-close:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .ui-datepicker .ui-datepicker-close.disabled {
   pointer-events: none;
@@ -3975,17 +3975,17 @@ div.wide.form .errorMessage {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -4003,11 +4003,11 @@ div.wide.form .errorMessage {
   clear: both;
 }
 .designer-toolbar input[type="submit"]:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 .designer-toolbar input[type="submit"].disabled {
   pointer-events: none;
@@ -4529,17 +4529,17 @@ div.wide.form .errorMessage {
   position: relative;
   display: inline-block;
   text-indent: 0;
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 4px 0 rgba(153, 153, 153, 0.15);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0 0 2px 0 rgba(153, 153, 153, 0.15);
   *zoom: 1;
-  -webkit-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -moz-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -ms-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  -o-transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
-  transition: all 0.28s cubic-bezier(0.390,0.575,0.565,1.000);
+  -webkit-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.14s cubic-bezier(0.390,0.575,0.565,1.000);
   -ms-transform: translate(0px,0);
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
@@ -4563,11 +4563,11 @@ div.wide.form .errorMessage {
 }
 #contactStatesData_AddInputButton:hover,
 #customFieldDataData_AddInputButton:hover {
-  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 8px 0 rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
 #contactStatesData_AddInputButton.disabled,
 #customFieldDataData_AddInputButton.disabled {
@@ -12748,7 +12748,7 @@ body.cartographer-light,
   .logo-and-search {
     left: 5px;
     padding-right: 15px;
-    padding-bottom: 1px;
+    padding-bottom: 3px;
   }
   #app-search {
     margin-left: 0;
@@ -12776,13 +12776,21 @@ body.cartographer-light,
     display: none;
   }
   .view-toolbar-container .pillbox:first-child {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
     width: 100%;
     background-size: auto 100%;
   }
   .view-toolbar-container .pillbox:first-child .split-button,
   .view-toolbar-container .pillbox:first-child .default-button {
-    flex: 1 auto;
+    -webkit-box-flex: 1 1 auto;
+    -moz-box-flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
     float: none;
   }
   .view-toolbar-container .pillbox:first-child .split-button > a,

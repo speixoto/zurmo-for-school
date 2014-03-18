@@ -155,9 +155,14 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /*=Login*/
+.login-container{
+	height:100%;
+	height: e( "calc(100% - 20px)" ); //20px is footer's top padding
+	padding: 30px;
+}
+
 #LoginView{
 	height:100%;
-	margin:30px;
 	.b-shadow(~"0 0 12px 5px rgba(153, 153, 153, 0.3)");
 	.radius(5px);
 	padding:0;
@@ -167,6 +172,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	}
 	.error{
 		margin-bottom: 40px !important;
+	}
+	+ #FooterView{
+		margin-left:0;
+		padding-left: 0;
 	}
 }
 
@@ -349,80 +358,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	}
 }
 
-#notifications{
-	float: left;
-	display:block;
-	height: 38px;
-	position: relative;
-	z-index: 1;
-	&.nav-open{
-		color:#fff;
-		border-left:1px solid #444 !important;
-		border-right:1px solid #444 !important;
-		.notifications-link{
-			background-color: transparent;
-			border:none;
-			#gradient > .vertical( #353535, #252525 );
-		}
-		#notifications-link{
-			border:none;
-		}
-		#notifications-flyout{
-			display: block !important;
-		}
-		.z-spinner{
-			display: block;
-			margin: 0 auto;
-			float: none;
-		}
-	}
-}
-
-.notifications-link{
-	z-index: 10;
-	position: relative;
-	display:block;
-	height: 100%;
-	&:hover{
-		color:#fff;
-		background-color: rgba(255, 255, 255, 0.05);
-		border-left: 1px solid @borderColor;
-		border-right: 1px solid @borderColor;
-		#notifications-link{
-			border:none;
-		}
-	}
-	&.unread{
-		#notifications-link{
-			color:#ff0000 !important;
-		}
-	}
-	&.all-read{
-		#notifications-link{
-			color:#7bb730 !important;
-		}
-	}
-}
-
-#notifications-link{
-	border-left: 1px solid @borderColor;
-	border-right: 1px solid @borderColor;
-	padding:2px 17px;
-	font-size:10px;
-	font-weight:bold;
-	text-align:center;
-	margin-top:12px  !important;
-	display:inline-block;
-	cursor:pointer;
-	vertical-align:middle;
-	background: url("@{path}notifications-bubble.png") center top no-repeat;
-	strong{
-		display: block;
-		position: relative;
-		top: -2px;
-	}
-}
-
 #user-toolbar{
 	float:right;
 	position: static;
@@ -433,7 +368,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .user-menu-item{
 	float: right !important;
 }
-
 
 #notifications-flyout{
 	margin:-1px -1px 0 0;
@@ -590,13 +524,12 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		margin-right: 10px;
 		position: relative;
 		top: 8px;
-		.radius(50%);
+		.radius(13px);
 		.b-shadow(~"inset 0 1px 1px 0 rgba(255, 255, 255, 0.2), 0px 1px 1px 1px rgba(0,0,0,0.2)");
 		border: none !important;
 		background:none;
 	}
 }
-
 
 #settings-header-menu{
 	margin-left:-1px;
@@ -870,38 +803,11 @@ body > .ui-autocomplete{
 }
 
 .AppContainer{
-	//min-width:900px;
-	//max-width: 1600px;
-	//height:100%;
-	//margin:0 3% 0 3%;
-	//background:#fff url("@{path}nav.png") -2px top repeat-y;
-	//.b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
-	//.radius(0 0 5px 5px);
-	//z-index: 0;
-	//position:relative;
-
 	height:100%;
 	height: e( "calc(100% - 50px)" );
 	border-top:none;
 	z-index: 10;
 	position:relative;
-	//margin-top: @headerHeight !important;
-}
-
-/*
-#HeaderView{
-	position:relative;
-	z-index:9999;
-	min-width:900px;
-	background: darken(@headerBarColor, 10%);
-	.b-shadow( ~"inset 0 10px 50px 0 @{headerBarColor}");
-}
-*/
-
-.container{
-	//margin: 0;
-	//min-width:900px;
-	//max-width: 1600px;
 }
 
 @headerHeight : 50px;
@@ -919,7 +825,6 @@ body > .ui-autocomplete{
 	.b-shadow(0 0 10px 2px rgba(102, 102, 102, 0.7));
 	padding-bottom: 3px;
 	> .container{
-		//padding: 3px 0 1px 0;
 		height: 100%;
 		#gradient > .vertical(lighten(@headerBarColor, 5%), darken(@headerBarColor, 5%));
 	}
@@ -942,7 +847,6 @@ body > .ui-autocomplete{
 .user-menu-item{
 	list-style: none;
 	position: relative;
-	//top: -3px;
 	li{
 		position: relative;
 		overflow: visible;
@@ -1075,25 +979,10 @@ body > .ui-autocomplete{
 	}
 }
 
-/*
-#search i:before{ content:  "k"; } 
-#shortcuts i:before{ content:  "Y"; }
-#home i:before{ content:  "A"; }
-#accounts i:before{ content:  "P"; }
-#leads i:before{ content:  "."; }
-#contacts i:before{ content:  "y"; }
-#opportunities i:before{ content:  "9"; }
-#conversations i:before{ content:  "b"; }
-#recently-viewed i:before{ content:  "{"; }
-#mashableInbox i:before{ content:  "g"; }
-#marketing i:before{ content:  '\00B6'; }
-#reports i:before{ content:  "V"; }
-*/
-
 /*=Menu+Recently Viewed*/
-
 .nav-collapsed{
 	@newWidth : 40px;
+	@uiChooserWidth: 38px;
 	.AppNavigation{
 		z-index: 99;
 		width: @newWidth;
@@ -1101,7 +990,8 @@ body > .ui-autocomplete{
 		&:hover{
 			width: @navWidth;
 			.b-shadow(2px 0 5px 0 rgba(102, 102, 102, 0.3));
-			.nav{
+			.nav,
+			#RecentlyViewedView ul {
 				> li > a > span{
 					display: inline-block !important;
 				}
@@ -1115,7 +1005,8 @@ body > .ui-autocomplete{
 				float: right !important;
 			}
 		}
-		.nav{
+		.nav,
+		#RecentlyViewedView ul {
 			> li > a > span{
 				display: none !important;
 			}
@@ -1127,7 +1018,7 @@ body > .ui-autocomplete{
 		}
 	}
 	.ui-chooser{
-		width: auto;
+		width: @uiChooserWidth;
 		padding:8px 0;
 		text-align: center;
 	}
@@ -1136,7 +1027,7 @@ body > .ui-autocomplete{
 	}
 	.AppContent,
 	#FooterView{
-		margin-left: @newWidth;
+		margin-left: @newWidth !important;
 	}
 	.hideme{
 		display: none !important;
@@ -1167,7 +1058,6 @@ body > .ui-autocomplete{
 		.radius( 4px );
 		.t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
 		width: 100%;
-		//.text-overflow();
 		span{
 			display: inline-block;
 			.text-overflow();
@@ -1211,6 +1101,14 @@ body > .ui-autocomplete{
 			content: "z";
 		}
 	}
+	.type-configuration   i:before{ content:  '\0060'; }
+	.type-designer        i:before{ content:  '\00D1'; }
+	.type-import          i:before{ content:  "N"; }
+	.type-groups          i:before{ content:  '\00DB'; }
+	.type-users           i:before{ content:  '\0066'; }
+	.type-roles           i:before{ content:  '\00C9'; }
+	.type-workflows       i:before{ content:  '\20AC'; }
+	.type-contactWebForms i:before{ content:  '\003C'; }
 	.type-search          i:before{ content:  "k"; }
 	.type-shortcuts       i:before{ content:  "Y"; }
 	.type-home            i:before{ content:  "A"; }
@@ -1221,7 +1119,7 @@ body > .ui-autocomplete{
 	.type-conversations   i:before{ content:  "b"; }
 	.type-recently-viewed i:before{ content:  "{"; }
 	.type-mashableInbox   i:before{ content:  "g"; }
-	.type-marketing       i:before{ content:  '\00B6'; }
+	.type-marketing       i:before{ content:  '\2021'; }
 	.type-reports         i:before{ content:  "V"; }
 	.type-UsersModule            i:before{ content: "e"; }
 	.type-AccountsModule         i:before{ content: "P"; }
@@ -1232,7 +1130,7 @@ body > .ui-autocomplete{
 	.type-iailMessagiodule       i:before{ content: "g"; }
 	.type-MissionsModule         i:before{ content: "Q"; }
 	.type-ReportsModule          i:before{ content: "V"; }
-	.type-iailTiplatesModule     i:before{ content:'\00B6'; }
+	.type-iailTiplatesModule     i:before{ content: '\00B6'; }
 	.type-MarketingListsModule   i:before{ content: '\0022'; }
 	.type-WorkflowsModule        i:before{ content: '\20AC'; }
 	.type-products               i:before{ content: '\003E'; }
@@ -1302,11 +1200,6 @@ body > .ui-autocomplete{
 		#gradient > .vertical(@topColor, @bottomColor ) !important;
 	}
 	&.admin-menu{
-		li:not(.type-home){
-			i{
-				display: none;
-			}
-		}
 		.parent ul{
 			display: none;
 			position: absolute;
@@ -1388,10 +1281,8 @@ body > .ui-autocomplete{
 	}
 }
 
-@recentlyViewedIconSize : 24px;
-
 /*=Content*/
-@speed : 0.28s;
+@recentlyViewedIconSize : 24px;
 
 #ErrorView,
 .AppContent{
@@ -1770,7 +1661,7 @@ form,
 	position: fixed;
 	left: 0;
 	bottom: 0;
-	width: 168px;
+	width: 167px;
 	padding:8px 10px;
 	margin: 0 1px;
 	border-top:1px solid #ccc;

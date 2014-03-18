@@ -748,11 +748,10 @@ $(window).ready(function(){
 
     $(window).resize(function(){
         //$(this).resizeWhiteArea();
-        $(this).checkForResponsiveNav();
+        //$(this).checkForResponsiveNav();
     });
 
-    $(this).checkForResponsiveNav();
-
+    //$(this).checkForResponsiveNav();
     //$(this).resizeWhiteArea();
 
     /*Autogrow text areas*/

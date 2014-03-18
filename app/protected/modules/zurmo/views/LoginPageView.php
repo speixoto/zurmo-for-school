@@ -47,6 +47,7 @@
             $gridView->setView($flashMessageView, 0, 0);
             $gridView->setView($loginview, 1, 0);
             $gridView->setView(new FooterView(), 2, 0);
+            $gridView->setCssClasses(array('login-container'));
             $this->registerScripts();
             parent::__construct($gridView);
         }

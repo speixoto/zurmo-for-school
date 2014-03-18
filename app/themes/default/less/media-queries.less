@@ -192,7 +192,7 @@
 	.logo-and-search{
 		left: 5px;
 		padding-right: 15px;
-		padding-bottom: 1px;
+		padding-bottom: 3px;
 	}
 	#app-search{
 		margin-left: 0;
@@ -223,12 +223,12 @@
     }
     .view-toolbar-container{
 	    .pillbox:first-child{
-		    display: flex;
+		    .flexbox();
 		    width: 100%;
 		    background-size: auto 100%;
 		    .split-button,
 		    .default-button{
-			    flex: 1 auto;
+			    .flex(1 1 auto);
 			    float: none;
 			    + .default-button,
 			    + .split-button{
