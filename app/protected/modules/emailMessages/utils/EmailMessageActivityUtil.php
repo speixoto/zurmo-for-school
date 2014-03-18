@@ -395,13 +395,13 @@ PTN;
         }
 
         /**
-         * @param string $content
-         * @param int $personId
-         * @param int $marketingListId
-         * @param int $modelId
+         * @param $content
+         * @param $personId
+         * @param $marketingListId
+         * @param $modelId
          * @param $modelType
-         * @param bool $isHtmlContent
-         * @param bool $replaceExisting
+         * @param $isHtmlContent
+         * @param $replaceExisting
          * @param bool $preview
          */
         public static function resolveUnsubscribeAndManageSubscriptionPlaceholders(& $content, $personId,

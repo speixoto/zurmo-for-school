@@ -77,7 +77,7 @@
 
         protected function renderPlainTextAndHtmlContent(& $content)
         {
-            $params   = array('redactorPlugins' => CJSON::encode(array('mergetags')));
+            $params = array(EmailTemplateHtmlAndTextContentElement::SELECTIVE_TAB_LOAD_KEY => true);
             $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null, $this->form, $params);
             $element->editableTemplate  = '{label}{content}{error}';
             $right    = ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());

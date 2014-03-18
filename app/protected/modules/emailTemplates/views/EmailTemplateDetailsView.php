@@ -117,7 +117,8 @@
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
             $this->registerContentTabsHeightScripts();
-            $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
+            $params = array(EmailTemplateHtmlAndTextContentElement::SELECTIVE_TAB_LOAD_KEY => true);
+            $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form, $params);
             return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
         }
 
