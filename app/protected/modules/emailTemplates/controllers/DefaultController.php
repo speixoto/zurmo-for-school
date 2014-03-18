@@ -575,9 +575,13 @@
             echo $content;
         }
 
-        public function actionRenderBaseTemplateOptions($elementClassName, $elementModelClassName, $elementAttributeName, $elementFormClassName, array $elementParams = array())
+        public function actionRenderBaseTemplateOptions($templateId, $elementClassName, $elementModelClassName,
+                                                        $elementAttributeName, $elementFormClassName,
+                                                        array $elementParams = array())
         {
-            $element                    = new $elementClassName(new $elementModelClassName(), $elementAttributeName,
+            $model                      = new $elementModelClassName();
+            $model->id                  = $templateId;
+            $element                    = new $elementClassName($model, $elementAttributeName,
                                                                 new $elementFormClassName(), $elementParams);
             echo $element->render();
         }

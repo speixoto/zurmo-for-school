@@ -204,7 +204,7 @@
 
         protected function renderEditableHtmlContentArea()
         {
-            if (!$this->resolveSelectiveLoadOfTabs() || !$this->isPlainTextTemplate())
+            if (!$this->resolveSelectiveLoadOfTabs() || $this->isPastedHtmlTemplate())
             {
                 return $this->renderHtmlContentArea();
             }

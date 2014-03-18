@@ -231,7 +231,7 @@
             return $selector;
         }
 
-        protected static function resolveTemplateIdHiddenInputJQuerySelector()
+        public static function resolveTemplateIdHiddenInputJQuerySelector()
         {
             $id = ZurmoHtml::activeId(new BuilderEmailTemplateWizardForm(), static::HIDDEN_ID);
             return '#' . $id;

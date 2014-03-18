@@ -221,9 +221,14 @@
             Yii::app()->clientScript->registerScript('populateBaseTemplatesScript', "
                 function populateBaseTemplates(elementClassName, elementModelClassName, elementAttributeName, elementFormClassName, elementParams, divId)
                 {
-                    var requestData    = { elementClassName: elementClassName, elementModelClassName: elementModelClassName,
-                                    elementAttributeName: elementAttributeName, elementFormClassName: elementFormClassName,
-                                    elementParams: elementParams };
+                    var templateId     = $('" .
+                                            GeneralDataForEmailTemplateWizardView::
+                                                    resolveTemplateIdHiddenInputJQuerySelector() . "').val();
+                    var requestData    = { templateId: templateId, elementClassName: elementClassName,
+                                            elementModelClassName: elementModelClassName,
+                                            elementAttributeName: elementAttributeName,
+                                             elementFormClassName: elementFormClassName,
+                                             elementParams: elementParams };
 
                     " . ZurmoHtml::ajax($this->resolvePopulateBaseTemplateAjaxOptions()) . "
                 }", CClientScript::POS_HEAD);
