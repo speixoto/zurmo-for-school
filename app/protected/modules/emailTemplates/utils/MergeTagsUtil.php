@@ -71,7 +71,22 @@
 
         protected static function resolveFullyQualifiedMergeTagRegularExpression(& $value, $key)
         {
-            $value = '/' . preg_quote($value) . '/';
+            static::resolvePregQuotedValue($value, $key);
+            $value = '/' . $value . '/';
+        }
+
+        protected static function resolvePregQuotedValue(& $value)
+        {
+            $value = preg_quote($value);
+        }
+
+        protected static function resolvePregQuotedAttributeValue(& $value, $key)
+        {
+            if (strpos($value, '$') !== false)
+            {
+                // we only preg_quote $ in replacement array
+                static::resolvePregQuotedValue($value);
+            }
         }
 
         /**
@@ -135,13 +150,22 @@
 
         public function extractMergeTagsPlaceHolders()
         {
+            $tagPrefix          = static::TAG_PREFIX;
+            static::resolvePregQuotedValue($tagPrefix);
+            $tagSuffix          = static::TAG_SUFFIX;
+            static::resolvePregQuotedValue($tagSuffix);
+            $timeDelimiter      = static::TIME_DELIMITER;
+            static::resolvePregQuotedValue($timeDelimiter);
+            $capitalDelimiter   = static::CAPITAL_DELIMITER;
+            static::resolvePregQuotedValue($capitalDelimiter);
+            $propertyDelimiter  = static::PROPERTY_DELIMITER;
+            static::resolvePregQuotedValue($propertyDelimiter);
+
             // Current RE: /((WAS\%)?(([A-Z0-9])(\^|__)?)+)/ // Not Coding Standard
-            $pattern =  '/' . preg_quote(static::TAG_PREFIX) .
-                        '((WAS' . preg_quote(static::TIME_DELIMITER) . ')?' .
-                        '(([A-Z0-9])' . '(' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
-                        preg_quote(static::PROPERTY_DELIMITER) . ')?)+)' . // Not Coding Standard
-                        preg_quote(static::TAG_SUFFIX) .
-                        '/';
+            $pattern =  '/' . $tagPrefix . '((WAS' . $timeDelimiter . ')?' .
+                        '(([A-Z0-9])' . '(' . $capitalDelimiter . '|' .
+                        $propertyDelimiter . ')?)+)' . // Not Coding Standard
+                        $tagSuffix . '/';
             // $this->mergeTags index 0 = with tag prefix and suffix, index 1 = without tag prefix and suffix
             $matchesCounts = preg_match_all($pattern, $this->content, $this->mergeTags);
             array_walk($this->mergeTags, 'static::resolveUniqueMergeTags');
@@ -154,6 +178,7 @@
             $mergeTags                  = $this->mergeTags[0];
             $attributes                 = array_values($this->mergeTags[1]);
             $this->resolveFullyQualifiedMergeTagsRegularExpression($mergeTags);
+            $this->resolveQuotedAttributes($attributes);
             $content                    = preg_replace($mergeTags, $attributes, $this->content, -1, $resolvedMergeTagsCount);
             if (!empty($content))
             {
@@ -170,6 +195,11 @@
         protected function resolveFullyQualifiedMergeTagsRegularExpression(& $mergeTags)
         {
             array_walk($mergeTags, 'static::resolveFullyQualifiedMergeTagRegularExpression');
+        }
+
+        protected function resolveQuotedAttributes(& $attributes)
+        {
+            array_walk($attributes, 'static::resolvePregQuotedAttributeValue');
         }
     }
 ?>
