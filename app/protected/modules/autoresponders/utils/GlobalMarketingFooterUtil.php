@@ -92,9 +92,13 @@
         {
             $unsubscribeUrlPlaceHolder          = static::UNSUBSCRIBE_URL_PLACEHOLDER;
             $manageSubscriptionsUrlPlaceHolder  = static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
-            $content     = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
+            StringUtil::prependNewLine($recipientMention, $isHtmlContent);
+            $content        = $unsubscribeUrlPlaceHolder;
+            $content        .= $manageSubscriptionsUrlPlaceHolder;
+            $content        .= $recipientMention;
             return $content;
         }
     }
