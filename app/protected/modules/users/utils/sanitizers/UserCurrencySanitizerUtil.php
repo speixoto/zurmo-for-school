@@ -92,5 +92,10 @@
         {
             return array_values(Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(null));
         }
+
+        public function shouldSanitizeValue()
+        {
+            return true;
+        }
     }
 ?>
