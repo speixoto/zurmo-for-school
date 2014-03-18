@@ -75,14 +75,14 @@
                 ),
                 2 => array(
                     'attributeName'             => 'isDraft',
-                    'operatorType'              => 'equal',
+                    'operatorType'              => 'equals',
                     'value'                     => 1,
                 ),
             );
             $searchAttributeData['structure'] = '1 and 2';
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('EmailTemplate');
             $where = RedBeanModelDataProvider::makeWhere('EmailTemplate', $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            $models = EmailTemplate::getSubset($joinTablesAdapter, null, null, $where, null);
             foreach ($models as $model)
             {
                 $model->delete();

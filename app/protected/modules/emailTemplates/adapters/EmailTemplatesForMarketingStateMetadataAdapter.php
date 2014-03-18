@@ -60,7 +60,12 @@
                 'operatorType'  => 'equals',
                 'value'         => 0
             );
-            $structure    .= $startingCount . ' and ' . ($startingCount + 1);
+            $metadata['clauses'][$startingCount + 2] = array(
+                'attributeName' => 'isDraft',
+                'operatorType'  => 'isNull',
+                'value'         => null
+            );
+            $structure    .= $startingCount . ' and (' . ($startingCount + 1) . ' or ' . ($startingCount + 2) . ')';
             if (empty($metadata['structure']))
             {
                 $metadata['structure'] = '(' . $structure . ')';
