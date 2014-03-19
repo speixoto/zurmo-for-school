@@ -78,8 +78,14 @@
 
         protected function resolveNextPageLinkHtmlOptions()
         {
-            return array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-           // return array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");$(this).addClass("loading");$(this).makeOrRemoveLoadingSpinner(true);');
+            if ($this->model->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            {
+                return array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");$(this).addClass("loading");$(this).makeOrRemoveLoadingSpinner(true);');
+            }
+            else
+            {
+                return array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            }
         }
 
         protected function renderNextPageLinkLabel()

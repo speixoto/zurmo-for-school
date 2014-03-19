@@ -377,9 +377,9 @@
             $ajaxOption     = $this->resolvePreviewAjaxOptions();
             Yii::app()->clientScript->registerScript('previewMenuButtonClickScript', '
                 $("#' . static::PREVIEW_MENU_BUTTON_ID . '").unbind("click.previewMenuButtonClick")
-                                                            .bind("click.previewMenuButtonClick", function(event)
-                 {
+                                                            .bind("click.previewMenuButtonClick", function(event){
                     ' . ZurmoHtml::ajax($ajaxOption) . '
+                    $("body").addClass("previewing-builder");
                     event.preventDefault();
                 });');
         }
@@ -415,6 +415,7 @@
                                                     .bind("click.reviewIFrameContainerCloserLinkClick", function(event)
                  {
                     $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
+                    $("body").removeClass("previewing-builder");
                     event.preventDefault();
                  });');
         }
