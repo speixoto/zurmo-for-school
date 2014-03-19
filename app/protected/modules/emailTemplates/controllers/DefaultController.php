@@ -594,6 +594,7 @@
             {
                 $contact    = Contact::getById(intval($contactId));
             }
+            echo $emailTemplate->htmlContent;
             $this->resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent);
         }
 
