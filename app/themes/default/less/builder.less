@@ -188,6 +188,12 @@
 	td{
 		width: 65%;
 	}
+	.redactor_box iframe{
+		min-height: 400px;
+	}
+	.edit-form-tab-content{ //.tabs-container
+		z-index: 99999;
+	}
 }
 
 .builder-position-checkbox{
@@ -216,6 +222,11 @@
 	}
 }
 
+div[id^="builderimageelement"]{
+	~ .redactor_box iframe{
+		background:url("@{path}psd-light.png") left top repeat;
+	}
+}
 
 /*Template Chooser*/
 .templates-chooser-list{
@@ -323,6 +334,12 @@
 	}
 }
 
+#redactor_image_box{
+	img{
+		border: 1px solid #dfdfdf;
+	}
+}
+
 #ContentForEmailTemplateWizardView{
 	.email-template-content,
 	.tab,
@@ -399,4 +416,8 @@
 }
 .fancy-divider-5{
 	background-image: url("@{path}email-builder/fancy-divider-5.png");
+}
+
+#BuilderElementEditableModelForm_content_text{
+	min-height: 400px;
 }

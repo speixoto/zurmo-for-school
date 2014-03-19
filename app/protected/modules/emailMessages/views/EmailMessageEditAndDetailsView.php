@@ -156,6 +156,7 @@
 
         protected function renderEmailMessageContent()
         {
+            $this->registerIframeHeightScripts();
             $content    = ZurmoHtml::tag('iframe', $this->resolveContentIFrameHtmlOptions(), '');
             return $content;
         }
@@ -183,6 +184,24 @@
                 return ($this->renderType != 'Details');// this if would only be true for contactEmailTemplateNamesDropDown.
             }
             return parent::shouldDisplayCell($detailViewOnly);
+        }
+
+        protected function registerIframeHeightScripts()
+        {
+            $scriptName = 'iframe-height';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('#email-message-content-iframe').load(function(){
+                            var contentHeight = $('#email-message-content-iframe').contents().find('body').outerHeight();
+                            $('#email-message-content-iframe').height(contentHeight + 50);
+                        });
+                    ");
+            }
         }
     }
 ?>

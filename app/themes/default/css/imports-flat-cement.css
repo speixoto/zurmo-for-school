@@ -836,120 +836,60 @@ a.simple-link .icon-x {
   height: 54px;
   margin-bottom: 20px;
 }
-#InstallAccessFailurePageView,
-#ErrorPageView {
-  background-color: #f6f6f6 ;
-  background-repeat: no-repeat ;
-  background-image: -webkit-gradient(linear,0 0,0 100%,from(#f6f6f6),color-stop(100px,#ffffff),to(#f6f6f6)) ;
-  background-image: -webkit-linear-gradient(#f6f6f6,#ffffff 100px,#f6f6f6) ;
-  background-image: -ms-linear-gradient(#f6f6f6,#ffffff 100px,#f6f6f6) ;
-  background-image: -o-linear-gradient(#f6f6f6,#ffffff 100px,#f6f6f6) ;
-  background-image: -moz-linear-gradient(#f6f6f6,#ffffff 100px,#f6f6f6) ;
-  background-image: linear-gradient(#f6f6f6,#ffffff 100px,#f6f6f6) ;
-  -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
-  -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
-  -ms-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
-  -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
-  box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
+#InstallView {
+  margin-left: 0;
+  padding: 75px 15% 15px 15%;
+  font-size: 14px;
+  line-height: 150%;
+}
+#InstallView .z-label {
   font-size: 12px;
-  line-height: 140%;
-  background: #fff;
-  width: 960px;
-  padding: 20px;
-  margin: 40px auto;
 }
-#InstallAccessFailurePageView a,
-#ErrorPageView a {
-  background-color: #2c3e50;
-  padding: 1px 4px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  color: #fff;
-}
-#InstallAccessFailurePageView a:hover,
-#ErrorPageView a:hover {
-  color: #fff !important;
-  text-decoration: underline;
-}
-#InstallAccessFailurePageView div,
-#ErrorPageView div {
-  margin: 10px 0;
-}
-#InstallPageView .AppContainer {
-  background-image: none;
-  font-size: 12px;
-  line-height: 140%;
-  padding: 20px;
-  margin: 40px 40px 0 40px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-}
-#InstallPageView div.wide.form {
-  float: none;
-}
-#InstallPageView #save {
-  color: #fff !important;
-  -webkit-text-shadow: none !important;
-  -moz-text-shadow: none !important;
-  -ms-text-shadow: none !important;
-  -o-text-shadow: none !important;
-  text-shadow: none !important;
-}
-#InstallPageView ul {
+#InstallView ul {
   list-style: inside;
   margin-bottom: 10px;
+  font-weight: bold;
 }
-#InstallPageView ul li {
+#InstallView ul li {
   margin-bottom: 5px;
 }
-#InstallPageView table {
+#InstallView table {
   width: 100%;
 }
-#InstallPageView table table {
+#InstallView table table {
   border-color: #DDDEDE;
   border-style: solid;
   border-width: 0 0 1px 0;
   border-spacing: 0;
   border-collapse: collapse;
 }
-#InstallPageView table table td {
+#InstallView table table td {
   border-color: #DDDEDE;
   border-style: solid;
   border-width: 1px 1px 0 0;
   padding-left: 10px;
 }
-#InstallPageView table table tr {
+#InstallView table table tr {
   border-color: #DDDEDE;
   border-style: solid;
   border-width: 0 0 0 1px;
   border-spacing: 0;
 }
-#InstallPageView table table tr:first-child {
+#InstallView table table tr:first-child {
   border-left: none;
 }
-#InstallPageView table table tr:first-child td {
+#InstallView table table tr:first-child td {
   border: none;
   font-weight: bold;
 }
-#InstallPageView table table tr:hover {
+#InstallView table table tr:hover {
   background-color: none;
   color: #545454;
 }
-#InstallPageView table td {
+#InstallView table td {
   padding: 8px 2px;
 }
-#InstallPageView #install-form {
+#install-form {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -961,7 +901,7 @@ a.simple-link .icon-x {
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
-#InstallPageView #install-form input[type="submit"] {
+#install-form input[type="submit"] {
   line-height: 1;
   cursor: pointer;
   -webkit-border-radius: 2px;
@@ -991,22 +931,22 @@ a.simple-link .icon-x {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
 }
-#InstallPageView #install-form input[type="submit"]:before,
-#InstallPageView #install-form input[type="submit"]:after {
+#install-form input[type="submit"]:before,
+#install-form input[type="submit"]:after {
   content: " ";
   display: table;
 }
-#InstallPageView #install-form input[type="submit"]:after {
+#install-form input[type="submit"]:after {
   clear: both;
 }
-#InstallPageView #install-form input[type="submit"]:hover {
+#install-form input[type="submit"]:hover {
   -webkit-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
   -moz-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
   -ms-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
   -o-box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
   box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.5), 0 0 7px 0 rgba(75, 75, 75, 0.25);
 }
-#InstallPageView #install-form input[type="submit"].disabled {
+#install-form input[type="submit"].disabled {
   pointer-events: none;
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;
@@ -1019,37 +959,36 @@ a.simple-link .icon-x {
   filter: grayscale(85%);
   filter: gray;
 }
-#InstallPageView #install-form table {
+#install-form table {
   padding-bottom: 15px;
 }
-#InstallPageView #install-form th {
+#install-form th {
   width: 26%;
 }
-#InstallPageView #install-form td {
+#install-form td {
   width: 37%;
 }
-#InstallPageView #install-form th+td {
+#install-form th+td {
   vertical-align: top;
 }
-#InstallPageView #install-form tr td:last-child {
+#install-form tr td:last-child {
   padding-left: 15px;
 }
-#InstallPageView #install-form label {
+#install-form label {
   font-size: 12px !important;
-  color: #666;
   font-weight: 400 !important;
-  padding-top: 12px;
 }
-#InstallPageView #install-form .hasCheckBox {
+#install-form .hasCheckBox {
   padding-top: 0;
   margin-left: 0;
 }
-#InstallPageView #install-form .view-toolbar-container {
-  border-top: 1px solid #ccc;
+#install-form .form-toolbar {
+  border-top: none;
 }
 #logging-table,
 #progress-table {
   width: 100%;
+  padding: 15px;
 }
 #logging-table img,
 #progress-table img {
@@ -1076,6 +1015,7 @@ a.simple-link .icon-x {
   display: inline-block;
   position: relative;
   top: -10px;
+  margin: 0 10px;
 }
 .back-to-app-menu-item span {
   vertical-align: middle;
@@ -11628,6 +11568,12 @@ a + .project-stats {
 .element-edit-form td {
   width: 65%;
 }
+.element-edit-form .redactor_box iframe {
+  min-height: 400px;
+}
+.element-edit-form .edit-form-tab-content {
+  z-index: 99999;
+}
 .builder-position-checkbox {
   width: 50%;
   display: inline-block;
@@ -11650,6 +11596,9 @@ a + .project-stats {
 }
 #element-settings label {
   display: block;
+}
+div[id^="builderimageelement"] ~ .redactor_box iframe {
+  background: url("../images/psd-light.png") left top repeat;
 }
 .templates-chooser-list {
   margin-bottom: 30px;
@@ -11781,6 +11730,9 @@ a + .project-stats {
 .redactor_toolbar li a.re-mergeTags:hover {
   background-image: url("../images/email-builder/merge-tags-hover.png");
 }
+#redactor_image_box img {
+  border: 1px solid #dfdfdf;
+}
 #ContentForEmailTemplateWizardView .email-template-content,
 #ContentForEmailTemplateWizardView .tab,
 #ContentForEmailTemplateWizardView .redactor_box,
@@ -11851,6 +11803,9 @@ a + .project-stats {
 }
 .fancy-divider-5 {
   background-image: url("../images/email-builder/fancy-divider-5.png");
+}
+#BuilderElementEditableModelForm_content_text {
+  min-height: 400px;
 }
 .merge-view {
   width: 100% !important;
@@ -12565,73 +12520,164 @@ body.flat-cement .juiportlet-columns .juiportlet-widget .pager {
 .color-swatch.honey .theme-color-3 {
   background: #7f9293;
 }
+.body-texture {
+  background-attachment: fixed;
+}
+.body-texture .AppContent {
+  background: none !important;
+}
 body.light-noise-diagonal,
 .texture-swatch.light-noise-diagonal .background-texture-1 {
   background: url("../images/patterns/light-noise-diagonal/light-noise-diagonal.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.light-noise-diagonal .AppContent,
+.texture-swatch.light-noise-diagonal .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.french-stucco,
 .texture-swatch.french-stucco .background-texture-1 {
   background: url("../images/patterns/french-stucco/french-stucco.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.french-stucco .AppContent,
+.texture-swatch.french-stucco .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.exclusive-paper,
 .texture-swatch.exclusive-paper .background-texture-1 {
   background: url("../images/patterns/exclusive-paper/exclusive-paper.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.exclusive-paper .AppContent,
+.texture-swatch.exclusive-paper .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.diagonal-noise,
 .texture-swatch.diagonal-noise .background-texture-1 {
   background: url("../images/patterns/diagonal-noise/diagonal-noise.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.diagonal-noise .AppContent,
+.texture-swatch.diagonal-noise .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.paper,
 .texture-swatch.paper .background-texture-1 {
   background: url("../images/patterns/paper/paper.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.paper .AppContent,
+.texture-swatch.paper .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.light-toast,
 .texture-swatch.light-toast .background-texture-1 {
   background: url("../images/patterns/light-toast/light-toast.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.light-toast .AppContent,
+.texture-swatch.light-toast .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.black-linen-2,
 .texture-swatch.black-linen-2 .background-texture-1 {
   background: url("../images/patterns/black-linen-v2/black-linen-v2.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.black-linen-2 .AppContent,
+.texture-swatch.black-linen-2 .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.carbon-fibre,
 .texture-swatch.carbon-fibre .background-texture-1 {
   background: url("../images/patterns/carbon-fibre/carbon-fibre.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.carbon-fibre .AppContent,
+.texture-swatch.carbon-fibre .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.cartographer,
 .texture-swatch.cartographer .background-texture-1 {
   background: url("../images/patterns/cartographer/cartographer.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.cartographer .AppContent,
+.texture-swatch.cartographer .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.circles,
 .texture-swatch.circles .background-texture-1 {
   background: url("../images/patterns/circles/circles.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.circles .AppContent,
+.texture-swatch.circles .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.concrete-wall,
 .texture-swatch.concrete-wall .background-texture-1 {
   background: url("../images/patterns/concrete-wall/concrete-wall.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.concrete-wall .AppContent,
+.texture-swatch.concrete-wall .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.denim,
 .texture-swatch.denim .background-texture-1 {
   background: url("../images/patterns/denim/denim.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.denim .AppContent,
+.texture-swatch.denim .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.low-contrast-linen,
 .texture-swatch.low-contrast-linen .background-texture-1 {
   background: url("../images/patterns/low-contrast-linen/low-contrast-linen.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.low-contrast-linen .AppContent,
+.texture-swatch.low-contrast-linen .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.wood,
 .texture-swatch.wood .background-texture-1 {
   background: url("../images/patterns/wood-pattern/wood-pattern.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.wood .AppContent,
+.texture-swatch.wood .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.whitey,
 .texture-swatch.whitey .background-texture-1 {
   background: url("../images/patterns/whitey/whitey.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.whitey .AppContent,
+.texture-swatch.whitey .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.fabric-plaid,
 .texture-swatch.fabric-plaid .background-texture-1 {
   background: url("../images/patterns/fabric-plaid/fabric-plaid.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.fabric-plaid .AppContent,
+.texture-swatch.fabric-plaid .background-texture-1 .AppContent {
+  background: none !important;
 }
 body.cartographer-light,
 .texture-swatch.cartographer-light .background-texture-1 {
   background: url("../images/patterns/cartographer-light/cartographer-light.png") left top repeat !important;
+  background-attachment: fixed;
+}
+body.cartographer-light .AppContent,
+.texture-swatch.cartographer-light .background-texture-1 .AppContent {
+  background: none !important;
 }
 @media all and (max-width: 900px) {
   #HeaderView {
