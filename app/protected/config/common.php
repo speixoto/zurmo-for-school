@@ -389,6 +389,7 @@
             'application.modules.api.components.ApiRequest',
             'application.extensions.wideImage.WideImage',
             'application.extensions.phaActiveColumn.*',
+            'application.extensions.cssToInlineStyles.*'
         ),
         'modules' => array(
             'accountAccountAffiliations',

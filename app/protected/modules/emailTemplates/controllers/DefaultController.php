@@ -594,10 +594,24 @@
             {
                 $contact    = Contact::getById(intval($contactId));
             }
-            $this->resolveEmailMessage($emailTemplate, $contact);
+            $this->resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent);
         }
 
-        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null)
+        public function actionSendTestEmailWithConvert($id, $contactId = null, $validXHTML = false)
+        {
+            $emailTemplate  = EmailTemplate::getById(intval($id));
+            $contact        = null;
+            if (isset($contactId))
+            {
+                $contact    = Contact::getById(intval($contactId));
+            }
+            $cssToInlineStyles = new CssToInlineStyles($emailTemplate->htmlContent);
+            $htmlContent       = $cssToInlineStyles->convert($validXHTML);
+            echo $htmlContent;
+            $this->resolveEmailMessage($emailTemplate, $contact, $htmlContent);
+        }
+
+        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent)
         {
             // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
             $emailMessage                       = new EmailMessage();
@@ -606,7 +620,7 @@
             $emailContent->textContent          = $emailTemplate->textContent;
             // we do not need to do : EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
             // check __set of EmailTemplate.
-            $emailContent->htmlContent          = $emailTemplate->htmlContent;
+            $emailContent->htmlContent          = $htmlContent;
             $emailMessage->content              = $emailContent;
             $emailMessage->sender               = static::resolveSender();
             static::resolveRecipient($emailMessage, $contact);

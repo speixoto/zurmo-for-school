@@ -328,12 +328,13 @@
             $originalBaseTemplateIdSelector = static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector();
             $baseTemplateIdSelector         = static::resolveBaseTemplateIdHiddenInputJQuerySelector();
             $script         = "
+                                initEmailTemplateEditor();
                                 selectedBaseTemplateId  = $('" . $baseTemplateIdSelector . "').val();
                                 originalBaseTemplateId  = $('" . $originalBaseTemplateIdSelector . "').val();
+                                var canvasSourceUrl     = $('" . $canvasIFrameSelector . "').attr('src');
                                 if (canvasSourceUrl == 'about:blank' || selectedBaseTemplateId != originalBaseTemplateId)
                                 {
                                     // update canvas url
-                                    var canvasSourceUrl = $('" . $canvasIFrameSelector . "').attr('src');
                                     if (canvasSourceUrl == 'about:blank')
                                     {
                                         canvasSourceUrl		= '" . $canvasActionUrl . "';
@@ -343,7 +344,7 @@
                                     $('" . $refreshCanvasLinkSelector . "').trigger('click');
                                 }
                                 $('" . $originalBaseTemplateIdSelector . "').val(selectedBaseTemplateId);
-                                initEmailTemplateEditor();
+
                                 ";
             $parentScript   = parent::resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                                     $validationInputId, $progressPerStep,
