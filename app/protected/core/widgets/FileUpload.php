@@ -177,6 +177,7 @@ $(function () {
         autoUpload: true,
         sequentialUploads: true,
         maxFileSize: {$this->maxSize},
+        dropZone: $('#dropzone{$id}'),
         add: function (e, data) {
             {$this->beforeUploadAction}
             {$sendAction}
@@ -237,7 +238,8 @@ EOD;
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
 
             $htmlOptions = array('id' => $this->inputId);
-            $html  = '<div id="fileUpload' . $id . '">';
+            $html  = '<div id="dropzone' . $id . '">';
+            $html .= '<div id="fileUpload' . $id . '">';
             $html .= '<div class="fileupload-buttonbar clearfix">';
             $html .= '<div class="addfileinput-button"><span>Y</span>' . $addLabel;
             $html .= ZurmoHtml::fileField($this->inputName, null, $htmlOptions);

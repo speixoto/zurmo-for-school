@@ -100,11 +100,12 @@
         {
             $previewContainerContent   = $this->resolvePreviewContainerContent();
             $freezeOverlayContent      = $this->renderFreezeOverlayContent();
+            $toolbarContent            = $this->renderLeftSidebarToolbarContent();
             $leftSidebarContent        = $this->renderLeftSidebarContent();
             $rightSidebarContent       = $this->resolveCanvasContent();
             $this->wrapContentForLeftSideBar($leftSidebarContent);
             $this->wrapContentForRightSideBar($rightSidebarContent);
-            $content = $freezeOverlayContent . $previewContainerContent .
+            $content = $freezeOverlayContent . $previewContainerContent . $toolbarContent .
                        $leftSidebarContent . $rightSidebarContent;
             $content = ZurmoHtml::tag('div', $this->resolveContentHtmlOptions(), $content);
             return $content;
@@ -113,8 +114,7 @@
         protected function renderLeftSidebarContent()
         {
             $hiddenElements      = null;
-            $leftSidebarContent  = $this->renderLeftSidebarToolbarContent();
-            $leftSidebarContent .= $this->resolveElementsSidebarContent();
+            $leftSidebarContent  = $this->resolveElementsSidebarContent();
             $this->renderHiddenElements($hiddenElements, $leftSidebarContent);
             $leftSidebarContent .= $this->renderRefreshCanvasLinkContent($leftSidebarContent);
             return $leftSidebarContent;
