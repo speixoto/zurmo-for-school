@@ -164,5 +164,101 @@
                                                                  . ImportRowDataResultsUtil::ERROR);
             $this->assertEquals(0, count($beansWithErrors));
         }
+
+        /**
+         * @depends testSimpleUserImportWhereAllRowsSucceed
+         */
+        public function testUserImportWithOptionalFields()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $users                      = User::getAll();
+            $this->assertEquals(11, count($users));
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'User';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::
+                createTempTableByFileNameAndTableName('importAnalyzerWithOptionalFields.csv',
+                                              $import->getTempTableName(), true,
+                                              Yii::getPathOfAlias('application.modules.users.tests.unit.files'));
+
+            $this->assertEquals(11, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
+
+            $defaultLanguage = Yii::app()->language;
+            $localeIds       = ZurmoLocale::getSelectableLocaleIds();
+            $defaultLocale   = $localeIds[0];
+
+            $timezoneIdentifiers = DateTimeZone::listIdentifiers();
+            $defaultTimeZone     = $timezoneIdentifiers[0];
+            $defaultCurrency     = Yii::app()->currencyHelper->getActiveCurrencyForCurrentUser();
+            $defaultCurrencyId   = $defaultCurrency->id;
+
+            $mappingData = array(
+                'column_0'  => array('attributeIndexOrDerivedType' => 'username',
+                                     'type' => 'importColumn',
+                                     'mappingRulesData' => array()),
+                'column_1'  => array('attributeIndexOrDerivedType' => 'Password',
+                                     'type' => 'importColumn',
+                                     'mappingRulesData' => array(
+                                     'PasswordDefaultValueModelAttributeMappingRuleForm' =>
+                                     array('defaultValue' => null))),
+                'column_3'  => ImportMappingUtil::makeStringColumnMappingData('firstName'),
+                'column_4'  => ImportMappingUtil::makeStringColumnMappingData('lastName'),
+                'column_5'  => array('attributeIndexOrDerivedType' => 'language',
+                                     'type' => 'extraColumn',
+                                     'mappingRulesData' => array(
+                                     'DefaultValueModelAttributeMappingRuleForm' =>
+                                     array('defaultValue' => $defaultLanguage))),
+                'column_6'  => array('attributeIndexOrDerivedType' => 'locale',
+                                     'type' => 'extraColumn',
+                                     'mappingRulesData' => array(
+                                     'DefaultValueModelAttributeMappingRuleForm' =>
+                                     array('defaultValue' => $defaultLocale))),
+                'column_7'  => array('attributeIndexOrDerivedType' => 'timeZone',
+                                     'type' => 'extraColumn',
+                                     'mappingRulesData' => array(
+                                     'DefaultValueModelAttributeMappingRuleForm' =>
+                                     array('defaultValue' => $defaultTimeZone))),
+                'column_8'  => array('attributeIndexOrDerivedType' => 'currency',
+                                     'type' => 'extraColumn',
+                                     'mappingRulesData' => array(
+                                     'DefaultValueModelAttributeMappingRuleForm' =>
+                                     array('defaultValue' => $defaultCurrencyId))),
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Users');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider, $importRules, $mappingData, $importResultsUtil,
+                                             new ExplicitReadWriteModelPermissions(), $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 10 new models are created.
+            $users = User::getAll();
+            $this->assertEquals(21, count($users));
+            $user   = User::getByUsername('myusername11');
+            $this->assertEquals($defaultLanguage, $user->language);
+            $this->assertEquals($defaultLocale,   $user->locale);
+            $this->assertEquals($defaultTimeZone, $user->timeZone);
+            $this->assertEquals($defaultCurrency, $user->currency);
+            //Confirm 10 rows were processed as 'created'.
+            $this->assertEquals(10, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
+                                . ImportRowDataResultsUtil::CREATED));
+            //Confirm that 0 rows were processed as 'updated'.
+            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+                                . ImportRowDataResultsUtil::UPDATED));
+            //Confirm 2 rows were processed as 'errors'.
+            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+                                . ImportRowDataResultsUtil::ERROR));
+            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
+                                . ImportRowDataResultsUtil::ERROR);
+            $this->assertEquals(0, count($beansWithErrors));
+        }
     }
 ?>
