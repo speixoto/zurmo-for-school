@@ -46,7 +46,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'SaveButton'),
-                            array('type' => 'CancelLink'),
+                            array('type' => 'UserEmailConfigurationCancelLink'),
                         ),
                     ),
                     'derivedAttributeTypes' => array(
