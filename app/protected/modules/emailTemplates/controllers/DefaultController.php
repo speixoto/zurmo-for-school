@@ -600,16 +600,27 @@
 
         public function actionSendTestEmailWithConvert($id, $contactId = null, $validXHTML = false)
         {
-            $emailTemplate  = EmailTemplate::getById(intval($id));
-            $contact        = null;
+            $emailTemplate      = EmailTemplate::getById(intval($id));
+            $contact            = null;
             if (isset($contactId))
             {
-                $contact    = Contact::getById(intval($contactId));
+                $contact        = Contact::getById(intval($contactId));
             }
-            $cssToInlineStyles = new CssToInlineStyles($emailTemplate->htmlContent);
-            $htmlContent       = $cssToInlineStyles->convert($validXHTML);
+            $htmlContent        = $this->convertCssToInlineStyles($emailTemplate->htmlContent, $validXHTML);
             echo $htmlContent;
-            $this->resolveEmailMessage($emailTemplate, $contact, $htmlContent);
+            //$this->resolveEmailMessage($emailTemplate, $contact, $htmlContent);
+        }
+
+        protected function convertCssToInlineStyles($htmlContent, $validXHTML = false)
+        {
+            $cssToInlineStyles = new ZurmoCssToInlineStylesUtil($htmlContent);
+            $cssToInlineStyles->setCleanup(false);
+            $cssToInlineStyles->setExcludeMediaQueries(true);
+            $cssToInlineStyles->setUseInlineStylesBlock(true);
+            $cssToInlineStyles->setMoveStyleBlocksToBody(true);
+            $cssToInlineStyles->setCombineStyleBlock(true);
+            $htmlContent       = $cssToInlineStyles->convert($validXHTML);
+            return $htmlContent;
         }
 
         protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent)

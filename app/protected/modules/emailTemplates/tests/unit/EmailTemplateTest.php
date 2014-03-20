@@ -543,7 +543,7 @@
             // now try with nobody user
             $nobody                         = User::getByUsername('nobody');
             Yii::app()->user->userModel     = $nobody;
-            $resolvedStringValue    = strval($emailTemplate[0]);
+            $resolvedStringValue            = strval($emailTemplate[0]);
             $this->assertEmpty($resolvedStringValue);
         }
 
