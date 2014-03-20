@@ -140,7 +140,7 @@ var emailTemplateEditor = {
             appendTo: 'body',
             cursor: 'move',
             iframeFix: true,
-            revert: 'invalid',
+            //revert: 'invalid',
             cursorAt: { left:  -10, top: -10 },
             helper: function(event, ui){
                 elementDragged      = $(event.currentTarget);

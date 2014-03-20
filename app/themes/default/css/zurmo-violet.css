@@ -1352,6 +1352,7 @@ body > .ui-autocomplete {
     -webkit-user-select: none;
   }
   body .AppNavigation:hover {
+    z-index: 99999;
     width: 170px;
     -webkit-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
     -moz-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
@@ -1410,6 +1411,7 @@ body > .ui-autocomplete {
   -webkit-user-select: none;
 }
 .nav-collapsed .AppNavigation:hover {
+  z-index: 99999;
   width: 170px;
   -webkit-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);
   -moz-box-shadow: 2px 0 5px 0 rgba(102,102,102,0.3);

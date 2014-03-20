@@ -242,6 +242,10 @@
                                 'observeImages'         => 'true',
                                 'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),
                                 'imageGetJson'          => ImageFileModelUtil::getUrlForActionGetUploaded(),
+                                'initCallback' => 'function(){
+                                    var contentHeight = $(".redactor_box iframe").contents().find("body").outerHeight();
+                                    $(".redactor_box iframe").height(contentHeight + 50);
+                                }'
             ));
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);

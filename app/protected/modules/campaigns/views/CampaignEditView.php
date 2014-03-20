@@ -154,6 +154,7 @@
         protected function renderContent()
         {
             $this->registerCopyInfoFromMarketingListScript();
+            $this->registerRedactorHeightScript();
             return parent::renderContent();
         }
 
@@ -255,6 +256,13 @@
                 );
             ");
             // End Not Coding Standard
+        }
+
+        protected function registerRedactorHeightScript()
+        {
+            /*Yii::app()->clientScript->registerScript('redactorHeightScript', '
+                        var contentHeight = $(".redactor_box iframe").contents().find("html").outerHeight();
+                        $(".redactor_box iframe").height(contentHeight + 50);');*/
         }
 
         protected function isCampaignEditable()

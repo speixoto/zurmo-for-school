@@ -11380,6 +11380,10 @@ a + .project-stats {
 #builder .form-fields td {
   padding-left: 0 !important;
 }
+.previewing-builder {
+  overflow: hidden;
+  height: auto !important;
+}
 .previewing-builder .HeaderView {
   z-index: 0;
 }
@@ -11426,9 +11430,9 @@ a + .project-stats {
 }
 #building-blocks li {
   float: left;
-  width: 105px;
+  width: 30%;
   height: 105px;
-  margin: 0 15px 15px 0;
+  margin: 0 3.33% 15px 0;
   display: block;
   cursor: pointer;
 }
@@ -11455,6 +11459,8 @@ a + .project-stats {
   -ms-box-shadow: 0 0 1px 1px rgba(153,153,153,0.5);
   -o-box-shadow: 0 0 1px 1px rgba(153,153,153,0.5);
   box-shadow: 0 0 1px 1px rgba(153,153,153,0.5);
+  width: 100% !important;
+  height: 100% !important;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -ms-box-shadow: none;
@@ -11481,9 +11487,11 @@ a + .project-stats {
   font-size: 13px;
   font-weight: bold;
 }
-.ui-draggable.ui-draggable-dragging.ui-sortable-helper {
-  border: 1px solid red;
-  opacity: 1 !important;
+@media all and (max-width: 900px) {
+  #building-blocks li {
+    width: 46%;
+    margin-right: 4%;
+  }
 }
 .draggable-element-clone {
   display: block;
