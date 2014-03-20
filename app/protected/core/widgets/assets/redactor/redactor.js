@@ -489,6 +489,11 @@
 					title: lang.image,
 					func: 'imageShow'
 				},
+                zurmoImage:
+                {
+                    title: lang.image,
+                    func: 'zurmoImageShow'
+                },
 				video:
 				{
 					title: lang.video,
@@ -5976,6 +5981,12 @@
 
 			this.modalClose();
 		},
+
+        zurmoImageShow: function()
+        {
+            this.set('');
+            this.imageShow();
+        },
 
 		// IMAGE
 		imageShow: function()
