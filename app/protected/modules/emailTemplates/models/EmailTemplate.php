@@ -176,6 +176,7 @@
                     array('htmlContent',                'EmailTemplateMergeTagsValidator'),
                     array('textContent',                'EmailTemplateMergeTagsValidator'),
                     array('serializedData',             'type', 'type' => 'string'),
+                    array('serializedData',             'EmailTemplateSerializedDataValidator'),
                 ),
                 'elements' => array(
                     'htmlContent'                   => 'TextArea',
@@ -369,6 +370,11 @@
             return ($this->builtType == static::BUILT_TYPE_BUILDER_TEMPLATE);
         }
 
+        public function isPredefinedBuilderTemplate()
+        {
+            return ($this->isBuilderTemplate() && empty($this->modelClassName));
+        }
+
         public function __set($attributeName, $value)
         {
             parent::__set($attributeName, $value);
@@ -383,11 +389,6 @@
             {
                 $this->htmlContent  = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($this->serializedData, false);
             }
-        }
-
-        protected function isPredefinedBuilderTemplate()
-        {
-            return ($this->isBuilderTemplate() && empty($this->modelClassName));
         }
     }
 ?>

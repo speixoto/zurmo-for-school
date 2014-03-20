@@ -55,12 +55,12 @@
             UserTestHelper::createBasicUser('nobody');
 
             // Setup test data owned by the super user.
-            static::$templateOwnedBySuper = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                                                    'Test Subject1',
-                                                                                                    'Contact',
-                                                                                                    'Test Name1',
-                                                                                                    'Test HtmlContent1',
-                                                                                                    'Test TextContent1');
+
+            static::$templateOwnedBySuper = EmailTemplateTestHelper::create('Test Name1',
+                                                                            'Test Subject1',
+                                                                            'Contact',
+                                                                            'Test HtmlContent1',
+                                                                            'Test TextContent1');
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
@@ -75,10 +75,8 @@
         {
             $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
             $this->assertTrue($this->user->save());
-            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                                'Test Subject Regular 01',
+            $emailTemplate = EmailTemplateTestHelper::create('Test Name Regular 01', 'Test Subject Regular 01',
                                                                                 'Contact',
-                                                                                'Test Name Regular 01',
                                                                                 'Test HtmlContent Regular 01',
                                                                                 'Test TextContent Regular 01');
 

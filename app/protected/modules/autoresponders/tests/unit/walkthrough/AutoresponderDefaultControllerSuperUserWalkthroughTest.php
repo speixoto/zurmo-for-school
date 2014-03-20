@@ -47,16 +47,17 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Subject 01', 'Contact',
-                                                            'EmailTemplate 01', 'Html Content 01', 'Text Content 01');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Subject 02', 'Contact',
-                                                            'EmailTemplate 02', 'Html Content 02', 'Text Content 03');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Subject 03', 'Contact',
-                                                            'EmailTemplate 03', 'Html Content 03', 'Text Content 03');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Subject 04', 'Contact',
-                                                            'EmailTemplate 04', 'Html Content 04', 'Text Content 04');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW, 'Subject 05', 'Contact',
-                                                            'EmailTemplate 05', 'Html Content 05', 'Text Content 05');
+
+            EmailTemplateTestHelper::create('EmailTemplate 01', 'Subject 01', 'Contact', 'Html Content 01',
+                                            'Text Content 01');
+            EmailTemplateTestHelper::create('EmailTemplate 02', 'Subject 02', 'Contact', 'Html Content 02',
+                                            'Text Content 02');
+            EmailTemplateTestHelper::create('EmailTemplate 03', 'Subject 03', 'Contact', 'Html Content 03',
+                                            'Text Content 03');
+            EmailTemplateTestHelper::create('EmailTemplate 04', 'Subject 04', 'Contact', 'Html Content 04',
+                                            'Text Content 04');
+            EmailTemplateTestHelper::create('EmailTemplate 05', 'Subject 05', 'Contact', 'Html Content 05',
+                                            'Text Content 05');
 
             $marketingList = MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                                         'MarketingList Description');

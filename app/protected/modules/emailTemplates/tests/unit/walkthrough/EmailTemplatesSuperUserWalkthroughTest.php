@@ -69,10 +69,10 @@
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
 
             // Setup test data owned by the super user.
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW, 'Test Subject', 'Contact',
-                'Test Name', 'Test HtmlContent', 'Test TextContent');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Test Subject1', 'Contact',
-                'Test Name1', 'Test HtmlContent1', 'Test TextContent1');
+            EmailTemplateTestHelper::create('Test Name', 'Test Subject', 'Contact', 'Text HtmlContent',
+                                            'Test TextContent', EmailTemplate::TYPE_WORKFLOW);
+            EmailTemplateTestHelper::create('Test Name1', 'Test Subject1', 'Contact', 'Text HtmlContent1',
+                                            'Test TextContent1', EmailTemplate::TYPE_WORKFLOW);
 
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');

@@ -42,6 +42,12 @@
             if (!empty($serialized))
             {
                 $unserialized = CJSON::decode($serialized);
+                if (json_last_error() != JSON_ERROR_NONE)
+                {
+                    $message    = Zurmo::t('EmailTemplatesModule', 'Unable to decode serializedData.');
+                    $this->addError($object, $attribute, $message);
+                    return false;
+                }
                 if (empty($unserialized))
                 {
                     return true;
@@ -54,9 +60,14 @@
                 {
                     return true;
                 }
-
+                else
+                {
+                    $message    = Zurmo::t('EmailTemplatesModule', 'serializedData contains invalid scheme.');
+                    $this->addError($object, $attribute, $message);
+                    return false;
+                }
             }
-            return false;
+            return true;
         }
     }
 ?>

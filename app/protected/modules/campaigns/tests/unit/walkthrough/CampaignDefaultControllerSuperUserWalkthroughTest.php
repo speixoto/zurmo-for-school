@@ -47,24 +47,9 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Subject 01',
-                                                                'Contact',
-                                                                'EmailTemplate 01',
-                                                                'html',
-                                                                'text');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Subject 02',
-                                                                'Contact',
-                                                                'EmailTemplate 02',
-                                                                'html',
-                                                                'text');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Subject 03',
-                                                                'Contact',
-                                                                'EmailTemplate 03',
-                                                                'html',
-                                                                'text');
+            EmailTemplateTestHelper::create('EmailTemplate 01', 'Subject 01', 'Contact', 'html', 'text');
+            EmailTemplateTestHelper::create('EmailTemplate 02', 'Subject 02', 'Contact', 'html', 'text');
+            EmailTemplateTestHelper::create('EmailTemplate 03', 'Subject 03', 'Contact', 'html', 'text');
             MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                'MarketingList Description',
                                                                'first',
