@@ -40,7 +40,7 @@
 
         const MODULE_CLASS_NAME_ID = 'moduleClassNameForMergeTagsViewId';
 
-        protected $defaultTextAndDropDownElementEditableTemplate    = '<th>{label}<span class="required">*</span></th><td colspan="{colspan}">{content}</td>';
+        protected $defaultTextAndDropDownElementEditableTemplate    = '<th>{label}<span class="required">*</span></th><td colspan="{colspan}"><div>{content}</div></td>';
 
         /**
          * @return string
