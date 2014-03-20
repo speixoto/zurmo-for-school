@@ -36,6 +36,8 @@
 
     class BuilderHeaderRowElement extends BuilderRowElement
     {
+        protected $shouldWrapCenterTagAroundTdForNonEditable = true;
+
         // we have created a separate class for this because we may customize
         // more options for row than just if its header or not.
         protected static function resolveLabel()
@@ -52,6 +54,11 @@
                 ),
             );
             return $properties;
+        }
+
+        protected function resolveNonEditableContentWrappingTdHtmlOptions()
+        {
+            return array('class' => 'center', 'align' => 'center');
         }
     }
 ?>

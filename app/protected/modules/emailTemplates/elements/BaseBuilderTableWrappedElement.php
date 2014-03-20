@@ -36,6 +36,8 @@
 
     abstract class BaseBuilderTableWrappedElement extends BaseBuilderElement
     {
+        protected $shouldWrapCenterTagAroundTdForNonEditable = false;
+
         public static function isUiAccessible()
         {
             return false;
@@ -44,10 +46,25 @@
         protected function resolveWrapperNonEditableByContentAndProperties($content, array $customDataAttributes)
         {
             // these are container elements, we wrap them in tables instead of divs
+            if($this->shouldWrapCenterTagAroundTdForNonEditable)
+            {
+                $content    = $this->resolveWrapperCenterNonEditableByContent($content);
+            }
             $content        = $this->resolveWrapperTdNonEditableByContent($content);
             $content        = $this->resolveWrapperTrNonEditableByContent($content);
             $content        = $this->resolveWrapperTBodyNonEditableByContent($content);
             $content        = $this->resolveWrapperTableNonEditableByContentAndHtmlOptions($content, $customDataAttributes);
+            return $content;
+        }
+
+        /**
+         * Create a 'center' wrapper
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperCenterNonEditableByContent($content)
+        {
+            $content            = ZurmoHtml::tag('center', array(), $content);
             return $content;
         }
 

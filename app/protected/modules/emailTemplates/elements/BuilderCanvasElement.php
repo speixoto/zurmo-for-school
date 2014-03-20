@@ -36,6 +36,8 @@
 
     class BuilderCanvasElement extends BuilderContainerElement
     {
+        protected $shouldWrapCenterTagAroundTdForNonEditable = true;
+
         public static function resolveLabel()
         {
             return Zurmo::t('EmailTemplatesModule', 'Canvas');
