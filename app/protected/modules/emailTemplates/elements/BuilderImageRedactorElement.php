@@ -58,7 +58,7 @@
 
         protected function resolveRedactorButtons()
         {
-            $buttons         = array('image');
+            $buttons         = array('zurmoImage');
             return CJSON::encode($buttons);
         }
 
