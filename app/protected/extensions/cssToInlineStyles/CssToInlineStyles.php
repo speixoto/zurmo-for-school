@@ -14,56 +14,56 @@ class CssToInlineStyles
      *
      * @var	string
      */
-    private $css;
+    protected $css;
 
     /**
      * The processed CSS rules
      *
      * @var	array
      */
-    private $cssRules;
+    protected $cssRules;
 
     /**
      * Should the generated HTML be cleaned
      *
      * @var	bool
      */
-    private $cleanup = false;
+    protected $cleanup = false;
 
     /**
      * The encoding to use.
      *
      * @var	string
      */
-    private $encoding = 'UTF-8';
+    protected $encoding = 'UTF-8';
 
     /**
      * The HTML to process
      *
      * @var	string
      */
-    private $html;
+    protected $html;
 
     /**
      * Use inline-styles block as CSS
      *
      * @var	bool
      */
-    private $useInlineStylesBlock = false;
+    protected $useInlineStylesBlock = false;
 
     /**
      * Strip original style tags
      *
      * @var bool
      */
-    private $stripOriginalStyleTags = false;
+    protected $stripOriginalStyleTags = false;
 
     /**
      * Exclude the media queries from the inlined styles
      *
      * @var bool
      */
-    private $excludeMediaQueries = false;
+    protected $excludeMediaQueries = false;
 
     /**
      * Creates an instance, you could set the HTML and CSS here, or load it
@@ -85,7 +85,7 @@ class CssToInlineStyles
      * @return string
      * @param  string $selector The CSS-selector.
      */
-    private function buildXPathQuery($selector)
+    protected function buildXPathQuery($selector)
     {
         // redefine
         $selector = (string) $selector;
@@ -150,7 +150,7 @@ class CssToInlineStyles
      * @return int
      * @param  string $selector The selector to calculate the specifity for.
      */
-    private function calculateCSSSpecifity($selector)
+    protected function calculateCSSSpecifity($selector)
     {
         // cleanup selector
         $selector = str_replace(array('>', '+'), array(' > ', ' + '), $selector);
@@ -184,7 +184,7 @@ class CssToInlineStyles
      * @return string
      * @param  string $html The HTML to cleanup.
      */
-    private function cleanupHTML($html)
+    protected function cleanupHTML($html)
     {
         // remove classes
         $html = preg_replace('/(\s)+class="(.*)"(\s)*/U', ' ', $html);
@@ -474,7 +474,7 @@ class CssToInlineStyles
      *
      * @return string
      */
-    private function getEncoding()
+    protected function getEncoding()
     {
         return $this->encoding;
     }
@@ -485,7 +485,7 @@ class CssToInlineStyles
      *
      * @return void
      */
-    private function processCSS()
+    protected function processCSS()
     {
         // init vars
         $css = (string) $this->css;
@@ -570,7 +570,7 @@ class CssToInlineStyles
      * @return array
      * @param  string $propertyString The CSS-properties.
      */
-    private function processCSSProperties($propertyString)
+    protected function processCSSProperties($propertyString)
     {
         // split into chunks
         $properties = (array) explode(';', $propertyString);
@@ -691,7 +691,7 @@ class CssToInlineStyles
      * @return string
      * @param  string $html The HTML to strip style tags.
      */
-    private function stripOriginalStyleTags($html)
+    protected function stripOriginalStyleTags($html)
     {
         return preg_replace('|<style(.*)>(.*)</style>|isU', '', $html);
     }
@@ -703,7 +703,7 @@ class CssToInlineStyles
      * @param  array $e1 The first element.
      * @param  array $e2 The second element.
      */
-    private static function sortOnSpecifity($e1, $e2)
+    protected static function sortOnSpecifity($e1, $e2)
     {
         // validate
         if(!isset($e1['specifity']) || !isset($e2['specifity'])) return 0;
