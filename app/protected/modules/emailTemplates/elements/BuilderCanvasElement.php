@@ -150,7 +150,10 @@
         {
             //TODO: @sergio: Shouldnt we move this thing to a file too?
             $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets.fonts"));
-            $publishedAssetsPath = Yii::app()->createAbsoluteUrl($publishedAssetsPath);
+            if (!$this->renderForCanvas)
+            {
+                $publishedAssetsPath = Yii::app()->createAbsoluteUrl($publishedAssetsPath);
+            }
             $iconsFont = "<style>" .
                 "@font-face" .
                 "{" .
