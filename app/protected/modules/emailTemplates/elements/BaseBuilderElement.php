@@ -955,32 +955,13 @@
         protected function resolveFormClientOptions()
         {
             return array('beforeValidate'    => 'js:$(this).beforeValidateAction',
-                         'afterValidate'     => $this->renderAfterValidateScript(),
+                         'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                          'afterValidateAjax' => $this->renderConfigSaveAjax(),
                          'summaryID'         => WizardActiveForm::makeErrorsSummaryId($this->resolveFormId()),
                          'validateOnSubmit'  => true,
                          'validateOnChange'  => false);
         }
-
-        /**
-         * This is used to remove the error class for all the settings tab when the last input had an error
-         * @return string
-         */
-        protected function renderAfterValidateScript()
-        {
-            $script = "js:function(form, data, hasError){
-                            if(!$(this).afterValidateAction(form, data, hasError)) {
-                                $('#element-settings').removeClass('error');
-                                    return false;
-                            }
-                            if(!hasError) {
-                                eval($(form).data('settings').afterValidateAjax);
-                            }
-                            return false;
-                     }";
-            return $script;
-        }
-
+       
         protected function renderConfigSaveAjax()
         {
             $ajaxOptions = $this->resolveAjaxPostForApplyClickAjaxOptions(); //todo; remove
