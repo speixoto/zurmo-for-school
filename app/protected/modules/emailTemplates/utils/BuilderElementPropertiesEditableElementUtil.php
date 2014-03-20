@@ -67,9 +67,10 @@
             $icon = static::getIconByProperty($property);
             if (isset($icon))
             {
-                $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}"><div class="has-unit-input">{content}' .
-                                             $icon . '</div>{error}</td>';
+                $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}"><div><div class="has-unit-input">{content}' .
+                                             $icon . '</div>{error}</div></td>';
             }
+            $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}"><div>{content}{error}</div></td>';
         }
 
         protected static function getIconByProperty($property)
