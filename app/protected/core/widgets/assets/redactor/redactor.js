@@ -6407,6 +6407,7 @@
 						if (new_w > min_w)
 						{
 							$image.width(new_w);
+                            $image.attr('width',new_w);
 
 							if (new_w < 100)
 							{
