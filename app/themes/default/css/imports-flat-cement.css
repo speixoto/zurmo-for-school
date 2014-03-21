@@ -11733,6 +11733,14 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   -o-border-radius: 6px;
   border-radius: 6px;
 }
+.redactor_toolbar li a.zurmoImage {
+  background-image: url("../images/email-builder/merge-tags.png");
+  background-color: pink !important;
+  border: 1px solid gold !important;
+}
+.redactor_toolbar li a.zurmoImage:hover {
+  background-image: url("../images/email-builder/merge-tags-hover.png");
+}
 .redactor_toolbar li a.re-mergeTags {
   background-image: url("../images/email-builder/merge-tags.png");
   width: 80px !important;
@@ -11816,6 +11824,9 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 }
 #BuilderElementEditableModelForm_content_text {
   min-height: 400px;
+}
+#AutoresponderEditAndDetailsView .redactor_box iframe {
+  min-height: 600px !important;
 }
 .merge-view {
   width: 100% !important;

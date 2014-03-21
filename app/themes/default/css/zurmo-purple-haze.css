@@ -1721,6 +1721,10 @@ body > .ui-autocomplete {
 #RecentlyViewedView .type-ProductsCategoryModule i:before {
   content: '\00D7';
 }
+#MenuView .type-EmailTemplatesModule   i:before,
+#RecentlyViewedView .type-EmailTemplatesModule   i:before {
+  content: '\00B6';
+}
 #MenuView .type-CampaignsModule        i:before,
 #RecentlyViewedView .type-CampaignsModule        i:before {
   content: '\002C';
