@@ -57,9 +57,7 @@
             $htmlContent['{bodyContent}']       = $bodyContent;
             $htmlContent['{preferenceContent}'] = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Manage your email preferences'), $url);
             $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By {link}',
-                array_merge(LabelUtil::getTranslationParamsForAllModules(),
-                    array('{link}' => ZurmoHtml::link(Yii::app()->label, self::resolveWebsiteUrlForNotificationMessage()))
-                ));
+                array('{link}' => ZurmoHtml::link(Yii::app()->label, self::resolveWebsiteUrlForNotificationMessage())));
             return strtr($htmlTemplate, $htmlContent);
         }
 
