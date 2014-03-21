@@ -33,14 +33,13 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
+     /**
+      * Form layout class for calendar item detail view.
+      */
     class CalendarItemDetailsViewFormLayout extends DetailsViewFormLayout
     {
         /**
-         * Render a form layout.
-         * Gets appropriate meta data and loops through it. Builds form content
-         * as it loops through. For each element in the form it calls the appropriate
-         * Element class.
+         * Override to render calendar item detail in a different layout.
          * @return A string containing the element's content.
          */
         public function render()
