@@ -52,6 +52,12 @@
                                             'layout',
                                             static::resolveDefaultParams(
                                                 Zurmo::t('EmailTemplatesModule', 'Layout')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                                            'BuilderElementBackendPropertiesEditableElementUtil',
+                                            'ButtonSizeStaticDropDownFormElement',
+                                            'sizeClass',
+                                            static::resolveDefaultParams(
+                                                Zurmo::t('EmailTemplatesModule', 'Size')));
             return $configurationItems;
         }
     }

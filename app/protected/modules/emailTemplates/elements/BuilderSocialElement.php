@@ -69,6 +69,12 @@
                 return null;
             }
             $content    =   null;
+            $sizeClass  = null;
+            if (isset($this->properties['backend']['sizeClass']))
+            {
+                $sizeClass = $this->properties['backend']['sizeClass'];
+                unset($this->properties['backend']['sizeClass']);
+            }
             foreach ($this->properties['backend']['services'] as $serviceName => $serviceDetails)
             {
                 if (ArrayUtil::getArrayValue($serviceDetails, 'enabled') and ArrayUtil::getArrayValue($serviceDetails, 'url'))
@@ -80,6 +86,10 @@
                     $properties['backend']['text']      = $serviceName;
                     $properties['backend']['sizeClass'] = 'button social-button ' . $serviceName;
                     $properties['backend']['width']     = '100%';
+                    if (isset($sizeClass))
+                    {
+                        $properties['backend']['sizeclass'] = $sizeClass;
+                    }
                     $element         = BuilderElementRenderUtil::resolveElement('BuilderSocialButtonElement', $this->renderForCanvas, null, $properties);
 
                     $content .= $element->renderNonEditable();
