@@ -47,7 +47,7 @@
             $calendarItem   = new CalendarItem();
             $startAttribute = $savedCalendar->startAttributeName;
             $endAttribute   = $savedCalendar->endAttributeName;
-            Yii::app()->custom->setTitle($calendarItem, $model);
+            Yii::app()->custom->setCalendarItemTitle($calendarItem, $model);
             $calendarItem->setStartDateTime($model->$startAttribute);
             if ($endAttribute != null)
             {

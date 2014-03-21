@@ -92,7 +92,7 @@
          * @param CalendarItem $calendarItem
          * @param RedBeanModel $model
          */
-        public function setTitle(CalendarItem $calendarItem, RedBeanModel $model)
+        public function setCalendarItemTitle(CalendarItem $calendarItem, RedBeanModel $model)
         {
             $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
         }
