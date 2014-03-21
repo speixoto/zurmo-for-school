@@ -85,7 +85,6 @@
                     $properties['frontend']['target']   = '_blank';
                     $properties['backend']['text']      = $serviceName;
                     $properties['backend']['sizeClass'] = 'button social-button ' . $serviceName;
-                    $properties['backend']['width']     = '100%';
                     if (isset($sizeClass))
                     {
                         $properties['backend']['sizeclass'] = $sizeClass;
