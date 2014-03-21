@@ -79,7 +79,6 @@
                     $properties['frontend']['target']   = '_blank';
                     $properties['backend']['text']      = $serviceName;
                     $properties['backend']['sizeClass'] = 'button social-button ' . $serviceName;
-                    $properties['backend']['width']     = '100%';
                     $element         = BuilderElementRenderUtil::resolveElement('BuilderSocialButtonElement', $this->renderForCanvas, null, $properties);
 
                     $content .= $element->renderNonEditable();

@@ -119,7 +119,7 @@
          * Resolve frontend properties for non-editable
          * @return array
          */
-        protected final function resolveBackendPropertiesForWrapperTableNonEditable()
+        protected function resolveBackendPropertiesForWrapperTableNonEditable()
         {
             $properties = array();
             $backendProperties = ArrayUtil::getArrayValue($this->properties, 'backend');
