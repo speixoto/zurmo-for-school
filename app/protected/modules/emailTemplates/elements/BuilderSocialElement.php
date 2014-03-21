@@ -57,6 +57,7 @@
                             'url'       => Yii::app()->createAbsoluteUrl('/'),
                         ),
                     ),
+                    'sizeClass' => 'button',
                 ),
             );
             return $properties;
@@ -73,7 +74,6 @@
             if (isset($this->properties['backend']['sizeClass']))
             {
                 $sizeClass = $this->properties['backend']['sizeClass'];
-                unset($this->properties['backend']['sizeClass']);
             }
             foreach ($this->properties['backend']['services'] as $serviceName => $serviceDetails)
             {
@@ -84,11 +84,7 @@
                     $properties['frontend']['href']     = $serviceDetails['url'];
                     $properties['frontend']['target']   = '_blank';
                     $properties['backend']['text']      = $serviceName;
-                    $properties['backend']['sizeClass'] = 'button social-button ' . $serviceName;
-                    if (isset($sizeClass))
-                    {
-                        $properties['backend']['sizeclass'] = $sizeClass;
-                    }
+                    $properties['backend']['sizeClass'] = 'social-button ' . $serviceName . ' ' . $sizeClass;
                     $element         = BuilderElementRenderUtil::resolveElement('BuilderSocialButtonElement', $this->renderForCanvas, null, $properties);
 
                     $content .= $element->renderNonEditable();
