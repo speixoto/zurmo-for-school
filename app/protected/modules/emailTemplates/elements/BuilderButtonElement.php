@@ -99,6 +99,44 @@
             return array();
         }
 
+        /**
+         * Supports adding width as style instead of just as width element on table
+         * @param $content
+         * @param array $customDataAttributes
+         * @return string
+         */
+        protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $customDataAttributes)
+        {
+            $backendHtmlOptions = $this->resolveBackendPropertiesForWrapperTableNonEditable();
+            $defaultHtmlOptions = $this->resolveNonEditableWrapperOptions($customDataAttributes);
+            $options            = CMap::mergeArray($backendHtmlOptions, $defaultHtmlOptions);
+            $htmlOptions        = CMap::mergeArray($options, $customDataAttributes);
+            $content            = ZurmoHtml::tag('table', $htmlOptions, $content);
+            return $content;
+        }
+
+        /**
+         * Resolve frontend properties for non-editable
+         * @return array
+         */
+        protected final function resolveBackendPropertiesForWrapperTableNonEditable()
+        {
+            return array(); //todo; fix.
+            $properties = array();
+            $backendProperties = ArrayUtil::getArrayValue($this->properties, 'backend');
+            if ($backendProperties)
+            {
+                $properties = array();
+                $width      = ArrayUtil::getNestedValue($this->properties, "backend['width']");
+                if ($width)
+                {
+                    $properties['inlineStyles']['width']   = $width;
+                }
+            }
+            $this->resolveInlineStylePropertiesNonEditable($properties);
+            return $properties;
+        }
+
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
@@ -116,7 +154,7 @@
          * Resolve wrapper's column options
          * @return array
          */
-        protected function resolveNonEditableContentWrappingTdOptions()
+        protected function resolveNonEditableContentWrappingTableOptions()
         {
             $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
             if(isset($frontendOptions['href']))

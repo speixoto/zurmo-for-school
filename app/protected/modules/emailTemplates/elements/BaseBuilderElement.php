@@ -379,13 +379,22 @@
         protected final function resolveInlineStylePropertiesNonEditable(array & $mergedProperties)
         {
             $mergedProperties['style'] = '';
-            $inlineStyles   = ArrayUtil::getArrayValue($mergedProperties, 'inlineStyles');
+            $inlineStyles   = $this->resolveInlineStylesForNonEditable($mergedProperties);
             if ($inlineStyles)
             {
                 unset($mergedProperties['inlineStyles']);
                 $mergedProperties['style']  = $this->stringifyProperties($inlineStyles, null, null, ':', ';');
             }
             $this->resolveInlineStylesFromBackendPropertiesNonEditable($mergedProperties);
+        }
+
+        /**
+         * @param array $mergedProperties
+         * @return array|null
+         */
+        protected function resolveInlineStylesForNonEditable(array & $mergedProperties)
+        {
+            return ArrayUtil::getArrayValue($mergedProperties, 'inlineStyles');
         }
 
         /**
@@ -961,7 +970,7 @@
                          'validateOnSubmit'  => true,
                          'validateOnChange'  => false);
         }
-       
+
         protected function renderConfigSaveAjax()
         {
             $ajaxOptions = $this->resolveAjaxPostForApplyClickAjaxOptions(); //todo; remove
