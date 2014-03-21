@@ -86,5 +86,15 @@
         public function resolveElementInformationDuringFormLayoutRender(DetailsView $view, &$elementInformation)
         {
         }
+
+        /**
+         * Called in CalendarUtil to set the title.
+         * @param CalendarItem $calendarItem
+         * @param RedBeanModel $model
+         */
+        public function setTitle(CalendarItem $calendarItem, RedBeanModel $model)
+        {
+            $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
+        }
     }
 ?>
