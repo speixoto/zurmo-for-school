@@ -6408,6 +6408,7 @@
 						{
 							$image.width(new_w);
                             $image.attr('width',new_w);
+                            $image.attr('height',new_h);
 
 							if (new_w < 100)
 							{
