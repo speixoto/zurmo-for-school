@@ -121,7 +121,6 @@
          */
         protected final function resolveBackendPropertiesForWrapperTableNonEditable()
         {
-            return array(); //todo; fix.
             $properties = array();
             $backendProperties = ArrayUtil::getArrayValue($this->properties, 'backend');
             if ($backendProperties)
