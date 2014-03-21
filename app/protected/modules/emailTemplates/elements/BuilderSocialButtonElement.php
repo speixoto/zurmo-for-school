@@ -36,9 +36,9 @@
 
     class BuilderSocialButtonElement extends BuilderButtonElement
     {
-        protected function resolveAvailableNonEditableActionsArray()
+        public static function isUIAccessible()
         {
-            return array();
+            return false;
         }
 
         /**
