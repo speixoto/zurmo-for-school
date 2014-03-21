@@ -45,5 +45,22 @@
         {
             return null;
         }
+
+        /**
+         * Get details view form layout class.
+         * @return string
+         */
+        protected function getDetailsViewFormLayoutClass()
+        {
+            return 'CalendarItemDetailsViewFormLayout';
+        }
+
+        /**
+         * Override the nonEditable template for element.
+         */
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+            $element->nonEditableTemplate = '<li><span>{label}</span><span>{content}</span></li>';
+        }
     }
 ?>
