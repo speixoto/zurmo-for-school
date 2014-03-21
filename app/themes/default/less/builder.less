@@ -339,12 +339,14 @@ div[id^="builderimageelement"]{
 	.radius(6px);
 }
 
-.redactor_toolbar li a.zurmoImage {
-	background-image: url("@{path}email-builder/merge-tags.png");
-	background-color: pink !important;
-	border: 1px solid gold !important;
+.redactor_toolbar li a.zurmoImage:before {
+	.symbly(14px);
+	content: '\0112';
+	//background-image: url("@{path}email-builder/merge-tags.png");
+	//background-color: pink !important;
+	//border: 1px solid gold !important;
 	&:hover {
-		background-image: url("@{path}email-builder/merge-tags-hover.png");
+		//background-image: url("@{path}email-builder/merge-tags-hover.png");
 	}
 }
 
@@ -444,6 +446,8 @@ div[id^="builderimageelement"]{
 	min-height: 400px;
 }
 
+#ContentForEmailTemplateWizardView,
+#CampaignEditView,
 #AutoresponderEditAndDetailsView{
 	.redactor_box iframe{
 		min-height: 600px !important;
