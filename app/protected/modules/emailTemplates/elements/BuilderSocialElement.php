@@ -78,8 +78,8 @@
                     $properties['frontend']['href']     = $serviceDetails['url'];
                     $properties['frontend']['target']   = '_blank';
                     $properties['backend']['text']      = $serviceName;
-                    $properties['backend']['sizeClass'] = 'social-button ' . $serviceName;
-                    $properties['backend']['width']     = '100%';
+                    $properties['backend']['sizeClass'] = 'button social-button ' . $serviceName;
+                    $properties['frontend']['width']    = '100%';
                     $element         = BuilderElementRenderUtil::resolveElement('BuilderSocialButtonElement', $this->renderForCanvas, null, $properties);
 
                     $content .= $element->renderNonEditable();
@@ -98,7 +98,7 @@
         {
             return null;
         }
-        
+
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
