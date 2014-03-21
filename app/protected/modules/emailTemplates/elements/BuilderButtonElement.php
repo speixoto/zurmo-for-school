@@ -70,6 +70,10 @@
             $text                   = $this->properties['backend']['text'];
             $label                  = ZurmoHtml::tag('strong', array(), $text);
             $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
+            if(isset($frontendOptions['style']))
+            {
+                unset($frontendOptions['style']);
+            }
             $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
             $options                = CMap::mergeArray($htmlOptions, $frontendOptions);
             $content                = ZurmoHtml::link($label, $href, $options);
@@ -92,16 +96,43 @@
 
         protected function resolveDefaultHtmlOptionsForLink()
         {
-            return array('class' => 'newsletter-button');
+            return array();
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
-            $htmlOptions['class']   .= ' ' . $this->properties['backend']['sizeClass'];
+            $htmlOptions['class']  .= ' ' . $this->properties['backend']['sizeClass'];
+            $htmlOptions['align']   = ArrayUtil::getArrayValue($this->properties['backend'], 'align');
+            $width                  = ArrayUtil::getNestedValue($this->properties, "backend['width']");
+            if ($width)
+            {
+                $htmlOptions['width']   = $width;
+            }
             return $htmlOptions;
         }
 
+        /**
+         * Resolve wrapper's column options
+         * @return array
+         */
+        protected function resolveNonEditableContentWrappingTdOptions()
+        {
+            $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
+            if(isset($frontendOptions['href']))
+            {
+                unset($frontendOptions['href']);
+            }
+            if(isset($frontendOptions['target']))
+            {
+                unset($frontendOptions['target']);
+            }
+            $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
+            $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
+            return $options;
+        }
+
+/**
         protected function resolveNonEditableContentWrappingTdOptions()
         {
             $htmlOptions            = $this->resolveNonEditableContentWrappingTdHtmlOptions();
@@ -113,10 +144,12 @@
             }
             return $htmlOptions;
         }
-
+ * **/
+/**
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
             return array('class' => 'button-container');
         }
+ * **/
     }
 ?>
