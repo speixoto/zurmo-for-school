@@ -56,8 +56,8 @@
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
             $htmlContent['{preferenceContent}'] = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Manage your email preferences'), $url);
-            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By <a href=\'http://www.zurmo.com\'>Zurmo</a>', LabelUtil::getTranslationParamsForAllModules());
-            $htmlContent['{sourceContent}']     = str_replace('http://www.zurmo.com', self::resolveWebsiteUrlForNotificationMessage(), $htmlContent['{sourceContent}']);
+            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By <a href=\'{link}\'>Zurmo</a>',
+                array_merge(LabelUtil::getTranslationParamsForAllModules(), array('{link}' => self::resolveWebsiteUrlForNotificationMessage())));
             return strtr($htmlTemplate, $htmlContent);
         }
 
