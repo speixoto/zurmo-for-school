@@ -2,12 +2,6 @@ div img {
 	float: none;
 }
 
-/*.builder-element-non-editable h1,
-.builder-element-non-editable h2,
-.builder-element-non-editable h3,
-.builder-element-non-editable h4,
-.builder-element-non-editable h5,
-.builder-element-non-editable h6,*/
 .builder-element-non-editable p {
 	font-size: inherit;
 	line-height: inherit;
@@ -51,14 +45,6 @@ table.medium-button td,
 table.large-button td {
 	padding-left: 8px;
 	padding-right: 8px;
-}
-
-table.button:hover td,
-table.tiny-button:hover td,
-table.small-button:hover td,
-table.medium-button:hover td,
-table.large-button:hover td {
-
 }
 
 td.container{
@@ -143,36 +129,3 @@ table.horizontal table{
 	float: left;
 	margin-right: 15px;
 }
-
-/*
-table.horizontal a.Facebook,
-table.horizontal a.Twitter,
-table.horizontal a.GooglePlus,
-table.horizontal a.YouTube,
-table.horizontal a.Instagram,
-table.horizontal a.Website{
-	display:inline-block;
-	margin: 0 5px 5px 0;
-	width: auto;
-}
-
-table.vertical a.Facebook,
-table.vertical a.Twitter,
-table.vertical a.GooglePlus,
-table.vertical a.YouTube,
-table.vertical a.Instagram,
-table.vertical a.Website{
-	display:block;
-	margin:5px 0;
-	width: 100%;
-}
-
-a.Facebook:visited,
-a.Twitter:visited,
-a.GooglePlus:visited,
-a.YouTube:visited,
-a.Instagram:visited,
-a.Website:visited{
-	color:#ffffff !important;
-}
-*/
