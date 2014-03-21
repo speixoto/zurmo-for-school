@@ -112,12 +112,16 @@
         protected function renderHtmlHead()
         {
             $headContent    = $this->renderCss();
-            if (MINIFY_SCRIPTS){
-                $headContent .= $this->renderBuilderCssTools();
-            }
-            else
+            if ($this->renderForCanvas)
             {
-                $headContent .= $this->renderLess();
+                if (MINIFY_SCRIPTS)
+                {
+                    $headContent .= $this->renderBuilderCssTools();
+                }
+                else
+                {
+                    $headContent .= $this->renderLess();
+                }
             }
             $headContent    = ZurmoHtml::tag('head', array(), $headContent);
             return $headContent;
@@ -149,12 +153,10 @@
         protected function renderIconFontCss()
         {
             //TODO: @sergio: Shouldnt we move this thing to a file too?
-            $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets.fonts"));
-            if (!$this->renderForCanvas)
+            if ($this->renderForCanvas)
             {
-                $publishedAssetsPath = Yii::app()->createAbsoluteUrl($publishedAssetsPath);
-            }
-            $iconsFont = "<style>" .
+                $publishedAssetsPath = Yii::app()->assetManager->publish(Yii::getPathOfAlias("application.core.views.assets.fonts"));
+                $iconsFont = "<style>" .
                 "@font-face" .
                 "{" .
                 "font-family: 'zurmo_gamification_symbly_rRg';" .
@@ -168,7 +170,9 @@
                 "unicode-range: U+00-FFFF;" . // Not Coding Standard
                 "}" .
                 "</style>";
-            return $iconsFont;
+                return $iconsFont;
+            }
+
         }
 
         protected function resolveCanvasGlobalCssPath()
