@@ -586,7 +586,7 @@
             echo $element->render();
         }
 
-        public function actionSendTestEmail($id, $contactId = null)
+        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
             $contact        = null;
@@ -595,7 +595,7 @@
                 $contact    = Contact::getById(intval($contactId));
             }
             echo $emailTemplate->htmlContent;
-            $this->resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent);
+            $this->resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent, $emailAddress);
         }
 
         public function actionReSerialize($id)
@@ -604,7 +604,7 @@
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
         }
 
-        public function actionSendTestEmailWithConvert($id, $contactId = null, $validXHTML = false)
+        public function actionSendTestEmailWithConvert($id, $contactId = null, $validXHTML = false, $emailAddress = null)
         {
             $emailTemplate      = EmailTemplate::getById(intval($id));
             $contact            = null;
@@ -614,7 +614,7 @@
             }
             $htmlContent        = $this->convertCssToInlineStyles($emailTemplate->htmlContent, $validXHTML);
             echo $htmlContent;
-            //$this->resolveEmailMessage($emailTemplate, $contact, $htmlContent);
+            $this->resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
         }
 
         protected function convertCssToInlineStyles($htmlContent, $validXHTML = false)
@@ -629,7 +629,7 @@
             return $htmlContent;
         }
 
-        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent)
+        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
         {
             // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
             $emailMessage                       = new EmailMessage();
@@ -641,7 +641,7 @@
             $emailContent->htmlContent          = $htmlContent;
             $emailMessage->content              = $emailContent;
             $emailMessage->sender               = static::resolveSender();
-            static::resolveRecipient($emailMessage, $contact);
+            static::resolveRecipient($emailMessage, $contact, $emailAddress);
             $box                                = EmailBox::resolveAndGetByName(EmailBox::USER_DEFAULT_NAME);
             $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->sendImmediately($emailMessage);
@@ -663,17 +663,25 @@
             return $sender;
         }
 
-        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact = null)
+        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact = null, $emailAddress = null)
         {
             if ($contact === null)
             {
                 $contact  = static::resolveDefaultRecipient();
             }
-            $primaryEmailAddress    = $contact->primaryEmail->emailAddress;
+            if($emailAddress == null)
+            {
+                $primaryEmailAddress    = $contact->primaryEmail->emailAddress;
+            }
+            else
+            {
+                $primaryEmailAddress    = $emailAddress;
+            }
+
             if ($primaryEmailAddress != null)
             {
                 $recipient                  = new EmailMessageRecipient();
-                $recipient->toAddress       = $contact->primaryEmail->emailAddress;
+                $recipient->toAddress       = $primaryEmailAddress;
                 $recipient->toName          = strval($contact);
                 $recipient->type            = EmailMessageRecipient::TYPE_TO;
                 $recipient->personsOrAccounts->add($contact);
