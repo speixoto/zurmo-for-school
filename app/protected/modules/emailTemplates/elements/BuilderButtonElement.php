@@ -131,25 +131,5 @@
             $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
             return $options;
         }
-
-/**
-        protected function resolveNonEditableContentWrappingTdOptions()
-        {
-            $htmlOptions            = $this->resolveNonEditableContentWrappingTdHtmlOptions();
-            $htmlOptions['align']   = ArrayUtil::getArrayValue($this->properties['backend'], 'align');
-            $width                  = ArrayUtil::getNestedValue($this->properties, "backend['width']");
-            if ($width)
-            {
-                $htmlOptions['width']   = $width;
-            }
-            return $htmlOptions;
-        }
- * **/
-/**
-        protected function resolveNonEditableContentWrappingTdHtmlOptions()
-        {
-            return array('class' => 'button-container');
-        }
- * **/
     }
 ?>

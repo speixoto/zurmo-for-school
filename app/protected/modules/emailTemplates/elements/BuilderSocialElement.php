@@ -73,10 +73,16 @@
             {
                 if (ArrayUtil::getArrayValue($serviceDetails, 'enabled') and ArrayUtil::getArrayValue($serviceDetails, 'url'))
                 {
-                    $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
-                    $htmlOptions['class']  .= ' ' . $serviceName;
-                    $label                  = ZurmoHtml::tag('strong', array(), $serviceName);
-                    $content               .= ZurmoHtml::link($label, $serviceDetails['url'], $htmlOptions);
+
+                    $properties = array();
+                    $properties['frontend']['href']     = $serviceDetails['url'];
+                    $properties['frontend']['target']   = '_blank';
+                    $properties['backend']['text']      = $serviceName;
+                    $properties['backend']['sizeClass'] = 'button social-button ' . $serviceName;
+                    $properties['backend']['width']     = '100%';
+                    $element         = BuilderElementRenderUtil::resolveElement('BuilderSocialButtonElement', $this->renderForCanvas, null, $properties);
+
+                    $content .= $element->renderNonEditable();
                 }
             }
             return $content;
@@ -91,11 +97,6 @@
         protected function renderContentTab(ZurmoActiveForm $form)
         {
             return null;
-        }
-
-        protected function resolveDefaultHtmlOptionsForLink()
-        {
-            return array('class' => 'social-button', 'target' => '_blank');
         }
 
         protected function resolveNonEditableWrapperHtmlOptions()

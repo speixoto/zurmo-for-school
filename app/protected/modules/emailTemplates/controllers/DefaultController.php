@@ -598,6 +598,12 @@
             $this->resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent);
         }
 
+        public function actionReSerialize($id)
+        {
+            $emailTemplate  = EmailTemplate::getById(intval($id));
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
+        }
+
         public function actionSendTestEmailWithConvert($id, $contactId = null, $validXHTML = false)
         {
             $emailTemplate      = EmailTemplate::getById(intval($id));

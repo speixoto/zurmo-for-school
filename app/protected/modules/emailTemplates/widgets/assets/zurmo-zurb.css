@@ -1,6 +1,7 @@
 div img {
 	float: none;
 }
+
 /*.builder-element-non-editable h1,
 .builder-element-non-editable h2,
 .builder-element-non-editable h3,
@@ -15,79 +16,58 @@ div img {
 	color: inherit;
 	text-align: inherit;
 }
+
 .simple-divider,
 .fancy-divider {
 	width: 100%;
 }
+
 table.header td.wrapper {
 	vertical-align: middle;
 }
+
 td.wrapper{
 	vertical-align: top;
 }
+
 td.button-container {
 	text-align: center;
 }
-a.newsletter-button {
-	display: inline-block;
-	width: 100%;
-	height: 100%;
-	line-height: 1;
-	background: #2ba6cb;
-	border: 1px solid #2284a1;
-}
-a.newsletter-button strong {
-	display: inline-block;
-	line-height: 1;
-	padding: 10px 20px;
-	font-weight: inherit;
-}
-a.social-button {
-	display: inline-block;
-	width: 100%;
-	line-height: 1;
-	text-align: center;
-}
-a.social-button strong {
-	display: inline-block;
-	line-height: 1;
-	padding: 10px 20px;
-	font-weight: inherit;
-}
+
+.social-button {}
+
 table.button,
 table.tiny-button,
 table.small-button,
 table.medium-button,
-table.large-button {
+table.large-button{
 	width: auto;
-	/*width: 100%;*/
-	/*overflow: visible;*/
-	overflow:visible;
 }
+
 table.button td,
 table.tiny-button td,
 table.small-button td,
 table.medium-button td,
 table.large-button td {
-	background: none;
-	border: none;
+	padding-left: 8px;
+	padding-right: 8px;
 }
+
 table.button:hover td,
 table.tiny-button:hover td,
 table.small-button:hover td,
 table.medium-button:hover td,
 table.large-button:hover td {
-	background: none !important;
-	border: none;
+
 }
+
 td.container{
 	text-align: center;
 	width: 100%;
 }
+
 .button-container{
-	text-align: center;
-	width: 100%;
-	overflow: hidden;
+
 }
 table.tiny-button td {
 	padding: 5px 5px 4px 5px;
@@ -101,52 +81,53 @@ table.medium-button td {
 table.large-button td {
 	padding: 21px 21px 18px 21px;
 }
-a.Facebook {
+
+table.Facebook td {
 	color: #ffffff;
 	background: #3b5998;
 	border-color: #2d4473;
 }
-a.Facebook:hover {
+table.Facebook:hover {
 	background: #2d4473 !important;
 }
-a.Twitter {
+table.Twitter td{
 	color: #ffffff;
 	background: #00acee;
 	border-color: #0087bb;
 }
-a.Twitter:hover {
+table.Twitter:hover {
 	background: #0087bb !important;
 }
-a.GooglePlus {
+table.GooglePlus td{
 	 color: #ffffff;
 	 background-color: #DB4A39;
 	 border-color: #CC0000;
  }
-a.GooglePlus:hover {
+table.GooglePlus:hover {
 	background: #CC0000 !important;
 }
-a.YouTube {
+table.YouTube td{
 	color: #ffffff;
 	background-color: #db1925;
 	border-color: #cc0f29;
 }
-a.YouTube:hover {
+table.YouTube:hover {
 	background: #cc0f29 !important;
 }
-a.Instagram {
+table.Instagram td{
 	color: #ffffff;
 	background: #7b4829;
 	border-color: #773424;
 }
-a.Instagram:hover {
+table.Instagram:hover {
 	background: #773424 !important;
 }
-a.Website {
+table.Website td{
 	color: #ffffff;
 	background: #7d098b;
 	border-color: #560861;
 }
-a.Website:hover {
+table.Website:hover {
 	background: #560861 !important;
 }
 
@@ -154,6 +135,16 @@ table.horizontal, table.vertical{
 	width: 100%;
 }
 
+table.vertical table{
+	margin-bottom: 15px;
+}
+
+table.horizontal table{
+	float: left;
+	margin-right: 15px;
+}
+
+/*
 table.horizontal a.Facebook,
 table.horizontal a.Twitter,
 table.horizontal a.GooglePlus,
@@ -184,3 +175,4 @@ a.Instagram:visited,
 a.Website:visited{
 	color:#ffffff !important;
 }
+*/
