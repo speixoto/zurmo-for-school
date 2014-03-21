@@ -67,5 +67,20 @@
                             return true;
                         }";
         }
+
+        /**
+         * collapse left side bar by default to give more room for canvas
+         */
+        protected function registerScripts()
+        {
+            parent::registerScripts();
+            Yii::app()->clientScript->registerScript('builderEmailTemplateCollapseLeftSideView', "
+                if(!$('body').hasClass('nav-collapsed'))
+                {
+                    $('body').addClass('nav-collapsed');
+                }
+            ");
+        }
     }
 ?>
+}
