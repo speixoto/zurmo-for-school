@@ -40,5 +40,15 @@
         {
             return array();
         }
+
+        /**
+         * Overriding since this element is not sortable
+         * @param $content
+         * @return string
+         */
+        protected function wrapNonEditableElementContent($content)
+        {
+            return $content;
+        }
     }
 ?>
