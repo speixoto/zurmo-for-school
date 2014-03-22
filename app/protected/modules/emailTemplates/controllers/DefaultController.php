@@ -629,6 +629,27 @@
             return $htmlContent;
         }
 
+        public function actionSendTestEmailUsingCssIn($id, $contactId = null, $emailAddress = null)
+        {
+            $emailTemplate      = EmailTemplate::getById(intval($id));
+            $contact            = null;
+            if (isset($contactId))
+            {
+                $contact        = Contact::getById(intval($contactId));
+            }
+            $htmlContent = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
+            $htmlContent = $this->convertUsingCssIn($htmlContent);
+            echo $htmlContent;
+            //todo: put an exit here if you just want to see how the conversion looks.
+            $this->resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
+        }
+
+        protected function convertUsingCssIn($htmlContent)
+        {
+            //todo: utilize CSSIN
+            return $htmlContent;
+        }
+
         protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
         {
             // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
