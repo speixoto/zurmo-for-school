@@ -391,6 +391,7 @@
             'application.extensions.phaActiveColumn.*',
             'application.extensions.cssToInlineStyles.*',
             'application.extensions.userinterface.UserInterface',
+            'application.extensions.cssIn.src.CSSIN',
         ),
         'modules' => array(
             'accountAccountAffiliations',

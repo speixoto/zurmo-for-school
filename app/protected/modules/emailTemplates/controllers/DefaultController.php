@@ -646,8 +646,9 @@
 
         protected function convertUsingCssIn($htmlContent)
         {
-            //todo: utilize CSSIN
-            return $htmlContent;
+            $cssInUtil = new ZurmoCssInUtil();
+            $html_with_inlined_css = $cssInUtil->inlineCSS(null, $htmlContent);
+            return $html_with_inlined_css;
         }
 
         protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
