@@ -40,8 +40,6 @@
 
         protected $moveStyleBlocksToBody    = false;
 
-        protected $stripOriginalStyleTags   = false;
-
         /**
          * The HTML to process
          *
@@ -61,7 +59,6 @@
 
         protected function moveStyleBlocks($html)
         {
-            $this->ensureEitherStripeOrMoveIsSet();
             $styles             = $this->resolveStyleBlockContent();
             $html               = $this->stripOriginalStyleTags($html);
             if ($this->moveStyleBlocksToBody)
@@ -123,14 +120,6 @@
                 $style              = implode(PHP_EOL, $matches[0]);
             }
             return $style;
-        }
-
-        protected function ensureEitherStripeOrMoveIsSet()
-        {
-            if ($this->stripOriginalStyleTags && $this->moveStyleBlocksToBody)
-            {
-                throw new NotSupportedException('stripOriginalStyleTags and moveStyleBlocksToBody are both set.');
-            }
         }
 
         function inlineCSS($url, $contents=null)
