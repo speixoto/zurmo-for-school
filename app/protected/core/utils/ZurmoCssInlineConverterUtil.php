@@ -64,12 +64,11 @@
                     throw new NotSupportedException('Invalid converter specified.');
                 }
             }
-
-            $htmlContent        = static::resolveHtmlContentForPostConverterChanges($htmlContent);
             if ($prettyPrint)
             {
                 $htmlContent    = static::prettyPrint($htmlContent);
             }
+            $htmlContent        = static::resolveHtmlContentForPostConverterChanges($htmlContent);
             return $htmlContent;
         }
 
