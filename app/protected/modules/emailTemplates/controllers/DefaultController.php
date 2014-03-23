@@ -613,7 +613,7 @@
                 }
                 else if ($converter == 'premailer')
                 {
-                    $htmlContent    = Premailer::html($htmlContent);
+                    $htmlContent    = $this->convertUsingPremailer($htmlContent);
                 }
                 else
                 {
@@ -630,8 +630,14 @@
         {
             $cssInUtil = new ZurmoCssInUtil();
             $cssInUtil->setMoveStyleBlocksToBody();
-            $html_with_inlined_css = $cssInUtil->inlineCSS(null, $htmlContent);
-            return $html_with_inlined_css;
+            $htmlContent = $cssInUtil->inlineCSS(null, $htmlContent);
+            return $htmlContent;
+        }
+
+        protected function convertUsingPremailer($htmlContent)
+        {
+            $premailerConverted = Premailer::html($htmlContent);
+            return $premailerConverted['html'];
         }
 
         protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
