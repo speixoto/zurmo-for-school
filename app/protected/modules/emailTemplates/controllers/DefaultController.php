@@ -586,7 +586,13 @@
             echo $element->render();
         }
 
-        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null)
+        public function actionReSerialize($id)
+        {
+            $emailTemplate  = EmailTemplate::getById(intval($id));
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
+        }
+
+        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $converter = 0)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
             $contact        = null;
@@ -594,52 +600,28 @@
             {
                 $contact    = Contact::getById(intval($contactId));
             }
-            echo $emailTemplate->htmlContent;
-            $this->resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent, $emailAddress);
-        }
-
-        public function actionReSerialize($id)
-        {
-            $emailTemplate  = EmailTemplate::getById(intval($id));
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
-        }
-
-        public function actionSendTestEmailWithConvert($id, $contactId = null, $validXHTML = false, $emailAddress = null)
-        {
-            $emailTemplate      = EmailTemplate::getById(intval($id));
-            $contact            = null;
-            if (isset($contactId))
+            $htmlContent    = $emailTemplate->htmlContent;
+            if (empty($htmlContent))
             {
-                $contact        = Contact::getById(intval($contactId));
+                $htmlContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
             }
-            $htmlContent        = $this->convertCssToInlineStyles($emailTemplate->htmlContent, $validXHTML);
-            echo $htmlContent;
-            $this->resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
-        }
-
-        protected function convertCssToInlineStyles($htmlContent, $validXHTML = false)
-        {
-            $cssToInlineStyles = new ZurmoCssToInlineStylesUtil($htmlContent);
-            $cssToInlineStyles->setCleanup(false);
-            $cssToInlineStyles->setExcludeMediaQueries(true);
-            $cssToInlineStyles->setUseInlineStylesBlock(true);
-            $cssToInlineStyles->setMoveStyleBlocksToBody(true);
-            $cssToInlineStyles->setCombineStyleBlock(true);
-            $htmlContent       = $cssToInlineStyles->convert($validXHTML);
-            return $htmlContent;
-        }
-
-        public function actionSendTestEmailUsingCssIn($id, $contactId = null, $emailAddress = null)
-        {
-            $emailTemplate      = EmailTemplate::getById(intval($id));
-            $contact            = null;
-            if (isset($contactId))
+            if ($converter)
             {
-                $contact        = Contact::getById(intval($contactId));
+                if ($converter == 'cssin')
+                {
+                    $htmlContent    = $this->convertUsingCssIn($htmlContent);
+                }
+                else if ($converter == 'premailer')
+                {
+                    $htmlContent    = Premailer::html($htmlContent);
+                }
+                else
+                {
+                    throw new NotSupportedException('Invalid converter specified.');
+                }
             }
-            $htmlContent = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
-            $htmlContent = $this->convertUsingCssIn($htmlContent);
             echo $htmlContent;
+            exit;
             //todo: put an exit here if you just want to see how the conversion looks.
             $this->resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
         }
