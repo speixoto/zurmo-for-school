@@ -36,18 +36,18 @@
 
     abstract class ZurmoCssInlineConverterUtil
     {
-        public static function convertEmailByModel(EmailTemplate $emailTemplate, $converter = 0)
+        public static function convertEmailByModel(EmailTemplate $emailTemplate, $converter = 0, $prettyPrint = true)
         {
             $htmlContent        = $emailTemplate->htmlContent;
             if (empty($htmlContent))
             {
                 $htmlContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
             }
-            $htmlContent        = static::convertEmailByHtmlContent($htmlContent, $converter);
+            $htmlContent        = static::convertEmailByHtmlContent($htmlContent, $converter, $prettyPrint);
             return $htmlContent;
         }
 
-        public static function convertEmailByHtmlContent($htmlContent, $converter = 0)
+        public static function convertEmailByHtmlContent($htmlContent, $converter = 0, $prettyPrint = true)
         {
             if ($converter)
             {
@@ -64,7 +64,29 @@
                     throw new NotSupportedException('Invalid converter specified.');
                 }
             }
+
+            $htmlContent        = static::resolveHtmlContentForPostConverterChanges($htmlContent);
+            if ($prettyPrint)
+            {
+                $htmlContent    = static::prettyPrint($htmlContent);
+            }
             return $htmlContent;
+        }
+
+        protected static function resolveHtmlContentForPostConverterChanges($htmlContent)
+        {
+            $htmlContent    = '<!-- doesnt matter what this is -->' . $htmlContent;
+            return $htmlContent;
+        }
+
+        protected static function prettyPrint($htmlContent)
+        {
+            $document                       = new DOMDocument();
+            $document->preserveWhiteSpace   = false;
+            $document->formatOutput         = true;
+            @$document->loadHTML($htmlContent);
+            $prettyPrintedHtmlContent       = $document->saveHTML();
+            return $prettyPrintedHtmlContent;
         }
 
         protected static function convertUsingCssIn($htmlContent)
