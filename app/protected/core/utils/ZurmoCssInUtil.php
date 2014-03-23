@@ -36,6 +36,184 @@
 
     class ZurmoCssInUtil extends CSSIN
     {
+        function inlineCSS($url, $contents=null)
+        {
+            // Download the HTML if it was not provided
+            if($contents === null)
+            {
+                $html = file_get_html($url, false, null, -1, -1, true, true, DEFAULT_TARGET_CHARSET, false, DEFAULT_BR_TEXT, DEFAULT_SPAN_TEXT);
+            }
+            // Else use the data provided!
+            else
+            {
+                $html = str_get_html($contents, true, true, DEFAULT_TARGET_CHARSET, false, DEFAULT_BR_TEXT, DEFAULT_SPAN_TEXT);
+            }
 
+            if(!is_object($html))
+            {
+                return false;
+            }
+
+            $css_urls = array();
+
+            // Find all stylesheets and determine their absolute URLs to retrieve them
+            foreach($html->find('link[rel="stylesheet"]') as $style)
+            {
+                $css_urls[] = self::absolutify($url, $style->href);
+                $style->outertext = '';
+            }
+
+            $css_blocks = '';
+
+            // Find all <style> blocks and cut styles from them (leaving media queries)
+            foreach($html->find('style') as $style)
+            {
+                list($_css_to_parse, $_css_to_keep) = self::splitMediaQueries($style->innertext());
+                $css_blocks .= $_css_to_parse;
+                if (!empty($_css_to_keep)) {
+                    $style->innertext = $_css_to_keep;
+                } else {
+                    $style->outertext = '';
+                }
+            }
+
+            $raw_css = '';
+            if (!empty($css_urls)) {
+                $raw_css .= $this->getCSSFromFiles($css_urls);
+            }
+            if (!empty($css_blocks)) {
+                $raw_css .= $css_blocks;
+            }
+
+            // Get the CSS rules by decreasing order of specificity.
+            // This is an array with, amongst other things, the keys 'properties', which hold the CSS properties
+            // and the 'selector', which holds the CSS selector
+            $rules = $this->parseCSS($raw_css);
+
+            // We loop over each rule by increasing order of specificity, find the nodes matching the selector
+            // and apply the CSS properties
+            foreach ($rules as $rule)
+            {
+                foreach($html->find($rule['selector']) as $node)
+                {
+                    // Unserialize the style array, merge the rule's CSS into it...
+                    if($node->hasChildNodes())
+                    {
+                        $style = array_merge(self::styleToArray($node->style), $rule['properties']);
+                    }
+                    else
+                    {
+                        $style = array_merge($rule['properties'], self::styleToArray($node->style));
+                    }
+                    // And put the CSS back as a string!
+                    $node->style = self::arrayToStyle($style);
+                }
+            }
+
+            // Now a tricky part: do a second pass with only stuff marked !important
+            // because !important properties do not care about specificity, except when fighting
+            // agains another !important property
+            foreach ($rules as $rule)
+            {
+                foreach($rule['properties'] as $key => $value)
+                {
+                    if(strpos($value, '!important') !== false)
+                    {
+                        foreach($html->find($rule['selector']) as $node)
+                        {
+                            $style = self::styleToArray($node->style);
+                            $style[$key] = $value;
+                            $node->style = self::arrayToStyle($style);
+                        }
+                    }
+                }
+            }
+            // Let simple_html_dom give us back our HTML with inline CSS!
+            return (string)$html;
+        }
+
+        public static function calculateCSSSpecifity($selector)
+        {
+            // cleanup selector
+            $selector = str_replace(array('>', '+'), array(' > ', ' + '), $selector);
+
+            // init var
+            $specifity = 0;
+
+            if ($selector == 'div img')
+            {
+                return 0;
+            }
+
+
+            // split the selector into chunks based on spaces
+            $chunks = explode(' ', $selector);
+
+            // loop chunks
+            foreach ($chunks as $chunk) {
+                // an ID is important, so give it a high specifity
+                if(strstr($chunk, '#') !== false) $specifity += 100;
+
+                // classes are more important than a tag, but less important then an ID
+                elseif(strstr($chunk, '.')) $specifity += 10;
+
+                // anything else isn't that important
+                else $specifity += 1;
+            }
+
+            // return
+            return $specifity;
+        }
+
+        public function parseCSS($text)
+        {
+            $css  = new \csstidy();
+            $css->parse($text);
+
+            $rules 		= array();
+            $position 	= 0;
+
+            foreach($css->css as $declarations)
+            {
+                foreach($declarations as $selectors => $properties)
+                {
+                    foreach(explode(",", $selectors) as $selector)
+                    {
+                        $rules[] = array(
+                            'position' 		=> $position,
+                            'specificity' 	=> self::calculateCSSSpecifity($selector),
+                            'selector' 		=> $selector,
+                            'properties' 	=> $properties
+                        );
+                    }
+
+                    $position += 1;
+                }
+            }
+
+            usort($rules, function($a, $b){
+                if($a['specificity'] > $b['specificity'])
+                {
+                    return 1;
+                }
+                else if($a['specificity'] < $b['specificity'])
+                {
+                    return -1;
+                }
+                else
+                {
+                    if($a['position'] > $b['position'])
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+            });
+
+            return $rules;
+        }
     }
 ?>
