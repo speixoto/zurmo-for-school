@@ -74,7 +74,7 @@
 
         protected static function resolveHtmlContentForPostConverterChanges($htmlContent)
         {
-            $htmlContent    = '<!-- doesnt matter what this is -->' . $htmlContent;
+            $htmlContent    = '<!-- zurmo css inline -->' . PHP_EOL . $htmlContent;
             return $htmlContent;
         }
 
