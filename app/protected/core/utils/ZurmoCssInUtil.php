@@ -59,6 +59,7 @@
 
         protected function moveStyleBlocks($html)
         {
+            $this->html         = $html;
             $styles             = $this->resolveStyleBlockContent();
             $html               = $this->stripOriginalStyleTags($html);
             if ($this->moveStyleBlocksToBody)
