@@ -106,7 +106,8 @@
                 'charset'        => 'utf8',
             ),
             'emailHelper' => array(
-                'class'       => 'application.modules.emailMessages.components.EmailHelper',
+                'class'                 => 'application.modules.emailMessages.components.EmailHelper',
+                'htmlConverter'         => 'cssin'
             ),
             'authenticationHelper' => array(
                 'class'       => 'application.modules.zurmo.components.ZurmoAuthenticationHelper',
