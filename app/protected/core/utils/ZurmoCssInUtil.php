@@ -36,6 +36,103 @@
 
     class ZurmoCssInUtil extends CSSIN
     {
+        protected $combineStyleBlocks       = false;
+
+        protected $moveStyleBlocksToBody    = false;
+
+        protected $stripOriginalStyleTags   = false;
+
+        /**
+         * The HTML to process
+         *
+         * @var	string
+         */
+        protected $html;
+
+        public function setCombineStyleBlock($combineStyleBlocks = true)
+        {
+            $this->combineStyleBlocks  = $combineStyleBlocks;
+        }
+
+        public function setMoveStyleBlocksToBody($moveStyleBlocksToBody = true)
+        {
+            $this->moveStyleBlocksToBody = $moveStyleBlocksToBody;
+        }
+
+        protected function moveStyleBlocks($html)
+        {
+            $this->ensureEitherStripeOrMoveIsSet();
+            $styles             = $this->resolveStyleBlockContent();
+            $html               = $this->stripOriginalStyleTags($html);
+            if ($this->moveStyleBlocksToBody)
+            {
+                return $this->combineAndMoveStylesToBody($styles, $html);
+            }
+            return $this->combineAndMoveStylesToHead($styles, $html);
+        }
+
+        protected function stripOriginalStyleTags($html)
+        {
+            return preg_replace('|<style(.*)>(.*)</style>|isU', '', $html);
+        }
+
+        protected function combineAndMoveStylesToBody($styles, $html)
+        {
+            $html           = $this->combineAndMoveStyles($styles, $html, false);
+            return $html;
+        }
+
+        protected function combineAndMoveStylesToHead($styles, $html)
+        {
+            $html           = $this->combineAndMoveStyles($styles, $html, true);
+            return $html;
+        }
+
+        protected function combineAndMoveStyles($styles, $html, $moveToHead)
+        {
+            $search     = 'body';
+            if ($moveToHead)
+            {
+                $search = '/head';
+            }
+            $matches        = preg_split('#(<' . $search . '.*?>)#i', $html, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+            if ($moveToHead)
+            {
+                $styles     = $styles . $matches[1];
+            }
+            else
+            {
+                $styles     = $matches[1] . $styles;
+            }
+            $html           = $matches[0] . $styles . $matches[2];
+            return $html;
+        }
+
+        protected function resolveStyleBlockContent()
+        {
+            $html               = $this->html;
+            $matches            = array();
+            preg_match_all('|<style(.*)>(.*)</style>|isU', $html, $matches);
+            if ($this->combineStyleBlocks)
+            {
+                $styleBlockContent  = implode(PHP_EOL, $matches[2]);
+                $style              = ZurmoHtml::tag('style', array(), $styleBlockContent);
+            }
+            else
+            {
+                $style              = implode(PHP_EOL, $matches[0]);
+            }
+            return $style;
+        }
+
+        protected function ensureEitherStripeOrMoveIsSet()
+        {
+            if ($this->stripOriginalStyleTags && $this->moveStyleBlocksToBody)
+            {
+                throw new NotSupportedException('stripOriginalStyleTags and moveStyleBlocksToBody are both set.');
+            }
+        }
+
         function inlineCSS($url, $contents=null)
         {
             // Download the HTML if it was not provided
@@ -129,7 +226,8 @@
                 }
             }
             // Let simple_html_dom give us back our HTML with inline CSS!
-            return (string)$html;
+            $html = $this->moveStyleBlocks((string)$html);
+            return $html;
         }
 
         public static function calculateCSSSpecifity($selector)

@@ -647,6 +647,7 @@
         protected function convertUsingCssIn($htmlContent)
         {
             $cssInUtil = new ZurmoCssInUtil();
+            $cssInUtil->setMoveStyleBlocksToBody();
             $html_with_inlined_css = $cssInUtil->inlineCSS(null, $htmlContent);
             return $html_with_inlined_css;
         }
