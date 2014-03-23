@@ -607,7 +607,7 @@
             echo $htmlContent;
         }
 
-        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $converter = 0)
+        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
             $contact        = null;
@@ -615,10 +615,7 @@
             {
                 $contact    = Contact::getById(intval($contactId));
             }
-            // we could have used the call directly here but its better to reuse existing code to reduce
-            // test cases
-            $htmlContent    = $this->actionConvertEmail($id, $converter, 1, $emailTemplate);
-            static::resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
+            static::resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent, $emailAddress);
         }
 
         protected static function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
