@@ -38,11 +38,17 @@
     {
         public static function convertEmailByModel(EmailTemplate $emailTemplate, $converter = 0)
         {
-            $htmlContent            = $emailTemplate->htmlContent;
+            $htmlContent        = $emailTemplate->htmlContent;
             if (empty($htmlContent))
             {
-                $htmlContent        = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
+                $htmlContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
             }
+            $htmlContent        = static::convertEmailByHtmlContent($htmlContent, $converter);
+            return $htmlContent;
+        }
+
+        public static function convertEmailByHtmlContent($htmlContent, $converter = 0)
+        {
             if ($converter)
             {
                 if ($converter == 'cssin')
