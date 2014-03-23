@@ -592,6 +592,21 @@
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
         }
 
+        public function actionConvertEmail($id, $converter = 0, $returnConvertedOutput = 0,
+                                           EmailTemplate $emailTemplate = null)
+        {
+            if (!isset($emailTemplate))
+            {
+                $emailTemplate  = EmailTemplate::getById(intval($id));
+            }
+            $htmlContent    = ZurmoCssInlineConverterUtil::convertEmailByModel($emailTemplate, $converter);
+            if ($returnConvertedOutput)
+            {
+                return $htmlContent;
+            }
+            echo $htmlContent;
+        }
+
         public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $converter = 0)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
@@ -600,47 +615,13 @@
             {
                 $contact    = Contact::getById(intval($contactId));
             }
-            $htmlContent    = $emailTemplate->htmlContent;
-            if (empty($htmlContent))
-            {
-                $htmlContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
-            }
-            if ($converter)
-            {
-                if ($converter == 'cssin')
-                {
-                    $htmlContent    = $this->convertUsingCssIn($htmlContent);
-                }
-                else if ($converter == 'premailer')
-                {
-                    $htmlContent    = $this->convertUsingPremailer($htmlContent);
-                }
-                else
-                {
-                    throw new NotSupportedException('Invalid converter specified.');
-                }
-            }
-            echo $htmlContent;
-            exit;
-            //todo: put an exit here if you just want to see how the conversion looks.
-            $this->resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
+            // we could have used the call directly here but its better to reuse existing code to reduce
+            // test cases
+            $htmlContent    = $this->actionConvertEmail($id, $converter, 1, $emailTemplate);
+            static::resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
         }
 
-        protected function convertUsingCssIn($htmlContent)
-        {
-            $cssInUtil = new ZurmoCssInUtil();
-            $cssInUtil->setMoveStyleBlocksToBody();
-            $htmlContent = $cssInUtil->inlineCSS(null, $htmlContent);
-            return $htmlContent;
-        }
-
-        protected function convertUsingPremailer($htmlContent)
-        {
-            $premailerConverted = Premailer::html($htmlContent);
-            return $premailerConverted['html'];
-        }
-
-        protected function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
+        protected static function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
         {
             // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
             $emailMessage                       = new EmailMessage();
