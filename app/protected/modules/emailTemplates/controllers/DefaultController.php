@@ -619,7 +619,7 @@
             {
                 $contact    = Contact::getById(intval($contactId));
             }
-            static::resolveEmailMessage($emailTemplate, $contact, $emailTemplate->htmlContent, $emailAddress);
+            static::resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
         }
 
         protected static function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
