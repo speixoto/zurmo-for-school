@@ -56,7 +56,6 @@
             static::$emailTemplate          = $emailTemplate;
             static::resolveMetadataMembers();
             static::resolveOwner();
-            static::resolveExplicitReadWritePermissions();
             static::resolveFileAttachments();
         }
 
@@ -154,14 +153,6 @@
             {
                 $owner                  = User::getById((int)static::$data['ownerId']);
                 static::$emailTemplate->owner   = $owner;
-            }
-        }
-
-        protected static function resolveExplicitReadWritePermissions()
-        {
-            if (isset(static::$data['explicitReadWriteModelPermissions']))
-            {
-                ExplicitReadWriteModelPermissionsUtil::resolveByPostDataAndModelThenMake(static::$data, static::$emailTemplate);
             }
         }
 

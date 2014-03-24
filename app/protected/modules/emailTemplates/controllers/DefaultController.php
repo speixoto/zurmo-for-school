@@ -215,6 +215,9 @@
                 Yii::app()->gameHelper->muteScoringModelsOnSave();
                 $unmuteScoring = true;
             }
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                            resolveByPostDataAndModelThenMake($postData[get_class($model)],
+                                                                                                $emailTemplate);
             // we have false here to avoid any issues with EmailTemplateAtLeastOneContentAreaRequiredValidator
             // throwing errors for content being empty. Plus we already validate it using the wizard form.
             if ($emailTemplate->save(false))
@@ -222,6 +225,11 @@
                 if($unmuteScoring)
                 {
                     Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+                }
+                if ($explicitReadWriteModelPermissions != null)
+                {
+                    ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailTemplate,
+                                                                                    $explicitReadWriteModelPermissions);
                 }
                 $modelClassName  = $emailTemplate->modelClassName;
                 $moduleClassName = $modelClassName::getModuleClassName();
