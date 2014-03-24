@@ -391,8 +391,6 @@
             'application.extensions.wideImage.WideImage',
             'application.extensions.phaActiveColumn.*',
             'application.extensions.userinterface.UserInterface',
-            'application.extensions.cssIn.src.CSSIN',
-            'application.extensions.premailer.Premailer',
         ),
         'modules' => array(
             'accountAccountAffiliations',

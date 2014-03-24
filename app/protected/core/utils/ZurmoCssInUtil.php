@@ -34,6 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
+    Yii::import('ext.cssIn.src.CSSIN');
     class ZurmoCssInUtil extends CSSIN
     {
         protected $combineStyleBlocks       = false;

@@ -63,13 +63,10 @@
 
         protected static function convertHtmlContent($htmlContent, $converter)
         {
+            // we may add support for other converters in future.
             if ($converter == 'cssin')
             {
                 return static::convertUsingCssIn($htmlContent);
-            }
-            else if ($converter == 'premailer')
-            {
-                return static::convertUsingPremailer($htmlContent);
             }
             else
             {
@@ -99,12 +96,6 @@
             $cssInUtil->setMoveStyleBlocksToBody();
             $htmlContent = $cssInUtil->inlineCSS(null, $htmlContent);
             return $htmlContent;
-        }
-
-        protected static function convertUsingPremailer($htmlContent)
-        {
-            $premailerConverted = Premailer::html($htmlContent);
-            return $premailerConverted['html'];
         }
     }
 ?>
