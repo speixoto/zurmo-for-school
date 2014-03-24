@@ -598,12 +598,6 @@
             echo $element->render();
         }
 
-        public function actionReSerialize($id)
-        {
-            $emailTemplate  = EmailTemplate::getById(intval($id));
-            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
-        }
-
         public function actionConvertEmail($id, $converter = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
