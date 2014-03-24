@@ -36,6 +36,11 @@
 
     class BuilderButtonElement extends BaseBuilderTableWrappedElement
     {
+        /**
+         * @var array
+         */
+        protected $inlineStylesToKeepOnATag = array('color', 'font-size', 'font-family', 'font-weight');
+
         public static function isUIAccessible()
         {
             return true;
@@ -70,14 +75,73 @@
             $text                   = $this->properties['backend']['text'];
             $label                  = ZurmoHtml::tag('strong', array(), $text);
             $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
-            if(isset($frontendOptions['style']))
-            {
-                unset($frontendOptions['style']);
-            }
             $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
             $options                = CMap::mergeArray($htmlOptions, $frontendOptions);
             $content                = ZurmoHtml::link($label, $href, $options);
             return $content;
+        }
+
+        protected function resolveFrontendPropertiesNonEditable()
+        {
+            $properties = array();
+            $frontendProperties = ArrayUtil::getArrayValue($this->properties, 'frontend');
+            if ($frontendProperties)
+            {
+                $properties = $frontendProperties;
+            }
+            $this->resolveInlineStylePropertiesForFrontendNonEditable($properties);
+            return $properties;
+        }
+
+        protected function resolveInlineStylePropertiesForFrontendNonEditable(array & $mergedProperties)
+        {
+            $mergedProperties['style'] = '';
+            $inlineStyles   = $this->resolveInlineStylesForNonEditable($mergedProperties);
+            if ($inlineStyles)
+            {
+                $usableInlineStyles = array();
+                foreach($this->inlineStylesToKeepOnATag as $style)
+                {
+                    if(isset($inlineStyles[$style]))
+                    {
+                        $usableInlineStyles[$style] = $inlineStyles[$style];
+                        unset($mergedProperties['inlineStyles'][$style]);
+                    }
+                }
+                unset($mergedProperties['inlineStyles']);
+                if($usableInlineStyles)
+                {
+                    $mergedProperties['style']  = $this->stringifyProperties($usableInlineStyles, null, null, ':', ';');
+                }
+            }
+        }
+
+        protected function resolveFrontendPropertiesForWrappingTdNonEditable()
+        {
+            $properties = array();
+            $frontendProperties = ArrayUtil::getArrayValue($this->properties, 'frontend');
+            if ($frontendProperties)
+            {
+                $properties = $frontendProperties;
+            }
+            foreach($this->inlineStylesToKeepOnATag as $style)
+            {
+                if(isset($properties['inlineStyles']) && isset($properties['inlineStyles'][$style]))
+                {
+                    unset($properties['inlineStyles'][$style]);
+                }
+            }
+            $this->resolveInlineStylePropertiesNonEditable($properties);
+            return $properties;
+        }
+
+        /**
+         * @param array $mergedProperties
+         * @return array|null
+         */
+        protected function resolveInlineStylesForNonEditable(array & $mergedProperties)
+        {
+            return ArrayUtil::getArrayValue($mergedProperties, 'inlineStyles');
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
@@ -107,9 +171,6 @@
          */
         protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $customDataAttributes)
         {
-           // echo "<pre>";
-            //print_r($this->properties);
-            //echo "</pre>";
             $backendHtmlOptions = $this->resolveBackendPropertiesForWrapperTableNonEditable();
             $defaultHtmlOptions = $this->resolveNonEditableWrapperOptions($customDataAttributes);
             $options            = CMap::mergeArray($backendHtmlOptions, $defaultHtmlOptions);

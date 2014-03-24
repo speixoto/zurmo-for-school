@@ -140,10 +140,15 @@
          */
         protected function resolveNonEditableContentWrappingTdOptions()
         {
-            $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
+            $frontendOptions    = $this->resolveFrontendPropertiesForWrappingTdNonEditable();
             $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
             $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
             return $options;
+        }
+
+        protected function resolveFrontendPropertiesForWrappingTdNonEditable()
+        {
+            return $this->resolveFrontendPropertiesNonEditable();
         }
     }
 ?>

@@ -358,7 +358,7 @@
          * Resolve frontend properties for non-editable
          * @return array
          */
-        protected final function resolveFrontendPropertiesNonEditable()
+        protected function resolveFrontendPropertiesNonEditable()
         {
             $properties = array();
             $frontendProperties = ArrayUtil::getArrayValue($this->properties, 'frontend');
