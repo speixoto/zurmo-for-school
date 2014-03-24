@@ -107,6 +107,9 @@
          */
         protected function resolveWrapperTableNonEditableByContentAndHtmlOptions($content, array $customDataAttributes)
         {
+           // echo "<pre>";
+            //print_r($this->properties);
+            //echo "</pre>";
             $backendHtmlOptions = $this->resolveBackendPropertiesForWrapperTableNonEditable();
             $defaultHtmlOptions = $this->resolveNonEditableWrapperOptions($customDataAttributes);
             $options            = CMap::mergeArray($backendHtmlOptions, $defaultHtmlOptions);

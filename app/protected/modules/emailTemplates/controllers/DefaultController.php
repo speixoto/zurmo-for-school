@@ -358,6 +358,15 @@
             echo $model->htmlContent;
         }
 
+        public function actionGetSerializedToHtmlContent($id)
+        {
+            assert('is_string($className)');
+            $modelId = (int) $id;
+            $model = EmailTemplate::getById($modelId);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($model->serializedData, false);
+        }
+
         /**
          * @param null $uniqueId
          * @param null $nodeId

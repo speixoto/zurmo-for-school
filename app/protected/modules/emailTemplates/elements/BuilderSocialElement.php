@@ -79,7 +79,6 @@
             {
                 if (ArrayUtil::getArrayValue($serviceDetails, 'enabled') and ArrayUtil::getArrayValue($serviceDetails, 'url'))
                 {
-
                     $properties = array();
                     $properties['frontend']['href']     = $serviceDetails['url'];
                     $properties['frontend']['target']   = '_blank';
