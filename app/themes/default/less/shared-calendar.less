@@ -180,3 +180,71 @@
 		padding-left: 0;
 	}
 }
+
+.calendar-event-tooltip{
+	.left-column{
+		padding: 5px;
+	}
+	.details-table{
+		border: none !important;
+		background: none !important;
+		.b-shadow(none) !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		.reset-filter();
+	}
+	.ui-tooltip-content{
+		overflow: visible;
+	}
+	.ui-tooltip-titlebar{
+		background: none !important;
+	}
+	.toolbar-mbmenu{
+		margin: -31px 20px 0 0 !important;
+	}
+	.view-toolbar{
+		margin: 0;
+	}
+	.options-menu{
+		.parent > a{
+			padding: 0;
+			background: none;
+			border: none !important;
+			.b-shadow(none);
+			&:hover{
+				background: none !important;
+				.b-shadow(none) !important;
+			}
+		}
+		.parent > a span{
+			display: none;
+		}
+		.parent > a:before{
+			content:'n';
+			.symbly(26px);
+		}
+		.parent > a:after{
+			margin-left: 2px;
+			position: relative;
+			top: -2px;
+		}
+		ul{
+			top: 25px;
+		}
+	}
+	.form-fields{
+		color:@textColor;
+		ul{
+			list-style: none;
+			strong{
+				margin-right:4px;
+			}
+		}
+		li{
+			margin-bottom: 3px;
+		}
+	}
+	.after-form-details-content{
+		display: none;
+	}
+}

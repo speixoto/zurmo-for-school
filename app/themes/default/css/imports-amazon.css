@@ -12394,6 +12394,83 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   width: 70%;
   padding-left: 0;
 }
+.calendar-event-tooltip .left-column {
+  padding: 5px;
+}
+.calendar-event-tooltip .details-table {
+  border: none !important;
+  background: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.calendar-event-tooltip .ui-tooltip-content {
+  overflow: visible;
+}
+.calendar-event-tooltip .ui-tooltip-titlebar {
+  background: none !important;
+}
+.calendar-event-tooltip .toolbar-mbmenu {
+  margin: -31px 20px 0 0 !important;
+}
+.calendar-event-tooltip .view-toolbar {
+  margin: 0;
+}
+.calendar-event-tooltip .options-menu .parent > a {
+  padding: 0;
+  background: none;
+  border: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+}
+.calendar-event-tooltip .options-menu .parent > a:hover {
+  background: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.calendar-event-tooltip .options-menu .parent > a span {
+  display: none;
+}
+.calendar-event-tooltip .options-menu .parent > a:before {
+  content: 'n';
+  font-weight: normal !important;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+}
+.calendar-event-tooltip .options-menu .parent > a:after {
+  margin-left: 2px;
+  position: relative;
+  top: -2px;
+}
+.calendar-event-tooltip .options-menu ul {
+  top: 25px;
+}
+.calendar-event-tooltip .form-fields {
+  color: #545454;
+}
+.calendar-event-tooltip .form-fields ul {
+  list-style: none;
+}
+.calendar-event-tooltip .form-fields ul strong {
+  margin-right: 4px;
+}
+.calendar-event-tooltip .form-fields li {
+  margin-bottom: 3px;
+}
+.calendar-event-tooltip .after-form-details-content {
+  display: none;
+}
 body.flat-cement * {
   box-shadow: none !important;
 }
