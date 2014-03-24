@@ -109,7 +109,7 @@
         {
             $url    =  Yii::app()->createUrl(static::getControllerId() .
                                              '/default/relationsAndAttributesTreeForMergeTags',
-                                             array_merge($_GET, array('uniqueId' => $this->uniqueId)));
+                                             array_merge(GetUtil::getData(), array('uniqueId' => $this->uniqueId)));
             $this->resolveUrl($url);
             // Begin Not Coding Standard
             $script = "
