@@ -509,13 +509,17 @@
             echo $content;
         }
 
-        public function actionRenderPreview($id = null)
+        public function actionRenderPreview($id = null, $useHtmlContent = 1)
         {
             Yii::app()->clientScript->setToAjaxMode();
             if (isset($id))
             {
                 $emailTemplate  = EmailTemplate::getById(intval($id));
                 $content        = $emailTemplate->htmlContent;
+                if (!$useHtmlContent || empty($content))
+                {
+                    $content    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
+                }
                 Yii::app()->clientScript->render($content);
                 echo $content;
                 Yii::app()->end(0, false);
