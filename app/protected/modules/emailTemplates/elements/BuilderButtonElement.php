@@ -105,6 +105,10 @@
                     if(isset($inlineStyles[$style]))
                     {
                         $usableInlineStyles[$style] = $inlineStyles[$style];
+                        if($style == 'color')
+                        {
+                            $usableInlineStyles[$style] .= ' !important';
+                        }
                         unset($mergedProperties['inlineStyles'][$style]);
                     }
                 }
