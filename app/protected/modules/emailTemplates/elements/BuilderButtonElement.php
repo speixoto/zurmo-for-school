@@ -131,6 +131,14 @@
                     unset($properties['inlineStyles'][$style]);
                 }
             }
+            if(isset($properties['target']))
+            {
+                unset($properties['target']);
+            }
+            if(isset($properties['href']))
+            {
+                unset($properties['href']);
+            }
             $this->resolveInlineStylePropertiesNonEditable($properties);
             return $properties;
         }
