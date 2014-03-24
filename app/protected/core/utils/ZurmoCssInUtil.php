@@ -151,19 +151,7 @@
                 $style->outertext = '';
             }
 
-            $css_blocks = '';
-
-            // Find all <style> blocks and cut styles from them (leaving media queries)
-            foreach($html->find('style') as $style)
-            {
-                list($_css_to_parse, $_css_to_keep) = self::splitMediaQueries($style->innertext());
-                $css_blocks .= $_css_to_parse;
-                if (!empty($_css_to_keep)) {
-                    $style->innertext = $_css_to_keep;
-                } else {
-                    $style->outertext = '';
-                }
-            }
+            $css_blocks = $this->processStylesCleanup($html);
 
             $raw_css = '';
             if (!empty($css_urls)) {
@@ -219,6 +207,18 @@
             // Let simple_html_dom give us back our HTML with inline CSS!
             $html = $this->moveStyleBlocks((string)$html);
             return $html;
+        }
+
+        protected function processStylesCleanup($html)
+        {
+            $css_blocks = '';
+            // Find all <style> blocks and cut styles from them (leaving media queries)
+            foreach($html->find('style') as $style)
+            {
+                list($_css_to_parse, $_css_to_keep) = self::splitMediaQueries($style->innertext());
+                $css_blocks .= $_css_to_parse;
+            }
+            return $css_blocks;
         }
 
         public static function calculateCSSSpecifity($selector)

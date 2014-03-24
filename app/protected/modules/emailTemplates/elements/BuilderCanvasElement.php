@@ -111,7 +111,8 @@
 
         protected function renderHtmlHead()
         {
-            $headContent    = $this->renderCss();
+            $headContent   = $this->renderMetaTag();
+            $headContent  .= $this->renderCss();
             if ($this->renderForCanvas)
             {
                 if (MINIFY_SCRIPTS)
@@ -125,6 +126,11 @@
             }
             $headContent    = ZurmoHtml::tag('head', array(), $headContent);
             return $headContent;
+        }
+
+        protected function renderMetaTag()
+        {
+            return '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
         }
 
         protected function renderCss()
@@ -193,7 +199,7 @@
         {
             $path   = $this->resolveCanvasGlobalCssPath();
             $overridePath = $this->resolveCanvasOverrideCssPath();
-            $css    = ZurmoHtml::tag('style', array(), file_get_contents($path) . file_get_contents($overridePath));
+            $css    = ZurmoHtml::tag('style', array('type' => 'text/css' ), file_get_contents($path) . file_get_contents($overridePath));
             return $css;
         }
     }
