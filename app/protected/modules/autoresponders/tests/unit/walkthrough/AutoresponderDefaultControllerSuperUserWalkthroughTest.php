@@ -177,8 +177,8 @@
                                                 'href="#">MergeTag Guide</a>') !== false);
             $this->assertTrue(strpos($content, '<textarea id="Autoresponder_textContent" ' .
                                                 'name="Autoresponder[textContent]" rows="6" cols="50"') !== false);
-            $this->assertTrue(strpos($content, "<textarea id='Autoresponder_htmlContent' " .
-                                                "name='Autoresponder[htmlContent]'") !== false);
+            $this->assertTrue(strpos($content, '<textarea id="Autoresponder_htmlContent" ' .
+                                                'name="Autoresponder[htmlContent]"') !== false);
             $this->assertTrue(strpos($content, '<label>Attachments</label>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_files" type="file" ' .
@@ -376,8 +376,8 @@
                                                 'href="#">MergeTag Guide</a>') !== false);
             $this->assertTrue(strpos($content, '<textarea id="Autoresponder_textContent" ' .
                                                 'name="Autoresponder[textContent]" rows="6" cols="50"') !== false);
-            $this->assertTrue(strpos($content, "<textarea id='Autoresponder_htmlContent' " .
-                                                "name='Autoresponder[htmlContent]'") !== false);
+            $this->assertTrue(strpos($content, '<textarea id="Autoresponder_htmlContent" ' .
+                                                'name="Autoresponder[htmlContent]"') !== false);
             $this->assertTrue(strpos($content, '<label>Attachments</label>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_files" type="file" ' .
