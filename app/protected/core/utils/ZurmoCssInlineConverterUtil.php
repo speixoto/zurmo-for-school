@@ -36,33 +36,22 @@
 
     abstract class ZurmoCssInlineConverterUtil
     {
-        public static function convertEmailByModel(EmailTemplate $emailTemplate, $converter = 0, $prettyPrint = true)
+        public static function convertAndPrettifyEmailByModel(EmailTemplate $emailTemplate, $converter = null, $prettyPrint = true)
         {
             $htmlContent        = $emailTemplate->htmlContent;
             if (empty($htmlContent))
             {
                 $htmlContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
             }
-            $htmlContent        = static::convertEmailByHtmlContent($htmlContent, $converter, $prettyPrint);
+            $htmlContent        = static::convertAndPrettifyEmailByHtmlContent($htmlContent, $converter, $prettyPrint);
             return $htmlContent;
         }
 
-        public static function convertEmailByHtmlContent($htmlContent, $converter = 0, $prettyPrint = true)
+        public static function convertAndPrettifyEmailByHtmlContent($htmlContent, $converter = null, $prettyPrint = true)
         {
-            if ($converter)
+            if (isset($converter))
             {
-                if ($converter == 'cssin')
-                {
-                    $htmlContent    = static::convertUsingCssIn($htmlContent);
-                }
-                else if ($converter == 'premailer')
-                {
-                    $htmlContent    = static::convertUsingPremailer($htmlContent);
-                }
-                else
-                {
-                    throw new NotSupportedException('Invalid converter specified.');
-                }
+                $htmlContent    = static::convertHtmlContent($htmlContent, $converter);
             }
             if ($prettyPrint)
             {
@@ -70,6 +59,22 @@
             }
             $htmlContent        = static::resolveHtmlContentForPostConverterChanges($htmlContent);
             return $htmlContent;
+        }
+
+        protected static function convertHtmlContent($htmlContent, $converter)
+        {
+            if ($converter == 'cssin')
+            {
+                return static::convertUsingCssIn($htmlContent);
+            }
+            else if ($converter == 'premailer')
+            {
+                return static::convertUsingPremailer($htmlContent);
+            }
+            else
+            {
+                throw new NotSupportedException('Invalid converter specified.');
+            }
         }
 
         protected static function resolveHtmlContentForPostConverterChanges($htmlContent)

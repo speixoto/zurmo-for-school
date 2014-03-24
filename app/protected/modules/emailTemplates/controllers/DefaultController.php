@@ -604,10 +604,10 @@
             echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($emailTemplate->serializedData, false);
         }
 
-        public function actionConvertEmail($id, $converter = 0)
+        public function actionConvertEmail($id, $converter = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
-            $htmlContent    = ZurmoCssInlineConverterUtil::convertEmailByModel($emailTemplate, $converter);
+            $htmlContent    = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByModel($emailTemplate, $converter);
             echo $htmlContent;
         }
 

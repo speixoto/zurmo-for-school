@@ -91,10 +91,10 @@
 
         /**
          * Name of the html converter to use for outgoing html emails
-         * 0 to disable
+         * null to disable
          * @var string
          */
-        public $htmlConverter   = 0;
+        public $htmlConverter   = null;
 
         /**
          * Contains array of settings to load during initialization from the configuration table.
@@ -325,7 +325,7 @@
             }
             if (!empty($emailMessage->content->htmlContent))
             {
-                $mailer->body       = ZurmoCssInlineConverterUtil::convertEmailByHtmlContent(
+                $mailer->body       = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByHtmlContent(
                                                                                     $emailMessage->content->htmlContent,
                                                                                     $this->htmlConverter);
             }
