@@ -64,6 +64,10 @@
             {
                 throw new FailedToSaveModelException();
             }
+            $emailTemplate = EmailTemplate::getById($emailTemplate->id);
+            ReadPermissionsOptimizationUtil::
+                securableItemGivenPermissionsForGroup($emailTemplate, Group::getByName(Group::EVERYONE_GROUP_NAME));
+            $saved                          = $emailTemplate->save(false);
             assert('$saved');
         }
     }
