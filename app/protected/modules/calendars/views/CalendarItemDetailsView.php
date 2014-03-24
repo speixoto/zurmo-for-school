@@ -60,7 +60,7 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            $element->nonEditableTemplate = '<li><span>{label}</span><span>{content}</span></li>';
+            $element->nonEditableTemplate = '<li><strong>{label}</strong><span>{content}</span></li>';
         }
     }
 ?>
