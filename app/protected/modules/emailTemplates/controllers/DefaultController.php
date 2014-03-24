@@ -605,9 +605,15 @@
             echo $htmlContent;
         }
 
-        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null)
+        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $useHtmlContent = 1)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
+            $htmlContent    = $emailTemplate->htmlContent;
+            if (!$useHtmlContent)
+            {
+                $htmlContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate,
+                                                                                                                false);
+            }
             $contact        = null;
             if (isset($contactId))
             {
