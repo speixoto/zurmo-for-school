@@ -182,5 +182,18 @@
             $activityItem1 = $meetings[0]->activityItems->offsetGet(0);
             $this->assertEquals($account, $activityItem1);
         }
+
+        /**
+         * @depends testSuperUserAllDefaultControllerActions
+         */
+        public function testCreateMeetingWithTimeZoneAdjustment()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('redirectUrl' => 'someRedirect',
+                                     'startDate'   => '2014-03-03'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('meetings/default/createMeeting');
+            $this->assertTrue(strpos($content, '3/3/2014 12:00 AM') !== false);
+            $this->assertFalse(strpos($content, '3/2/2014 11:00 PM') !== false);
+        }
     }
 ?>
