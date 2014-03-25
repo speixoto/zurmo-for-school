@@ -134,8 +134,8 @@
             {
                 $urlToImage = PlaceholderImageUtil::resolveTransparentImageUrl(true);
                 $content    = ZurmoHtml::closeTag('td');
-                $content   .= ZurmoHtml::openTag('td');
-                $content   .=ZurmoHtml::image($urlToImage, '', array('width' => '100%', 'height' => '15'));
+                $content   .= ZurmoHtml::openTag('td', array('class' => 'social-horizontal-expander'));
+                $content   .= ZurmoHtml::image($urlToImage, '', array('width' => '15', 'height' => '15'));
                 $content   .= ZurmoHtml::closeTag('td');
                 $content   .= ZurmoHtml::openTag('td');
                 return $content;
