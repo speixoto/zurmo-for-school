@@ -91,8 +91,8 @@
             if (Yii::app()->userInterface->isMobile() === false)
             {
                 $content .= static::renderHeaderGameDashboardContent();
+                $content .= static::renderHeaderCalendarContent();
             }
-            $content     .= static::renderHeaderCalendarContent();
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
             return $content;
         }
