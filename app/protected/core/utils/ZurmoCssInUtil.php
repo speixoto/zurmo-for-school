@@ -95,15 +95,18 @@
                 $search = '/head';
             }
             $matches        = preg_split('#(<' . $search . '.*?>)#i', $html, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-            if ($moveToHead)
+            if (count($matches) > 1)
             {
-                $styles     = $styles . $matches[1];
+                if ($moveToHead)
+                {
+                    $styles     = $styles . $matches[1];
+                }
+                else
+                {
+                    $styles     = $matches[1] . $styles;
+                }
+                $html           = $matches[0] . $styles . $matches[2];
             }
-            else
-            {
-                $styles     = $matches[1] . $styles;
-            }
-            $html           = $matches[0] . $styles . $matches[2];
             return $html;
         }
 

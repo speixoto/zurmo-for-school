@@ -72,13 +72,14 @@
             EmailTemplateTestHelper::create('Test Name', 'Test Subject', 'Contact', 'Text HtmlContent',
                                             'Test TextContent', EmailTemplate::TYPE_WORKFLOW);
             EmailTemplateTestHelper::create('Test Name1', 'Test Subject1', 'Contact', 'Text HtmlContent1',
-                                            'Test TextContent1', EmailTemplate::TYPE_WORKFLOW);
+                                            'Test TextContent1', EmailTemplate::TYPE_CONTACT);
 
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
         }
 
@@ -104,9 +105,9 @@
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
             $this->assertEquals (substr_count($content, 'Test Name1'), 1);
-            $this->assertEquals (substr_count($content, 'Clark Kent'), 1);
+            $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
-            $this->assertEquals (1,                     count($emailTemplates));
+            $this->assertEquals (1, count($emailTemplates));
         }
 
         /**
@@ -118,9 +119,9 @@
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (strpos($content,       '1 result') !== false);
             $this->assertEquals (substr_count($content, 'Test Name'), 1);
-            $this->assertEquals (substr_count($content, 'Clark Kent'), 1);
+            $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
-            $this->assertEquals (1,                     count($emailTemplates));
+            $this->assertEquals (1, count($emailTemplates));
         }
 
         /**
@@ -129,7 +130,8 @@
         public function testSuperUserCreateActionForWorkflow()
         {
             // Create a new emailTemplate and test validator.
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->setPostArray(array('EmailTemplate' => array(
                 'type'              => EmailTemplate::TYPE_WORKFLOW,
                 'name'              => 'New Test Workflow EmailTemplate',

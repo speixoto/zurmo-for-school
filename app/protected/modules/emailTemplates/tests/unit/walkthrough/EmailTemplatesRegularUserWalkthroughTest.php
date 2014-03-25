@@ -104,9 +104,11 @@
 
             $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
             $this->assertTrue($this->user->save());
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->setGetArray(array('id' => $emailTemplate->id));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
@@ -130,13 +132,14 @@
             $this->assertTrue($this->user->save());
 
             // Create a new emailTemplate and test validator.
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->setPostArray(array('EmailTemplate' => array(
                                             'type'              => EmailTemplate::TYPE_WORKFLOW,
                                             'name'              => 'New Test Workflow EmailTemplate',
                                             'subject'           => 'New Test Subject')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
-            $this->assertTrue(strpos($content, 'Create Email Template') !== false);
+            $this->assertTrue(strpos($content, 'Email Template Wizard - Plain Text') !== false);
             $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
             $this->assertTrue(strpos($content, '<select name="EmailTemplate[modelClassName]" id="EmailTemplate_modelClassName_value"') !== false);
             $this->assertTrue(strpos($content, 'Please provide at least one of the contents field.') !== false);

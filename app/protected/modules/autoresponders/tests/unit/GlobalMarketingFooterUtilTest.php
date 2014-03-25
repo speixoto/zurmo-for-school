@@ -64,9 +64,11 @@
             $isHtmlContent                      = false;
             $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
             $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
-            $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
+            StringUtil::prependNewLine($recipientMention, $isHtmlContent);
+            $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder . $recipientMention;
             $plainTextFooter = GlobalMarketingFooterUtil::getContentByType($isHtmlContent);
             $this->assertNotNull($plainTextFooter);
             $this->assertEquals($defaultFooter, $plainTextFooter);
@@ -74,9 +76,11 @@
             $isHtmlContent                      = true;
             $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
             $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
-            $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder;
+            StringUtil::prependNewLine($recipientMention, $isHtmlContent);
+            $defaultFooter  = $unsubscribeUrlPlaceHolder . $manageSubscriptionsUrlPlaceHolder . $recipientMention;
             $richTextFooter = GlobalMarketingFooterUtil::getContentByType($isHtmlContent);
             $this->assertNotNull($richTextFooter);
             $this->assertEquals($defaultFooter, $richTextFooter);
