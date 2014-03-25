@@ -36,7 +36,7 @@
 	color:#fff;
 	font-weight:bold;
 	padding:0 25px;
-	line-height:25px;
+	line-height:24px;
 	white-space: nowrap;
 	.t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
 	#gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
@@ -93,10 +93,10 @@ a:active{
 .z-button{
 	.button-layout();
 	@hexToRGBA : rgba(red(@themeColorBtnDefault), green(@themeColorBtnDefault), blue(@themeColorBtnDefault), 0.8);
-	//border-top:1px solid  lighten(@hexToRGBA, 10%); /*lighter*/
-	//border-left: 1px solid @hexToRGBA;
-	//border-right:1px solid @hexToRGBA;
-	//border-bottom:1px solid darken(@hexToRGBA, 10%); /*darker*/
+	border-top:   1px solid  lighten(@hexToRGBA, 10%); /*lighter*/
+	border-left:  1px solid @hexToRGBA;
+	border-right: 1px solid @hexToRGBA;
+	border-bottom:1px solid darken(@hexToRGBA, 10%); /*darker*/
 }
 
 .secondary-button,
