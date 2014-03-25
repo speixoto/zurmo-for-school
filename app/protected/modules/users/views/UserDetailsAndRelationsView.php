@@ -79,7 +79,7 @@
             assert('$rightTopView instanceof View || $rightTopView == null');
             assert('is_bool($renderRightSide)');
             $actionView = new ActionBarForUserEditAndDetailsView ($this->controllerId, $this->moduleId,
-                                                                  $this->params['relationModel'], 'DetailsLink');
+                                                                  $this->params['relationModel'], 'UserDetailsMenu');
             $content  = $actionView->render();
             $leftVerticalGridView  = new GridView(2, 1);
             $leftVerticalGridView->setView($leftTopView, 0, 0);
