@@ -438,7 +438,7 @@
             }
             $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-03');
             $this->assertEquals($endDateTime, '2014-03-04 05:59:59');
-            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-29');
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-29');
             $this->assertEquals($endDateTime, '2014-03-30 04:59:59');
         }
     }
