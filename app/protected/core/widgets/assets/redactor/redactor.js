@@ -5984,7 +5984,8 @@
 
         zurmoImageShow: function()
         {
-            this.set('');
+            this.selectionAll();
+            this.insertHtmlAdvanced('', true);
             this.imageShow();
         },
 
