@@ -109,6 +109,7 @@
 		margin:0 3.33% 15px 0;
 		display: block;
 		cursor: pointer;
+		.animateAll(0.18s);
 		&:active{
 			cursor: move;
 		}
@@ -127,6 +128,9 @@
 		li{
 			width: 46%;
 			margin-right: 4%;
+		}
+		i{
+			font-size: 50px;
 		}
 	}
 }
@@ -150,6 +154,7 @@
 		line-height: 1px;
 		margin-top: 30px;
 		color: #ddd;
+		.animateAll(0.18s);
 	}
 	span{
 		position: absolute;
@@ -197,6 +202,7 @@
 	position: relative;
 	th{
 		width: 35%;
+		padding-top: 6px;
 	}
 	td{
 		width: 65%;
@@ -242,6 +248,48 @@ div[id^="builderimageelement"]{
 }
 
 /*Template Chooser*/
+
+#chosen-layout{
+	text-align: center;
+	width: 50%;
+	margin: 0 auto 30px auto;
+	i{
+		font-size: 400px;
+		line-height: 60%;
+	}
+	h3{
+		text-align: left;
+	}
+	.simple-link{
+		display: block;
+		text-align: right;
+	}
+}
+
+#templates{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: gold;
+	padding: 15px;
+	.templates-chooser-list li {
+		width: 200px;
+		margin-bottom: 60px;
+	}
+	.z-button{
+		margin-top: 10px;
+		float: right;
+	}
+	.secondary-button{
+		margin-top: 10px;
+		float: left;
+	}
+}
+
 .templates-chooser-list{
 	margin-bottom: 30px;
 	> h3{

@@ -60,7 +60,7 @@
                             'Lucida Console',
                             'Lucida Grande',
                             'Lucida Sans Unicode',
-                            'Monaco.',
+                            'Monaco',
                             'Palatino',
                             'Palatino Linotype',
                             'Tahoma',

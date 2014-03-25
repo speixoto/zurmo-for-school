@@ -11434,6 +11434,17 @@ a + .project-stats {
   margin: 0 3.33% 15px 0;
   display: block;
   cursor: pointer;
+  -webkit-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 #building-blocks li:active {
   cursor: move;
@@ -11474,6 +11485,17 @@ a + .project-stats {
   line-height: 1px;
   margin-top: 30px;
   color: #ddd;
+  -webkit-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 #building-blocks li div span {
   position: absolute;
@@ -11490,6 +11512,9 @@ a + .project-stats {
   #building-blocks li {
     width: 46%;
     margin-right: 4%;
+  }
+  #building-blocks i {
+    font-size: 50px;
   }
 }
 .draggable-element-clone {
@@ -11520,6 +11545,17 @@ a + .project-stats {
   line-height: 1px;
   margin-top: 30px;
   color: #ddd;
+  -webkit-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.18s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 }
 .draggable-element-clone span {
   position: absolute;
@@ -11573,6 +11609,7 @@ a + .project-stats {
 }
 .element-edit-form th {
   width: 35%;
+  padding-top: 6px;
 }
 .element-edit-form td {
   width: 65%;
@@ -11608,6 +11645,45 @@ a + .project-stats {
 }
 div[id^="builderimageelement"] ~ .redactor_box iframe {
   background: url("../images/psd-light.png") left top repeat;
+}
+#chosen-layout {
+  text-align: center;
+  width: 50%;
+  margin: 0 auto 30px auto;
+}
+#chosen-layout i {
+  font-size: 400px;
+  line-height: 60%;
+}
+#chosen-layout h3 {
+  text-align: left;
+}
+#chosen-layout .simple-link {
+  display: block;
+  text-align: right;
+}
+#templates {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: gold;
+  padding: 15px;
+}
+#templates .templates-chooser-list li {
+  width: 200px;
+  margin-bottom: 60px;
+}
+#templates .z-button {
+  margin-top: 10px;
+  float: right;
+}
+#templates .secondary-button {
+  margin-top: 10px;
+  float: left;
 }
 .templates-chooser-list {
   margin-bottom: 30px;

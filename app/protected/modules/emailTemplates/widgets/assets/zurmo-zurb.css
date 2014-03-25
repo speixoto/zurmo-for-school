@@ -111,9 +111,8 @@ table.vertical img {
 	height: 15px;
 	display:block;
 }
-table.horizontal table,
-table.horizontal img{
-	float: left;
+table.horizontal td{
+	width: auto;
 }
 table.horizontal img{
 	width:15px;
