@@ -50,7 +50,7 @@
 }
 
 .previewing-builder{
-	overflow: hidden;
+	overflow: hidden !important;
 	height: auto !important;
 	.HeaderView{
 		z-index: 0;
@@ -386,6 +386,9 @@ div[id^="builderimageelement"]{
 	.treeview ul{
 		background: none !important;
 	}
+	li{
+		cursor: pointer;
+	}
 	&.wizard-merge-tags{
 		position: absolute;
 		right: -250px;
@@ -478,7 +481,7 @@ div[id^="builderimageelement"]{
 	width: 100%;
 	margin-bottom: 20px;
 	input{
-		margin-top:13px !important
+		margin-top:8px !important
 	}
 	label{
 		width: 85%;

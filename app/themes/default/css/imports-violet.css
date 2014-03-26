@@ -11416,7 +11416,7 @@ a + .project-stats {
   padding-left: 0 !important;
 }
 .previewing-builder {
-  overflow: hidden;
+  overflow: hidden !important;
   height: auto !important;
 }
 .previewing-builder .HeaderView {
@@ -11825,6 +11825,9 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 .MergeTagsView .treeview ul {
   background: none !important;
 }
+.MergeTagsView li {
+  cursor: pointer;
+}
 .MergeTagsView.wizard-merge-tags {
   position: absolute;
   right: -250px;
@@ -11917,7 +11920,7 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   margin-bottom: 20px;
 }
 .divider-swatch input {
-  margin-top: 13px !important;
+  margin-top: 8px !important;
 }
 .divider-swatch label {
   width: 85%;

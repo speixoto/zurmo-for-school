@@ -168,9 +168,8 @@
                         $(this).draggable({
                             helper: function(event){
                                 var label = $(event.target).html();
-                                var width = $(".wrapper").width() * 0.5 - 55;
+                                var width = $(event.target).width() + 50;
                                 var clone = $(\'<div class="dynamic-row clone">\' + label + \'</div>\');
-                                //clone.width(width);
                                 clone.animate({ width : width}, 250);
                                 $("body").append(clone);
                                 return clone;
