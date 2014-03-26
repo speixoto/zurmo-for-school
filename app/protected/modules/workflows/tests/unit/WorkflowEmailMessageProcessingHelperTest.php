@@ -75,6 +75,7 @@
             $file = ZurmoTestHelper::createFileModel();
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->modelClassName = 'WorkflowModelTestItem';
             $emailTemplate->type           = 1;
             $emailTemplate->name           = 'some template';
@@ -307,6 +308,7 @@
             $this->assertTrue($meeting->save());
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->modelClassName = 'Task';
             $emailTemplate->type           = 1;
             $emailTemplate->name           = 'some template';

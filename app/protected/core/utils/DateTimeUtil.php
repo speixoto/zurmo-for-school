@@ -372,7 +372,7 @@
          */
         public static function convertDbFormattedDateTimeToTimeZoneAdjustedDateTime($dateTime)
         {
-            assert('is_string($dateTime) && DateTimeUtil::isValidDbFormattedDate($dateTime)');
+            assert('is_string($dateTime) && DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
             $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
             $adjustedDate = new DateTime($dateTime, $userTimeZone);
             $adjustedDate->setTimezone(new DateTimeZone('GMT'));
