@@ -71,6 +71,52 @@
     <td>Account_explicitReadWriteModelPermissions_nonEveryoneGroup</td>
     <td>West Channel Sales</td>
 </tr>
+<!--create account-->
+<tr>
+  <td>open</td>
+  <td>index.php/accounts/default/create</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForTextPresent</td>
+  <td>Create Account</td>
+  <td></td>
+</tr>
+<tr>
+  <td>type</td>
+  <td>Account_name</td>
+  <td>Test Account ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>clickAndWait</td>
+  <td>save</td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForPageToLoad</td>
+  <td></td>
+  <td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+  <td>waitForText</td>
+  <td>//div[@id='AccountDetailsPortletView']/div/div/div/table/tbody/tr[1]/td</td>
+  <td>Test Account ${randomSuffix}</td>
+</tr>
 <tr>
     <td>open</td>
     <td>index.php/accounts/default/edit?id=7</td>
@@ -94,7 +140,7 @@
 <tr>
     <td>assertSelectedLabel</td>
     <td>Account_explicitReadWriteModelPermissions_nonEveryoneGroup</td>
-    <td>East</td>
+    <td>West Channel Sales</td>
 </tr>
 </tbody></table>
 </body>

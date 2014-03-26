@@ -123,6 +123,7 @@
                                                                                                                   button: 'Close'
                                                                                                                }
                                                                                                      },
+                                                                                            style: {classes:'calendar-event-tooltip'},
                                                                                             show:{
                                                                                                     event: 'click'
                                                                                             },
