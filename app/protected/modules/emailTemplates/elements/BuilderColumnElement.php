@@ -67,6 +67,18 @@
             return $content;
         }
 
+        /**
+         * When the color is empty we need to add an extra div for the drop area to be visible
+         * @param $content
+         */
+        protected function resolveContentWhenColumnIsEmpty(& $content)
+        {
+            if ($this->renderForCanvas && empty($content))
+            {
+                $content = '<div class="element-wrapper empty-element-wrapper"></div>';
+            }
+        }
+
         protected function resolveNonEditableContentWrappingTdHtmlOptions()
         {
             return array('class' => BaseBuilderElement::BUILDER_ELEMENT_SORTABLE_ELEMENTS_CLASS);
