@@ -209,6 +209,12 @@
         {
             $themeUrl  = Yii::app()->themeManager->baseUrl;
             $theme    = Yii::app()->theme->name;
+            $backgroundTexture = Yii::app()->themeManager->getActiveBackgroundTexture();
+            $classContent = null;
+            if ($backgroundTexture != null)
+            {
+                $classContent .= ' ' . $backgroundTexture;
+            }
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
                 Yii::app()->clientScript->registerScriptFile(
@@ -228,8 +234,8 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/jquery.truncateText.js');
             return '<!DOCTYPE html>' .
-                   '<!--[if IE 8]><html class="zurmo ie8" lang="en"><![endif]-->' .
-                   '<!--[if gt IE 8]><!--><html class="zurmo" lang="en"><!--<![endif]-->';
+                   '<!--[if IE 8]><html class="zurmo ie8' . $classContent . '" lang="en"><![endif]-->' .
+                   '<!--[if gt IE 8]><!--><html class="zurmo' . $classContent . '" lang="en"><!--<![endif]-->';
         }
 
         /**
@@ -375,11 +381,6 @@
         protected function renderXHtmlBodyStart()
         {
             $classContent      = Yii::app()->themeManager->getActiveThemeColor();
-            $backgroundTexture = Yii::app()->themeManager->getActiveBackgroundTexture();
-            if ($backgroundTexture != null)
-            {
-                $classContent .= ' ' . $backgroundTexture;
-            }
             if (Yii::app()->userInterface->isMobile())
             {
                 $classContent .= ' mobile-app';
