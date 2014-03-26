@@ -309,7 +309,7 @@
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
             if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $upgradeFromVersionMatches) !== false) // Not Coding Standard
             {
-                if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false) // Not Coding Standard
+                if (preg_match('/^(\d+)\.(\d+)\.?(\d+|\w+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false) // Not Coding Standard
                 {
                     $currentZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
                     if (version_compare($currentZurmoVersion, $upgradeFromVersionMatches[0], '>=') &&

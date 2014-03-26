@@ -55,7 +55,17 @@
                 'operatorType'  => 'equals',
                 'value'         => EmailTemplate::TYPE_CONTACT
             );
-            $structure    .= $startingCount;
+            $metadata['clauses'][$startingCount + 1] = array(
+                'attributeName' => 'isDraft',
+                'operatorType'  => 'equals',
+                'value'         => 0
+            );
+            $metadata['clauses'][$startingCount + 2] = array(
+                'attributeName' => 'isDraft',
+                'operatorType'  => 'isNull',
+                'value'         => null
+            );
+            $structure    .= $startingCount . ' and (' . ($startingCount + 1) . ' or ' . ($startingCount + 2) . ')';
             if (empty($metadata['structure']))
             {
                 $metadata['structure'] = '(' . $structure . ')';

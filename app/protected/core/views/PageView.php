@@ -284,8 +284,8 @@
                                                                                 $themeBaseUrl . '/less/default-theme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
-                    $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
-                                                                                $themeBaseUrl . '/less/mobile.less"/>';
+//                    $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
+//                                                                                $themeBaseUrl . '/less/mobile.less"/>';
                 }
                 $specialCssContent .= '<!--[if lt IE 9]><link rel="stylesheet/less" type="text/css" href="' .
                                                                         $themeBaseUrl . '/less/ie.less"/><![endif]-->';
@@ -303,7 +303,7 @@
                 }
                 if (Yii::app()->userInterface->isMobile())
                 {
-                    $cs->registerCssFile($themeBaseUrl . '/css/mobile.css');
+//                    $cs->registerCssFile($themeBaseUrl . '/css/mobile.css');
                 }
             }
             if (MINIFY_SCRIPTS)
@@ -384,6 +384,7 @@
             {
                 $classContent .= ' mobile-app';
             }
+            Yii::app()->userInterface->resolveCollapseClassForBody($classContent);
             return '<body class="' . $classContent . '">';
         }
 

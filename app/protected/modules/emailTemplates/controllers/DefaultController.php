@@ -87,41 +87,27 @@
 
         public function actionListForMarketing()
         {
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                                            'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForMarketingMenuActionElement::getType();
-            $emailTemplate                  = new EmailTemplate(false);
-            $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
-            $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
-                                              'EmailTemplatesForMarketingStateMetadataAdapter',
-                                              'EmailTemplatesSearchView');
-            $breadCrumbLinks                = static::getListBreadcrumbLinks();
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-            {
-                $mixedView = $this->makeListView($searchForm, $dataProvider);
-                $view = new EmailTemplatesPageView($mixedView);
-            }
-            else
-            {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForMarketingListsSearchAndListView', null, $activeActionElementType);
-                $view      = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            echo $view->render();
+            $this->actionListByType(EmailTemplate::TYPE_CONTACT);
         }
 
         public function actionListForWorkflow()
         {
+            $this->actionListByType(EmailTemplate::TYPE_WORKFLOW);
+        }
+
+        protected function actionListByType($type)
+        {
+            assert('is_int($type) || is_string($type)');
+            $type               = intval($type);
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = EmailTemplatesForWorkflowMenuActionElement::getType();
+                                                                        'listPageSize', get_class($this->getModule()));
             $emailTemplate                  = new EmailTemplate(false);
-            $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
+            $emailSearchFormClassName       = static::getSearchFormClassName();
+            $searchForm                     = new $emailSearchFormClassName($emailTemplate);
+            $stateMetadataAdapter           = static::getStateMetadataAdapterByType($type);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
-                                              'EmailTemplatesForWorkflowStateMetadataAdapter',
-                                              'EmailTemplatesSearchView');
-            $breadCrumbLinks                = static::getListBreadcrumbLinks();
+                                                                                $stateMetadataAdapter,
+                                                                                'EmailTemplatesSearchView');
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView($searchForm, $dataProvider);
@@ -129,128 +115,181 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
-                $view      = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'WorkflowBreadCrumbView'));
+                $activeActionElementType        = static::getMenuActionElementTypeByType($type);
+                $breadCrumbLinks                = static::getListBreadcrumbLinks();
+                $breadCrumbsView                = static::getBreadCrumbViewByType($type);
+                $viewUtil                       = static::getViewUtilByType($type);
+                $actionBar                      = static::getActionBarByType($type);
+                $mixedView                      = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                                                                                        $actionBar, null,
+                                                                                        $activeActionElementType);
+                $view                           = new EmailTemplatesPageView($viewUtil::
+                                                                                makeViewWithBreadcrumbsForCurrentUser(
+                                                                                                    $this,
+                                                                                                    $mixedView,
+                                                                                                    $breadCrumbLinks,
+                                                                                                    $breadCrumbsView));
             }
             echo $view->render();
         }
 
-        public function actionCreate($type)
+        public function actionSelectBuiltType($type)
         {
-            $type = (int)$type;
-            $emailTemplate       = new EmailTemplate();
-            $emailTemplate->type = $type;
-            $editAndDetailsView  = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate), 'Edit');
-            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            assert('is_int($type) || is_string($type)');
+            $type               = intval($type);
+            $viewUtil           = static::getViewUtilByType($type);
+            $breadCrumbView     = static::getBreadCrumbViewByType($type);
+            $breadCrumbLinks    = static::getBreadCrumbLinksByType($type);
+            $breadCrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Select Email Template Type');
+            $view               = new EmailTemplatesPageView($viewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                                                                                    $this,
+                                                                                    new EmailTemplateWizardTypesGridView(),
+                                                                                    $breadCrumbLinks,
+                                                                                    $breadCrumbView));
+            echo $view->render();
+        }
+
+        public function actionCreate($type, $builtType = null)
+        {
+            assert('is_int($type) || is_string($type)');
+            $type                       = intval($type);
+            if ($builtType == null)
             {
-                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
-                $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadCrumbLinks, 'WorkflowBreadCrumbView'));
+                $this->actionSelectBuiltType($type);
+                Yii::app()->end(0, false);
             }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            assert('is_int($builtType) || is_string($builtType)');
+            $breadCrumbLink             = null;
+            $builtType                  = intval($builtType);
+            $emailTemplate              = new EmailTemplate();
+            $emailTemplate->type        = $type;
+            $emailTemplate->builtType   = $builtType;
+            $breadCrumbLink             = Zurmo::t('Core', 'Create');
+            if ($emailTemplate->isPlainTextTemplate()|| $emailTemplate->isPastedHtmlTemplate())
             {
-                $emailTemplate->modelClassName = 'Contact';
-                $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]  = Zurmo::t('Core', 'Create');
-                $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadCrumbLinks, 'MarketingBreadCrumbView'));
+                $emailTemplate->isDraft     = false;
+            }
+            $this->actionRenderWizardForModel($emailTemplate, $breadCrumbLink);
+        }
+
+        public function actionEdit($id) // , $redirectUrl = null
+        {
+            $emailTemplate      = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
+            $breadCrumbLink     = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+            $this->actionRenderWizardForModel($emailTemplate, $breadCrumbLink);
+        }
+
+        protected function actionRenderWizardForModel(EmailTemplate $emailTemplate, $breadCrumbsLink)
+        {
+            $viewUtil                   = static::getViewUtilByType($emailTemplate->type);
+            $breadCrumbView             = static::getBreadCrumbViewByType($emailTemplate->type);
+            $breadCrumbLinks            = static::getBreadCrumbLinksByType($emailTemplate->type);
+            $breadCrumbLinks[]          = $breadCrumbsLink;
+            $progressBarAndStepsView    = EmailTemplateWizardViewFactory::makeStepsAndProgressBarViewFromEmailTemplate($emailTemplate);
+            $wizardView                 = EmailTemplateWizardViewFactory::makeViewFromEmailTemplate($emailTemplate);
+            $view                       = new EmailTemplatesPageView($viewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
+                                                                        $this,
+                                                                        $progressBarAndStepsView,
+                                                                        $wizardView,
+                                                                        $breadCrumbLinks,
+                                                                        $breadCrumbView));
+            echo $view->render();
+        }
+
+        public function actionSave($builtType)
+        {
+            $postData                   = PostUtil::getData();
+            $emailTemplate              = null;
+            $this->resolveEmailTemplateByPostData($postData, $emailTemplate, $builtType);
+
+            $emailTemplateToWizardFormAdapter   = new EmailTemplateToWizardFormAdapter($emailTemplate);
+            $model                              =  $emailTemplateToWizardFormAdapter->makeFormByBuiltType();
+            if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
+            {
+                $this->actionValidate($postData, $model);
+            }
+            $unmuteScoring = false;
+            if($emailTemplate->isBuilderTemplate() && ($emailTemplate->isDraft || !isset($emailTemplate->isDraft)))
+            {
+                Yii::app()->gameHelper->muteScoringModelsOnSave();
+                $unmuteScoring = true;
+            }
+            $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
+                                                            resolveByPostDataAndModelThenMake($postData[get_class($model)],
+                                                                                                $emailTemplate);
+            // we have false here to avoid any issues with EmailTemplateAtLeastOneContentAreaRequiredValidator
+            // throwing errors for content being empty. Plus we already validate it using the wizard form.
+            if ($emailTemplate->save(false))
+            {
+                if($unmuteScoring)
+                {
+                    Yii::app()->gameHelper->unmuteScoringModelsOnSave();
+                }
+                if ($explicitReadWriteModelPermissions != null)
+                {
+                    ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailTemplate,
+                                                                                    $explicitReadWriteModelPermissions);
+                }
+                $modelClassName  = $emailTemplate->modelClassName;
+                $moduleClassName = $modelClassName::getModuleClassName();
+                echo CJSON::encode(array('id'              => $emailTemplate->id,
+                                         'redirectToList'  => false,
+                                         'moduleClassName' => $moduleClassName));
+                Yii::app()->end(0, false);
             }
             else
             {
-                throw new NotSupportedException();
+                throw new FailedToSaveModelException();
             }
-            echo $view->render();
         }
 
-        public function actionEdit($id, $redirectUrl = null)
+        public function actionDetails($id)
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
-
-            $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate, $redirectUrl), 'Edit');
-            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
-            {
-                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadCrumbLinks, 'WorkflowBreadCrumbView'));
-            }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
-            {
-                $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
-                                      $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
+                                                                                'EmailTemplatesModule'), $emailTemplate);
+            $detailsView                = new EmailTemplateDetailsView($this->getId(), $this->getModule()->getId(),
+                                                                        $emailTemplate, strval($emailTemplate));
+            $viewUtil                   = static::getViewUtilByType($emailTemplate->type);
+            $breadCrumbView             = static::getBreadCrumbViewByType($emailTemplate->type);
+            $breadCrumbLinks            = static::getBreadCrumbLinksByType($emailTemplate->type);
+            $breadCrumbLinks[]          = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+            $view                       = new EmailTemplatesPageView($viewUtil::makeViewWithBreadcrumbsForCurrentUser(
+                                                                                                    $this,
+                                                                                                    $detailsView,
+                                                                                                    $breadCrumbLinks,
+                                                                                                    $breadCrumbView));
             echo $view->render();
         }
 
-        public function actionDetails($id, $renderJson = false, $includeFilesInJson = false, $contactId = null)
+        public function actionDetailsJson($id, $includeFilesInJson = false, $contactId = null)
         {
             $contactId     = (int) $contactId;
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
-            if ($renderJson)
+            header('Content-type: application/json');
+            if ($contactId != null)
             {
-                header('Content-type: application/json');
-                if ($contactId != null)
-                {
-                    $contact     = Contact::getById($contactId);
-                    $textContent = $emailTemplate->textContent;
-                    $htmlContent = $emailTemplate->htmlContent;
-                    AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-                    $unsubscribePlaceholder         = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
-                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
-                    $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
-                                                            MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-                    $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
-                                               null, $textContent);
-                    $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder),
-                                               null, $htmlContent);
-                    $emailTemplate->textContent = $textContent;
-                    $emailTemplate->htmlContent = $htmlContent;
-                }
-                $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
-                echo $emailTemplate;
-                Yii::app()->end(0, false);
+                $contact        = Contact::getById($contactId);
+                $textContent    = $emailTemplate->textContent;
+                $htmlContent    = $emailTemplate->htmlContent;
+                AutoresponderAndCampaignItemsUtil::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+                $unsubscribePlaceholder         = GlobalMarketingFooterUtil::
+                                                                                            UNSUBSCRIBE_URL_PLACEHOLDER;
+                $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::
+                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+                $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
+                                                                                                            $textContent);
+                $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
+                                                                                                        $htmlContent);
+                $emailTemplate->textContent = $textContent;
+                $emailTemplate->htmlContent = $htmlContent;
             }
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
-                                        'EmailTemplatesModule'), $emailTemplate);
-            $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
-                                                                            $this->getModule()->getId(), $emailTemplate);
-
-            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
-            {
-                $breadCrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-                $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view                     = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
-                                            makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                            $breadCrumbLinks, 'WorkflowBreadCrumbView'));
-            }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
-            {
-                $breadCrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
-                $breadCrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view                     = new EmailTemplatesPageView(MarketingDefaultViewUtil::
-                                            makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                            $breadCrumbLinks, 'MarketingBreadCrumbView'));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            echo $view->render();
+            $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
+            echo $emailTemplate;
+            Yii::app()->end(0, false);
         }
 
         protected function resolveEmailTemplateAsJson(EmailTemplate $emailTemplate, $includeFilesInJson)
@@ -265,6 +304,10 @@
                     $emailTemplateData['filesIds'][] = $file->id;
                 }
             }
+            if ($emailTemplate->builtType == EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE)
+            {
+                unset($emailTemplateData['serializedData']);
+            }
             $emailTemplateJson = CJSON::encode($emailTemplateData);
             return $emailTemplateJson;
         }
@@ -276,17 +319,22 @@
 
         public function actionDelete($id)
         {
-            $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            $emailTemplate      = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailTemplate);
-            $type          = $emailTemplate->type;
-            $emailTemplate->delete();
-            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            $redirectUrl        = null;
+            if ($emailTemplate->isWorkflowTemplate())
             {
-                $this->redirect(array($this->getId() . '/listForWorkflow'));
+                $redirectUrl = $this->getId() . '/listForWorkflow';
             }
-            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->isContactTemplate())
             {
-                $this->redirect(array($this->getId() . '/listForMarketing'));
+                $redirectUrl        = $this->getId() . '/listForMarketing';
+            }
+            $emailTemplate->delete();
+
+            if (isset($redirectUrl))
+            {
+                $this->redirect(array($redirectUrl));
             }
             else
             {
@@ -310,9 +358,342 @@
             echo $model->htmlContent;
         }
 
+        public function actionGetSerializedToHtmlContent($id)
+        {
+            assert('is_string($className)');
+            $modelId = (int) $id;
+            $model = EmailTemplate::getById($modelId);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
+            echo EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($model->serializedData, false);
+        }
+
+        /**
+         * @param null $uniqueId
+         * @param null $nodeId
+         * @param string $moduleClassName
+         */
+        public function actionRelationsAndAttributesTreeForMergeTags($uniqueId = null, $nodeId = null, $moduleClassName = 'ContactsModule')
+        {
+            $type     = Report::TYPE_ROWS_AND_COLUMNS;
+            $treeType = ComponentForReportForm::TYPE_FILTERS;
+            $report   = new Report();
+            $report->setModuleClassName($moduleClassName);
+            $report->setType($type);
+            if ($nodeId != null)
+            {
+                $reportToTreeAdapter = new MergeTagsReportRelationsAndAttributesToTreeAdapter($report, $treeType, $uniqueId);
+                echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
+                Yii::app()->end(0, false);
+            }
+            $view        = new ReportRelationsAndAttributesForMergeTagsTreeView($type, $treeType, 'edit-form', $uniqueId);
+            $content     = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
         protected static function getZurmoControllerUtil()
         {
             return new EmailTemplateZurmoControllerUtil();
+        }
+
+        protected static function getBreadCrumbViewByType($type)
+        {
+            $breadCrumbView   = 'MarketingBreadCrumbView';
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $breadCrumbView = 'WorkflowBreadCrumbView';
+            }
+            return $breadCrumbView;
+        }
+
+        protected static function getViewUtilByType($type)
+        {
+            $viewUtil = 'MarketingDefaultViewUtil';
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $viewUtil = 'WorkflowDefaultAdminViewUtil';
+            }
+            return $viewUtil;
+        }
+
+        protected static function getStateMetadataAdapterByType($type)
+        {
+            $adapterClass   = 'EmailTemplatesForMarketingStateMetadataAdapter';
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $adapterClass   = 'EmailTemplatesForWorkflowStateMetadataAdapter';
+            }
+            return $adapterClass;
+        }
+
+        protected static function getActionBarByType($type)
+        {
+            $actionBar  = 'SecuredActionBarForMarketingListsSearchAndListView';
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $actionBar  = 'SecuredActionBarForWorkflowsSearchAndListView';
+            }
+            return $actionBar;
+        }
+
+        protected static function getMenuActionElementTypeByType($type)
+        {
+            $menuActionElement  = 'EmailTemplatesForMarketingMenuActionElement';
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $menuActionElement  = 'EmailTemplatesForWorkflowMenuActionElement';
+            }
+            $menuActionElementType  = $menuActionElement::getType();
+            return $menuActionElementType;
+        }
+
+        protected static function getBreadCrumbLinksByType($type)
+        {
+            $breadCrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $breadCrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+            }
+            return $breadCrumbLinks;
+        }
+
+        protected function resolveEmailTemplateByPostData(array $postData, & $emailTemplate, $builtType)
+        {
+            $formName   = EmailTemplateToWizardFormAdapter::getFormClassNameByBuiltType($builtType);
+            $id         = $postData[$formName][GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
+            if ($id <= 0)
+            {
+                $this->resolveCanCurrentUserAccessEmailTemplates();
+                $emailTemplate               = new EmailTemplate();
+            }
+            else
+            {
+                $emailTemplate              = EmailTemplate::getById(intval($id));
+            }
+            DataToEmailTemplateUtil::resolveEmailTemplateByWizardPostData($emailTemplate, $postData,
+                EmailTemplateToWizardFormAdapter::getFormClassNameByBuiltType($builtType));
+        }
+
+        protected function resolveCanCurrentUserAccessEmailTemplates()
+        {
+            if (!RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule',
+                                                            EmailTemplatesModule::RIGHT_CREATE_EMAIL_TEMPLATES,
+                                                            Yii::app()->user->userModel))
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            return true;
+        }
+
+        protected function actionValidate($postData, EmailTemplateWizardForm $model)
+        {
+            if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
+            {
+                $model->setScenario($postData['validationScenario']);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            $errorData = array();
+            $validated = $model->validate();
+            if ($validated === false)
+            {
+                foreach ($model->getErrors() as $attribute => $errors)
+                {
+                    $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
+                }
+            }
+            echo CJSON::encode($errorData);
+            Yii::app()->end(0, false);
+        }
+
+        public function actionRenderCanvas($id = null)
+        {
+            Yii::app()->clientScript->setToAjaxMode();
+            // it would be empty for the first time during create so we just end the request here.
+            if (empty($id))
+            {
+                Yii::app()->end(0, false);
+            }
+            assert('is_int($id) || is_string($id)');
+            $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($id, true);
+            Yii::app()->clientScript->render($content);
+            echo $content;
+        }
+
+        public function actionRenderPreview($id = null, $useHtmlContent = 1)
+        {
+            Yii::app()->clientScript->setToAjaxMode();
+            if (isset($id))
+            {
+                $emailTemplate  = EmailTemplate::getById(intval($id));
+                $content        = $emailTemplate->htmlContent;
+                if (!$useHtmlContent || empty($content))
+                {
+                    $content    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate, false);
+                }
+                Yii::app()->clientScript->render($content);
+                echo $content;
+                Yii::app()->end(0, false);
+            }
+            // serializedData['dom'] = json_encoded_dom
+            $serializedDataArray    = Yii::app()->request->getPost('serializedData');
+            if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
+            {
+                Yii::app()->end(0, false);
+            }
+            $content = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($serializedDataArray, false);
+            Yii::app()->clientScript->render($content);
+            echo $content;
+        }
+
+        public function actionRenderElementEditable()
+        {
+            $this->actionRenderElement(true);
+        }
+
+        public function actionRenderElementNonEditable()
+        {
+            $ajax = Yii::app()->request->getPost('ajax');
+            if (isset($ajax))
+            {
+                BuilderElementRenderUtil::validateEditableForm();
+            }
+            $this->actionRenderElement(false);
+        }
+
+        protected function actionRenderElement($editable = false)
+        {
+            Yii::app()->clientScript->setToAjaxMode();
+            $editableForm       = Yii::app()->request->getPost(BaseBuilderElement::getModelClassName());
+            $className          = ArrayUtil::getArrayValue($editableForm, 'className');
+            $id                 = ArrayUtil::getArrayValue($editableForm, 'id');
+            $properties         = ArrayUtil::getArrayValue($editableForm, 'properties');
+            $content            = ArrayUtil::getArrayValue($editableForm, 'content');
+            $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
+            $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW);
+
+            // at bare minimum we should have classname. Without these it does not make sense.
+            if (!Yii::app()->request->isPostRequest || !isset($className))
+            {
+                Yii::app()->end(0, false);
+            }
+            if ($editable)
+            {
+                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
+            }
+            else
+            {
+                $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $wrapElementInRow,
+                                                                        $id, $properties, $content);
+            }
+            Yii::app()->clientScript->render($content);
+            echo $content;
+        }
+
+        public function actionRenderBaseTemplateOptions($templateId, $elementClassName, $elementModelClassName,
+                                                        $elementAttributeName, $elementFormClassName,
+                                                        array $elementParams = array())
+        {
+            $model                      = new $elementModelClassName();
+            $model->id                  = $templateId;
+            $element                    = new $elementClassName($model, $elementAttributeName,
+                                                                new $elementFormClassName(), $elementParams);
+            echo $element->render();
+        }
+
+        public function actionConvertEmail($id, $converter = null)
+        {
+            $emailTemplate  = EmailTemplate::getById(intval($id));
+            $htmlContent    = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByModel($emailTemplate, $converter);
+            echo $htmlContent;
+        }
+
+        public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $useHtmlContent = 1)
+        {
+            $emailTemplate  = EmailTemplate::getById(intval($id));
+            $htmlContent    = $emailTemplate->htmlContent;
+            if (!$useHtmlContent)
+            {
+                $htmlContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate,
+                                                                                                                false);
+            }
+            $contact        = null;
+            if (isset($contactId))
+            {
+                $contact    = Contact::getById(intval($contactId));
+            }
+            static::resolveEmailMessage($emailTemplate, $contact, $htmlContent, $emailAddress);
+        }
+
+        protected static function resolveEmailMessage(EmailTemplate $emailTemplate, Contact $contact = null, $htmlContent, $emailAddress = null)
+        {
+            // TODO: @Shoaibi: Critical: Refactor this and AutoresponderAndCampaignItemsUtil
+            $emailMessage                       = new EmailMessage();
+            $emailMessage->subject              = $emailTemplate->subject;
+            $emailContent                       = new EmailMessageContent();
+            $emailContent->textContent          = $emailTemplate->textContent;
+            // we do not need to do : EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
+            // check __set of EmailTemplate.
+            $emailContent->htmlContent          = $htmlContent;
+            $emailMessage->content              = $emailContent;
+            $emailMessage->sender               = static::resolveSender();
+            static::resolveRecipient($emailMessage, $contact, $emailAddress);
+            $box                                = EmailBox::resolveAndGetByName(EmailBox::USER_DEFAULT_NAME);
+            $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+            Yii::app()->emailHelper->sendImmediately($emailMessage);
+            $emailMessage->owner                = $emailTemplate->owner;
+            $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailTemplate);
+            ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
+                                                                                    $explicitReadWriteModelPermissions);
+            if (!$emailMessage->save())
+            {
+                throw new FailedToSaveModelException("Unable to save EmailMessage");
+            }
+        }
+
+        protected static function resolveSender()
+        {
+            $sender                         = new EmailMessageSender();
+            $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel);
+            $sender->fromName               = strval(Yii::app()->user->userModel);
+            return $sender;
+        }
+
+        protected static function resolveRecipient(EmailMessage $emailMessage, Contact $contact = null, $emailAddress = null)
+        {
+            if ($contact === null)
+            {
+                $contact  = static::resolveDefaultRecipient();
+            }
+            if($emailAddress == null)
+            {
+                $primaryEmailAddress    = $contact->primaryEmail->emailAddress;
+            }
+            else
+            {
+                $primaryEmailAddress    = $emailAddress;
+            }
+
+            if ($primaryEmailAddress != null)
+            {
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $primaryEmailAddress;
+                $recipient->toName          = strval($contact);
+                $recipient->type            = EmailMessageRecipient::TYPE_TO;
+                $recipient->personsOrAccounts->add($contact);
+                $emailMessage->recipients->add($recipient);
+            }
+        }
+
+        protected static function resolveDefaultRecipient()
+        {
+            return Yii::app()->user->userModel;
         }
     }
 ?>

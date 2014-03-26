@@ -242,6 +242,10 @@
             {
                 return 'ModifiedDateTime';
             }
+            if ($attributeName =='latestActivityDateTime')
+            {
+                return 'LatestActivityDateTime';
+            }
             if ($attributeName =='username')
             {
                 return 'Username';

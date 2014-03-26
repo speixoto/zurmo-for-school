@@ -131,37 +131,37 @@
          * used by the zurmo page view.
          * @param CController $controller
          * @param View $containedView
+         * @return View
          */
         public static function makeStandardViewForCurrentUser(CController $controller, View $containedView)
         {
-            // in case of mobile we render it as part of menu.
-            if (static::$showRecentlyViewed && !Yii::app()->userInterface->isMobile())
+            if (static::$showRecentlyViewed)
             {
-                $verticalColumns = 2;
+                $verticalColumns = 3;
             }
             else
             {
-                $verticalColumns = 1;
+                $verticalColumns = 2;
             }
-            $aVerticalGridView   = new GridView($verticalColumns, 1);
-
-            $aVerticalGridView->setCssClasses( array('AppNavigation', 'clearfix')); //navigation left column
+            $aVerticalGridView   = new GridView($verticalColumns, 1,'nav', false);
+            $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
             $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
             if (static::$showRecentlyViewed)
             {
                 $aVerticalGridView->setView(static::makeRecentlyViewedView(), 1, 0);
             }
+            $aVerticalGridView->setView(new UserInterfaceChooserView(), ($verticalColumns - 1), 0);
 
-            $horizontalGridView = new GridView(1, 3);
-            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix')); //teh conatiner for the floated items
+            $horizontalGridView = new GridView(1, 3, 'section', false);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'container', 'clearfix')); //teh conatiner for the floated items
             $horizontalGridView->setView($aVerticalGridView, 0, 0);
 
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent'))); //the app itself to the right
 
             $horizontalGridView->setView($containedView, 0, 1);
-            $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $cotainedView
+            $horizontalGridView->setView(static::makeFlashMessageView($controller),   0, 2); //TODO needs to move into $containedView
 
-            $verticalGridView   = new GridView(6, 1);
+            $verticalGridView   = new GridView(6, 1, null);
             $verticalGridView->setView(static::makeHeaderView($controller),                 0, 0);
             $verticalGridView->setView($horizontalGridView,                                 1, 0);
             $verticalGridView->setView(static::makeModalContainerView(),                    2, 0);
@@ -180,12 +180,12 @@
          */
         public static function makeAuthorizationViewForCurrentUser(CController $controller, View $containedView)
         {
-            $horizontalGridView = new GridView(1, 1);
-            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix'));
+            $horizontalGridView = new GridView(1, 1, 'section', false);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'container', 'clearfix'));
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent')));
             $horizontalGridView->setView($containedView, 0, 0);
 
-            $verticalGridView   = new GridView(3, 1);
+            $verticalGridView   = new GridView(3, 1, null);
             $verticalGridView->setView(static::makeHeaderView($controller),         0, 0);
             $verticalGridView->setView($horizontalGridView,                         1, 0);
             $verticalGridView->setView(static::makeFooterView(),                    2, 0);
@@ -199,17 +199,17 @@
          */
         public static function makeErrorViewForCurrentUser(CController $controller, View $containedView)
         {
-            $aVerticalGridView   = new GridView(1, 1);
-            $aVerticalGridView->setCssClasses( array('AppNavigation', 'clearfix')); //navigation left column
+            $aVerticalGridView   = new GridView(1, 1,'nav', false);
+            $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
             $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
 
-            $horizontalGridView = new GridView(2, 1);
-            $horizontalGridView->setCssClasses(array('AppContainer', 'clearfix'));
+            $horizontalGridView = new GridView(2, 1, 'section', false);
+            $horizontalGridView->setCssClasses(array('AppContainer', 'container', 'clearfix')); //teh conatiner for the floated items
             $horizontalGridView->setView($aVerticalGridView, 0, 0);
             $containedView->setCssClasses(array_merge($containedView->getCssClasses(), array('AppContent', 'ErrorView'))); //the app itself to the right
             $horizontalGridView->setView($containedView, 1, 0);
 
-            $verticalGridView   = new GridView(3, 1);
+            $verticalGridView   = new GridView(3, 1, null);
             $verticalGridView->setView(static::makeHeaderView($controller),         0, 0);
             $verticalGridView->setView($horizontalGridView,                         1, 0);
             $verticalGridView->setView(static::makeFooterView(),                    2, 0);
@@ -223,26 +223,18 @@
             $settingsMenuItems        = static::resolveHeaderMenuItemsForMobile($settingsMenuItems);
             $userMenuItems            = static::getAndResolveUserMenuItemsForHeader();
             $applicationName          = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
-            if (Yii::app()->userInterface->isMobile())
-            {
-                $headerView               = new MobileHeaderView($settingsMenuItems, $userMenuItems, $applicationName);
-            }
-            else
-            {
-                $shortcutsCreateMenuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-                $moduleNamesAndLabels     = GlobalSearchUtil::
-                                                getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
-                $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
-                GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption($moduleNamesAndLabels);
-                $headerView               = new HeaderView($controller->getId(),
-                                                            $controller->getModule()->getId(),
-                                                            $settingsMenuItems,
-                                                            $userMenuItems,
-                                                            $shortcutsCreateMenuItems,
-                                                            $moduleNamesAndLabels,
-                                                            $sourceUrl,
-                                                            $applicationName);
-            }
+            $shortcutsCreateMenuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
+            $moduleNamesAndLabels     = GlobalSearchUtil::
+                                        getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
+            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
+            GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption($moduleNamesAndLabels);
+            $headerView = new HeaderView(  $settingsMenuItems,
+                                           $userMenuItems,
+                                           $shortcutsCreateMenuItems,
+                                           $moduleNamesAndLabels,
+                                           $sourceUrl,
+                                           $applicationName);
+            $headerView->setCssClasses(array('HeaderView'));
             return $headerView;
         }
 
@@ -347,53 +339,11 @@
                         unset($items[$key]);
                     }
                 }
-                static::resolveItemsAsItemsForMobile($items, $useMinimalDynamicLabelMbMenu, $controller);
             }
             else
             {
                 return;
             }
-        }
-
-        protected static function resolveItemsAsItemsForMobile(& $items, &$useMinimalDynamicLabelMbMenu, $controller = null)
-        {
-            $useMinimalDynamicLabelMbMenu   = true;
-            static::$showRecentlyViewed     = false;
-            $controller                     = ($controller)? $controller: Yii::app()->request->controller;
-            $shortcutsCreateMenuItems       = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-            static::resolveShortcutsCreateMenuItemsForMobile($shortcutsCreateMenuItems);
-            $shortcutsCreateMenuView        = new MobileShortcutsCreateMenuView(
-                $controller->getId(),
-                $controller->getModule()->getId(),
-                $shortcutsCreateMenuItems
-            );
-            $moduleNamesAndLabels           = GlobalSearchUtil::
-                getGlobalSearchScopingModuleNamesAndLabelsDataByUser(
-                Yii::app()->user->userModel);
-            $sourceUrl                      = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
-            $globalSearchView               = new MobileGlobalSearchView($moduleNamesAndLabels, $sourceUrl);
-            $recentlyViewed                 = static::makeRecentlyViewedView();
-            $recentlyViewedMenu             = $recentlyViewed->renderMenu();
-            $searchItem                     = array(
-                array(
-                    'label'                 => '',
-                    'dynamicLabelContent'   => $globalSearchView->render(),
-                    'itemOptions'           => array('id' => 'search'),
-                ));
-            $shortcutsItems                 = array(
-                array(
-                    'label'                 => '',
-                    'dynamicLabelContent'   => $shortcutsCreateMenuView->render(),
-                    'itemOptions'           => array('id' => 'shortcuts'),
-                ));
-            $recentlyViewedItems            = array(
-                array(
-                    'label'                 => '',
-                    'dynamicLabelContent'   => MobileHtml::renderFlyoutTrigger('Recently Viewed'),
-                    'itemOptions'           => array('id' => 'recently-viewed'),
-                    'items'                 => ($recentlyViewedMenu) ? $recentlyViewedMenu : null,
-                ));
-            $items                          = CMap::mergeArray($searchItem, $items, $shortcutsItems, $recentlyViewedItems);
         }
 
         protected static function resolveShortcutsCreateMenuItemsForMobile(& $shortcutsCreateMenuItems)

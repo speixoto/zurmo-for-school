@@ -337,7 +337,7 @@
             $accountMappingData = array('attributeIndexOrDerivedType' => 'account',
                                         'type'                        => 'importColumn',
                                         'mappingRulesData'            => array(
-                                        'IdValueTypeMappingRuleForm'  => array()));
+                                        'RelatedModelValueTypeMappingRuleForm'  => array('type' => RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)));
 
             $mappingData = array(
                 'column_0'  => ImportMappingUtil::makeStringColumnMappingData       ('firstName'),

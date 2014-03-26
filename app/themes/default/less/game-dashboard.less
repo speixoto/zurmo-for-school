@@ -32,17 +32,17 @@
 // "Copyright Zurmo Inc. 2014. All rights reserved".
 
 .gd-dashboard-active{
-	#HeaderView{
+	/*#HeaderView{
 		position: fixed;
 		width: 100%;
 	}
 	.AppContainer{
 		padding-top: 78px;
-	}
+	}*/
 }
 
 #gd-overlay{
-	top:78px;
+	top:0;
 	left: 0;
 	right: 0;
 	bottom:0;
@@ -50,11 +50,12 @@
 	position:absolute;
 	width:100%;
 	display: block;
+	z-index: 99;
 }
 
 #gd-container{
 	z-index: 100;
-	top:78px;
+	top:0;
 	left: 0;
 	right: 0;
 	bottom:0;
@@ -63,9 +64,6 @@
 	height:100%;
 	display:table;
 	overflow: hidden;
-	*{
-		
-	}
 }
 
 #gd-centralizer{

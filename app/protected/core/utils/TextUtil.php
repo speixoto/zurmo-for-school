@@ -149,7 +149,7 @@
             }
             // Add the remainder of the text.
             $html .= substr($text, $position);
-            return $html;
+            return nl2br($html);
         }
     }
 ?>

@@ -108,11 +108,21 @@
 }
 
 .animateAll(@time: 0.5s){
-    -webkit-transition: all @time ease-out;
-       -moz-transition: all @time ease-out;
-		-ms-transition: all @time ease-out;
-         -o-transition: all @time ease-out;
-            transition: all @time ease-out;
+	@easeOutSine:cubic-bezier(0.390, 0.575, 0.565, 1.000);
+	@easeInOutSine:cubic-bezier(0.445, 0.050, 0.550, 0.950);
+
+	-webkit-transition: all @time @easeOutSine;//ease-in-out;
+	   -moz-transition: all @time @easeOutSine;//ease-in-out;
+	    -ms-transition: all @time @easeOutSine;//ease-in-out;
+	     -o-transition: all @time @easeOutSine;//ease-in-out;
+	        transition: all @time @easeOutSine;//ease-in-out;
+
+		    -ms-transform: translate(0px, 0);
+		   -moz-transform: translate(0px, 0);
+		-webkit-transform: translate3d(0px, 0, 0);
+		        transform: translate(0px, 0);
+	-webkit-touch-callout: none;
+	  -webkit-user-select: none;
 }
 
 .cf,
@@ -265,4 +275,20 @@
     padding: 0;
     margin: 0;
     .reset-filter();
+}
+
+.flexbox() {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+.flex(@values) {
+	-webkit-box-flex: @values;
+	-moz-box-flex:  @values;
+	-webkit-flex:  @values;
+	-ms-flex:  @values;
+	flex:  @values;
 }

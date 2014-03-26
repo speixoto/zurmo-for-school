@@ -159,7 +159,7 @@
             $savedCalendar              = CalendarTestHelper::createSavedCalendarByName('Test Cal', '#315AB0');
             $currentDateTime            = new DateTime('NOW');
             $currentDateTime->add(new DateInterval('P1D'));
-            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel, $savedCalendar->id);
+            $savedCalendarSubscriptions = SavedCalendarSubscriptions::makeByUser(Yii::app()->user->userModel, (string)$savedCalendar->id);
             $dp                         = CalendarItemsDataProviderFactory::getDataProviderByDateRangeType($savedCalendarSubscriptions,
                                                                                                            '2014-01-01',
                                                                                                            $currentDateTime->format('Y-m-d'),
@@ -173,7 +173,7 @@
             $this->assertEquals($savedCalendar->id, $keys[0]);
             $items                      = CalendarUtil::getFullCalendarItems($dp);
             $this->assertCount(1, $items);
-            $this->assertEquals($product, $items[0]['model']);
+            $this->assertEquals($product->id, $items[0]['modelId']);
         }
     }
 ?>
