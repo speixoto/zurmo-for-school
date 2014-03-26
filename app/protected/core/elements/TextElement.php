@@ -79,7 +79,7 @@
          */
         protected function resolveEditableHtmlOptionsInputValue(& $htmlOptions)
         {
-            if($this->attribute == 'id' && (ZurmoHtml::resolveValue($this->model, $this->attribute) < 0))
+            if ($this->attribute == 'id' && (ZurmoHtml::resolveValue($this->model, $this->attribute) < 0))
             {
                 $htmlOptions['value'] = '';
             }

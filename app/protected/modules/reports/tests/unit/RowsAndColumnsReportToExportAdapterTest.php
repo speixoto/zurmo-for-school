@@ -266,7 +266,7 @@
             $this->assertEquals($compareRowData, $adapter->getData());
             $reportModelTestItem->delete();
         }
-        
+
         public function testExportRelationAttributes()
         {
             $values = array(
