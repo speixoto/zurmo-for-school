@@ -78,7 +78,7 @@ var emailTemplateEditor = {
             this.settings.deleteActionSelector          = deleteActionSelector;
             this.settings.sortableRowsClass             = sortableRowsClass;
             this.settings.sortableElementsClass         = sortableElementsClass;
-            this.settings.sortableRowsSelector          = '.' + sortableRowsClass;
+            this.settings.sortableRowsSelector          = '.' + sortableRowsClass + ' > center';
             this.settings.sortableElementsSelector      = '.' + sortableElementsClass;
             this.settings.cellDroppableClass            = cellDroppableClass;
             this.settings.iframeOverlaySelector         = iframeOverlaySelector;
@@ -371,7 +371,7 @@ var emailTemplateEditor = {
     },
     onClickDeleteEvent: function () {
         //Check if removing last row
-        if ($(this).closest(emailTemplateEditor.settings.sortableRowsSelector).find('center').children('.element-wrapper').length > 1 ||
+        if ($(this).closest(emailTemplateEditor.settings.sortableRowsSelector).children('.element-wrapper').length > 1 ||
             $(this).parents(emailTemplateEditor.settings.sortableElementsSelector).length > 0) {
                 //Remove row/element
                 $(this).closest(".element-wrapper").remove();
