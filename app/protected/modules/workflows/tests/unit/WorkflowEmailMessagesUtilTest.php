@@ -107,6 +107,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->textContent    = 'some content';
@@ -146,6 +147,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->textContent    = 'some content';
@@ -194,6 +196,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->textContent    = 'some content';

@@ -62,8 +62,9 @@
 
         protected function resolveWrapperTdNonEditableByContent($content, array $properties = array())
         {
+            $this->resolveContentWhenColumnIsEmpty($content);
             $content        = parent::resolveWrapperTdNonEditableByContent($content, $properties);
-            $content        .= ZurmoHtml::tag('td', $this->resolveNonEditableExpanderTdHtmlOptions(), '');
+            $content       .= ZurmoHtml::tag('td', $this->resolveNonEditableExpanderTdHtmlOptions(), '');
             return $content;
         }
 
