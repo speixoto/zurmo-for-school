@@ -186,28 +186,6 @@ var emailTemplateEditor = {
             }
         }
 
-        function onBodyMouseUp(event){
-            $('body').off('mousemove');
-            $('body').off('mouseup');
-            emailTemplateEditor.settings.isDragging = false;
-            if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
-                var wrapInRow = elementDragged.data('wrap');
-                if (typeof wrapInRow == 'undefined') {
-                    if( emailTemplateEditor.settings.ghost.parent().hasClass( emailTemplateEditor.settings.sortableRowsClass) === true ){
-                        wrapInRow = emailTemplateEditor.settings.wrapInRow;
-                    } else {
-                        wrapInRow = emailTemplateEditor.settings.doNotWrapInRow;
-                    }
-                }
-                emailTemplateEditor.placeNewElement(elementDraggedClass, wrapInRow, iframeContents, innerElements);
-            } else {
-                console.log('dropped either outside of canvas or not on element');
-                //Remove the ghost element
-                $(innerElements).each(function(){$(this).removeClass('hover');});
-                emailTemplateEditor.settings.ghost.detach();
-            }
-        }
-
         function onBodyMouseMove(event){
             if(emailTemplateEditor.settings.isDragging === true){
                 $(innerElements).each(function(){$(this).removeClass('hover');});
@@ -242,6 +220,28 @@ var emailTemplateEditor = {
         function onIFrameBodyMouseMove(event){
             $(emailTemplateEditor.settings.iframeSelector).contents().find('.hover').removeClass('hover');
             $(event.target).closest('.element-wrapper').addClass('hover');
+        }
+
+        function onBodyMouseUp(event){
+            $('body').off('mousemove');
+            $('body').off('mouseup');
+            emailTemplateEditor.settings.isDragging = false;
+            if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
+                var wrapInRow = elementDragged.data('wrap');
+                if (typeof wrapInRow == 'undefined') {
+                    if( emailTemplateEditor.settings.ghost.parent().hasClass( emailTemplateEditor.settings.sortableRowsClass) === true ){
+                        wrapInRow = emailTemplateEditor.settings.wrapInRow;
+                    } else {
+                        wrapInRow = emailTemplateEditor.settings.doNotWrapInRow;
+                    }
+                }
+                emailTemplateEditor.placeNewElement(elementDraggedClass, wrapInRow, iframeContents, innerElements);
+            } else {
+                console.log('dropped either outside of canvas or not on element');
+                //Remove the ghost element
+                $(innerElements).each(function(){$(this).removeClass('hover');});
+                emailTemplateEditor.settings.ghost.detach();
+            }
         }
     },
     //Init the cells to be sortable
