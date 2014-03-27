@@ -952,15 +952,17 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
+// Begin Not Coding Standard
                                                                                         'text' => '
  <b>New Products</b>
 <ul>
-    <li><a href="#" target="_blank">AcmeMaster 10,000</a></li>.' // Not Coding Standard
-  '.<li><a href="#">ProAcme 5,000</a></li>.' // Not Coding Standard
-  '.<li><a href="#">AcmeMaster++</a></li>
+    <li><a href="#" target="_blank">AcmeMaster 10,000</a></li>
+    <li><a href="#">ProAcme 5,000</a></li>
+    <li><a href="#">AcmeMaster++</a></li>
     <li><a href="#" target="_blank">The Acme Beginner pro</a></li>
 </ul>
 ',
+// End Not Coding Standard
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (
