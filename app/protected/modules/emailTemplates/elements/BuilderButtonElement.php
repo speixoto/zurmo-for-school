@@ -39,7 +39,7 @@
         /**
          * @var array
          */
-        protected $inlineStylesToKeepOnATag = array('color', 'font-size', 'font-family', 'font-weight');
+        protected $inlineStylesToKeepOnATag = array('color', 'font-size', 'font-family');
 
         public static function isUIAccessible()
         {
@@ -73,12 +73,24 @@
             $href                   = null;
             extract($this->properties['frontend']);
             $text                   = $this->properties['backend']['text'];
-            $label                  = ZurmoHtml::tag('strong', array(), $text);
+            $strongHtmlOptions      = $this->resolveFrontendPropertiesForStrong();
+            $label                  = ZurmoHtml::tag('strong', $strongHtmlOptions, $text);
             $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
             $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
             $options                = CMap::mergeArray($htmlOptions, $frontendOptions);
             $content                = ZurmoHtml::link($label, $href, $options);
             return $content;
+        }
+
+        protected function resolveFrontendPropertiesForStrong()
+        {
+            $strongHtmlOptions      =  array();
+            if (isset($this->properties['frontend']['inlineStyles']['font-weight']))
+            {
+                $inlineStyles['font-weight'] = $this->properties['frontend']['inlineStyles']['font-weight'];
+                $strongHtmlOptions = array('style' => $this->stringifyProperties($inlineStyles, null, null, ':', ';'));
+            }
+            return $strongHtmlOptions;
         }
 
         protected function resolveFrontendPropertiesNonEditable()
