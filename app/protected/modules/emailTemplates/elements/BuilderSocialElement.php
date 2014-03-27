@@ -110,7 +110,7 @@
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
-            $htmlOptions['class']  .= ' ' .$this->properties['backend']['layout']; // Not Coding Standard
+            $htmlOptions['class']  .= ' ' . $this->properties['backend']['layout'];
             return $htmlOptions;
         }
 
