@@ -139,7 +139,6 @@
 
 #kanban-board{
 	.clearfix();
-	
 	display: table;
 	vertical-align: top;
 	height: 100%;
@@ -149,7 +148,6 @@
 
 .drop-zone-container{
 	padding: 37px 2px 2px 2px;
-	
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -164,9 +162,7 @@
 	border:2px dashed @themeColor;
 }
 
-
 .kanban-column{
-	
 	white-space: normal;
 	display: table-cell;//inline-block;
 	vertical-align: top;
@@ -400,11 +396,22 @@
 	overflow: hidden;
 	float: right;
 	margin:0 0 10px 5px !important;
+	.radius(3px);
+	.default-button{
+		border: none;
+		+ .default-button{
+			bordr-left:1px solid #bababa;
+		}
+	}
+	a{
+		line-height: 1;
+	}
 	.button-label {
 		.smaller();
 		padding: 0 3px !important;
 		line-height: 20px !important;
 		z-index: 10;
+		margin: 0 !important;
 		&:before{
 			content:'';
 			position: absolute;

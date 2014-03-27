@@ -357,6 +357,41 @@
         }
 
         /**
+         * Some task status's are ok for multiple kanban item types.
+         * @param $kanbanItemType
+         * @param $taskStatus
+         * @return true if the task status is ok for the current kanbanItemType
+         */
+        public static function isKanbanItemTypeValidBasedOnTaskStatus($kanbanItemType, $taskStatus)
+        {
+            if($taskStatus == null && $kanbanItemType == KanbanItem::TYPE_SOMEDAY)
+            {
+                return true;
+            }
+            elseif($taskStatus == null)
+            {
+                return false;
+            }
+            if ($taskStatus == Task::STATUS_NEW)
+            {
+                if($kanbanItemType == KanbanItem::TYPE_SOMEDAY || $kanbanItemType == KanbanItem::TYPE_TODO)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            $data = self::getTaskStatusMappingToKanbanItemTypeArray();
+            if($data[intval($taskStatus)] == $kanbanItemType)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
          * Resolves Subscribe Url
          * @param int $taskId
          * @return string
@@ -976,24 +1011,30 @@
             //It should be created here but check for create as well here
             if ($kanbanItem == null)
             {
-                $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+                TasksUtil::createKanbanItemFromTask($task);
             }
-            $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            if ($kanbanItem->type != $kanbanTypeByStatus)
+            else
             {
-                $sourceKanbanItemType = $kanbanItem->type;
-                //put the item at the end
-                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
-                $kanbanItem->type = $kanbanTypeByStatus;
-                $kanbanItem->save();
-                //Resort the source column
-                if ($task->project->id > 0)
+                if (!TasksUtil::isKanbanItemTypeValidBasedOnTaskStatus($kanbanItem->type, $task->status))
                 {
-                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
-                }
-                elseif ($task->activityItems->count() > 0)
-                {
-                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
+                    $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+                    if ($kanbanItem->type != $kanbanTypeByStatus)
+                    {
+                        $sourceKanbanItemType = $kanbanItem->type;
+                        //put the item at the end
+                        $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
+                        $kanbanItem->type = $kanbanTypeByStatus;
+                        $kanbanItem->save();
+                        //Resort the source column
+                        if ($task->project->id > 0)
+                        {
+                            TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
+                        }
+                        elseif ($task->activityItems->count() > 0)
+                        {
+                            TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
+                        }
+                    }
                 }
             }
         }
@@ -1141,6 +1182,24 @@
             {
                 TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
             }
+        }
+
+        /**
+         * Gets full calendar item data.
+         * @return string
+         */
+        public function getCalendarItemData()
+        {
+            $name                      = $this->name;
+            $status                    = self::getStatusDisplayName($this->status);
+            $requestedByUser           = $this->requestedByUser->getFullName();
+            $owner                     = $this->owner->getFullName();
+            $language                  = Yii::app()->languageHelper->getForCurrentUser();
+            $translatedAttributeLabels = self::translatedAttributeLabels($language);
+            return array(Zurmo::t('Core',        'Name',    array(), null, $language)          => $name,
+                         Zurmo::t('ZurmoModule', 'Status',  array(), null, $language)       => $status,
+                         $translatedAttributeLabels['requestedByUser']                      => $requestedByUser,
+                         $translatedAttributeLabels['owner']                                => $owner);
         }
     }
 ?>

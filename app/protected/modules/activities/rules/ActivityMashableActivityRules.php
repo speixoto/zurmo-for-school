@@ -117,7 +117,7 @@
             {
                 return Zurmo::t('ActivitiesModule', 'for {relatedModelsStringContent}', array('{relatedModelsStringContent}' => $stringContent));
             }
-            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Contact');
+            $stringContent = self::getActivityItemsStringContentByModelClassName($model, 'Contact', 'ContactsStateMetadataAdapter');
             if ($stringContent != null)
             {
                 return Zurmo::t('ActivitiesModule', 'with {relatedContactsStringContent}', array('{relatedContactsStringContent}' => $stringContent));
@@ -140,9 +140,11 @@
          * @param string $castDownModelClassName
          * @return null|string
          */
-        protected static function getActivityItemsStringContentByModelClassName(RedBeanModel $model, $castDownModelClassName)
+        protected static function getActivityItemsStringContentByModelClassName(RedBeanModel $model,
+                                  $castDownModelClassName, $stateMetadataAdapter = 'StateMetadataAdapter')
         {
             assert('is_string($castDownModelClassName)');
+            assert('is_string($stateMetadataAdapter)');
             $existingModels = array();
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($castDownModelClassName);
             foreach ($model->activityItems as $item)
@@ -155,7 +157,7 @@
                         if (strval($castedDownModel) != null)
                         {
                             $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
-                            $moduleClassName = $castedDownModel->getModuleClassName();
+                            $moduleClassName = $stateMetadataAdapter::getModuleClassNameByModel($castedDownModel);
                             $moduleId        = $moduleClassName::getDirectoryName();
                             $element         = new DetailsLinkActionElement('default', $moduleId,
                                                                             $castedDownModel->id, $params);

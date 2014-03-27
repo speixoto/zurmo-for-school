@@ -47,8 +47,8 @@
             $form = MarketingConfigurationFormAdapter::makeFormFromMarketingConfiguration();
             $this->assertEquals(AutoresponderOrCampaignBatchSizeConfigUtil::CONFIG_DEFAULT_VALUE,           $form->autoresponderOrCampaignBatchSize);
             $this->assertEquals(CampaignItemsUtil::DEFAULT_CAMPAIGNITEMS_TO_CREATE_PAGE_SIZE,               $form->campaignItemsToCreatePageSize);
-            $this->assertEquals(UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(false),  $form->autoresponderOrCampaignFooterPlainText);
-            $this->assertEquals(UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType(true),   $form->autoresponderOrCampaignFooterRichText);
+            $this->assertEquals(GlobalMarketingFooterUtil::getContentByType(false),  $form->autoresponderOrCampaignFooterPlainText);
+            $this->assertEquals(GlobalMarketingFooterUtil::getContentByType(true),   $form->autoresponderOrCampaignFooterRichText);
 
             //User is not root so he cant change batch size
             $form->autoresponderOrCampaignBatchSize         = 20;

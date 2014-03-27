@@ -122,7 +122,7 @@
             $unsubscriberCount          = 2;
             $this->setGetArray(array('marketingListId' => $marketingListId));
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/countMembers');
-            $countArray                 = CJson::decode($content);
+            $countArray                 = CJSON::decode($content);
             $this->assertNotEmpty($countArray);
             $this->assertArrayHasKey('subscriberCount', $countArray);
             $this->assertArrayHasKey('unsubscriberCount', $countArray);
@@ -146,7 +146,7 @@
                                     'type'              => $type,
                                 ));
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -154,7 +154,7 @@
             $this->assertEquals('message', $contentArray['type']);
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -176,7 +176,7 @@
                                     'type'              => $type,
                                 ));
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -184,7 +184,7 @@
             $this->assertEquals('message', $contentArray['type']);
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -200,7 +200,7 @@
                                 ));
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $percent                    = round((2 / $contactCount) * 100,0) ; // Not Coding Standard
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
@@ -221,7 +221,7 @@
                                 ));
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);

@@ -36,15 +36,14 @@
 
     class AutoresponderEditAndDetailsView extends SecuredEditAndDetailsView
     {
-        // TODO: @Shoaibi: Low: Refactor this and EmailTemplateEditAndDetailsView
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'    => 'AutorespondersCancelLink', 'renderType' => 'Edit'),
                             array('type'    => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type'    => 'AutorespondersCancelLink', 'renderType' => 'Edit'),
                             array('type'    => 'EditLink', 'renderType' => 'Details'),
                             array('type'    => 'AutoresponderDeleteLink'),
                         ),
@@ -57,7 +56,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'operationType',
-                                                                                'type' => 'AutoresponderOperationType'),
+                                                      'type' => 'AutoresponderOperationType'),
                                             ),
                                         ),
                                     )
@@ -123,7 +122,7 @@
         protected function renderAfterFormLayout($form)
         {
             $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column full-width strong-right clearfix'), $content);
         }
 
         protected function renderAfterFormLayoutForDetailsContent($form = null)
@@ -135,11 +134,25 @@
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
             $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
+            $element->plugins = array('fontfamily', 'fontsize', 'fontcolor');
             if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            return ZurmoHtml::tag('div', array('class' => 'autoresponder-combined-content'), $element->render());
+            $content  = ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderMergeTagsContent());
+            $content .= ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            return $content;
+        }
+
+        protected function renderMergeTagsContent()
+        {
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $view = new MergeTagsView('Autoresponder',
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'textContent')),
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'htmlContent')),
+                            false);
+            $content = $view->render();
+            return $title . $content;
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)

@@ -67,7 +67,7 @@
             assert('$controller == null || $controller instanceof CController');
             $items = MenuUtil::resolveByCacheAndGetVisibleAndOrderedAdminTabMenuByCurrentUser();
             static::resolveForActiveMenuItem($items, $controller);
-            return new MenuView($items, false, 10);
+            return new MenuView($items, false, 10, array('admin-menu'));
         }
     }
 ?>

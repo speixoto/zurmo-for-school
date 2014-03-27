@@ -47,24 +47,9 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Subject 01',
-                                                                'Contact',
-                                                                'EmailTemplate 01',
-                                                                'html',
-                                                                'text');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Subject 02',
-                                                                'Contact',
-                                                                'EmailTemplate 02',
-                                                                'html',
-                                                                'text');
-            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                'Subject 03',
-                                                                'Contact',
-                                                                'EmailTemplate 03',
-                                                                'html',
-                                                                'text');
+            EmailTemplateTestHelper::create('EmailTemplate 01', 'Subject 01', 'Contact', 'html', 'text');
+            EmailTemplateTestHelper::create('EmailTemplate 02', 'Subject 02', 'Contact', 'html', 'text');
+            EmailTemplateTestHelper::create('EmailTemplate 03', 'Subject 03', 'Contact', 'html', 'text');
             MarketingListTestHelper::createMarketingListByName('MarketingListName',
                                                                'MarketingList Description',
                                                                'first',
@@ -215,7 +200,7 @@
             $this->assertEquals(1, substr_count($content, 'campaign01'));
             $this->assertEquals(1, substr_count($content, 'campaign02'));
             $this->assertEquals(2, substr_count($content, 'Active'));
-            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
+            $this->assertEquals(3, substr_count($content, 'Clark Kent'));
             $this->assertEquals(4, substr_count($content, '@zurmo.com'));
             $this->assertEquals(6, substr_count($content, 'fromCampaign'));
             $this->assertEquals(3, substr_count($content, 'fromCampaign2'));
@@ -242,7 +227,7 @@
             $this->assertTrue(strpos($content, '<th id="list-view_c2">Status</th>') !== false);
             $this->assertEquals(1, substr_count($content, 'campaign02'));
             $this->assertEquals(1, substr_count($content, 'Active'));
-            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
             $this->assertEquals(2, substr_count($content, '@zurmo.com'));
             $this->assertEquals(7, substr_count($content, 'fromCampaign2'));
             $this->assertEquals(2, substr_count($content, 'fromCampaign2@zurmo.com'));
@@ -267,7 +252,7 @@
             $this->assertTrue(strpos($content, '<th id="list-view_c2">Status</th>') !== false);
             $this->assertEquals(1, substr_count($content, 'campaign02'));
             $this->assertEquals(1, substr_count($content, 'Active'));
-            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
             $this->assertEquals(2, substr_count($content, '@zurmo.com'));
             $this->assertEquals(7, substr_count($content, 'fromCampaign2'));
             $this->assertEquals(2, substr_count($content, 'fromCampaign2@zurmo.com'));
@@ -280,8 +265,6 @@
         {
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/create');
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Campaigns</title>') !== false);
-            $this->assertTrue(strpos($content, '<div id="CampaignsPageView" class="ZurmoDefaultPageView ' .
-                                                'ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingBreadCrumbView" class="BreadCrumbView">' .
                                                 '<div class="breadcrumbs">') !== false);
             $this->assertTrue(strpos($content, '<div class="AppContent GridView">') !== false);
@@ -353,15 +336,14 @@
             $this->assertTrue(strpos($content, '>EmailTemplate 03</option>') !== false);
             $this->assertTrue(strpos($content, '</select></div></td></tr>') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="fileUploadCampaign">' .
-                                                '<div class="fileupload-buttonbar clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix">') !== false);
             $this->assertTrue(strpos($content, '<div class="addfileinput-button"><span>Y</span>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
             $this->assertTrue(strpos($content, '<input id="Campaign_files" type="file" name="Campaign_files"') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-content">') !== false);
             $this->assertTrue(strpos($content, '<table class="files">') !== false);
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
-            $this->assertTrue(strpos($content, '<div class="email-template-combined-content">') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-combined-content') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
@@ -373,13 +355,11 @@
                                                 '</textarea></td></div>') !== false);
             $this->assertTrue(strpos($content, '<div id="tab2" class="active-tab tab email-template-htmlContent">' .
                                                 '<label for="Campaign_htmlContent">Html Content</label>') !== false);
-            $this->assertTrue(strpos($content, '<textarea id=\'Campaign_htmlContent\' name=\'Campaign[htmlContent]\'>' .
-                                                '</textarea></div></div></td></div>') !== false);
+            $this->assertTrue(strpos($content, '<textarea id="Campaign_htmlContent" name="Campaign[htmlContent]"') !== false);
             $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
                                                 'clearfix dock"><div class="form-toolbar">') !== false);
             $this->assertTrue(strpos($content, '/campaigns/default"><span class="z-label">Cancel</span></a>') !== false);
-            $this->assertTrue(strpos($content, '<span class="z-spinner"></span><span class="z-icon"></span>' .
-                                                '<span class="z-label">Save and Schedule</span></a></div') !== false);
+            $this->assertTrue(strpos($content, 'Save and Schedule') !== false);
             $this->assertTrue(strpos($content, '<div id="modalContainer-edit-form">') !== false);
 
             $this->setPostArray(array('Campaign' => array(
@@ -507,7 +487,7 @@
             $this->assertTrue(strpos($content, '<li class="juiportlet-widget CampaignOverallMetricsView type-campaigns" id="Campaign' .
                                                 'DetailsAndRelationsViewLeftBottomView') !== false);
             $this->assertTrue(strpos($content, '<div class="juiportlet-widget-head">') !== false);
-            $this->assertTrue(strpos($content, '<h3>Campaign Dashboard</h3><ul class="options-menu '.
+            $this->assertTrue(strpos($content, '<h3>Campaign Dashboard</h3><div class="portlet-actions-container"><ul class="options-menu '.
                                                 'edit-portlet-menu nav">') !== false);
             $this->assertTrue(strpos($content, '<li class="parent last"><a href="javascript:void(0);">' .
                                                 '<span></span></a>') !== false);
@@ -577,8 +557,6 @@
             $this->setGetArray(array('id' => $campaignId));
             $content = $this->runControllerWithNoExceptionsAndGetContent('campaigns/default/edit');
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Campaigns</title>') !== false);
-            $this->assertTrue(strpos($content, '<div id="CampaignsPageView" class="ZurmoDefaultPageView ' .
-                                                'ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingBreadCrumbView" class="BreadCrumbView">' .
                                                 '<div class="breadcrumbs">') !== false);
             $this->assertTrue(strpos($content, '/marketing/default/index">Marketing</a>') !== false);
@@ -645,14 +623,13 @@
             $this->assertTrue(strpos($content, 'EmailTemplate 02</option>') !== false);
             $this->assertTrue(strpos($content, 'EmailTemplate 03</option>') !== false);
             $this->assertTrue(strpos($content, '<th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="fileUploadCampaign"><div class="fileupload' .
-                                                '-buttonbar clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix">') !== false);
             $this->assertTrue(strpos($content, '<div class="addfileinput-button"><span>Y</span>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
             $this->assertTrue(strpos($content, '<input id="Campaign_files" type="file" name="Campaign_files"') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-content"><table class="files">') !== false);
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
-            $this->assertTrue(strpos($content, '<div class="email-template-combined-content">') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-combined-content') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-content"><div class="tabs-nav">') !== false);
             $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
@@ -664,8 +641,7 @@
                                                 '</textarea></td></div>') !== false);
             $this->assertTrue(strpos($content, '<div id="tab2" class=" tab email-template-htmlContent">' .
                                                 '<label for="Campaign_htmlContent">Html Content</label>') !== false);
-            $this->assertTrue(strpos($content, '<textarea id=\'Campaign_htmlContent\' name=\'Campaign[htmlContent]\'>' .
-                                                'Html</textarea></div>') !== false);
+            $this->assertTrue(strpos($content, '<textarea id="Campaign_htmlContent" name="Campaign[htmlContent]"') !== false);
 
             $marketingList      = MarketingListTestHelper::createMarketingListByName('MarketingListName2',
                                                                                         'MarketingList Description',

@@ -126,6 +126,24 @@
             $group = Group::getByName('JJJ');
             $this->assertEquals(2, $group->users ->count());
             $this->assertEquals(0, $group->groups ->count());
+            $fakePostData = array(
+                'userMembershipData'    => array(),
+                'userNonMembershipData' => array(0 => $bill->id, 1 => $jim->id),
+            );
+            $form = new GroupUserMembershipForm();
+            $this->assertEmpty($form->userMembershipData);
+            $this->assertEmpty($form->userNonMembershipData);
+            $form = GroupUserMembershipFormUtil::setFormFromCastedPost($form, $fakePostData);
+            $compare1 = array();
+            $this->assertEquals($compare1, $form->userMembershipData);
+            $group = Group::getByName('JJJ');
+            $this->assertEquals('JJJ', $group->name);
+            $saved = GroupUserMembershipFormUtil::setMembershipFromForm($form, $group);
+            $this->assertTrue($saved);
+            $group->forget();
+            $group = Group::getByName('JJJ');
+            $this->assertEquals(0, $group->users ->count());
+            $this->assertEquals(0, $group->groups ->count());
         }
 
         public function testValidateMembershipChange()

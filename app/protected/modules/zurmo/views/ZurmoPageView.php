@@ -56,5 +56,10 @@
         {
             return array();
         }
+
+        protected function getContainerWrapperTag()
+        {
+            return null;
+        }
     }
 ?>

@@ -81,7 +81,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView', $this->model->type) . "
                             $('#FiltersForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('40%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -91,7 +91,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView', $this->model->type) . "
                             $('#DisplayAttributesForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('60%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -101,7 +101,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                             $('#DisplayAttributesForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView', $this->model->type) . "
                             $('#OrderBysForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('80%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');

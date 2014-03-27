@@ -108,7 +108,9 @@
         {
             foreach (self::$_events as $index => $event)
             {
-                if ($event['name'] == $name && $event['handler'] == $handler)
+                // when comparing 2 objects use === instead of ==
+                // why? http://www.richardlord.net/blog/php-nesting-level-too-deep-recursive-dependency
+                if ($event['name'] == $name && $event['handler'] === $handler)
                 {
                     unset(self::$_events[$index]);
                 }

@@ -56,6 +56,14 @@
             return 'CreateEmailMessageForm';
         }
 
+        protected function getTextContentId()
+        {
+            $textContentId = $this->getModuleId() . '_content';
+            $textContentId .= '_';
+            $textContentId .= EmailTemplateHtmlAndTextContentElement::TEXT_CONTENT_INPUT_NAME;
+            return $textContentId;
+        }
+
         protected function getHtmlContentId()
         {
             $htmlContentId = $this->getModuleId() . '_content';

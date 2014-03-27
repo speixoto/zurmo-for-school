@@ -522,8 +522,8 @@
          */
         protected function afterSave()
         {
-            $this->resolvePermitablesToUpdate();
             parent::afterSave();
+            $this->resolvePermitablesToUpdate();
         }
 
         /**

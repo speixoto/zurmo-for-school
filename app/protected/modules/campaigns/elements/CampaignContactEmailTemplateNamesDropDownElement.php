@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CampaignContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
+    class CampaignContactEmailTemplateNamesDropDownElement extends ContactEmailTemplateNamesDropDownElement
     {
         protected function getModuleId()
         {

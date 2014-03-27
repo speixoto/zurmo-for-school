@@ -88,7 +88,7 @@
             $content .= '<div class="' . $class . '">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                                'ZurmoActiveForm',
+                                                                static::getFormClassName(),
                                                                 array_merge(
                                                                     array('id' => static::getFormId(),
                                                                     'htmlOptions' => $this->resolveFormHtmlOptions()),
@@ -128,6 +128,11 @@
                 return strval($this->model);
             }
             return $this->getNewModelTitleLabel();
+        }
+
+        protected static function getFormClassName()
+        {
+            return 'ZurmoActiveForm';
         }
 
         protected function renderRightSideContent($form = null)

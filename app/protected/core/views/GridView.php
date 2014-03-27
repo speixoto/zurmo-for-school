@@ -43,23 +43,29 @@
         private $columns;
         private $columnWidths;
         private $containedViews;
+        private $containerWrapperTag;
 
         /**
          * Constructs a GridView specifying a its number
          * of rows and columns.
          */
-        public function __construct($rows, $columns)
+        public function __construct($rows, $columns, $containerWrapperTag = 'div',
+                                    $makeDefaultClassesFromClassHeirarchy = true)
         {
             assert('is_int($rows)    && $rows    > 0');
             assert('is_int($columns) && $columns > 0');
+            assert('is_string($containerWrapperTag) || $containerWrapperTag == null');
+            assert('is_bool($makeDefaultClassesFromClassHeirarchy)');
             $this->rows         = $rows;
             $this->columns      = $columns;
             $this->columnWidths = array_pad(array(), $columns, 0);
-            $containedViews = array_pad(array(), $rows, null);
+           // $containedViews = array_pad(array(), $rows, null);
             for ($row = 0; $row < $rows; $row++)
             {
                 $this->containedViews[] = array_pad(array(), $columns, null);
             }
+            $this->containerWrapperTag                  = $containerWrapperTag;
+            $this->makeDefaultClassesFromClassHeirarchy = $makeDefaultClassesFromClassHeirarchy;
         }
 
         /**
@@ -70,6 +76,15 @@
         public function isUniqueToAPage()
         {
             return false;
+        }
+
+        /**
+         * //todo: eventually remove gridView entirely
+         * @return string
+         */
+        protected function getContainerWrapperTag()
+        {
+            return $this->containerWrapperTag;
         }
 
         /**

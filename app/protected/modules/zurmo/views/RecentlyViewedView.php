@@ -61,6 +61,7 @@
                 $cClipWidget->beginClip("recentlyViewed");
                 $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
                     'items' => $items,
+                    'labelPrefix'   => 'i',
                 ));
                 $cClipWidget->endClip();
                 $content .= $cClipWidget->getController()->clips['recentlyViewed'];

@@ -382,9 +382,8 @@ PTN;
                                                                                          $marketingListId, $modelId,
                                                                                          $modelType, $isHtmlContent)
         {
-            $unsubscribePlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
-                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribePlaceholder         = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             $replaceExisting    = false;
             if (strpos($content, $unsubscribePlaceholder) !== false ||
                 strpos($content, $manageSubscriptionsPlaceholder) !== false)
@@ -396,13 +395,13 @@ PTN;
         }
 
         /**
-         * @param string $content
-         * @param int $personId
-         * @param int $marketingListId
-         * @param int $modelId
+         * @param $content
+         * @param $personId
+         * @param $marketingListId
+         * @param $modelId
          * @param $modelType
-         * @param bool $isHtmlContent
-         * @param bool $replaceExisting
+         * @param $isHtmlContent
+         * @param $replaceExisting
          * @param bool $preview
          */
         public static function resolveUnsubscribeAndManageSubscriptionPlaceholders(& $content, $personId,
@@ -419,10 +418,6 @@ PTN;
             static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
             if ($replaceExisting)
             {
-                if ($preview)
-                {
-                    $content = static::resolveDefaultFooterPlaceholderContentByType($isHtmlContent);
-                }
                 static::resolveUnsubscribeAndManageSubscriptionPlaceholdersToUrls($content,
                                                                                   $unsubscribeUrl,
                                                                                   $manageSubscriptionsUrl);
@@ -472,19 +467,19 @@ PTN;
 
         protected static function resolveUnsubscribePlaceholderToUrl(& $content, $unsubscribeUrl)
         {
-            $placeholder      = UnsubscribeAndManageSubscriptionsPlaceholderUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $placeholder      = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
             $content          = str_replace($placeholder, $unsubscribeUrl, $content);
         }
 
         protected static function resolveManageSubscriptionsPlaceholderToUrl(& $content, $manageSubscriptionsUrl)
         {
-            $placeholder    = UnsubscribeAndManageSubscriptionsPlaceholderUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $placeholder    = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             $content        = str_replace($placeholder, $manageSubscriptionsUrl, $content);
         }
 
         protected static function resolveDefaultFooterPlaceholderContentByType($isHtmlContent)
         {
-            return UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType($isHtmlContent, true);
+            return GlobalMarketingFooterUtil::getContentByType($isHtmlContent, true);
         }
 
         public static function resolveHashForUnsubscribeAndManageSubscriptionsUrls($personId, $marketingListId, $modelId,

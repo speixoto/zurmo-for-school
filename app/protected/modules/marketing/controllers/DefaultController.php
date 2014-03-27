@@ -132,7 +132,7 @@
         public function actionPreviewFooter($isHtmlContent, $content)
         {
             Yii::app()->getClientScript()->setToAjaxMode();
-            $view   = new AutoresponderOrCampaignFooterTextPreviewView((bool)$isHtmlContent, $content);
+            $view   = new GlobalMarketingFooterFooterConfigurationPreviewView((bool)$isHtmlContent, $content);
             $modalView = new ModalView($this, $view);
             echo $modalView->render();
         }

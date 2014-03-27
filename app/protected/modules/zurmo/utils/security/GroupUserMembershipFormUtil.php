@@ -114,9 +114,12 @@
             {
                 if (empty($form->userMembershipData[$user->id]) && !$user->isSystemUser && !$user->isRootUser)
                 {
-                    $group->users->removeByIndex($index);
                     $removedUsers[] = $user;
                 }
+            }
+            foreach ($removedUsers as $user)
+            {
+                $group->users->remove($user);
             }
             $users = GroupUserMembershipFormUtil::makeUsersFromUserMembershipData($form->userMembershipData);
             foreach ($users as $user)

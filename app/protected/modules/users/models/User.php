@@ -762,7 +762,10 @@
                 ),
                 'elements' => array(
                     'currency' => 'CurrencyDropDown',
+                    'language' => 'LanguageStaticDropDown',
+                    'locale'   => 'LocaleStaticDropDown',
                     'role'     => 'Role',
+                    'timeZone' => 'TimeZoneStaticDropDown',
                 ),
                 'defaultSortAttribute' => 'lastName',
                 'noExport' => array(
