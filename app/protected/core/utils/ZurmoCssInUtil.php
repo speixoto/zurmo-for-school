@@ -178,7 +178,7 @@
                 foreach ($html->find($rule['selector']) as $node)
                 {
                     // Unserialize the style array, merge the rule's CSS into it...
-                    if ($node->hasChildNodes())
+                    if ($node->hasChildNodes() && $node->tag != 'a')
                     {
                         $style = array_merge(self::styleToArray($node->style), $rule['properties']);
                     }
