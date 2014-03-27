@@ -195,12 +195,14 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('#email-message-content-iframe').load(function(){
                             var contentHeight = $('#email-message-content-iframe').contents().find('body').outerHeight();
                             $('#email-message-content-iframe').height(contentHeight + 50);
                         });
                     ");
+                // End Not Coding Standard
             }
         }
     }

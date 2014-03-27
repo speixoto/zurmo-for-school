@@ -48,7 +48,7 @@
         {
             $content = null;
             $data    = $this->resolveData();
-            if(!empty($data))
+            if (!empty($data))
             {
                 $content .= $this->form->radioButtonList(
                     $this->model,
@@ -103,7 +103,6 @@
             }
             return $thumbnail;
         }
-
 
         protected function resolveGenericThumbnail()
         {

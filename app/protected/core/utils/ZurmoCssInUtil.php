@@ -127,10 +127,10 @@
             return $style;
         }
 
-        function inlineCSS($url, $contents=null)
+        function inlineCSS($url, $contents = null)
         {
             // Download the HTML if it was not provided
-            if($contents === null)
+            if ($contents === null)
             {
                 $html = file_get_html($url, false, null, -1, -1, true, true, DEFAULT_TARGET_CHARSET, false, DEFAULT_BR_TEXT, DEFAULT_SPAN_TEXT);
             }
@@ -140,7 +140,7 @@
                 $html = str_get_html($contents, true, true, DEFAULT_TARGET_CHARSET, false, DEFAULT_BR_TEXT, DEFAULT_SPAN_TEXT);
             }
 
-            if(!is_object($html))
+            if (!is_object($html))
             {
                 return false;
             }
@@ -148,7 +148,7 @@
             $css_urls = array();
 
             // Find all stylesheets and determine their absolute URLs to retrieve them
-            foreach($html->find('link[rel="stylesheet"]') as $style)
+            foreach ($html->find('link[rel="stylesheet"]') as $style)
             {
                 $css_urls[] = self::absolutify($url, $style->href);
                 $style->outertext = '';
@@ -157,10 +157,12 @@
             $css_blocks = $this->processStylesCleanup($html);
 
             $raw_css = '';
-            if (!empty($css_urls)) {
+            if (!empty($css_urls))
+            {
                 $raw_css .= $this->getCSSFromFiles($css_urls);
             }
-            if (!empty($css_blocks)) {
+            if (!empty($css_blocks))
+            {
                 $raw_css .= $css_blocks;
             }
 
@@ -173,10 +175,10 @@
             // and apply the CSS properties
             foreach ($rules as $rule)
             {
-                foreach($html->find($rule['selector']) as $node)
+                foreach ($html->find($rule['selector']) as $node)
                 {
                     // Unserialize the style array, merge the rule's CSS into it...
-                    if($node->hasChildNodes())
+                    if ($node->hasChildNodes())
                     {
                         $style = array_merge(self::styleToArray($node->style), $rule['properties']);
                     }
@@ -194,11 +196,11 @@
             // agains another !important property
             foreach ($rules as $rule)
             {
-                foreach($rule['properties'] as $key => $value)
+                foreach ($rule['properties'] as $key => $value)
                 {
-                    if(strpos($value, '!important') !== false)
+                    if (strpos($value, '!important') !== false)
                     {
-                        foreach($html->find($rule['selector']) as $node)
+                        foreach ($html->find($rule['selector']) as $node)
                         {
                             $style = self::styleToArray($node->style);
                             $style[$key] = $value;
@@ -216,7 +218,7 @@
         {
             $css_blocks = '';
             // Find all <style> blocks and cut styles from them (leaving media queries)
-            foreach($html->find('style') as $style)
+            foreach ($html->find('style') as $style)
             {
                 list($_css_to_parse, $_css_to_keep) = self::splitMediaQueries($style->innertext());
                 $css_blocks .= $_css_to_parse;
@@ -227,7 +229,7 @@
         public static function calculateCSSSpecifity($selector)
         {
             // cleanup selector
-            $selector = str_replace(array('>', '+'), array(' > ', ' + '), $selector);
+            $selector = str_replace(array('>', '+'), array(' > ', ' + '), $selector); // Not Coding Standard
 
             // init var
             $specifity = 0;
@@ -237,17 +239,17 @@
                 return 0;
             }
 
-
             // split the selector into chunks based on spaces
             $chunks = explode(' ', $selector);
 
             // loop chunks
-            foreach ($chunks as $chunk) {
+            foreach ($chunks as $chunk)
+            {
                 // an ID is important, so give it a high specifity
-                if(strstr($chunk, '#') !== false) $specifity += 100;
+                if (strstr($chunk, '#') !== false) $specifity += 100;
 
                 // classes are more important than a tag, but less important then an ID
-                elseif(strstr($chunk, '.')) $specifity += 10;
+                elseif (strstr($chunk, '.')) $specifity += 10;
 
                 // anything else isn't that important
                 else $specifity += 1;
@@ -261,21 +263,20 @@
         {
             $css  = new \csstidy();
             $css->parse($text);
+            $rules      = array();
+            $position   = 0;
 
-            $rules 		= array();
-            $position 	= 0;
-
-            foreach($css->css as $declarations)
+            foreach ($css->css as $declarations)
             {
-                foreach($declarations as $selectors => $properties)
+                foreach ($declarations as $selectors => $properties)
                 {
-                    foreach(explode(",", $selectors) as $selector)
+                    foreach (explode(",", $selectors) as $selector) // Not Coding Standard
                     {
                         $rules[] = array(
-                            'position' 		=> $position,
-                            'specificity' 	=> self::calculateCSSSpecifity($selector),
-                            'selector' 		=> $selector,
-                            'properties' 	=> $properties
+                            'position'      => $position,
+                            'specificity'   => self::calculateCSSSpecifity($selector),
+                            'selector'      => $selector,
+                            'properties'    => $properties
                         );
                     }
 
@@ -283,18 +284,19 @@
                 }
             }
 
-            usort($rules, function($a, $b){
-                if($a['specificity'] > $b['specificity'])
+            usort($rules, function($a, $b)
+            {
+                if ($a['specificity'] > $b['specificity'])
                 {
                     return 1;
                 }
-                else if($a['specificity'] < $b['specificity'])
+                elseif ($a['specificity'] < $b['specificity'])
                 {
                     return -1;
                 }
                 else
                 {
-                    if($a['position'] > $b['position'])
+                    if ($a['position'] > $b['position'])
                     {
                         return 1;
                     }

@@ -74,7 +74,7 @@
                         static::resolveSerializedDataForTemplateByPostData(static::$data, static::$emailTemplate);
                         continue;
                     }
-                    else if ($postDataValue != $originalValue)
+                    elseif ($postDataValue != $originalValue)
                     {
                         if ($member == 'isDraft')
                         {
@@ -117,7 +117,7 @@
                 unset($unserializedData['icon']);
                 $unserializedData['baseTemplateId'] = $postUnserializedData['baseTemplateId'];
             }
-            else if ($templateUnserializedData != $postUnserializedData)
+            elseif ($templateUnserializedData != $postUnserializedData)
             {
                 // baseTemplateId remains same, probably a post from canvas
                 if (isset($postUnserializedData['dom']) && isset($templateUnserializedData['dom']))

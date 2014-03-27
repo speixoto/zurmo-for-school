@@ -230,7 +230,7 @@
         protected function resolveLabelContent(array $item)
         {
             $label      = $item['label'] . $this->resolveAndGetSpanAndDynamicLabelContent($item);
-            if(isset($item['labelSpanHtmlOptions']))
+            if (isset($item['labelSpanHtmlOptions']))
             {
                 $labelSpanHtmlOptions = $item['labelSpanHtmlOptions'];
             }

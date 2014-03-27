@@ -74,6 +74,7 @@
             $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                 'htmlOptions'   => $htmlOptions,
                 'content'       => $emailMessageContent->$attribute,
@@ -83,11 +84,12 @@
                 'deniedTags'    => CJSON::encode($this->resolveDeniedTags()),
                 'imageUpload'   => ImageFileModelUtil::getUrlForActionUpload(),
                 'imageGetJson'  => ImageFileModelUtil::getUrlForActionGetUploaded(),
-                'initCallback' => 'function(){
+                'initCallback'  => 'function(){
                                              var contentHeight = $(".redactor_box iframe").contents().find("body").outerHeight();
                                              $(".redactor_box iframe").height(contentHeight + 50);
                                         }'
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];
             return $content;
@@ -219,12 +221,14 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('.redactor-iframe').load(function(){
                             var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
                             $('.redactor-iframe').height(contentHeight + 50);
                         });
                     ");
+                // End Not Coding Standard
             }
         }
 

@@ -41,8 +41,8 @@
      */
     class NumberToWordsUtil
     {
-        public static function convert($number) {
-
+        public static function convert($number)
+        {
             $hyphen      = '-';
             $conjunction = ' and ';
             $separator   = ', ';
@@ -86,11 +86,13 @@
                 1000000000000000000 => 'quintillion'
             );
 
-            if (!is_numeric($number)) {
+            if (!is_numeric($number))
+            {
                 return false;
             }
 
-            if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX) {
+            if (($number >= 0 && (int) $number < 0) || (int) $number < 0 - PHP_INT_MAX)
+            {
                 // overflow
                 trigger_error(
                     'convert only accepts numbers between -' . PHP_INT_MAX . ' and ' . PHP_INT_MAX,
@@ -99,17 +101,20 @@
                 return false;
             }
 
-            if ($number < 0) {
+            if ($number < 0)
+            {
                 return $negative . static::convert(abs($number));
             }
 
             $string = $fraction = null;
 
-            if (strpos($number, '.') !== false) {
+            if (strpos($number, '.') !== false)
+            {
                 list($number, $fraction) = explode('.', $number);
             }
 
-            switch (true) {
+            switch (true)
+            {
                 case $number < 21:
                     $string = $dictionary[$number];
                     break;
@@ -117,7 +122,8 @@
                     $tens   = ((int) ($number / 10)) * 10;
                     $units  = $number % 10;
                     $string = $dictionary[$tens];
-                    if ($units) {
+                    if ($units)
+                    {
                         $string .= $hyphen . $dictionary[$units];
                     }
                     break;
@@ -125,7 +131,8 @@
                     $hundreds  = $number / 100;
                     $remainder = $number % 100;
                     $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
-                    if ($remainder) {
+                    if ($remainder)
+                    {
                         $string .= $conjunction . static::convert($remainder);
                     }
                     break;
@@ -134,17 +141,20 @@
                     $numBaseUnits = (int) ($number / $baseUnit);
                     $remainder = $number % $baseUnit;
                     $string = static::convert($numBaseUnits) . ' ' . $dictionary[$baseUnit];
-                    if ($remainder) {
+                    if ($remainder)
+                    {
                         $string .= $remainder < 100 ? $conjunction : $separator;
                         $string .= static::convert($remainder);
                     }
                     break;
             }
 
-            if (null !== $fraction && is_numeric($fraction)) {
+            if (null !== $fraction && is_numeric($fraction))
+            {
                 $string .= $decimal;
                 $words = array();
-                foreach (str_split((string) $fraction) as $number) {
+                foreach (str_split((string) $fraction) as $number)
+                {
                     $words[] = $dictionary[$number];
                 }
                 $string .= implode(' ', $words);

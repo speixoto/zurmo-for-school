@@ -210,7 +210,7 @@
                 $this->actionValidate($postData, $model);
             }
             $unmuteScoring = false;
-            if($emailTemplate->isBuilderTemplate() && ($emailTemplate->isDraft || !isset($emailTemplate->isDraft)))
+            if ($emailTemplate->isBuilderTemplate() && ($emailTemplate->isDraft || !isset($emailTemplate->isDraft)))
             {
                 Yii::app()->gameHelper->muteScoringModelsOnSave();
                 $unmuteScoring = true;
@@ -222,7 +222,7 @@
             // throwing errors for content being empty. Plus we already validate it using the wizard form.
             if ($emailTemplate->save(false))
             {
-                if($unmuteScoring)
+                if ($unmuteScoring)
                 {
                     Yii::app()->gameHelper->unmuteScoringModelsOnSave();
                 }
@@ -671,7 +671,7 @@
             {
                 $contact  = static::resolveDefaultRecipient();
             }
-            if($emailAddress == null)
+            if ($emailAddress == null)
             {
                 $primaryEmailAddress    = $contact->primaryEmail->emailAddress;
             }

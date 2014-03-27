@@ -121,7 +121,7 @@
                                 {$this->renderRedactorParamForInit('plugins')}
                                 {$this->renderRedactorParamForInit('toolbarExternal')}
                                 {$this->renderRedactorParamForInit('fullpage')}
-				                {$this->renderRedactorParamForInit('allowedTags')}
+                                {$this->renderRedactorParamForInit('allowedTags')}
                                 {$this->renderRedactorParamForInit('deniedTags')}
                                 {$this->renderRedactorParamForInit('iframe')}
                                 {$this->renderRedactorParamForInit('css')}
@@ -151,7 +151,7 @@
             $paramValue = $this->$paramName;
             if (isset($paramValue))
             {
-                $config = "{$paramName}: {$paramValue},";
+                $config = "{$paramName}: {$paramValue},"; // Not Coding Standard
                 return $config;
             }
         }

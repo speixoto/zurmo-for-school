@@ -131,6 +131,7 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, "
                         var remainingHeight =  $('.email-template-textContent').closest('.left-column').height() -
                                                $('.email-template-textContent').closest('.left-column').find('.panel').height() -
@@ -145,6 +146,7 @@
                             }
                         });
                     ");
+                // End Not Coding Standard
             }
         }
 

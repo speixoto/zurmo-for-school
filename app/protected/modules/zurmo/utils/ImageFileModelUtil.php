@@ -39,7 +39,6 @@
      */
     class ImageFileModelUtil
     {
-
         /**
          * Reads image or thumb if it exists on cache.
          * If it don't exists cache it from the ImageFileModel first

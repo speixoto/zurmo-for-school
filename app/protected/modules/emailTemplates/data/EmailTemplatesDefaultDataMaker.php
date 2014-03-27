@@ -36,7 +36,6 @@
 
     class EmailTemplatesDefaultDataMaker extends EmailTemplatesBaseDefaultDataMaker
     {
-
         public function make()
         {
             $this->makeBlank();
@@ -252,7 +251,7 @@
                                                                                     array (
                                                                                         'text' => '
 <p>
-	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
+    Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
 </p>
 ',
                                                                                     ),
@@ -550,7 +549,7 @@
                                                                                     array (
                                                                                         'text' => '
 <p>
-	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
+    Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
 </p>
 ',
                                                                                     ),
@@ -602,11 +601,11 @@
                                                                                         'text' => '
 <b>New Articles</b>
 <ul>
-	<li>Article Name about something</li>
-	<li>10 ways to create email templates</li>
-	<li>Great new marketing tools from Acme</li>
-	<li>Best blog post of the year</li>
-	<li>Meet our new chef</li>
+    <li>Article Name about something</li>
+    <li>10 ways to create email templates</li>
+    <li>Great new marketing tools from Acme</li>
+    <li>Best blog post of the year</li>
+    <li>Meet our new chef</li>
 </ul>
 ',
                                                                                     ),
@@ -956,10 +955,10 @@
                                                                                         'text' => '
  <b>New Products</b>
 <ul>
-	<li><a href="#" target="_blank">AcmeMaster 10,000</a></li>
-	<li><a href="#">ProAcme 5,000</a></li>
-	<li><a href="#">AcmeMaster++</a></li>
-	<li><a href="#" target="_blank">The Acme Beginner pro</a></li>
+    <li><a href="#" target="_blank">AcmeMaster 10,000</a></li>.' // Not Coding Standard
+  '.<li><a href="#">ProAcme 5,000</a></li>.' // Not Coding Standard
+  '.<li><a href="#">AcmeMaster++</a></li>
+    <li><a href="#" target="_blank">The Acme Beginner pro</a></li>
 </ul>
 ',
                                                                                     ),
@@ -1049,7 +1048,7 @@
                                                                                     array (
                                                                                         'text' => '
 <p>
-	Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
+    Orsino, the <i>Duke of Illyria</i>, is consumed by his passion for the melancholy Countess Olivia. His ostentatious musings on the nature of love begin with what has become one of Shakespeare\'s most famous lines: "If music be the food of love, play on." It is apparent that Orsino\'s love is hollow. He is a romantic dreamer, for whom the idea of being in love is most important. When Valentine gives him the terrible news that <b>Olivia</b> plans to seclude herself for seven years to mourn her deceased brother, Orsino seems unfazed, and hopes Olivia may one day be as bewitched by love (the one self king) as he. Fittingly, the scene ends with Orsino off to lay in a bed of flowers, where he can be alone with his love-thoughts. Later in the play it will be up to Viola to teach Orsino the true meaning of love.
 </p>
 ',
                                                                                     ),
@@ -1811,7 +1810,8 @@
                                                                             array (
                                                                                 'content' =>
                                                                                     array (
-                                                                                        'image' => '<img src="http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&amp;zoom=13&amp;size=580x180&amp;maptype=roadmap &amp;markers=color:blue%7Clabel:S%7C40.702147,-74.015794&amp;markers=color:green%7Clabel:G%7C40.711614,-74.012318 &amp;markers=color:red%7Clabel:C%7C40.718217,-73.998284&amp;sensor=false">',
+                                                                                        'image' =>
+'<img src="http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&amp;zoom=13&amp;size=580x180&amp;maptype=roadmap &amp;markers=color:blue%7Clabel:S%7C40.702147,-74.015794&amp;markers=color:green%7Clabel:G%7C40.711614,-74.012318 &amp;markers=color:red%7Clabel:C%7C40.718217,-73.998284&amp;sensor=false">', // Not Coding Standard
                                                                                     ),
                                                                                 'properties' =>
                                                                                     array (

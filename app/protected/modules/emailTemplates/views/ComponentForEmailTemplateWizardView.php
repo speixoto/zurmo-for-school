@@ -253,6 +253,7 @@
                                             LabelUtil::getTranslationParamsForAllModules());
             }
             $ajaxArray                  = array();
+            // Begin Not Coding Standard
             $ajaxArray['error']       = "js:function(data)
                                         {
                                             $('#FlashMessageBar').jnotifyAddMessage({
@@ -262,6 +263,7 @@
                                                 showIcon: false,
                                             });
                                         }";
+            // End Not Coding Standard
             return $ajaxArray;
         }
 
@@ -297,7 +299,6 @@
 
         public static function resolveValidationScenario()
         {
-
         }
 
         public static function redirectAfterSave()
@@ -307,7 +308,6 @@
 
         public static function resolvePreviousPageScript(& $script)
         {
-
         }
     }
 ?>

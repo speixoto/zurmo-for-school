@@ -124,7 +124,6 @@
             return $resolvedHtml;
         }
 
-
         /**
          * Resolve merge tags present in html
          * @param $html

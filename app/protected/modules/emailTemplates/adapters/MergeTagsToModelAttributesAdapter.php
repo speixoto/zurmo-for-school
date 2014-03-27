@@ -107,7 +107,7 @@
                 {
                     return static::PROPERTY_NOT_FOUND;
                 }
-                else if (!$model->isAttribute($attributeName))
+                elseif (!$model->isAttribute($attributeName))
                 {
                     if ($model instanceof Activity)
                     {

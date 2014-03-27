@@ -337,6 +337,7 @@
 
         protected function registerElementsMenuButtonClickScript()
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('elementsMenuButtonClickScript', '
                 $("#' . static::ELEMENTS_MENU_BUTTON_ID . '").unbind("click.elementsMenuButtonClickScript")
                                                         .bind("click.elementsMenuButtonClickScript", function(event)
@@ -350,10 +351,12 @@
                     $("#' . static::ELEMENTS_CONTAINER_ID . '").show();
                     event.preventDefault();
                  });');
+            // End Not Coding Standard
         }
 
         protected function registerCanvasConfigurationMenuButtonClickScript()
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('canvasConfigurationMenuButtonClickScript', '
                 $("#' . static::CANVAS_CONFIGURATION_MENU_BUTTON_ID . '").unbind("click.canvasConfigurationMenuButtonClick")
                                                     .bind("click.canvasConfigurationMenuButtonClick", function(event)
@@ -370,11 +373,13 @@
                             .find(".' . BaseBuilderElement::OVERLAY_ACTION_EDIT . '").trigger("click");
                     event.preventDefault();
                     });');
+            // End Not Coding Standard
         }
 
         protected function registerPreviewMenuButtonClickScript()
         {
             $ajaxOption     = $this->resolvePreviewAjaxOptions();
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('previewMenuButtonClickScript', '
                 $("#' . static::PREVIEW_MENU_BUTTON_ID . '").unbind("click.previewMenuButtonClick")
                                                             .bind("click.previewMenuButtonClick", function(event){
@@ -382,6 +387,7 @@
                     $("body").addClass("previewing-builder");
                     event.preventDefault();
                 });');
+            // End Not Coding Standard
         }
 
         protected function resolvePreviewAjaxOptions()
@@ -391,6 +397,7 @@
             $ajaxArray['cache']         = 'false';
             $ajaxArray['url']           = static::resolvePreviewActionUrl();
             $ajaxArray['type']          = 'POST';
+            // Begin Not Coding Standard
             $ajaxArray['data']          = 'js:(function(){
                                                 jsonSerializedData = {dom: $.parseJSON(emailTemplateEditor.compileSerializedData())};
                                                 serializedData     = JSON.stringify(jsonSerializedData);
@@ -405,6 +412,7 @@
             $ajaxArray['success']       = 'js:function (html){
                                             $("#' . static::PREVIEW_IFRAME_ID . '").contents().find("html").html(html);
                                         }';
+            // End Not Coding Standard
             return $ajaxArray;
         }
 

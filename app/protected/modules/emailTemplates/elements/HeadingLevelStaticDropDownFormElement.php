@@ -51,6 +51,5 @@
             $levels         = array_combine(array_values($levels), array_map('ucfirst', array_values($levels)));
             return $levels;
         }
-
     }
 ?>

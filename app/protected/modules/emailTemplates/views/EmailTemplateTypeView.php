@@ -53,7 +53,7 @@
         protected function getTypeData()
         {
             $sourceModuleType   = $this->getSourceModuleType();
-            $baseRoute          = "emailTemplates/default/create?type=${sourceModuleType}&builtType=";
+            $baseRoute          = "emailTemplates/default/create?type=${sourceModuleType}&builtType="; // Not Coding Standard
             $builtTypes         = EmailTemplate::getBuiltTypeDropDownArray();
             $types = array();
             foreach ($builtTypes as $builtType => $titleLabel)

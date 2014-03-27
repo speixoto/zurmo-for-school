@@ -253,6 +253,7 @@
             {
                 return;
             }
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('trashSomeDataOnModuleChangeScript', "
                 $('" . $this->resolveModuleClassNameJQuerySelector() . "').unbind('change.trashSomeDataOnModuleChange')
                                                                 .bind('change.trashSomeDataOnModuleChange', function()
@@ -276,6 +277,7 @@
                     }
                 });
                 ");
+            // End Not Coding Standard
         }
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,

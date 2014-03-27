@@ -179,7 +179,7 @@
 
             $items  = array();
             $baseID = self::getIdByName($name);
-            if(isset($htmlOptions['dataInputPrefix']))
+            if (isset($htmlOptions['dataInputPrefix']))
             {
                 $baseID = $htmlOptions['dataInputPrefix'] . $baseID;
                 unset($htmlOptions['dataInputPrefix']);

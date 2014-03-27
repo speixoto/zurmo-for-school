@@ -65,7 +65,7 @@
         protected static function getIdByFileName($fileName)
         {
             $matches = array();
-            $pattern = '/^(\d+)' . static::FILE_NAME_SEPARATOR . '/';
+            $pattern = '/^(\d+)' . static::FILE_NAME_SEPARATOR . '/'; // Not Coding Standard
             preg_match($pattern, $fileName, $matches);
             if (count($matches) == 2)
             {

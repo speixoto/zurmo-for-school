@@ -100,12 +100,12 @@
             if ($inlineStyles)
             {
                 $usableInlineStyles = array();
-                foreach($this->inlineStylesToKeepOnATag as $style)
+                foreach ($this->inlineStylesToKeepOnATag as $style)
                 {
-                    if(isset($inlineStyles[$style]))
+                    if (isset($inlineStyles[$style]))
                     {
                         $usableInlineStyles[$style] = $inlineStyles[$style];
-                        if($style == 'color')
+                        if ($style == 'color')
                         {
                             $usableInlineStyles[$style] .= ' !important';
                         }
@@ -113,7 +113,7 @@
                     }
                 }
                 unset($mergedProperties['inlineStyles']);
-                if($usableInlineStyles)
+                if ($usableInlineStyles)
                 {
                     $mergedProperties['style']  = $this->stringifyProperties($usableInlineStyles, null, null, ':', ';');
                 }
@@ -128,18 +128,18 @@
             {
                 $properties = $frontendProperties;
             }
-            foreach($this->inlineStylesToKeepOnATag as $style)
+            foreach ($this->inlineStylesToKeepOnATag as $style)
             {
-                if(isset($properties['inlineStyles']) && isset($properties['inlineStyles'][$style]))
+                if (isset($properties['inlineStyles']) && isset($properties['inlineStyles'][$style]))
                 {
                     unset($properties['inlineStyles'][$style]);
                 }
             }
-            if(isset($properties['target']))
+            if (isset($properties['target']))
             {
                 unset($properties['target']);
             }
-            if(isset($properties['href']))
+            if (isset($properties['href']))
             {
                 unset($properties['href']);
             }
@@ -232,11 +232,11 @@
         protected function resolveNonEditableContentWrappingTableOptions()
         {
             $frontendOptions    = $this->resolveFrontendPropertiesNonEditable();
-            if(isset($frontendOptions['href']))
+            if (isset($frontendOptions['href']))
             {
                 unset($frontendOptions['href']);
             }
-            if(isset($frontendOptions['target']))
+            if (isset($frontendOptions['target']))
             {
                 unset($frontendOptions['target']);
             }

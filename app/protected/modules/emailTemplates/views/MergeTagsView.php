@@ -161,6 +161,7 @@
             $cs->registerCssFile(Yii::app()->getClientScript()->getCoreScriptUrl() . '/treeview/jquery.treeview.css');
             Yii::app()->clientScript->registerScript('mergeTagsScript' . $this->uniqueId,
                                                      $this->renderTreeViewAjaxScriptContent());
+            // Begin Not Coding Standard
             $script = '
                 $(document).ready(function(){
                     $(".item-to-place").off("mousemove");
@@ -187,8 +188,10 @@
                         });
                     });
                 ';
-            if($this->textContentId != null)
+            // End Not Coding Standard
+            if ($this->textContentId != null)
             {
+                // Begin Not Coding Standard
                 $script.='if ($("#' . $this->textContentId . '").data("droppable"))
                                 {
                                     $("#' . $this->textContentId . '").droppable("destroy");
@@ -210,9 +213,11 @@
                                         droparea.value = str1 + dropText + str3;
                                     }
                                 });';
+                // End Not Coding Standard
             }
-            if($this->htmlContentId != null)
+            if ($this->htmlContentId != null)
             {
+                // Begin Not Coding Standard
                 $script.='if ($("#' . $this->htmlContentId . '").parent().data("droppable"))
                                 {
                                     $("#' . $this->htmlContentId . '").parent().droppable("destroy");
@@ -226,6 +231,7 @@
                                     $("#' . $this->htmlContentId . '").redactor("insertNode", node);
                                 }
                             });';
+                // End Not Coding Standard
             }
             $script .= '});';
             Yii::app()->clientScript->registerScript('mergeTagsDragDropScript' . $this->uniqueId, $script);
@@ -233,9 +239,9 @@
 
         protected function getViewStyle()
         {
-            if($this->hideByDefault)
+            if ($this->hideByDefault)
             {
-                return 'style=display:none;';
+                return 'style=display:none;'; // Not Coding Standard
             }
         }
     }
