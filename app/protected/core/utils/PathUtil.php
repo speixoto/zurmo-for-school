@@ -191,7 +191,7 @@
 
         protected static function filterMungableModels($model)
         {
-            return (is_subclass_of($model, 'SecurableItem') && $model::hasReadPermissionsOptimization());
+            return (is_subclass_of($model, 'SecurableItem') && $model::hasPermissionsOptimization());
         }
 
         protected static function getAllEmailTemplateElementClassNamesWithFilterFromCache($identifier, $filter)

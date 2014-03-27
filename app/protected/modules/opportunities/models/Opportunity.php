@@ -184,7 +184,7 @@
             return 'Opportunity';
         }
 
-        public static function hasReadPermissionsOptimization()
+        public static function hasPermissionsOptimization()
         {
             return true;
         }

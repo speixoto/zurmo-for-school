@@ -75,7 +75,7 @@
             return 'WorkflowsTest2Module';
         }
 
-        public static function hasReadPermissionsOptimization()
+        public static function hasPermissionsOptimization()
         {
             return true;
         }

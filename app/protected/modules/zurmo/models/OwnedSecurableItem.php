@@ -222,7 +222,7 @@
 
         protected function afterSave()
         {
-            if ($this->hasReadPermissionsOptimization())
+            if ($this->hasPermissionsOptimization())
             {
                 if ($this->isNewModel)
                 {
@@ -249,7 +249,7 @@
             {
                 return false;
             }
-            if ($this->hasReadPermissionsOptimization())
+            if ($this->hasPermissionsOptimization())
             {
                 AllPermissionsOptimizationUtil::securableItemBeingDeleted($this);
             }
@@ -334,7 +334,7 @@
             $modelClassName  = get_called_class();
             $moduleClassName = $modelClassName::getModuleClassName();
             //Currently only adds munge if the module is securable and this model supports it.
-            if (static::hasReadPermissionsOptimization() && $moduleClassName != null &&
+            if (static::hasPermissionsOptimization() && $moduleClassName != null &&
                 is_subclass_of($moduleClassName, 'SecurableModule'))
             {
                 $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForUser($moduleClassName);
@@ -439,7 +439,7 @@
                 {
                     $modelClassName  = get_called_class();
                     $moduleClassName = $modelClassName::getModuleClassName();
-                    if(static::hasReadPermissionsOptimization() &&
+                    if(static::hasPermissionsOptimization() &&
                        $moduleClassName != null &&
                        is_subclass_of($moduleClassName, 'SecurableModule') &&
                        AllPermissionsOptimizationUtil::checkPermissionsHasAnyOf($requiredPermissions, $this, $user))
