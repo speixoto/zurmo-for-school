@@ -117,6 +117,10 @@
                     if (isset($inlineStyles[$style]))
                     {
                         $usableInlineStyles[$style] = $inlineStyles[$style];
+                        if ($style == 'color')
+                        {
+                            $usableInlineStyles[$style] .= ' !important';
+                        }
                         unset($mergedProperties['inlineStyles'][$style]);
                     }
                 }
@@ -251,15 +255,6 @@
             $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
             $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
             return $options;
-        }
-
-        protected function sanitizeProperties(array & $properties)
-        {
-            parent::sanitizeProperties($properties);
-            foreach($properties as $key => $value)
-            {
-                $properties[$key] .= ' !important';
-            }
         }
     }
 ?>
