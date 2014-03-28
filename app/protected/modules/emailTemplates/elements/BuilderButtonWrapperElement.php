@@ -103,5 +103,10 @@
         {
             return array();
         }
+
+        protected function resolveFrontendPropertiesForWrappingTdNonEditable()
+        {
+            return array();
+        }
     }
 ?>
