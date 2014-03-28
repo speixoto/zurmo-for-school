@@ -1311,11 +1311,12 @@
 
         public function validate($attribute, $value)
         {
-            if (isset($this->getRules()[$attribute]))
+            $rules = $this->getRules();
+            if (isset($rules[$attribute]))
             {
                 try
                 {
-                    return call_user_func(array($this, $this->getRules()[$attribute]), $value);
+                    return call_user_func(array($this, $rules[$attribute]), $value);
                 }
                 catch (Exception $exception)
                 {
@@ -1369,11 +1370,12 @@
 
         protected function sanitizeProperties(array & $properties)
         {
+            $propertiesMappedArray = static::getPropertiesSuffixMappedArray();
             foreach ($properties as $key => $value)
             {
-                if (isset(static::getPropertiesSuffixMappedArray()[$key]))
+                if (isset($propertiesMappedArray[$key]))
                 {
-                    $properties[$key] .= static::getPropertiesSuffixMappedArray()[$key];
+                    $properties[$key] .= $propertiesMappedArray[$key];
                 }
             }
         }
