@@ -142,8 +142,9 @@
         }
 
         /**
-         * When there are many nested roles/groups, it is best to process non-optimized otherwise, the stored procedures
+         * When there are many nested roles/groups, it is best to process non-security-optimized otherwise, the stored procedures
          * are slow. Eventually need to probably remove stored procedures entirely, but for now this will be utilized.
+         * This should return true if you have many nested roles/groups.
          * @return bool
          */
         public function processGetActualPermissionsAsNonOptimized()

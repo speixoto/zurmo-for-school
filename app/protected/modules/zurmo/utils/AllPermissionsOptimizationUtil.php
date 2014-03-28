@@ -45,7 +45,6 @@
          * permissions for a given user can take a long time. This is true with securityOptimization = true and when false.
          * This utility makes use of the existing munge 'read' tables already in place that can give accurate permission
          * information at the atomic 'model' level.
-         * //todo: add munge write/change also
          * @param $requiredPermissions
          * @param OwnedSecurableItem $ownedSecurableItem
          * @param User $user
@@ -61,7 +60,20 @@
             elseif(in_array($requiredPermissions, array(Permission::READ, Permission::WRITE, Permission::DELETE,
                                                         Permission::CHANGE_PERMISSIONS, Permission::CHANGE_OWNER)))
             {
-                return false; //todo:
+                if((bool)Yii::app()->params['processReadMungeAsWriteMunge'])
+                {
+                    //Forcing use of Permission::READ since it is expected you are always using read/write together
+                    //as explicit permissions if processReadMungeAsWriteMunge is true
+                    return static::resolveAndCheckPermissionsForRead(Permission::READ, $ownedSecurableItem, $user);
+                }
+                else
+                {
+                    //todo: in future refactor split read munge into read munge and write munge to separate out
+                    //the read and write logic. But for now this is done together since the use of read without write
+                    //is not exposed in the user interface. @see ExplicitReadWriteModelPermissions addReadOnlyPermitable
+                    //removeReadOnlyPermitable
+                    return false;
+                }
             }
             else
             {
