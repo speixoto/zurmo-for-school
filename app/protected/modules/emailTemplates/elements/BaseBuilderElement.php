@@ -1370,11 +1370,12 @@
 
         protected function sanitizeProperties(array & $properties)
         {
+            $propertiesMappedArray = static::getPropertiesSuffixMappedArray();
             foreach ($properties as $key => $value)
             {
-                if (isset(static::getPropertiesSuffixMappedArray()[$key]))
+                if (isset($propertiesMappedArray[$key]))
                 {
-                    $properties[$key] .= static::getPropertiesSuffixMappedArray()[$key];
+                    $properties[$key] .= $propertiesMappedArray[$key];
                 }
             }
         }
