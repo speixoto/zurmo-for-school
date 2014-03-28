@@ -39,7 +39,7 @@
         /**
          * @var array
          */
-        protected $inlineStylesToKeepOnATag = array('color', 'font-size', 'font-family');
+        protected $inlineStylesToKeepOnATag = array('color', 'font-size', 'font-family', 'font-weight');
 
         public static function isUIAccessible()
         {
@@ -72,25 +72,12 @@
             $target                 = null;
             $href                   = null;
             extract($this->properties['frontend']);
-            $text                   = $this->properties['backend']['text'];
-            $strongHtmlOptions      = $this->resolveFrontendPropertiesForStrong();
-            $label                  = ZurmoHtml::tag('strong', $strongHtmlOptions, $text);
+            $label                  = $this->properties['backend']['text'];
             $frontendOptions        = $this->resolveFrontendPropertiesNonEditable();
             $htmlOptions            = $this->resolveDefaultHtmlOptionsForLink();
             $options                = CMap::mergeArray($htmlOptions, $frontendOptions);
             $content                = ZurmoHtml::link($label, $href, $options);
             return $content;
-        }
-
-        protected function resolveFrontendPropertiesForStrong()
-        {
-            $strongHtmlOptions      =  array();
-            if (isset($this->properties['frontend']['inlineStyles']['font-weight']))
-            {
-                $inlineStyles['font-weight'] = $this->properties['frontend']['inlineStyles']['font-weight'];
-                $strongHtmlOptions = array('style' => $this->stringifyProperties($inlineStyles, null, null, ':', ';'));
-            }
-            return $strongHtmlOptions;
         }
 
         protected function resolveFrontendPropertiesNonEditable()
@@ -117,6 +104,10 @@
                     if (isset($inlineStyles[$style]))
                     {
                         $usableInlineStyles[$style] = $inlineStyles[$style];
+                        if ($style == 'color')
+                        {
+                            $usableInlineStyles[$style] .= ' !important';
+                        }
                         unset($mergedProperties['inlineStyles'][$style]);
                     }
                 }
@@ -251,15 +242,6 @@
             $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
             $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
             return $options;
-        }
-
-        protected function sanitizeProperties(array & $properties)
-        {
-            parent::sanitizeProperties($properties);
-            foreach($properties as $key => $value)
-            {
-                $properties[$key] .= ' !important';
-            }
         }
     }
 ?>

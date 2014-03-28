@@ -178,7 +178,7 @@
                 foreach ($html->find($rule['selector']) as $node)
                 {
                     // Unserialize the style array, merge the rule's CSS into it...
-                    if ($node->hasChildNodes() && $node->tag != 'a')
+                    if ($node->hasChildNodes() && $node->tag != 'a' && !$this->isBuilderButtonElement($node))
                     {
                         $style = array_merge(self::styleToArray($node->style), $rule['properties']);
                     }
@@ -212,6 +212,22 @@
             // Let simple_html_dom give us back our HTML with inline CSS!
             $html = $this->moveStyleBlocks((string)$html);
             return $html;
+        }
+
+        protected function isBuilderButtonElement($node)
+        {
+            $parentNode = $node->parentNode()->parentNode()->parentNode();
+            if (!is_object($parentNode))
+            {
+                return false;
+            }
+            $id = $parentNode->getAttribute('id');
+            $id = preg_replace('#_.*#i', '', $id);
+            if ($id == 'builderbuttonelement')
+            {
+                return true;
+            }
+            return false;
         }
 
         protected function processStylesCleanup($html)
