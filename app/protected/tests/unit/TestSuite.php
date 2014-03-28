@@ -300,7 +300,7 @@
         {
             foreach (static::$dependentTestModelClassNames as $modelClassName)
             {
-                if (is_subclass_of($modelClassName, 'SecurableItem') && $modelClassName::hasPermissionsOptimization())
+                if (is_subclass_of($modelClassName, 'SecurableItem') && $modelClassName::hasReadPermissionsOptimization())
                 {
                     ReadPermissionsOptimizationUtil::recreateTable(ReadPermissionsOptimizationUtil::getMungeTableName(
                                                                                                     $modelClassName));

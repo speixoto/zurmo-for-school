@@ -74,7 +74,7 @@
             return true;
         }
 
-        public static function hasPermissionsOptimization()
+        public static function hasReadPermissionsOptimization()
         {
             return true;
         }

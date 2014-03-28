@@ -510,9 +510,9 @@
         }
 
         /**
-         * Override on any models you want to utilize AllPermissionsOptimization
+         * Override on any models you want to utilize ReadPermissionsOptimization
          */
-        public static function hasPermissionsOptimization()
+        public static function hasReadPermissionsOptimization()
         {
             return false;
         }

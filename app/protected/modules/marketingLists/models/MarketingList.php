@@ -124,7 +124,7 @@
             return $metadata;
         }
 
-        public static function hasPermissionsOptimization()
+        public static function hasReadPermissionsOptimization()
         {
             return true;
         }

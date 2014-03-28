@@ -234,7 +234,7 @@
                                   ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
         {
             assert('$securableItem->id > 0');
-            $optimizeReadPermissions = $securableItem::hasPermissionsOptimization();
+            $optimizeReadPermissions = $securableItem::hasReadPermissionsOptimization();
             $securableItem->setTreatCurrentUserAsOwnerForPermissions(true);
             $saveSecurableItem = false;
             if ($explicitReadWriteModelPermissions->getReadOnlyPermitablesCount() > 0)

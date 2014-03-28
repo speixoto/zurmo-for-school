@@ -172,7 +172,7 @@ class Account extends OwnedSecurableItem implements StarredInterface
             return 'Account';
         }
 
-        public static function hasPermissionsOptimization()
+        public static function hasReadPermissionsOptimization()
         {
             return true;
         }
