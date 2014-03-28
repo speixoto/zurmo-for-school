@@ -7160,6 +7160,7 @@ i[class^="icon"] {
 .icon-title:after {
   content: '\00CC';
 }
+.icon-buttonwrapper:after,
 .icon-button:after {
   content: '\012A';
 }

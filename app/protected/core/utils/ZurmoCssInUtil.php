@@ -204,7 +204,7 @@
                         {
                             $style = self::styleToArray($node->style);
                             $style[$key] = $value;
-                            $node->style = self::arrayToStyle($style);
+                            $node->style = str_replace('!important', '', self::arrayToStyle($style)); //remove the !important declaration because it is not read by some clients
                         }
                     }
                 }

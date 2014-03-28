@@ -37,6 +37,22 @@ td.button-container {
 	text-align: center;
 }
 
+table.button-wrapper{
+	width: 100%;
+}
+
+/*table.button-wrapper[align="right"],*/
+table.button-wrapper[align="right"] tr,
+table.button-wrapper[align="right"] td{
+	text-align: inherit !important;
+}
+
+/*table.button-wrapper[align="center"],*/
+table.button-wrapper[align="center"] tr,
+table.button-wrapper[align="center"] td{
+	text-align: inherit !important;
+}
+
 .social-button strong{
 	font-weight: normal;
 }
@@ -56,7 +72,7 @@ table.medium-button[width="100%"],
 table.large-button[width="100%"] {
 	width: 100% !important;
 }
-
+/*
 table.button[align="center"],
 table.tiny-button[align="center"],
 table.small-button[align="center"],
@@ -72,7 +88,7 @@ table.medium-button[align="right"],
 table.large-button[align="right"] {
 	text-align:right !important;
 }
-
+*/
 table.button td,
 table.tiny-button td,
 table.small-button td,
@@ -87,17 +103,11 @@ td.container {
 	width: 100%;
 }
 
-table.button td.button-td {         padding: 8px 8px 7px 8px !important; }
-table.tiny-button td.button-td {	padding: 5px 5px 4px 5px !important; }
-table.small-button td.button-td {	padding: 8px 8px 7px 8px !important;}
-table.medium-button td.button-td {  padding: 12px 12px 10px 12px !important;}
-table.large-button td.button-td {	padding: 21px 21px 18px 21px !important;}
-
-.ExternalClass table.button td.button-td {         padding: 8px 8px 7px 8px; }
-.ExternalClass table.tiny-button td.button-td {	   padding: 5px 5px 4px 5px; }
-.ExternalClass table.small-button td.button-td {   padding: 8px 8px 7px 8px;}
-.ExternalClass table.medium-button td.button-td {  padding: 12px 12px 10px 12px;}
-.ExternalClass table.large-button td.button-td {   padding: 21px 21px 18px 21px;}
+table.button         td.button-td { padding: 8px 8px 7px 8px     !important; }
+table.tiny-button    td.button-td {	padding: 5px 5px 4px 5px     !important; }
+table.small-button   td.button-td {	padding: 8px 8px 7px 8px     !important; }
+table.medium-button  td.button-td { padding: 12px 12px 10px 12px !important;}
+table.large-button   td.button-td {	padding: 21px 21px 18px 21px !important;}
 
 td.button-td{
 	text-align: center !important;
@@ -167,8 +177,14 @@ table.Website:hover td {
 	background: #560861 !important;
 }
 
-table.social-button strong{
-	color: #ffffff;
+table.Twitter a,
+table.Facebook a,
+table.googleplus a,
+table.instagram a,
+table.YouTube a,
+table.website a,
+table.social-button a{
+	color: #ffffff !important;
 }
 
 table.horizontal {
