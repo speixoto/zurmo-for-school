@@ -14,6 +14,15 @@ div img {
 .simple-divider,
 .fancy-divider {
 	width: 100%;
+	text-align: center;
+}
+.fancy-divider td{
+	width: 100%;
+	text-align: center;
+}
+.fancy-divider img{
+	margin: 0 auto !important;
+	float: none !important;
 }
 
 table.header td.wrapper {
@@ -40,6 +49,30 @@ table.large-button {
 	width: auto;
 }
 
+table.button[width="100%"],
+table.tiny-button[width="100%"],
+table.small-button[width="100%"],
+table.medium-button[width="100%"],
+table.large-button[width="100%"] {
+	width: 100% !important;
+}
+
+table.button[align="center"],
+table.tiny-button[align="center"],
+table.small-button[align="center"],
+table.medium-button[align="center"],
+table.large-button[align="center"] {
+	text-align:center !important;
+}
+
+table.button[align="right"],
+table.tiny-button[align="right"],
+table.small-button[align="right"],
+table.medium-button[align="right"],
+table.large-button[align="right"] {
+	text-align:right !important;
+}
+
 table.button td,
 table.tiny-button td,
 table.small-button td,
@@ -54,20 +87,24 @@ td.container {
 	width: 100%;
 }
 
-table.tiny-button td {
-	padding: 5px 5px 4px 5px;
+table.button td.button-td {         padding: 8px 8px 7px 8px !important; }
+table.tiny-button td.button-td {	padding: 5px 5px 4px 5px !important; }
+table.small-button td.button-td {	padding: 8px 8px 7px 8px !important;}
+table.medium-button td.button-td {  padding: 12px 12px 10px 12px !important;}
+table.large-button td.button-td {	padding: 21px 21px 18px 21px !important;}
+
+.ExternalClass table.button td.button-td {         padding: 8px 8px 7px 8px; }
+.ExternalClass table.tiny-button td.button-td {	   padding: 5px 5px 4px 5px; }
+.ExternalClass table.small-button td.button-td {   padding: 8px 8px 7px 8px;}
+.ExternalClass table.medium-button td.button-td {  padding: 12px 12px 10px 12px;}
+.ExternalClass table.large-button td.button-td {   padding: 21px 21px 18px 21px;}
+
+td.button-td{
+	text-align: center !important;
 }
 
-table.small-button td {
-	padding: 8px 8px 7px 8px;
-}
-
-table.medium-button td {
-	padding: 12px 12px 10px 12px;
-}
-
-table.large-button td {
-	padding: 21px 21px 18px 21px;
+td.button-td a{
+	color:#ffffff;
 }
 
 table.Facebook td {
@@ -128,6 +165,10 @@ table.Website td {
 
 table.Website:hover td {
 	background: #560861 !important;
+}
+
+table.social-button strong{
+	color: #ffffff;
 }
 
 table.horizontal {

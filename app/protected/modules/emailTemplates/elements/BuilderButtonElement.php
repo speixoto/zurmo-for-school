@@ -63,7 +63,7 @@
                     'href'              => Yii::app()->createAbsoluteUrl('/'),
                     'target'            => '_blank',
                     'inlineStyles'  => array(
-                        'color'              => '#fffff',
+                        'color'              => '#ffffff',
                     ),
                 )
             );
@@ -249,6 +249,14 @@
             $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
             $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
             return $options;
+        }
+
+        protected function resolveWrapperTdNonEditableByContent($content)
+        {
+            $options            = $this->resolveNonEditableContentWrappingTdOptions();
+            $options            = CMap::mergeArray($options, array('class'=>'button-td'));
+            $content            = ZurmoHtml::tag('td', $options, $content);
+            return $content;
         }
     }
 ?>

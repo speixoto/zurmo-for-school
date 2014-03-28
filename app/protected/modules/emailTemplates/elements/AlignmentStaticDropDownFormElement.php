@@ -47,7 +47,7 @@
 
         protected function resolveAvailableAlignments()
         {
-            $alignments = array('left', 'right', 'center', 'justify');
+            $alignments = array('left', 'right', 'center');
             $alignments    = array_combine(array_values($alignments), array_map('ucfirst', array_values($alignments)));
             return $alignments;
         }
