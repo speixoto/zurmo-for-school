@@ -94,8 +94,6 @@
             return $content;
         }
 
-        //
-
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
             $propertiesForm     = BuilderSocialElementPropertiesEditableElementsUtil::render($this->model, $form);

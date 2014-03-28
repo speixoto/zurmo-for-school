@@ -41,11 +41,6 @@
          */
         protected $inlineStylesToKeepOnATag = array('color', 'font-size', 'font-family', 'font-weight');
 
-        public static function isUIAccessible()
-        {
-            return true;
-        }
-
         protected static function resolveLabel()
         {
             return Zurmo::t('EmailTemplatesModule', 'Button');
@@ -257,6 +252,11 @@
             $options            = CMap::mergeArray($options, array('class'=>'button-td'));
             $content            = ZurmoHtml::tag('td', $options, $content);
             return $content;
+        }
+
+        protected function resolveAvailableNonEditableActionsArray()
+        {
+            return array();
         }
     }
 ?>
