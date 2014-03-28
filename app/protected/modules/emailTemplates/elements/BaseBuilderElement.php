@@ -1316,7 +1316,7 @@
             {
                 try
                 {
-                    return call_user_func(array($this, $this->getRules()[$attribute]), $value);
+                    return call_user_func(array($this, $rules[$attribute]), $value);
                 }
                 catch (Exception $exception)
                 {
