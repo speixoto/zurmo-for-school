@@ -80,6 +80,7 @@
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
+            $htmlOptions['class']  .= ' button-wrapper';
             $htmlOptions['align']   = ArrayUtil::getArrayValue($this->properties['backend'], 'align');
             return $htmlOptions;
         }
