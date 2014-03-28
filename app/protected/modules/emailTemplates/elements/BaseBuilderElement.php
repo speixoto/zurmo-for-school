@@ -1311,7 +1311,8 @@
 
         public function validate($attribute, $value)
         {
-            if (isset($this->getRules()[$attribute]))
+            $rules = $this->getRules();
+            if (isset($rules[$attribute]))
             {
                 try
                 {
