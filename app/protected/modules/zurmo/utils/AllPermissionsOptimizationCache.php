@@ -291,6 +291,22 @@
             if (static::supportsAndAllowsMemcache())
             {
                 static::incrementCacheIncrementValue(static::$cacheType);
+                static::resolveToSetFlashMessageOnForgetAll();
+            }
+        }
+
+        /**
+         * In larger deployments the showFlashMessageWhenSecurityCacheShouldBeRebuilt should be set to true
+         * since when clearing cache, it would require a rebuild to ensure future requests are fast. Matters the most
+         * when nested roles/groups are used.
+         */
+        protected static function resolveToSetFlashMessageOnForgetAll()
+        {
+            if((bool)Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'])
+            {
+                Yii::app()->user->setFlash('permissionsOptimization',
+                    Zurmo::t('ZurmoModule', 'The security cache should be rebuilt to improve performance. ' .
+                                            'Please ask your administrator to perform this action.'));
             }
         }
     }

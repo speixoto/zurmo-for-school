@@ -96,6 +96,12 @@
             echo "</pre>";
         }
 
+        /**
+         * This is a not so fancy way of doing what actionRebuildSecurityCache is doing. It is not paged
+         * and really only for development use until this performance improvement is fully stable.
+         * todo: can remove this method at some point in the future.
+         * @throws NotSupportedException
+         */
         public function actionRebuildAllNamedSecurableActualPermissions()
         {
             if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
@@ -144,7 +150,11 @@
         {
             if (!Group::isUserASuperAdministrator(Yii::app()->user->userModel))
             {
-                throw new NotSupportedException();
+                $failureMessageContent = Zurmo::t('Core', 'You must be a super administrator to rebuild the security cache.');
+                $messageView           = new AccessFailureView($failureMessageContent);
+                $view                  = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
             }
             if($User_page == 1)
             {

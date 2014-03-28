@@ -458,6 +458,7 @@
             'sentryDsn'    => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
             'processNamedSecurableActualPermissionsAsOptimized' => true,
             'processReadMungeAsWriteMunge' => true,
+            'showFlashMessageWhenSecurityCacheShouldBeRebuilt' => false,
         ),
         'preload' => array(
             'browser',
