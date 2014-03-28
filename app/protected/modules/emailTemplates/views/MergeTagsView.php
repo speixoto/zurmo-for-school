@@ -229,6 +229,7 @@
                                     var dropText = ui.draggable.data("value");
                                     var node = document.createTextNode(dropText);
                                     $("#' . $this->htmlContentId . '").redactor("insertNode", node);
+                                    $("#' . $this->htmlContentId . '").redactor("sync");
                                 }
                             });';
                 // End Not Coding Standard
