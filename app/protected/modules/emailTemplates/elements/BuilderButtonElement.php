@@ -62,6 +62,9 @@
                 'frontend'      => array(
                     'href'              => Yii::app()->createAbsoluteUrl('/'),
                     'target'            => '_blank',
+                    'inlineStyles'  => array(
+                        'color'              => '#fffff',
+                    ),
                 )
             );
             return $properties;
@@ -143,6 +146,10 @@
                 unset($properties['href']);
             }
             $this->resolveInlineStylePropertiesNonEditable($properties);
+            if (isset($properties['inlineStyles']))
+            {
+                unset($properties['inlineStyles']);
+            }
             return $properties;
         }
 
