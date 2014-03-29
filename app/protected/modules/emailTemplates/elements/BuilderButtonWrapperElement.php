@@ -38,7 +38,8 @@
     {
         public static function isUIAccessible()
         {
-            return true;
+            //TODO: @sergio: Changed since we reverted to 753baf temporary. Check if we will use this or remove
+            return false;
         }
 
         protected static function resolveLabel()
@@ -58,7 +59,7 @@
                     'href'              => Yii::app()->createAbsoluteUrl('/'),
                     'target'            => '_blank',
                     'inlineStyles'  => array(
-                        'color'              => '#fffff',
+                        'color'              => '#ffffff',
                     ),
                 )
             );
