@@ -58,7 +58,7 @@
                     'href'              => Yii::app()->createAbsoluteUrl('/'),
                     'target'            => '_blank',
                     'inlineStyles'  => array(
-                        'color'              => '#fffff',
+                        'color'              => '#ffffff',
                     ),
                 )
             );

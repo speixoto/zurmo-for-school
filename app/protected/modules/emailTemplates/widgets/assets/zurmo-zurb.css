@@ -103,19 +103,12 @@ td.container {
 	width: 100%;
 }
 
-table.button         td.button-td { padding: 8px 8px 7px 8px     !important; }
-table.tiny-button    td.button-td {	padding: 5px 5px 4px 5px     !important; }
-table.small-button   td.button-td {	padding: 8px 8px 7px 8px     !important; }
-table.medium-button  td.button-td { padding: 12px 12px 10px 12px !important;}
-table.large-button   td.button-td {	padding: 21px 21px 18px 21px !important;}
+table.button         td.button-td { padding: 8px 8px 7px 8px }
+table.tiny-button    td.button-td {	padding: 5px 5px 4px 5px }
+table.small-button   td.button-td {	padding: 8px 8px 7px 8px }
+table.medium-button  td.button-td { padding: 12px 12px 10px 12px }
+table.large-button   td.button-td {	padding: 21px 21px 18px 21px }
 
-td.button-td{
-	text-align: center !important;
-}
-
-td.button-td a{
-	color:#ffffff;
-}
 
 table.Facebook td {
 	color: #ffffff;
