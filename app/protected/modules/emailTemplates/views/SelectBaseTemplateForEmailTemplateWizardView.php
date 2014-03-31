@@ -229,7 +229,7 @@
                 {
                     var templateId     = $('" .
                                             GeneralDataForEmailTemplateWizardView::
-                                                    resolveTemplateIdHiddenInputJQuerySelector() . "').val();
+                                                    resolveTemplateIdHiddenInputJQuerySelector($this->model) . "').val();
                     var requestData    = { templateId: templateId, elementClassName: elementClassName,
                                             elementModelClassName: elementModelClassName,
                                             elementAttributeName: elementAttributeName,
@@ -328,7 +328,7 @@
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                               $validationInputId, $progressPerStep,
-                                                                              $stepCount)
+                                                                              $stepCount, $model)
         {
             $canvasIFrameSelector       = "#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID;
             $canvasActionUrl            =  static::resolveCanvasActionUrl();
@@ -358,7 +358,7 @@
             // End Not Coding Standard
             $parentScript   = parent::resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                                     $validationInputId, $progressPerStep,
-                                                                                    $stepCount);
+                                                                                    $stepCount, $model);
             $script         = $script . PHP_EOL . $parentScript;
             return $script;
         }
