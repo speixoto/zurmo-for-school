@@ -198,7 +198,7 @@
         {
             $nextPageClassName  = static::resolveNextPageClassName($stepCount);
             $ajaxOptions        = $viewClassName::resolveAdditionalAjaxOptions($formName, $validationInputId,
-                                                                                $progressPerStep, $stepCount, $nextPageClassName);
+                                                                                $progressPerStep, $stepCount, $nextPageClassName, $this->model);
             return $ajaxOptions;
         }
 
