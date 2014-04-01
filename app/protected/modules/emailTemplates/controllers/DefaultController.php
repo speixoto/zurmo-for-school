@@ -360,7 +360,6 @@
 
         public function actionGetSerializedToHtmlContent($id)
         {
-            assert('is_string($className)');
             $modelId = (int) $id;
             $model = EmailTemplate::getById($modelId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
@@ -542,7 +541,6 @@
                 echo $content;
                 Yii::app()->end(0, false);
             }
-            // serializedData['dom'] = json_encoded_dom
             $serializedDataArray    = Yii::app()->request->getPost('serializedData');
             if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
             {
