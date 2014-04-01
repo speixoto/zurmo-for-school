@@ -129,7 +129,7 @@
             $this->assertTrue(strpos($content, '2 result(s)') !== false);
             $this->assertEquals(2, substr_count($content, 'MarketingListName'));
             $this->assertTrue(strpos($content, 'Clark Kent') !== false);
-            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
+            $this->assertEquals(3, substr_count($content, 'Clark Kent'));
             $this->assertTrue(strpos($content, '@zurmo.com') !== false);
             $this->assertEquals(4, substr_count($content, '@zurmo.com'));
             $this->assertEquals(2, substr_count($content, 'first@zurmo.com'));
@@ -154,7 +154,7 @@
             $this->assertTrue(strpos($content, '1 result(s)') !== false);
             $this->assertEquals(1, substr_count($content, 'MarketingListName2'));
             $this->assertTrue(strpos($content, 'Clark Kent') !== false);
-            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
             $this->assertTrue(strpos($content, '@zurmo.com') !== false);
             $this->assertEquals(2, substr_count($content, '@zurmo.com'));
             $this->assertEquals(2, substr_count($content, 'second@zurmo.com'));
@@ -178,7 +178,7 @@
             $this->assertTrue(strpos($content, '1 result(s)') !== false);
             $this->assertEquals(1, substr_count($content, 'MarketingListName'));
             $this->assertTrue(strpos($content, 'Clark Kent') !== false);
-            $this->assertEquals(1, substr_count($content, 'Clark Kent'));
+            $this->assertEquals(2, substr_count($content, 'Clark Kent'));
             $this->assertTrue(strpos($content, '@zurmo.com') !== false);
             $this->assertEquals(2, substr_count($content, '@zurmo.com'));
             $this->assertEquals(2, substr_count($content, 'first@zurmo.com'));

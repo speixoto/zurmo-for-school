@@ -9,22 +9,17 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">CreateUser</td></tr>
+<tr><td rowspan="1" colspan="3">Create User</td></tr>
 </thead><tbody>
-<tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
 <tr>
 	<td>setTimeout</td>
 	<td>45000</td>
 	<td></td>
 </tr>
 <tr>
-	<td>storeGlobal</td>
-	<td>javascript{Math.floor(Math.random()*11000)}</td>
-	<td>randomSuffix</td>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -194,7 +189,7 @@
 <!--Business Card View-->
 <tr>
 	<td>click</td>
-	<td>css=img.gravatar</td>
+	<td>//div[@id='businessCardView']/div[1]/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -288,11 +283,6 @@
 	<td>link=Edit</td>
 	<td>Edit</td>
 </tr>
-<!--tr>
-    <td>assertText</td>
-    <td>//div[@id='zurmoView']/div[1]/table/tbody/tr[6]/td</td>
-    <td>Janny${randomSuffix} Jingo${randomSuffix}</td>
-</tr-->
 <tr>
 	<td>verifyTextPresent</td>
 	<td>janny${randomSuffix}</td>
@@ -308,11 +298,6 @@
 	<td>link=janny${randomSuffix}@jingo.com</td>
 	<td>janny${randomSuffix}@jingo.com</td>
 </tr>
-<!--tr>
-    <td>compareText</td>
-    <td>//div[@id='UserDetailsView']/div/div[3]/table/tbody/tr[3]/td</td>
-    <td>123 Jingo Street<br /> Chicago IL, 60614<br /> USAmap</td>
-</tr-->
 <tr>
 	<td>assertText</td>
 	<td>//div[@id='zurmoView']/div[1]/table/tbody/tr[3]/td</td>
@@ -528,6 +513,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>

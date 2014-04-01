@@ -671,10 +671,12 @@ a + .autoresponder-stats{
 }
 
 /*Manage Subscriptions*/
+#MarketingListsManageSubscriptionsListView,
+#MarketingListsExternalActionsPreviewView,
 #MarketingListsExternalActionsPageView,
 #MarketingListsManageSubscriptionsPageView{
-	max-width: 900px;
-	margin: 30px auto;
+	margin-left: 0;
+	padding: 75px 15% 15px 15%;
 	> .GridView{
 		.clearfix();
 	}
@@ -699,8 +701,8 @@ a + .autoresponder-stats{
 	.Warning,
 	.wrapper{
 		background: #fff;
-		.b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
-		.radius(5px);
+		.b-shadow(0 0 5px 0px rgba(153, 153, 153, 0.3)); /*999*/
+		.radius(2px);
 	}
 	.Warning{
 		.clearfix();
@@ -719,18 +721,21 @@ a + .autoresponder-stats{
 			border: 0;
 		}
 	}
-	#FooterView {
-		margin: 20px 0;
-		padding-bottom: 20px;
+	~ #FooterView {
+		margin: 20px 0 20px 15%;
+		padding: 0 0 0 15px;
 		clear: both;
 	}
 	h1{
+		.unstyle-panel();
+		font-size: 25px;
+		margin-bottom: 30px;
+		text-indent: 0;
 		background: none;
 		border: none;
-		.unstyle-panel();
 	}
-	#MarketingListsManageSubscriptionsListView{
-
+	.left-column{
+		//padding: 0;
 	}
 	#marketingLists-manageSubscriptionsList{
 		table{
@@ -750,5 +755,10 @@ a + .autoresponder-stats{
 	}
 	.switch{
 		margin-right: 15px;
+		float: none;
+	}
+	.simple-link{
+		display: block;
+		margin-top: 15px;
 	}
 }

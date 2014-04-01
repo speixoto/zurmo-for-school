@@ -40,7 +40,7 @@
         {
             return array(
                 'name'     => $this->attribute,
-                'header'   => Zurmo::t('CalendarsModule', 'Title'),
+                'header'   => Zurmo::t('ZurmoModule', 'Title'),
                 'value'    => 'Yii::app()->format->text(strval($data["' . $this->attribute . '"]))',
                 'type'     => 'raw',
                 'sortable' => false,

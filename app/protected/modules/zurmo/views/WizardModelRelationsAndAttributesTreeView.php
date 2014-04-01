@@ -56,6 +56,11 @@
         protected $formName;
 
         /**
+         * @var null|string
+         */
+        protected $uniqueId;
+
+        /**
          * Override in children with correct controllerId
          * @throws NotImplementedException
          */
@@ -68,15 +73,18 @@
          * @param string $type
          * @param string $treeType
          * @param string $formName
+         * @param null|string $uniqueId
          */
-        public function __construct($type, $treeType, $formName)
+        public function __construct($type, $treeType, $formName, $uniqueId = null)
         {
             assert('is_string($type)');
             assert('is_string($treeType)');
             assert('is_string($formName)');
+            assert('is_string($uniqueId) || $uniqueId === null');
             $this->type     = $type;
             $this->treeType = $treeType;
             $this->formName = $formName;
+            $this->uniqueId = $uniqueId;
         }
 
         /**
@@ -123,7 +131,7 @@
          */
         protected function getTreeId()
         {
-            return $this->treeType . 'TreeView';
+            return $this->uniqueId . $this->treeType . 'TreeView';
         }
     }
 ?>

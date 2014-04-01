@@ -116,7 +116,9 @@
             {
                 $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
-                                            'wrapperClass' => 'item-to-place');
+                                            'wrapperClass' => 'item-to-place',
+                );
+                $this->resolveChildNodeDataValueForAttributeNode($attributeNode, $attribute, $nodeIdPrefix);
                 $childrenNodeData[] = $attributeNode;
             }
             $selectableRelationsData = $modelToReportAdapter->
@@ -140,6 +142,16 @@
                 $childrenNodeData[]           = $relationNode;
             }
             return $childrenNodeData;
+        }
+
+        /**
+         * Override as needed
+         * @param $attributeNode
+         * @param $attribute
+         * @param $nodeIdPrefix
+         */
+        protected function resolveChildNodeDataValueForAttributeNode(& $attributeNode, $attribute, $nodeIdPrefix)
+        {
         }
 
         /**

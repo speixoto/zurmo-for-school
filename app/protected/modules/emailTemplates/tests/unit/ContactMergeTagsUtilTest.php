@@ -142,7 +142,7 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
             $model                                          = new EmailTemplateModelTestItem();
-            $model->string                                  = 'abc';
+            $model->string                                  = 'We will add a $100 discount to this deal';
             $model->firstName                               = 'James';
             $model->lastName                                = 'Jackson';
             $model->phone                                   = 1122334455;
@@ -173,7 +173,8 @@
             assert('$saved'); // Not Coding Standard
             self::$emailTemplate                            = $model;
             self::$content                                  = '[[STRING]] [[FIRST^NAME]] [[LAST^NAME]] [[PHONE]]';
-            self::$compareContent                           = 'abc James Jackson 1122334455';
+            self::$compareContent                           = 'We will add a $100 discount to this deal' .
+                                                                ' James Jackson 1122334455';
 
             self::$account                                  = AccountTestHelper::
                                                               createAccountByNameForOwner('Account1', self::$super);
@@ -303,7 +304,7 @@
         public function testStringMergeTag()
         {
             $content                = 'string: [[STRING]]';
-            $compareContent         = 'string: abc';
+            $compareContent         = 'string: We will add a $100 discount to this deal';
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
@@ -590,6 +591,23 @@
 
         /**
          * @depends testPrimaryEmailMergeTag
+         */
+        public function testOwnerEmailMergeTag()
+        {
+            $content                        = 'owner: [[OWNER]]';
+            $compareContent                 = 'owner: Clark Kent';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($compareContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnerEmailMergeTag
          */
         public function testSecondaryEmailMergeTag()
         {

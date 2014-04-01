@@ -56,7 +56,8 @@
             $htmlContent                        = array();
             $htmlContent['{bodyContent}']       = $bodyContent;
             $htmlContent['{preferenceContent}'] = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Manage your email preferences'), $url);
-            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By <a href=\'http://www.zurmo.com\'>Zurmo</a>', LabelUtil::getTranslationParamsForAllModules());
+            $htmlContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By {link}',
+                array('{link}' => ZurmoHtml::link(Yii::app()->label, self::resolveWebsiteUrlForNotificationMessage())));
             return strtr($htmlTemplate, $htmlContent);
         }
 
@@ -114,7 +115,7 @@
             $textContent['{bodyContent}']       = $bodyContent;
             $textContent['{preferenceContent}'] = Zurmo::t('EmailMessagesModule', 'Manage your email preferences') . ': ' . $url;
             $textContent['{sourceContent}']     = Zurmo::t('EmailMessagesModule', 'Powered By Zurmo', LabelUtil::getTranslationParamsForAllModules());
-            $textContent['{sourceContent}']    .= PHP_EOL . 'http://www.zurmo.com';
+            $textContent['{sourceContent}']    .= PHP_EOL . self::resolveWebsiteUrlForNotificationMessage();
             return strtr($textTemplate, $textContent);
         }
 
@@ -186,6 +187,22 @@
             $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             Yii::app()->emailHelper->send($emailMessage);
+        }
+
+        /**
+         * @return string
+         */
+        protected static function resolveWebsiteUrlForNotificationMessage()
+        {
+            $emailNotificationUtilWebsiteUrl = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'emailNotificationUtilWebsiteUrl');
+            if ($emailNotificationUtilWebsiteUrl != '')
+            {
+                return $emailNotificationUtilWebsiteUrl;
+            }
+            else
+            {
+                return "http://www.zurmo.com";
+            }
         }
     }
 ?>

@@ -39,7 +39,7 @@
      */
     abstract class ReportWizardView extends WizardView
     {
-        public static function getControllerId()
+        public static function getModuleId()
         {
             return 'reports';
         }

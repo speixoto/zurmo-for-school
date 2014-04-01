@@ -76,7 +76,7 @@
 
 .autoresponder-combined-content,
 .email-template-combined-content{
-	padding: 0 15px;
+	padding: 0;
 	position: relative;
 	.big-spinner{
 		position: absolute;
@@ -87,12 +87,21 @@
 		height: 100%;
 		//background: rgba(255, 255, 255, 0.9);
 		margin: 0;
-		
 	}
 	.spinner{
 		margin: 100px 0 0 50%;
 		left: 0 !important;
 		top: 0 !important;
+	}
+	&.strong-right{
+		padding-left: 15px;
+		padding-bottom: 15px;
+	}
+	&.full-width{
+		padding-right: 15px;
+	}
+	&.right-column{
+		overflow: visible;
 	}
 }
 
@@ -106,14 +115,7 @@
 		height: 100%;
 		background: rgba(255, 255, 255, 0.8);
 		margin: 0;
-		
 	}
-	/*
-	.spinner{
-		margin: 15% 0 0 50%;
-		left: 0 !important;
-		top: 0 !important;
-	}*/
 }
 
 .tabs-nav{
@@ -140,6 +142,10 @@
 	    top: 1px;
 	    color: @themeColor;
     }
+	.simple-link{
+		position: relative;
+		bottom: -9px;
+	}
 }
 
 .mergetag-guide-modal{

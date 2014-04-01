@@ -43,5 +43,14 @@
         {
             return 'AccountContactAffiliation';
         }
+
+        /**
+         * Get the array of attributes that cannot be mapped when using these import rules.
+         * @return array
+         */
+        public static function getNonImportableAttributeNames()
+        {
+            return array_merge(parent::getNonImportableAttributeNames(), array('primary'));
+        }
     }
 ?>

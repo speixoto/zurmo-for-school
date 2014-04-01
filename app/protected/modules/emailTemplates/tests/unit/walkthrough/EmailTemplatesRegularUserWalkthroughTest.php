@@ -55,12 +55,12 @@
             UserTestHelper::createBasicUser('nobody');
 
             // Setup test data owned by the super user.
-            static::$templateOwnedBySuper = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                                                    'Test Subject1',
-                                                                                                    'Contact',
-                                                                                                    'Test Name1',
-                                                                                                    'Test HtmlContent1',
-                                                                                                    'Test TextContent1');
+
+            static::$templateOwnedBySuper = EmailTemplateTestHelper::create('Test Name1',
+                                                                            'Test Subject1',
+                                                                            'Contact',
+                                                                            'Test HtmlContent1',
+                                                                            'Test TextContent1');
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
@@ -75,10 +75,8 @@
         {
             $this->user->setRight('ContactsModule', ContactsModule::getAccessRight());
             $this->assertTrue($this->user->save());
-            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT,
-                                                                                'Test Subject Regular 01',
+            $emailTemplate = EmailTemplateTestHelper::create('Test Name Regular 01', 'Test Subject Regular 01',
                                                                                 'Contact',
-                                                                                'Test Name Regular 01',
                                                                                 'Test HtmlContent Regular 01',
                                                                                 'Test TextContent Regular 01');
 
@@ -106,9 +104,11 @@
 
             $this->user->setRight('EmailTemplatesModule', EmailTemplatesModule::getCreateRight());
             $this->assertTrue($this->user->save());
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->setGetArray(array('id' => $emailTemplate->id));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
@@ -132,13 +132,14 @@
             $this->assertTrue($this->user->save());
 
             // Create a new emailTemplate and test validator.
-            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
+                                     'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
             $this->setPostArray(array('EmailTemplate' => array(
                                             'type'              => EmailTemplate::TYPE_WORKFLOW,
                                             'name'              => 'New Test Workflow EmailTemplate',
                                             'subject'           => 'New Test Subject')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
-            $this->assertTrue(strpos($content, 'Create Email Template') !== false);
+            $this->assertTrue(strpos($content, 'Email Template Wizard - Plain Text') !== false);
             $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
             $this->assertTrue(strpos($content, '<select name="EmailTemplate[modelClassName]" id="EmailTemplate_modelClassName_value"') !== false);
             $this->assertTrue(strpos($content, 'Please provide at least one of the contents field.') !== false);

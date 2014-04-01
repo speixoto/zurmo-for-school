@@ -47,7 +47,7 @@
             $calendarItem   = new CalendarItem();
             $startAttribute = $savedCalendar->startAttributeName;
             $endAttribute   = $savedCalendar->endAttributeName;
-            $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
+            Yii::app()->custom->setCalendarItemTitle($calendarItem, $model);
             $calendarItem->setStartDateTime($model->$startAttribute);
             if ($endAttribute != null)
             {
@@ -456,7 +456,7 @@
         {
             assert('is_int($savedCalendarSubscriptionId)');
             $elementContent = ZurmoHtml::tag('li', array(),
-                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('CalendarsModule', 'Unsubscribe')), '#',
+                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Unsubscribe')), '#',
                                                     array('data-value'  => $savedCalendarSubscriptionId,
                                                           'class'       => 'shared-cal-unsubscribe')));
             $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);

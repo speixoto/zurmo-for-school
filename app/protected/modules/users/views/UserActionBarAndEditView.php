@@ -41,7 +41,7 @@
             public function __construct($controllerId, $moduleId, RedBeanModel $model, $moduleName)
         {
             parent::__construct(2, 1);
-            $this->setView(new ActionBarForUserEditAndDetailsView ($controllerId, $moduleId, $model, 'EditLink'), 0, 0);
+            $this->setView(new ActionBarForUserEditAndDetailsView ($controllerId, $moduleId, $model, 'UserEditMenu'), 0, 0);
             $editViewClassName = get_class($model) . 'EditView';
             $this->setView(new $editViewClassName($controllerId, $moduleId, $model), 1, 0);
         }

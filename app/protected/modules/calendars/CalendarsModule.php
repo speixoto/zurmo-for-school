@@ -115,7 +115,7 @@
          */
         protected static function getSingularModuleLabel($language)
         {
-            return Zurmo::t('CalendarsModule', 'Calendar', array(), null, $language);
+            return Zurmo::t('Core', 'Calendar', array(), null, $language);
         }
 
         /**

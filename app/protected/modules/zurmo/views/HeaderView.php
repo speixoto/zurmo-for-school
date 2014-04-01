@@ -36,11 +36,27 @@
 
     class HeaderView extends View
     {
-        protected $verticalGridView;
+        /**
+         * @var string
+         */
+        protected $applicationName;
 
         /**
-         * @param string $controllerId
-         * @param string $moduleId
+         * @var array
+         */
+        protected $moduleNamesAndLabels;
+
+        /**
+         * @var string
+         */
+        protected $sourceUrl;
+
+        /**
+         * @var array
+         */
+        protected $shortcutsCreateMenuItems;
+
+        /**
          * @param array $settingsMenuItems
          * @param array $userMenuItems
          * @param array $shortcutsCreateMenuItems
@@ -48,40 +64,97 @@
          * @param string $sourceUrl
          * @param string $applicationName
          */
-        public function __construct($controllerId, $moduleId, $settingsMenuItems, $userMenuItems,
+        public function __construct($settingsMenuItems, $userMenuItems,
                                     $shortcutsCreateMenuItems,
                                     $moduleNamesAndLabels, $sourceUrl, $applicationName)
         {
-            assert('is_string($controllerId)');
-            assert('is_string($moduleId)');
             assert('is_array($settingsMenuItems)');
             assert('is_array($userMenuItems)');
             assert('is_array($shortcutsCreateMenuItems)');
             assert('is_array($moduleNamesAndLabels)');
             assert('is_string($sourceUrl)');
             assert('is_string($applicationName) || $applicationName == null');
-
-            $shortcutsCreateMenuView = new ShortcutsCreateMenuView(
-                                                                $controllerId,
-                                                                $moduleId,
-                                                                $shortcutsCreateMenuItems
-                                                            );
-            $this->verticalGridView   = new GridView(2, 1);
-            $this->verticalGridView->setView(
-                                        new HeaderLinksView($settingsMenuItems, $userMenuItems,
-                                                            $applicationName), 0, 0);
-            $globalSearchAndShortcutsCreateMenuView = new GlobalSearchAndShortcutsCreateMenuView($moduleNamesAndLabels,
-                                                          $sourceUrl,
-                                                          $shortcutsCreateMenuView);
-            $horizontalGridView = new GridView(1, 1);
-            $horizontalGridView->setView($globalSearchAndShortcutsCreateMenuView, 0, 0);
-            $this->verticalGridView->setView($horizontalGridView, 1, 0);
+            $this->applicationName          = $applicationName;
+            $this->moduleNamesAndLabels     = $moduleNamesAndLabels;
+            $this->sourceUrl                = $sourceUrl;
+            $this->shortcutsCreateMenuItems = $shortcutsCreateMenuItems;
+            $this->settingsMenuItems        = $settingsMenuItems;
+            $this->userMenuItems            = $userMenuItems;
         }
 
         protected function renderContent()
         {
             $this->renderLoginRequiredAjaxResponse();
-            return $this->verticalGridView->render();
+
+            $logoAndSearchContent = $this->renderLogoAndSearchContent();
+            $userActionsContent   = $this->renderUserActionsContent();
+            $content  = ZurmoHtml::tag('div', array('class' => 'logo-and-search'), $logoAndSearchContent);
+            $content .= ZurmoHtml::tag('div', array('class' => 'user-actions clearfix'), $userActionsContent);
+            return ZurmoHtml::tag('div', array('class' => 'container clearfix'), $content);
+        }
+
+        protected function renderLogoAndSearchContent()
+        {
+            $content  = $this->resolveAndRenderLogoContent();
+            $content .= $this->resolveAndRenderGlobalSearchContent();
+            return $content;
+        }
+
+        protected function resolveAndRenderGlobalSearchContent()
+        {
+            $globalSearchView = new GlobalSearchView($this->moduleNamesAndLabels, $this->sourceUrl);
+            return $globalSearchView->render();
+        }
+
+        protected function resolveAndRenderLogoContent()
+        {
+            $homeUrl   = Yii::app()->createUrl('home/default');
+            $content   = null;
+            if ($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
+            {
+                $logoFileModel = FileModel::getById($logoFileModelId);
+                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                    DIRECTORY_SEPARATOR . $logoFileModel->name);
+            }
+            else
+            {
+                $logoFileSrc   = Yii::app()->themeManager->baseUrl . '/default/images/Zurmo_logo.png';
+            }
+            $logoHeight = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoHeight();
+            $logoWidth  = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoWidth();
+            if (Yii::app()->userInterface->isMobile())
+            {
+                //make sure width and height are NEVER defined
+                $content   .= '<img src="' . $logoFileSrc . '" alt="Zurmo Logo" />';
+            }
+            else
+            {
+                $content   .= '<img src="' . $logoFileSrc . '" alt="Zurmo Logo" height="'
+                              . $logoHeight .'" width="' . $logoWidth .'" />';
+            }
+            if ($this->applicationName != null)
+            {
+                $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);
+            }
+            return ZurmoHtml::link($content, $homeUrl, array('class' => 'clearfix', 'id' => 'corp-logo'));
+        }
+
+        protected function renderUserActionsContent()
+        {
+            $headerLinksView = new HeaderLinksView($this->settingsMenuItems, $this->userMenuItems);
+            $content  = $headerLinksView->render();
+            $content .= $this->resolveAndRenderShortcutsContent();
+            return $content;
+        }
+
+        protected function resolveAndRenderShortcutsContent()
+        {
+            $shortcutsCreateMenuView = new ShortcutsCreateMenuView(
+                Yii::app()->controller->getId(),
+                Yii::app()->controller->getModule()->getId(),
+                $this->shortcutsCreateMenuItems
+            );
+            return $shortcutsCreateMenuView->render();
         }
 
         protected function renderLoginRequiredAjaxResponse()
@@ -106,6 +179,11 @@
                     );
                 ');
             }
+        }
+
+        protected function getContainerWrapperTag()
+        {
+            return 'header';
         }
     }
 ?>

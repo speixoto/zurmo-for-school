@@ -42,6 +42,8 @@
             'tracking/default/track',
             'marketingLists/external/',
             'contacts/external/',
+            'zurmo/imageModel/getImage/',
+            'zurmo/imageModel/getThumb/',
             'min/serve');
 
         public function attach($owner)
@@ -430,6 +432,7 @@
             if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
             {
                 ForgetAllCacheUtil::forgetAllCaches();
+                $this->clearCacheDirectories();
             }
         }
 
@@ -580,6 +583,39 @@
         protected static function getAllowedGuestUserRoutes()
         {
             return self::$allowedGuestUserRoutes;
+        }
+
+        protected function clearCacheDirectories()
+        {
+            $cacheDirectories   = $this->resolveCacheDirectoryPaths();
+            foreach ($cacheDirectories as $cacheDirectory)
+            {
+                $this->clearCacheDirectory($cacheDirectory);
+            }
+        }
+
+        protected function clearCacheDirectory(array $cacheDirectory)
+        {
+            $excludedFiles          = array('index.html');
+            $path                   = null;
+            $removeDirectoryItself  = false;
+            extract($cacheDirectory);
+            if (is_dir($path))
+            {
+                FileUtil::deleteDirectoryRecursive($path, $removeDirectoryItself, $excludedFiles);
+            }
+        }
+
+        protected function resolveCacheDirectoryPaths()
+        {
+            $cacheDirectories       = array(
+                array(  'path'                  => Yii::app()->assetManager->getBasePath(),
+                        'removeDirectoryItself' => false),
+                array(  'path'                 => Yii::getPathOfAlias('application.runtime.themes'),
+                        'removeDirectoryItself' => false),
+                array(  'path'                 => Yii::getPathOfAlias('application.runtime.minscript.cache'),
+                        'removeDirectoryItself' => false));
+            return $cacheDirectories;
         }
      }
 ?>

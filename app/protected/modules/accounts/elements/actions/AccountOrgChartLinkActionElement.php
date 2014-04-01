@@ -59,7 +59,6 @@
             return $this->getLabel();
         }
 
-        
         protected function getRouteAction()
         {
             return '/orgGraph/';

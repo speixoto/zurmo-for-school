@@ -448,7 +448,6 @@
          */
         public function actionUserInterface()
         {
-            Yii::import('application.extensions.userinterface.UserInterface');
             if (isset($_GET['userInterface']))
             {
                 if (in_array($_GET['userInterface'], array(UserInterface::DESKTOP, UserInterface::MOBILE, UserInterface::TABLET)))
@@ -457,6 +456,15 @@
                 }
                 $this->redirect(Yii::app()->createUrl('home/default/'));
             }
+        }
+
+        /**
+         * Toggle the option to expand/colapse the left menu
+         */
+        public function actionToggleCollapse()
+        {
+            Yii::app()->userInterface->toggleCollapseMenu();
+            $this->redirect(ArrayUtil::getArrayValue(GetUtil::getData(), 'returnUrl'));
         }
 
         public function actionGetUpdatesForRefresh($unreadMashableInbox)

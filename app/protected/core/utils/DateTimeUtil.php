@@ -372,7 +372,7 @@
          */
         public static function convertDbFormattedDateTimeToTimeZoneAdjustedDateTime($dateTime)
         {
-            assert('is_string($dateTime) && DateTimeUtil::isValidDbFormattedDate($dateTime)');
+            assert('is_string($dateTime) && DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
             $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
             $adjustedDate = new DateTime($dateTime, $userTimeZone);
             $adjustedDate->setTimezone(new DateTimeZone('GMT'));
@@ -388,7 +388,7 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
-        
+
         public static function getLastDayOfAMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
@@ -397,7 +397,7 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
-        
+
         public static function getFirstDayOfLastMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
@@ -406,7 +406,7 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
-        
+
         public static function getLastDayOfLastMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
@@ -415,7 +415,7 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
-        
+
         public static function getFirstDayOfNextMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
@@ -424,7 +424,7 @@
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
-        
+
         public static function getLastDayOfNextMonthDate($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');

@@ -43,7 +43,6 @@
             $cClipWidget->widget('application.core.widgets.OrgChart');
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['OrgChart'];
-
         }
     }
 ?>

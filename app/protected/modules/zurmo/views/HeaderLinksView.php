@@ -42,8 +42,6 @@
 
         protected $notificationsUrl;
 
-        protected $applicationName;
-
         const USER_MENU_ID                              = 'user-header-menu';
 
         const SETTINGS_MENU_ID                          = 'settings-header-menu';
@@ -65,58 +63,23 @@
         /**
          * @param array $settingsMenuItems
          * @param array $userMenuItems
-         * @param string $applicationName
          */
-        public function __construct($settingsMenuItems, $userMenuItems, $applicationName)
+        public function __construct($settingsMenuItems, $userMenuItems)
         {
             assert('is_array($settingsMenuItems)');
             assert('is_array($userMenuItems)');
-            assert('is_string($applicationName) || $applicationName == null');
             $this->settingsMenuItems     = $settingsMenuItems;
             $this->userMenuItems         = $userMenuItems;
-            $this->applicationName       = $applicationName;
         }
 
         protected function renderContent()
         {
             $this->registerScripts();
-            $homeUrl   = Yii::app()->createUrl('home/default');
-            $content   = '<div class="clearfix">';
-            $content  .= '<a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>';
-            $content  .= '<div id="corp-logo">';
-            if ($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
-            {
-                $logoFileModel = FileModel::getById($logoFileModelId);
-                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
-                    DIRECTORY_SEPARATOR . $logoFileModel->name);
-            }
-            else
-            {
-                $logoFileSrc   = Yii::app()->themeManager->baseUrl . '/default/images/Zurmo_logo.png';
-            }
-            $logoHeight = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoHeight();
-            $logoWidth  = ZurmoUserInterfaceConfigurationFormAdapter::resolveLogoWidth();
-            if (Yii::app()->userInterface->isMobile())
-            {
-                $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" /></a>'; //make sure width and height are NEVER defined
-            }
-            else
-            {
-                $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" height="'
-                    . $logoHeight .'" width="' . $logoWidth .'" /></a>';
-            }
-            if ($this->applicationName != null)
-            {
-                $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);
-            }
-            $content  .= '</div>';
+            $content = null;
             if (!empty($this->userMenuItems) && !empty($this->settingsMenuItems))
             {
-                $content  .= '<div id="user-toolbar" class="clearfix">';
                 $content  .= static::renderHeaderMenus($this->userMenuItems, $this->settingsMenuItems);
-                $content  .= '</div>';
             }
-            $content  .= '</div>';
             return $content;
         }
 
@@ -124,14 +87,13 @@
         {
             $userMenuItemsWithTopLevel     = static::resolveUserMenuItemsWithTopLevelItem($userMenuItems);
             $settingsMenuItemsWithTopLevel = static::resolveSettingsMenuItemsWithTopLevelItem($settingsMenuItems);
-            $content = null;
+            $content = static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
             if (Yii::app()->userInterface->isMobile() === false)
             {
                 $content .= static::renderHeaderGameDashboardContent();
+                $content .= static::renderHeaderCalendarContent();
             }
-            $content     .= static::renderHeaderCalendarContent();
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
-            $content     .= static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
             return $content;
         }
 
@@ -159,7 +121,10 @@
 
         protected static function getUserMenuTopLevelItem()
         {
-            return array(array('label' => Yii::app()->user->userModel->username, 'url' => null));
+            return array(array('dynamicLabelContent'  => Yii::app()->user->userModel->getAvatarImage(25),
+                               'labelSpanHtmlOptions' => array('class' => 'avatar-holder'),
+                               'label'                => Yii::app()->user->userModel->username,
+                               'url'                  => null));
         }
 
         protected static function getSettingsMenuTopLevel()
@@ -317,6 +282,11 @@
             $content = ZurmoHtml::link('U', $url, array('id' => 'header-calendar-link'));
             return ZurmoHtml::tag('div', array('id' => static::USER_CALENDAR_WRAPPER_ID,
                 'class' => 'user-menu-item'), $content);
+        }
+
+        protected function getContainerWrapperTag()
+        {
+            return null;
         }
     }
 ?>

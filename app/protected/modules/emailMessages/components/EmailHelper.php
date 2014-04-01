@@ -90,6 +90,13 @@
         public $fromAddress;
 
         /**
+         * Name of the html converter to use for outgoing html emails
+         * null to disable
+         * @var string
+         */
+        public $htmlConverter   = null;
+
+        /**
          * Contains array of settings to load during initialization from the configuration table.
          * @see loadOutboundSettings
          * @var array
@@ -318,7 +325,9 @@
             }
             if (!empty($emailMessage->content->htmlContent))
             {
-                $mailer->body     = $emailMessage->content->htmlContent;
+                $mailer->body       = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByHtmlContent(
+                                                                                    $emailMessage->content->htmlContent,
+                                                                                    $this->htmlConverter);
             }
             $mailer->From = array($emailMessage->sender->fromAddress => $emailMessage->sender->fromName);
             foreach ($emailMessage->recipients as $recipient)

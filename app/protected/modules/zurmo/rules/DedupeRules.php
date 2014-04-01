@@ -99,7 +99,7 @@
             }
             $id            = $this->getInputIdForDedupe($element);
             $dedupeViewId  = $this->getDedupeViewClassName();
-            $link          = ZurmoHtml::link(Zurmo::t('ZurmoModule', 'click here'), '#', array('onclick' => 'js:$("#' . $dedupeViewId . '").closest("form")[0].submit();'));
+            $link          = ZurmoHtml::link(Zurmo::t('Core', 'click here'), '#', array('onclick' => 'js:$("#' . $dedupeViewId . '").closest("form")[0].submit();'));
             $spanUnderline = ZurmoHtml::tag('span', array('class' => 'underline'), $link);
             $textMessage   = '<br>' . ZurmoHtml::encode(Zurmo::t('ZurmoModule', 'If you still want to save {link}.', array('{link}' => $spanUnderline)));
             $spinnerId     = 'dedupe-spinner';

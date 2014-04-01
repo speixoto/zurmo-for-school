@@ -387,7 +387,7 @@
             }
             if ($this->isDerivedAttribute($attribute))
             {
-                if($attribute == 'UniqueIdentifier')
+                if ($attribute == 'UniqueIdentifier')
                 {
                     return ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER;
                 }
