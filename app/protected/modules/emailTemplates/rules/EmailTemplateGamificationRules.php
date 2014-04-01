@@ -48,6 +48,7 @@
         {
             return array(GamePoint::TYPE_COMMUNICATION => 10);
         }
+
         /**
          * Override to handle 'draft' email template creation
          * @param CEvent $event
@@ -63,7 +64,7 @@
             }
             if ($model->getIsNewModel())
             {
-                if(!$model->isDraft)
+                if (!$model->isDraft)
                 {
                     $scoreType           = static::resolveCreateScoreTypeByModel($model);
                     $category            = static::SCORE_CATEGORY_CREATE_MODEL;
@@ -93,7 +94,6 @@
                     $category            = static::SCORE_CATEGORY_UPDATE_MODEL;
                     $gameScore           = GameScore::resolveToGetByTypeAndPerson($scoreType, Yii::app()->user->userModel);
                 }
-
             }
             $gameScore->addValue();
             $saved = $gameScore->save();

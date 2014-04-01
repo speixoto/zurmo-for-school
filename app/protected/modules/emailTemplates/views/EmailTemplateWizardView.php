@@ -124,10 +124,10 @@
         {
             assert('is_string($formName)');
             $script             = "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');";
-            $script             .= $this->renderTreeViewAjaxScriptContentForMergeTagsView();
-            $viewClassNames		= static::resolveContainingViewClassNames();
-            $progressPerStep	= $this->resolveProgressPerStep();
-            $validationInputId	= static::getValidationScenarioInputId();
+            $script            .= $this->renderTreeViewAjaxScriptContentForMergeTagsView();
+            $viewClassNames     = static::resolveContainingViewClassNames();
+            $progressPerStep    = $this->resolveProgressPerStep();
+            $validationInputId  = static::getValidationScenarioInputId();
             foreach ($viewClassNames as $id => $viewClassName)
             {
                 $script         .= $this->resolveNextPageScript($formName, $viewClassName,
@@ -174,21 +174,22 @@
 
         protected function resolveNextPageScript($formName, $viewClassName, $validationInputId, $progressPerStep, $stepCount)
         {
-            $scriptPrefix	= 'if';
+            $scriptPrefix       = 'if';
             if ($stepCount)
             {
-                $scriptPrefix	= 'else if';
+                $scriptPrefix	= 'else if'; // Not Coding Standard
             }
-            $ajaxOptions 		= $this->resolveAdditionalAjaxOptions($formName, $viewClassName, $validationInputId,
+            $ajaxOptions        = $this->resolveAdditionalAjaxOptions($formName, $viewClassName, $validationInputId,
                                                                         $progressPerStep, $stepCount);
-            $nextPageLinkId		= $viewClassName::getNextPageLinkId();
-            $redirectAfterSave	= $viewClassName::redirectAfterSave();
-
-            $script 			= $this->getSaveAjaxString($formName, $redirectAfterSave, $ajaxOptions);
-            $script   			= $scriptPrefix . " (linkId == '" . $nextPageLinkId . "')
+            $nextPageLinkId     = $viewClassName::getNextPageLinkId();
+            $redirectAfterSave  = $viewClassName::redirectAfterSave();
+            $script             = $this->getSaveAjaxString($formName, $redirectAfterSave, $ajaxOptions);
+            // Begin Not Coding Standard
+            $script             = $scriptPrefix . " (linkId == '" . $nextPageLinkId . "')
                                     {
                                         " . $script . "
                                     }";
+            // End Not Coding Standard
             return $script;
         }
 
@@ -196,27 +197,27 @@
                                                         $progressPerStep, $stepCount)
         {
             $nextPageClassName  = static::resolveNextPageClassName($stepCount);
-            $ajaxOptions 		= $viewClassName::resolveAdditionalAjaxOptions($formName, $validationInputId,
-                                                                                $progressPerStep, $stepCount, $nextPageClassName);
+            $ajaxOptions        = $viewClassName::resolveAdditionalAjaxOptions($formName, $validationInputId,
+                                                                                $progressPerStep, $stepCount, $nextPageClassName, $this->model);
             return $ajaxOptions;
         }
 
         protected function registerPreviousPageScript($viewClassName, $validationInput, $progressPerStep, $stepCount)
         {
-            $previousPageLinkId	        = $viewClassName::getPreviousPageLinkId();
-            $scriptName	                = "clickflow." . $previousPageLinkId;
-            $eventName	                = "click." . $previousPageLinkId;
-            $previousPageClassName	    = static::resolvePreviousPageClassName($stepCount);
+            $previousPageLinkId         = $viewClassName::getPreviousPageLinkId();
+            $scriptName                 = "clickflow." . $previousPageLinkId;
+            $eventName                  = "click." . $previousPageLinkId;
+            $previousPageClassName      = static::resolvePreviousPageClassName($stepCount);
             if (!isset($previousPageClassName))
             {
-                $script 	= $this->resolvePreviousPageScriptForFirstStep($previousPageLinkId);
+                $script     = $this->resolvePreviousPageScriptForFirstStep($previousPageLinkId);
             }
             else
             {
-                $script 	= $this->resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInput, $progressPerStep, $stepCount);
+                $script     = $this->resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInput, $progressPerStep, $stepCount);
             }
 
-            $script 		= "
+            $script         = "
             $('#" . $previousPageLinkId . "').unbind('" . $eventName . "').bind('" . $eventName . "', function()
             {
                 " . $script . "
@@ -226,7 +227,7 @@
 
         protected function resolvePreviousPageScriptForFirstStep()
         {
-            $script 	= "
+            $script     = "
                             url = '" . $this->resolveSaveRedirectToListUrl() . "';
                             window.location.href = url;
                             return false;";
@@ -236,9 +237,9 @@
         protected function resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInputId,
                                                             $progressPerStep, $stepCount)
         {
-            $validationScenario 	= $previousPageClassName::resolveValidationScenario();
-            $progress 				= $stepCount * $progressPerStep;
-            $script 	            = "
+            $validationScenario     = $previousPageClassName::resolveValidationScenario();
+            $progress               = $stepCount * $progressPerStep;
+            $script                 = "
                             $('#" . $validationInputId . "').val('" . $validationScenario . "');
                             $('#" . $previousPageClassName . "').show();
                             $('#" . $viewClassName . "').hide();
@@ -246,7 +247,7 @@
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step')
                                                                     .prev().addClass('current-step');
                             return false;
-					";
+                    ";
             $viewClassName::resolvePreviousPageScript($script);
             return $script;
         }

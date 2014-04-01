@@ -70,7 +70,7 @@
                 {
                     $this->reduceColumns($difference);
                 }
-                else if ($difference > 0)
+                elseif ($difference > 0)
                 {
                     $this->induceColumn($difference);
                 }
@@ -156,11 +156,10 @@
                 (!$columnWrappingTable && !$isHeader))
             {
                 $cssClasses = 'container';
-
             }
             // $columnWrappingTable = true, $header = false     : row
             // $columnWrappingTable = false, $header = true     : row header
-            else if (($columnWrappingTable && !$isHeader) ||
+            elseif (($columnWrappingTable && !$isHeader) ||
                     (!$columnWrappingTable && $isHeader))
             {
                 $cssClasses = 'row';
@@ -212,7 +211,6 @@
                 $columnWidth                = NumberToWordsUtil::convert(static::MAX_COLUMN_WIDTH / $columnCount);
                 $columnCssClasses           = array(BuilderColumnElement::TABLE_CSS_CLASSES_PARAM_KEY => $columnWidth);
                 $columnCssClasses           = array_fill(0, count($columnKeys), $columnCssClasses);
-
             }
             else
             {

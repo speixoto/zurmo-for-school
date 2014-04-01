@@ -185,13 +185,10 @@
             $modelForm->setAttributes($builderModelForm);
             if (!$modelForm->validate())
             {
-
                 foreach ($modelForm->getErrors() as $attribute => $errors)
                 {
                     $errorData[ZurmoHtml::activeId($modelForm, $attribute)] = $errors;
                 }
-
-
             }
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);

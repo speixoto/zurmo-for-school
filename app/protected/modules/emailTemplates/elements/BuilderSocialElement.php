@@ -94,8 +94,6 @@
             return $content;
         }
 
-        //
-
         protected function renderSettingsTab(ZurmoActiveForm $form)
         {
             $propertiesForm     = BuilderSocialElementPropertiesEditableElementsUtil::render($this->model, $form);
@@ -110,7 +108,7 @@
         protected function resolveNonEditableWrapperHtmlOptions()
         {
             $htmlOptions            = parent::resolveNonEditableWrapperHtmlOptions();
-            $htmlOptions['class']  .= ' ' .$this->properties['backend']['layout'];
+            $htmlOptions['class']  .= ' ' . $this->properties['backend']['layout'];
             return $htmlOptions;
         }
 
@@ -121,7 +119,7 @@
 
         protected function resolveSpacerContentForVerticalLayout()
         {
-            if($this->getLayout() == 'vertical')
+            if ($this->getLayout() == 'vertical')
             {
                 $urlToImage = PlaceholderImageUtil::resolveTransparentImageUrl(true);
                 return ZurmoHtml::image($urlToImage, '', array('width' => '100%', 'height' => '15'));
@@ -130,7 +128,7 @@
 
         protected function resolveTdCloseAndOpenContentForHorizontalLayout()
         {
-            if($this->getLayout() == 'horizontal')
+            if ($this->getLayout() == 'horizontal')
             {
                 $urlToImage = PlaceholderImageUtil::resolveTransparentImageUrl(true);
                 $content    = ZurmoHtml::closeTag('td');

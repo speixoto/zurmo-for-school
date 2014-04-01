@@ -165,12 +165,14 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('.redactor-iframe').load(function(){
                             var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
                             $('.redactor-iframe').height(contentHeight + 50);
                         });
                     ");
+                // End Not Coding Standard
             }
         }
 
@@ -232,6 +234,7 @@
             $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_INPUT_NAME);
             $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                 'htmlOptions'           => $htmlOptions,
                                 'content'               => $htmlContent,
@@ -247,6 +250,7 @@
                                     $(".redactor_box iframe").height(contentHeight + 50);
                                 }'
             ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
             $content                .= $cClipWidget->getController()->clips['Redactor'];

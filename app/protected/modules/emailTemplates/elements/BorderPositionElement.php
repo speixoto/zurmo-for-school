@@ -200,6 +200,7 @@
 
         protected function registerAllOrNoneCheckboxScript()
         {
+            // Begin Not Coding Standard
             $script = '
                         function changeAllDirectionalCheckboxesAndRaiseEvents(checked)
                         {
@@ -236,6 +237,7 @@
                             }
                         });';
             Yii::app()->clientScript->registerScript('allOrNoneChangeCheckboxScript', $script);
+            // End Not Coding Standard
         }
     }
 ?>

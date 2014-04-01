@@ -115,7 +115,7 @@
         protected function renderSelectBaseTemplateByElementName($elementName, $wrapperDivCssId, $heading = null, $params = array())
         {
             $element = new $elementName($this->model, static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME, $this->form, $params);
-            if(null != $content = $element->render())
+            if (null != $content = $element->render())
             {
                 $content = ZurmoHtml::tag('ul', array('class' => 'clearfix'), $content);
                 $content = "<h3>${heading}</h3>" . $content;
@@ -223,12 +223,13 @@
 
         protected function registerPopulateBaseTemplatesScript()
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('populateBaseTemplatesScript', "
                 function populateBaseTemplates(elementClassName, elementModelClassName, elementAttributeName, elementFormClassName, elementParams, divId)
                 {
                     var templateId     = $('" .
                                             GeneralDataForEmailTemplateWizardView::
-                                                    resolveTemplateIdHiddenInputJQuerySelector() . "').val();
+                                                    resolveTemplateIdHiddenInputJQuerySelector($this->model) . "').val();
                     var requestData    = { templateId: templateId, elementClassName: elementClassName,
                                             elementModelClassName: elementModelClassName,
                                             elementAttributeName: elementAttributeName,
@@ -237,6 +238,7 @@
 
                     " . ZurmoHtml::ajax($this->resolvePopulateBaseTemplateAjaxOptions()) . "
                 }", CClientScript::POS_HEAD);
+            // End Not Coding Standard
         }
 
         protected function resolvePopulateBaseTemplateAjaxOptions()
@@ -249,15 +251,18 @@
             $ajaxArray['url']           = static::resolveBaseTemplateOptionsUrl();
             $ajaxArray['type']          = 'GET';
             $ajaxArray['data']          = "js:requestData";
+            // Begin Not Coding Standard
             $ajaxArray['success']       = "js:function(data, status, request)
                                         {
                                             updateBaseTemplatesByDivId(divId, data);
                                         }";
+            // End Not Coding Standard
             return $ajaxArray;
         }
 
         protected function registerUpdateBaseTemplatesByDivIdScript()
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('updateBaseTemplatesByDivIdScript', "
                 function updateBaseTemplatesByDivId(divId, data)
                 {
@@ -271,10 +276,12 @@
                         $('div#' + divId).show();
                     }
                 }", CClientScript::POS_HEAD);
+            // End Not Coding Standard
         }
 
         protected function registerReloadPreviouslyCreatedTemplatesScript()
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('reloadPreviouslyCreatedTemplatesScript', "
                 function reloadPreviouslyCreatedTemplates(elementParams)
                 {
@@ -285,6 +292,7 @@
                     divId                   = '" . static::PREVIOUSLY_CREATED_TEMPLATES_DIV_ID . "';
                     populateBaseTemplates(elementClassName, elementModelClassName, elementAttributeName, elementFormClassName, elementParams, divId);
                 }", CClientScript::POS_HEAD);
+            // End Not Coding Standard
         }
 
         protected function resolveBaseTemplateIdInputNameWithoutSerializedData()
@@ -320,13 +328,14 @@
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                               $validationInputId, $progressPerStep,
-                                                                              $stepCount)
+                                                                              $stepCount, $model)
         {
             $canvasIFrameSelector       = "#" . BuilderCanvasWizardView::CANVAS_IFRAME_ID;
             $canvasActionUrl            =  static::resolveCanvasActionUrl();
             $refreshCanvasLinkSelector  = "#" . BuilderCanvasWizardView::REFRESH_CANVAS_FROM_SAVED_TEMPLATE_LINK_ID;
             $originalBaseTemplateIdSelector = static::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector();
             $baseTemplateIdSelector         = static::resolveBaseTemplateIdHiddenInputJQuerySelector();
+            // Begin Not Coding Standard
             $script         = "
                                 initEmailTemplateEditor();
                                 selectedBaseTemplateId  = $('" . $baseTemplateIdSelector . "').val();
@@ -337,7 +346,7 @@
                                     // update canvas url
                                     if (canvasSourceUrl == 'about:blank')
                                     {
-                                        canvasSourceUrl		= '" . $canvasActionUrl . "';
+                                        canvasSourceUrl     = '" . $canvasActionUrl . "';
                                         canvasSourceUrl     = canvasSourceUrl.replace(/id=(\d*)/, 'id=' + data.id);
                                         $('" . $canvasIFrameSelector . "').attr('src', canvasSourceUrl);
                                     }
@@ -346,9 +355,10 @@
                                 $('" . $originalBaseTemplateIdSelector . "').val(selectedBaseTemplateId);
 
                                 ";
+            // End Not Coding Standard
             $parentScript   = parent::resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                                     $validationInputId, $progressPerStep,
-                                                                                    $stepCount);
+                                                                                    $stepCount, $model);
             $script         = $script . PHP_EOL . $parentScript;
             return $script;
         }

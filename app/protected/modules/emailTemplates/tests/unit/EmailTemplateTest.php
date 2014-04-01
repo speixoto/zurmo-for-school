@@ -818,7 +818,6 @@
             $this->assertContains('workflow 01', $dataAndLabels);
             // do another call to ensure this time cache is served:
             $dataAndLabels  = EmailTemplate::getDataAndLabelsByType($type);
-
         }
     }
 ?>

@@ -40,6 +40,5 @@
 
     class CalendarsReportRules extends SecuredReportRules
     {
-
     }
 ?>

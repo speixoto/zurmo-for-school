@@ -279,16 +279,15 @@
         protected function resolveJoinsForDerivedRelationViaCastedUpModelThatIsManyToMany($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
-            $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->getOpposingRelationModelClassName();
             $opposingRelationTableName       = $this->modelAttributeToDataProviderAdapter->getOpposingRelationTableName();
             $relationJoiningTableAliasName   = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                 $this->modelAttributeToDataProviderAdapter->getManyToManyTableNameForDerivedRelationViaCastedUpModel(),
                 "id",
                 $onTableAliasName,
-                self::resolveForeignKey($opposingRelationTableName));
+                self::resolveForeignKey($onTableAliasName));
             $onTableAliasName                = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                                                $opposingRelationTableName,
-                                               self::resolveForeignKey($opposingRelationModelClassName),
+                                               self::resolveForeignKey($opposingRelationTableName),
                                                $relationJoiningTableAliasName,
                                                'id');
             return $onTableAliasName;

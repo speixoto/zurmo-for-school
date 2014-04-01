@@ -263,7 +263,6 @@
          */
         protected function registerNonEditableScripts()
         {
-
         }
 
         /**
@@ -271,7 +270,6 @@
          */
         protected function registerNonEditableCss()
         {
-
         }
 
         /**
@@ -578,7 +576,6 @@
             return $content;
         }
 
-
         /**
          * Returns string containing all form input fields properly wrapped in containers.
          * @param ZurmoActiveForm $form
@@ -771,6 +768,7 @@
         protected function registerTabbedContentScripts()
         {
             $scriptName = 'element-edit-form-tab-switch-handler';
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript($scriptName, "
                     $('.edit-form-tab-content .tabs-nav a:not(.simple-link)').click( function(event){
                         event.preventDefault();
@@ -787,6 +785,7 @@
                         });
                     });
                 ");
+            // End Not Coding Standard
         }
 
         /**
@@ -989,6 +988,7 @@
             //$ajaxArray['cache']         = 'false'; //todo: should by default be used.
             $ajaxArray['url']           = $this->resolveFormActionUrl();
             $ajaxArray['type']          = 'POST';
+            // Begin Not Coding Standard
             $ajaxArray['data'] = 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()';
             $ajaxArray['beforeSend']    = "js:function()
                                         {
@@ -1005,6 +1005,7 @@
                                             emailTemplateEditor.canvasChanged();
                                             emailTemplateEditor.addPlaceHolderForEmptyCells();
                                         }";
+            // End Not Coding Standard
             return $ajaxArray;
         }
 
@@ -1032,7 +1033,6 @@
          */
         protected function renderBeforeFormLayout(ZurmoActiveForm $form)
         {
-
         }
 
         /**
@@ -1041,7 +1041,6 @@
          */
         protected function renderAfterFormLayout(ZurmoActiveForm $form)
         {
-
         }
 
         /**
@@ -1132,7 +1131,7 @@
             {
                 $params     = $defaultParams;
             }
-            else if (ArrayUtil::getArrayValue($params, 'mergeDefault'))
+            elseif (ArrayUtil::getArrayValue($params, 'mergeDefault'))
             {
                 $params     = CMap::mergeArray($defaultParams, $params);
             }
@@ -1312,17 +1311,17 @@
 
         public function validate($attribute, $value)
         {
-            if (isset($this->getRules()[$attribute]))
+            $rules = $this->getRules();
+            if (isset($rules[$attribute]))
             {
                 try
                 {
-                    return call_user_func(array($this, $this->getRules()[$attribute]), $value);
+                    return call_user_func(array($this, $rules[$attribute]), $value);
                 }
                 catch (Exception $exception)
                 {
                     throw new NotImplementedException();
                 }
-
             }
             return true;
         }
@@ -1371,11 +1370,12 @@
 
         protected function sanitizeProperties(array & $properties)
         {
-            foreach($properties as $key => $value)
+            $propertiesMappedArray = static::getPropertiesSuffixMappedArray();
+            foreach ($properties as $key => $value)
             {
-                if (isset(static::getPropertiesSuffixMappedArray()[$key]))
+                if (isset($propertiesMappedArray[$key]))
                 {
-                    $properties[$key] .= static::getPropertiesSuffixMappedArray()[$key];
+                    $properties[$key] .= $propertiesMappedArray[$key];
                 }
             }
         }

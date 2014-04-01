@@ -106,7 +106,7 @@
                 $id = " id=\"$name\"";
                 unset($classes[0]);
             }
-            elseif($this->renderContainerWrapperId())
+            elseif ($this->renderContainerWrapperId())
             {
                 $id = $this->getId();
                 if ($id != null)
@@ -124,7 +124,7 @@
                 $classes = " class=\"$classes\"";
             }
             $containerWrapperTag = $this->getContainerWrapperTag();
-            if($containerWrapperTag == null)
+            if ($containerWrapperTag == null)
             {
                 return $content;
             }
@@ -136,7 +136,7 @@
 
         protected function resolveDefaultClasses()
         {
-            if($this->makeDefaultClassesFromClassHeirarchy)
+            if ($this->makeDefaultClassesFromClassHeirarchy)
             {
                 return RuntimeUtil::getClassHierarchy(get_class($this), 'View');
             }

@@ -47,7 +47,6 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-
             EmailTemplateTestHelper::create('EmailTemplate 01', 'Subject 01', 'Contact', 'Html Content 01',
                                             'Text Content 01');
             EmailTemplateTestHelper::create('EmailTemplate 02', 'Subject 02', 'Contact', 'Html Content 02',

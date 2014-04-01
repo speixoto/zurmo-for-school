@@ -49,7 +49,7 @@
         {
             $sizes = array(100, 115, 125, 140, 150, 200);
             $resolvedSizesForUnits = array();
-            foreach($sizes as $size)
+            foreach ($sizes as $size)
             {
                 $size = $this->resolveSizeForUnits($size);
                 $resolvedSizesForUnits[$size]   = $size;

@@ -93,7 +93,7 @@
             $count = 1;
             foreach ($this->items as $key => $item)
             {
-                if(isset($item['moduleId']))
+                if (isset($item['moduleId']))
                 {
                     $items[$key]['itemOptions']['class'] = 'type-' . $item['moduleId'];
                     if ($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
