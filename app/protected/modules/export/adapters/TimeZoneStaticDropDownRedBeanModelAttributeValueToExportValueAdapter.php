@@ -34,22 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AlignmentStaticDropDownFormElement extends BuilderStaticDropDownFormElement
+    class TimeZoneStaticDropDownRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
-        {
-            $alignments     = $this->resolveAvailableAlignments();
-            return $alignments;
-        }
-
-        protected function resolveAvailableAlignments()
-        {
-            $alignments = array('left', 'right', 'center');
-            $alignments    = array_combine(array_values($alignments), array_map('ucfirst', array_values($alignments)));
-            return $alignments;
-        }
     }
 ?>

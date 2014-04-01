@@ -62,6 +62,9 @@
                 'frontend'      => array(
                     'href'              => Yii::app()->createAbsoluteUrl('/'),
                     'target'            => '_blank',
+                    'inlineStyles'  => array(
+                        'color'              => '#ffffff',
+                    ),
                 )
             );
             return $properties;
@@ -143,6 +146,10 @@
                 unset($properties['href']);
             }
             $this->resolveInlineStylePropertiesNonEditable($properties);
+            if (isset($properties['inlineStyles']))
+            {
+                unset($properties['inlineStyles']);
+            }
             return $properties;
         }
 
@@ -242,6 +249,14 @@
             $htmlOptions        = $this->resolveNonEditableContentWrappingTdHtmlOptions();
             $options            = CMap::mergeArray($htmlOptions, $frontendOptions);
             return $options;
+        }
+
+        protected function resolveWrapperTdNonEditableByContent($content)
+        {
+            $options            = $this->resolveNonEditableContentWrappingTdOptions();
+            $options            = CMap::mergeArray($options, array('class'=>'button-td'));
+            $content            = ZurmoHtml::tag('td', $options, $content);
+            return $content;
         }
     }
 ?>

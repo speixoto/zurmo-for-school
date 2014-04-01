@@ -438,14 +438,14 @@
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                               $validationInputId, $progressPerStep,
-                                                                              $stepCount)
+                                                                              $stepCount, $model)
         {
             $script                     = static::resolveHideCanvasScript();
             $parentScript               = parent::resolveSuccessAjaxCallbackForPageTransition($formName,
                                                                                                 $nextPageClassName,
                                                                                                 $validationInputId,
                                                                                                 $progressPerStep,
-                                                                                                $stepCount);
+                                                                                                $stepCount, $model);
             $script                     = $script . PHP_EOL . $parentScript;
             return $script;
         }

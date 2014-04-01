@@ -236,9 +236,9 @@
             return $selector;
         }
 
-        public static function resolveTemplateIdHiddenInputJQuerySelector()
+        public static function resolveTemplateIdHiddenInputJQuerySelector($model)
         {
-            $id = ZurmoHtml::activeId(new BuilderEmailTemplateWizardForm(), static::HIDDEN_ID);
+            $id = ZurmoHtml::activeId($model, static::HIDDEN_ID);
             return '#' . $id;
         }
 
@@ -282,10 +282,10 @@
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                                 $validationInputId, $progressPerStep,
-                                                                                    $stepCount)
+                                                                                    $stepCount, $model)
         {
             $actionId                   = Yii::app()->getController()->getAction()->getId();
-            $templateIdSelector         = static::resolveTemplateIdHiddenInputJQuerySelector();
+            $templateIdSelector         = static::resolveTemplateIdHiddenInputJQuerySelector($model);
             $moduleClassNameSelector    = static::resolveModuleClassNameHiddenInputJQuerySelector();
             $script                     = "if ('create' == '" . $actionId . "')
                                             {
@@ -298,7 +298,7 @@
                                                                                                 $nextPageClassName,
                                                                                                 $validationInputId,
                                                                                                 $progressPerStep,
-                                                                                                $stepCount);
+                                                                                                $stepCount, $model);
             $script                     = $script . PHP_EOL . $parentScript;
             return $script;
         }
