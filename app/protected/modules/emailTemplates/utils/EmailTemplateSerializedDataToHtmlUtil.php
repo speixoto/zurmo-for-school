@@ -64,6 +64,7 @@
          */
         public static function resolveHtmlByEmailTemplateModel(EmailTemplate $emailTemplate, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null)
         {
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $serializedData = $emailTemplate->serializedData;
             $resolvedHtml   = static::resolveHtmlBySerializedData($serializedData, $renderForCanvas, $attachedMergeTagModel, $emailTemplate->type, $emailTemplate->language);
             return $resolvedHtml;

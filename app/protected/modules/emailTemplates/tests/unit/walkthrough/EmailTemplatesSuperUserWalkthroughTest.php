@@ -106,6 +106,7 @@
             $this->assertTrue   (strpos($content,       '1 result') !== false);
             $this->assertEquals (substr_count($content, 'Test Name1'), 1);
             $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
+            $this->assertEquals (substr_count($content, '<td>Use HTML</td>'), 1);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
             $this->assertEquals (1, count($emailTemplates));
         }
@@ -120,13 +121,113 @@
             $this->assertTrue   (strpos($content,       '1 result') !== false);
             $this->assertEquals (substr_count($content, 'Test Name'), 1);
             $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
+            $this->assertEquals (substr_count($content, '<td>Use HTML</td>'), 1);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
             $this->assertEquals (1, count($emailTemplates));
         }
 
+        public function testSelectBuiltType()
+        {
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/selectBuiltType');
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">'.
+                                                'Email Template Wizard</span></span></h1>') !== false);
+            $this->assertTrue(strpos($content, '<ul class="configuration-list creation-list">') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Use Plain Text</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Use HTML</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Use Template Builder</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li></ul>') !== false);
+        }
+
+        public function testCreateWithoutBuiltType()
+        {
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
+            $content    = $this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/create');
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">'.
+                    'Email Template Wizard</span></span></h1>') !== false);
+            $this->assertTrue(strpos($content, '<ul class="configuration-list creation-list">') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Use Plain Text</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Use HTML</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Use Template Builder</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false);
+            $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li></ul>') !== false);
+        }
+
+        public function testMergeTagGuide()
+        {
+            $content    = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/mergeTagGuide');
+            $this->assertTrue(strpos($content, '<div id="ModalView"><div id="MergeTagGuideView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="mergetag-guide-modal-content" class="mergetag-guide-modal">') !== false);
+            $this->assertTrue(strpos($content, 'Merge tags are a quick way to introduce reader-specific dynamic '.
+                                                'information into emails.') !== false);
+            $this->assertTrue(strpos($content, '<div id="mergetag-syntax"><div id="mergetag-syntax-head">'.
+                                                '<h4>Syntax</h4></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="mergetag-syntax-body"><ul>') !== false);
+            $this->assertTrue(strpos($content, '<li>A merge tag starts with: [[ and ends with ]].</li>') !== false);
+            $this->assertTrue(strpos($content, '<li>Between starting and closing tags it can have field names. These ' .
+                                                'names are written in all caps regardless of actual field name' .
+                                                ' case.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li>Fields that contain more than one word are named using camel case' .
+                                                ' in the system and to address that in merge tags, use the prefix ^ ' .
+                                                'before the letter that should be capitalize when ' .
+                                                'converted.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li>To access a related field, use the following prefix:' .
+                                                ' __</li>') !== false);
+            $this->assertTrue(strpos($content, '<li>To access a previous value of a field (only supported in workflow' .
+                                                ' type templates) prefix the field name with: WAS%. If there is no ' .
+                                                'previous value, the current value will be used. If the attached ' .
+                                                'module does not support storing previous values an error will be ' .
+                                                'thrown when saving the template.</li>') !== false);
+            $this->assertTrue(strpos($content, '</ul></div></div><div id="mergetag-examples"><div id="mergetag-' .
+                                                'examples-head">') !== false);
+            $this->assertTrue(strpos($content, '<h4>Examples</h4></div><div id="mergetag-examples-body">') !== false);
+            $this->assertTrue(strpos($content, '<ul><li>Adding a contact\'s First Name (firstName): <strong>' .
+                                                '[[FIRST^NAME]]</strong></li>') !== false);
+            $this->assertTrue(strpos($content, '<li>Adding a contact\'s city (primaryAddress->city): <strong>' .
+                                                '[[PRIMARY^ADDRESS__CITY]]</strong></li>') !== false);
+            $this->assertTrue(strpos($content, '<li>Adding a user\'s previous primary email address: <strong>' .
+                                                '[[WAS%PRIMARY^EMAIL__EMAIL^ADDRESS]]</strong></li>') !== false);
+            $this->assertTrue(strpos($content, '</ul></div></div><div id="mergetag-special-tags"><div id="mergetag' .
+                                                '-special-tags-head">') !== false);
+            $this->assertTrue(strpos($content, '<h4>Special Tags</h4></div><div id="mergetag-special-tags-body">') !== false);
+            $this->assertTrue(strpos($content, '<ul><li><strong>[[MODEL^URL]]</strong> : prints absolute url to the ' .
+                                                'current model attached to template.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[BASE^URL]]</strong> : prints absolute url to the current' .
+                                                ' install without trailing slash.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[APPLICATION^NAME]]</strong> : prints application name' .
+                                                ' as set in global settings > application name.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[CURRENT^YEAR]]</strong> : prints current year.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[LAST^YEAR]]</strong> : prints last year.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[OWNERS^AVATAR^SMALL]]</strong> : prints the owner\'s ' .
+                                                'small avatar image (32x32).</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[OWNERS^AVATAR^MEDIUM ]]</strong> : prints the owner\'s ' .
+                                                'medium avatar image (64x64).</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[OWNERS^AVATAR^LARGE]]</strong> : prints the owner\'s ' .
+                                                'large avatar image (128x128).</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[OWNERS^EMAIL^SIGNATURE]]</strong> : prints the owner\'s' .
+                                                ' email signature.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[GLOBAL^MARKETING^FOOTER^PLAIN^TEXT]]</strong> : prints ' .
+                                                'the Global Marketing Footer(Plain Text).</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>[[GLOBAL^MARKETING^FOOTER^HTML]]</strong> : prints the ' .
+                                                'Global Marketing Footer(Rich Text).</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>{{UNSUBSCRIBE_URL}}</strong> : prints unsubscribe' .
+                                                ' url.</li>') !== false);
+            $this->assertTrue(strpos($content, '<li><strong>{{MANAGE_SUBSCRIPTIONS_URL}}</strong> : prints manage' .
+                                                ' subscriptions url.</li>') !== false);
+        }
+
         /**
          * @depends testSuperUserListForWorkflowAction
-         */
+         *
         public function testSuperUserCreateActionForWorkflow()
         {
             // Create a new emailTemplate and test validator.
@@ -184,7 +285,7 @@
 
         /**
          * @depends testSuperUserCreateActionForWorkflow
-         */
+         *
         public function testSuperUserCreateActionForMarketing()
         {
             // Create a new emailTemplate and test validator.
@@ -238,7 +339,7 @@
 
         /**
          * @depends testSuperUserCreateActionForMarketing
-         */
+         *
         public function testSuperUserEditActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test EmailTemplate');
@@ -318,7 +419,7 @@
 
         /**
          * @depends testSuperUserCreateActionForMarketing
-         */
+         *
         public function testSuperUserEditActionForWorkflow()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow EmailTemplate');
@@ -360,7 +461,7 @@
 
         /**
          * @depends testSuperUserEditActionForMarketing
-         */
+         *
         public function testSuperUserDetailsJsonActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
@@ -394,7 +495,7 @@
 
         /**
          * @depends testSuperUserDetailsJsonActionForMarketing
-         */
+         *
         public function testSuperUserDetailsActionForMarketing()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
@@ -413,7 +514,7 @@
 
         /**
          * @depends testSuperUserEditActionForWorkflow
-         */
+         *
         public function testSuperUserDetailsJsonActionForWorkflow()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');

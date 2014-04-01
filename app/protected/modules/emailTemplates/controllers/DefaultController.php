@@ -532,6 +532,7 @@
             if (isset($id))
             {
                 $emailTemplate  = EmailTemplate::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
                 $content        = $emailTemplate->htmlContent;
                 if (!$useHtmlContent || empty($content))
                 {
@@ -610,6 +611,7 @@
         public function actionConvertEmail($id, $converter = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $htmlContent    = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByModel($emailTemplate, $converter);
             echo $htmlContent;
         }
@@ -617,6 +619,7 @@
         public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $useHtmlContent = 1)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $htmlContent    = $emailTemplate->htmlContent;
             if (!$useHtmlContent)
             {
