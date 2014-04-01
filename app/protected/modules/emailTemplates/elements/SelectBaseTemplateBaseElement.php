@@ -60,6 +60,20 @@
             return $content;
         }
 
+        protected function renderPreviewButton()
+        {
+            $previewLabel   = Zurmo::t('EmailTemplatesModule', 'Preview');
+            $previewSpan    = ZurmoHtml::tag('span', array('class' => 'z-label'), $previewLabel);
+            return ZurmoHtml::link($previewSpan, '#', array('class' => 'secondary-button'));
+        }
+
+        protected function renderUseButton()
+        {
+            $useLabel   = Zurmo::t('EmailTemplatesModule', 'Use');
+            $useSpan    = ZurmoHtml::tag('span', array('class' => 'z-label'), $useLabel);
+            return ZurmoHtml::link($useSpan, '#', array('class' => 'z-button'));
+        }
+
         protected function renderControlNonEditable()
         {
             throw new NotImplementedException();
@@ -70,9 +84,12 @@
             $htmlOptions              = array();
             $htmlOptions['id']        = $this->getEditableInputId($this->attribute);
             $htmlOptions['separator'] = '';
+            $template                 ='{input}{label}';
+            $template                .= $this->renderUseButton();
+            $template                .= $this->renderPreviewButton();
             $htmlOptions['template']  = ZurmoHtml::tag('li',
                                                         array('class' => 'base-template-selection'),
-                                                        '{input}{label}');
+                                                        $template);
             if (isset($this->params['inputPrefix']) && $this->params['inputPrefix'])
             {
                 $htmlOptions['dataInputPrefix'] = $this->params['inputPrefix'];

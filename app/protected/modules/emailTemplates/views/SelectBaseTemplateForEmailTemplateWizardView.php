@@ -83,12 +83,24 @@
             $leftSideContent                            =  null;
             $hiddenElements                             = null;
             $this->renderSerializedDataHiddenFields($hiddenElements);
-
-            $leftSideContent                            .= $this->renderSelectBaseTemplateFromPredefinedTemplates();
-            $leftSideContent                            .= $this->renderSelectBaseTemplateFromPreviouslyCreatedTemplates();
+            $leftSideContent                            = $this->renderSelectBaseTemplateForm();
             $this->renderHiddenElements($hiddenElements, $leftSideContent);
 
             $content                                    = $leftSideContent;
+            return $content;
+        }
+
+        protected function renderSelectBaseTemplateForm()
+        {
+            $content  = $this->renderSelectBaseTemplateFromPredefinedTemplates();
+            $content .= $this->renderSelectBaseTemplateFromPreviouslyCreatedTemplates();
+//            $emailTemplate                  = new EmailTemplate(false);
+//            $emailSearchFormClassName       = static::getSearchFormClassName();
+//            $searchForm                     = new $emailSearchFormClassName($emailTemplate);
+//            $stateMetadataAdapter           = static::getStateMetadataAdapterByType($type);
+//            $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
+//                $stateMetadataAdapter,
+//                'EmailTemplatesSearchView');
             return $content;
         }
 

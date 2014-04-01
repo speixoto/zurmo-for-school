@@ -88,9 +88,9 @@
         public static function getBuiltTypeDropDownArray()
         {
             return array(
+                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Use Template Builder'),
                 static::BUILT_TYPE_PLAIN_TEXT_ONLY  => Zurmo::t('EmailTemplatesModule', 'Use Plain Text'),
                 static::BUILT_TYPE_PASTED_HTML      => Zurmo::t('EmailTemplatesModule', 'Use HTML'),
-                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Use Template Builder'),
             );
         }
 
