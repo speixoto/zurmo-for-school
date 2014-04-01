@@ -130,6 +130,7 @@
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
+            $updateStartTimestamp = time();
             foreach ($users as $user)
             {
                 Yii::app()->user->userModel = $user;
@@ -144,11 +145,12 @@
                             $onlyOwnedModels = true;
                         }
                         static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                                                Yii::app()->user->userModel, $partialBuild, $onlyOwnedModels);
+                            Yii::app()->user->userModel, $updateStartTimestamp, $partialBuild, $onlyOwnedModels);
                     }
                 }
             }
             Yii::app()->user->userModel = $loggedUser;
+            static::setTimeReadPermissionUpdateTimestamp($updateStartTimestamp);
         }
 
         /**
@@ -157,20 +159,22 @@
          * @param User $user
          * @param bool $partialBuild
          * @param bool $onlyOwnedModels
+         * @param int $updateStartTimestamp
          */
-        public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user,
+        public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
                                                                                   $partialBuild = true, $onlyOwnedModels = false)
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+            assert('is_int($updateStartTimestamp)');
             $metadata = array();
             $lastReadPermissionUpdateTimestamp = static::getLastReadPermissionUpdateTimestamp();
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastReadPermissionUpdateTimestamp);
-            $nowDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
 
             $metadata['clauses'][1] = array(
                 'attributeName'        => 'createdDateTime',
                 'operatorType'         => 'lessThanOrEqualTo',
-                'value'                => $nowDateTime
+                'value'                => $updateDateTime
             );
             $metadata['structure'] = "1";
 
@@ -224,7 +228,7 @@
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_ADD . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
@@ -240,12 +244,10 @@
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                    (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_DELETE . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
-
-            static::setTimeReadPermissionUpdateTimestamp($lastReadPermissionUpdateTimestamp);
         }
 
         /**
