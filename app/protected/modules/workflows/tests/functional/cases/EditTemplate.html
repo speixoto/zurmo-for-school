@@ -82,7 +82,7 @@
 <tr>
 	<td>type</td>
 	<td>id=EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -91,23 +91,22 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-view']/div[2]/table/tbody/tr/td[2]/a</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>//div[@id='list-view']/div[2]/table/tbody/tr/td[2]</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
 	<td>EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 </tr>
-<!--go in detail view of template-->
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='list-view']/div[2]/table/tbody/tr[1]/td[4]/a</td>
+	<td>click</td>
+	<td>//div[@id='list-view']/div[2]/table/tbody/tr[1]/td[2]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -121,18 +120,28 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForText</td>
-	<td>//div[@id='EmailTemplateEditAndDetailsView']/div/h1/span/span</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>setSpeed</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=EmailTemplate_textContent</td>
-	<td>Test Edited </td>
+	<td>id=ClassicEmailTemplateWizardForm_subject</td>
+	<td>test email subject after editing.</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Save</td>
+	<td>click</td>
+	<td>//div[@id='GeneralDataForEmailTemplateWizardView']/div[2]/div/div/a[2]/span[3]</td>
 	<td></td>
 </tr>
 <tr>
@@ -145,21 +154,10 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--verify values after saving template-->
 <tr>
-	<td>assertText</td>
-	<td>//div[@id='tab1']</td>
-	<td>Test Edited</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>index.php/productTemplates/default/list</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
+	<td>type</td>
+	<td>id=ClassicEmailTemplateWizardForm_textContent</td>
+	<td>html content</td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
@@ -168,7 +166,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>id=clear-search-link</td>
+	<td>//a[@id='contentFinishLink']/span[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -177,8 +180,13 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForTextNotPresent</td>
-	<td>Criteria Selected</td>
+	<td>waitForTextPresent</td>
+	<td>test email subject after editing.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>test email subject after editing.</td>
 	<td></td>
 </tr>
 </tbody>
