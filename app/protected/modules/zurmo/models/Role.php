@@ -154,5 +154,19 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
         }
+
+        protected function beforeValidate()
+        {
+            parent::beforeValidate();
+            foreach ($this->roles as $role)
+            {
+                if ($this->role->isSame($role))
+                {
+                    $errorMessage = Zurmo::t('ZurmoModule', 'You cannot select a child role for the parent role');
+                    $this->addError('role', $errorMessage);
+                    return false;
+                }
+            }
+        }
     }
 ?>
