@@ -183,5 +183,28 @@
             $emailTemplates = EmailTemplate::getAll();
             $this->assertEquals(1, count($emailTemplates));
         }
+
+        public function testSuperUserDetailsJsonActionForCreateEmailMessage()
+        {
+            $contact         = ContactTestHelper::createContactByNameForOwner('test', $this->user);
+            //Create a template not owned by user and give user read permission
+            $super           = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $emailTemplate   = EmailTemplateTestHelper::create('testa', 'test for permissions', 'Contact', 'testHtml');
+            $emailTemplate->addPermissions($this->user, Permission::READ, Permission::ALLOW);
+            $emailTemplate->save();
+
+            //Test user can get detailsJson
+            Yii::app()->user->userModel = $this->user;
+            $this->setGetArray(array('id'                 => $emailTemplate->id,
+                                     'renderJson'         => true,
+                                     'includeFilesInJson' => false,
+                                     'contactId'          => $contact->id));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals('testHtml', $emailTemplateDetailsResolvedArray['htmlContent']);
+        }
     }
 ?>
