@@ -279,7 +279,6 @@
                                                                                 $serializedData);
             $this->setGetArray(array('id' => $emailTemplate->id, 'className' => get_class($emailTemplate)));
             $content    = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/getHtmlContent');
-            $this->fail("// TODO: @Sergio: Critical: why are the ids for buildersocialbuttonelement different here?");
             $this->assertEquals($expectedHtmlContent, $content);
         }
 
@@ -361,7 +360,6 @@
             $expectedContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($emailTemplateId, true);
             $this->setGetArray(array('id' => $emailTemplateId));
             $content            = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/renderCanvas');
-            $this->fail("// TODO: @Sergio: Critical: why are the ids for buildersocialbuttonelement different here?");
             $this->assertEquals($expectedContent, $content);
         }
 
@@ -411,7 +409,6 @@
             $expectedContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateId($emailTemplateId);
             $this->setGetArray(array('id' => $emailTemplateId));
             $content            = $this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/renderPreview');
-            $this->fail("// TODO: @Sergio: Critical: why are the ids for buildersocialbuttonelement different here?");
             $this->assertEquals($expectedContent, $content);
         }
 
@@ -445,7 +442,6 @@
             $expectedContent    = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByModel($emailTemplate);
             $this->setGetArray(array('id' => $emailTemplate->id));
             $content            = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/convertEmail');
-            $this->fail("// TODO: @Sergio: Critical: why are the ids for buildersocialbuttonelement different here?");
             $this->assertEquals($expectedContent, $content);
         }
 
@@ -501,7 +497,6 @@
             $expectedContent    = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByModel($emailTemplate, 'cssin');
             $this->setGetArray(array('id' => $emailTemplate->id, 'converter' => 'cssin'));
             $content            = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/convertEmail');
-            $this->fail("// TODO: @Sergio: Critical: why are the ids for buildersocialbuttonelement different here?");
             $this->assertEquals($expectedContent, $content);
         }
 
