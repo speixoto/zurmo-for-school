@@ -574,22 +574,24 @@
             $id                 = ArrayUtil::getArrayValue($editableForm, 'id');
             $properties         = ArrayUtil::getArrayValue($editableForm, 'properties');
             $content            = ArrayUtil::getArrayValue($editableForm, 'content');
+            $params             = ArrayUtil::getArrayValue($editableForm, 'params');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
             $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW);
 
-            // at bare minimum we should have classname. Without these it does not make sense.
+            // at bare minimum we should have classname. Without it, it does not make sense.
             if (!Yii::app()->request->isPostRequest || !isset($className))
             {
                 Yii::app()->end(0, false);
             }
             if ($editable)
             {
-                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
+                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties,
+                                                                    $content, $params);
             }
             else
             {
                 $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $wrapElementInRow,
-                                                                        $id, $properties, $content);
+                                                                        $id, $properties, $content, $params);
             }
             Yii::app()->clientScript->render($content);
             echo $content;
