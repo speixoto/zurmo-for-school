@@ -283,9 +283,11 @@
                 $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
                                                                                                             $textContent);
                 $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
-                                                                                                        $htmlContent);
+                                                                                                            $htmlContent);
+                $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(true);
                 $emailTemplate->textContent = $textContent;
                 $emailTemplate->htmlContent = $htmlContent;
+                $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(false);
             }
             $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
             echo $emailTemplate;
