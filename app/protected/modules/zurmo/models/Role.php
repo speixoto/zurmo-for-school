@@ -157,7 +157,6 @@
 
         protected function beforeValidate()
         {
-            parent::beforeValidate();
             foreach ($this->roles as $role)
             {
                 if ($this->role->isSame($role))
@@ -167,6 +166,7 @@
                     return false;
                 }
             }
+            return parent::beforeValidate();
         }
     }
 ?>
