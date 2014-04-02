@@ -92,15 +92,34 @@
 
         protected function renderSelectBaseTemplateForm()
         {
-            $content  = $this->renderSelectBaseTemplateFromPredefinedTemplates();
-            $content .= $this->renderSelectBaseTemplateFromPreviouslyCreatedTemplates();
-//            $emailTemplate                  = new EmailTemplate(false);
-//            $emailSearchFormClassName       = static::getSearchFormClassName();
-//            $searchForm                     = new $emailSearchFormClassName($emailTemplate);
-//            $stateMetadataAdapter           = static::getStateMetadataAdapterByType($type);
-//            $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
-//                $stateMetadataAdapter,
-//                'EmailTemplatesSearchView');
+//            $content  = $this->renderSelectBaseTemplateFromPredefinedTemplates();
+//            $content .= $this->renderSelectBaseTemplateFromPreviouslyCreatedTemplates();
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'         => 'builtType',
+                    'operatorType'          => 'equals',
+                    'value'                 => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE,
+                ),
+                2 => array(
+                    'attributeName'         => 'modelClassName',
+                    'operatorType'          => 'isNull',
+                    'value'                 => null,
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2';
+            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
+
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ListView");
+            $cClipWidget->widget('application.core.widgets.ZurmoListView', array(
+                'dataProvider'  => $dataProvider,
+                'itemView'      => 'BaseEmailTemplateItemForListView',
+                'itemsTagName'  => 'ul',
+                'itemsCssClass' => 'clearfix'
+            ));
+            $cClipWidget->endClip();
+            $content = $cClipWidget->getController()->clips['ListView'];
             return $content;
         }
 
