@@ -89,11 +89,11 @@
             $icon               = ArrayUtil::getArrayValue($unserializedData, 'icon');
             if (!empty($icon))
             {
-                return ZurmoHtml::tag('i', array('class' => $icon), '');
+                return ZurmoHtml::icon($icon);
             }
             else
             {
-                return ZurmoHtml::tag('i', array('class' => 'icon-user-template'), '');
+                return ZurmoHtml::icon('icon-user-template');
             }
         }
     }
