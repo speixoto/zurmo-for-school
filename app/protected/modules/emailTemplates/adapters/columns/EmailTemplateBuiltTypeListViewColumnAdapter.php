@@ -49,7 +49,7 @@
 
         public static function resolveValueFromBuiltType($builtType)
         {
-            return EmailTemplate::getNonEditableBuiltTypeStringContent($builtType);
+            return EmailTemplate::getNonEditableBuiltTypeStringContent((int) $builtType);
         }
     }
 ?>
