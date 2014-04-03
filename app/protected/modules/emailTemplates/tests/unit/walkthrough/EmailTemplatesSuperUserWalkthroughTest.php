@@ -108,7 +108,7 @@
             $this->assertTrue   (strpos($content,       '1 result') !== false);
             $this->assertEquals (substr_count($content, 'Test Name1'), 1);
             $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
-            $this->assertEquals (substr_count($content, '<td>Use HTML</td>'), 1);
+            $this->assertEquals (substr_count($content, '<td>HTML</td>'), 1);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
             $this->assertEquals (1, count($emailTemplates));
         }
@@ -123,7 +123,7 @@
             $this->assertTrue   (strpos($content,       '1 result') !== false);
             $this->assertEquals (substr_count($content, 'Test Name'), 1);
             $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
-            $this->assertEquals (substr_count($content, '<td>Use HTML</td>'), 1);
+            $this->assertEquals (substr_count($content, '<td>HTML</td>'), 1);
             $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
             $this->assertEquals (1, count($emailTemplates));
         }
@@ -146,12 +146,15 @@
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li></ul>') !== false);
         }
 
+        /**
+         * @depends testSelectBuiltTypeAction
+         */
         public function testCreateWithoutBuiltTypeAction()
         {
             $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
             $content    = $this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/create');
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">'.
-                    'Email Template Wizard</span></span></h1>') !== false);
+                                                'Email Template Wizard</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<ul class="configuration-list creation-list">') !== false);
             $this->assertTrue(strpos($content, '<li><h4>Use Plain Text</h4><a class="white-button" href="') !== false);
             $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false);
@@ -283,6 +286,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForPlainText
          * @depends testGetHtmlContentActionForBuilder
          */
         public function testGetSerializedToHtmlContentForPlainText()
@@ -293,6 +297,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForHtml
          * @depends testGetSerializedToHtmlContentForPlainText
          */
         public function testGetSerializedToHtmlContentForHtml()
@@ -303,6 +308,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForBuilder
          * @depends testGetSerializedToHtmlContentForHtml
          */
         public function testGetSerializedToHtmlContentForBuilder()
@@ -332,6 +338,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForPlainText
          * @depends testRenderCanvasWithoutId
          */
         public function testRenderCanvasForPlainText()
@@ -342,6 +349,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForHtml
          * @depends testRenderCanvasForPlainText
          */
         public function testRenderCanvasForForHtml()
@@ -352,6 +360,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForBuilder
          * @depends testRenderCanvasForForHtml
          */
         public function testRenderCanvasForBuilder()
@@ -381,6 +390,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForPlainText
          * @depends testRenderPreviewWithoutId
          */
         public function testRenderPreviewForPlainText()
@@ -391,6 +401,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForHtml
          * @depends testRenderPreviewForPlainText
          */
         public function testRenderPreviewForForHtml()
@@ -401,6 +412,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForBuilder
          * @depends testRenderPreviewForForHtml
          */
         public function testRenderPreviewForBuilder()
@@ -431,8 +443,8 @@
         {
             $emailTemplate      = EmailTemplate::getById(2);
             $expectedContent    = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlByEmailTemplateModel($emailTemplate);
-            $this->setPostArray(array('serializedData' => $emailTemplate->serializeData));
-            $content            = $this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/renderPreview');
+            $this->setPostArray(array('serializedData' => $emailTemplate->serializedData));
+            $content            = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/renderPreview');
             $this->assertEquals($expectedContent, $content);
         }
 
@@ -446,6 +458,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForPlainText
          * @depends testConvertEmailWithoutConverter
          */
         public function testConvertEmailForPlainText()
@@ -462,6 +475,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForHtml
          * @depends testConvertEmailForPlainText
          */
         public function testConvertEmailForForHtml()
@@ -475,6 +489,7 @@
         }
 
         /**
+         * @depends testGetHtmlContentActionForBuilder
          * @depends testConvertEmailForForHtml
          */
         public function testConvertEmailForBuilder()
@@ -678,8 +693,8 @@
             $id                 = __FUNCTION__ . __LINE__;
             $renderForCanvas    = true;
             $properties         = array(
-                    'frontend'      => array('inlineStyles'  => array('color' => '#cccccc')),
-                    'backend'       => array('headingLevel'  => 'h3'));
+                                                'frontend'      => array('inlineStyles'  => array('color' => '#cccccc')),
+                                                'backend'       => array('headingLevel'  => 'h3'));
             $params             = null;
             $wrapElementInRow   = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
             $expectedContent    = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas,
@@ -905,6 +920,917 @@
                                                                     'emailTemplates/default/renderBaseTemplateOptions');
             $this->assertEquals($expectedContent, $content);
         }
+
+        /**
+         * @depends testGetHtmlContentActionForPlainText
+         */
+        public function testDetailsJsonActionForPlainText()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName('EmailTemplate', 'plainText 01');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testGetHtmlContentActionForHtml
+         */
+        public function testDetailsJsonActionForHtml()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName('EmailTemplate', 'html 01');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testGetHtmlContentActionForBuilder
+         */
+        public function testDetailsJsonActionForBuilder()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName('EmailTemplate', 'builder 01');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            unset($emailTemplateDetailsArray['serializedData']);
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+
+        /**
+         * @depends testDetailsJsonActionForPlainText
+         */
+        public function testDetailsJsonActionForMarketing()
+        {
+            $emailTemplate  = EmailTemplateTestHelper::create('marketing 01', 'marketing 01', 'Contact', 'html', 'text');
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplate->id, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testDetailsJsonActionForMarketing
+         */
+        public function testDetailsJsonActionForMarketingWithFiles()
+        {
+            $emailTemplateId        = self::getModelIdByModelNameAndName ('EmailTemplate', 'marketing 01');
+            $emailTemplate          = EmailTemplate::getById($emailTemplateId);
+            // attach some files
+            $fileNames              = array('testImage.png', 'testZip.zip', 'testPDF.pdf');
+            foreach ($fileNames as $fileName)
+            {
+                $emailTemplate->files->add(ZurmoTestHelper::createFileModel($fileName));
+            }
+            $emailTemplate->save();
+            $emailTemplate->forgetAll();
+            unset($emailTemplate);
+            $emailTemplate          = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true, 'includeFilesInJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $emailTemplateDetailsResolvedArrayWithoutFiles = $emailTemplateDetailsResolvedArray;
+            unset($emailTemplateDetailsResolvedArrayWithoutFiles['filesIds']);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertNotEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArrayWithoutFiles);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray['filesIds']);
+            $this->assertEquals($emailTemplate->files->count(), count($emailTemplateDetailsResolvedArray['filesIds']));
+            foreach ($emailTemplate->files as $index => $file)
+            {
+                $this->assertEquals($file->id, $emailTemplateDetailsResolvedArray['filesIds'][$index]);
+            }
+        }
+
+        /**
+         * @depends testDetailsJsonActionForMarketing
+         */
+        public function testDetailsActionForMarketing()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'marketing 01');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $this->setGetArray(array('id' => $emailTemplateId));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
+            $this->assertTrue(strpos($content, '<span>Options</span>') !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/edit?id=' . $emailTemplateId) !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/delete?id=' . $emailTemplateId) !== false);
+            $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">'. $emailTemplate->name . '</td>') !== false);
+            $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
+            $this->assertTrue(strpos($content, '<div class="tabs-nav"><a href="#tab1">') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">') !== false);
+        }
+
+        /**
+         * @depends testDetailsJsonActionForPlainText
+         */
+        public function testDetailsJsonActionForWorkflow()
+        {
+            $emailTemplate  = EmailTemplateTestHelper::create('workflow 01', 'workflow 01', 'Note', 'html',
+                                                                    'text', EmailTemplate::TYPE_WORKFLOW);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+            $this->setGetArray(array('id' => $emailTemplate->id, 'renderJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+        }
+
+        /**
+         * @depends testDetailsJsonActionForWorkflow
+         */
+        public function testDetailsJsonActionForWorkflowWithFiles()
+        {
+            $emailTemplateId        = self::getModelIdByModelNameAndName ('EmailTemplate', 'workflow 01');
+            $emailTemplate          = EmailTemplate::getById($emailTemplateId);
+            // attach some files
+            $fileNames              = array('testImage.png', 'testZip.zip', 'testPDF.pdf');
+            foreach ($fileNames as $fileName)
+            {
+                $emailTemplate->files->add(ZurmoTestHelper::createFileModel($fileName));
+            }
+            $emailTemplate->save();
+            $emailTemplate->forgetAll();
+            unset($emailTemplate);
+            $emailTemplate          = EmailTemplate::getById($emailTemplateId);
+            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
+            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
+            $this->assertNotEmpty($emailTemplateDetailsArray);
+
+            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true, 'includeFilesInJson' => true));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $emailTemplateDetailsResolvedArrayWithoutFiles = $emailTemplateDetailsResolvedArray;
+            unset($emailTemplateDetailsResolvedArrayWithoutFiles['filesIds']);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertNotEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
+            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArrayWithoutFiles);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray['filesIds']);
+            $this->assertEquals($emailTemplate->files->count(), count($emailTemplateDetailsResolvedArray['filesIds']));
+            foreach ($emailTemplate->files as $index => $file)
+            {
+                $this->assertEquals($file->id, $emailTemplateDetailsResolvedArray['filesIds'][$index]);
+            }
+        }
+
+        /**
+         * @depends testDetailsJsonActionForWorkflow
+         */
+        public function testDetailsActionForWorkflow()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'workflow 01');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $this->setGetArray(array('id' => $emailTemplateId));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
+            $this->assertTrue(strpos($content, '<span>Options</span>') !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/edit?id=' . $emailTemplateId) !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/delete?id=' . $emailTemplateId) !== false);
+            $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">'. $emailTemplate->name . '</td>') !== false);
+            $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
+            $this->assertTrue(strpos($content, '<div class="tabs-nav"><a href="#tab1">') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">') !== false);
+        }
+
+        /**
+         * @depends testDetailsJsonActionForWorkflow
+         */
+        public function testDetailsJsonActionWithMergeTagResolution()
+        {
+            $contact         = ContactTestHelper::createContactByNameForOwner('test', $this->super);
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'marketing 01');
+            $emailTemplate   = EmailTemplate::getById($emailTemplateId);
+            $unsubscribePlaceholder         = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $emailTemplate->textContent = "Test text content with contact tag: [[FIRST^NAME]] {$unsubscribePlaceholder}";
+            $emailTemplate->htmlContent = "Test html content with contact tag: [[FIRST^NAME]] {$manageSubscriptionsPlaceholder}";
+            $this->assertTrue($emailTemplate->save());
+            $this->setGetArray(array('id'                 => $emailTemplateId,
+                'renderJson'         => true,
+                'includeFilesInJson' => false,
+                'contactId'          => $contact->id));
+            // @ to avoid headers already sent error.
+            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
+            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
+            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
+            $this->assertEquals('Test text content with contact tag: test ', $emailTemplateDetailsResolvedArray['textContent']);
+            $this->assertEquals('Test html content with contact tag: test ', $emailTemplateDetailsResolvedArray['htmlContent']);
+        }
+
+        public function testCreateActionForPlainTextAndMarketing()
+        {
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT,
+                                        'builtType' => EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            file_put_contents('/tmp/plain_contact.html', $content);
+            $this->assertTrue(strpos($content, '<div id="MarketingBreadCrumbView" class="BreadCrumbView">' .
+                                                '<div class="breadcrumbs">') !== false);
+            $this->assertTrue(strpos($content, '/marketing/default/index">Marketing</a>') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/listForMarketing">Templates</a>') !== false);
+            $this->assertTrue(strpos($content, '<span>Create</span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ClassicEmailTemplateStepsAndProgressBarForWizardView" ' .
+                                                'class="StepsAndProgressBarForWizardView MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="progress"><div class="progress-back"><div class="progress' .
+                                                '-bar" style="width:50%; margin-left:0%"></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:50%" class="current-step">General</span>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:50%">Content</span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ClassicEmailTemplateWizardView" class="' .
+                                                'EmailTemplateWizardView WizardView">') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">' .
+                                                'Email Template Wizard - Plain Text</span></span></h1>') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=1" method="post">') !== false);
+            $this->assertTrue(strpos($content, '<input id="componentType" type="hidden" value=' .
+                                                '"ValidateForGeneralData" name="validationScenario"') !== false);
+            $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="GeneralDataForEmailTemplateWizardView" class="ComponentFor' .
+                                                'EmailTemplateWizardView ComponentForWizardModelView' .
+                                                ' MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<h3>General</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div id="edit-form_es_" class="errorSummary" ' .
+                                                'style="display:none">') !== false);
+            $this->assertTrue(strpos($content, '<p>Please fix the following input errors:</p>') !== false);
+            $this->assertTrue(strpos($content, '<ul><li>dummy</li></ul></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column"><div class="panel">' .
+                                                '<table class="form-fields">') !== false);
+            $this->assertTrue(strpos($content, '<colgroup><col class="col-0"><col class="col-1"></colgroup>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label for="ClassicEmailTemplateWizardForm_name">' .
+                                                'Name</label><span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_name"' .
+                                                ' name="ClassicEmailTemplateWizardForm[name]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label for="ClassicEmailTemplateWizardForm_subject">' .
+                                                'Subject</label><span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_' .
+                                                'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
+                                                ' type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm">' .
+                                                '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
+            $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
+                                                'class="addfileinput-button">') !== false);
+            $this->assertTrue(strpos($content, '<span>Y</span><strong class="add-label">Add Files</strong>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_files" type="file"' .
+                                                ' name="ClassicEmailTemplateWizardForm_files"') !== false);
+            $this->assertTrue(strpos($content, '<span class="max-upload-size">') !== false);
+            $this->assertTrue(strpos($content, '</div><div class="fileupload-content"><table class="files">') !== false);
+            $this->assertTrue(strpos($content, '<tr><td colspan="2"><input id="ClassicEmailTemplateWizardForm_type"' .
+                                                ' type="hidden" value="2" name="ClassicEmailTemplateWizard' .
+                                                'Form[type]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_builtType" type="hidden"' .
+                                                ' value="1" name="ClassicEmailTemplateWizardForm[builtType]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_isDraft" type="hidden" ' .
+                                                'value="0" name="ClassicEmailTemplateWizardForm[isDraft]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_language" type="hidden" ' .
+                                                'name="ClassicEmailTemplateWizardForm[language]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_hiddenId" type="hidden" ' .
+                                                'value="0" name="ClassicEmailTemplateWizardForm[hiddenId]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="moduleClassNameForMergeTagsViewId" type="hidden" ' .
+                                                'name="moduleClassNameForMergeTagsViewId"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_modelClassName" ' .
+                                                'type="hidden" value="Contact" name="ClassicEmailTemplate' .
+                                                'WizardForm[modelClassName]"') !== false);
+            $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
+            $this->assertTrue(strpos($content, '<div class="right-side-edit-view-panel">') !== false);
+            $this->assertTrue(strpos($content, '<h3>Rights and Permissions</h3><div id="owner-box">') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_ownerName"'.
+                                                '>Owner Name</label>') !== false);
+            $this->assertTrue(strpos($content, '<input name="ClassicEmailTemplateWizardForm[ownerId]" ' .
+                                                'id="ClassicEmailTemplateWizardForm_ownerId" value="1"' .
+                                                ' type="hidden"') !== false);
+            $this->assertTrue(strpos($content, '<a id="ClassicEmailTemplateWizardForm_users_Select' .
+                                                'Link" href="#">') !== false);
+            $this->assertTrue(strpos($content, '<span class="model-select-icon"></span><span ' .
+                                                'class="z-spinner"></span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizard' .
+                                                'Form_ownerId_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<label>Who can read and write</label><div ' .
+                                                'class="radio-input">') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_0" value="" type="radio" name="ClassicEmailTemplate' .
+                                                'WizardForm[explicitReadWriteModelPermissions][type]"') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_0">Owner</label>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWrite' .
+                                                'ModelPermissions_type_1" value="') !== false);
+            $this->assertTrue(strpos($content, '" type="radio" name="ClassicEmailTemplateWizardForm[explicit' .
+                                                'ReadWriteModelPermissions][type]"') !== false);
+            // TODO: @Shoaibi: Critical: why do we not get the option for owner and users in?
+            /*
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel'.
+                                                'Permissions_type_1">Owner and users in</label>') !== false);
+            $this->assertTrue(strpos($content, '<select id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_nonEveryoneGroup" onclick=\'document.getElementById' .
+                                                '("ClassicEmailTemplateWizardForm_explicitReadWriteModelPermissions' .
+                                                '_type_1").checked="checked";\' name="ClassicEmailTemplateWizardForm' .
+                                                '[explicitReadWriteModelPermissions][nonEveryoneGroup]">') !== false);
+            $this->assertTrue(strpos($content, '">East</option>') !== false);
+            $this->assertTrue(strpos($content, '">East Channel Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">East Direct Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">West</option>') !== false);
+            $this->assertTrue(strpos($content, '">West Channel Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">West Direct Sales</option></select>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_2" value="') !== false);
+            $this->assertTrue(strpos($content, '" checked type="radio" name="Classic' .
+                                                'EmailTemplateWizardForm[explicitReadWrite' .
+                                                'ModelPermissions][type]"') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_2">Everyone</label>') !== false);
+            /**/
+            $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
+                                                'clearfix dock"><div class="form-toolbar">') !== false);
+            $this->assertEquals(2, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
+                                                            'clearfix dock"><div class="form-toolbar">') !== false);
+            $this->assertTrue(strpos($content, '<a id="generalDataCancelLink" class="cancel-button" href="#">' .
+                                                '<span class="z-label">Cancel</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="generalDataNextLink" name="save" class="attachLoading ' .
+                                                'z-button" onclick="js:$(this).addClass(&quot;attachLoadingTarget' .
+                                                '&quot;);jQuery.yii.submitForm(this, &#039;&#039;, ' .
+                                                '{&#039;save&#039;:&#039;save&#039;}); return false;" href="#">' .
+                                                '<span class="z-spinner"></span><span class="z-icon"></span><span ' .
+                                                'class="z-label">Next</span></a></div></div></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ContentForEmailTemplateWizardView" class="ComponentForEmail' .
+                                                'TemplateWizardView ComponentForWizardModelView' .
+                                                ' MetadataView" style="display:none;">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix strong-right">' .
+                                                '<h3>Content</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column"><h3>Merge Tags</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div class="MergeTagsView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="MergeTagsTreeAreaEmailTemplate" class="hasTree' .
+                                                ' loading"><span class="big-spinner"></span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-combined-content right-column">') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-content">') !== false);
+            $this->assertTrue(strpos($content, '<div class="tabs-nav">') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="MergeTagGuideAjaxLinkActionElement--yt') !== false);
+            $this->assertTrue(strpos($content, '" class="simple-link" href="#">MergeTag Guide</a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-' .
+                                                'textContent">') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_textContent">' .
+                                                'Text Content</label>') !== false);
+            $this->assertTrue(strpos($content, '<textarea id="ClassicEmailTemplateWizardForm_textContent" ' .
+                                                'name="ClassicEmailTemplateWizardForm[textContent]"' .
+                                                ' rows="6" cols="50"></textarea>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizardForm_' .
+                                                'textContent_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizardForm_' .
+                                                'htmlContent_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<a id="contentCancelLink" class="cancel-button" href="#">' .
+                                                '<span class="z-label">Previous</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="contentFinishLink" name="save" class="attachLoading z-button"' .
+                                                ' onclick="js:$(this).addClass(&quot;attachLoadingTarget&quot;);' .
+                                                'jQuery.yii.submitForm(this, &#039;&#039;, {&#039;save&#039;:&#039;' .
+                                                'save&#039;}); return false;" href="#"><span class="z-spinner">' .
+                                                '</span><span class="z-icon"></span><span class="z-label">Save</span>' .
+                                                '</a></div></div></div></div></div></form>') !== false);
+        }
+
+
+        /**
+         * @depends testCreateActionForPlainTextAndMarketing
+         */
+        public function testCreateActionForHtmlAndWorkflow()
+        {
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
+                                    'builtType' => EmailTemplate::BUILT_TYPE_PASTED_HTML));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            file_put_contents('/tmp/01', $content);
+            $this->assertTrue(strpos($content, '<div id="WorkflowBreadCrumbView" class="SettingsBreadCrumbView ' .
+                                                'BreadCrumbView"><div class="breadcrumbs">') !== false);
+            $this->assertTrue(strpos($content, '/workflows/default/index">Workflows</a>') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/listForWorkflow">Templates</a>') !== false);
+            $this->assertTrue(strpos($content, '<span>Create</span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ClassicEmailTemplateStepsAndProgressBarForWizardView" ' .
+                                                'class="StepsAndProgressBarForWizardView MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="progress"><div class="progress-back"><div class="progress' .
+                                                '-bar" style="width:50%; margin-left:0%"></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:50%" class="current-step">General</span>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:50%">Content</span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ClassicEmailTemplateWizardView" class="' .
+                                                'EmailTemplateWizardView WizardView">') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">' .
+                                                'Email Template Wizard - HTML</span></span></h1>') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=2" method="post">') !== false);
+            $this->assertTrue(strpos($content, '<input id="componentType" type="hidden" value=' .
+                                                '"ValidateForGeneralData" name="validationScenario"') !== false);
+            $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="GeneralDataForEmailTemplateWizardView" class="ComponentFor' .
+                                                'EmailTemplateWizardView ComponentForWizardModelView' .
+                                                ' MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<h3>General</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div id="edit-form_es_" class="errorSummary" ' .
+                                                'style="display:none">') !== false);
+            $this->assertTrue(strpos($content, '<p>Please fix the following input errors:</p>') !== false);
+            $this->assertTrue(strpos($content, '<ul><li>dummy</li></ul></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column"><div class="panel">' .
+                                                '<table class="form-fields">') !== false);
+            $this->assertTrue(strpos($content, '<colgroup><col class="col-0"><col class="col-1"></colgroup>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th>Module<span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<select name="ClassicEmailTemplateWizardForm[modelClassName]" ' .
+                                                'id="ClassicEmailTemplateWizardForm_modelClassName_value">') !== false);
+            $this->assertTrue(strpos($content, '<option value="Account">Accounts</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="SavedCalendar">Calendars</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Contact">Contacts</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Meeting">Meetings</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Note">Notes</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Opportunity">Opportunities</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Product">Products</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Task">Tasks</option>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label for="ClassicEmailTemplateWizardForm_name">' .
+                                                'Name</label><span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_name"' .
+                                                ' name="ClassicEmailTemplateWizardForm[name]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label for="ClassicEmailTemplateWizardForm_subject">' .
+                                                'Subject</label><span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_' .
+                                                'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
+                                                ' type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm">' .
+                                                '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
+            $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
+                                                'class="addfileinput-button">') !== false);
+            $this->assertTrue(strpos($content, '<span>Y</span><strong class="add-label">Add Files</strong>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_files" type="file"' .
+                                                ' name="ClassicEmailTemplateWizardForm_files"') !== false);
+            $this->assertTrue(strpos($content, '<span class="max-upload-size">') !== false);
+            $this->assertTrue(strpos($content, '</div><div class="fileupload-content"><table class="files">') !== false);
+            $this->assertTrue(strpos($content, '<tr><td colspan="2"><input id="ClassicEmailTemplateWizardForm_type"' .
+                                                ' type="hidden" value="1" name="ClassicEmailTemplateWizard' .
+                                                'Form[type]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_builtType" type="hidden"' .
+                                                ' value="2" name="ClassicEmailTemplateWizardForm[builtType]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_isDraft" type="hidden" ' .
+                                                'value="0" name="ClassicEmailTemplateWizardForm[isDraft]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_language" type="hidden" ' .
+                                                'name="ClassicEmailTemplateWizardForm[language]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_hiddenId" type="hidden" ' .
+                                                'value="0" name="ClassicEmailTemplateWizardForm[hiddenId]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="moduleClassNameForMergeTagsViewId" type="hidden" ' .
+                                                'name="moduleClassNameForMergeTagsViewId"') !== false);
+            $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
+            $this->assertTrue(strpos($content, '<div class="right-side-edit-view-panel">') !== false);
+            $this->assertTrue(strpos($content, '<h3>Rights and Permissions</h3><div id="owner-box">') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_ownerName"'.
+                                                '>Owner Name</label>') !== false);
+            $this->assertTrue(strpos($content, '<input name="ClassicEmailTemplateWizardForm[ownerId]" ' .
+                                                'id="ClassicEmailTemplateWizardForm_ownerId" value="1"' .
+                                                ' type="hidden"') !== false);
+            $this->assertTrue(strpos($content, '<a id="ClassicEmailTemplateWizardForm_users_Select' .
+                                                'Link" href="#">') !== false);
+            $this->assertTrue(strpos($content, '<span class="model-select-icon"></span><span ' .
+                                                'class="z-spinner"></span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizard' .
+                                                'Form_ownerId_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<label>Who can read and write</label><div ' .
+                                                'class="radio-input">') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_0" value="" type="radio" name="ClassicEmailTemplate' .
+                                                'WizardForm[explicitReadWriteModelPermissions][type]"') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_0">Owner</label>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWrite' .
+                                                'ModelPermissions_type_1" value="') !== false);
+            $this->assertTrue(strpos($content, '" type="radio" name="ClassicEmailTemplateWizardForm[explicit' .
+                                                'ReadWriteModelPermissions][type]"') !== false);
+            // TODO: @Shoaibi: Critical: why do we not get the option for owner and users in?
+            /*
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_1">Owner and users in</label>') !== false);
+            $this->assertTrue(strpos($content, '<select id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_nonEveryoneGroup" onclick=\'document.getElementById' .
+                                                '("ClassicEmailTemplateWizardForm_explicitReadWriteModelPermissions' .
+                                                '_type_1").checked="checked";\' name="ClassicEmailTemplateWizardForm' .
+                                                '[explicitReadWriteModelPermissions][nonEveryoneGroup]">') !== false);
+            $this->assertTrue(strpos($content, '">East</option>') !== false);
+            $this->assertTrue(strpos($content, '">East Channel Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">East Direct Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">West</option>') !== false);
+            $this->assertTrue(strpos($content, '">West Channel Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">West Direct Sales</option></select>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_2" value="') !== false);
+            $this->assertTrue(strpos($content, '" checked type="radio" name="Classic' .
+                                                'EmailTemplateWizardForm[explicitReadWrite' .
+                                                'ModelPermissions][type]"') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_2">Everyone</label>') !== false);
+            /**/
+            $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
+                                                'clearfix dock"><div class="form-toolbar">') !== false);
+            $this->assertEquals(2, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
+                                                            'clearfix dock"><div class="form-toolbar">') !== false);
+            $this->assertTrue(strpos($content, '<a id="generalDataCancelLink" class="cancel-button" href="#">' .
+                                                '<span class="z-label">Cancel</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="generalDataNextLink" name="save" class="attachLoading ' .
+                                                'z-button" onclick="js:$(this).addClass(&quot;attachLoadingTarget' .
+                                                '&quot;);jQuery.yii.submitForm(this, &#039;&#039;, ' .
+                                                '{&#039;save&#039;:&#039;save&#039;}); return false;" href="#">' .
+                                                '<span class="z-spinner"></span><span class="z-icon"></span><span ' .
+                                                'class="z-label">Next</span></a></div></div></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ContentForEmailTemplateWizardView" class="ComponentForEmail' .
+                                                'TemplateWizardView ComponentForWizardModelView' .
+                                                ' MetadataView" style="display:none;">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix strong-right">' .
+                                                '<h3>Content</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column"><h3>Merge Tags</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div class="MergeTagsView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="MergeTagsTreeAreaEmailTemplate" class="hasTree' .
+                                                ' loading"><span class="big-spinner"></span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-combined-content right-column">') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-content">') !== false);
+            $this->assertTrue(strpos($content, '<div class="tabs-nav">') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="MergeTagGuideAjaxLinkActionElement--yt') !== false);
+            $this->assertTrue(strpos($content, '" class="simple-link" href="#">MergeTag Guide</a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-' .
+                                                'textContent">') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_textContent">' .
+                                                'Text Content</label>') !== false);
+            $this->assertTrue(strpos($content, '<textarea id="ClassicEmailTemplateWizardForm_textContent" ' .
+                                                'name="ClassicEmailTemplateWizardForm[textContent]"' .
+                                                ' rows="6" cols="50"></textarea>') !== false);
+            $this->assertTrue(strpos($content, '<div id="tab2" class=" tab email-template-htmlContent">') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_htmlContent">Html Content' .
+                                                '</label><textarea id="ClassicEmailTemplateWizardForm_htmlContent" name' .
+                                                '="ClassicEmailTemplateWizardForm[htmlContent]"></textarea>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizardForm_' .
+                                                'textContent_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizardForm_' .
+                                                'htmlContent_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<a id="contentCancelLink" class="cancel-button" href="#">' .
+                                                '<span class="z-label">Previous</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="contentFinishLink" name="save" class="attachLoading z-button"' .
+                                                ' onclick="js:$(this).addClass(&quot;attachLoadingTarget&quot;);' .
+                                                'jQuery.yii.submitForm(this, &#039;&#039;, {&#039;save&#039;:&#039;' .
+                                                'save&#039;}); return false;" href="#"><span class="z-spinner">' .
+                                                '</span><span class="z-icon"></span><span class="z-label">Save</span>' .
+                                                '</a></div></div></div></div></div></form>') !== false);
+        }
+
+        /**
+         * @depends testCreateActionForHtmlAndWorkflow
+         */
+        public function testCreateActionForBuilderAndWorkflow()
+        {
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
+                                    'builtType' => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            file_put_contents('/tmp/01', $content);
+            $this->assertTrue(strpos($content, '<div id="WorkflowBreadCrumbView" class="SettingsBreadCrumbView ' .
+                                                'BreadCrumbView"><div class="breadcrumbs">') !== false);
+            $this->assertTrue(strpos($content, '/workflows/default/index">Workflows</a>') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/listForWorkflow">Templates</a>') !== false);
+            $this->assertTrue(strpos($content, '<span>Create</span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ClassicEmailTemplateStepsAndProgressBarForWizardView" ' .
+                                                'class="StepsAndProgressBarForWizardView MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="progress"><div class="progress-back"><div class="progress' .
+                                                '-bar" style="width:50%; margin-left:0%"></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:25%" class="current-step">General</span>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:25%" class="current-step">Layout</span>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:25%" class="current-step">Designer</span>') !== false);
+            $this->assertTrue(strpos($content, '<span style="width:25%">Content</span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ClassicEmailTemplateWizardView" class="' .
+                                                'EmailTemplateWizardView WizardView">') !== false);
+            $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">' .
+                                                'Email Template Wizard - Template Builder</span></span></h1>') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=2" method="post">') !== false);
+            $this->assertTrue(strpos($content, '<input id="componentType" type="hidden" value=' .
+                                                '"ValidateForGeneralData" name="validationScenario"') !== false);
+            $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="GeneralDataForEmailTemplateWizardView" class="ComponentFor' .
+                                                'EmailTemplateWizardView ComponentForWizardModelView' .
+                                                ' MetadataView">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<h3>General</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div id="edit-form_es_" class="errorSummary" ' .
+                                                'style="display:none">') !== false);
+            $this->assertTrue(strpos($content, '<p>Please fix the following input errors:</p>') !== false);
+            $this->assertTrue(strpos($content, '<ul><li>dummy</li></ul></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column"><div class="panel">' .
+                                                '<table class="form-fields">') !== false);
+            $this->assertTrue(strpos($content, '<colgroup><col class="col-0"><col class="col-1"></colgroup>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th>Module<span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<select name="ClassicEmailTemplateWizardForm[modelClassName]" ' .
+                                                'id="ClassicEmailTemplateWizardForm_modelClassName_value">') !== false);
+            $this->assertTrue(strpos($content, '<option value="Account">Accounts</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="SavedCalendar">Calendars</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Contact">Contacts</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Meeting">Meetings</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Note">Notes</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Opportunity">Opportunities</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Product">Products</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="Task">Tasks</option>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label for="ClassicEmailTemplateWizardForm_name">' .
+                                                'Name</label><span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_name"' .
+                                                ' name="ClassicEmailTemplateWizardForm[name]" ' .
+                                                'type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label for="ClassicEmailTemplateWizardForm_subject">' .
+                                                'Subject</label><span class="required">*</span></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div><input id="ClassicEmailTemplateWizardForm_' .
+                                                'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
+                                                ' type="text" maxlength="64"') !== false);
+            $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm">' .
+                                                '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
+            $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
+                                                'class="addfileinput-button">') !== false);
+            $this->assertTrue(strpos($content, '<span>Y</span><strong class="add-label">Add Files</strong>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_files" type="file"' .
+                                                ' name="ClassicEmailTemplateWizardForm_files"') !== false);
+            $this->assertTrue(strpos($content, '<span class="max-upload-size">') !== false);
+            $this->assertTrue(strpos($content, '</div><div class="fileupload-content"><table class="files">') !== false);
+            $this->assertTrue(strpos($content, '<tr><td colspan="2"><input id="ClassicEmailTemplateWizardForm_type"' .
+                                                ' type="hidden" value="1" name="ClassicEmailTemplateWizard' .
+                                                'Form[type]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_builtType" type="hidden"' .
+                                                ' value="2" name="ClassicEmailTemplateWizardForm[builtType]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_isDraft" type="hidden" ' .
+                                                'value="0" name="ClassicEmailTemplateWizardForm[isDraft]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_language" type="hidden" ' .
+                                                'name="ClassicEmailTemplateWizardForm[language]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_hiddenId" type="hidden" ' .
+                                                'value="0" name="ClassicEmailTemplateWizardForm[hiddenId]"') !== false);
+            $this->assertTrue(strpos($content, '<input id="moduleClassNameForMergeTagsViewId" type="hidden" ' .
+                                                'name="moduleClassNameForMergeTagsViewId"') !== false);
+            $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
+            $this->assertTrue(strpos($content, '<div class="right-side-edit-view-panel">') !== false);
+            $this->assertTrue(strpos($content, '<h3>Rights and Permissions</h3><div id="owner-box">') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_ownerName"'.
+                                                '>Owner Name</label>') !== false);
+            $this->assertTrue(strpos($content, '<input name="ClassicEmailTemplateWizardForm[ownerId]" ' .
+                                                'id="ClassicEmailTemplateWizardForm_ownerId" value="1"' .
+                                                ' type="hidden"') !== false);
+            $this->assertTrue(strpos($content, '<a id="ClassicEmailTemplateWizardForm_users_Select' .
+                                                'Link" href="#">') !== false);
+            $this->assertTrue(strpos($content, '<span class="model-select-icon"></span><span ' .
+                                                'class="z-spinner"></span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizard' .
+                                                'Form_ownerId_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<label>Who can read and write</label><div ' .
+                                                'class="radio-input">') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_0" value="" type="radio" name="ClassicEmailTemplate' .
+                                                'WizardForm[explicitReadWriteModelPermissions][type]"') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_0">Owner</label>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWrite' .
+                                                'ModelPermissions_type_1" value="') !== false);
+            $this->assertTrue(strpos($content, '" type="radio" name="ClassicEmailTemplateWizardForm[explicit' .
+                                                'ReadWriteModelPermissions][type]"') !== false);
+            // TODO: @Shoaibi: Critical: why do we not get the option for owner and users in?
+            /*
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_1">Owner and users in</label>') !== false);
+            $this->assertTrue(strpos($content, '<select id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_nonEveryoneGroup" onclick=\'document.getElementById' .
+                                                '("ClassicEmailTemplateWizardForm_explicitReadWriteModelPermissions' .
+                                                '_type_1").checked="checked";\' name="ClassicEmailTemplateWizardForm' .
+                                                '[explicitReadWriteModelPermissions][nonEveryoneGroup]">') !== false);
+            $this->assertTrue(strpos($content, '">East</option>') !== false);
+            $this->assertTrue(strpos($content, '">East Channel Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">East Direct Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">West</option>') !== false);
+            $this->assertTrue(strpos($content, '">West Channel Sales</option>') !== false);
+            $this->assertTrue(strpos($content, '">West Direct Sales</option></select>') !== false);
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_2" value="') !== false);
+            $this->assertTrue(strpos($content, '" checked type="radio" name="Classic' .
+                                                'EmailTemplateWizardForm[explicitReadWrite' .
+                                                'ModelPermissions][type]"') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_2">Everyone</label>') !== false);
+            /**/
+            $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
+                                                'clearfix dock"><div class="form-toolbar">') !== false);
+            $this->assertEquals(4, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
+                                                'clearfix dock"><div class="form-toolbar">') !== false);
+            $this->assertTrue(strpos($content, '<a id="generalDataCancelLink" class="cancel-button" href="#">' .
+                                                '<span class="z-label">Cancel</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="generalDataNextLink" name="save" class="attachLoading ' .
+                                                'z-button" onclick="js:$(this).addClass(&quot;attachLoadingTarget' .
+                                                '&quot;);jQuery.yii.submitForm(this, &#039;&#039;, ' .
+                                                '{&#039;save&#039;:&#039;save&#039;}); return false;" href="#">' .
+                                                '<span class="z-spinner"></span><span class="z-icon"></span><span ' .
+                                                'class="z-label">Next</span></a></div></div></div></div>') !== false);
+
+
+            $this->assertTrue(strpos($content, '<div id="SelectBaseTemplateForEmailTemplateWizardView" class="' .
+                                                'ComponentForEmailTemplateWizardView ComponentForWizardModelView ' .
+                                                'MetadataView" style="display:none;">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix"><h3>Layout</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div id="select-base-template-from-predefined-templates" ' .
+                                                'class="templates-chooser-list clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<h3>Templates</h3>') !== false);
+            $this->assertTrue(strpos($content, '<ul class="clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<input id="ytpredefinedTemplate_baseTemplateId" type="hidden" value=' .
+                                                '"" name="BuilderEmailTemplateWizardForm[baseTemplateId]">') !== false);
+            $this->assertTrue(strpos($content, '<li class="base-template-selection">, substr_count') !== false);
+            $this->assertEquals(6, substr_count($content, '<input id="predefinedTemplateBuilderEmailTemplateWizard' .
+                                                            'Form_baseTemplateId'));
+            $this->assertTrue(strpos($content, '<input id="predefinedTemplateBuilderEmailTemplateWizardForm' .
+                                                '_baseTemplateId') !== false);
+            $this->assertTrue(strpos($content, '" type="radio" name="BuilderEmailTemplateWizardForm[base' .
+                                                'TemplateId]">') !== false);
+            $this->assertEquals(6, substr_count($content, '" type="radio" name="BuilderEmailTemplateWizard' .
+                                                            'Form[baseTemplateId]">'));
+            $this->assertTrue(strpos($content, '<label for="predefinedTemplateBuilderEmailTemplateWizard' .
+                                                'Form_baseTemplateId_') !== false);
+            $this->assertEquals(6, substr_count($content, '<label for="predefinedTemplateBuilderEmail' .
+                                                'TemplateWizardForm_baseTemplateId_'));
+            $this->assertTrue(strpos($content, '<i class="icon-template-5"></i><h4 class="name">1 Column' .
+                                                '</h4></label></li>') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-template-2"></i><h4 class="name">2 Columns' .
+                                                '</h4></label></li>') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-template-3"></i><h4 class="name">2 Columns with strong' .
+                                                ' right</h4></label></li>') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-template-4"></i><h4 class="name">3 Columns' .
+                                                '</h4></label></li>') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-template-1"></i><h4 class="name">3 Columns with' .
+                                                ' Hero</h4></label></li>') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-template-0"></i><h4 class="name">Blank' .
+                                                '</h4></label></li>') !== false);
+            $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_serializedData_' .
+                                                'baseTemplateId" type="hidden" name="BuilderEmailTemplateWizard' .
+                                                'Form[serializedData][baseTemplateId]">') !== false);
+            $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_originalBaseTemplateId" ' .
+                                                'type="hidden" name="BuilderEmailTemplateWizardForm[original' .
+                                                'BaseTemplateId]">') !== false);
+            $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_serializedData_dom" ' .
+                                                'type="hidden" name="BuilderEmailTemplateWizardForm' .
+                                                '[serializedData][dom]">') !== false);
+            $this->assertTrue(strpos($content, '<a id="selectBaseTemplatePreviousLink" class="cancel-button" href="#"' .
+                                                '><span class="z-label">Previous</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="selectBaseTemplateNextLink" name="save" class="attachLoading ' .
+                                                'z-button" onclick="js:$(this).addClass(&quot;attachLoadingTarget' .
+                                                '&quot;);$(this).addClass(&quot;loading&quot;);$(this).makeOrRemove' .
+                                                'LoadingSpinner(true);jQuery.yii.submitForm(this, &#039;&#039;, ' .
+                                                '{&#039;save&#039;:&#039;save&#039;}); return false;" href="#"><span ' .
+                                                'class="z-spinner"></span><span class="z-icon"></span><span class="' .
+                                                'z-label">Next</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="BuilderCanvasWizardView" class="ComponentForEmailTemplate' .
+                                                'WizardView ComponentForWizardModelView MetadataView" ' .
+                                                'style="display:none;">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix"><h3>Canvas</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div id="builder" class="strong-right clearfix">') !== false);
+            $this->assertTrue(strpos($content, '<div id="iframe-overlay" class="ui-overlay-block"><span class="' .
+                                                'big-spinner"></span></div>') !== false);
+            $this->assertTrue(strpos($content, '<div id="preview-iframe-container" title="Preview" ' .
+                                                'style="display:none">') !== false);
+            $this->assertTrue(strpos($content, '<a id="preview-iframe-container-close-link" class="default-btn" ' .
+                                                'href="#"><span class="z-label">Close</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<iframe id="preview-iframe" src="about:blank" width="100%" ' .
+                                                'height="100%" seamless="seamless" frameborder="0"></iframe>') !== false);
+            $this->assertTrue(strpos($content, '<nav class="pillbox clearfix"><div id="builder-elements-menu-button" ' .
+                                                'class="active default-button">') !== false);
+            $this->assertTrue(strpos($content, '<a class="button-action" href="#"><i class="icon-elements"></i>' .
+                                                '<span class="button-label">Elements</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="builder-canvas-configuration-menu-button" ' .
+                                                'class="default-button">') !== false);
+            $this->assertTrue(strpos($content, '<a class="button-action" href="#"><i class="icon-configuration"></i>' .
+                                                '<span class="button-label">Canvas Configuration</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<nav class="pillbox clearfix"><div id="builder-preview-menu-button" ' .
+                                                'class="default-button">') !== false);
+            $this->assertTrue(strpos($content, '<a class="button-action" href="#"><i class="icon-preview"></i><span ' .
+                                                'class="button-label">Preview</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="droppable-element-sidebar"><ul id="building-blocks" class="' .
+                                                'clearfix builder-elements builder-elements-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderButtonElement" class="builder-element builder' .
+                                                '-element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-button"></i><span>Button</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderDividerElement" class="builder-element builder' .
+                                                '-element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-divider"></i><span>Divider</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderExpanderElement" class="builder-element ' .
+                                                'builder-element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-expander"></i><span>Expander</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderFancyDividerElement" class="builder-element ' .
+                                                'builder-element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-fancydivider"></i><span>Fancy Divider</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderFooterElement" class="builder-element builder' .
+                                                '-element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-footer"></i><span>Footer</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderHeaderImageTextElement" class="builder-element' .
+                                                ' builder-element-droppable" data-wrap="0">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-header"></i><span>Header</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderImageElement" class="builder-element builder-' .
+                                                'element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-image"></i><span>Image</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderPlainTextElement" class="builder-element ' .
+                                                'builder-element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-plaintext"></i><span>Plain Text</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderSocialElement" class="builder-element ' .
+                                                'builder-element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-social"></i><span>Social</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderTextElement" class="builder-element builder-' .
+                                                'element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-text"></i><span>Rich Text</span>') !== false);
+            $this->assertTrue(strpos($content, '<li data-class="BuilderTitleElement" class="builder-element builder-' .
+                                                'element-droppable builder-element-cell-droppable">') !== false);
+            $this->assertTrue(strpos($content, '<i class="icon-title"></i><span>Title</span>') !== false);
+            $this->assertTrue(strpos($content, '<a id="refresh-canvas-from-saved-template" style="display:none" ' .
+                                                'href="#">Reload Canvas</a>') !== false);
+            $this->assertTrue(strpos($content, '<iframe id="canvas-iframe" src="about:blank" width="100%" height=' .
+                                                '"100%" frameborder="0"></iframe>') !== false);
+            $this->assertTrue(strpos($content, '<a id="builderCanvasPreviousLink" class="cancel-button" href="#">' .
+                                                '<span class="z-label">Previous</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="builderCanvasSaveLink" name="save" class="attachLoading ' .
+                                                'z-button" onclick="js:$(this).addClass(&quot;attachLoadingTarget' .
+                                                '&quot;);$(this).addClass(&quot;loading&quot;);$(this).makeOrRemove' .
+                                                'LoadingSpinner(true);jQuery.yii.submitForm(this, &#039;&#039;, ' .
+                                                '{&#039;save&#039;:&#039;save&#039;}); return false;" href="#">' .
+                                                '<span class="z-spinner"></span><span class="z-icon"></span><span ' .
+                                                'class="z-label">Next</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="ContentForEmailTemplateWizardView" class="ComponentForEmail' .
+                                                'TemplateWizardView ComponentForWizardModelView' .
+                                                ' MetadataView" style="display:none;">') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column full-width clearfix strong-right">' .
+                                                '<h3>Content</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div class="left-column"><h3>Merge Tags</h3>') !== false);
+            $this->assertTrue(strpos($content, '<div class="MergeTagsView">') !== false);
+            $this->assertTrue(strpos($content, '<div id="MergeTagsTreeAreaEmailTemplate" class="hasTree' .
+                                                ' loading"><span class="big-spinner"></span></div></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-combined-content right-column">') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-content">') !== false);
+            $this->assertTrue(strpos($content, '<div class="tabs-nav">') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="MergeTagGuideAjaxLinkActionElement--yt') !== false);
+            $this->assertTrue(strpos($content, '" class="simple-link" href="#">MergeTag Guide</a>') !== false);
+            $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-' .
+                                                'textContent">') !== false);
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_textContent">' .
+                                                'Text Content</label>') !== false);
+            $this->assertTrue(strpos($content, '<textarea id="ClassicEmailTemplateWizardForm_textContent" ' .
+                                                'name="ClassicEmailTemplateWizardForm[textContent]"' .
+                                                ' rows="6" cols="50"></textarea>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizardForm_' .
+                                                'textContent_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="errorMessage" id="ClassicEmailTemplateWizardForm_' .
+                                                'htmlContent_em_" style="display:none"></div>') !== false);
+            $this->assertTrue(strpos($content, '<a id="contentCancelLink" class="cancel-button" href="#">' .
+                                                '<span class="z-label">Previous</span></a>') !== false);
+            $this->assertTrue(strpos($content, '<a id="contentFinishLink" name="save" class="attachLoading z-button"' .
+                                                ' onclick="js:$(this).addClass(&quot;attachLoadingTarget&quot;);' .
+                                                'jQuery.yii.submitForm(this, &#039;&#039;, {&#039;save&#039;:&#039;' .
+                                                'save&#039;}); return false;" href="#"><span class="z-spinner">' .
+                                                '</span><span class="z-icon"></span><span class="z-label">Save</span>' .
+                                                '</a></div></div></div></div></div></form>') !== false);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /**
          * @depends testListForWorkflowAction
@@ -1141,125 +2067,8 @@
         }
 
         /**
-         * @depends testEditActionForMarketing
-         *
-        public function testDetailsJsonActionForMarketing()
-        {
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
-            $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
-            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
-            $this->assertNotEmpty($emailTemplateDetailsArray);
-            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
-            // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
-            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
-            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
-            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
-
-            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true, 'includeFilesInJson' => true));
-            // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
-            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
-            $emailTemplateDetailsResolvedArrayWithoutFiles = $emailTemplateDetailsResolvedArray;
-            unset($emailTemplateDetailsResolvedArrayWithoutFiles['filesIds']);
-            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
-            $this->assertNotEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
-            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArrayWithoutFiles);
-            $this->assertNotEmpty($emailTemplateDetailsResolvedArray['filesIds']);
-            $this->assertEquals($emailTemplate->files->count(), count($emailTemplateDetailsResolvedArray['filesIds']));
-            foreach ($emailTemplate->files as $index => $file)
-            {
-                $this->assertEquals($file->id, $emailTemplateDetailsResolvedArray['filesIds'][$index]);
-            }
-        }
-
-        /**
-         * @depends testDetailsJsonActionForMarketing
-         *
-        public function testDetailsActionForMarketing()
-        {
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
-            $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $this->setGetArray(array('id' => $emailTemplateId));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
-            $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
-            $this->assertTrue(strpos($content, '<span>Options</span>') !== false);
-            $this->assertTrue(strpos($content, 'emailTemplates/default/edit?id=' . $emailTemplateId) !== false);
-            $this->assertTrue(strpos($content, 'emailTemplates/default/delete?id=' . $emailTemplateId) !== false);
-            $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">'. $emailTemplate->name . '</td>') !== false);
-            $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
-            $this->assertTrue(strpos($content, '<div class="tabs-nav"><a class="active-tab" href="#tab1">') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab2">') !== false);
-        }
-
-        /**
-         * @depends testEditActionForWorkflow
-         *
-        public function testDetailsJsonActionForWorkflow()
-        {
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
-            $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $emailTemplateDataUtil = new ModelToArrayAdapter($emailTemplate);
-            $emailTemplateDetailsArray = $emailTemplateDataUtil->getData();
-            $this->assertNotEmpty($emailTemplateDetailsArray);
-            $this->setGetArray(array('id' => $emailTemplateId, 'renderJson' => true));
-            // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
-            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
-            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
-            $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
-        }
-
-        /**
-         * @depends testDetailsJsonActionForWorkflow
-         */
-        public function testDetailsJsonActionForCreateEmailMessage()
-        {
-            $contact         = ContactTestHelper::createContactByNameForOwner('test', $this->super);
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
-            $emailTemplate   = EmailTemplate::getById($emailTemplateId);
-            $unsubscribePlaceholder         = GlobalMarketingFooterUtil::
-                                                    UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::
-                                                    MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            $emailTemplate->textContent = "Test text content with contact tag: [[FIRST^NAME]] {$unsubscribePlaceholder}";
-            $emailTemplate->htmlContent = "Test html content with contact tag: [[FIRST^NAME]] {$manageSubscriptionsPlaceholder}";
-            $this->assertTrue($emailTemplate->save());
-            $this->setGetArray(array('id'                 => $emailTemplateId,
-                                     'renderJson'         => true,
-                                     'includeFilesInJson' => false,
-                                     'contactId'          => $contact->id));
-            // @ to avoid headers already sent error.
-            $content = @$this->runControllerWithExitExceptionAndGetContent('emailTemplates/default/detailsJson');
-            $emailTemplateDetailsResolvedArray = CJSON::decode($content);
-            $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
-            $this->assertEquals('Test text content with contact tag: test ', $emailTemplateDetailsResolvedArray['textContent']);
-            $this->assertEquals('Test html content with contact tag: test ', $emailTemplateDetailsResolvedArray['htmlContent']);
-        }
-
-        /**
-         * @depends testDetailsJsonActionForCreateEmailMessage
-         */
-        public function testDetailsActionForWorkflow()
-        {
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
-            $emailTemplate = EmailTemplate::getById($emailTemplateId);
-            $this->setGetArray(array('id' => $emailTemplateId));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
-            $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
-            $this->assertTrue(strpos($content, '<span>Options</span>') !== false);
-            $this->assertTrue(strpos($content, 'emailTemplates/default/edit?id=' . $emailTemplateId) !== false);
-            $this->assertTrue(strpos($content, 'emailTemplates/default/delete?id=' . $emailTemplateId) !== false);
-            $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">'. $emailTemplate->name . '</td>') !== false);
-            $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
-            $this->assertTrue(strpos($content, '<div class="tabs-nav"><a class="active-tab" href="#tab1">') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab2">') !== false);
-        }
-
-        /**
          * @depends testListForMarketingAction
-         */
+         *
         public function testStickySearchActions()
         {
             StickySearchUtil::clearDataByKey('EmailTemplatesSearchView');
@@ -1283,7 +2092,7 @@
 
             $this->setGetArray(array(
                 'EmailTemplatesSearchForm' => array(
-                    'anyMixedAttributes'    => 'Test'
+                                                'anyMixedAttributes'    => 'Test'
                 )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
             $this->assertTrue(strpos($content, '1 result(s)') !== false);
@@ -1308,30 +2117,30 @@
             $this->assertEquals($compareData, $data);
         }
 
+        /**/
         /**
          * @depends testDetailsActionForMarketing
+         * @depends testDetailsActionForWorkflow
          */
         public function testDeleteAction()
         {
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Email Template 00');
+            $initialCount   = EmailTemplate::getCount();
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'marketing 01');
             // Delete an emailTemplate.
             $this->setGetArray(array('id' => $emailTemplateId));
             $this->resetPostArray();
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/delete');
             $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/listForMarketing');
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
-            $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(3, count($emailTemplates));
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test Workflow Email Template 00');
+            $this->assertEquals($initialCount - 1 , EmailTemplate::getCount());
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'workflow 01');
             $this->setGetArray(array('id' => $emailTemplateId));
             $this->resetPostArray();
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/delete');
             $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/listForWorkflow');
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
-            $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(2, count($emailTemplates));
+            $this->assertEquals($initialCount - 2, EmailTemplate::getCount());
         }
-
 
         protected static function sanitizeStringOfIdAttribute(& $string)
         {
@@ -1345,6 +2154,5 @@
         {
             $string = trim(preg_replace('#<script(.*?)>(.*?)</script>#is', '', $string));
         }
-
     }
 ?>
