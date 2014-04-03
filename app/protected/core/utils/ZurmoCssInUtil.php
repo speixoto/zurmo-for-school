@@ -210,12 +210,40 @@
 
             foreach ($html->nodes as $index => $node)
             {
-                $style = array_merge(self::styleToArray($node->style), self::styleToArray($cloneNodesArray[$index]->style));
-                $node->style = self::arrayToStyle($style);
+                $nodeStyle = self::styleToArray($node->style);
+                $cloneNodeStyle = self::styleToArray($cloneNodesArray[$index]->style);
+                $style = $this->mergeStyles(self::styleToArray($node->style), self::styleToArray($cloneNodesArray[$index]->style));
+                $style = self::arrayToStyle($style);
+                $node->style = $style;
             }
             // Let simple_html_dom give us back our HTML with inline CSS!
             $html = $this->moveStyleBlocks((string)$html);
             return $html;
+        }
+
+        protected function mergeStyles(Array $firstStyle, Array $secondStyle)
+        {
+            $stylesToRemove = array();
+            foreach ($secondStyle as $styleTag => $value)
+            {
+                $matches = array();
+                preg_match('#(.*)-(.*)#i', $styleTag, $matches);
+                if (isset($matches[1]))
+                {
+                    $stylesToRemove[] = $matches[1];
+                }
+            }
+            $stylesToAddInTheBegining = array();
+            foreach ($stylesToRemove as $styleRoRemove)
+            {
+                if (isset($firstStyle[$styleRoRemove]))
+                {
+                    $stylesToAddInTheBegining[$styleRoRemove] = $firstStyle[$styleRoRemove];
+                    unset($firstStyle[$styleRoRemove]);
+                }
+            }
+            $mergeArray = array_merge($firstStyle, $secondStyle);
+            return array_merge($stylesToAddInTheBegining, $mergeArray);
         }
 
         protected function processStylesCleanup($html)
