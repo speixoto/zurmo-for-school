@@ -197,7 +197,7 @@
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent) && (!$this->resolveSelectiveLoadOfTabs() || $this->isPastedHtmlTemplate()))
+            if (!empty($this->model->htmlContent) && (!$this->resolveSelectiveLoadOfTabs() || !$this->isPlainTextTemplate()))
             {
                 return 'html';
             }

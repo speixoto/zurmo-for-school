@@ -73,5 +73,20 @@
             $this->assertTrue($billy->role->id > 0);
             $this->assertTrue($billy->role->isSame($role));
         }
+
+        public function testAddingChildRoleAsAParentRole()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $childRole          = new Role();
+            $childRole->name    = 'childRole';
+            $parentRole         = new Role();
+            $parentRole->name   = 'parentRole';
+            $parentRole->roles->add($childRole);
+            $saved              = $parentRole->save();
+            $this->assertTrue($saved);
+            $parentRole->role   = $childRole;
+            $this->assertFalse($parentRole->validate());
+            $this->assertEquals('You cannot select a child role for the parent role', $parentRole->getError('role'));
+        }
     }
 ?>
