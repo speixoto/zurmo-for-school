@@ -104,6 +104,25 @@
             }
         }
 
+        public static function getBuiltTypeListDropDownArray()
+        {
+            return array(
+                static::BUILT_TYPE_PLAIN_TEXT_ONLY  => Zurmo::t('EmailTemplatesModule', 'Plain Text'),
+                static::BUILT_TYPE_PASTED_HTML      => Zurmo::t('EmailTemplatesModule', 'HTML'),
+                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Template Builder'),
+            );
+        }
+
+        public static function getNonEditableBuiltTypeListStringContent($builtType)
+        {
+            assert('is_int($builtType) || $builtType == null');
+            $dropDownArray = self::getBuiltTypeListDropDownArray();
+            if (!empty($dropDownArray[$builtType]))
+            {
+                return Yii::app()->format->text($dropDownArray[$builtType]);
+            }
+        }
+
         public function __toString()
         {
             try

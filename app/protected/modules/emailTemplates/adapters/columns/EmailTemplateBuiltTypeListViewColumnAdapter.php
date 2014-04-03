@@ -49,8 +49,7 @@
 
         public static function resolveValueFromBuiltType($builtType)
         {
-            $builtTypesAndLabels    = EmailTemplate::getBuiltTypeDropDownArray();
-            return $builtTypesAndLabels[$builtType];
+            return EmailTemplate::getNonEditableBuiltTypeListStringContent($builtType);
         }
     }
 ?>
