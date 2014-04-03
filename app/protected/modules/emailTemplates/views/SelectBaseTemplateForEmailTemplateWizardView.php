@@ -80,51 +80,25 @@
          */
         protected function renderFormContent()
         {
-            $leftSideContent                            =  null;
-            $hiddenElements                             = null;
+            $leftSideContent =  null;
+            $hiddenElements  = null;
             $this->renderSerializedDataHiddenFields($hiddenElements);
-            $leftSideContent                            = $this->renderSelectBaseTemplateForm();
+            $leftSideContent = $this->renderSelectBaseTemplateForm();
             $this->renderHiddenElements($hiddenElements, $leftSideContent);
-
-            $content                                    = $leftSideContent;
+            $content         = $leftSideContent;
             return $content;
         }
 
         protected function renderSelectBaseTemplateForm()
         {
-//            $content  = $this->renderSelectBaseTemplateFromPredefinedTemplates();
-//            $content .= $this->renderSelectBaseTemplateFromPreviouslyCreatedTemplates();
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'         => 'builtType',
-                    'operatorType'          => 'equals',
-                    'value'                 => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE,
-                ),
-                2 => array(
-                    'attributeName'         => 'modelClassName',
-                    'operatorType'          => 'isNull',
-                    'value'                 => null,
-                ),
-            );
-            $searchAttributeData['structure'] = '1 and 2';
-            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
-
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ListView");
-            $cClipWidget->widget('application.core.widgets.ZurmoListView', array(
-                'dataProvider'  => $dataProvider,
-                'itemView'      => 'BaseEmailTemplateItemForListView',
-                'itemsTagName'  => 'ul',
-                'itemsCssClass' => 'clearfix'
-            ));
-            $cClipWidget->endClip();
-            $content = $cClipWidget->getController()->clips['ListView'];
-            return $content;
+            $element = new SelectBaseTemplateElement($this->model, 'baseTemplateId', $this->form);
+            $element->editableTemplate = '{content}{error}';
+            return $element->render();
         }
 
         protected function renderSelectBaseTemplateFromPredefinedTemplates()
         {
+            //TODO: @sergio: Remove this. Not used.
             $elementClassName   = static::PREDEFINED_TEMPLATES_ELEMENT_CLASS_NAME;
             $wrapperDivCssId    = static::PREDEFINED_TEMPLATES_DIV_ID;
             $heading            = Zurmo::t('EmailTemplatesModule', 'Templates');
@@ -135,6 +109,7 @@
 
         protected function renderSelectBaseTemplateFromPreviouslyCreatedTemplates()
         {
+            //TODO: @sergio: Remove this. Not used.
             $elementClassName   = static::PREVIOUSLY_CREATED_TEMPLATES_ELEMENT_CLASS_NAME;
             $wrapperDivCssId    = static::PREVIOUSLY_CREATED_TEMPLATES_DIV_ID;
             $heading            = Zurmo::t('EmailTemplatesModule', 'My Templates');

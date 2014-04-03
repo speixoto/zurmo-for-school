@@ -141,7 +141,7 @@
         {
             $this->wrapContentInTableCell($hiddenElements, array('colspan' => 2));
             $this->wrapContentInTableRow($hiddenElements);
-            $content                .= $hiddenElements;
+            $content .= $hiddenElements;
         }
 
         protected function wrapContentForLeftSideBar(& $content, $prefix = null)
