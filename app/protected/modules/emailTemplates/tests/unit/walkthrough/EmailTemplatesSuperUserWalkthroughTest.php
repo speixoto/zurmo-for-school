@@ -135,13 +135,13 @@
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">'.
                                                 'Email Template Wizard</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<ul class="configuration-list creation-list">') !== false);
-            $this->assertTrue(strpos($content, '<li><h4>Use Plain Text</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Plain Text</h4><a class="white-button" href="') !== false);
             $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<li><h4>Use HTML</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>HTML</h4><a class="white-button" href="') !== false);
             $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<li><h4>Use Template Builder</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Template Builder</h4><a class="white-button" href="') !== false);
             $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li></ul>') !== false);
         }
@@ -156,13 +156,13 @@
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">'.
                                                 'Email Template Wizard</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<ul class="configuration-list creation-list">') !== false);
-            $this->assertTrue(strpos($content, '<li><h4>Use Plain Text</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Plain Text</h4><a class="white-button" href="') !== false);
             $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<li><h4>Use HTML</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>HTML</h4><a class="white-button" href="') !== false);
             $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
-            $this->assertTrue(strpos($content, '<li><h4>Use Template Builder</h4><a class="white-button" href="') !== false);
+            $this->assertTrue(strpos($content, '<li><h4>Template Builder</h4><a class="white-button" href="') !== false);
             $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li></ul>') !== false);
         }
