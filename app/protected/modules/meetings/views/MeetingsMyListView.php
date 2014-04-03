@@ -108,5 +108,28 @@
         {
             return 'startDateTime';
         }
+
+        protected function makeDataProviderBySearchAttributeData($searchAttributeData)
+        {
+            assert('is_array($searchAttributeData)');
+            list($sortAttribute, $sortDescending)  =
+            SearchUtil::resolveSortFromStickyData($this->modelClassName, $this->uniqueLayoutId);
+            $sortOrderVariableName  = $this->modelClassName. '_sort';
+            $sortOrderVariableValue = Yii::app()->getRequest()->getQuery($sortOrderVariableName, null);
+            if ($sortOrderVariableValue === null)
+            {
+                $sortDescending = true;
+            }
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            $redBeanModelDataProvider = new RedBeanModelDataProvider($this->modelClassName, $sortAttribute,
+                                                                     $sortDescending, $searchAttributeData, array(
+                                                                     'pagination' => array('pageSize' => $pageSize)));
+            $sort          = new RedBeanSort($redBeanModelDataProvider->modelClassName);
+            $sort->sortVar = $redBeanModelDataProvider->getId().'_sort';
+            $sort->route   = 'defaultPortlet/myListDetails';
+            $sort->params  = array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId']));
+            $redBeanModelDataProvider->setSort($sort);
+            return $redBeanModelDataProvider;
+        }
     }
 ?>

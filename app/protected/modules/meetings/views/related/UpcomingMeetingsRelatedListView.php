@@ -147,6 +147,21 @@
             return $searchAttributeData;
         }
 
+        protected function makeDataProviderBySearchAttributeData($searchAttributeData)
+        {
+            assert('is_array($searchAttributeData)');
+            $sortAttribute  = SearchUtil::resolveSortAttributeFromArray($this->modelClassName, $_GET);
+            $sortDescending = SearchUtil::resolveSortDescendingFromArray($this->modelClassName, $_GET);
+            $sortOrderVariableName  = $this->modelClassName. '_sort';
+            $sortOrderVariableValue = Yii::app()->getRequest()->getQuery($sortOrderVariableName, null);
+            if ($sortOrderVariableValue === null)
+            {
+                $sortDescending = true;
+            }
+            return new RedBeanModelDataProvider($this->modelClassName, $sortAttribute, (bool)$sortDescending,
+                                                $searchAttributeData, $this->resolveConfigForDataProvider());
+        }
+
         /**
          * @return string
          */
