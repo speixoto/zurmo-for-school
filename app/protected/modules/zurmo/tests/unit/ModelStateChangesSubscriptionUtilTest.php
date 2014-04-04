@@ -52,6 +52,7 @@
         {
             ReadPermissionsSubscriptionUtil::recreateTable('account_read_subscription');
             ModelCreationApiSyncUtil::buildTable();
+            $messageLogger = new DebuggingMessageLogger();
             $timestamp = time();
             sleep(1);
             $models = ModelStateChangesSubscriptionUtil::getCreatedModels('apiTest', 'Account', 5, 0, $timestamp);
@@ -63,7 +64,7 @@
             $this->assertEquals(false, $models);
 
             // Now run ReadPermissionSubscriptionUtil
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, true);
             $models = ModelStateChangesSubscriptionUtil::getCreatedModels('apiTest', 'Account', 5, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(1, count($models));
@@ -78,7 +79,7 @@
             AccountTestHelper::createAccountByNameForOwner('First Test Account', Yii::app()->user->userModel);
             AccountTestHelper::createAccountByNameForOwner('Second Test Account', Yii::app()->user->userModel);
             AccountTestHelper::createAccountByNameForOwner('Third Test Account', Yii::app()->user->userModel);
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, true);
             $models = ModelStateChangesSubscriptionUtil::getCreatedModels('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(2, count($models));
@@ -95,10 +96,11 @@
         {
             ReadPermissionsSubscriptionUtil::recreateTable('account_read_subscription');
             ModelCreationApiSyncUtil::buildTable();
+            $messageLogger = new DebuggingMessageLogger();
             $timestamp = time();
             sleep(1);
             $account1 = AccountTestHelper::createAccountByNameForOwner('First Test Delete Account', Yii::app()->user->userModel);
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
             $models = ModelStateChangesSubscriptionUtil::getDeletedModelIds('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertTrue(empty($models));
@@ -109,7 +111,7 @@
             $this->assertTrue(is_array($models));
             $this->assertTrue(empty($models));
 
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
             $models = ModelStateChangesSubscriptionUtil::getDeletedModelIds('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(1, count($models));
@@ -122,7 +124,7 @@
             $account2 = AccountTestHelper::createAccountByNameForOwner('Second Test Delete Account', Yii::app()->user->userModel);
             $account3 = AccountTestHelper::createAccountByNameForOwner('Third Test Delete Account', Yii::app()->user->userModel);
             $account4 = AccountTestHelper::createAccountByNameForOwner('Forth Test Delete Account', Yii::app()->user->userModel);
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
 
             $account2Id = $account2->id;
             $account3Id = $account3->id;
@@ -130,7 +132,7 @@
             $this->assertTrue($account2->delete());
             $this->assertTrue($account3->delete());
             $this->assertTrue($account4->delete());
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
             $models = ModelStateChangesSubscriptionUtil::getDeletedModelIds('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(2, count($models));
