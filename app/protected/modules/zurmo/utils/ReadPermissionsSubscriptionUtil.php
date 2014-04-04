@@ -217,7 +217,7 @@
 
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $where  = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
-            $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where, 'createdDateTime asc');
+            $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where);
 
             $endTime = microtime(true);
             $executionTimeMs = $endTime - $startTime;
