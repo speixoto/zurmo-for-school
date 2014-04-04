@@ -75,7 +75,7 @@
             }
             catch (NotFoundException $e)
             {
-                ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($this->getMessageLogger(), true);
+                ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($this->getMessageLogger(), false);
             }
             return true;
         }
