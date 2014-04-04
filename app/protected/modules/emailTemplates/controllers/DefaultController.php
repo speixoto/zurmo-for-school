@@ -283,9 +283,11 @@
                 $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
                                                                                                             $textContent);
                 $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
-                                                                                                        $htmlContent);
+                                                                                                            $htmlContent);
+                $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(true);
                 $emailTemplate->textContent = $textContent;
                 $emailTemplate->htmlContent = $htmlContent;
+                $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(false);
             }
             $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
             echo $emailTemplate;
@@ -360,7 +362,6 @@
 
         public function actionGetSerializedToHtmlContent($id)
         {
-            assert('is_string($className)');
             $modelId = (int) $id;
             $model = EmailTemplate::getById($modelId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
@@ -532,6 +533,7 @@
             if (isset($id))
             {
                 $emailTemplate  = EmailTemplate::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
                 $content        = $emailTemplate->htmlContent;
                 if (!$useHtmlContent || empty($content))
                 {
@@ -541,7 +543,6 @@
                 echo $content;
                 Yii::app()->end(0, false);
             }
-            // serializedData['dom'] = json_encoded_dom
             $serializedDataArray    = Yii::app()->request->getPost('serializedData');
             if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
             {
@@ -575,22 +576,24 @@
             $id                 = ArrayUtil::getArrayValue($editableForm, 'id');
             $properties         = ArrayUtil::getArrayValue($editableForm, 'properties');
             $content            = ArrayUtil::getArrayValue($editableForm, 'content');
+            $params             = ArrayUtil::getArrayValue($editableForm, 'params');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
             $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW);
 
-            // at bare minimum we should have classname. Without these it does not make sense.
+            // at bare minimum we should have classname. Without it, it does not make sense.
             if (!Yii::app()->request->isPostRequest || !isset($className))
             {
                 Yii::app()->end(0, false);
             }
             if ($editable)
             {
-                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
+                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties,
+                                                                    $content, $params);
             }
             else
             {
                 $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $wrapElementInRow,
-                                                                        $id, $properties, $content);
+                                                                        $id, $properties, $content, $params);
             }
             Yii::app()->clientScript->render($content);
             echo $content;
@@ -610,6 +613,7 @@
         public function actionConvertEmail($id, $converter = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $htmlContent    = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByModel($emailTemplate, $converter);
             echo $htmlContent;
         }
@@ -617,6 +621,7 @@
         public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $useHtmlContent = 1)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $htmlContent    = $emailTemplate->htmlContent;
             if (!$useHtmlContent)
             {

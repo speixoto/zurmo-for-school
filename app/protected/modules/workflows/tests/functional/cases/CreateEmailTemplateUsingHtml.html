@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>EditTemplate</title>
+<title>CreateEmailTemplateUsingHtml</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Edit Template</td></tr>
+<tr><td rowspan="1" colspan="3">Create Email Template Using Html</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -17,7 +17,7 @@
 	<td>45000</td>
 	<td></td>
 </tr>
-<!--Go to templates list-->
+<!--Go to create email template-->
 <tr>
 	<td>open</td>
 	<td>index.php/workflows/default</td>
@@ -64,8 +64,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='SecuredActionBarForWorkflowsSearchAndListView']/div/nav/div[2]/a[1]</td>
+	<td>click</td>
+	<td>link=Create Template</td>
 	<td></td>
 </tr>
 <tr>
@@ -78,35 +78,30 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--select template created in functional test-->
 <tr>
-	<td>type</td>
-	<td>id=EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>keyUp</td>
-	<td>id=EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>\10</td>
-</tr>
-<tr>
-	<td>waitForText</td>
-	<td>//div[@id='list-view']/div[2]/table/tbody/tr/td[2]</td>
-	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
+	<td>waitForTextPresent</td>
+	<td>Email Template Wizard</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyValue</td>
-	<td>EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
+	<td>assertTextPresent</td>
+	<td>Use Plain Text</td>
+	<td></td>
 </tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Use HTML</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Use Template Builder</td>
+	<td></td>
+</tr>
+<!--use html-->
 <tr>
 	<td>click</td>
-	<td>//div[@id='list-view']/div[2]/table/tbody/tr[1]/td[2]/a</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[2]/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -120,19 +115,46 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>waitForElementPresent</td>
-	<td>link=Edit</td>
+	<td>waitForTextPresent</td>
+	<td>Email Template Wizard - HTML</td>
+	<td></td>
+</tr>
+<!--check validation-->
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='GeneralDataForEmailTemplateWizardView']/div[2]/div/div/a[2]/span[3]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Edit</td>
+	<td>waitForTextPresent</td>
+	<td>Please fix the following input errors:</td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Name cannot be blank.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Subject cannot be blank.</td>
+	<td></td>
+</tr>
+<!--add email template details-->
+<tr>
+	<td>type</td>
+	<td>id=ClassicEmailTemplateWizardForm_name</td>
+	<td>Test Email Template Using Html ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>id=ClassicEmailTemplateWizardForm_subject</td>
-	<td>test email subject after editing.</td>
+	<td>test email subject.</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>id=ClassicEmailTemplateWizardForm_files</td>
+    <td>C:\Inetpub\selenium\zurmo_bleeding\app\protected\modules\emailTemplates\tests\functional\files\testLogo.png</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -176,12 +198,27 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td>test email subject after editing.</td>
+	<td>Test Email Template Using Html ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
+	<td>assertText</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[1]/td</td>
+	<td>Accounts</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[2]/td</td>
+	<td>Test Email Template Using Html ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[3]/td</td>
+	<td>test email subject.</td>
+</tr>
+<tr>
 	<td>assertTextPresent</td>
-	<td>test email subject after editing.</td>
+	<td>html content</td>
 	<td></td>
 </tr>
 </tbody>

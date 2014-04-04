@@ -84,7 +84,8 @@
                     $properties['frontend']['target']   = '_blank';
                     $properties['backend']['text']      = $serviceName;
                     $properties['backend']['sizeClass'] = 'button social-button ' . $serviceName . ' ' . $sizeClass;
-                    $element         = BuilderElementRenderUtil::resolveElement('BuilderSocialButtonElement', $this->renderForCanvas, null, $properties);
+                    $id                                 = $this->id . '_' . $serviceName;
+                    $element         = BuilderElementRenderUtil::resolveElement('BuilderSocialButtonElement', $this->renderForCanvas, $id, $properties);
 
                     $content .= $element->renderNonEditable();
                     $content .= $this->resolveSpacerContentForVerticalLayout();

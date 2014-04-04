@@ -64,7 +64,7 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>link=Create Template</td>
 	<td></td>
 </tr>
@@ -80,75 +80,28 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td>Create Email Template</td>
-	<td></td>
-</tr>
-<!--check validation-->
-<tr>
-	<td>clickAndWait</td>
-	<td>save</td>
+	<td>Email Template Wizard</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>waitForTextPresent</td>
-	<td>Name cannot be blank.</td>
+	<td>assertTextPresent</td>
+	<td>Use Plain Text</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
-	<td>Subject cannot be blank.</td>
+	<td>assertTextPresent</td>
+	<td>Use HTML</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForTextPresent</td>
-	<td>Please provide at least one of the contents field.</td>
+	<td>assertTextPresent</td>
+	<td>Use Template Builder</td>
 	<td></td>
 </tr>
-<!--check default values-->
-<tr>
-	<td>assertSelectedLabel</td>
-	<td>EmailTemplate_modelClassName_value</td>
-	<td>Accounts</td>
-</tr>
-<!--add template details-->
+<!--use plain text-->
 <tr>
 	<td>click</td>
-	<td>id=EmailTemplate_name</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=EmailTemplate_name</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=EmailTemplate_subject</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=EmailTemplate_subject</td>
-	<td>Email Template Subject ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=EmailTemplate_textContent</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=EmailTemplate_textContent</td>
-	<td>Test</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Save</td>
+	<td>//div[@id='EmailTemplateTypeView']/ul/li[1]/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -161,31 +114,112 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<!--verify values after creating template-->
 <tr>
-	<td>assertTextPresent</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>waitForTextPresent</td>
+	<td>Email Template Wizard - Plain Text</td>
+	<td></td>
+</tr>
+<!--check validation-->
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='GeneralDataForEmailTemplateWizardView']/div[2]/div/div/a[2]/span[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Please fix the following input errors:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Name cannot be blank.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Subject cannot be blank.</td>
+	<td></td>
+</tr>
+<!--add email template details-->
+<tr>
+	<td>type</td>
+	<td>id=ClassicEmailTemplateWizardForm_name</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ClassicEmailTemplateWizardForm_subject</td>
+	<td>test email subject.</td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>id=ClassicEmailTemplateWizardForm_files</td>
+    <td>C:\Inetpub\selenium\zurmo_bleeding\app\protected\modules\emailTemplates\tests\functional\files\testLogo.png</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='GeneralDataForEmailTemplateWizardView']/div[2]/div/div/a[2]/span[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ClassicEmailTemplateWizardForm_textContent</td>
+	<td>html content</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[@id='contentFinishLink']/span[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='EmailTemplateEditAndDetailsView']/div/div[2]/div[1]/table/tbody/tr[1]/td</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[1]/td</td>
 	<td>Accounts</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='EmailTemplateEditAndDetailsView']/div/div[2]/div[1]/table/tbody/tr[2]/td</td>
-	<td>EmailTemplateTest ${randomSuffix}</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[2]/td</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='EmailTemplateEditAndDetailsView']/div/div[2]/div[1]/table/tbody/tr[3]/td</td>
-	<td>Email Template Subject ${randomSuffix}</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[3]/td</td>
+	<td>test email subject.</td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>//div[@id='tab1']</td>
-	<td>Test</td>
+	<td>assertTextPresent</td>
+	<td>html content</td>
+	<td></td>
 </tr>
 </tbody>
 </table>
