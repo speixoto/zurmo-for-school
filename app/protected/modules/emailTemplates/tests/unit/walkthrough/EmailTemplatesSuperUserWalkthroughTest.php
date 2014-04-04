@@ -136,13 +136,13 @@
                                                 'Email Template Wizard</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<ul class="configuration-list creation-list">') !== false);
             $this->assertTrue(strpos($content, '<li><h4>Plain Text</h4><a class="white-button" href="') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<li><h4>HTML</h4><a class="white-button" href="') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<li><h4>Template Builder</h4><a class="white-button" href="') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li></ul>') !== false);
         }
 
@@ -157,13 +157,13 @@
                                                 'Email Template Wizard</span></span></h1>') !== false);
             $this->assertTrue(strpos($content, '<ul class="configuration-list creation-list">') !== false);
             $this->assertTrue(strpos($content, '<li><h4>Plain Text</h4><a class="white-button" href="') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=1">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<li><h4>HTML</h4><a class="white-button" href="') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=2">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li>') !== false);
             $this->assertTrue(strpos($content, '<li><h4>Template Builder</h4><a class="white-button" href="') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/create?type=2&amp;builtType=3">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<span class="z-label">Create</span></a></li></ul>') !== false);
         }
 
@@ -785,7 +785,6 @@
             $this->assertEquals($expectedContent, $content);
         }
 
-
         /**
          * @depends testRenderElementEditableWithClassNameAndIdForCanvas
          */
@@ -900,11 +899,11 @@
          */
         public function testRenderBaseTemplateOptionsForPredefined()
         {
-            $templateId 			    = 0;
-            $elementClassName 		    = 'SelectBaseTemplateFromPredefinedTemplatesElement';
-            $elementModelClassName 	    = 'BuilderEmailTemplateWizardForm';
-            $elementAttributeName 	    = 'baseTemplateId';
-            $elementFormClassName 	    = 'WizardActiveForm';
+            $templateId                 = 0;
+            $elementClassName           = 'SelectBaseTemplateFromPredefinedTemplatesElement';
+            $elementModelClassName      = 'BuilderEmailTemplateWizardForm';
+            $elementAttributeName       = 'baseTemplateId';
+            $elementFormClassName       = 'WizardActiveForm';
             $model                      = new $elementModelClassName();
             $model->id                  = $templateId;
             $element                    = new $elementClassName($model, $elementAttributeName,
@@ -975,7 +974,6 @@
             $this->assertNotEmpty($emailTemplateDetailsResolvedArray);
             $this->assertEquals($emailTemplateDetailsArray, $emailTemplateDetailsResolvedArray);
         }
-
 
         /**
          * @depends testDetailsJsonActionForPlainText
@@ -1172,7 +1170,7 @@
                                                 'EmailTemplateWizardView WizardView">') !== false);
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">' .
                                                 'Email Template Wizard - Plain Text</span></span></h1>') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=1" method="post">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=1" method="post">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<input id="componentType" type="hidden" value=' .
                                                 '"ValidateForGeneralData" name="validationScenario"') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
@@ -1271,7 +1269,8 @@
                                                 'ModelPermissions][type]"') !== false);
             $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2">Everyone</label>') !== false);
-            /**/
+            */
+
             $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
                                                 'clearfix dock"><div class="form-toolbar">') !== false);
             $this->assertEquals(2, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
@@ -1320,7 +1319,6 @@
                                                 '</a></div></div></div></div></div></form>') !== false);
         }
 
-
         /**
          * @depends testCreateActionForPlainTextAndMarketing
          */
@@ -1345,7 +1343,7 @@
                                                 'EmailTemplateWizardView WizardView">') !== false);
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">' .
                                                 'Email Template Wizard - HTML</span></span></h1>') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=2" method="post">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=2" method="post">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<input id="componentType" type="hidden" value=' .
                                                 '"ValidateForGeneralData" name="validationScenario"') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
@@ -1452,7 +1450,8 @@
                                                 'ModelPermissions][type]"') !== false);
             $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2">Everyone</label>') !== false);
-            /**/
+            */
+
             $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
                                                 'clearfix dock"><div class="form-toolbar">') !== false);
             $this->assertEquals(2, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
@@ -1537,7 +1536,7 @@
                                                 'EmailTemplateWizardView WizardView">') !== false);
             $this->assertTrue(strpos($content, '<h1><span class="truncated-title"><span class="ellipsis-content">' .
                                                 'Email Template Wizard - Template Builder</span></span></h1>') !== false);
-            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=3" method="post">') !== false);
+            $this->assertTrue(strpos($content, '/emailTemplates/default/save?builtType=3" method="post">') !== false); // Not Coding Standard
             $this->assertTrue(strpos($content, '<input id="componentType" type="hidden" value=' .
                                                 '"ValidateForGeneralData" name="validationScenario"') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
@@ -1644,7 +1643,8 @@
                                                 'ModelPermissions][type]"') !== false);
             $this->assertTrue(strpos($content, '<label for="BuilderEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2">Everyone</label>') !== false);
-            /**/
+            */
+
             $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
                                                 'clearfix dock"><div class="form-toolbar">') !== false);
             $this->assertEquals(4, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
@@ -1836,22 +1836,6 @@
                                                 '</span><span class="z-label">Save</span></a></div></div></div>' .
                                                 '</div></div></form>') !== false);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         /**
          * @depends testListForWorkflowAction
@@ -2166,7 +2150,7 @@
         protected static function sanitizeStringOfIdAttribute(& $string)
         {
             // remove id from all tags
-            $string = preg_replace('#\s\[?id\]?="[^"]+"#', '', $string);
+            $string = preg_replace('#\s\[?id\]?="[^"]+"#', '', $string); // Not Coding Standard
             // remove hidden input which has a name ending with id
             $string = preg_replace('#<input(.*?)type="hidden(.*?) name="(.*?)\[id\]"(.*?)#is', '', $string);
         }

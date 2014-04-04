@@ -120,12 +120,12 @@
     <td>//div[@id='WorkflowDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
 	<td>WorkflowTest ${randomSuffix}</td>
 </tr>
+<!--edit workflow-->
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
+	<td>waitForElementPresent</td>
+	<td>link=Edit</td>
 	<td></td>
 </tr>
-<!--edit workflow-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Edit</td>
@@ -140,11 +140,6 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -228,9 +223,9 @@
 </tr>
 <!--verify values after saving workflow-->
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
+	<td>waitForText</td>
+	<td>//div[@id='WorkflowDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
+	<td>WorkflowTest ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -246,11 +241,6 @@
 	<td>assertText</td>
 	<td>//div[@id='WorkflowDetailsView']/div/div[2]/div/table/tbody/tr[3]/td</td>
 	<td>New Records Only</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
 </tr>
 <tr>
 	<td>open</td>

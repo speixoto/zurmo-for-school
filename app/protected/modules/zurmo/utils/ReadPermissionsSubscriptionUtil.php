@@ -125,14 +125,22 @@
         /**
          * Update read subscription table for all users and models
          * @param bool $partialBuild
+         * @param MessageLogger $messageLogger
          */
-        public static function updateAllReadSubscriptionTables($partialBuild = true)
+        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $partialBuild = true)
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
             $updateStartTimestamp = time();
+
+            $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                'Starting read permission building for all users.'));
+
             foreach ($users as $user)
             {
+                $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                    'Starting read permission building for userID: {id}', array('{id}' => $user->id)));
+                $startTime = microtime(true);
                 Yii::app()->user->userModel = $user;
                 $modelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
                 if (!empty($modelClassNames) && is_array($modelClassNames))
@@ -145,9 +153,16 @@
                             $onlyOwnedModels = true;
                         }
                         static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                            Yii::app()->user->userModel, $updateStartTimestamp, $partialBuild, $onlyOwnedModels);
+                            Yii::app()->user->userModel, $updateStartTimestamp, $partialBuild, $onlyOwnedModels,
+                            $messageLogger);
                     }
                 }
+                $endTime = microtime(true);
+                $executionTimeMs = $endTime - $startTime;
+                $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                    'Ending read permission building for userID: {id}', array('{id}' => $user->id)));
+                $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                    'Build time for userID: {id} - {miliSeconds}', array('{id}' => $user->id, '{miliSeconds}' => $executionTimeMs)));
             }
             Yii::app()->user->userModel = $loggedUser;
             static::setTimeReadPermissionUpdateTimestamp($updateStartTimestamp);
@@ -160,13 +175,16 @@
          * @param bool $partialBuild
          * @param bool $onlyOwnedModels
          * @param int $updateStartTimestamp
+         * @param MessageLogger $messageLogger
          */
         public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
-                                                                                  $partialBuild = true, $onlyOwnedModels = false)
+                                                                                  $partialBuild = true, $onlyOwnedModels = false,
+                                                                                  MessageLogger $messageLogger)
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             assert('is_int($updateStartTimestamp)');
             $metadata = array();
+            $startTime = microtime(true);
             $lastReadPermissionUpdateTimestamp = static::getLastReadPermissionUpdateTimestamp();
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastReadPermissionUpdateTimestamp);
             $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
@@ -201,11 +219,19 @@
             $where  = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
             $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where, 'createdDateTime asc');
 
+            $endTime = microtime(true);
+            $executionTimeMs = $endTime - $startTime;
+            $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                'SQL time {modelClassName}: {miliSeconds}', array('{modelClassName}' => $modelClassName, '{miliSeconds}' => $executionTimeMs)));
+
             // Get models from subscription table
             $tableName = static::getSubscriptionTableName($modelClassName);
             $sql = "SELECT modelid FROM $tableName WHERE userid = " . $user->id .
                 " AND subscriptiontype = " . static::TYPE_ADD;
-
+            if ($partialBuild)
+            {
+                $sql .= " and modifieddatetime > '" . $dateTime . "'";
+            }
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $permissionTableIds = array();
             if (is_array($permissionTableRows) && !empty($permissionTableRows))

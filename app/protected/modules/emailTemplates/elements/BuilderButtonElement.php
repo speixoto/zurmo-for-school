@@ -254,7 +254,7 @@
         protected function resolveWrapperTdNonEditableByContent($content)
         {
             $options            = $this->resolveNonEditableContentWrappingTdOptions();
-            $options            = CMap::mergeArray($options, array('class'=>'button-td'));
+            $options            = CMap::mergeArray($options, array('class' => 'button-td'));
             $content            = ZurmoHtml::tag('td', $options, $content);
             return $content;
         }
