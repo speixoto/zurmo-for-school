@@ -57,8 +57,8 @@
         {
             $content  = null;
             $content .= $this->renderName();
-            $content .= $this->renderUseButton();
-            $content .= $this->renderPreviewButton();
+            $content .= $this->renderUseLink();
+            $content .= $this->renderPreviewLink();
             return ZurmoHtml::tag('li', array('class' => 'base-template-selection', 'data-value' => $this->model->id), $content);
         }
 
@@ -69,18 +69,35 @@
             return $icon . $name;
         }
 
-        protected function renderPreviewButton()
+        protected function renderPreviewLink()
         {
+            $htmlOptions    = $this->htmlOptionsForPreviewLink();
             $previewLabel   = Zurmo::t('EmailTemplatesModule', 'Preview');
             $previewSpan    = ZurmoHtml::tag('span', array('class' => 'z-label'), $previewLabel);
-            return ZurmoHtml::link($previewSpan, '#', array('class' => 'secondary-button'));
+            return ZurmoHtml::link($previewSpan, '#', $htmlOptions);
         }
 
-        protected function renderUseButton()
+        protected function htmlOptionsForPreviewLink()
         {
-            $useLabel   = Zurmo::t('EmailTemplatesModule', 'Use');
-            $useSpan    = ZurmoHtml::tag('span', array('class' => 'z-label'), $useLabel);
-            return ZurmoHtml::link($useSpan, '#', array('class' => 'z-button'));
+            return array(
+                'class' => 'secondary-button preview-template',
+            );
+        }
+
+        protected function renderUseLink()
+        {
+            $htmlOptions = $this->htmlOptionsForUseLink();
+            $useLabel    = Zurmo::t('EmailTemplatesModule', 'Use');
+            $useSpan     = ZurmoHtml::tag('span', array('class' => 'z-label'), $useLabel);
+            return ZurmoHtml::link($useSpan, '#', $htmlOptions);
+        }
+
+        protected function htmlOptionsForUseLink()
+        {
+            return array(
+                'class' => 'z-button use-template',
+            );
+
         }
 
         protected function resolveThumbnail()

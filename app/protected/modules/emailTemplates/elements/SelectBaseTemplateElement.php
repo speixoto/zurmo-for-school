@@ -38,6 +38,7 @@
     {
         protected function renderControlEditable()
         {
+            $this->registerScripts();
             //TODO: @sergio: Move this to a util maybe. We need pillbox to filter by builderType
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -53,7 +54,7 @@
                 ),
             );
             $searchAttributeData['structure'] = '1 and 2';
-            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
+            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider(array(), 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
 
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ListView");
@@ -61,12 +62,24 @@
                 'dataProvider'  => $dataProvider,
                 'itemView'      => 'BaseEmailTemplateItemForListView',
                 'itemsTagName'  => 'ul',
-                'itemsCssClass' => 'clearfix'
+                'itemsCssClass' => 'teste-class clearfix',
+                'pager'         => $this->getCGridViewPagerParams(),
+//                'viewData'      => array(),  //TODO: @sergio: Pass paramas for the view, for examplete the ids of the use and preview classes
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['ListView'];
             $content .= $this->renderHiddenInput();
             return $content;
+        }
+
+        protected function getCGridViewPagerParams()
+        {
+            $pagerParams = array(
+//                'prevPageLabel'    => '<span>previous</span>',
+                'nextPageLabel'    => '',
+                'class'            => 'EndlessListLinkPager',
+            );
+            return $pagerParams;
         }
 
         protected function renderHiddenInput()
@@ -80,6 +93,72 @@
         protected function renderControlNonEditable()
         {
             throw new NotSupportedException();
+        }
+
+        protected function registerScripts()
+        {
+            $script  = $this->renderOnClickUseLinkScript();
+            $script .= $this->renderOnClickPreviewLinkScript();
+            Yii::app()->getClientScript()->registerScript(__CLASS__, $script);
+        }
+
+        protected function renderOnClickUseLinkScript()
+        {
+            $nextPageLinkId = SelectBaseTemplateForEmailTemplateWizardView::getNextPageLinkId();
+            $script = "
+                $('body').off('click', '.use-template');
+                $('body').on('click', '.use-template', function (event) {
+                    var currentSelectedValue = $(this).closest('li').data('value');
+                    originalBaseTemplateId  = $('" . SelectBaseTemplateForEmailTemplateWizardView::resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
+                    // show warning only on edit when a user has already been to canvas once.
+                    if (originalBaseTemplateId != '' && currentSelectedValue != originalBaseTemplateId)
+                    {
+                        if (!confirm('" . Zurmo::t('EmailTemplatesModule', 'Changing base template would trash any existing design made on canvas.') ."'))
+                        {
+                            return false;
+                        }
+                    }
+                    $('#{$this->getEditableInputId()}').val(currentSelectedValue);
+                    updateBaseTemplateIdHiddenInputValue(currentSelectedValue);
+                    $('#{$nextPageLinkId}').click();
+                    event.preventDefault();
+                    return true;
+                });
+            ";
+            return $script;
+        }
+
+        protected function renderOnClickPreviewLinkScript()
+        {
+            $message                      = Zurmo::t('EmailTemplatesModule', 'There was an error generating preview');
+            $url                          = Yii::app()->createUrl('emailTemplates/default/renderPreview', array('id' => null));
+            $ajaxOptions['cache']         = 'false';
+            $ajaxOptions['url']           = "js:(function(){
+                                                return '{$url}' + templateId;
+                                             })()";
+            $ajaxOptions['beforeSend']    = 'js:function(){
+                                                //TODO: @sergio: Add
+                                             }';
+            $ajaxOptions['success']       = 'js:function (html){
+                                             }';
+            $ajax                         = ZurmoHtml::ajax($ajaxOptions);
+
+            $script = "
+                $('body').off('click', '.preview-template');
+                $('body').on('click', '.preview-template', function (event) {
+                    var templateId = $(this).closest('li').data('value');
+                    {$ajax}
+                    event.preventDefault();
+                    return true;
+                });
+            ";
+
+            return $script;
+        }
+
+        protected function resolvePreviewAjaxOptions()
+        {
+
         }
     }
 ?>

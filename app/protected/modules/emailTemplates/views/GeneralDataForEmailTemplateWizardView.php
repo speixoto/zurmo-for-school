@@ -272,8 +272,6 @@
                         resetOriginalBaseBaseTemplateId();
                         resetSerializedDomData();
                         var params  = JSON.parse('{ \"modelClassName\" : \"' + $(this).val() + '\" }');
-                        reloadPreviouslyCreatedTemplates(params)
-                        preSelectBaseTemplate();
                     }
                 });
                 ");
