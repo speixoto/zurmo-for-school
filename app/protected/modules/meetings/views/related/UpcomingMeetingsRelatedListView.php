@@ -150,8 +150,8 @@
         protected function makeDataProviderBySearchAttributeData($searchAttributeData)
         {
             assert('is_array($searchAttributeData)');
-            $sortAttribute  = SearchUtil::resolveSortAttributeFromArray($this->modelClassName, $_GET);
-            $sortDescending = SearchUtil::resolveSortDescendingFromArray($this->modelClassName, $_GET);
+            $sortAttribute  = SearchUtil::resolveSortAttributeFromArray($this->modelClassName, GetUtil::getData());
+            $sortDescending = SearchUtil::resolveSortDescendingFromArray($this->modelClassName, GetUtil::getData());
             $sortOrderVariableName  = $this->modelClassName. '_sort';
             $sortOrderVariableValue = Yii::app()->getRequest()->getQuery($sortOrderVariableName, null);
             if ($sortOrderVariableValue === null)
