@@ -52,6 +52,10 @@
             Yii::app()->user->userModel = $super;
             $maker  = new EmailTemplatesDefaultDataMaker();
             $maker->make();
+            $demoDataHelper = new DemoDataHelper();
+            $demoDataHelper->setRangeByModelName('User', 1, 10);
+            $groupsDemoDataMaker = new GroupsDemoDataMaker();
+            $groupsDemoDataMaker->makeAll($demoDataHelper);
             ReadPermissionsOptimizationUtil::rebuild();
         }
 
@@ -1249,29 +1253,26 @@
                                                 'ModelPermissions_type_1" value="') !== false);
             $this->assertTrue(strpos($content, '" type="radio" name="ClassicEmailTemplateWizardForm[explicit' .
                                                 'ReadWriteModelPermissions][type]"') !== false);
-            // TODO: @Shoaibi: Critical: why do we not get the option for owner and users in?
-            /*
             $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel'.
                                                 'Permissions_type_1">Owner and users in</label>') !== false);
             $this->assertTrue(strpos($content, '<select id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
-                                                'Permissions_nonEveryoneGroup" onclick=\'document.getElementById' .
-                                                '("ClassicEmailTemplateWizardForm_explicitReadWriteModelPermissions' .
-                                                '_type_1").checked="checked";\' name="ClassicEmailTemplateWizardForm' .
-                                                '[explicitReadWriteModelPermissions][nonEveryoneGroup]">') !== false);
+                                                'Permissions_nonEveryoneGroup" onclick="document.getElementById(' .
+                                                '&quot;ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_1&quot;).checked=&quot;checked&quot;;" name="' .
+                                                'ClassicEmailTemplateWizardForm[explicitReadWriteModelPermissions]' .
+                                                '[nonEveryoneGroup]"') !== false);
             $this->assertTrue(strpos($content, '">East</option>') !== false);
             $this->assertTrue(strpos($content, '">East Channel Sales</option>') !== false);
             $this->assertTrue(strpos($content, '">East Direct Sales</option>') !== false);
             $this->assertTrue(strpos($content, '">West</option>') !== false);
             $this->assertTrue(strpos($content, '">West Channel Sales</option>') !== false);
-            $this->assertTrue(strpos($content, '">West Direct Sales</option></select>') !== false);
+            $this->assertTrue(strpos($content, '">West Direct Sales</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2" value="') !== false);
-            $this->assertTrue(strpos($content, '" checked type="radio" name="Classic' .
-                                                'EmailTemplateWizardForm[explicitReadWrite' .
+            $this->assertTrue(strpos($content, 'type="radio" name="ClassicEmailTemplateWizardForm[explicitReadWrite' .
                                                 'ModelPermissions][type]"') !== false);
             $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2">Everyone</label>') !== false);
-            /**/
             $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
                                                 'clearfix dock"><div class="form-toolbar">') !== false);
             $this->assertEquals(2, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
@@ -1329,7 +1330,6 @@
             $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW,
                                     'builtType' => EmailTemplate::BUILT_TYPE_PASTED_HTML));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
-            file_put_contents('/tmp/01', $content);
             $this->assertTrue(strpos($content, '<div id="WorkflowBreadCrumbView" class="SettingsBreadCrumbView ' .
                                                 'BreadCrumbView"><div class="breadcrumbs">') !== false);
             $this->assertTrue(strpos($content, '/workflows/default/index">Workflows</a>') !== false);
@@ -1430,29 +1430,26 @@
                                                 'ModelPermissions_type_1" value="') !== false);
             $this->assertTrue(strpos($content, '" type="radio" name="ClassicEmailTemplateWizardForm[explicit' .
                                                 'ReadWriteModelPermissions][type]"') !== false);
-            // TODO: @Shoaibi: Critical: why do we not get the option for owner and users in?
-            /*
-            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+            $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel'.
                                                 'Permissions_type_1">Owner and users in</label>') !== false);
             $this->assertTrue(strpos($content, '<select id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
-                                                'Permissions_nonEveryoneGroup" onclick=\'document.getElementById' .
-                                                '("ClassicEmailTemplateWizardForm_explicitReadWriteModelPermissions' .
-                                                '_type_1").checked="checked";\' name="ClassicEmailTemplateWizardForm' .
-                                                '[explicitReadWriteModelPermissions][nonEveryoneGroup]">') !== false);
+                                                'Permissions_nonEveryoneGroup" onclick="document.getElementById(' .
+                                                '&quot;ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_1&quot;).checked=&quot;checked&quot;;" name="' .
+                                                'ClassicEmailTemplateWizardForm[explicitReadWriteModelPermissions]' .
+                                                '[nonEveryoneGroup]"') !== false);
             $this->assertTrue(strpos($content, '">East</option>') !== false);
             $this->assertTrue(strpos($content, '">East Channel Sales</option>') !== false);
             $this->assertTrue(strpos($content, '">East Direct Sales</option>') !== false);
             $this->assertTrue(strpos($content, '">West</option>') !== false);
             $this->assertTrue(strpos($content, '">West Channel Sales</option>') !== false);
-            $this->assertTrue(strpos($content, '">West Direct Sales</option></select>') !== false);
+            $this->assertTrue(strpos($content, '">West Direct Sales</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2" value="') !== false);
-            $this->assertTrue(strpos($content, '" checked type="radio" name="Classic' .
-                                                'EmailTemplateWizardForm[explicitReadWrite' .
+            $this->assertTrue(strpos($content, 'type="radio" name="ClassicEmailTemplateWizardForm[explicitReadWrite' .
                                                 'ModelPermissions][type]"') !== false);
             $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2">Everyone</label>') !== false);
-            /**/
             $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
                                                 'clearfix dock"><div class="form-toolbar">') !== false);
             $this->assertEquals(2, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
@@ -1622,29 +1619,26 @@
                                                 'ModelPermissions_type_1" value="') !== false);
             $this->assertTrue(strpos($content, '" type="radio" name="BuilderEmailTemplateWizardForm[explicit' .
                                                 'ReadWriteModelPermissions][type]"') !== false);
-            // TODO: @Shoaibi: Critical: why do we not get the option for owner and users in?
-            /*
-            $this->assertTrue(strpos($content, '<label for="BuilderEmailTemplateWizardForm_explicitReadWriteModel' .
+            $this->assertTrue(strpos($content, '<label for="BuilderEmailTemplateWizardForm_explicitReadWriteModel'.
                                                 'Permissions_type_1">Owner and users in</label>') !== false);
             $this->assertTrue(strpos($content, '<select id="BuilderEmailTemplateWizardForm_explicitReadWriteModel' .
-                                                'Permissions_nonEveryoneGroup" onclick=\'document.getElementById' .
-                                                '("BuilderEmailTemplateWizardForm_explicitReadWriteModelPermissions' .
-                                                '_type_1").checked="checked";\' name="BuilderEmailTemplateWizardForm' .
-                                                '[explicitReadWriteModelPermissions][nonEveryoneGroup]">') !== false);
+                                                'Permissions_nonEveryoneGroup" onclick="document.getElementById(' .
+                                                '&quot;BuilderEmailTemplateWizardForm_explicitReadWriteModel' .
+                                                'Permissions_type_1&quot;).checked=&quot;checked&quot;;" name="' .
+                                                'BuilderEmailTemplateWizardForm[explicitReadWriteModelPermissions]' .
+                                                '[nonEveryoneGroup]"') !== false);
             $this->assertTrue(strpos($content, '">East</option>') !== false);
             $this->assertTrue(strpos($content, '">East Channel Sales</option>') !== false);
             $this->assertTrue(strpos($content, '">East Direct Sales</option>') !== false);
             $this->assertTrue(strpos($content, '">West</option>') !== false);
             $this->assertTrue(strpos($content, '">West Channel Sales</option>') !== false);
-            $this->assertTrue(strpos($content, '">West Direct Sales</option></select>') !== false);
+            $this->assertTrue(strpos($content, '">West Direct Sales</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2" value="') !== false);
-            $this->assertTrue(strpos($content, '" checked type="radio" name="Builder' .
-                                                'EmailTemplateWizardForm[explicitReadWrite' .
+            $this->assertTrue(strpos($content, 'type="radio" name="BuilderEmailTemplateWizardForm[explicitReadWrite' .
                                                 'ModelPermissions][type]"') !== false);
             $this->assertTrue(strpos($content, '<label for="BuilderEmailTemplateWizardForm_explicitReadWriteModel' .
                                                 'Permissions_type_2">Everyone</label>') !== false);
-            /**/
             $this->assertTrue(strpos($content, '<div class="float-bar"><div class="view-toolbar-container ' .
                                                 'clearfix dock"><div class="form-toolbar">') !== false);
             $this->assertEquals(4, substr_count($content, '<div class="float-bar"><div class="view-toolbar-container ' .
