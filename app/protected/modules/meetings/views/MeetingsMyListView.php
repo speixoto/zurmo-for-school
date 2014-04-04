@@ -116,6 +116,10 @@
             $sortDescending = SearchUtil::resolveSortDescendingFromArray($this->modelClassName, GetUtil::getData());
             $sortOrderVariableName  = $this->modelClassName. '_sort';
             $sortOrderVariableValue = Yii::app()->getRequest()->getQuery($sortOrderVariableName, null);
+            if ($sortAttribute === null)
+            {
+                $sortAttribute = $this->getSortAttributeForDataProvider();
+            }
             if ($sortOrderVariableValue === null)
             {
                 $sortDescending = true;
