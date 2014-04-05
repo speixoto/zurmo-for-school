@@ -62,8 +62,8 @@
                 'dataProvider'  => $dataProvider,
                 'itemView'      => 'BaseEmailTemplateItemForListView',
                 'itemsTagName'  => 'ul',
-                'itemsCssClass' => 'teste-class clearfix',
-                'pager'         => $this->getCGridViewPagerParams(),
+                'itemsCssClass' => 'template-list clearfix',
+                'pager'         => $this->getCGridViewPagerParams($dataProvider->getPagination()),
 //                'viewData'      => array(),  //TODO: @sergio: Pass paramas for the view, for examplete the ids of the use and preview classes
             ));
             $cClipWidget->endClip();
@@ -72,12 +72,13 @@
             return $content;
         }
 
-        protected function getCGridViewPagerParams()
+        protected function getCGridViewPagerParams($pagination)
         {
             $pagerParams = array(
-//                'prevPageLabel'    => '<span>previous</span>',
-                'nextPageLabel'    => '',
-                'class'            => 'EndlessListLinkPager',
+                'class'            => 'YiinfiniteScroller',
+                'itemSelector'     => 'ul.template-list > li',
+                'contentSelector'  => 'ul.template-list',
+                'pages'            => $pagination
             );
             return $pagerParams;
         }
