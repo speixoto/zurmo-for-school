@@ -243,9 +243,11 @@
             // Initial status is set to ReadPermissionsSubscriptionUtil::STATUS_STARTED
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_STARTED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            $this->assertFalse(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());
             ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            $this->assertTrue(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . $super->id;
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($permissionTableRows));
@@ -276,9 +278,11 @@
             // status need to be ReadPermissionsSubscriptionUtil::STATUS_COMPLETED
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            $this->assertTrue(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());
             ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            $this->assertTrue(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());
             $sql = "SELECT * FROM task_read_subscription WHERE userid = " . $super->id;
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));

@@ -453,5 +453,21 @@
                 return static::STATUS_STARTED;
             }
         }
+
+        /**
+         * Check if ReadPermissionSubscription
+         * @return bool
+         */
+        public static function isReadPermissionSubscriptionUpdateCompleted()
+        {
+            if (static::getReadPermissionUpdateStatus() == static::STATUS_COMPLETED)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 ?>
