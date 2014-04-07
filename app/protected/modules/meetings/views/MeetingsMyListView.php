@@ -108,5 +108,10 @@
         {
             return 'startDateTime';
         }
+
+        protected function resolveSortDescendingForDataProvider()
+        {
+            return true;
+        }
     }
 ?>
