@@ -39,6 +39,9 @@
         const TYPE_ADD    = 1;
         const TYPE_DELETE = 2;
 
+        const STATUS_STARTED    = 1;
+        const STATUS_COMPLETED = 2;
+
         /**
          * Rebuild read permission subscription table
          */
@@ -67,7 +70,8 @@
         protected static function getReadSubscriptionTableSchemaByName($tableName)
         {
             assert('is_string($tableName) && $tableName  != ""');
-            return array($tableName =>  array('columns' => array(
+            return array($tableName =>  array(
+                'columns' => array(
                 array(
                     'name' => 'userid',
                     'type' => 'INT(11)',
@@ -101,10 +105,12 @@
                     'default' => 'NULL', // Not Coding Standard
                 ),
             ),
-                'indexes' => array('userid_modelid' => array(
-                    'columns' => array('userid', 'modelid'),
-                    'unique' => true,
-                ),
+            'indexes' =>
+                array('userid_modelid' =>
+                    array(
+                        'columns' => array('userid', 'modelid'),
+                        'unique' => true,
+                    ),
                 ),
             )
             );
@@ -132,6 +138,7 @@
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
             $updateStartTimestamp = time();
+            static::setReadPermissionUpdateStatus(static::STATUS_STARTED);
 
             $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
                 'Starting read permission building for all users.'));
@@ -166,6 +173,7 @@
             }
             Yii::app()->user->userModel = $loggedUser;
             static::setTimeReadPermissionUpdateTimestamp($updateStartTimestamp);
+            static::setReadPermissionUpdateStatus(static::STATUS_COMPLETED);
         }
 
         /**
@@ -416,6 +424,50 @@
             $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
             $readSubscriptionUpdateDetails['lastReadPermissionUpdateTimestamp'] = $lastReadPermissionUpdateTimestamp;
             static::setReadSubscriptionUpdateDetails($readSubscriptionUpdateDetails);
+        }
+
+        /**
+         * Set status of ReadPermissionSubscription update(stored in configuration)
+         * @param int $status
+         */
+        public static function setReadPermissionUpdateStatus($status)
+        {
+            $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
+            $readSubscriptionUpdateDetails['status'] = $status;
+            static::setReadSubscriptionUpdateDetails($readSubscriptionUpdateDetails);
+        }
+
+        /**
+         * Get status of ReadPermissionSubscription update(stored in configuration)
+         * @return int
+         */
+        public static function getReadPermissionUpdateStatus()
+        {
+            $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
+            if (isset($readSubscriptionUpdateDetails['status']))
+            {
+                return $readSubscriptionUpdateDetails['status'];
+            }
+            else
+            {
+                return static::STATUS_STARTED;
+            }
+        }
+
+        /**
+         * Check if ReadPermissionSubscription
+         * @return bool
+         */
+        public static function isReadPermissionSubscriptionUpdateCompleted()
+        {
+            if (static::getReadPermissionUpdateStatus() == static::STATUS_COMPLETED)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

@@ -111,6 +111,10 @@
             $properties     = null;
             $content        = null;
             $canvasData     = reset($dom);
+            if (!is_array($canvasData))
+            {
+                return null;
+            }
             extract($canvasData);
             $id             = key($dom);
             $resolvedHtml   = BuilderElementRenderUtil::renderNonEditable($class, $renderForCanvas, false, $id, $properties, $content);
