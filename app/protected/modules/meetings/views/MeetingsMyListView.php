@@ -113,15 +113,5 @@
         {
             return true;
         }
-
-        /**
-         * Resolve configuration for data provider
-         * @return array
-         */
-        protected function resolveConfigForDataProvider()
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            return array('pagination' => array('pageSize' => $pageSize));
-        }
     }
 ?>
