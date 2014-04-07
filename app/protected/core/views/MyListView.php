@@ -115,6 +115,11 @@
             list($sortAttribute, $sortDescending)  =
                     SearchUtil::resolveSortFromStickyData($this->modelClassName, $this->uniqueLayoutId);
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
+            if ($sortAttribute === null)
+            {
+                $sortAttribute = $this->getSortAttributeForDataProvider();
+                $sortDescending = $this->resolveSortDescendingForDataProvider();
+            }
             $redBeanModelDataProvider = new RedBeanModelDataProvider($this->modelClassName, $sortAttribute, $sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(
@@ -132,6 +137,11 @@
         protected function getSortAttributeForDataProvider()
         {
             return null;
+        }
+
+        protected function resolveSortDescendingForDataProvider()
+        {
+            return false;
         }
 
         public function isUniqueToAPage()

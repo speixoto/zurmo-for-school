@@ -152,23 +152,9 @@
             return 'startDateTime';
         }
 
-        protected function makeDataProviderBySearchAttributeData($searchAttributeData)
+        protected function resolveSortDescendingForDataProvider()
         {
-            assert('is_array($searchAttributeData)');
-            $sortAttribute  = SearchUtil::resolveSortAttributeFromArray($this->modelClassName, GetUtil::getData());
-            $sortDescending = SearchUtil::resolveSortDescendingFromArray($this->modelClassName, GetUtil::getData());
-            $sortOrderVariableName  = $this->modelClassName. '_sort';
-            $sortOrderVariableValue = Yii::app()->getRequest()->getQuery($sortOrderVariableName, null);
-            if ($sortAttribute === null)
-            {
-                $sortAttribute = $this->getSortAttributeForDataProvider();
-            }
-            if ($sortOrderVariableValue === null)
-            {
-                $sortDescending = true;
-            }
-            return new RedBeanModelDataProvider($this->modelClassName, $sortAttribute, (bool)$sortDescending,
-                                                $searchAttributeData, $this->resolveConfigForDataProvider());
+            return true;
         }
 
         /**
