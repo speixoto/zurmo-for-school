@@ -117,7 +117,7 @@
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
             if ($sortAttribute === null)
             {
-                $sortAttribute = $this->getSortAttributeForDataProvider();
+                $sortAttribute  = $this->getSortAttributeForDataProvider();
                 $sortDescending = $this->resolveSortDescendingForDataProvider();
             }
             $redBeanModelDataProvider = new RedBeanModelDataProvider($this->modelClassName, $sortAttribute, $sortDescending,
