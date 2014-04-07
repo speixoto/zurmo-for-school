@@ -36,13 +36,11 @@
 
     class SelectBaseTemplateForEmailTemplateWizardView extends ComponentForEmailTemplateWizardView
     {
-        const PREDEFINED_TEMPLATES_DIV_ID                       = 'select-base-template-from-predefined-templates';
+        const CHOSEN_DIV_ID                                     = 'chosen-layout';
 
-        const PREDEFINED_TEMPLATES_ELEMENT_CLASS_NAME           = 'SelectBaseTemplateFromPredefinedTemplatesElement';
+        const TEMPLATES_DIV_ID                                  = 'templates';
 
-        const PREVIOUSLY_CREATED_TEMPLATES_DIV_ID               = 'select-base-template-from-previously-created-templates';
-
-        const PREVIOUSLY_CREATED_TEMPLATES_ELEMENT_CLASS_NAME   = 'SelectBaseTemplateFromPreviouslyCreatedTemplatesElement';
+        const CLOSE_LINK_CLASS_NAME                             = 'closeme';
 
         const BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME         = 'baseTemplateId';
 
@@ -51,7 +49,7 @@
          */
         public static function getWizardStepTitle()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Layout');
+            return null;
         }
 
         /**
@@ -83,26 +81,109 @@
             $leftSideContent           =  null;
             $hiddenElements            = null;
             $this->renderSerializedDataHiddenFields($hiddenElements);
-            $leftSideContent = $this->renderSelectBaseTemplateForm();
+            $leftSideContent  = $this->renderSelectedLayout();
+            $leftSideContent .= $this->renderSelectBaseTemplateForm();
             $this->renderHiddenElements($hiddenElements, $leftSideContent);
             $content         = $leftSideContent;
             return $content;
+        }
+
+        protected function renderActionBar()
+        {
+            $content = '
+					<div class="pills">
+						<a href="#" class="active">Layouts</a>
+						<a href="#" class="saved-templates">Saved Templates</a>
+					</div>
+			';
+            $content .= $this->renderCloseSelectTemplatesButton();
+            $this->wrapContentInDiv($content, array('class' => 'mini-pillbox'));
+            return $content;
+        }
+
+        protected function renderCloseSelectTemplatesButton()
+        {
+            $linkText  = ZurmoHtml::icon('icon-x');
+            $linkText .= Zurmo::t('EmailTemplatesModule', 'close');
+            return ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . static::CLOSE_LINK_CLASS_NAME));
+        }
+
+        protected function renderSelectedLayout()
+        {
+            $textForLink = ZurmoHtml::tag('span', array('class' => 'z-label'),
+                                          Zurmo::t('EmailTemplatesModule', 'Or select a different one'));
+            $content  = $this->resolveThumbnail();
+            $content .= ZurmoHtml::tag('h3', array(), $this->model->name);
+            $content .= ZurmoHtml::tag('p', array(), $this->model->subject);
+            $content .= ZurmoHtml::link($textForLink, '#', array('id' => 'chooser-overlay', 'class' => 'secondary-button'));
+            $this->wrapContentInDiv($content, $this->getHtmlOptionsForSelectedLayoutDiv());
+            return $content;
+        }
+
+        protected function getHtmlOptionsForSelectedLayoutDiv()
+        {
+            $style = 'display: none;';
+            if ($this->getBaseTemplateId() != null)
+            {
+                $style = 'display: block;';
+            }
+            return array(
+                'id'    => static::CHOSEN_DIV_ID,
+                'class' => 'clearfix',
+                'style' => $style,
+            );
+        }
+
+        protected function resolveThumbnail()
+        {
+            $unserializedData   = CJSON::decode($this->model->serializedData);
+            $icon               = ArrayUtil::getArrayValue($unserializedData, 'icon');
+            if (!empty($icon))
+            {
+                return ZurmoHtml::icon($icon);
+            }
+            else
+            {
+                return ZurmoHtml::icon('icon-user-template');
+            }
         }
 
         protected function renderSelectBaseTemplateForm()
         {
             $element = new SelectBaseTemplateElement($this->model, 'baseTemplateId', $this->form);
             $element->editableTemplate = '{content}{error}';
-            return $element->render();
+            $content  = $this->renderActionBar();
+            $content .= $element->render();
+            $this->wrapContentInDiv($content, $this->getHtmlOptionsForSelectBaseTemplatesDiv());
+            return $content;
+        }
+
+        protected function getHtmlOptionsForSelectBaseTemplatesDiv()
+        {
+            $style = 'display: block;';
+            if ($this->getBaseTemplateId() != null)
+            {
+                $style = 'display: none;';
+            }
+            return array(
+                'id'    => static::TEMPLATES_DIV_ID,
+                'style' => $style,
+            );
         }
 
         protected function renderSerializedDataHiddenFields(& $hiddenElements)
         {
-            $unserializedData   = CJSON::decode($this->model->serializedData);
-            $baseTemplateId     = (isset($unserializedData['baseTemplateId']))? $unserializedData['baseTemplateId'] : null;
+            $baseTemplateId = $this->getBaseTemplateId();
             $this->renderHiddenField($hiddenElements, 'serializedData[baseTemplateId]', $baseTemplateId);
             $this->renderHiddenField($hiddenElements, 'originalBaseTemplateId', $baseTemplateId);
             $this->renderHiddenField($hiddenElements, BuilderCanvasWizardView::CACHED_SERIALIZED_DATA_ATTRIBUTE_NAME . '[dom]', null);
+        }
+
+        protected function getBaseTemplateId()
+        {
+            $unserializedData   = CJSON::decode($this->model->serializedData);
+            $baseTemplateId     = (isset($unserializedData['baseTemplateId']))? $unserializedData['baseTemplateId'] : null;
+            return $baseTemplateId;
         }
 
         protected function registerScripts()
@@ -115,6 +196,8 @@
             $this->registerResetBaseTemplateIdScript();
             $this->registerResetOriginalBaseTemplateIdScript();
             $this->registerResetSerializedDomDataScript();
+            $this->registerChooserButtonClickScript();
+            $this->registerChooserCloseButtonClickScript();
         }
 
         protected function registerResetBaseTemplateIdScript()
@@ -250,6 +333,31 @@
                     }
                 }", CClientScript::POS_HEAD);
             // End Not Coding Standard
+        }
+
+        protected function registerChooserButtonClickScript()
+        {
+            Yii::app()->clientScript->registerScript('chooserButtonClickScript', "
+                $('#chooser-overlay').off('click');
+                $('#chooser-overlay').on('click', function (event) {
+                    $('#" . static::CHOSEN_DIV_ID . "').hide();
+                    $('#" . static::TEMPLATES_DIV_ID . "').show();
+                    $('#BuilderEmailTemplateWizardView .float-bar').hide();
+                    event.preventDefault();
+                });
+            ");
+        }
+
+        protected function registerChooserCloseButtonClickScript()
+        {
+            Yii::app()->clientScript->registerScript('chooserCloseButtonClickScript', "
+                $('." . static::CLOSE_LINK_CLASS_NAME . "').click(function(){
+                    $('#" . static::CHOSEN_DIV_ID . "').show();
+                    $('#BuilderEmailTemplateWizardView .float-bar').show();
+                    $('#" . static::TEMPLATES_DIV_ID . "').hide();
+                    event.preventDefault();
+                });
+            ");
         }
 
         protected function resolveBaseTemplateIdInputIdWithoutSerializedData()

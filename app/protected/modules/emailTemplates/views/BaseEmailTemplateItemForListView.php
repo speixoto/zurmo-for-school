@@ -74,7 +74,7 @@
         {
             $icon = $this->resolveThumbnail();
             $name = ZurmoHtml::tag('h4', array('class' => 'name'), $this->model->name);
-            return $icon . $name;
+            return '<label>' . $icon . $name . '</label>';
         }
 
         protected function renderPreviewLink()

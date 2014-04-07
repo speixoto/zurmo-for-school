@@ -64,6 +64,7 @@
                 'itemsTagName'  => 'ul',
                 'itemsCssClass' => 'template-list clearfix',
                 'pager'         => $this->getCGridViewPagerParams($dataProvider->getPagination()),
+                'htmlOptions'   => array('class' => 'templates-chooser-list clearfix'),
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['ListView'];
@@ -121,6 +122,9 @@
                     $('#{$this->getEditableInputId()}').val(currentSelectedValue);
                     updateBaseTemplateIdHiddenInputValue(currentSelectedValue);
                     $('#{$nextPageLinkId}').click();
+                    $('#BuilderEmailTemplateWizardView .float-bar').show();
+                    $('#" . SelectBaseTemplateForEmailTemplateWizardView::CHOSEN_DIV_ID . "').show();
+                    $('#" . SelectBaseTemplateForEmailTemplateWizardView::TEMPLATES_DIV_ID . "').hide();
                     event.preventDefault();
                     return true;
                 });
