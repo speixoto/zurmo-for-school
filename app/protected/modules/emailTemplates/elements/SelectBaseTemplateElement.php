@@ -64,7 +64,6 @@
                 'itemsTagName'  => 'ul',
                 'itemsCssClass' => 'template-list clearfix',
                 'pager'         => $this->getCGridViewPagerParams($dataProvider->getPagination()),
-//                'viewData'      => array(),  //TODO: @sergio: Pass paramas for the view, for examplete the ids of the use and preview classes
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['ListView'];
@@ -137,11 +136,11 @@
             $ajaxOptions['url']           = "js:(function(){
                                                 return '{$url}' + templateId;
                                              })()";
-            $ajaxOptions['beforeSend']    = 'js:function(){
-                                                //TODO: @sergio: Add
-                                             }';
-            $ajaxOptions['success']       = 'js:function (html){
-                                             }';
+            $ajaxOptions['success']       = "js:function (html){
+                                                $('#" . BuilderCanvasWizardView::PREVIEW_IFRAME_ID . "').contents().find('html').html(html);
+                                                $('#" . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID . "').show();
+                                                $('body').addClass('previewing-builder');
+                                             }";
             $ajax                         = ZurmoHtml::ajax($ajaxOptions);
 
             $script = "

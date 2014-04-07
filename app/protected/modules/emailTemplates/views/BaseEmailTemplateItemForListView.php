@@ -40,17 +40,25 @@
      */
     class BaseEmailTemplateItemForListView extends ItemForListView
     {
-        const PREDEFINED_TEMPLATES_DIV_ID                       = 'select-base-template-from-predefined-templates';
+        const USE_LINK_CLASS_NAME   = 'use-template';
 
-        const PREDEFINED_TEMPLATES_ELEMENT_CLASS_NAME           = 'SelectBaseTemplateFromPredefinedTemplatesElement';
+        const PREVIEW_LINK_CLASS_NAME   = 'preview-template';
 
-        const PREVIOUSLY_CREATED_TEMPLATES_DIV_ID               = 'select-base-template-from-previously-created-templates';
+        protected $useClass = self::USE_LINK_CLASS_NAME;
 
-        const PREVIOUSLY_CREATED_TEMPLATES_ELEMENT_CLASS_NAME   = 'SelectBaseTemplateFromPreviouslyCreatedTemplatesElement';
+        protected $previewClass = self::PREVIEW_LINK_CLASS_NAME;
 
-        public function __construct($index, EmailTemplate $model, $widget)
+        public function __construct($data)
         {
-            parent::__construct($index, $model, $widget);
+            parent::__construct($data);
+            if (isset($data['useClass']))
+            {
+                $this->useClass = $data['useClass'];
+            }
+            if (isset($data['previewClass']))
+            {
+                $this->previewClass = $data['previewClass'];
+            }
         }
 
         public function renderItem()
@@ -80,7 +88,7 @@
         protected function htmlOptionsForPreviewLink()
         {
             return array(
-                'class' => 'secondary-button preview-template',
+                'class' => 'secondary-button ' . $this->previewClass,
             );
         }
 
@@ -95,7 +103,7 @@
         protected function htmlOptionsForUseLink()
         {
             return array(
-                'class' => 'z-button use-template',
+                'class' => 'z-button ' . $this->useClass,
             );
 
         }

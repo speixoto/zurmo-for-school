@@ -80,8 +80,8 @@
          */
         protected function renderFormContent()
         {
-            $leftSideContent =  null;
-            $hiddenElements  = null;
+            $leftSideContent           =  null;
+            $hiddenElements            = null;
             $this->renderSerializedDataHiddenFields($hiddenElements);
             $leftSideContent = $this->renderSelectBaseTemplateForm();
             $this->renderHiddenElements($hiddenElements, $leftSideContent);

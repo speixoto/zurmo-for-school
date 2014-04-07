@@ -66,7 +66,7 @@
         protected function renderItem($data)
         {
             $itemViewClassName = $this->itemView;
-            $itemForListView   = new $itemViewClassName($data['index'], $data['data'], $data['widget']);
+            $itemForListView   = new $itemViewClassName($data);
             $item = $itemForListView->renderItem();
             echo $item;
         }

@@ -54,11 +54,11 @@
 
         protected $widget;
 
-        public function __construct($index, $model, $widget)
+        public function __construct($data)
         {
-            $this->rowIndex = $index;
-            $this->model    = $model;
-            $this->widget   = $widget;
+            $this->rowIndex = $data['index'];
+            $this->model    = $data['data'];
+            $this->widget   = $data['widget'];
         }
 
         abstract public function renderItem();
