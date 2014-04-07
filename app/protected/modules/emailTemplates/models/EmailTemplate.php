@@ -400,5 +400,18 @@
                 $this->htmlContent  = EmailTemplateSerializedDataToHtmlUtil::resolveHtmlBySerializedData($this->serializedData, false);
             }
         }
+
+        public function validate(array $attributeNames = null, $ignoreRequiredValidator = false, $validateAll = false)
+        {
+            if ($validateAll == false)
+            {
+                $metadata               = static::getMetadata();
+                $excludedMembers        = array('textContent', 'htmlContent');
+                $members                = $metadata['EmailTemplate']['members'];
+                // ignore content fields, we validate them inside the wizard form anyway.
+                $attributeNames         = array_diff($members, $excludedMembers);
+            }
+            return parent::validate($attributeNames, $ignoreRequiredValidator);
+        }
     }
 ?>

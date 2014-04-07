@@ -218,9 +218,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                             resolveByPostDataAndModelThenMake($postData[get_class($model)],
                                                                                                 $emailTemplate);
-            // we have false here to avoid any issues with EmailTemplateAtLeastOneContentAreaRequiredValidator
-            // throwing errors for content being empty. Plus we already validate it using the wizard form.
-            if ($emailTemplate->save(false))
+            if ($emailTemplate->save())
             {
                 if ($unmuteScoring)
                 {
@@ -462,11 +460,18 @@
         protected function resolveEmailTemplateByPostData(array $postData, & $emailTemplate, $builtType)
         {
             $formName   = EmailTemplateToWizardFormAdapter::getFormClassNameByBuiltType($builtType);
-            $id         = $postData[$formName][GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
+            $formData   = ArrayUtil::getArrayValue($postData, $formName);
+            if (!is_array($formData))
+            {
+                Yii::app()->end(0, false);
+            }
+            $id         = intval(ArrayUtil::getArrayValue($formData, GeneralDataForEmailTemplateWizardView::HIDDEN_ID));
             if ($id <= 0)
             {
                 $this->resolveCanCurrentUserAccessEmailTemplates();
                 $emailTemplate               = new EmailTemplate();
+                // this is just here for: testSaveInvalidDataWithoutValidationScenario()
+                $emailTemplate->builtType    = $builtType;
             }
             else
             {
