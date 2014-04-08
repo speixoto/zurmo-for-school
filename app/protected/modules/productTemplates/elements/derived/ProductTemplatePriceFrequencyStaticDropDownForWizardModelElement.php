@@ -34,27 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Workflow rules to be used with the Products module.
-     */
-    class ProductsWorkflowRules extends SecuredWorkflowRules
+    class ProductTemplatePriceFrequencyStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function getDropDownArray()
         {
-            $metadata = array(
-                'Product' => array(
-                    'availableOperatorsTypes' =>
-                        array('type'           => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
-                              'priceFrequency' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'triggerValueElementTypes' =>
-                        array('type'           => 'ProductTemplateTypeStaticDropDownForWizardModel',
-                              'priceFrequency' => 'ProductTemplatePriceFrequencyStaticDropDownForWizardModel'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return ProductTemplateElementUtil::getProductTemplatePriceFrequencyDropdownArray();
         }
     }
 ?>
