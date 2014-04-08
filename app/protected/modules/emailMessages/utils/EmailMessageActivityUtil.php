@@ -281,10 +281,13 @@
 
         protected static function resolveTrackingUrlForLink($link)
         {
-            $queryStringArray = static::$baseQueryStringArray;
-            $queryStringArray['url'] = StringUtil::addSchemeIfMissing($link);
-            $hash = static::resolveHashForQueryStringArray($queryStringArray);
-            $link = static::resolveAbsoluteTrackingUrlByHash($hash);
+            if (!static::isMarketingExternalUrl($link))
+            {
+                $queryStringArray = static::$baseQueryStringArray;
+                $queryStringArray['url'] = StringUtil::addSchemeIfMissing($link);
+                $hash = static::resolveHashForQueryStringArray($queryStringArray);
+                $link = static::resolveAbsoluteTrackingUrlByHash($hash);
+            }
             return $link;
         }
 
@@ -516,12 +519,22 @@ PTN;
 
         protected static function resolveUnsubscribeBaseUrl()
         {
-            return '/marketingLists/external/unsubscribe';
+            return static::resolveMarketingExternalControllerUrl(). '/unsubscribe';
         }
 
         protected static function resolveManageSubscriptionsBaseUrl()
         {
-            return '/marketingLists/external/manageSubscriptions';
+            return static::resolveMarketingExternalControllerUrl() . '/manageSubscriptions';
+        }
+
+        protected static function resolveMarketingExternalControllerUrl()
+        {
+            return '/marketingLists/external';
+        }
+
+        protected static function isMarketingExternalUrl($url)
+        {
+            return (strpos($url, static::resolveMarketingExternalControllerUrl()) !== false);
         }
 
         protected static function validateAndResolveFullyQualifiedQueryStringArrayForTracking(& $queryStringArray)
