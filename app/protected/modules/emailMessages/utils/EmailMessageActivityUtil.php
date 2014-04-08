@@ -441,19 +441,27 @@ PTN;
 
         protected static function resolveUnsubscribeUrlForHtmlContent(& $unsubscribeUrl, $isHtmlContent)
         {
+            $unsubscribeTranslated          = Zurmo::t('Core', 'Unsubscribe');
             if ($isHtmlContent)
             {
-                $unsubscribeTranslated          = Zurmo::t('Core', 'Unsubscribe');
                 $unsubscribeUrl = ZurmoHtml::link($unsubscribeTranslated, $unsubscribeUrl);
+            }
+            else
+            {
+                $unsubscribeUrl = $unsubscribeTranslated . ': ' . $unsubscribeUrl;
             }
         }
 
         protected static function resolveManageSubscriptionsUrlForHtmlContent(& $manageSubscriptionsUrl, $isHtmlContent)
         {
+            $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
             if ($isHtmlContent)
             {
-                $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
                 $manageSubscriptionsUrl = ZurmoHtml::link($manageSubscriptionsTranslated, $manageSubscriptionsUrl);
+            }
+            else
+            {
+                $manageSubscriptionsUrl = $manageSubscriptionsTranslated . ': ' . $manageSubscriptionsUrl;
             }
         }
 
