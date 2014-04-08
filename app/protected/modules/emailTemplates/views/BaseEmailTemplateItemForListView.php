@@ -64,10 +64,30 @@
         public function renderItem()
         {
             $content  = null;
+            $content .= $this->renderScreenOptions();
             $content .= $this->renderName();
             $content .= $this->renderUseLink();
             $content .= $this->renderPreviewLink();
             return ZurmoHtml::tag('li', array('class' => 'base-template-selection', 'data-value' => $this->model->id), $content);
+        }
+
+        protected function renderScreenOptions()
+        {
+            if ($this->model->modelClassName != '')
+            {
+                $linkText       = ZurmoHtml::icon('icon-details') . '<span class="button-label"></span>' . ZurmoHtml::icon('icon-trigger');
+                $link           = ZurmoHtml::link($linkText, '', array('class' => 'button-action-trigger'));
+                $detailsContent = ItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent($this->model);
+                $description    = ZurmoHtml::tag('h4', array(), $this->model->name);
+                $description   .= ZurmoHtml::tag('p', array(), $this->model->subject);
+                $description   .= $detailsContent;
+                $description    = ZurmoHtml::tag('div', array('class' => 'screen-options'), $description);
+                $description    = ZurmoHtml::tag('li', array(), $description);
+                $description    = ZurmoHtml::tag('ul', array('class' => 'button-actions'), $description);
+                $content        = $link . $description;
+                $content        = ZurmoHtml::tag('div', array('class' => 'default-button template-info'), $content);
+                return $content;
+            }
         }
 
         protected function renderName()

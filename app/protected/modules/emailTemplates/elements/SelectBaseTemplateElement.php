@@ -36,29 +36,19 @@
 
     class SelectBaseTemplateElement extends Element
     {
+        const FILTER_BY_PREDEFINED_TEMPLATES = 1;
+
+        const FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES = 2;
+
+        const CLOSE_LINK_CLASS_NAME = 'closeme';
+
         protected function renderControlEditable()
         {
-            $this->registerScripts();
-            //TODO: @sergio: Move this to a util maybe. We need pillbox to filter by builderType
-            $searchAttributeData = array();
-            $searchAttributeData['clauses'] = array(
-                1 => array(
-                    'attributeName'         => 'builtType',
-                    'operatorType'          => 'equals',
-                    'value'                 => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE,
-                ),
-                2 => array(
-                    'attributeName'         => 'modelClassName',
-                    'operatorType'          => 'isNull',
-                    'value'                 => null,
-                ),
-            );
-            $searchAttributeData['structure'] = '1 and 2';
-            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider(array(), 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
-
-            $cClipWidget = new CClipWidget();
+            $dataProvider = $this->getDataProviderByGet();
+            $cClipWidget  = new CClipWidget();
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget('application.core.widgets.ZurmoListView', array(
+                'id'            => $this->getListViewId(),
                 'dataProvider'  => $dataProvider,
                 'itemView'      => 'BaseEmailTemplateItemForListView',
                 'itemsTagName'  => 'ul',
@@ -67,18 +57,104 @@
                 'htmlOptions'   => array('class' => 'templates-chooser-list clearfix'),
             ));
             $cClipWidget->endClip();
-            $content  = $cClipWidget->getController()->clips['ListView'];
+            $content  = $this->renderActionBar();
+            $content .= $cClipWidget->getController()->clips['ListView'];
             $content .= $this->renderHiddenInput();
+            $this->registerScripts($cClipWidget->id);
             return $content;
+        }
+
+        protected function getDataProviderByGet()
+        {
+            //TODO: @sergio: Move this to a util maybe. We need pillbox to filter by builderType
+            //TODO: @sergio: Add the modelClassName search attribute
+            $searchAttributeData = array();
+            $filterBy = ArrayUtil::getArrayValue(GetUtil::getData(), 'filterBy');
+            if ($filterBy == static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES)
+            {
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'         => 'builtType',
+                        'operatorType'          => 'equals',
+                        'value'                 => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE,
+                    ));
+                $searchAttributeData['structure'] = '1';
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'         => 'isDraft',
+                    'operatorType'          => 'equals',
+                    'value'                 => 0,
+                );
+                $searchAttributeData['structure'] .= ' and 2';
+//                if (isset($modelClassName))
+//                {
+//                    $searchAttributeData['clauses'][3] = array(
+//                        'attributeName'        => 'modelClassName',
+//                        'operatorType'         => 'equals',
+//                        'value'                => $modelClassName,
+//                    );
+//                }
+//                else
+                {
+                    // if moduleClassName isn't give then at least exclude the pre-defined ones.
+                    $searchAttributeData['clauses'][3] = array(
+                        'attributeName'         => 'modelClassName',
+                        'operatorType'          => 'isNotNull',
+                        'value'                 => null,
+                    );
+                }
+                $searchAttributeData['structure'] .= ' and 3';
+            }
+            else
+            {
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'         => 'builtType',
+                        'operatorType'          => 'equals',
+                        'value'                 => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE,
+                    ),
+                    2 => array(
+                        'attributeName'         => 'modelClassName',
+                        'operatorType'          => 'isNull',
+                        'value'                 => null,
+                    ),
+                );
+                $searchAttributeData['structure'] = '1 and 2';
+            }
+            $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
+            return $dataProvider;
+        }
+
+        protected function renderActionBar()
+        {
+            $content = '
+					<div class="pills">
+						<a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
+						<a href="#" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
+					</div>
+			';
+            $content .= $this->renderCloseSelectTemplatesButton();
+            $content  = ZurmoHtml::tag('div', array('class' => 'mini-pillbox'), $content);
+            return $content;
+        }
+
+        protected function renderCloseSelectTemplatesButton()
+        {
+            $linkText  = ZurmoHtml::icon('icon-x');
+            $linkText .= Zurmo::t('EmailTemplatesModule', 'close');
+            return ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . static::CLOSE_LINK_CLASS_NAME));
         }
 
         protected function getCGridViewPagerParams($pagination)
         {
             $pagerParams = array(
-                'class'            => 'YiinfiniteScroller',
-                'itemSelector'     => 'ul.template-list > li',
-                'contentSelector'  => 'ul.template-list',
-                'pages'            => $pagination
+                'class'            => 'SimpleListLinkPager',
+                'firstPageLabel'   => '<span>first</span>',
+                'prevPageLabel'    => '<span>previous</span>',
+                'nextPageLabel'    => '<span>next</span>',
+                'lastPageLabel'    => '<span>last</span>',
+//                'itemSelector'     => 'ul.template-list > li',
+//                'contentSelector'  => 'ul.template-list',
+//                'pages'            => $pagination
             );
             return $pagerParams;
         }
@@ -96,10 +172,11 @@
             throw new NotSupportedException();
         }
 
-        protected function registerScripts()
+        protected function registerScripts($listViewId)
         {
             $script  = $this->renderOnClickUseLinkScript();
             $script .= $this->renderOnClickPreviewLinkScript();
+            $script .= $this->renderOnClickFilterLinksScript($listViewId);
             Yii::app()->getClientScript()->registerScript(__CLASS__, $script);
         }
 
@@ -134,7 +211,6 @@
 
         protected function renderOnClickPreviewLinkScript()
         {
-            $message                      = Zurmo::t('EmailTemplatesModule', 'There was an error generating preview');
             $url                          = Yii::app()->createUrl('emailTemplates/default/renderPreview', array('id' => null));
             $ajaxOptions['cache']         = 'false';
             $ajaxOptions['url']           = "js:(function(){
@@ -160,9 +236,27 @@
             return $script;
         }
 
-        protected function resolvePreviewAjaxOptions()
+        protected function renderOnClickFilterLinksScript()
         {
+            $script = "
+                $('body').off('click', '.filter-link');
+                $('body').on('click', '.filter-link', function (event) {
+                    $('.filter-link.active').removeClass('active');
+                    $(this).addClass('active');
+                    $.fn.yiiListView.update('{$this->getListViewId()}', {
+                         url: location.href.replace(/&?.*filterBy=([^&]$|[^&]*)/i, ''),
+                         data: {filterBy: $(this).data('filter')}
+                    });
+                    event.preventDefault();
+                    return true;
+                });
+            ";
+            return $script;
+        }
 
+        protected function getListViewId()
+        {
+            return $this->getEditableInputId() . '_list_view';
         }
     }
 ?>

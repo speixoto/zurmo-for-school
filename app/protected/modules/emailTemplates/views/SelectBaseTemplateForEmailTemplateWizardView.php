@@ -40,8 +40,6 @@
 
         const TEMPLATES_DIV_ID                                  = 'templates';
 
-        const CLOSE_LINK_CLASS_NAME                             = 'closeme';
-
         const BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME         = 'baseTemplateId';
 
         /**
@@ -88,26 +86,6 @@
             return $content;
         }
 
-        protected function renderActionBar()
-        {
-            $content = '
-					<div class="pills">
-						<a href="#" class="active">Layouts</a>
-						<a href="#" class="saved-templates">Saved Templates</a>
-					</div>
-			';
-            $content .= $this->renderCloseSelectTemplatesButton();
-            $this->wrapContentInDiv($content, array('class' => 'mini-pillbox'));
-            return $content;
-        }
-
-        protected function renderCloseSelectTemplatesButton()
-        {
-            $linkText  = ZurmoHtml::icon('icon-x');
-            $linkText .= Zurmo::t('EmailTemplatesModule', 'close');
-            return ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . static::CLOSE_LINK_CLASS_NAME));
-        }
-
         protected function renderSelectedLayout()
         {
             $textForLink = ZurmoHtml::tag('span', array('class' => 'z-label'),
@@ -152,8 +130,7 @@
         {
             $element = new SelectBaseTemplateElement($this->model, 'baseTemplateId', $this->form);
             $element->editableTemplate = '{content}{error}';
-            $content  = $this->renderActionBar();
-            $content .= $element->render();
+            $content = $element->render();
             $this->wrapContentInDiv($content, $this->getHtmlOptionsForSelectBaseTemplatesDiv());
             return $content;
         }
@@ -351,7 +328,7 @@
         protected function registerChooserCloseButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('chooserCloseButtonClickScript', "
-                $('." . static::CLOSE_LINK_CLASS_NAME . "').click(function(){
+                $('." . SelectBaseTemplateElement::CLOSE_LINK_CLASS_NAME . "').click(function(){
                     $('#" . static::CHOSEN_DIV_ID . "').show();
                     $('#BuilderEmailTemplateWizardView .float-bar').show();
                     $('#" . static::TEMPLATES_DIV_ID . "').hide();
