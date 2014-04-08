@@ -43,28 +43,11 @@
 
         protected static $baseQueryStringArray;
 
-        /**
-         * @param bool $tracking
-         * @param string $content
-         * @param int $modelId
-         * @param $modelType
-         * @param int $personId
-         * @param int $marketingListId
-         * @param bool $isHtmlContent
-         * @return bool
-         */
-        public static function resolveContentForTrackingAndFooter($tracking, & $content, $modelId, $modelType, $personId,
-                                                                            $marketingListId, $isHtmlContent = false)
+        public static function resolveContentGlobalFooter(& $content, $personId, $marketingListId, $modelId,
+                                                                                         $modelType, $isHtmlContent)
         {
-            assert('is_int($modelId)');
-            assert('is_int($marketingListId)');
-            $trackingAdded = static::resolveContentForTracking($tracking, $content, $modelId, $modelType,
-                                                                                            $personId, $isHtmlContent);
-            if (!$trackingAdded)
-            {
-                return false;
-            }
-            static::resolveContentForUnsubscribeAndManageSubscriptionsUrls($content, $personId, $marketingListId, $modelId, $modelType, $isHtmlContent);
+            static::resolveContentForUnsubscribeAndManageSubscriptionsUrls($content, $personId, $marketingListId,
+                                                                            $modelId, $modelType, $isHtmlContent);
             return true;
         }
 
@@ -115,9 +98,10 @@
             return static::processActivityFromQueryStringArray($queryStringArray);
         }
 
-        protected static function resolveContentForTracking($tracking, & $content, $modelId, $modelType, $personId,
+        public static function resolveContentForTracking($tracking, & $content, $modelId, $modelType, $personId,
                                                                                                         $isHtmlContent)
         {
+            assert('is_int($modelId)');
             if (!$tracking)
             {
                 return true;
@@ -142,7 +126,9 @@
             $trackingType = static::resolveTrackingTypeByQueryStringArray($queryStringArray);
             if ($trackingType === EmailMessageActivity::TYPE_CLICK)
             {
-                return array('redirect' => true, 'url' => $queryStringArray['url']);
+                // this shouldn't be here, its here to suppose no-scheme urls from previous versions' database
+                $url    = StringUtil::addSchemeIfMissing($queryStringArray['url']);
+                return array('redirect' => true, 'url' => $url);
             }
             else
             {
@@ -244,7 +230,7 @@
             }
             else
             {
-                $callBack = 'static::resolveTrackingUrlForMatchedHrefLinkArray';
+                $callBack = 'static::resolveTrackingUrlForMatchedPlainLinkArray';
             }
             $content = preg_replace_callback($spacePrefixedAndSuffixedLinkRegex,
                                              $callBack,
@@ -296,7 +282,7 @@
         protected static function resolveTrackingUrlForLink($link)
         {
             $queryStringArray = static::$baseQueryStringArray;
-            $queryStringArray['url'] = $link;
+            $queryStringArray['url'] = StringUtil::addSchemeIfMissing($link);
             $hash = static::resolveHashForQueryStringArray($queryStringArray);
             $link = static::resolveAbsoluteTrackingUrlByHash($hash);
             return $link;
@@ -382,16 +368,27 @@ PTN;
                                                                                          $marketingListId, $modelId,
                                                                                          $modelType, $isHtmlContent)
         {
-            $unsubscribePlaceholder         = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            $replaceExisting    = false;
-            if (strpos($content, $unsubscribePlaceholder) !== false ||
-                strpos($content, $manageSubscriptionsPlaceholder) !== false)
-            {
-                $replaceExisting = true;
-            }
+            $replaceExisting = static::isFooterAlreadyPresent($content);
             static::resolveUnsubscribeAndManageSubscriptionPlaceholders($content, $personId, $marketingListId, $modelId,
                                                                     $modelType, $isHtmlContent, $replaceExisting, false);
+        }
+
+        protected static function isFooterAlreadyPresent($content)
+        {
+            $footerContent  = array(
+                GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER,
+                GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER,
+                //'GLOBAL' . MergeTagsUtil::CAPITAL_DELIMITER . 'MARKETING' . MergeTagsUtil::CAPITAL_DELIMITER . 'FOOTER'
+            );
+
+            foreach ($footerContent as $footer)
+            {
+                if (strpos($content, $footer) !== false)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /**
