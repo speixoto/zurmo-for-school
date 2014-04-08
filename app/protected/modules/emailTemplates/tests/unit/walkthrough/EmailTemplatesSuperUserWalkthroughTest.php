@@ -1455,18 +1455,18 @@
             $this->assertTrue(strpos($content, '<div class="email-template-combined-content right-column">') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-content">') !== false);
             $this->assertTrue(strpos($content, '<div class="tabs-nav">') !== false);
-            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a id="MergeTagGuideAjaxLinkActionElement-') !== false);
             $this->assertTrue(strpos($content, '" class="simple-link" href="#">MergeTag Guide</a>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-' .
+            $this->assertTrue(strpos($content, '<div id="tab1" class=" tab email-template-' .
                                                 'textContent">') !== false);
             $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_textContent">' .
                                                 'Text Content</label>') !== false);
             $this->assertTrue(strpos($content, '<textarea id="ClassicEmailTemplateWizardForm_textContent" ' .
                                                 'name="ClassicEmailTemplateWizardForm[textContent]"' .
                                                 ' rows="6" cols="50"></textarea>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab2" class=" tab email-template-htmlContent">') !== false);
+            $this->assertTrue(strpos($content, '<div id="tab2" class="active-tab tab email-template-htmlContent">') !== false);
             $this->assertTrue(strpos($content, '<label for="ClassicEmailTemplateWizardForm_htmlContent">Html Content' .
                                                 '</label><textarea id="ClassicEmailTemplateWizardForm_htmlContent" name' .
                                                 '="ClassicEmailTemplateWizardForm[htmlContent]"></textarea>') !== false);
@@ -2075,10 +2075,10 @@
             $this->assertTrue(strpos($content, '<div class="email-template-combined-content right-column">') !== false);
             $this->assertTrue(strpos($content, '<div class="email-template-content">') !== false);
             $this->assertTrue(strpos($content, '<div class="tabs-nav">') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
             $this->assertTrue(strpos($content, '<a id="MergeTagGuideAjaxLinkActionElement-') !== false);
             $this->assertTrue(strpos($content, '" class="simple-link" href="#">MergeTag Guide</a>') !== false);
-            $this->assertTrue(strpos($content, '<div id="tab1" class=" tab email-template-' .
+            $this->assertTrue(strpos($content, '<div id="tab1" class="active-tab tab email-template-' .
                                                 'textContent">') !== false);
             $this->assertTrue(strpos($content, '<label for="BuilderEmailTemplateWizardForm_textContent">' .
                                                 'Text Content</label>') !== false);

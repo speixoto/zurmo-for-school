@@ -179,7 +179,7 @@
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == null');
-            $textContent    = $this->model->textContent;
+            $textContent    = nl2br(Yii::app()->format->text($this->model->textContent));
             $activeTab      = $this->getActiveTab();
             $htmlContent    = $this->renderNonEditableHtmlContentArea();
             $content        = $this->resolveTabbedContent($textContent, $htmlContent, $activeTab);
