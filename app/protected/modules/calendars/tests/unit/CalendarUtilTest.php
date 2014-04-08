@@ -41,6 +41,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             ProductTestHelper::createProductByNameForOwner('First Product', User::getByUsername('super'));
+            sleep(10);
             ProductTestHelper::createProductByNameForOwner('Second Product', User::getByUsername('super'));
         }
 
