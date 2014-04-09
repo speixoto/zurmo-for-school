@@ -140,12 +140,12 @@
         protected static function resolveContentForGlobalFooter(& $textContent, & $htmlContent, $modelId, $modelType,
                                                                 $personId, $marketingListId, $activityUtil)
         {
-            if ($textContent != null)
+            if (!empty($textContent))
             {
                 $activityUtil::resolveContentGlobalFooter($textContent, $personId, $marketingListId, $modelId,
                                                             $modelType, false);
             }
-            if ($htmlContent != null)
+            if (!empty($htmlContent))
             {
                 $activityUtil::resolveContentGlobalFooter($htmlContent, $personId, $marketingListId, $modelId,
                                                             $modelType, true);
@@ -155,14 +155,14 @@
         protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
                                                             $modelType, $personId, $activityUtil)
         {
-            if ($textContent != null)
+            if (!empty($textContent))
             {
                 $activityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
                                                             $personId, false);
             }
-            if ($htmlContent != null)
+            if (!empty($htmlContent))
             {
-                $activityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
+                $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
                                                             $personId, true);
             }
         }
