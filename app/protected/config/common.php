@@ -390,7 +390,6 @@
             'application.extensions.wideImage.WideImage',
             'application.extensions.phaActiveColumn.*',
             'application.extensions.userinterface.UserInterface',
-            'application.extensions.yiinfinite-scroll.YiinfiniteScroller',
         ),
         'modules' => array(
             'accountAccountAffiliations',

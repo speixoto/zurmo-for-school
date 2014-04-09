@@ -42,19 +42,23 @@
 
         const CLOSE_LINK_CLASS_NAME = 'closeme';
 
+        const MODEL_CLASS_NAME_ATTRIBUTE = 'modelClassName';
+
         protected function renderControlEditable()
         {
             $dataProvider = $this->getDataProviderByGet();
             $cClipWidget  = new CClipWidget();
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget('application.core.widgets.ZurmoListView', array(
-                'id'            => $this->getListViewId(),
-                'dataProvider'  => $dataProvider,
-                'itemView'      => 'BaseEmailTemplateItemForListView',
-                'itemsTagName'  => 'ul',
-                'itemsCssClass' => 'template-list clearfix',
-                'pager'         => $this->getCGridViewPagerParams($dataProvider->getPagination()),
-                'htmlOptions'   => array('class' => 'templates-chooser-list clearfix'),
+                'id'                => $this->getListViewId(),
+                'dataProvider'      => $dataProvider,
+                'itemView'          => 'BaseEmailTemplateItemForListView',
+                'itemsTagName'      => 'ul',
+                'itemsCssClass'     => 'template-list clearfix',
+                'pager'             => $this->getCGridViewPagerParams(),
+                'htmlOptions'       => array('class' => 'templates-chooser-list clearfix'),
+                'beforeAjaxUpdate'  => $this->getCGridViewBeforeAjaxUpdate(),
+                'afterAjaxUpdate'   => $this->getCGridViewAfterAjaxUpdate(),
             ));
             $cClipWidget->endClip();
             $content  = $this->renderActionBar();
@@ -64,61 +68,34 @@
             return $content;
         }
 
+        protected function getCGridViewBeforeAjaxUpdate()
+        {
+            return "js:function(id, options) {
+                        cacheListItems = $('ul.template-list').html()
+            }";
+        }
+
+        protected function getCGridViewAfterAjaxUpdate()
+        {
+            // Begin Not Coding Standard
+            return "js:function(id, data) {
+                        var html = $('ul.template-list').html();
+                        $('ul.template-list').html(cacheListItems + html);
+            }";
+            // End Not Coding Standard
+        }
+
         protected function getDataProviderByGet()
         {
-            //TODO: @sergio: Move this to a util maybe. We need pillbox to filter by builderType
-            //TODO: @sergio: Add the modelClassName search attribute
-            $searchAttributeData = array();
+            $modelClassName = $this->resolveModelClassName();
             $filterBy = ArrayUtil::getArrayValue(GetUtil::getData(), 'filterBy');
             if ($filterBy == static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES)
             {
-                $searchAttributeData['clauses'] = array(
-                    1 => array(
-                        'attributeName'         => 'builtType',
-                        'operatorType'          => 'equals',
-                        'value'                 => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE,
-                    ));
-                $searchAttributeData['structure'] = '1';
-                $searchAttributeData['clauses'][2] = array(
-                    'attributeName'         => 'isDraft',
-                    'operatorType'          => 'equals',
-                    'value'                 => 0,
-                );
-                $searchAttributeData['structure'] .= ' and 2';
-//                if (isset($modelClassName))
-//                {
-//                    $searchAttributeData['clauses'][3] = array(
-//                        'attributeName'        => 'modelClassName',
-//                        'operatorType'         => 'equals',
-//                        'value'                => $modelClassName,
-//                    );
-//                }
-//                else
-                {
-                    // if moduleClassName isn't give then at least exclude the pre-defined ones.
-                    $searchAttributeData['clauses'][3] = array(
-                        'attributeName'         => 'modelClassName',
-                        'operatorType'          => 'isNotNull',
-                        'value'                 => null,
-                    );
-                }
-                $searchAttributeData['structure'] .= ' and 3';
+                $searchAttributeData = EmailTemplate::getPreviouslyCreatedBuilderTemplateSearchAttributeData($modelClassName, false);
             }
             else
             {
-                $searchAttributeData['clauses'] = array(
-                    1 => array(
-                        'attributeName'         => 'builtType',
-                        'operatorType'          => 'equals',
-                        'value'                 => EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE,
-                    ),
-                    2 => array(
-                        'attributeName'         => 'modelClassName',
-                        'operatorType'          => 'isNull',
-                        'value'                 => null,
-                    ),
-                );
-                $searchAttributeData['structure'] = '1 and 2';
+                $searchAttributeData = EmailTemplate::getPredefinedBuilderTemplatesSearchAttributeData();
             }
             $dataProvider   = RedBeanModelDataProviderUtil::makeDataProvider($searchAttributeData, 'EmailTemplate', 'RedBeanModelDataProvider', null, false, 10);
             return $dataProvider;
@@ -126,6 +103,7 @@
 
         protected function renderActionBar()
         {
+            $modelClassName = $this->resolveModelClassName();
             $content = '
 					<div class="pills">
 						<a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
@@ -144,17 +122,11 @@
             return ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . static::CLOSE_LINK_CLASS_NAME));
         }
 
-        protected function getCGridViewPagerParams($pagination)
+        protected function getCGridViewPagerParams()
         {
             $pagerParams = array(
-                'class'            => 'SimpleListLinkPager',
-                'firstPageLabel'   => '<span>first</span>',
-                'prevPageLabel'    => '<span>previous</span>',
-                'nextPageLabel'    => '<span>next</span>',
-                'lastPageLabel'    => '<span>last</span>',
-//                'itemSelector'     => 'ul.template-list > li',
-//                'contentSelector'  => 'ul.template-list',
-//                'pages'            => $pagination
+                'class'            => 'BottomLinkPager',
+                'nextPageLabel'    => Zurmo::t('EmailTemplatesModule', 'Load More'),
             );
             return $pagerParams;
         }
@@ -243,9 +215,10 @@
                 $('body').on('click', '.filter-link', function (event) {
                     $('.filter-link.active').removeClass('active');
                     $(this).addClass('active');
+                    $('ul.template-list').html('');
                     $.fn.yiiListView.update('{$this->getListViewId()}', {
                          url: location.href.replace(/&?.*filterBy=([^&]$|[^&]*)/i, ''),
-                         data: {filterBy: $(this).data('filter')}
+                         data: {filterBy: $(this).data('filter'), modelClassName: $('#{$this->getModelClassNameId()}').val()}
                     });
                     event.preventDefault();
                     return true;
@@ -254,9 +227,29 @@
             return $script;
         }
 
+        protected function getModelClassNameId()
+        {
+            return $this->getEditableInputId(static::MODEL_CLASS_NAME_ATTRIBUTE, 'value');
+        }
+
         protected function getListViewId()
         {
             return $this->getEditableInputId() . '_list_view';
+        }
+
+        protected function resolveModelClassName()
+        {
+            $modelClassName = ArrayUtil::getArrayValue(GetUtil::getData(), 'modelClassName');
+            if (isset($modelClassName))
+            {
+                return $modelClassName;
+            }
+
+            if (isset($this->model->modelClassName))
+            {
+                return $this->model->modelClassName;
+            }
+            return 'Contact';
         }
     }
 ?>

@@ -271,7 +271,7 @@
                         resetBaseTemplateId();
                         resetOriginalBaseBaseTemplateId();
                         resetSerializedDomData();
-                        var params  = JSON.parse('{ \"modelClassName\" : \"' + $(this).val() + '\" }');
+                        $('#" . SelectBaseTemplateForEmailTemplateWizardView::TEMPLATES_DIV_ID . "').find('.pills').children(':first').click();
                     }
                 });
                 ");
