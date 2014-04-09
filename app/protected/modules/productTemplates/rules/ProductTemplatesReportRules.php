@@ -53,11 +53,13 @@
                     'nonReportable' =>
                         array('productTemplates', 'productTemplate'),
                     'availableOperatorsTypes' =>
-                        array('type'   => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
-                              'status' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                        array('type'           => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                              'status'         => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                              'priceFrequency' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'filterValueElementTypes' =>
-                        array('type'   => 'ProductTemplateTypeStaticDropDownForWizardModel',
-                              'status' => 'ProductTemplateStatusStaticDropDownForWizardModel'),
+                        array('type'           => 'ProductTemplateTypeStaticDropDownForWizardModel',
+                              'status'         => 'ProductTemplateStatusStaticDropDownForWizardModel',
+                              'priceFrequency' => 'ProductTemplatePriceFrequencyStaticDropDownForWizardModel'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);
