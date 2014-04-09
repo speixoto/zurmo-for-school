@@ -548,8 +548,8 @@
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 10',
-                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}}',
-                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}}',
+                                                                '{{UNSUBSCRIBE_URL}}',
+                                                                '{{UNSUBSCRIBE_URL}}',
                                                                 1,
                                                                 Autoresponder::OPERATION_SUBSCRIBE,
                                                                 true,
@@ -568,7 +568,7 @@
             $this->assertNotEquals($autoresponder->htmlContent, $htmlContent);
             $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
@@ -592,8 +592,8 @@
                                                                                                 'CustomFromName',
                                                                                                 'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 11',
-                                                                                'Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                'Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
                                                                                 1,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
                                                                                 true,
@@ -610,9 +610,9 @@
             $htmlContent                = $autoresponderItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($autoresponder->textContent, $textContent);
             $this->assertNotEquals($autoresponder->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Manage: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'Manage Subscriptions: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Manage: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
@@ -636,10 +636,10 @@
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 12',
-                                                                            'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                            'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                            '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
+                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                            '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
+                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
                                                                             1,
                                                                             Autoresponder::OPERATION_SUBSCRIBE,
                                                                             true,
@@ -658,15 +658,15 @@
             $this->assertNotEquals($autoresponder->htmlContent, $htmlContent);
             $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
-            $this->assertTrue(strpos($textContent, ', Manage: localhost') !== false);
+            $this->assertTrue(strpos($textContent, ', Manage Subscriptions: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, ', Manage: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, ', <a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
@@ -712,7 +712,8 @@
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($textContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'HTML<br /><img width="1" height="1" src="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'HTML<br /><br /><a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/tracking/default/track?id='));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe?hash=') !== false);

@@ -495,7 +495,7 @@
         }
 
         /**
-         * @//depends testRunWithMultipleRecipientsWithAttachments
+         * @depends testRunWithMultipleRecipientsWithAttachments
          */
         public function testRunWithSubscribedAndUnsubscribedMembers()
         {
