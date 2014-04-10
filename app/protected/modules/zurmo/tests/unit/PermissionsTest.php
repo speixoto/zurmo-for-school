@@ -36,6 +36,12 @@
 
     class PermissionsTest extends ZurmoBaseTest
     {
+        /**
+         * Some of these tests require that READ is processed as READ and never used for processing WRITE MUNGE
+         * @var
+         */
+        protected $processReadMungeAsWriteMungeValue;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -58,6 +64,14 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            $this->processReadMungeAsWriteMungeValue = Yii::app()->params['processReadMungeAsWriteMunge'];
+            Yii::app()->params['processReadMungeAsWriteMunge'] = false;
+        }
+
+        public function teardown()
+        {
+            parent::teardown();
+            Yii::app()->params['processReadMungeAsWriteMunge'] = $this->processReadMungeAsWriteMungeValue;
         }
 
         public function testStringify()

@@ -287,6 +287,7 @@
             $nobody = User::getByUsername('nobody');
             $note->addPermissions($nobody, Permission::READ_WRITE_DELETE);
             $this->assertTrue($note->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($note, $nobody);
             Yii::app()->user->userModel = User::getByUsername('nobody');
             $noteId = $note->id;
             $note->forget();
