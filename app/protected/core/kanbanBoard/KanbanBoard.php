@@ -204,11 +204,8 @@
             $this->selectedTheme = $selectedTheme;
             $user = Yii::app()->user->userModel;
             $modelName = get_class($this->model);
-            if ($modelName != null && $user != null && $selectedTheme != null)
-            {
-                $key = $modelName . self::ATTRIBUTE_SEPARATOR . self::SELECTED_THEME;
-                ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', $key, $selectedTheme);
-            }
+            $key = $this->getSelectedThemeKeyByModelName($modelName);
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', $key, $selectedTheme);
         }
 
         /**
@@ -227,19 +224,21 @@
         {
             $user = Yii::app()->user->userModel;
             $modelName = get_class($this->model);
-            if ($modelName != null && $user != null)
+            $key = $this->getSelectedThemeKeyByModelName($modelName);
+            if (null != $theme = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', $key))
             {
-                $key = $modelName . self::ATTRIBUTE_SEPARATOR . self::SELECTED_THEME;
-                if (null != $theme = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', $key))
-                {
-                    $this->selectedTheme = $theme;
-                }
-                else
-                {
-                    $this->selectedTheme = $this->getDefaultTheme();
-                }
+                $this->selectedTheme = $theme;
+            }
+            else
+            {
+                $this->selectedTheme = $this->getDefaultTheme();
             }
             return $this->selectedTheme;
+        }
+
+        public function getSelectedThemeKeyByModelName($modelName)
+        {
+            return $modelName . self::ATTRIBUTE_SEPARATOR . self::SELECTED_THEME;
         }
 
         /**
