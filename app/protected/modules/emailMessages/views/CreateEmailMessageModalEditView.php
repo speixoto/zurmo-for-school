@@ -95,7 +95,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'null',
-                                                      'type' => 'EmailMessageContactEmailTemplateNamesDropDown')
+                                                      'type' => 'EmailMessageEmailTemplate')
                                             ),
                                         ),
                                     )
