@@ -35,26 +35,9 @@
      ********************************************************************************/
 
     /**
-     * Workflow rules to be used with the Products module.
+     * Class to help evaluate Product Template type field triggers against model values.
      */
-    class ProductsWorkflowRules extends SecuredWorkflowRules
+    class ProductTemplateTypeDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'Product' => array(
-                    'availableOperatorsTypes' =>
-                        array('type'           => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
-                              'priceFrequency' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
-                    'triggerValueElementTypes' =>
-                        array('type'           => 'ProductTemplateTypeStaticDropDownForWizardModel',
-                              'priceFrequency' => 'ProductTemplatePriceFrequencyStaticDropDownForWizardModel'),
-                )
-            );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
-        }
     }
 ?>

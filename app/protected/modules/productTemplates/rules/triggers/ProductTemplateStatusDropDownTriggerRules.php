@@ -34,7 +34,10 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class TimeZoneStaticDropDownRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    /**
+     * Class to help evaluate Product Template status field triggers against model values.
+     */
+    class ProductTemplateStatusDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
     {
     }
 ?>

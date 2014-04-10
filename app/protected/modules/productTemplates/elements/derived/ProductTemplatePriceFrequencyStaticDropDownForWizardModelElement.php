@@ -34,7 +34,11 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class LocaleStaticDropDownRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    class ProductTemplatePriceFrequencyStaticDropDownForWizardModelElement extends StaticDropDownForWizardElement
     {
+        public function getDropDownArray()
+        {
+            return ProductTemplateElementUtil::getProductTemplatePriceFrequencyDropdownArray();
+        }
     }
 ?>

@@ -179,7 +179,7 @@
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == null');
-            $textContent    = $this->model->textContent;
+            $textContent    = nl2br(Yii::app()->format->text($this->model->textContent));
             $activeTab      = $this->getActiveTab();
             $htmlContent    = $this->renderNonEditableHtmlContentArea();
             $content        = $this->resolveTabbedContent($textContent, $htmlContent, $activeTab);
@@ -197,11 +197,23 @@
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent) && (!$this->resolveSelectiveLoadOfTabs() || $this->isPastedHtmlTemplate()))
+            if ($this->resolveSelectiveLoadOfTabs())
             {
-                return 'html';
+                // we are on email template wizard
+                if ($this->isPastedHtmlTemplate())
+                {
+                    return 'html';
+                }
+                return 'text';
             }
-            return 'text';
+            else
+            {
+                if (!empty($this->model->htmlContent) || (empty($this->model->htmlContent) && empty($this->model->htmlContent)))
+                {
+                    return 'html';
+                }
+                return 'text';
+            }
         }
 
         protected function renderEditableHtmlContentArea()

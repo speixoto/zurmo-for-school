@@ -120,12 +120,12 @@
     <td>//div[@id='WorkflowDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
 	<td>WorkflowTest ${randomSuffix}</td>
 </tr>
+<!--delete workflow-->
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
+	<td>waitForElementPresent</td>
+	<td>link=Delete</td>
 	<td></td>
 </tr>
-<!--delete workflow-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Delete</td>
@@ -149,11 +149,6 @@
 <tr>
 	<td>verifyTextPresent</td>
 	<td>No results found</td>
-	<td></td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
 	<td></td>
 </tr>
 <!--clear search result-->

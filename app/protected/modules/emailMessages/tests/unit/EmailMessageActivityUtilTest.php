@@ -483,8 +483,10 @@ HTML;
 
         protected static function resolveContent(& $content, $tracking = true, $isHtmlContent = true)
         {
-            return EmailMessageActivityUtil::resolveContentForTrackingAndFooter($tracking, $content, 1, 'AutoresponderItem',
-                                                                                                    1, 1, $isHtmlContent);
+            return (EmailMessageActivityUtil::resolveContentGlobalFooter($content, 1, 1, 1, 'AutoresponderItem',
+                                                                        $isHtmlContent) &&
+                    EmailMessageActivityUtil::resolveContentForTracking($tracking, $content, 1, 'AutoresponderItem',
+                                                                        1, $isHtmlContent));
         }
     }
 ?>

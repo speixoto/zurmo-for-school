@@ -53,19 +53,19 @@
                     return true;
                 }
                 if (count($unserialized) == 2 || count($unserialized) == 3 &&
-                        isset($unserialized['baseTemplate'], $unserialized['dom']) &&
-                        is_array($unserialized['dom']) &&
-                        count($unserialized['dom'][0]) == 3 &&
-                        isset($unserialized['dom'][0]['class'], $unserialized['dom'][0]['properties'], $unserialized['dom'][0]['content']))
+                        isset($unserialized['baseTemplateId'], $unserialized['dom']) &&
+                        is_array($unserialized['dom']))
                 {
-                    return true;
+                    $firstElement   = reset($unserialized['dom']);
+                    if (count($firstElement) == 3 && isset($firstElement['class'], $firstElement['properties'],
+                                                                                    $firstElement['content']))
+                    {
+                        return true;
+                    }
                 }
-                else
-                {
-                    $message    = Zurmo::t('EmailTemplatesModule', 'serializedData contains invalid scheme.');
-                    $this->addError($object, $attribute, $message);
-                    return false;
-                }
+                $message    = Zurmo::t('EmailTemplatesModule', 'serializedData contains invalid scheme.');
+                $this->addError($object, $attribute, $message);
+                return false;
             }
             return true;
         }

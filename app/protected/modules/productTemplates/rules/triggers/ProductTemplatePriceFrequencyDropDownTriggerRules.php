@@ -34,7 +34,10 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class LanguageStaticDropDownRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    /**
+     * Class to help evaluate Product Template price frequency field triggers against model values.
+     */
+    class ProductTemplatePriceFrequencyDropDownTriggerRules extends ConstantBasedStaticDropDownTriggerRules
     {
     }
 ?>

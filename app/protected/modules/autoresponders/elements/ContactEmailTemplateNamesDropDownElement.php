@@ -277,7 +277,10 @@
             $emailTemplatesArray    = array();
             foreach ($emailTemplates as $emailTemplate)
             {
-                $emailTemplatesArray[$emailTemplate->id] = $emailTemplate->name;
+                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($emailTemplate, Permission::READ))
+                {
+                    $emailTemplatesArray[$emailTemplate->id] = $emailTemplate->name;
+                }
             }
             asort($emailTemplatesArray);
             return $emailTemplatesArray;
