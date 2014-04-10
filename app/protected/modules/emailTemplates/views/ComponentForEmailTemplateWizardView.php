@@ -212,7 +212,7 @@
                                                                               $stepCount, $model)
         {
             $ownClassName   = get_called_class();
-            $progress       = ($stepCount + 1) * $progressPerStep;
+            $progress       = ($stepCount + 2) * $progressPerStep;
             $script         = "
                         $('#" . $validationInputId . "').val('" .  $nextPageClassName::resolveValidationScenario() . "');
                         $('#" . $ownClassName . "').hide();

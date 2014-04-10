@@ -89,10 +89,9 @@
         protected function renderSelectedLayout()
         {
             $textForLink = ZurmoHtml::tag('span', array('class' => 'z-label'),
-                                          Zurmo::t('EmailTemplatesModule', 'Or select a different one'));
+                                          Zurmo::t('EmailTemplatesModule', 'Select a different layout'));
             $content  = $this->resolveThumbnail();
             $content .= ZurmoHtml::tag('h3', array(), $this->model->name);
-            $content .= ZurmoHtml::tag('p', array(), $this->model->subject);
             $content .= ZurmoHtml::link($textForLink, '#', array('id' => 'chooser-overlay', 'class' => 'secondary-button'));
             $this->wrapContentInDiv($content, $this->getHtmlOptionsForSelectedLayoutDiv());
             return $content;
@@ -204,7 +203,6 @@
                 {
                     $('#chosen-layout').find('i').removeClass().addClass(item.data('icon'));
                     $('#chosen-layout').find('h3').html(item.data('name'));
-                    $('#chosen-layout').find('p').html(item.data('subject'));
                 }
                 function preSelectBaseTemplate()
                 {
@@ -321,7 +319,7 @@
         protected function registerChooserCloseButtonClickScript()
         {
             Yii::app()->clientScript->registerScript('chooserCloseButtonClickScript', "
-                $('." . SelectBaseTemplateElement::CLOSE_LINK_CLASS_NAME . "').click(function(){
+                $('." . SelectBaseTemplateElement::CLOSE_LINK_CLASS_NAME . "').click(function(event){
                     $('#" . static::CHOSEN_DIV_ID . "').show();
                     $('#BuilderEmailTemplateWizardView .float-bar').show();
                     $('#" . static::TEMPLATES_DIV_ID . "').hide();
