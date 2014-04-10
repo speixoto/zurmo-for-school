@@ -100,15 +100,10 @@
 
         protected function getHtmlOptionsForSelectedLayoutDiv()
         {
-            $style = 'display: none;';
-            if ($this->getBaseTemplateId() != null)
-            {
-                $style = 'display: block;';
-            }
             return array(
                 'id'    => static::CHOSEN_DIV_ID,
                 'class' => 'clearfix',
-                'style' => $style,
+                'style' => 'display: block;',
             );
         }
 
@@ -137,14 +132,9 @@
 
         protected function getHtmlOptionsForSelectBaseTemplatesDiv()
         {
-            $style = 'display: block;';
-            if ($this->getBaseTemplateId() != null)
-            {
-                $style = 'display: none;';
-            }
             return array(
                 'id'    => static::TEMPLATES_DIV_ID,
-                'style' => $style,
+                'style' => 'display: none;',
             );
         }
 
@@ -209,18 +199,22 @@
 
         protected function registerPreSelectBaseTemplateScript()
         {
-            //TODO: @sergio: We dont need to preSelect a template anymore
             Yii::app()->clientScript->registerScript('preSelectBaseTemplateScript', "
+                function updateSelectedLayout(item)
+                {
+                    $('#chosen-layout').find('i').removeClass().addClass(item.data('icon'));
+                    $('#chosen-layout').find('h3').html(item.data('name'));
+                    $('#chosen-layout').find('p').html(item.data('subject'));
+                }
                 function preSelectBaseTemplate()
                 {
                     baseTemplateId  = $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val();
                     if (baseTemplateId == '')
                     {
-                        baseTemplateId = $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . " :first').val();
+                        baseTemplateId = $('" . $this->resolveBaseTemplateListItemsJQuerySelector() . " li:nth-child(2)').data('value');
+                        $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val(baseTemplateId);
+                        updateSelectedLayout($('" . $this->resolveBaseTemplateListItemsJQuerySelector() . " li:nth-child(2)'));
                     }
-                    $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "[value=' + baseTemplateId +']').prop('checked', true);
-                    // raise the click event so updateBaseTemplateIdHiddenInputOnSelectionChangeScript can take care of it.
-                    $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "[value=' + baseTemplateId +']').trigger('click');
                 }
                 preSelectBaseTemplate();
             ", CClientScript::POS_READY);
@@ -234,8 +228,7 @@
                     $('" . static::resolveBaseTemplateIdHiddenInputJQuerySelector() . "').val(value);
                 }
 
-                $('" . $this->resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector() . "').unbind('click')
-                                                                                            .bind('click', function()
+                $('" . $this->resolveBaseTemplateListItemsJQuerySelector() . "').unbind('change').bind('change', function()
                 {
                     originalBaseTemplateId  = $('" . $this->resolveOriginalBaseTemplateIdHiddenInputJQuerySelector() . "').val();
 
@@ -339,15 +332,13 @@
 
         protected function resolveBaseTemplateIdInputIdWithoutSerializedData()
         {
-            $name   = ZurmoHtml::activeName($this->model, static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME);
-            return $name;
+            $id   = ZurmoHtml::activeId($this->model, static::BASE_TEMPLATE_RADIO_BUTTON_ATTRIBUTE_NAME);
+            return $id;
         }
 
-        protected function resolveBaseTemplateIdRadioInputWithoutSerializedDataJQuerySelector()
+        protected function resolveBaseTemplateListItemsJQuerySelector()
         {
-            $inputId  = $this->resolveBaseTemplateIdInputIdWithoutSerializedData();
-            $selector = "#{$inputId}";
-            return $selector;
+            return SelectBaseTemplateElement::getItemsListJQuerySelector();
         }
 
         protected function resolveSerializedDomDataHiddenInputJQuerySelector()

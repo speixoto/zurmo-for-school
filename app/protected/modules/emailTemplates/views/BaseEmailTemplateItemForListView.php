@@ -48,6 +48,8 @@
 
         protected $previewClass = self::PREVIEW_LINK_CLASS_NAME;
 
+        protected $icon;
+
         public function __construct($data)
         {
             parent::__construct($data);
@@ -59,6 +61,7 @@
             {
                 $this->previewClass = $data['previewClass'];
             }
+            $this->setIcon();
         }
 
         public function renderItem()
@@ -68,7 +71,18 @@
             $content .= $this->renderName();
             $content .= $this->renderUseLink();
             $content .= $this->renderPreviewLink();
-            return ZurmoHtml::tag('li', array('class' => 'base-template-selection', 'data-value' => $this->model->id), $content);
+            $htmlOptions = $this->getHtmlOptionsForItem();
+            return ZurmoHtml::tag('li', $htmlOptions, $content);
+        }
+
+        protected function getHtmlOptionsForItem()
+        {
+            return array('class'        => 'base-template-selection',
+                         'data-value'   => $this->model->id,
+                         'data-name'    => $this->model->name,
+                         'data-icon'    => $this->icon,
+                         'data-subject' => $this->model->subject,
+            );
         }
 
         protected function renderScreenOptions()
@@ -130,15 +144,20 @@
 
         protected function resolveThumbnail()
         {
+            return ZurmoHtml::icon($this->icon);
+        }
+
+        protected function setIcon()
+        {
             $unserializedData   = CJSON::decode($this->model->serializedData);
             $icon               = ArrayUtil::getArrayValue($unserializedData, 'icon');
             if (!empty($icon))
             {
-                return ZurmoHtml::icon($icon);
+                $this->icon = $icon;
             }
             else
             {
-                return ZurmoHtml::icon('icon-user-template');
+                $this->icon = 'icon-user-template';
             }
         }
     }

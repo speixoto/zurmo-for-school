@@ -44,6 +44,10 @@
 
         const MODEL_CLASS_NAME_ATTRIBUTE = 'modelClassName';
 
+        const ITEMS_LIST_CLASS_NAME = 'template-list';
+
+        const ITEMS_TAG_NAME = 'ul';
+
         protected function renderControlEditable()
         {
             $dataProvider = $this->getDataProviderByGet();
@@ -53,12 +57,13 @@
                 'id'                => $this->getListViewId(),
                 'dataProvider'      => $dataProvider,
                 'itemView'          => 'BaseEmailTemplateItemForListView',
-                'itemsTagName'      => 'ul',
-                'itemsCssClass'     => 'template-list clearfix',
+                'itemsTagName'      => static::ITEMS_TAG_NAME,
+                'itemsCssClass'     => static::ITEMS_LIST_CLASS_NAME . ' clearfix',
                 'pager'             => $this->getCGridViewPagerParams(),
                 'htmlOptions'       => array('class' => 'templates-chooser-list clearfix'),
                 'beforeAjaxUpdate'  => $this->getCGridViewBeforeAjaxUpdate(),
                 'afterAjaxUpdate'   => $this->getCGridViewAfterAjaxUpdate(),
+                'template'          => static::getGridTemplate(),
             ));
             $cClipWidget->endClip();
             $content  = $this->renderActionBar();
@@ -68,19 +73,30 @@
             return $content;
         }
 
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
+            return "{summary}{sorter}{items}" . $preloader . "{pager}";
+        }
+
         protected function getCGridViewBeforeAjaxUpdate()
         {
             return "js:function(id, options) {
-                        cacheListItems = $('ul.template-list').html()
+                        cacheListItems = $('" . static::getItemsListJQuerySelector() . "').html()
             }";
+        }
+
+        public static function getItemsListJQuerySelector()
+        {
+            return static::ITEMS_TAG_NAME . '.' . static::ITEMS_LIST_CLASS_NAME;
         }
 
         protected function getCGridViewAfterAjaxUpdate()
         {
             // Begin Not Coding Standard
             return "js:function(id, data) {
-                        var html = $('ul.template-list').html();
-                        $('ul.template-list').html(cacheListItems + html);
+                        var html = $('" . static::getItemsListJQuerySelector() . "').html();
+                        $('" . static::getItemsListJQuerySelector() . "').html(cacheListItems + html);
             }";
             // End Not Coding Standard
         }
@@ -118,7 +134,7 @@
         protected function renderCloseSelectTemplatesButton()
         {
             $linkText  = ZurmoHtml::icon('icon-x');
-            $linkText .= Zurmo::t('EmailTemplatesModule', 'close');
+            $linkText .= Zurmo::t('EmailTemplatesModule', 'cancel');
             return ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . static::CLOSE_LINK_CLASS_NAME));
         }
 
@@ -127,6 +143,7 @@
             $pagerParams = array(
                 'class'            => 'BottomLinkPager',
                 'nextPageLabel'    => Zurmo::t('EmailTemplatesModule', 'Load More'),
+                'header'           => '<div class="list-preloader"><span class="z-spinner"></span></div>',
             );
             return $pagerParams;
         }
@@ -170,7 +187,7 @@
                     }
                     $('#{$this->getEditableInputId()}').val(currentSelectedValue);
                     updateBaseTemplateIdHiddenInputValue(currentSelectedValue);
-                    $('#{$nextPageLinkId}').click();
+                    updateSelectedLayout($(this).closest('li'));
                     $('#BuilderEmailTemplateWizardView .float-bar').show();
                     $('#" . SelectBaseTemplateForEmailTemplateWizardView::CHOSEN_DIV_ID . "').show();
                     $('#" . SelectBaseTemplateForEmailTemplateWizardView::TEMPLATES_DIV_ID . "').hide();
@@ -215,6 +232,10 @@
                 $('body').on('click', '.filter-link', function (event) {
                     $('.filter-link.active').removeClass('active');
                     $(this).addClass('active');
+                    $('#" . $this->getListViewId() . "').addClass('attachLoadingTarget');
+                    $('#" . $this->getListViewId() . "').addClass('loading');
+                    $('#" . $this->getListViewId() . " > .pager').hide();
+                    $(this).makeSmallLoadingSpinner(true, '#" . $this->getListViewId() . "');
                     $('ul.template-list').html('');
                     $.fn.yiiListView.update('{$this->getListViewId()}', {
                          url: location.href.replace(/&?.*filterBy=([^&]$|[^&]*)/i, ''),
