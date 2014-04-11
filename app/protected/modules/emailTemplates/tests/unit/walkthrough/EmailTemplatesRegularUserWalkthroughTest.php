@@ -107,7 +107,6 @@
             $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/edit');
             $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/details');
             $this->runControllerShouldResultInAccessFailureAndGetContent('emailTemplates/default/delete');
-
         }
 
         public function testListForMarketingAction()
