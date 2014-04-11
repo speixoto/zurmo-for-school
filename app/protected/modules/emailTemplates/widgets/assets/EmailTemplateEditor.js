@@ -229,7 +229,7 @@ var emailTemplateEditor = {
             if (elementDragged != undefined && elementDragged.is('li') && $(event.target).hasClass('ui-draggable-iframeFix')){
                 var wrapInRow = elementDragged.data('wrap');
                 if (typeof wrapInRow == 'undefined') {
-                    if( emailTemplateEditor.settings.ghost.parent().hasClass( emailTemplateEditor.settings.sortableRowsClass) === true ){
+                    if( emailTemplateEditor.settings.ghost.closest('td').hasClass( emailTemplateEditor.settings.sortableRowsClass) === true ){
                         wrapInRow = emailTemplateEditor.settings.wrapInRow;
                     } else {
                         wrapInRow = emailTemplateEditor.settings.doNotWrapInRow;
@@ -237,7 +237,6 @@ var emailTemplateEditor = {
                 }
                 emailTemplateEditor.placeNewElement(elementDraggedClass, wrapInRow, iframeContents, innerElements);
             } else {
-                console.log('dropped either outside of canvas or not on element');
                 //Remove the ghost element
                 $(innerElements).each(function(){$(this).removeClass('hover');});
                 emailTemplateEditor.settings.ghost.detach();
