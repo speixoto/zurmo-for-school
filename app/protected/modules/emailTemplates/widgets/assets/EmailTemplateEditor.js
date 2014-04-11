@@ -291,6 +291,10 @@ var emailTemplateEditor = {
     },
     //Used on a new element is dragged and dropped from outside iframe
     placeNewElement: function ( elementClass, wrapElement, iframeContents, innerElements) {
+        if (!emailTemplateEditor.settings.ghost.is(":visible"))
+        {
+            return;
+        }
         $.ajax({
             url: emailTemplateEditor.settings.getNewElementUrl,
             type: 'POST',
