@@ -95,14 +95,13 @@
                         'value'         => Yii::app()->user->userModel->id
                     ),
                 );
-                $searchAttributeData['structure'] = '1 or (2 and 3)';
-                return $searchAttributeData;
+                $searchAttributeData['structure'] = '(1 or 2) and 3';
             }
             else
             {
-                $metadata = null;
+                $searchAttributeData = null;
             }
-            return $metadata;
+            return $searchAttributeData;
         }
 
         public function getModelStringContent(RedBeanModel $model)

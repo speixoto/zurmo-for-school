@@ -93,7 +93,6 @@
             $grandParentRole->role  = $childRole;
             $this->assertFalse($grandParentRole->validate());
             $this->assertEquals('You cannot select a child role for the parent role', $grandParentRole->getError('role'));
-
         }
     }
 ?>

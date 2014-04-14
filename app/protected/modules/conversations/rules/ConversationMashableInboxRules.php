@@ -89,8 +89,19 @@
                     'operatorType'         => 'equals',
                     'value'                => 0
                 ),
+                5 => array(
+                    'attributeName'    => 'ownerHasReadLatest',
+                    'operatorType'     => 'doesNotEqual',
+                    'value'            => (bool)1
+                ),
+                6 => array(
+                    'attributeName'        => 'conversationParticipants',
+                    'relatedAttributeName' => 'person',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->getClassId('Item')
+                )
             );
-            $searchAttributeData['structure'] = '(1 or 2) and (3 or 4)';
+            $searchAttributeData['structure'] = '(1 or 2) and (3 or 4 or 5 or 6)';
             return $searchAttributeData;
         }
 
@@ -136,7 +147,7 @@
                         'operatorType'         => 'equals',
                         'value'                => Yii::app()->user->userModel->id
                 );
-                $metadata['structure'] = "(1 and 4) or(2 and 3)";
+                $metadata['structure'] = "(1 and 4) or (2 and 3)";
             }
             else
             {
