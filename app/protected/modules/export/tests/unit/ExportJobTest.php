@@ -548,9 +548,9 @@
 
             $job = new ExportJob();
             //ReadPermissionSubscriptionUpdate should get added to jobQueue
-            $this->assertEquals(1, count(Yii::app()->jobQueue->getAll()));
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
-            $this->assertEquals(1, count(Yii::app()->jobQueue->getAll()));
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
 
