@@ -34,8 +34,19 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class SearchAttributesDataCollectionTest extends BaseTest
+    class SearchAttributesDataCollectionTest extends ZurmoBaseTest
     {
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
         public function testKanbanBoardMethods()
         {
             $searchModel    = new AAASearchFormTestModel(new AAA());
