@@ -47,6 +47,7 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
         }
+
         public function testKanbanBoardMethods()
         {
             $searchModel    = new AAASearchFormTestModel(new AAA());
