@@ -142,8 +142,9 @@
         {
             $pagerParams = array(
                 'class'            => 'BottomLinkPager',
-                'nextPageLabel'    => Zurmo::t('EmailTemplatesModule', 'Load More'),
+                'nextPageLabel'    => '<span>next</span>',
                 'header'           => '<div class="list-preloader"><span class="z-spinner"></span></div>',
+                'htmlOptions'      => array('class' => 'endless-list-pager')
             );
             return $pagerParams;
         }
