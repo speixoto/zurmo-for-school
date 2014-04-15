@@ -263,7 +263,6 @@
          */
         protected function registerNonEditableScripts()
         {
-
         }
 
         /**
@@ -271,7 +270,6 @@
          */
         protected function registerNonEditableCss()
         {
-
         }
 
         /**
@@ -578,7 +576,6 @@
             return $content;
         }
 
-
         /**
          * Returns string containing all form input fields properly wrapped in containers.
          * @param ZurmoActiveForm $form
@@ -771,6 +768,7 @@
         protected function registerTabbedContentScripts()
         {
             $scriptName = 'element-edit-form-tab-switch-handler';
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript($scriptName, "
                     $('.edit-form-tab-content .tabs-nav a:not(.simple-link)').click( function(event){
                         event.preventDefault();
@@ -787,6 +785,7 @@
                         });
                     });
                 ");
+            // End Not Coding Standard
         }
 
         /**
@@ -796,49 +795,49 @@
         protected function renderFormActionLinks()
         {
             $content    = $this->renderApplyLink();
-            $content   .= $this->renderCancelLink();
+            $content   .= $this->renderBackLink();
             $content    = ZurmoHtml::tag('div', array('class' => 'form-toolbar'), $content);
             $content    = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $content);
             return $content;
         }
 
         /**
-         * Render Cancel Action Link
+         * Render Back Action Link
          * @return string
          */
-        protected function renderCancelLink()
+        protected function renderBackLink()
         {
-            $this->registerCancelScript();
-            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $this->renderCancelLinkLabel());
-            $link   = ZurmoHtml::link($label, '#', $this->resolveCancelLinkHtmlOptions());
+            $this->registerBackScript();
+            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $this->renderBackLinkLabel());
+            $link   = ZurmoHtml::link($label, '#', $this->resolveBackLinkHtmlOptions());
             return $link;
         }
 
         /**
-         * Resolve Cancel Link html options
+         * Resolve Back Link html options
          * @return array
          */
-        protected function resolveCancelLinkHtmlOptions()
+        protected function resolveBackLinkHtmlOptions()
         {
-            return array('id' => $this->resolveCancelLinkId(), 'class' => 'cancel-button');
+            return array('id' => $this->resolveBackLinkId(), 'class' => 'cancel-button');
         }
 
         /**
-         * Resolve link id for Cancel Link
+         * Resolve link id for back Link
          * @return string
          */
-        protected function resolveCancelLinkId()
+        protected function resolveBackLinkId()
         {
-            return 'elementEditFormCancelLink';
+            return 'elementEditFormBackLink';
         }
 
         /**
-         * Render Label for Cancel Link
+         * Render Label for Back Link
          * @return string
          */
-        protected function renderCancelLinkLabel()
+        protected function renderBackLinkLabel()
         {
-            return Zurmo::t('Core', 'Cancel');
+            return Zurmo::t('Core', 'Back');
         }
 
         /**
@@ -920,12 +919,12 @@
         }
 
         /**
-         * Register javascript snippet to handle clicking cancel link
+         * Register javascript snippet to handle clicking back link
          */
-        protected function registerCancelScript()
+        protected function registerBackScript()
         {
-            Yii::app()->clientScript->registerScript('cancelLinkClick', "
-                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick').bind('click.cancelLinkClick', function()
+            Yii::app()->clientScript->registerScript('backLinkClick', "
+                $('#" . $this->resolveBackLinkId() . "').unbind('click.backLinkClick').bind('click.backLinkClick', function()
                 {
                     hideElementEditFormOverlay();
                     $('#" . BuilderCanvasWizardView::ELEMENTS_CONTAINER_ID . "').show();
@@ -989,6 +988,7 @@
             //$ajaxArray['cache']         = 'false'; //todo: should by default be used.
             $ajaxArray['url']           = $this->resolveFormActionUrl();
             $ajaxArray['type']          = 'POST';
+            // Begin Not Coding Standard
             $ajaxArray['data'] = 'js:$("#' .  $this->resolveApplyLinkId() . '").closest("form").serialize()';
             $ajaxArray['beforeSend']    = "js:function()
                                         {
@@ -1005,6 +1005,7 @@
                                             emailTemplateEditor.canvasChanged();
                                             emailTemplateEditor.addPlaceHolderForEmptyCells();
                                         }";
+            // End Not Coding Standard
             return $ajaxArray;
         }
 
@@ -1032,7 +1033,6 @@
          */
         protected function renderBeforeFormLayout(ZurmoActiveForm $form)
         {
-
         }
 
         /**
@@ -1041,7 +1041,6 @@
          */
         protected function renderAfterFormLayout(ZurmoActiveForm $form)
         {
-
         }
 
         /**
@@ -1132,7 +1131,7 @@
             {
                 $params     = $defaultParams;
             }
-            else if (ArrayUtil::getArrayValue($params, 'mergeDefault'))
+            elseif (ArrayUtil::getArrayValue($params, 'mergeDefault'))
             {
                 $params     = CMap::mergeArray($defaultParams, $params);
             }
@@ -1312,17 +1311,17 @@
 
         public function validate($attribute, $value)
         {
-            if (isset($this->getRules()[$attribute]))
+            $rules = $this->getRules();
+            if (isset($rules[$attribute]))
             {
                 try
                 {
-                    return call_user_func(array($this, $this->getRules()[$attribute]), $value);
+                    return call_user_func(array($this, $rules[$attribute]), $value);
                 }
                 catch (Exception $exception)
                 {
                     throw new NotImplementedException();
                 }
-
             }
             return true;
         }
@@ -1371,11 +1370,12 @@
 
         protected function sanitizeProperties(array & $properties)
         {
-            foreach($properties as $key => $value)
+            $propertiesMappedArray = static::getPropertiesSuffixMappedArray();
+            foreach ($properties as $key => $value)
             {
-                if (isset(static::getPropertiesSuffixMappedArray()[$key]))
+                if (isset($propertiesMappedArray[$key]))
                 {
-                    $properties[$key] .= static::getPropertiesSuffixMappedArray()[$key];
+                    $properties[$key] .= $propertiesMappedArray[$key];
                 }
             }
         }

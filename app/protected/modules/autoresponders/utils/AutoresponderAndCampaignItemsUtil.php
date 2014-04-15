@@ -99,9 +99,13 @@
         {
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
+            $personId                   = $contact->getClassId('Person');
+            $activityUtil               = static::resolveActivityUtilByModelType($modelType);
+            static::resolveContentForGlobalFooter($textContent, $htmlContent, $modelId, $modelType, $personId,
+                                                    $marketingListId, $activityUtil);
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-            static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
-                                                                                $modelType, $contact, $marketingListId);
+            static::resolveContentForTracking($textContent, $htmlContent, $enableTracking, $modelId,
+                                                $modelType, $personId, $activityUtil);
         }
 
         public static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
@@ -133,22 +137,33 @@
             }
         }
 
-        protected static function resolveContentForTrackingAndFooter(& $textContent, & $htmlContent, $enableTracking, $modelId,
-                                                                        $modelType, Contact $contact, $marketingListId)
+        protected static function resolveContentForGlobalFooter(& $textContent, & $htmlContent, $modelId, $modelType,
+                                                                $personId, $marketingListId, $activityUtil)
         {
-            assert('is_int($modelId)');
-            assert('is_int($marketingListId)');
-            $personId                 = $contact->getClassId('Person');
-            $activityUtil             = $modelType . 'ActivityUtil';
-            if ($textContent != null)
+            if (!empty($textContent))
             {
-                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
-                                                                                    $personId, $marketingListId, false);
+                $activityUtil::resolveContentGlobalFooter($textContent, $personId, $marketingListId, $modelId,
+                                                            $modelType, false);
             }
-            if ($htmlContent != null)
+            if (!empty($htmlContent))
             {
-                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
-                                                                                    $personId, $marketingListId, true);
+                $activityUtil::resolveContentGlobalFooter($htmlContent, $personId, $marketingListId, $modelId,
+                                                            $modelType, true);
+            }
+        }
+
+        protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
+                                                            $modelType, $personId, $activityUtil)
+        {
+            if (!empty($textContent))
+            {
+                $activityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
+                                                            $personId, false);
+            }
+            if (!empty($htmlContent))
+            {
+                $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
+                                                            $personId, true);
             }
         }
 
@@ -280,6 +295,11 @@
             {
                 return EmailBox::CAMPAIGNS_NAME;
             }
+        }
+
+        protected static function resolveActivityUtilByModelType($modelType)
+        {
+            return $modelType . 'ActivityUtil';
         }
     }
 ?>

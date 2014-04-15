@@ -53,7 +53,6 @@
                     $property       = "[${property}]";
                     $content        .= $util::render($elementClass, $model, $property, $form, $params, $wrapInTr, $trOptions);
                 }
-
             }
             return $content;
         }
@@ -78,7 +77,6 @@
             return compact('util', 'elementClass', 'property', 'params');
         }
 
-
         /**
          * @param string $label
          * @return array
@@ -102,7 +100,6 @@
          */
         protected static function registerScripts(ZurmoActiveForm $form, CModel $model)
         {
-
         }
   }
 ?>

@@ -64,10 +64,12 @@
 
         protected function renderSyncBeforeCallbackScript()
         {
+            // Begin Not Coding Standard
             return "function(html)
                     {
                         return this.getEditor().contents().find('img:first').wrap('<p/>').parent().html();
                     }";
+            // End Not Coding Standard
         }
     }
 ?>

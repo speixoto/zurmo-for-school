@@ -276,7 +276,8 @@
         {
             $key    = str_replace(array("]", "'", '"'), '', $key);
             $pieces = explode('[', $key);
-            foreach ($pieces as $piece) {
+            foreach ($pieces as $piece)
+            {
                 if (!is_array($array) || !array_key_exists($piece, $array))
                 {
                     return null;
@@ -293,7 +294,8 @@
          */
         public static function recursivelyRemoveEmptyValues(array $haystack)
         {
-            foreach ($haystack as $key => $value) {
+            foreach ($haystack as $key => $value)
+            {
                 if (is_array($value))
                 {
                     $haystack[$key] = static::recursivelyRemoveEmptyValues($haystack[$key]);

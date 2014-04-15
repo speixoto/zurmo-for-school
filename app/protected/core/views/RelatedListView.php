@@ -135,8 +135,23 @@
             assert('is_array($searchAttributeData)');
             $sortAttribute  = SearchUtil::resolveSortAttributeFromArray($this->modelClassName, $_GET);
             $sortDescending =  SearchUtil::resolveSortDescendingFromArray($this->modelClassName, $_GET);
+            if ($sortAttribute === null)
+            {
+                $sortAttribute  = $this->getSortAttributeForDataProvider();
+                $sortDescending = $this->resolveSortDescendingForDataProvider();
+            }
             return new RedBeanModelDataProvider( $this->modelClassName, $sortAttribute, (bool)$sortDescending,
                                                                 $searchAttributeData, $this->resolveConfigForDataProvider());
+        }
+
+        protected function getSortAttributeForDataProvider()
+        {
+            return null;
+        }
+
+        protected function resolveSortDescendingForDataProvider()
+        {
+            return false;
         }
 
         public function renderPortletHeadContent()

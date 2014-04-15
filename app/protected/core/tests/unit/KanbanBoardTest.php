@@ -34,11 +34,12 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class KanbanBoardTest extends BaseTest
+    class KanbanBoardTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
             $values = array(
                 'Automotive',
                 'Adult Entertainment',
@@ -52,6 +53,12 @@
             {
                 throw new FailedToSaveRedBeanModelException();
             }
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
         public function testResolveKanbanBoardOptionsForSearchModelFromGetArray()
@@ -109,7 +116,7 @@
                                      'Adult Entertainment'     => 'Adult Entertainment',
                                      'Financial Services'      => 'Financial Services',
                                      'Mercenaries & Armaments' => 'Mercenaries & Armaments'),
-                                 'selectedTheme' => null);
+                                 'selectedTheme' => $kanbanBoard->getSelectedTheme());
             $this->assertEquals($compareData, $params);
         }
 

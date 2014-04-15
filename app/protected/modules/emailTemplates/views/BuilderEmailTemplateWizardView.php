@@ -47,9 +47,9 @@
         protected static function resolveContainingViewClassNames()
         {
             return array('GeneralDataForEmailTemplateWizardView',
-                            'SelectBaseTemplateForEmailTemplateWizardView',
-                            'BuilderCanvasWizardView',
-                            'ContentForEmailTemplateWizardView');
+                         'SelectBaseTemplateForEmailTemplateWizardView',
+                         'BuilderCanvasWizardView',
+                         'ContentForEmailTemplateWizardView');
         }
 
         protected function getBeforeValidateActionScript()
@@ -74,12 +74,14 @@
         protected function registerScripts()
         {
             parent::registerScripts();
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('builderEmailTemplateCollapseLeftSideView', "
                 if(!$('body').hasClass('nav-collapsed'))
                 {
                     $('body').addClass('nav-collapsed');
                 }
             ");
+            // End Not Coding Standard
         }
     }
 ?>

@@ -35,7 +35,6 @@
      ********************************************************************************/
     class EmailTemplateTest extends ZurmoBaseTest
     {
-        // TODO: @Shoaibi: Critical: Ensure validators are working fine too.
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -116,7 +115,7 @@
         public function testRequiredValidators()
         {
             $emailTemplate          = new EmailTemplate();
-            $validated              = $emailTemplate->validate();
+            $validated              = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $errors                 = $emailTemplate->getErrors();
             $this->assertCount(6, $errors);
@@ -147,7 +146,7 @@
         {
             $emailTemplate          = new EmailTemplate();
             $emailTemplate->type    = 'A string';
-            $validated              = $emailTemplate->validate();
+            $validated              = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                  = $emailTemplate->getError('type');
             $this->assertEquals("Type must be integer.", $error);
@@ -160,7 +159,7 @@
         {
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->builtType   = 'A string';
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                      = $emailTemplate->getError('builtType');
             $this->assertEquals("Built Type must be integer.", $error);
@@ -173,7 +172,7 @@
         {
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->name        = str_repeat('a', 100);
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                      = $emailTemplate->getError('name');
             $this->assertEquals("Name is too long (maximum is 64 characters).", $error);
@@ -186,7 +185,7 @@
         {
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->subject     = str_repeat('a', 100);
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                      = $emailTemplate->getError('subject');
             $this->assertEquals("Subject is too long (maximum is 64 characters).", $error);
@@ -199,7 +198,7 @@
         {
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->language    = str_repeat('a', 100);
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                      = $emailTemplate->getError('language');
             $this->assertEquals("Language is too long (maximum is 2 characters).", $error);
@@ -211,7 +210,7 @@
         public function testIsDraftDefaultValueForNoBuiltType()
         {
             $emailTemplate              = new EmailTemplate();
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $this->assertEquals(0, $emailTemplate->isDraft);
         }
@@ -223,7 +222,7 @@
         {
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->builtType   = EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY;
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $this->assertEquals(0, $emailTemplate->isDraft);
         }
@@ -235,7 +234,7 @@
         {
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->builtType   = EmailTemplate::BUILT_TYPE_PASTED_HTML;
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $this->assertEquals(0, $emailTemplate->isDraft);
         }
@@ -247,7 +246,7 @@
         {
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->builtType   = EmailTemplate::BUILT_TYPE_BUILDER_TEMPLATE;
-            $validated                  = $emailTemplate->validate();
+            $validated                  = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $this->assertEquals(1, $emailTemplate->isDraft);
         }
@@ -258,7 +257,7 @@
         public function testSerializedDataValidatorForEmpty()
         {
             $emailTemplate                  = new EmailTemplate();
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
         }
 
@@ -269,7 +268,7 @@
         {
             $emailTemplate                  = new EmailTemplate();
             $emailTemplate->serializedData  = 'somethingNotJson';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                          = $emailTemplate->getError('serializedData');
            $this->assertEquals('Unable to decode serializedData.', $error);
@@ -282,7 +281,7 @@
         {
             $emailTemplate                  = new EmailTemplate();
             $emailTemplate->serializedData  = CJSON::encode(array('key' => 'value'));
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $error                          = $emailTemplate->getError('serializedData');
             $this->assertEquals('serializedData contains invalid scheme.', $error);
@@ -302,7 +301,7 @@
             $emailTemplate->textContent     = 'Test text Content For Language';
             $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->language        = "";
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertTrue($validated);
             $this->assertTrue($emailTemplate->save());
             $id             = $emailTemplate->id;
@@ -328,7 +327,7 @@
             $emailTemplate->modelClassName  = 'Contact';
             $emailTemplate->name            = 'Another Test Email Template';
             $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_PASTED_HTML;
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $errorMessages = $emailTemplate->getErrors();
             $this->assertEquals(1, count($errorMessages));
@@ -358,7 +357,7 @@
             $this->assertEquals('Provided class name does not exist.', $errorMessages['modelClassName'][0]);
             // test against a class name thats not a model
             $emailTemplate->modelClassName  = 'TestSuite';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $errorMessages = $emailTemplate->getErrors();
             $this->assertEquals(1, count($errorMessages));
@@ -367,7 +366,7 @@
             $this->assertEquals('Provided class name is not a valid Model class.', $errorMessages['modelClassName'][0]);
             // test against a model that is indeed a class
             $emailTemplate->modelClassName  = 'Contact';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertTrue($validated);
             $this->assertTrue($emailTemplate->save());
             $this->assertEmpty($emailTemplate->getErrors());
@@ -389,7 +388,7 @@
             $emailTemplate->textContent     = 'Text Content';
             $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->modelClassName  = 'Contact';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $errorMessages = $emailTemplate->getErrors();
             $this->assertEquals(1, count($errorMessages));
@@ -400,7 +399,7 @@
             // grant him access, now save should work
             $nobody->setRight('ContactsModule', ContactsModule::getAccessRight());
             $this->assertTrue($nobody->save());
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertTrue($validated);
             $this->assertEmpty($emailTemplate->getErrors());
             $this->assertTrue($emailTemplate->save());
@@ -421,7 +420,7 @@
             $emailTemplate->htmlContent     = 'Html Content [[HTMLINVALIDMERGETAG]]';
             $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->modelClassName  = 'Contact';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $errorMessages = $emailTemplate->getErrors();
             $this->assertEquals(2, count($errorMessages));
@@ -434,7 +433,7 @@
             // test with no merge tags
             $emailTemplate->textContent    = 'Text Content without tags';
             $emailTemplate->htmlContent    = 'Html Content without tags';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertTrue($validated);
             $this->assertEmpty($emailTemplate->getErrors());
             $this->assertTrue($emailTemplate->save());
@@ -460,7 +459,7 @@
             $emailTemplate->textContent     = '';
             $emailTemplate->htmlContent     = "<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
             $emailTemplate->modelClassName  = 'Contact';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertFalse($validated);
             $errorMessages = $emailTemplate->getErrors();
             $this->assertEquals(1, count($errorMessages));
@@ -469,7 +468,7 @@
             $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
 
             $emailTemplate->textContent         = 'Text Content';
-            $validated                      = $emailTemplate->validate();
+            $validated                      = $emailTemplate->validate(null, false, true);
             $this->assertTrue($validated);
             $this->assertTrue($emailTemplate->save());
             $this->assertEquals(6, EmailTemplate::getCount());
@@ -818,7 +817,6 @@
             $this->assertContains('workflow 01', $dataAndLabels);
             // do another call to ensure this time cache is served:
             $dataAndLabels  = EmailTemplate::getDataAndLabelsByType($type);
-
         }
     }
 ?>

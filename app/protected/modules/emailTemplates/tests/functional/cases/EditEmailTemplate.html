@@ -34,11 +34,6 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Create</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
 	<td>Dashboard</td>
 	<td></td>
 </tr>
@@ -75,7 +70,7 @@
 <tr>
 	<td>type</td>
 	<td>id=EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>Test Email Template ${randomSuffix}</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -85,17 +80,17 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-view']/div[2]/table/tbody/tr/td[2]</td>
-	<td>Test Email Template ${randomSuffix}</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Test Email Template ${randomSuffix}</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyValue</td>
 	<td>EmailTemplatesSearchForm_anyMixedAttributes</td>
-	<td>Test Email Template ${randomSuffix}</td>
+	<td>Test Email Template Using Plain Text ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -113,28 +108,18 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=Edit</td>
 	<td></td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
-</tr>
-<tr>
 	<td>type</td>
-	<td>id=EmailTemplate_subject</td>
+	<td>id=ClassicEmailTemplateWizardForm_subject</td>
 	<td>test email subject after editing.</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>save</td>
+	<td>click</td>
+	<td>//div[@id='GeneralDataForEmailTemplateWizardView']/div[2]/div/div/a[2]/span[3]</td>
 	<td></td>
 </tr>
 <tr>
@@ -146,6 +131,36 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ClassicEmailTemplateWizardForm_textContent</td>
+	<td>html content</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[@id='contentFinishLink']/span[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>test email subject after editing.</td>
+	<td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>

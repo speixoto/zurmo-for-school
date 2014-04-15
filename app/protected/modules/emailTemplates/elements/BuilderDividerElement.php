@@ -137,7 +137,7 @@
         {
             $src            = $this->resolveDummyDividerImageUrl();
             $alt            = static::resolveLabel();
-            if(isset($this->properties['backend']) && isset($this->properties['backend']['divider-padding']))
+            if (isset($this->properties['backend']) && isset($this->properties['backend']['divider-padding']))
             {
                 $height = $this->properties['backend']['divider-padding'];
             }

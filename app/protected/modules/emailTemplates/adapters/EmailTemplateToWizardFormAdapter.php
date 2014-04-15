@@ -91,7 +91,7 @@
 
         protected function resolveEmailTemplateMembers(EmailTemplateWizardForm $formModel)
         {
-            $metadata               = $this->emailTemplate->getMetadata();
+            $metadata               = EmailTemplate::getMetadata();
             $members                = $metadata['EmailTemplate']['members'];
             foreach ($members as $member)
             {

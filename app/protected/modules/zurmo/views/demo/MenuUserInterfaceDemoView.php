@@ -108,7 +108,6 @@
             $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Marketing Lists Manage Subscriptions View',  $marketingListsSubscriptionsViewUrl));
             $content .= ZurmoHtml::tag('li', array(), ZurmoHtml::link('Mobile Header View',                     $mobileHeaderViewUrl));
 
-
             return ZurmoHtml::tag('ul', array(), $content);
         }
     }

@@ -92,7 +92,7 @@
 
         protected function validatePropertiesByElement($properties, $element, $prefix, & $hasErrors, $attribute, $key)
         {
-            if(is_array($properties))
+            if (is_array($properties))
             {
                 foreach ($properties as $key => $value)
                 {

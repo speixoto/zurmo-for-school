@@ -117,17 +117,18 @@
             {
                 $gridView->setView($view, $row, 0);
             }
-            return $gridView->render();
+            $previewContainerContent   = $this->resolvePreviewContainerContent();
+            return $gridView->render() . $previewContainerContent;
         }
 
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');
             $script             = "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');";
-            $script             .= $this->renderTreeViewAjaxScriptContentForMergeTagsView();
-            $viewClassNames		= static::resolveContainingViewClassNames();
-            $progressPerStep	= $this->resolveProgressPerStep();
-            $validationInputId	= static::getValidationScenarioInputId();
+            $script            .= $this->renderTreeViewAjaxScriptContentForMergeTagsView();
+            $viewClassNames     = static::resolveContainingViewClassNames();
+            $progressPerStep    = $this->resolveProgressPerStep();
+            $validationInputId  = static::getValidationScenarioInputId();
             foreach ($viewClassNames as $id => $viewClassName)
             {
                 $script         .= $this->resolveNextPageScript($formName, $viewClassName,
@@ -174,21 +175,22 @@
 
         protected function resolveNextPageScript($formName, $viewClassName, $validationInputId, $progressPerStep, $stepCount)
         {
-            $scriptPrefix	= 'if';
+            $scriptPrefix       = 'if';
             if ($stepCount)
             {
-                $scriptPrefix	= 'else if';
+                $scriptPrefix	= 'else if'; // Not Coding Standard
             }
-            $ajaxOptions 		= $this->resolveAdditionalAjaxOptions($formName, $viewClassName, $validationInputId,
+            $ajaxOptions        = $this->resolveAdditionalAjaxOptions($formName, $viewClassName, $validationInputId,
                                                                         $progressPerStep, $stepCount);
-            $nextPageLinkId		= $viewClassName::getNextPageLinkId();
-            $redirectAfterSave	= $viewClassName::redirectAfterSave();
-
-            $script 			= $this->getSaveAjaxString($formName, $redirectAfterSave, $ajaxOptions);
-            $script   			= $scriptPrefix . " (linkId == '" . $nextPageLinkId . "')
+            $nextPageLinkId     = $viewClassName::getNextPageLinkId();
+            $redirectAfterSave  = $viewClassName::redirectAfterSave();
+            $script             = $this->getSaveAjaxString($formName, $redirectAfterSave, $ajaxOptions);
+            // Begin Not Coding Standard
+            $script             = $scriptPrefix . " (linkId == '" . $nextPageLinkId . "')
                                     {
                                         " . $script . "
                                     }";
+            // End Not Coding Standard
             return $script;
         }
 
@@ -196,27 +198,27 @@
                                                         $progressPerStep, $stepCount)
         {
             $nextPageClassName  = static::resolveNextPageClassName($stepCount);
-            $ajaxOptions 		= $viewClassName::resolveAdditionalAjaxOptions($formName, $validationInputId,
-                                                                                $progressPerStep, $stepCount, $nextPageClassName);
+            $ajaxOptions        = $viewClassName::resolveAdditionalAjaxOptions($formName, $validationInputId,
+                                                                                $progressPerStep, $stepCount, $nextPageClassName, $this->model);
             return $ajaxOptions;
         }
 
         protected function registerPreviousPageScript($viewClassName, $validationInput, $progressPerStep, $stepCount)
         {
-            $previousPageLinkId	        = $viewClassName::getPreviousPageLinkId();
-            $scriptName	                = "clickflow." . $previousPageLinkId;
-            $eventName	                = "click." . $previousPageLinkId;
-            $previousPageClassName	    = static::resolvePreviousPageClassName($stepCount);
+            $previousPageLinkId         = $viewClassName::getPreviousPageLinkId();
+            $scriptName                 = "clickflow." . $previousPageLinkId;
+            $eventName                  = "click." . $previousPageLinkId;
+            $previousPageClassName      = static::resolvePreviousPageClassName($stepCount);
             if (!isset($previousPageClassName))
             {
-                $script 	= $this->resolvePreviousPageScriptForFirstStep($previousPageLinkId);
+                $script     = $this->resolvePreviousPageScriptForFirstStep($previousPageLinkId);
             }
             else
             {
-                $script 	= $this->resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInput, $progressPerStep, $stepCount);
+                $script     = $this->resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInput, $progressPerStep, $stepCount);
             }
 
-            $script 		= "
+            $script         = "
             $('#" . $previousPageLinkId . "').unbind('" . $eventName . "').bind('" . $eventName . "', function()
             {
                 " . $script . "
@@ -226,7 +228,7 @@
 
         protected function resolvePreviousPageScriptForFirstStep()
         {
-            $script 	= "
+            $script     = "
                             url = '" . $this->resolveSaveRedirectToListUrl() . "';
                             window.location.href = url;
                             return false;";
@@ -236,9 +238,9 @@
         protected function resolvePreviousPageScriptForStep($viewClassName, $previousPageClassName, $validationInputId,
                                                             $progressPerStep, $stepCount)
         {
-            $validationScenario 	= $previousPageClassName::resolveValidationScenario();
-            $progress 				= $stepCount * $progressPerStep;
-            $script 	            = "
+            $validationScenario     = $previousPageClassName::resolveValidationScenario();
+            $progress               = $stepCount * $progressPerStep;
+            $script                 = "
                             $('#" . $validationInputId . "').val('" . $validationScenario . "');
                             $('#" . $previousPageClassName . "').show();
                             $('#" . $viewClassName . "').hide();
@@ -246,7 +248,7 @@
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step')
                                                                     .prev().addClass('current-step');
                             return false;
-					";
+                    ";
             $viewClassName::resolvePreviousPageScript($script);
             return $script;
         }
@@ -269,6 +271,52 @@
         protected function resolvePreviousPageClassName($currentId)
         {
             return ArrayUtil::getArrayValue(static::resolveContainingViewClassNames(), $currentId - 1 );
+        }
+
+        protected function resolvePreviewContainerContent()
+        {
+            $this->registerPreviewIFrameContainerCloserLinkClick();
+            $content  = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),Zurmo::t('Core', 'Close')),
+                '#', array('id' => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID, 'class' => 'default-btn'));
+            $content .= ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
+            $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
+            return $content;
+        }
+
+        protected function resolvePreviewIFrameHtmlOptions()
+        {
+            return array('id' => BuilderCanvasWizardView::PREVIEW_IFRAME_ID,
+                // we set it to about:blank instead of preview url to save request and to also have some
+                // sort of basic html structure there which we can replace.
+                'src'         => 'about:blank',
+                'width'       => '100%',
+                'height'      => '100%',
+                'seamless'    => 'seamless',
+                'frameborder' => 0);
+        }
+
+        protected function resolvePreviewIFrameContainerHtmlOptions()
+        {
+            return array('id'    => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID,
+                'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
+                'style' => 'display:none');
+        }
+
+        protected function wrapContentInDiv(& $content, $htmlOptions = array())
+        {
+            $content = ZurmoHtml::tag('div', $htmlOptions, $content);
+        }
+
+        protected function registerPreviewIFrameContainerCloserLinkClick()
+        {
+            Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
+                $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").unbind("click.reviewIFrameContainerCloserLinkClick")
+                                                    .bind("click.reviewIFrameContainerCloserLinkClick", function(event)
+                 {
+                    $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
+                    $("body").removeClass("previewing-builder");
+                    event.preventDefault();
+                 });');
         }
     }
 ?>

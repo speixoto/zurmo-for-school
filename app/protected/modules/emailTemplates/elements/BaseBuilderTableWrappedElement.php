@@ -46,7 +46,7 @@
         protected function resolveWrapperNonEditableByContentAndProperties($content, array $customDataAttributes)
         {
             // these are container elements, we wrap them in tables instead of divs
-            if($this->shouldWrapCenterTagAroundTdForNonEditable)
+            if ($this->shouldWrapCenterTagAroundTdForNonEditable)
             {
                 $content    = $this->resolveWrapperCenterNonEditableByContent($content);
             }

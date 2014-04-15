@@ -94,7 +94,7 @@
                 //We do not want to list properties from CustomFieldData objects
                 //This is also the case for related models, not only for custom fields
                 elseif ($this->model->isRelation($attributeName) &&
-                        $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE)
+                        $this->isHasOneVariationNotOwnedRelation($attributeName))
                 {
                     //Non-owned relation
                     if ($this->model->{$attributeName}->id > 0)
@@ -154,7 +154,7 @@
                 //We do not want to list properties from CustomFieldData objects
                 //This is also the case for related models, not only for custom fields
                 elseif ($this->model->isRelation($attributeName) &&
-                    $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE)
+                        $this->isHasOneVariationNotOwnedRelation($attributeName))
                 {
                     //Non-owned relation
                     if ($this->model->{$attributeName}->id > 0)
@@ -224,6 +224,22 @@
             if ($this->model->isOwnedRelation($attributeName) &&
                 ($this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
                  $this->model->getRelationType($attributeName) == RedBeanModel::HAS_MANY_BELONGS_TO))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param $attributeName
+         * @return bool
+         */
+        protected function isHasOneVariationNotOwnedRelation($attributeName)
+        {
+            assert('is_string($attributeName)');
+            if (!$this->model->isOwnedRelation($attributeName) &&
+                ($this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
+                    $this->model->getRelationType($attributeName) == RedBeanModel::HAS_MANY_BELONGS_TO))
             {
                 return true;
             }

@@ -42,11 +42,11 @@
         public function getTitle()
         {
             $title = parent::getTitle() .  ' - ';
-            if($this->model->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
+            if ($this->model->builtType == EmailTemplate::BUILT_TYPE_PLAIN_TEXT_ONLY)
             {
                 $title .= Zurmo::t('EmailTemplatesModule', 'Plain Text');
             }
-            elseif($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
+            elseif ($this->model->builtType == EmailTemplate::BUILT_TYPE_PASTED_HTML)
             {
                 $title .= Zurmo::t('EmailTemplatesModule', 'HTML');
             }

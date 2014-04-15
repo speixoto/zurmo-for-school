@@ -130,7 +130,7 @@
 
         protected function renderMetaTag()
         {
-            return '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />';
+            return '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'; // Not Coding Standard
         }
 
         protected function renderCss()
@@ -178,7 +178,6 @@
                 "</style>";
                 return $iconsFont;
             }
-
         }
 
         protected function resolveCanvasGlobalCssPath()

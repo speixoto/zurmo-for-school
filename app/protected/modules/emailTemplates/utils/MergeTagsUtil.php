@@ -57,7 +57,7 @@
 
         public static function resolveAttributeStringToMergeTagString($attributeString)
         {
-            $string = preg_replace('/(?<=\\w)(?=[A-Z])/', static::CAPITAL_DELIMITER . "$1", $attributeString);
+            $string = preg_replace('/(?<=\\w)(?=[A-Z])/', static::CAPITAL_DELIMITER . "$1", $attributeString); // Not Coding Standard
             $string = strtolower($string);
             $string = str_replace(FormModelUtil::RELATION_DELIMITER, static::PROPERTY_DELIMITER, $string);
             $string = str_replace(static::PROPERTY_DELIMITER . static::CAPITAL_DELIMITER, static::PROPERTY_DELIMITER, $string);

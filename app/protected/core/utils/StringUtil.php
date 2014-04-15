@@ -185,5 +185,20 @@
         {
             return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
         }
+
+        /**
+         * Add a default scheme to url
+         * @param $url
+         * @param string $scheme
+         * @return string
+         */
+        public static function addSchemeIfMissing($url, $scheme = 'http')
+        {
+            if (!preg_match("~^(?:f|ht)tps?://~i", $url))
+            {
+                $url = $scheme ."://" . $url;
+            }
+            return $url;
+        }
     }
 ?>

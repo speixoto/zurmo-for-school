@@ -40,13 +40,12 @@
 
     class LowercaseSanitizerUtil extends SanitizerUtil
     {
-
         /**
          * @param $rowBean
          */
         public function analyzeByRow(RedBean_OODBBean $rowBean)
         {
-            $pattern = '/^[^A-Z]+$/';
+            $pattern = '/^[^A-Z]+$/'; // Not Coding Standard
             if (!preg_match($pattern, $rowBean->{$this->columnName}))
             {
                 $label = Zurmo::t('ImportModule', 'Is not lowercase. This value will converted to lowercase upon import.');

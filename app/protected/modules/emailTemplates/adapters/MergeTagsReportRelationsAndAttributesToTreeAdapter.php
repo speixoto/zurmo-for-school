@@ -79,7 +79,7 @@
         protected function resolveSpecialTagNodes()
         {
             $specialTagNodesData = array();
-            foreach($this->getSpecialTagsData() as $data)
+            foreach ($this->getSpecialTagsData() as $data)
             {
                 $node = array(  'id'           => self::makeNodeId($data['id']),
                                 'text'         => $data['label'],

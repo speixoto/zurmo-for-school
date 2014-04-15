@@ -74,7 +74,7 @@
                         static::resolveSerializedDataForTemplateByPostData(static::$data, static::$emailTemplate);
                         continue;
                     }
-                    else if ($postDataValue != $originalValue)
+                    elseif ($postDataValue != $originalValue)
                     {
                         if ($member == 'isDraft')
                         {
@@ -88,8 +88,8 @@
 
         protected static function resolveSerializedDataForTemplateByPostData()
         {
-            $unserializedData   = array();
-            $postUnserializedData = static::$data['serializedData'];
+            $unserializedData           = array();
+            $postUnserializedData       = ArrayUtil::getArrayValue(static::$data, 'serializedData');
             $templateUnserializedData   = CJSON::decode(static::$emailTemplate->serializedData);
             if (empty($templateUnserializedData))
             {
@@ -117,7 +117,7 @@
                 unset($unserializedData['icon']);
                 $unserializedData['baseTemplateId'] = $postUnserializedData['baseTemplateId'];
             }
-            else if ($templateUnserializedData != $postUnserializedData)
+            elseif ($templateUnserializedData != $postUnserializedData)
             {
                 // baseTemplateId remains same, probably a post from canvas
                 if (isset($postUnserializedData['dom']) && isset($templateUnserializedData['dom']))
@@ -149,9 +149,10 @@
 
         protected static function resolveOwner()
         {
-            if (static::$data['ownerId'] && static::$data['ownerId'] != static::$emailTemplate->owner->id)
+            $ownerId    = ArrayUtil::getArrayValue(static::$data, 'ownerId');
+            if (isset($ownerId) && $ownerId != static::$emailTemplate->owner->id)
             {
-                $owner                  = User::getById((int)static::$data['ownerId']);
+                $owner                  = User::getById((int)$ownerId);
                 static::$emailTemplate->owner   = $owner;
             }
         }

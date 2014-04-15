@@ -147,6 +147,16 @@
             return $searchAttributeData;
         }
 
+        protected function getSortAttributeForDataProvider()
+        {
+            return 'startDateTime';
+        }
+
+        protected function resolveSortDescendingForDataProvider()
+        {
+            return true;
+        }
+
         /**
          * @return string
          */

@@ -64,6 +64,7 @@
          */
         public static function resolveHtmlByEmailTemplateModel(EmailTemplate $emailTemplate, $renderForCanvas = false, OwnedSecurableItem $attachedMergeTagModel = null)
         {
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $serializedData = $emailTemplate->serializedData;
             $resolvedHtml   = static::resolveHtmlBySerializedData($serializedData, $renderForCanvas, $attachedMergeTagModel, $emailTemplate->type, $emailTemplate->language);
             return $resolvedHtml;
@@ -110,6 +111,10 @@
             $properties     = null;
             $content        = null;
             $canvasData     = reset($dom);
+            if (!is_array($canvasData))
+            {
+                return null;
+            }
             extract($canvasData);
             $id             = key($dom);
             $resolvedHtml   = BuilderElementRenderUtil::renderNonEditable($class, $renderForCanvas, false, $id, $properties, $content);
@@ -123,7 +128,6 @@
             }
             return $resolvedHtml;
         }
-
 
         /**
          * Resolve merge tags present in html

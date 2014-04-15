@@ -565,5 +565,19 @@
             $this->assertEquals($compareData,       $data);
             $this->assertEquals($compareHeaderData, $headerData);
         }
+
+        public function testHasOneAndNotOwnedVariants()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $adapter = new ModelToExportAdapter($super);
+            $data        = $adapter->getData();
+            $headerData  = $adapter->getHeaderData();
+            $this->assertTrue(in_array($super->getAttributeLabel('language'), $headerData));
+            $this->assertTrue(in_array($super->getAttributeLabel('locale'), $headerData));
+            $this->assertTrue(in_array($super->getAttributeLabel('timeZone'), $headerData));
+            $this->assertTrue(in_array($super->getAttributeLabel('role'), $headerData));
+            $this->assertEquals(count($headerData), count($data));
+        }
     }
 ?>

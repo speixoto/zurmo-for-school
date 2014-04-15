@@ -76,7 +76,7 @@
          * @param null $params
          * @return string
          */
-        public static function renderNonEditable($className, $renderForCanvas = false, $wrapElementInRow = false,
+        public static function renderNonEditable($className, $renderForCanvas = false, $wrapElementInRow = 0,
                                                  $id = null, $properties = null, $content = null, $params = null)
         {
             $element        = static::resolveElement($className, $renderForCanvas, $id, $properties, $content, $params);
@@ -185,13 +185,10 @@
             $modelForm->setAttributes($builderModelForm);
             if (!$modelForm->validate())
             {
-
                 foreach ($modelForm->getErrors() as $attribute => $errors)
                 {
                     $errorData[ZurmoHtml::activeId($modelForm, $attribute)] = $errors;
                 }
-
-
             }
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);

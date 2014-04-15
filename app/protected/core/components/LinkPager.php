@@ -45,7 +45,7 @@
          * @var array params to pass to the pagination class.
          * params are utilized during createURL
          */
-         public $paginationParams = array();
+         public $paginationParams;
 
          public $route;
 
@@ -64,8 +64,15 @@
         public function init()
         {
             parent::init();
-            $this->getPages()->params = $this->paginationParams;
-            $this->getPages()->route  = $this->route;
+            if (isset($this->paginationParams))
+            {
+                assert('is_array($this->paginationParams)');
+                $this->getPages()->params = $this->paginationParams;
+            }
+            if (isset($this->route))
+            {
+                $this->getPages()->route  = $this->route;
+            }
         }
     }
 ?>

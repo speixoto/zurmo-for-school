@@ -47,9 +47,11 @@
             $metadata = array(
                 'Product' => array(
                     'availableOperatorsTypes' =>
-                        array('type' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                        array('type'           => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                              'priceFrequency' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'triggerValueElementTypes' =>
-                        array('type' => 'ProductTemplateTypeStaticDropDownForWizardModel'),
+                        array('type'           => 'ProductTemplateTypeStaticDropDownForWizardModel',
+                              'priceFrequency' => 'ProductTemplatePriceFrequencyStaticDropDownForWizardModel'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

@@ -21,6 +21,18 @@
   <td>javascript{Math.floor(Math.random()*11000)}</td>
   <td>randomSuffix</td>
 </tr>
+<!--store current date-->
+<tr>
+	<td>storeGlobal</td>
+	<td>javascript{new Date().getDate().toString()}</td>
+	<td>date</td>
+</tr>
+<!--store current month-->
+<tr>
+	<td>storeGlobal</td>
+	<td>javascript{(new Date().getMonth()) + 1}</td>
+	<td>month</td>
+</tr>
 <!--create account to link with opportunity-->
 <tr>
   <td>open</td>
@@ -232,24 +244,9 @@
   <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=Opportunity_closeDate</td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
-</tr>
-<tr>
-  <td>click</td>
-  <td>//div[@id='ui-datepicker-div']/table/tbody/tr/td[3]/a</td>
-  <td></td>
-</tr>
-<tr>
-  <td>waitForCondition</td>
-  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-  <td>30000</td>
+  <td>type</td>
+  <td>Opportunity_closeDate</td>
+  <td>${month}/${date}/14</td>
 </tr>
 <tr>
   <td>select</td>
@@ -370,7 +367,7 @@
 <tr>
 	<td>assertText</td>
 	<td>//div[@id='OpportunityDetailsPortletView']/div/div/div/table/tbody/tr[4]/td</td>
-	<td>3/4/14</td>
+	<td>${month}/${date}/14</td>
 </tr>
 <tr>
 	<td>assertText</td>

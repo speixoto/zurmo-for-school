@@ -81,7 +81,7 @@
             $name                           = null;
             $builttype                      = null;
             $serializeddata                 = null;
-            $emailTemplate                  =  ZurmoRedBean::getRow('select name,builttype,serializeddata from emailtemplate where id =' . $id);
+            $emailTemplate                  =  ZurmoRedBean::getRow('select name, builttype, serializeddata from emailtemplate where id =' . $id);
             if (empty($emailTemplate))
             {
                 throw new NotFoundException("Unable to load model for id: ${id}");
@@ -128,7 +128,7 @@ public function make()
 
         protected function resolveFunctionNameFromTemplateName($name)
         {
-            preg_match("~^(\d+)~", $name, $columnCount);
+            preg_match("~^(\d+)~", $name, $columnCount);    // Not Coding Standard
             if (isset($columnCount[1]))
             {
                 $columnCount    = NumberToWordsUtil::convert($columnCount[1]);

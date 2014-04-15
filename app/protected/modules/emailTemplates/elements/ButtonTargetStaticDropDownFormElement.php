@@ -53,6 +53,5 @@
             );
             return $targets;
         }
-
     }
 ?>

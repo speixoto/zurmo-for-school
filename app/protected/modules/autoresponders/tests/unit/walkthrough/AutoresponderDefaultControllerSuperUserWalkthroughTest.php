@@ -47,7 +47,6 @@
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-
             EmailTemplateTestHelper::create('EmailTemplate 01', 'Subject 01', 'Contact', 'Html Content 01',
                                             'Text Content 01');
             EmailTemplateTestHelper::create('EmailTemplate 02', 'Subject 02', 'Contact', 'Html Content 02',
@@ -304,8 +303,8 @@
                                                 'name="Autoresponder[enableTracking]" disabled="disabled" value="1" ' .
                                                 'type="checkbox"') !== false);
             $this->assertTrue(strpos($content, '<th>Attachments</th>') !== false);
-            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, 'Text Content 04') !== false);
             $this->assertTrue(strpos($content, 'iframe') !== false); //Now Html is in an iframe
         }
@@ -370,8 +369,8 @@
             $this->assertTrue(strpos($content, '>EmailTemplate 02</option>') !== false);
             $this->assertTrue(strpos($content, '>EmailTemplate 03</option>') !== false);
             $this->assertTrue(strpos($content, '>EmailTemplate 04</option>') !== false);
-            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab1">Text Content</a>') !== false);
-            $this->assertTrue(strpos($content, '<a href="#tab2">Html Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a href="#tab1">Text Content</a>') !== false);
+            $this->assertTrue(strpos($content, '<a class="active-tab" href="#tab2">Html Content</a>') !== false);
             $this->assertTrue(strpos($content, 'class="simple-link" ' .
                                                 'href="#">MergeTag Guide</a>') !== false);
             $this->assertTrue(strpos($content, '<textarea id="Autoresponder_textContent" ' .

@@ -155,8 +155,6 @@
             return $title . $content;
         }
 
-
-
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
             if ($this->alwaysShowErrorSummary())

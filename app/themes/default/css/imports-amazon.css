@@ -2397,7 +2397,7 @@ table.configuration-list tr:last-child td {
   width: 50%;
   float: left;
   display: inline-block !important;
-  clear: none;
+  clear: none !important;
 }
 .color-swatch span,
 .texture-swatch span {
@@ -2409,7 +2409,7 @@ table.configuration-list tr:last-child td {
 .texture-swatch label {
   float: none !important;
   top: -3px;
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 .color-swatch input,
 .texture-swatch input {
@@ -7538,7 +7538,7 @@ a.user-link {
 }
 .button-actions {
   cursor: text;
-  z-index: 999999;
+  z-index: 9999;
   color: #EFEFEF;
   display: none;
   list-style: none;
@@ -11410,7 +11410,7 @@ a + .project-stats {
 #builder .right-column .right-side-edit-view-panel {
   background: none;
   padding: 0;
-  overflow: scroll;
+  overflow: hidden;
 }
 #builder .form-fields td {
   padding-left: 0 !important;
@@ -11682,22 +11682,52 @@ a + .project-stats {
 div[id^="builderimageelement"] ~ .redactor_box iframe {
   background: url("../images/psd-light.png") left top repeat;
 }
+#SelectBaseTemplateForEmailTemplateWizardView > .left-column {
+  padding: 0 !important;
+}
+#SelectBaseTemplateForEmailTemplateWizardView .mini-pillbox {
+  padding: 0 15px;
+}
 #chosen-layout {
-  text-align: center;
-  width: 50%;
-  margin: 0 auto 30px auto;
+  margin: 30px auto;
 }
 #chosen-layout i {
   font-size: 400px;
   line-height: 60%;
+  float: left;
+  width: 25%;
+  text-align: center;
+  border-right: 1px solid #ccc;
+  margin-right: 30px;
+}
+#chosen-layout i:after {
+  position: relative;
+  top: -15px;
+}
+#chosen-layout p {
+  font-size: 14px;
+  line-height: 24px;
+  color: #555;
+  font-weight: bold;
+  float: left;
+  width: 65%;
 }
 #chosen-layout h3 {
-  text-align: left;
+  padding-top: 30px;
+  font-size: 18px;
 }
-#chosen-layout .simple-link {
-  display: block;
-  text-align: right;
+#chosen-layout #chooser-overlay {
+  margin-top: 30px;
 }
+.template-pager {
+  text-align: center;
+  border-top: 1px solid #fff;
+}
+.template-pager div {
+  border-top: 1px solid #fff;
+  padding-top: 10px;
+}
+#saved-templates,
 #templates {
   display: none;
   width: 100%;
@@ -11707,21 +11737,93 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   right: 0;
   bottom: 0;
 }
-#templates .templates-chooser-list li {
+#saved-templates .templates-chooser-list > ul > li,
+#templates .templates-chooser-list > ul > li {
   margin: 0 0 75px 0;
   width: 20%;
   padding: 0 15px;
 }
+#saved-templates .z-button,
 #templates .z-button {
   margin-top: 10px;
   float: right;
 }
+#saved-templates .secondary-button,
 #templates .secondary-button {
   margin-top: 10px;
   float: left;
 }
+#saved-templates .mini-pillbox,
 #templates .mini-pillbox {
   margin-bottom: 30px;
+}
+#saved-templates .closeme,
+#templates .closeme {
+  line-height: 24px;
+  float: right;
+}
+#saved-templates .closeme i,
+#templates .closeme i {
+  font-weight: normal !important;
+  font-size: 26px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  line-height: 1;
+  border: none;
+  margin-right: 5px;
+  outline: none !important;
+  display: inline-block;
+  position: relative;
+  top: 0px;
+  color: #257282;
+  margin-top: 0;
+}
+#saved-templates li,
+#templates li {
+  position: relative;
+}
+#saved-templates .template-info,
+#templates .template-info {
+  position: absolute;
+  right: 18px;
+  top: 0px;
+}
+#saved-templates .template-info .button-actions,
+#templates .template-info .button-actions {
+  width: 225px;
+}
+#saved-templates .template-info .button-actions li,
+#templates .template-info .button-actions li {
+  width: 100%;
+}
+#saved-templates .template-info h4,
+#templates .template-info h4 {
+  text-align: left;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+#saved-templates .template-info p,
+#templates .template-info p {
+  white-space: normal;
+  line-height: 1.2;
+}
+#saved-templates .template-info .after-form-details-content,
+#templates .template-info .after-form-details-content {
+  margin-top: 15px;
+  text-align: left;
+  color: #ccc !important;
+  padding-left: 0;
+}
+#saved-templates .template-info .button-actions,
+#templates .template-info .button-actions {
+  top: 30px;
+}
+#saved-templates .template-info .icon-trigger:before,
+#templates .template-info .icon-trigger:before {
+  top: 13px;
+}
+#saved-templates .template-info .icon-details,
+#templates .template-info .icon-details {
+  margin-right: 0;
 }
 @media all and (max-width: 1000px) {
   #templates .templates-chooser-list li {
@@ -11732,9 +11834,6 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   #templates .templates-chooser-list li {
     width: 33.33%;
   }
-}
-.templates-chooser-list {
-  margin-bottom: 30px;
 }
 .templates-chooser-list > h3 {
   font-weight: normal;
@@ -11753,29 +11852,7 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   border-bottom: 1px solid #26354A;
   margin-right: 30px !important;
 }
-.templates-chooser-list li {
-  list-style: none;
-  width: 150px;
-  height: 150px;
-  float: left;
-  text-align: center;
-  position: relative;
-  margin: 0 15px 15px 0;
-  cursor: pointer;
-}
-.templates-chooser-list li input[type="radio"] {
-  visibility: hidden;
-  display: none;
-}
-.templates-chooser-list li input[type="radio"]:checked + label {
-  overflow: hidden;
-  -webkit-box-shadow: 0 0 3px 0px #26354A;
-  -moz-box-shadow: 0 0 3px 0px #26354A;
-  -ms-box-shadow: 0 0 3px 0px #26354A;
-  -o-box-shadow: 0 0 3px 0px #26354A;
-  box-shadow: 0 0 3px 0px #26354A;
-}
-.templates-chooser-list li label {
+.templates-chooser-list label {
   display: block;
   width: 100%;
   height: 100%;
@@ -11787,7 +11864,7 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   border-radius: 2px;
   overflow: hidden;
 }
-.templates-chooser-list h4 {
+.templates-chooser-list label h4 {
   width: 100%;
   position: absolute;
   bottom: 0;
@@ -11804,16 +11881,38 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   font-size: 13px;
   font-weight: bold;
 }
-.templates-chooser-list img {
-  margin: 5px auto 0 auto;
-}
-.templates-chooser-list i {
+.templates-chooser-list label i {
   display: block;
   text-align: center;
   font-size: 130px;
   line-height: 1px;
   margin-top: 50px;
   color: #ddd;
+}
+.templates-chooser-list img {
+  margin: 5px auto 0 auto;
+}
+.base-template-selection {
+  list-style: none;
+  width: 150px;
+  height: 150px;
+  float: left;
+  text-align: center;
+  position: relative;
+  margin: 0 15px 15px 0;
+  cursor: pointer;
+}
+.base-template-selection input[type="radio"] {
+  visibility: hidden;
+  display: none;
+}
+.base-template-selection input[type="radio"]:checked + label {
+  overflow: hidden;
+  -webkit-box-shadow: 0 0 3px 0px #26354A;
+  -moz-box-shadow: 0 0 3px 0px #26354A;
+  -ms-box-shadow: 0 0 3px 0px #26354A;
+  -o-box-shadow: 0 0 3px 0px #26354A;
+  box-shadow: 0 0 3px 0px #26354A;
 }
 .MergeTagsView {
   padding-right: 15px;
@@ -12759,156 +12858,156 @@ body.flat-cement .juiportlet-columns .juiportlet-widget .pager {
 .body-texture .AppContent {
   background: none !important;
 }
-body.light-noise-diagonal,
+html.light-noise-diagonal,
 .texture-swatch.light-noise-diagonal .background-texture-1 {
   background: url("../images/patterns/light-noise-diagonal/light-noise-diagonal.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.light-noise-diagonal .AppContent,
+html.light-noise-diagonal .AppContent,
 .texture-swatch.light-noise-diagonal .background-texture-1 .AppContent {
   background: none !important;
 }
-body.french-stucco,
+html.french-stucco,
 .texture-swatch.french-stucco .background-texture-1 {
   background: url("../images/patterns/french-stucco/french-stucco.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.french-stucco .AppContent,
+html.french-stucco .AppContent,
 .texture-swatch.french-stucco .background-texture-1 .AppContent {
   background: none !important;
 }
-body.exclusive-paper,
+html.exclusive-paper,
 .texture-swatch.exclusive-paper .background-texture-1 {
   background: url("../images/patterns/exclusive-paper/exclusive-paper.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.exclusive-paper .AppContent,
+html.exclusive-paper .AppContent,
 .texture-swatch.exclusive-paper .background-texture-1 .AppContent {
   background: none !important;
 }
-body.diagonal-noise,
+html.diagonal-noise,
 .texture-swatch.diagonal-noise .background-texture-1 {
   background: url("../images/patterns/diagonal-noise/diagonal-noise.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.diagonal-noise .AppContent,
+html.diagonal-noise .AppContent,
 .texture-swatch.diagonal-noise .background-texture-1 .AppContent {
   background: none !important;
 }
-body.paper,
+html.paper,
 .texture-swatch.paper .background-texture-1 {
   background: url("../images/patterns/paper/paper.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.paper .AppContent,
+html.paper .AppContent,
 .texture-swatch.paper .background-texture-1 .AppContent {
   background: none !important;
 }
-body.light-toast,
+html.light-toast,
 .texture-swatch.light-toast .background-texture-1 {
   background: url("../images/patterns/light-toast/light-toast.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.light-toast .AppContent,
+html.light-toast .AppContent,
 .texture-swatch.light-toast .background-texture-1 .AppContent {
   background: none !important;
 }
-body.black-linen-2,
+html.black-linen-2,
 .texture-swatch.black-linen-2 .background-texture-1 {
   background: url("../images/patterns/black-linen-v2/black-linen-v2.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.black-linen-2 .AppContent,
+html.black-linen-2 .AppContent,
 .texture-swatch.black-linen-2 .background-texture-1 .AppContent {
   background: none !important;
 }
-body.carbon-fibre,
+html.carbon-fibre,
 .texture-swatch.carbon-fibre .background-texture-1 {
   background: url("../images/patterns/carbon-fibre/carbon-fibre.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.carbon-fibre .AppContent,
+html.carbon-fibre .AppContent,
 .texture-swatch.carbon-fibre .background-texture-1 .AppContent {
   background: none !important;
 }
-body.cartographer,
+html.cartographer,
 .texture-swatch.cartographer .background-texture-1 {
   background: url("../images/patterns/cartographer/cartographer.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.cartographer .AppContent,
+html.cartographer .AppContent,
 .texture-swatch.cartographer .background-texture-1 .AppContent {
   background: none !important;
 }
-body.circles,
+html.circles,
 .texture-swatch.circles .background-texture-1 {
   background: url("../images/patterns/circles/circles.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.circles .AppContent,
+html.circles .AppContent,
 .texture-swatch.circles .background-texture-1 .AppContent {
   background: none !important;
 }
-body.concrete-wall,
+html.concrete-wall,
 .texture-swatch.concrete-wall .background-texture-1 {
   background: url("../images/patterns/concrete-wall/concrete-wall.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.concrete-wall .AppContent,
+html.concrete-wall .AppContent,
 .texture-swatch.concrete-wall .background-texture-1 .AppContent {
   background: none !important;
 }
-body.denim,
+html.denim,
 .texture-swatch.denim .background-texture-1 {
   background: url("../images/patterns/denim/denim.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.denim .AppContent,
+html.denim .AppContent,
 .texture-swatch.denim .background-texture-1 .AppContent {
   background: none !important;
 }
-body.low-contrast-linen,
+html.low-contrast-linen,
 .texture-swatch.low-contrast-linen .background-texture-1 {
   background: url("../images/patterns/low-contrast-linen/low-contrast-linen.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.low-contrast-linen .AppContent,
+html.low-contrast-linen .AppContent,
 .texture-swatch.low-contrast-linen .background-texture-1 .AppContent {
   background: none !important;
 }
-body.wood,
+html.wood,
 .texture-swatch.wood .background-texture-1 {
   background: url("../images/patterns/wood-pattern/wood-pattern.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.wood .AppContent,
+html.wood .AppContent,
 .texture-swatch.wood .background-texture-1 .AppContent {
   background: none !important;
 }
-body.whitey,
+html.whitey,
 .texture-swatch.whitey .background-texture-1 {
   background: url("../images/patterns/whitey/whitey.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.whitey .AppContent,
+html.whitey .AppContent,
 .texture-swatch.whitey .background-texture-1 .AppContent {
   background: none !important;
 }
-body.fabric-plaid,
+html.fabric-plaid,
 .texture-swatch.fabric-plaid .background-texture-1 {
   background: url("../images/patterns/fabric-plaid/fabric-plaid.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.fabric-plaid .AppContent,
+html.fabric-plaid .AppContent,
 .texture-swatch.fabric-plaid .background-texture-1 .AppContent {
   background: none !important;
 }
-body.cartographer-light,
+html.cartographer-light,
 .texture-swatch.cartographer-light .background-texture-1 {
   background: url("../images/patterns/cartographer-light/cartographer-light.png") left top repeat !important;
   background-attachment: fixed;
 }
-body.cartographer-light .AppContent,
+html.cartographer-light .AppContent,
 .texture-swatch.cartographer-light .background-texture-1 .AppContent {
   background: none !important;
 }

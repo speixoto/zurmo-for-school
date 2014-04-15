@@ -141,7 +141,7 @@
         {
             $this->wrapContentInTableCell($hiddenElements, array('colspan' => 2));
             $this->wrapContentInTableRow($hiddenElements);
-            $content                .= $hiddenElements;
+            $content .= $hiddenElements;
         }
 
         protected function wrapContentForLeftSideBar(& $content, $prefix = null)
@@ -178,18 +178,18 @@
         }
 
         public static function resolveAdditionalAjaxOptions($formName, $validationInputId, $progressPerStep,
-                                                            $stepCount, $nextPageClassName)
+                                                            $stepCount, $nextPageClassName, $model)
         {
             $errorCallback          = static::resolveErrorAjaxCallback();
             $successCallback        = static::resolveSuccessAjaxCallback($formName, $validationInputId, $progressPerStep,
-                                                                            $stepCount, $nextPageClassName);
+                                                                            $stepCount, $nextPageClassName, $model);
             $completeCallback       = static::resolveCompleteAjaxCallback($formName);
             $ajaxArray              = CMap::mergeArray($errorCallback, $successCallback, $completeCallback);
             return $ajaxArray;
         }
 
         protected static function resolveSuccessAjaxCallback($formName, $validationInputId, $progressPerStep,
-                                                             $stepCount, $nextPageClassName)
+                                                             $stepCount, $nextPageClassName, $model)
         {
             $ajaxArray          = array();
             if (isset($nextPageClassName))
@@ -197,7 +197,7 @@
                 $callback           = static::resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                                             $validationInputId,
                                                                                             $progressPerStep,
-                                                                                            $stepCount);
+                                                                                            $stepCount, $model);
                 $callback           = "js:function(data)
                                         {
                                             ${callback}
@@ -209,10 +209,10 @@
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                               $validationInputId, $progressPerStep,
-                                                                              $stepCount)
+                                                                              $stepCount, $model)
         {
             $ownClassName   = get_called_class();
-            $progress       = ($stepCount + 1) * $progressPerStep;
+            $progress       = ($stepCount + 2) * $progressPerStep;
             $script         = "
                         $('#" . $validationInputId . "').val('" .  $nextPageClassName::resolveValidationScenario() . "');
                         $('#" . $ownClassName . "').hide();
@@ -253,6 +253,7 @@
                                             LabelUtil::getTranslationParamsForAllModules());
             }
             $ajaxArray                  = array();
+            // Begin Not Coding Standard
             $ajaxArray['error']       = "js:function(data)
                                         {
                                             $('#FlashMessageBar').jnotifyAddMessage({
@@ -262,6 +263,7 @@
                                                 showIcon: false,
                                             });
                                         }";
+            // End Not Coding Standard
             return $ajaxArray;
         }
 
@@ -297,7 +299,6 @@
 
         public static function resolveValidationScenario()
         {
-
         }
 
         public static function redirectAfterSave()
@@ -307,7 +308,6 @@
 
         public static function resolvePreviousPageScript(& $script)
         {
-
         }
     }
 ?>

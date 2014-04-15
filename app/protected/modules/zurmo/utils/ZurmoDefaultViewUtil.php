@@ -143,7 +143,7 @@
             {
                 $verticalColumns = 2;
             }
-            $aVerticalGridView   = new GridView($verticalColumns, 1,'nav', false);
+            $aVerticalGridView   = new GridView($verticalColumns, 1, 'nav', false);
             $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
             $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
             if (static::$showRecentlyViewed)
@@ -199,7 +199,7 @@
          */
         public static function makeErrorViewForCurrentUser(CController $controller, View $containedView)
         {
-            $aVerticalGridView   = new GridView(1, 1,'nav', false);
+            $aVerticalGridView   = new GridView(1, 1, 'nav', false);
             $aVerticalGridView->setCssClasses( array('AppNavigation')); //navigation left column
             $aVerticalGridView->setView(static::makeMenuView($controller), 0, 0);
 

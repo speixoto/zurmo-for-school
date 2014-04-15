@@ -127,7 +127,5 @@
                 });
                 ", CClientScript::POS_END);
         }
-
-
     }
 ?>

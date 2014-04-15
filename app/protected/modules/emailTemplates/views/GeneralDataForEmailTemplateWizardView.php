@@ -236,9 +236,9 @@
             return $selector;
         }
 
-        public static function resolveTemplateIdHiddenInputJQuerySelector()
+        public static function resolveTemplateIdHiddenInputJQuerySelector($model)
         {
-            $id = ZurmoHtml::activeId(new BuilderEmailTemplateWizardForm(), static::HIDDEN_ID);
+            $id = ZurmoHtml::activeId($model, static::HIDDEN_ID);
             return '#' . $id;
         }
 
@@ -253,6 +253,7 @@
             {
                 return;
             }
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('trashSomeDataOnModuleChangeScript', "
                 $('" . $this->resolveModuleClassNameJQuerySelector() . "').unbind('change.trashSomeDataOnModuleChange')
                                                                 .bind('change.trashSomeDataOnModuleChange', function()
@@ -270,20 +271,19 @@
                         resetBaseTemplateId();
                         resetOriginalBaseBaseTemplateId();
                         resetSerializedDomData();
-                        var params  = JSON.parse('{ \"modelClassName\" : \"' + $(this).val() + '\" }');
-                        reloadPreviouslyCreatedTemplates(params)
-                        preSelectBaseTemplate();
+                        $('#" . SelectBaseTemplateForEmailTemplateWizardView::TEMPLATES_DIV_ID . "').find('.pills').children(':first').click();
                     }
                 });
                 ");
+            // End Not Coding Standard
         }
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                                 $validationInputId, $progressPerStep,
-                                                                                    $stepCount)
+                                                                                    $stepCount, $model)
         {
             $actionId                   = Yii::app()->getController()->getAction()->getId();
-            $templateIdSelector         = static::resolveTemplateIdHiddenInputJQuerySelector();
+            $templateIdSelector         = static::resolveTemplateIdHiddenInputJQuerySelector($model);
             $moduleClassNameSelector    = static::resolveModuleClassNameHiddenInputJQuerySelector();
             $script                     = "if ('create' == '" . $actionId . "')
                                             {
@@ -296,7 +296,7 @@
                                                                                                 $nextPageClassName,
                                                                                                 $validationInputId,
                                                                                                 $progressPerStep,
-                                                                                                $stepCount);
+                                                                                                $stepCount, $model);
             $script                     = $script . PHP_EOL . $parentScript;
             return $script;
         }
