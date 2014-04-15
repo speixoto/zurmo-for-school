@@ -98,7 +98,6 @@
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',            'AutoresponderMergeTagsValidator'),
                     array('textContent',            'AutoresponderMergeTagsValidator'),

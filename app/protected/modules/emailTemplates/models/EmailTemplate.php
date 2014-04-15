@@ -181,7 +181,6 @@
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
                     array('htmlContent',                'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',                'EmailTemplateAtLeastOneContentAreaRequiredValidator'),
                     array('textContent',                'EmailTemplateAtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',                'EmailTemplateMergeTagsValidator'),
                     array('textContent',                'EmailTemplateMergeTagsValidator'),
@@ -428,7 +427,7 @@
             if ($validateAll == false)
             {
                 $metadata               = static::getMetadata();
-                $excludedMembers        = array('textContent', 'htmlContent');
+                $excludedMembers        = array('textContent');
                 $members                = $metadata['EmailTemplate']['members'];
                 // ignore content fields, we validate them inside the wizard form anyway.
                 $attributeNames         = array_diff($members, $excludedMembers);
