@@ -36,6 +36,14 @@
 
     class NotificationMashableInboxRules extends MashableInboxRules
     {
+        const HTML_CONTENT_IFRAME_CLASS             = 'notification-message-html-content-iframe';
+
+        const HTML_CONTENT_IFRAME_DIV_CLASS         = 'notification-message-html-content-div';
+
+        const HTML_CONTENT_WRAPPER_DIV_CLASS        = 'notification-message-html-content';
+
+        const HTML_CONTENT_DIV_TOGGLE_BUTTON_CLASS  = 'notification-message-html-content-toggle';
+
         public function getUnreadCountForCurrentUser()
         {
             $searchAttributeData = $this->getMetadataFilteredByFilteredBy(MashableInboxForm::FILTERED_BY_UNREAD);
@@ -115,8 +123,7 @@
             {
                 if ($model->notificationMessage->htmlContent != null)
                 {
-                    $contentForSpan = ZurmoHtml::tag('iframe', $this->resolveNotificationMessageIFrameHtmlOptions(
-                                                                                $model->notificationMessage->id), '');
+                    $contentForSpan = $this->resolveHtmlContent($model->notificationMessage->id);
                 }
                 elseif ($model->notificationMessage->textContent != null)
                 {
@@ -129,15 +136,6 @@
                                 );
             }
             return $content;
-        }
-
-        protected function resolveNotificationMessageIFrameHtmlOptions($id)
-        {
-            return array('id' => 'notification-message-content',
-                'src' => Yii::app()->createUrl('notifications/default/renderMessageHtmlContent', array('id' => $id)),
-                'width' => '100%',
-                'height'    => '100%',
-                'frameborder' => 0);
         }
 
         public function getModelCreationTimeContent(RedBeanModel $model)
@@ -241,6 +239,83 @@
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);
             return $model->ownerHasReadLatest;
+        }
+
+        protected function resolveHtmlContent($id)
+        {
+            $buttonContent      = $this->resolveHtmlContentDivToggleButton();
+            $iframeContent      = ZurmoHtml::tag('iframe', $this->resolveHtmlContentIFrameHtmlOptions($id), '');
+            $iframeDivContent   = ZurmoHtml::tag('div', $this->resolveHtmlContentDivHtmlOptions() , $iframeContent);
+            $content            = $buttonContent . $iframeDivContent;
+            $content            = ZurmoHtml::tag('div', $this->resolveHtmlContentWrapperDivHtmlOptions(), $content);
+            return $content;
+        }
+
+        protected function resolveHtmlContentWrapperDivHtmlOptions()
+        {
+            return array(
+                'class' => static::HTML_CONTENT_WRAPPER_DIV_CLASS,
+            );
+        }
+
+        protected function resolveHtmlContentDivHtmlOptions()
+        {
+            return array(
+                'class' => static::HTML_CONTENT_IFRAME_DIV_CLASS,
+                'style' => 'display:none;',
+            );
+        }
+
+        protected function resolveHtmlContentIFrameHtmlOptions($id)
+        {
+            return array('class' => static::HTML_CONTENT_IFRAME_CLASS,
+                'src' => 'about:blank',
+                'width' => '100%',
+                'height'    => '100%',
+                'frameborder' => 0,
+                'data-src'  => $this->resolveNotificationMessageHtmlContentUrl($id));
+        }
+
+        protected function resolveNotificationMessageHtmlContentUrl($id)
+        {
+            return Yii::app()->createUrl('notifications/default/renderMessageHtmlContent', array('id' => $id));
+        }
+
+        protected function resolveHtmlContentDivToggleButton()
+        {
+            $this->registerHtmlContentDivToggleScript();
+            $label  = Zurmo::t('NotificationsModule', 'Toggle Content');
+            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
+            $link   = ZurmoHtml::link($label, '#', $this->resolveHtmlContentDivToggleButtonHtmlOptions());
+            return $link;
+        }
+
+        protected function resolveHtmlContentDivToggleButtonHtmlOptions()
+        {
+            return array('class' => 'cancel-button ' . static::HTML_CONTENT_DIV_TOGGLE_BUTTON_CLASS);
+        }
+
+        protected function registerHtmlContentDivToggleScript()
+        {
+            $scriptName = 'toggleHtmlContentIframeDiv';
+            if (!Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                    $('." . static::HTML_CONTENT_DIV_TOGGLE_BUTTON_CLASS . "').unbind('click').bind('click', function(event)
+                    {
+                        var self                = $(this);
+                        var htmlContentDiv      = self.siblings('.notification-message-html-content-div');
+                        var iframe              = htmlContentDiv.find('.notification-message-html-content-iframe');
+                        var iframeSourceUrl     = iframe.attr('src');
+                        var iframeDataSourceUrl = iframe.data('src');
+                        if (!htmlContentDiv.is(':visible') && iframeSourceUrl == 'about:blank')
+                        {
+                            iframe.attr('src', iframeDataSourceUrl);
+                        }
+                        htmlContentDiv.slideToggle();
+                    });
+                    ");
+            }
         }
     }
 ?>
