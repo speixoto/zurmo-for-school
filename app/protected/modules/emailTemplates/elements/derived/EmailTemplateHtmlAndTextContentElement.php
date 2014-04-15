@@ -209,7 +209,7 @@
             {
                 if ($this->resolveSelectiveLoadOfTabs())
                 {
-                    if ($this->isPastedHtmlTemplate() && !empty($this->model->htmlContent))
+                    if ($this->isPastedHtmlTemplate() && (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent))))
                     {
                         return 'html';
                     }
