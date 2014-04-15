@@ -822,6 +822,7 @@ body > .ui-autocomplete{
 	width: 100%;
 	margin: 0 auto 0 auto;
 	position: fixed;
+	-webkit-transform: translateZ(0);
 	top: 0;
 	left: 0;
 	right: 0;
@@ -953,6 +954,7 @@ body > .ui-autocomplete{
 	top: 0;
 	bottom:0;
 	z-index: 9999;
+	-webkit-transform: translateZ(0);
 	//margin-top: @headerHeight;
 	li{
 		list-style:none;
@@ -1412,6 +1414,7 @@ body > .ui-autocomplete{
 	.view-toolbar-container{
 		z-index:222222;
 		position:fixed !important;
+		-webkit-transform: translateZ(0);
 		width: auto;
 		padding-bottom:10px;
 		margin-left: -20px;
@@ -1730,6 +1733,7 @@ caption, th, td {
 #list-view{
 	overflow-x:hidden;
 	position:relative;
+	background: #fefefe;
 	.items-wrapper{
 		border: 1px solid #dfdfdf;
 		//border-bottom: 1px solid #dfdfdf;
@@ -1754,16 +1758,16 @@ caption, th, td {
 	width:100%;
 	border-collapse: collapse;
 	border-spacing: 1px;
-
 	> tbody,
 	> thead{
-		> tr > td{
+		td{
 			border: 1px solid #DFDFDF;
 			border-right:none;
 			border-left:none;
 			vertical-align:middle;
 			padding:10px 5px;
 			word-wrap: break-word;
+			-webkit-transform: translateZ(0); //fix for chrome painting issue/bug
 		}
 	}
 	> tbody,

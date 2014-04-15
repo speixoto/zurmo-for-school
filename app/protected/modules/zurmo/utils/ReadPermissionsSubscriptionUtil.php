@@ -130,10 +130,10 @@
 
         /**
          * Update read subscription table for all users and models
-         * @param bool $partialBuild
          * @param MessageLogger $messageLogger
+         * @return bool
          */
-        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger, $partialBuild = true)
+        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger)
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
@@ -160,7 +160,7 @@
                             $onlyOwnedModels = true;
                         }
                         static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                            Yii::app()->user->userModel, $updateStartTimestamp, $partialBuild, $onlyOwnedModels,
+                            Yii::app()->user->userModel, $updateStartTimestamp, $onlyOwnedModels,
                             $messageLogger);
                     }
                 }
@@ -174,20 +174,19 @@
             Yii::app()->user->userModel = $loggedUser;
             static::setTimeReadPermissionUpdateTimestamp($updateStartTimestamp);
             static::setReadPermissionUpdateStatus(static::STATUS_COMPLETED);
+            return true;
         }
 
         /**
          * Update models in read subscription table based on modelId and userId(userId is used implicitly in getSubsetIds)
          * @param string $modelClassName
          * @param User $user
-         * @param bool $partialBuild
          * @param bool $onlyOwnedModels
          * @param int $updateStartTimestamp
          * @param MessageLogger $messageLogger
          */
         public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
-                                                                                  $partialBuild = true, $onlyOwnedModels = false,
-                                                                                  MessageLogger $messageLogger)
+                                                                                  $onlyOwnedModels = false, MessageLogger $messageLogger)
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             assert('is_int($updateStartTimestamp)');
@@ -213,15 +212,6 @@
                 );
                 $metadata['structure'] .= " AND 2";
             }
-            if ($partialBuild)
-            {
-                $metadata['clauses'][3] = array(
-                    'attributeName'        => 'createdDateTime',
-                    'operatorType'         => 'greaterThan',
-                    'value'                => $dateTime
-                );
-                $metadata['structure'] .= " AND 3";
-            }
 
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $where  = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
@@ -236,10 +226,6 @@
             $tableName = static::getSubscriptionTableName($modelClassName);
             $sql = "SELECT modelid FROM $tableName WHERE userid = " . $user->id .
                 " AND subscriptiontype = " . static::TYPE_ADD;
-            if ($partialBuild)
-            {
-                $sql .= " and modifieddatetime > '" . $dateTime . "'";
-            }
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $permissionTableIds = array();
             if (is_array($permissionTableRows) && !empty($permissionTableRows))
