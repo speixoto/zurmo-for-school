@@ -141,7 +141,7 @@
         {
             $this->wrapContentInTableCell($hiddenElements, array('colspan' => 2));
             $this->wrapContentInTableRow($hiddenElements);
-            $content                .= $hiddenElements;
+            $content .= $hiddenElements;
         }
 
         protected function wrapContentForLeftSideBar(& $content, $prefix = null)
@@ -212,7 +212,7 @@
                                                                               $stepCount, $model)
         {
             $ownClassName   = get_called_class();
-            $progress       = ($stepCount + 1) * $progressPerStep;
+            $progress       = ($stepCount + 2) * $progressPerStep;
             $script         = "
                         $('#" . $validationInputId . "').val('" .  $nextPageClassName::resolveValidationScenario() . "');
                         $('#" . $ownClassName . "').hide();

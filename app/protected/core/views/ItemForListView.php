@@ -35,44 +35,32 @@
      ********************************************************************************/
 
     /**
-     * Override class to all passing in a params
-     * and route that are passed into the CPagination
-     * object
+     * Class ItemForListView
+     * Used to render items for the @see ZurmoListView
      */
-    class LinkPager extends CLinkPager
+    abstract class ItemForListView
     {
         /**
-         * @var array params to pass to the pagination class.
-         * params are utilized during createURL
+         * The index of the row where the item will be rendered
+         * @var int
          */
-         public $paginationParams;
-
-         public $route;
-
-         /**
-          * Handled by application styling
-          * @var string or false
-          */
-         public $cssFile = false;
+        protected $rowIndex;
 
         /**
-         * Override from CBasePager in order to utilize
-         * pagination class which allows for custom
-         * routes during createUrl for pages
-         * @return pagination the default pagination instance.
+         * The model to be rendered
+         * @var
          */
-        public function init()
+        protected $model;
+
+        protected $widget;
+
+        public function __construct($data)
         {
-            parent::init();
-            if (isset($this->paginationParams))
-            {
-                assert('is_array($this->paginationParams)');
-                $this->getPages()->params = $this->paginationParams;
-            }
-            if (isset($this->route))
-            {
-                $this->getPages()->route  = $this->route;
-            }
+            $this->rowIndex = $data['index'];
+            $this->model    = $data['data'];
+            $this->widget   = $data['widget'];
         }
+
+        abstract public function renderItem();
     }
 ?>

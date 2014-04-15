@@ -705,5 +705,31 @@
         {
             return Yii::app()->user->userModel;
         }
+
+        public function actionModalList($stateMetadataAdapterClassName = null)
+        {
+            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+                $_GET['modalTransferInformation']['sourceIdFieldId'],
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
+            );
+            echo ModalSearchListControllerUtil::
+                setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
+        }
+
+        public function actionAutoComplete($term, $autoCompleteOptions = null, $type = null)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('autoCompleteListPageSize',
+                                        get_class($this->getModule()));
+            $autoCompleteResults = EmailTemplateAutoCompleteUtil::getByPartialName($term, $pageSize, null,
+                                                $type, $autoCompleteOptions);
+            if (empty($autoCompleteResults))
+            {
+                $autoCompleteResults = array(array('id'    => null,
+                    'value' => null,
+                    'label' => Zurmo::t('Core', 'No results found')));
+            }
+            echo CJSON::encode($autoCompleteResults);
+        }
     }
 ?>

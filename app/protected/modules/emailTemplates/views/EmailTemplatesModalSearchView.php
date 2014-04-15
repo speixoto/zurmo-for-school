@@ -34,66 +34,57 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class EmailMessageContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
+    class EmailTemplatesModalSearchView extends SearchView
     {
-        /**
-         * Override so it only render if to recipient is a Contact
-         * and the user has the right to access Email Templates
-         * @return string
-         */
-        protected function renderControlEditable()
+        public static function getDefaultMetadata()
         {
-            if ($this->shouldUseTemplate() &&
-                RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
-            {
-                return parent::renderControlEditable();
-            }
-            return null;
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+//                        array(
+//                            'title' => 'Advanced Search',
+//                            'rows' => array(
+//                                array('cells' =>
+//                                    array(
+//                                        array(
+//                                            'elements' => array(
+//                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
+//                                            ),
+//                                        ),
+//                                    )
+//                                ),
+//                            ),
+//                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
 
-        protected function getModuleId()
+        public static function getDesignerRulesType()
         {
-            return 'CreateEmailMessageForm';
+            return 'ModalSearchView';
         }
 
-        protected function getTextContentId()
+        public static function getModelForMetadataClassName()
         {
-            $textContentId = $this->getModuleId() . '_content';
-            $textContentId .= '_';
-            $textContentId .= EmailTemplateHtmlAndTextContentElement::TEXT_CONTENT_INPUT_NAME;
-            return $textContentId;
-        }
-
-        protected function getHtmlContentId()
-        {
-            $htmlContentId = $this->getModuleId() . '_content';
-            $htmlContentId .= '_';
-            $htmlContentId .= EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME;
-            return $htmlContentId;
-        }
-
-        protected function getContactId()
-        {
-            if ($this->shouldUseTemplate())
-            {
-                $relatedId = Yii::app()->request->getQuery('relatedId');
-                return $relatedId;
-            }
-            return parent::getContactId();
-        }
-
-        /**
-         * If the emailMessage content can be populated from an emailTemplate
-         * @return bool
-         */
-        protected function shouldUseTemplate()
-        {
-            $relatedModelClassName = Yii::app()->request->getQuery('relatedModelClassName');
-            if ($relatedModelClassName == 'Contact')
-            {
-                return true;
-            }
-            return false;
+            return 'EmailTemplatesSearchForm';
         }
     }
 ?>

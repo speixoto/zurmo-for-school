@@ -129,7 +129,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'null',
-                                                            'type' => 'CampaignContactEmailTemplateNamesDropDown')
+                                                      'type' => 'EmailTemplate')
                                             ),
                                         ),
                                     )

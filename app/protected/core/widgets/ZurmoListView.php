@@ -34,45 +34,41 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Override class to all passing in a params
-     * and route that are passed into the CPagination
-     * object
-     */
-    class LinkPager extends CLinkPager
+    Yii::import('zii.widgets.CListView');
+
+    class ZurmoListView extends CListView
     {
-        /**
-         * @var array params to pass to the pagination class.
-         * params are utilized during createURL
-         */
-         public $paginationParams;
-
-         public $route;
-
-         /**
-          * Handled by application styling
-          * @var string or false
-          */
-         public $cssFile = false;
-
-        /**
-         * Override from CBasePager in order to utilize
-         * pagination class which allows for custom
-         * routes during createUrl for pages
-         * @return pagination the default pagination instance.
-         */
-        public function init()
+        public function renderItems()
         {
-            parent::init();
-            if (isset($this->paginationParams))
+            echo CHtml::openTag($this->itemsTagName,array('class'=>$this->itemsCssClass))."\n";
+            $data=$this->dataProvider->getData();
+            if(($n=count($data))>0)
             {
-                assert('is_array($this->paginationParams)');
-                $this->getPages()->params = $this->paginationParams;
+                $owner=$this->getOwner();
+                $viewFile=$owner->getViewFile($this->itemView);
+                $j=0;
+                foreach($data as $i=>$item)
+                {
+                    $data=$this->viewData;
+                    $data['index']=$i;
+                    $data['data']=$item;
+                    $data['widget']=$this;
+                    $this->renderItem($data);
+                    if($j++ < $n-1)
+                        echo $this->separator;
+                }
             }
-            if (isset($this->route))
-            {
-                $this->getPages()->route  = $this->route;
-            }
+            else
+                $this->renderEmptyText();
+            echo CHtml::closeTag($this->itemsTagName);
+        }
+
+        protected function renderItem($data)
+        {
+            $itemViewClassName = $this->itemView;
+            $itemForListView   = new $itemViewClassName($data);
+            $item = $itemForListView->renderItem();
+            echo $item;
         }
     }
 ?>

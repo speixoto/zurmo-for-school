@@ -35,44 +35,57 @@
      ********************************************************************************/
 
     /**
-     * Override class to all passing in a params
-     * and route that are passed into the CPagination
-     * object
+     * Display the emailTemplate selection for the emailMessage
      */
-    class LinkPager extends CLinkPager
+    class EmailMessageEmailTemplateElement extends EmailTemplateElement
     {
         /**
-         * @var array params to pass to the pagination class.
-         * params are utilized during createURL
+         * Override so it only render if to recipient is a Contact
+         * and the user has the right to access Email Templates
+         * @return string
          */
-         public $paginationParams;
+        protected function renderControlEditable()
+        {
+            if ($this->shouldUseTemplate() &&
+                RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
+            {
+                return parent::renderControlEditable();
+            }
+            return null;
+        }
 
-         public $route;
+        protected function getTextContentId()
+        {
+            return $this->getEditableInputId('content', EmailTemplateHtmlAndTextContentElement::TEXT_CONTENT_INPUT_NAME);
+        }
 
-         /**
-          * Handled by application styling
-          * @var string or false
-          */
-         public $cssFile = false;
+        protected function getHtmlContentId()
+        {
+            return $this->getEditableInputId('content', EmailTemplateHtmlAndTextContentElement::HTML_CONTENT_INPUT_NAME);
+        }
+
+        protected function getContactId()
+        {
+            if ($this->shouldUseTemplate())
+            {
+                $relatedId = Yii::app()->request->getQuery('relatedId');
+                return $relatedId;
+            }
+            return parent::getContactId();
+        }
 
         /**
-         * Override from CBasePager in order to utilize
-         * pagination class which allows for custom
-         * routes during createUrl for pages
-         * @return pagination the default pagination instance.
+         * If the emailMessage content can be populated from an emailTemplate
+         * @return bool
          */
-        public function init()
+        protected function shouldUseTemplate()
         {
-            parent::init();
-            if (isset($this->paginationParams))
+            $relatedModelClassName = Yii::app()->request->getQuery('relatedModelClassName');
+            if ($relatedModelClassName == 'Contact')
             {
-                assert('is_array($this->paginationParams)');
-                $this->getPages()->params = $this->paginationParams;
+                return true;
             }
-            if (isset($this->route))
-            {
-                $this->getPages()->route  = $this->route;
-            }
+            return false;
         }
     }
 ?>

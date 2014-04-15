@@ -47,9 +47,9 @@
         protected static function resolveContainingViewClassNames()
         {
             return array('GeneralDataForEmailTemplateWizardView',
-                            'SelectBaseTemplateForEmailTemplateWizardView',
-                            'BuilderCanvasWizardView',
-                            'ContentForEmailTemplateWizardView');
+                         'SelectBaseTemplateForEmailTemplateWizardView',
+                         'BuilderCanvasWizardView',
+                         'ContentForEmailTemplateWizardView');
         }
 
         protected function getBeforeValidateActionScript()

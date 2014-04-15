@@ -34,45 +34,39 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Override class to all passing in a params
-     * and route that are passed into the CPagination
-     * object
-     */
-    class LinkPager extends CLinkPager
+    class EmailTemplatesModalListView extends ModalListView
     {
-        /**
-         * @var array params to pass to the pagination class.
-         * params are utilized during createURL
-         */
-         public $paginationParams;
-
-         public $route;
-
-         /**
-          * Handled by application styling
-          * @var string or false
-          */
-         public $cssFile = false;
-
-        /**
-         * Override from CBasePager in order to utilize
-         * pagination class which allows for custom
-         * routes during createUrl for pages
-         * @return pagination the default pagination instance.
-         */
-        public function init()
+        public static function getDefaultMetadata()
         {
-            parent::init();
-            if (isset($this->paginationParams))
-            {
-                assert('is_array($this->paginationParams)');
-                $this->getPages()->params = $this->paginationParams;
-            }
-            if (isset($this->route))
-            {
-                $this->getPages()->route  = $this->route;
-            }
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplateBuiltType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

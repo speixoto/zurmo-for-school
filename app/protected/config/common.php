@@ -180,7 +180,6 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/iris.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/color.js',
-
                     )
                 ),
                 //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
