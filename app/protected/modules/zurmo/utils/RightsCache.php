@@ -41,5 +41,61 @@
      */
     abstract class RightsCache extends GeneralCache
     {
+        public static function getEntry($identifier, $default = 'NOT_FOUND_EXCEPTION', $cacheDefaultValue = false)
+        {
+            try
+            {
+                return parent::getEntry($identifier, $default, $cacheDefaultValue);
+            }
+            catch(NotFoundException $e)
+            {
+                if (static::supportsAndAllowsDatabaseCaching())
+                {
+                    $row = ZurmoRedBean::getRow("select entry from actual_rights_cache " .
+                                                "where identifier = '" . $identifier. "'");
+                    if($row != null && isset($row['entry']))
+                    {
+                        //Calling parent because we don't need to re-cache the db cache item
+                        parent::cacheEntry($identifier, $row['entry']);
+                        return $row['entry'];
+                    }
+                }
+                if ($default === 'NOT_FOUND_EXCEPTION')
+                {
+                    throw new NotFoundException();
+                }
+                else
+                {
+                    if ($cacheDefaultValue)
+                    {
+                        static::cacheEntry($identifier, $default);
+                    }
+                    return $default;
+                }
+            }
+        }
+
+        public static function cacheEntry($identifier, $entry)
+        {
+            assert('is_string($entry) || is_numeric($entry)');
+            parent::cacheEntry($identifier, $entry);
+            if (static::supportsAndAllowsDatabaseCaching())
+            {
+                ZurmoRedBean::exec("insert into actual_rights_cache
+                             (identifier, entry) values ('" . $identifier . "', '" . $entry . "') on duplicate key
+                             update entry = " . $entry);
+            }
+        }
+
+        // The $forgetDbLevel cache is for testing.
+        public static function forgetAll($forgetDbLevelCache = true)
+        {
+            if (static::supportsAndAllowsDatabaseCaching() && $forgetDbLevelCache)
+            {
+                ZurmoDatabaseCompatibilityUtil::
+                    callProcedureWithoutOuts("clear_cache_actual_rights()");
+            }
+            parent::forgetAll();
+        }
     }
 ?>

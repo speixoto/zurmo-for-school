@@ -82,7 +82,7 @@
             MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList2, $contact6);
             static::$regularUserMarketingListId = $marketingList2->id;
             static::$regularUserMemberId        = $member2->id;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

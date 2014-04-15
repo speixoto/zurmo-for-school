@@ -34,31 +34,30 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Controller Class for managing currency actions.
-     *
-     */
-    class ZurmoReadPermissionsController extends Controller
+    class AllPermissionsOptimizationUtilTest extends ZurmoBaseTest
     {
-        public function filters()
+        public static function setUpBeforeClass()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION, //Use this right until a more specific right is in place.
-               ),
-            );
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public function actionRebuildMunge()
+        public function setUp()
         {
-            ReadPermissionsOptimizationUtil::rebuild();
-            echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.') . "<BR>";
-            if (SHOW_QUERY_DATA)
-            {
-                echo PageView::makeShowQueryDataContent();
-            }
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testGetMungeIdsByUserIncludesEveryoneGroup()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+            $this->assertEquals(2, count($mungeIds));
+            $group = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $group->save();
+            AllPermissionsOptimizationCache::forgetAll();
+            $mungeIds = AllPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
+            $this->assertEquals(3, count($mungeIds));
         }
     }
 ?>

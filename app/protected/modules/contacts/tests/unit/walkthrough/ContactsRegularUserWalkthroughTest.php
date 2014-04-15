@@ -64,7 +64,7 @@
             //Setup default dashboard.
             Dashboard::getByLayoutIdAndUser                          (Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
             //Make contact DetailsAndRelations portlets
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function testRegularUserAllControllerActionsNoElevation()
@@ -183,6 +183,7 @@
             Yii::app()->user->userModel = $super;
             $contact->addPermissions($nobody, Permission::READ);
             $this->assertTrue($contact->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($contact, $nobody);
 
             //Now the nobody user can access the details view.
             Yii::app()->user->userModel = $nobody;
@@ -199,6 +200,8 @@
             Yii::app()->user->userModel = $super;
             $contact->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($contact->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($contact, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $nobody);
 
             //Now the nobody user should be able to access the edit view and still the details view.
             Yii::app()->user->userModel = $nobody;
@@ -215,6 +218,7 @@
             Yii::app()->user->userModel = $super;
             $contact->removePermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($contact->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($contact, $nobody);
 
             //Test nobody, access to detail, edit and delete should fail.
             Yii::app()->user->userModel = $nobody;
@@ -229,6 +233,7 @@
             Yii::app()->user->userModel = $super;
             $contact->addPermissions($nobody, Permission::READ_WRITE_DELETE);
             $this->assertTrue($contact->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $nobody);
 
             //Test nobody, access to delete should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -255,6 +260,16 @@
             $parentRole->users->add($userInParentRole);
             $parentRole->roles->add($childRole);
             $this->assertTrue($parentRole->save());
+            $userInChildRole->forget();
+            $userInChildRole = User::getByUsername('nobody');
+            $userInParentRole->forget();
+            $userInParentRole = User::getByUsername('confused');
+            $parentRoleId = $parentRole->id;
+            $parentRole->forget();
+            $parentRole = Role::getById($parentRoleId);
+            $childRoleId = $childRole->id;
+            $childRole->forget();
+            $childRole = Role::getById($childRoleId);
 
             $contact2 = ContactTestHelper::createContactByNameForOwner('testingParentRolePermission', $super);
 
@@ -280,6 +295,7 @@
             Yii::app()->user->userModel = $super;
             $contact2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($contact2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($contact2, $userInChildRole);
 
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -307,6 +323,8 @@
             Yii::app()->user->userModel = $super;
             $contact2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($contact2->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($contact2, $userInChildRole);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact2, $userInChildRole);
 
             //Test userInChildRole, access to edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -330,6 +348,7 @@
             Yii::app()->user->userModel = $super;
             $contact2->removePermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($contact2->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($contact2, $userInChildRole);
 
             //Test userInChildRole, access to detail, edit and delete should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -353,6 +372,7 @@
             Yii::app()->user->userModel = $super;
             $contact2->addPermissions($userInChildRole, Permission::READ_WRITE_DELETE);
             $this->assertTrue($contact2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact2, $userInChildRole);
 
             //Test userInParentRole, access to delete should not fail.
             Yii::app()->user->userModel = $userInParentRole;
@@ -420,6 +440,7 @@
             Yii::app()->user->userModel = $super;
             $contact3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($contact3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($contact3, $parentGroup);
 
             //Test userInParentGroup, access to details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -447,6 +468,8 @@
             Yii::app()->user->userModel = $super;
             $contact3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($contact3->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForGroup($contact3, $parentGroup);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($contact3, $parentGroup);
 
             //Test userInParentGroup, access to edit should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -471,6 +494,7 @@
             Yii::app()->user->userModel = $super;
             $contact3->removePermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($contact3->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($contact3, $parentGroup);
 
             //Test userInChildGroup, access to detail, edit and delete should fail.
             Yii::app()->user->userModel = $userInChildGroup;
@@ -494,6 +518,7 @@
             Yii::app()->user->userModel = $super;
             $contact3->addPermissions($parentGroup, Permission::READ_WRITE_DELETE);
             $this->assertTrue($contact3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($contact3, $parentGroup);
 
             //Test userInChildGroup, access to delete should not fail.
             Yii::app()->user->userModel = $userInChildGroup;

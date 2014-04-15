@@ -66,7 +66,7 @@
                     throw new FailedToSaveModelException();
                 }
                 $campaign = Campaign::getById($campaign->id);
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                     securableItemGivenPermissionsForGroup($campaign, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $campaign->save();
                 $campaigns[]                    = $campaign->id;

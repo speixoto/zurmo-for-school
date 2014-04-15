@@ -66,7 +66,7 @@
                                                     'regularText', 'regularHtml', 10, Autoresponder::OPERATION_SUBSCRIBE,
                                                     true, $regularUserMarketingList);
             static::$regularUserAutoresponderId   = $regularUserAutoresponder->id;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

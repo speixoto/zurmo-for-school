@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class PermissionsCacheTest extends ZurmoBaseTest
+    class AllPermissionsOptimizationCacheTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -43,75 +43,54 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function testCachingCombinedPermissions()
+        public function testCacheAndGetHasReadPermissionOnSecurableItem()
         {
-            if (PermissionsCache::supportsAndAllowsMemcache())
+            if (AllPermissionsOptimizationCache::supportsAndAllowsMemcache())
             {
                 $account = new Account();
                 $account->name = 'Yooples';
                 $this->assertTrue($account->save());
 
                 $super = User::getByUsername('super');
-                $combinedPermissions = 5;
 
-                PermissionsCache::cacheCombinedPermissions($account, $super, $combinedPermissions);
-                $combinedPermissionsFromCache = PermissionsCache::getCombinedPermissions($account, $super);
-                $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
-/*
-                PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::cacheHasReadPermissionOnSecurableItem($account, $super, true);
+                $hasReadPermission = AllPermissionsOptimizationCache::getHasReadPermissionOnSecurableItem($account, $super);
+                $this->assertTrue($hasReadPermission);
 
-                $account = new Account();
-                $account->name = 'Yooples2';
-                $this->assertTrue($account->save());
-                $super = User::getByUsername('super');
-                $combinedPermissions = 5;
-
-                PermissionsCache::cacheCombinedPermissions($account, $super, $combinedPermissions);
-                $combinedPermissionsFromCache = PermissionsCache::getCombinedPermissions($account, $super);
-                $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
-exit;
-*/
-            }
-        }
-
-        public function testCachingNamedSecurableItemActualPermissions()
-        {
-            if (PermissionsCache::supportsAndAllowsMemcache() || PermissionsCache::supportsAndAllowsDatabaseCaching())
-            {
-                Yii::app()->user->userModel = User::getByUsername('super');
-                $super = User::getByUsername('super');
-                $namedSecurableItem       = 'AccountsModule';
-                $item       = NamedSecurableItem::getByName('AccountsModule');
-                $actualPermissions = $item->getActualPermissions();
-
-                PermissionsCache::cacheNamedSecurableItemActualPermissions($namedSecurableItem, $super, $actualPermissions);
-                $actualPermissionsFromCache = PermissionsCache::getNamedSecurableItemActualPermissions($namedSecurableItem, $super);
-                $this->assertEquals($actualPermissions, $actualPermissionsFromCache);
-            }
-        }
-
-        public function testForgetSecurableItem()
-        {
-            if (PermissionsCache::supportsAndAllowsMemcache())
-            {
-                $super = User::getByUsername('super');
-                Yii::app()->user->userModel = $super;
-
-                $account = new Account();
-                $account->name = 'Ocean Inc.';
-                $this->assertTrue($account->save());
-
-                $combinedPermissions = 5;
-
-                PermissionsCache::cacheCombinedPermissions($account, $super, $combinedPermissions);
-                $combinedPermissionsFromCache = PermissionsCache::getCombinedPermissions($account, $super);
-                $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
-
-                PermissionsCache::forgetSecurableItem($account);
                 AllPermissionsOptimizationCache::forgetSecurableItemForRead($account);
                 try
                 {
-                    PermissionsCache::getCombinedPermissions($account, $super);
+                    AllPermissionsOptimizationCache::getHasReadPermissionOnSecurableItem($account, $super);
+                    $this->fail('NotFoundException exception is not thrown.');
+                }
+                catch (NotFoundException $e)
+                {
+                    $this->assertTrue(true);
+                }
+            }
+        }
+
+        public function testCacheAndGetMungeIdsByUser()
+        {
+            if (AllPermissionsOptimizationCache::supportsAndAllowsMemcache())
+            {
+                $super = User::getByUsername('super');
+                AllPermissionsOptimizationCache::cacheMungeIdsByUser($super, array(3,4,5));
+                $mungeIds = AllPermissionsOptimizationCache::getMungeIdsByUser($super);
+                $this->assertEquals(array(3,4,5), $mungeIds);
+                $oldValue = Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'];
+                Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'] = true;
+                $this->assertEquals(0, count(Yii::app()->user->getFlashes()));
+                AllPermissionsOptimizationCache::forgetAll();
+                $this->assertEquals(1, count(Yii::app()->user->getFlashes()));
+                Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'] = false;
+                $this->assertEquals(0, count(Yii::app()->user->getFlashes()));
+                AllPermissionsOptimizationCache::forgetAll();
+                $this->assertEquals(0, count(Yii::app()->user->getFlashes()));
+                Yii::app()->params['showFlashMessageWhenSecurityCacheShouldBeRebuilt'] = $oldValue;
+                try
+                {
+                    AllPermissionsOptimizationCache::getMungeIdsByUser($super);
                     $this->fail('NotFoundException exception is not thrown.');
                 }
                 catch (NotFoundException $e)
@@ -138,14 +117,14 @@ exit;
                 $value = GeneralCache::getEntry('somethingForTesting');
                 $this->assertEquals(34, $value);
 
-                PermissionsCache::cacheCombinedPermissions($account, $super, $combinedPermissions);
-                $combinedPermissionsFromCache = PermissionsCache::getCombinedPermissions($account, $super);
-                $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
+                AllPermissionsOptimizationCache::cacheHasReadPermissionOnSecurableItem($account, $super, true);
+                $hasReadPermission = AllPermissionsOptimizationCache::getHasReadPermissionOnSecurableItem($account, $super);
+                $this->assertTrue($hasReadPermission);
 
-                PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
                 try
                 {
-                    PermissionsCache::getCombinedPermissions($account, $super);
+                    AllPermissionsOptimizationCache::getHasReadPermissionOnSecurableItem($account, $super);
                     $this->fail('NotFoundException exception is not thrown.');
                 }
                 catch (NotFoundException $e)

@@ -73,7 +73,7 @@
                 $saved                          = $contactWebForm->save();
                 assert('$saved');
                 $contactWebForm = ContactWebForm::getById($contactWebForm->id);
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                     securableItemGivenPermissionsForGroup($contactWebForm, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $contactWebForm->save();
                 $contactWebForms[]              = $contactWebForm->id;

@@ -372,7 +372,7 @@
             $billy                      = User::getByUsername('billy');
             Yii::app()->user->userModel = $billy;
             $emailMessage               = EmailMessageTestHelper::createDraftSystemEmail('billy test email', $billy);
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             Yii::app()->emailHelper->send($emailMessage);

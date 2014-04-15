@@ -106,7 +106,7 @@ EOD;
                 $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
             }
             $messageStreamer->add($overwriteReadTablesMessage);
-            ReadPermissionsOptimizationUtil::rebuild($overwriteExistingReadTables, false, $messageStreamer);
+            AllPermissionsOptimizationUtil::rebuild($overwriteExistingReadTables, false, $messageStreamer);
             $messageStreamer->add(Zurmo::t('Commands', 'Rebuild read permissions complete.'));
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('Commands', 'Schema update complete.'));

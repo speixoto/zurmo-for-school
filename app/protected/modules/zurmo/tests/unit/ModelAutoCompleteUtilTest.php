@@ -319,7 +319,7 @@
             $this->assertEquals(Permission::NONE, $account->getEffectivePermissions      ($jimmy));
             $account->addPermissions($jimmy, Permission::READ);
             $this->assertTrue  ($account->save());
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $jimmy);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $jimmy);
             Yii::app()->user->userModel = $jimmy;
             $data = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm('animal', 5, Yii::app()->user->userModel);
             $this->assertEquals(1, count($data));
@@ -333,14 +333,14 @@
             $this->assertEquals(Permission::NONE, $contact->getEffectivePermissions      ($jimmy));
             $contact->addPermissions($jimmy, Permission::READ);
             $this->assertTrue  ($contact->save());
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser        ($contact, $jimmy);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser        ($contact, $jimmy);
             $opportunities = Opportunity::getByName('Animal Crackers');
             $this->assertEquals(1, count($opportunities));
             $opportunity = $opportunities[0];
             $this->assertEquals(Permission::NONE, $opportunity->getEffectivePermissions  ($jimmy));
             $opportunity->addPermissions($jimmy, Permission::READ);
             $this->assertTrue  ($opportunity->save());
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser        ($opportunity, $jimmy);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser        ($opportunity, $jimmy);
             Yii::app()->user->userModel = $jimmy;
             $data = ModelAutoCompleteUtil::getGlobalSearchResultsByPartialTerm('animal', 5, Yii::app()->user->userModel);
             $this->assertEquals(3, count($data));

@@ -49,6 +49,8 @@
 
         const ALLOW_DB_CACHING          = true;
 
+        public static $cacheType = 'Z:';
+
         protected static $cacheIncrementValueVariableName = 'CacheIncrementValue';
 
         protected static $additionalStringForCachePrefix = '';

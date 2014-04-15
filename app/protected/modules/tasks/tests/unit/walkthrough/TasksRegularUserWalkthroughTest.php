@@ -140,6 +140,7 @@
             Yii::app()->user->userModel = $super;
             $superAccount->addPermissions($nobody, Permission::READ);
             $this->assertTrue($superAccount->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($superAccount, $nobody);
 
             //Now the nobody user can access the details view.
             Yii::app()->user->userModel = $nobody;
@@ -162,6 +163,7 @@
             Yii::app()->user->userModel = $super;
             $task->addPermissions($nobody, Permission::READ);
             $this->assertTrue($task->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($task, $nobody);
 
             //Now access to tasks view by Nobody should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -178,6 +180,8 @@
             Yii::app()->user->userModel = $super;
             $task->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($task, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($task, $nobody);
 
             //Now access to tasks view and edit by Nobody should not fail.
             $this->setGetArray(array('id' => $task->id));
@@ -189,8 +193,9 @@
 
             //revoke the permission from the nobody user to access the task
             Yii::app()->user->userModel = $super;
-            $task->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
+            $task->removePermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($task, $nobody);
 
             //Now nobodys, access to edit and details of tasks should fail.
             Yii::app()->user->userModel = $nobody;
@@ -219,6 +224,16 @@
             $parentRole->users->add($userInParentRole);
             $parentRole->roles->add($childRole);
             $this->assertTrue($parentRole->save());
+            $userInChildRole->forget();
+            $userInChildRole = User::getByUsername('nobody');
+            $userInParentRole->forget();
+            $userInParentRole = User::getByUsername('confused');
+            $parentRoleId = $parentRole->id;
+            $parentRole->forget();
+            $parentRole = Role::getById($parentRoleId);
+            $childRoleId = $childRole->id;
+            $childRole->forget();
+            $childRole = Role::getById($childRoleId);
 
             //create account owned by super
             $account2 = AccountTestHelper::createAccountByNameForOwner('AccountsParentRolePermission', $super);
@@ -232,6 +247,7 @@
             Yii::app()->user->userModel = $super;
             $account2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($account2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($account2, $userInChildRole);
 
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -260,6 +276,7 @@
             Yii::app()->user->userModel = $super;
             $task2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($task2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($task2, $userInChildRole);
 
             //Test userInChildRole, access to tasks details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -277,6 +294,8 @@
             Yii::app()->user->userModel = $super;
             $task2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task2->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($task2, $userInChildRole);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($task2, $userInChildRole);
 
             //Test userInChildRole, access to tasks edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -292,8 +311,9 @@
 
             //revoke userInChildRole access to read and write tasks
             Yii::app()->user->userModel = $super;
-            $task2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
+            $task2->removePermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task2->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($task2, $userInChildRole);
 
             //Test userInChildRole, access to detail and edit should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -361,6 +381,7 @@
             Yii::app()->user->userModel = $super;
             $account3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($account3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($account3, $parentGroup);
 
             //Test userInParentGroup, access to details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -401,6 +422,7 @@
             Yii::app()->user->userModel = $super;
             $task3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($task3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($task3, $parentGroup);
 
             //Test userInParentGroup, access to tasks details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -416,6 +438,8 @@
             Yii::app()->user->userModel = $super;
             $task3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task3->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForGroup($task3, $parentGroup);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($task3, $parentGroup);
 
             //Test userInParentGroup, access to edit tasks should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -430,8 +454,9 @@
 
             //revoke parentGroup access to tasks read and write
             Yii::app()->user->userModel = $super;
-            $task3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS, Permission::DENY);
+            $task3->removePermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($task3->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($task3, $parentGroup);
 
             //Test userInChildGroup, access to tasks detail should fail.
             Yii::app()->user->userModel = $userInChildGroup;

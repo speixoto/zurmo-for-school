@@ -49,6 +49,11 @@
 
         private $byTimeWorkflowInQueueIds;
 
+        public static function getDependentTestModelClassNames()
+        {
+            return array('WorkflowModelTestItem');
+        }
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();

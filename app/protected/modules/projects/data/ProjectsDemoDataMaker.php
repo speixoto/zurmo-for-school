@@ -69,7 +69,7 @@
                 $saved = $project->save();
                 assert('$saved');
                 $project = Project::getById($project->id);
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                     securableItemGivenPermissionsForGroup($project, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $project->save();
                 assert('$saved');
@@ -152,7 +152,7 @@
                 $task = Task::getById($task->id);
                 $task->status = RandomDataUtil::getRandomValueFromArray(self::getTaskStatusOptions());
                 $task->save();
-                ReadPermissionsOptimizationUtil::
+                AllPermissionsOptimizationUtil::
                     securableItemGivenPermissionsForGroup($task, Group::getByName(Group::EVERYONE_GROUP_NAME));
                 $task->save();
                 ProjectsUtil::logTaskStatusChangeEvent($task,

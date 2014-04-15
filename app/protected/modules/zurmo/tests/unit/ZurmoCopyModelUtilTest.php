@@ -225,8 +225,10 @@
             Yii::app()->user->userModel = User::getByUsername('super');
             $account = AccountTestHelper::createAccountByNameForOwner('a super account', Yii::app()->user->userModel);
             //This will simulate sally having access to 'clone' the account.
-            $account->addPermissions(User::getByUserName('sally'), Permission::READ);
+            $sally = User::getByUserName('sally');
+            $account->addPermissions($sally, Permission::READ);
             $account->save();
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($account, $sally);
             Yii::app()->user->userModel = User::getByUsername('sally');
             $copyOfAccount = new Account();
             ZurmoCopyModelUtil::copy($account, $copyOfAccount);
