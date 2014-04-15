@@ -115,7 +115,8 @@
             {
                 if ($model->notificationMessage->htmlContent != null)
                 {
-                    $contentForSpan = Yii::app()->format->raw($model->notificationMessage->htmlContent);
+                    $contentForSpan = ZurmoHtml::tag('iframe', $this->resolveNotificationMessageIFrameHtmlOptions(
+                                                                                $model->notificationMessage->id), '');
                 }
                 elseif ($model->notificationMessage->textContent != null)
                 {
@@ -128,6 +129,15 @@
                                 );
             }
             return $content;
+        }
+
+        protected function resolveNotificationMessageIFrameHtmlOptions($id)
+        {
+            return array('id' => 'notification-message-content',
+                'src' => Yii::app()->createUrl('notifications/default/renderMessageHtmlContent', array('id' => $id)),
+                'width' => '100%',
+                'height'    => '100%',
+                'frameborder' => 0);
         }
 
         public function getModelCreationTimeContent(RedBeanModel $model)
