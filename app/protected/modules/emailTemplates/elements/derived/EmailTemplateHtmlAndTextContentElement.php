@@ -197,23 +197,11 @@
 
         protected function getActiveTab()
         {
-            if ($this->resolveSelectiveLoadOfTabs())
+            if (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent)))
             {
-                // we are on email template wizard
-                if ($this->isPastedHtmlTemplate())
-                {
-                    return 'html';
-                }
-                return 'text';
+                return 'html';
             }
-            else
-            {
-                if (!empty($this->model->htmlContent) || (empty($this->model->htmlContent) && empty($this->model->htmlContent)))
-                {
-                    return 'html';
-                }
                 return 'text';
-            }
         }
 
         protected function renderEditableHtmlContentArea()
