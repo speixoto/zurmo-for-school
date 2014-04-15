@@ -197,11 +197,25 @@
 
         protected function getActiveTab()
         {
-            if (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent)))
+            if (!isset($this->form))
             {
-                return 'html';
-            }
+                if (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent)))
+                {
+                    return 'html';
+                }
                 return 'text';
+            }
+            else
+            {
+                if ($this->resolveSelectiveLoadOfTabs())
+                {
+                    if ($this->isPastedHtmlTemplate())
+                    {
+                        return 'html';
+                    }
+                    return 'text';
+                }
+            }
         }
 
         protected function renderEditableHtmlContentArea()
