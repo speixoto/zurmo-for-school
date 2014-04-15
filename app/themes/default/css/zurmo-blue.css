@@ -1030,6 +1030,7 @@ body > .ui-autocomplete {
   width: 100%;
   margin: 0 auto 0 auto;
   position: fixed;
+  -webkit-transform: translateZ(0);
   top: 0;
   left: 0;
   right: 0;
@@ -1301,6 +1302,7 @@ body > .ui-autocomplete {
   top: 0;
   bottom: 0;
   z-index: 9999;
+  -webkit-transform: translateZ(0);
 }
 .AppNavigation li {
   list-style: none;
@@ -2090,6 +2092,7 @@ body > .ui-autocomplete {
 .float-bar .view-toolbar-container {
   z-index: 222222;
   position: fixed !important;
+  -webkit-transform: translateZ(0);
   width: auto;
   padding-bottom: 10px;
   margin-left: -20px;
@@ -2514,6 +2517,7 @@ td {
 #list-view {
   overflow-x: hidden;
   position: relative;
+  background: #fefefe;
 }
 #list-view .items-wrapper {
   border: 1px solid #dfdfdf;
@@ -2532,14 +2536,15 @@ td {
   border-collapse: collapse;
   border-spacing: 1px;
 }
-.items > tbody > tr > td,
-.items > thead > tr > td {
+.items > tbody td,
+.items > thead td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
   vertical-align: middle;
   padding: 10px 5px;
   word-wrap: break-word;
+  -webkit-transform: translateZ(0);
 }
 .items > tbody > tr > th,
 .items > thead > tr > th {

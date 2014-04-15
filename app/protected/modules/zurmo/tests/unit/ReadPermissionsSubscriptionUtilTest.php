@@ -107,7 +107,7 @@
             $this->assertEquals(0, count($permissionTableRows));
 
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
-                Yii::app()->user->userModel, time(), true, true, $messageLogger);
+                Yii::app()->user->userModel, time(), true, $messageLogger);
             $sql = "SELECT * FROM contact_read_subscription  order by modifieddatetime ASC, modelid  ASC";
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(2, count($permissionTableRows));
@@ -123,7 +123,7 @@
             $contact3 = ContactTestHelper::createContactByNameForOwner('Jimmy',  $super);
             sleep(1);
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
-                Yii::app()->user->userModel, time(), true, true, $messageLogger);
+                Yii::app()->user->userModel, time(), true, $messageLogger);
             $sql = "SELECT * FROM contact_read_subscription";
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(3, count($permissionTableRows));
@@ -144,7 +144,7 @@
             $contact4 = ContactTestHelper::createContactByNameForOwner('Jill',  $super);
             sleep(1);
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Contact',
-                Yii::app()->user->userModel, time(), true, true, $messageLogger);
+                Yii::app()->user->userModel, time(), true, $messageLogger);
             $sql = "SELECT * FROM contact_read_subscription WHERE userid = " . Yii::app()->user->userModel->id .
                 " AND subscriptiontype = " . ReadPermissionsSubscriptionUtil::TYPE_ADD . " order by modifieddatetime ASC, modelid  ASC";
             $permissionTableRows = ZurmoRedBean::getAll($sql);
@@ -174,7 +174,7 @@
             sleep(1);
             Yii::app()->user->userModel = $steven;
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Account',
-                Yii::app()->user->userModel, time(), false, false, $messageLogger);
+                Yii::app()->user->userModel, time(), false, $messageLogger);
             $sql = "SELECT * FROM account_read_subscription";
             $this->assertTrue(empty($permissionTableRows));
 
@@ -189,7 +189,7 @@
 
             Yii::app()->user->userModel = $steven;
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Account',
-                Yii::app()->user->userModel, time(), false, false, $messageLogger);
+                Yii::app()->user->userModel, time(), false, $messageLogger);
             $sql = "SELECT * FROM account_read_subscription";
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
@@ -200,7 +200,7 @@
             // Test as super
             Yii::app()->user->userModel = $super;
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Account',
-                Yii::app()->user->userModel, time(), false, false, $messageLogger);
+                Yii::app()->user->userModel, time(), false, $messageLogger);
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
@@ -218,7 +218,7 @@
 
             Yii::app()->user->userModel = $steven;
             ReadPermissionsSubscriptionUtil::updateReadSubscriptionTableByModelClassNameAndUser('Account',
-                Yii::app()->user->userModel, time(), false, false, $messageLogger);
+                Yii::app()->user->userModel, time(), false, $messageLogger);
             $sql = "SELECT * FROM account_read_subscription WHERE userid = " . Yii::app()->user->userModel->id;
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $this->assertEquals(1, count($permissionTableRows));
@@ -244,7 +244,7 @@
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_STARTED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $this->assertFalse(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $this->assertTrue(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());
@@ -279,7 +279,7 @@
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $this->assertTrue(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger, false);
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
             $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
                 ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $this->assertTrue(ReadPermissionsSubscriptionUtil::isReadPermissionSubscriptionUpdateCompleted());

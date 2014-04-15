@@ -35,44 +35,37 @@
      ********************************************************************************/
 
     /**
-     * Override class to all passing in a params
-     * and route that are passed into the CPagination
-     * object
+     * Helper class to convert a emailTemplate search into
+     * an Jui AutoComplete ready array.
      */
-    class LinkPager extends CLinkPager
+    class EmailTemplateAutoCompleteUtil
     {
         /**
-         * @var array params to pass to the pagination class.
-         * params are utilized during createURL
+         * @param string $partialName
+         * @param int $pageSize
+         * @param null|string $moduleClassName
+         * @param null|string $type
+         * @param $autoCompleteOptions
+         * @return array Jui AutoComplete ready array containing id, value, and label elements.
          */
-         public $paginationParams;
-
-         public $route;
-
-         /**
-          * Handled by application styling
-          * @var string or false
-          */
-         public $cssFile = false;
-
-        /**
-         * Override from CBasePager in order to utilize
-         * pagination class which allows for custom
-         * routes during createUrl for pages
-         * @return pagination the default pagination instance.
-         */
-        public function init()
+        public static function getByPartialName($partialName, $pageSize, $modelClassName = null,
+                                                    $type = null, $autoCompleteOptions = null)
         {
-            parent::init();
-            if (isset($this->paginationParams))
+            // autoCompleteOptions is not used but here for future uses.
+            assert('is_string($partialName)');
+            assert('is_int($pageSize)');
+            $autoCompleteResults  = array();
+            $emailTemplates                = EmailTemplateSearch::getEmailTemplatesByPartialName($partialName,
+                                                    $pageSize, $modelClassName, $type);
+            foreach ($emailTemplates as $emailTemplate)
             {
-                assert('is_array($this->paginationParams)');
-                $this->getPages()->params = $this->paginationParams;
+                $autoCompleteResults[] = array(
+                    'id'    => $emailTemplate->id,
+                    'value' => strval($emailTemplate),
+                    'label' => strval($emailTemplate),
+                );
             }
-            if (isset($this->route))
-            {
-                $this->getPages()->route  = $this->route;
-            }
+            return $autoCompleteResults;
         }
     }
 ?>

@@ -101,8 +101,10 @@
             assert('is_int($marketingListId)');
             $personId                   = $contact->getClassId('Person');
             $activityUtil               = static::resolveActivityUtilByModelType($modelType);
+            static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
             static::resolveContentForGlobalFooter($textContent, $htmlContent, $modelId, $modelType, $personId,
                                                     $marketingListId, $activityUtil);
+            // TODO: @Shoaibi: Critical: Get rid of it once we revise EmailMessageActivityUtil
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
             static::resolveContentForTracking($textContent, $htmlContent, $enableTracking, $modelId,
                                                 $modelType, $personId, $activityUtil);

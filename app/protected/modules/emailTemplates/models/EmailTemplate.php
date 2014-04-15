@@ -88,9 +88,9 @@
         public static function getBuiltTypeDropDownArray()
         {
             return array(
+                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Template Builder'),
                 static::BUILT_TYPE_PLAIN_TEXT_ONLY  => Zurmo::t('EmailTemplatesModule', 'Plain Text'),
                 static::BUILT_TYPE_PASTED_HTML      => Zurmo::t('EmailTemplatesModule', 'HTML'),
-                static::BUILT_TYPE_BUILDER_TEMPLATE => Zurmo::t('EmailTemplatesModule', 'Template Builder'),
             );
         }
 
@@ -181,7 +181,6 @@
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
                     array('htmlContent',                'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',                'EmailTemplateAtLeastOneContentAreaRequiredValidator'),
                     array('textContent',                'EmailTemplateAtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',                'EmailTemplateMergeTagsValidator'),
                     array('textContent',                'EmailTemplateMergeTagsValidator'),
@@ -237,10 +236,10 @@
         }
 
         /**
-         * Returns PredefinedTemplates
-         * @return Array of EmailTemplate models
+         * Returns the SearchAttributeData array to search for all predefinedBuilderTemplates
+         * @return array
          */
-        public static function getPredefinedBuilderTemplates()
+        public static function getPredefinedBuilderTemplatesSearchAttributeData()
         {
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -256,18 +255,28 @@
                 ),
             );
             $searchAttributeData['structure'] = '1 and 2';
+            return $searchAttributeData;
+        }
+
+        /**
+         * Returns PredefinedTemplates
+         * @return Array of EmailTemplate models
+         */
+        public static function getPredefinedBuilderTemplates()
+        {
+            $searchAttributeData              = static::getPredefinedBuilderTemplatesSearchAttributeData();
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
         }
 
         /**
+         * Returns the SearchAttributeData array to search for all previouslyCreatedBuilderTemplates
          * @param null $modelClassName
          * @param bool $includeDrafts
-         * @param null $limit number of previously created templates
-         * @return Array of EmailTemplate models
+         * @return array
          */
-        public static function getPreviouslyCreatedBuilderTemplates($modelClassName = null, $includeDrafts = false, $limit = null)
+        public static function getPreviouslyCreatedBuilderTemplateSearchAttributeData($modelClassName = null, $includeDrafts = false)
         {
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
@@ -304,8 +313,20 @@
                 );
             }
             $searchAttributeData['structure'] .= ' and 3';
-            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
-            $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return $searchAttributeData;
+        }
+
+        /**
+         * @param null $modelClassName
+         * @param bool $includeDrafts
+         * @param null $limit number of previously created templates
+         * @return Array of EmailTemplate models
+         */
+        public static function getPreviouslyCreatedBuilderTemplates($modelClassName = null, $includeDrafts = false, $limit = null)
+        {
+            $searchAttributeData    = static::getPreviouslyCreatedBuilderTemplateSearchAttributeData($modelClassName, $includeDrafts);
+            $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where                  = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, $limit, $where, 'name');
         }
 
@@ -406,7 +427,7 @@
             if ($validateAll == false)
             {
                 $metadata               = static::getMetadata();
-                $excludedMembers        = array('textContent', 'htmlContent');
+                $excludedMembers        = array('textContent');
                 $members                = $metadata['EmailTemplate']['members'];
                 // ignore content fields, we validate them inside the wizard form anyway.
                 $attributeNames         = array_diff($members, $excludedMembers);
