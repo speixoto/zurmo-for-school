@@ -4443,26 +4443,14 @@
 			{
 				var tmp = this.document.createElement('div');
 
-                console.log("original html");
-                console.log(html);
 				html = html.replace(/<br>|<\/H[1-6]>|<\/p>|<\/div>/gi, '\n');
-                console.log("original html");
-                console.log(html);
 
 				tmp.innerHTML = html;
 				html = tmp.textContent || tmp.innerText;
-                console.log("cleaned after inner");
-                console.log(html);
 
 				html = $.trim(html);
-                console.log("after trim");
-                console.log(html);
 				html = html.replace('\n', '<br>');
-                console.log("after changing line breaks");
-                console.log(html);
 				html = this.cleanParagraphy(html);
-                console.log("after paragraphy");
-                console.log(html);
 
 				this.pasteInsert(html);
 				return false;
