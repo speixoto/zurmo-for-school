@@ -4450,7 +4450,8 @@
 
 				html = $.trim(html);
 				html = html.replace('\n', '<br>');
-				html = this.cleanParagraphy(html);
+                // this wraps pasted text into <p> which isn't what we want.
+				//html = this.cleanParagraphy(html);
 
 				this.pasteInsert(html);
 				return false;
