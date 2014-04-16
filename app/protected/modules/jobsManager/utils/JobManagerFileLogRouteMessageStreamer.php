@@ -51,7 +51,7 @@
         public function __construct($template = null, $jobManagerFileLogger)
         {
             assert('is_string($template) || $template == null');
-            assert('$jobManagerFileLogger instance of JobManagerFileLogger');
+            assert('$jobManagerFileLogger instanceof JobManagerFileLogger');
             if ($template != null)
             {
                 $this->template = $template;

@@ -36,13 +36,6 @@
 
     class FooterView extends View
     {
-        protected $showUserInterfaceTypeSelector;
-
-        public function __construct($showUserInterfaceTypeSelector = true)
-        {
-            $this->showUserInterfaceTypeSelector = $showUserInterfaceTypeSelector;
-        }
-
         protected function renderContent()
         {
             //Do not remove the Zurmo logo or Zurmo Copyright notice.
@@ -56,41 +49,13 @@
             //"Copyright Zurmo Inc. 2014. All rights reserved".
             $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
                              'Copyright &#169; Zurmo Inc., 2014. All rights reserved.</span></a>';
-            if ($this->showUserInterfaceTypeSelector)
-            {
-                $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
-                return $copyrightHtml . $userInterfaceTypeSelectorHtml;
-            }
-            return $copyrightHtml;
+            $content = ZurmoHtml::tag('div', array('class' => 'container'), $copyrightHtml);
+            return $content;
         }
 
-        /**
-         * Render section for selection user interface type.
-         * Show only if user is using mobile and tablet devices.
-         */
-        protected function renderUserInterfaceTypeSelector()
+        protected function getContainerWrapperTag()
         {
-            if (Yii::app()->userInterface->isMobile())
-            {
-                $mobileActive  = ' active';
-                $desktopActive = null;
-            }
-            else
-            {
-                $mobileActive  = null;
-                $desktopActive = ' active';
-            }
-            $content  = '<div class="ui-chooser">';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Mobile')),
-                            Yii::app()->createUrl('zurmo/default/userInterface',
-                            array('userInterface' => UserInterface::MOBILE)),
-                            array('class' => 'icon-mobile' . $mobileActive));
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Full')),
-                Yii::app()->createUrl('zurmo/default/userInterface',
-                    array('userInterface' => UserInterface::DESKTOP)),
-                array('class' => 'icon-desktop' . $desktopActive));
-            $content .= '</div>';
-            return $content;
+            return 'footer';
         }
     }
 ?>

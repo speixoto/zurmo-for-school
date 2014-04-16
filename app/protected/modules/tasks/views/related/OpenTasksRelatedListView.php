@@ -196,5 +196,10 @@
                 return array('class' => 'copy-related-open-task');
             }
         }
+
+        protected function getSortAttributeForDataProvider()
+        {
+            return 'dueDateTime';
+        }
     }
 ?>

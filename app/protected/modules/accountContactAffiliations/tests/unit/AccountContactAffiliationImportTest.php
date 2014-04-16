@@ -87,7 +87,6 @@
                 'column_0'  => ImportMappingUtil::makeDropDownColumnMappingData     ('role'),
                 'column_1'  => ImportMappingUtil::makeHasOneColumnMappingData       ('contact'),
                 'column_2'  => ImportMappingUtil::makeHasOneColumnMappingData       ('account'),
-                'column_3'  => ImportMappingUtil::makeBooleanColumnMappingData      ('primary')
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('AccountContactAffiliations');
@@ -114,7 +113,7 @@
             $this->assertTrue($accountContactAffiliations[0]->contact->isSame($contact));
             $this->assertEquals('',     $accountContactAffiliations[0]->role->value);
 
-            $this->assertEquals('1',    $accountContactAffiliations[1]->primary);
+            $this->assertEquals('0',    $accountContactAffiliations[1]->primary);
             $this->assertTrue($accountContactAffiliations[1]->account->isSame($account));
             $this->assertTrue($accountContactAffiliations[1]->contact->isSame($contact));
             $this->assertEquals('Support',  $accountContactAffiliations[1]->role->value);

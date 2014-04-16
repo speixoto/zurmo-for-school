@@ -135,11 +135,12 @@
                 {
                     $checked = true;
                 }
+                $checkboxLabel = ZurmoHtml::label($checkListItem->name, 'TaskCheckListItem_' . $checkListItem->id, array());
                 $checkBox     = ZurmoHtml::checkBox('TaskCheckListItem_' . $checkListItem->id,
                                                     $checked,
                                                     array('class' => 'checkListItem', 'value' => $checkListItem->id));
                 $itemContent  = ZurmoHtml::tag('div', array('class' => 'editable'),
-                                               $checkBox . '<p>' . $checkListItem->name . '</p>');
+                                               $checkBox . '<p>' . $checkboxLabel . '</p>');
                 $itemContent .= $this->renderHiddenEditableTextField($checkListItem->id, $checkListItem->name);
                 $itemContent .= $this->attachActionsToCheckListItem();
                 $content     .= ZurmoHtml::tag('li', array('class' => 'check-list-item clearfix'), $itemContent);
@@ -246,7 +247,7 @@
                                                                         dataType: 'json',
                                                                         success : function(data)
                                                                         {
-                                                                            console.log('success');
+                                                                            //console.log('success');
                                                                         },
                                                                         error : function()
                                                                         {

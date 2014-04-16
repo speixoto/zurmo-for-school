@@ -65,8 +65,8 @@
         public function attributeLabels()
         {
             return array(
-                'beginDate' => Zurmo::t('MarketingModule', 'Start Date'),
-                'endDate'   => Zurmo::t('MarketingModule', 'End Date'),
+                'beginDate' => Zurmo::t('Core', 'Start Date'),
+                'endDate'   => Zurmo::t('Core', 'End Date'),
             );
         }
 

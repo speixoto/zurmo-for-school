@@ -45,19 +45,29 @@
         protected function renderControlEditable()
         {
             assert('$this->attribute != null');
+            $cClipWidget             = new CClipWidget();
+            $cClipWidget->beginClip("Redactor");
+            $cClipWidget->widget('application.core.widgets.Redactor', $this->resolveRedactorOptions());
+            $cClipWidget->endClip();
+            $content                 = $cClipWidget->getController()->clips['Redactor'];
+            return $content;
+        }
+
+        protected function resolveHtmlOptions()
+        {
             $id                      = $this->getEditableInputId();
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
             $htmlOptions['name']     = $this->getEditableInputName();
-            $cClipWidget             = new CClipWidget();
-            $cClipWidget->beginClip("Redactor");
-            $cClipWidget->widget('application.core.widgets.Redactor', array(
-                                        'htmlOptions' => $htmlOptions,
-                                        'content'     => $this->model->{$this->attribute},
-                                ));
-            $cClipWidget->endClip();
-            $content                 = $cClipWidget->getController()->clips['Redactor'];
-            return $content;
+            return $htmlOptions;
+        }
+
+        protected function resolveRedactorOptions()
+        {
+            return array(
+                'htmlOptions' => $this->resolveHtmlOptions(),
+                'content'   => $this->model->{$this->attribute},
+            );
         }
     }
 ?>

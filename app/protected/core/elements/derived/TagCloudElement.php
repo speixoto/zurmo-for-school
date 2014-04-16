@@ -38,9 +38,10 @@
     {
         protected $dataAndLabels = null;
 
+        //Not used, we override getEditableInputId and getEditableInputName
         protected function getFormName()
         {
-            return get_class($this->model);
+            return null;
         }
 
         protected function assertModelType()
@@ -91,14 +92,26 @@
             }
             if ($customFieldValue->value != null)
             {
-                return array('id' => $customFieldValue->value,
-                                  'name' => $this->dataAndLabels[$customFieldValue->value]);
+                return array('id'   => $customFieldValue->value,
+                             'name' => $this->dataAndLabels[$customFieldValue->value]);
             }
         }
 
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text($this->model->getAttributeLabel($this->attribute));
+        }
+
+        protected function getEditableInputId($attributeName = null, $relationAttributeName = null)
+        {
+            $inputPrefix = $this->resolveInputIdPrefix();
+            return $inputPrefix . $this->getUnqualifiedIdForIdField();
+        }
+
+        protected function getEditableInputName($attributeName = null, $relationAttributeName = null)
+        {
+            $inputPrefix = $this->resolveInputNamePrefix();
+            return $inputPrefix . $this->getUnqualifiedNameForIdField();
         }
     }
 ?>

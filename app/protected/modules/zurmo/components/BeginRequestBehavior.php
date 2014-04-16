@@ -42,6 +42,8 @@
             'tracking/default/track',
             'marketingLists/external/',
             'contacts/external/',
+            'zurmo/imageModel/getImage/',
+            'zurmo/imageModel/getThumb/',
             'min/serve');
 
         public function attach($owner)
@@ -135,6 +137,7 @@
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadEmailMessagesObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadReadPermissionSubscriptionObserver'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadContactLatestActivityDateTimeObserver'));
@@ -381,7 +384,7 @@
                 $isUrlAllowedToGuests = false;
                 foreach ($allowedGuestUserUrls as $url)
                 {
-                    if (ZurmoUrlManager::getPositionOfPathInUrl($url) !== false)
+                    if (Yii::app()->urlManager->getPositionOfPathInUrl($url) !== false)
                     {
                         $isUrlAllowedToGuests = true;
                         break;
@@ -429,6 +432,7 @@
             if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
             {
                 ForgetAllCacheUtil::forgetAllCaches();
+                $this->clearCacheDirectories();
             }
         }
 
@@ -497,6 +501,12 @@
             $conversationsObserver->init();
         }
 
+        public function handleLoadEmailMessagesObserver($event)
+        {
+            $emailMessagesObserver = new EmailMessagesObserver();
+            $emailMessagesObserver->init();
+        }
+
         public function handleLoadWorkflowsObserver($event)
         {
             Yii::app()->workflowsObserver; //runs init();
@@ -532,6 +542,7 @@
 
         public function handleDisableGamification($event)
         {
+            Yii::app()->gameHelper->enabled = false;
             Yii::app()->gamificationObserver->enabled = false;
         }
 
@@ -572,6 +583,39 @@
         protected static function getAllowedGuestUserRoutes()
         {
             return self::$allowedGuestUserRoutes;
+        }
+
+        protected function clearCacheDirectories()
+        {
+            $cacheDirectories   = $this->resolveCacheDirectoryPaths();
+            foreach ($cacheDirectories as $cacheDirectory)
+            {
+                $this->clearCacheDirectory($cacheDirectory);
+            }
+        }
+
+        protected function clearCacheDirectory(array $cacheDirectory)
+        {
+            $excludedFiles          = array('index.html');
+            $path                   = null;
+            $removeDirectoryItself  = false;
+            extract($cacheDirectory);
+            if (is_dir($path))
+            {
+                FileUtil::deleteDirectoryRecursive($path, $removeDirectoryItself, $excludedFiles);
+            }
+        }
+
+        protected function resolveCacheDirectoryPaths()
+        {
+            $cacheDirectories       = array(
+                array(  'path'                  => Yii::app()->assetManager->getBasePath(),
+                        'removeDirectoryItself' => false),
+                array(  'path'                 => Yii::getPathOfAlias('application.runtime.themes'),
+                        'removeDirectoryItself' => false),
+                array(  'path'                 => Yii::getPathOfAlias('application.runtime.minscript.cache'),
+                        'removeDirectoryItself' => false));
+            return $cacheDirectories;
         }
      }
 ?>

@@ -57,7 +57,7 @@
                                   'iconClass' => 'icon-add',
                                   'uniqueLayoutId' => 'eval:$this->uniqueLayoutId',
                                   'ajaxOptions' => 'eval:static::resolveAjaxOptionsForAddPortlet()',
-                                  'htmlOptions' => array('id' => 'AddPortletLink')
+                                  'htmlOptions' => array('id' => 'AddPortletLink', 'class' => 'button-action')
                             ),
                         ),
                     ),

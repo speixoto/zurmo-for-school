@@ -570,7 +570,9 @@
 
         protected function resolveColumnAndBarGeneralProperties()
         {
-            $this->addCategoryAxisProperties('title',           "'{$this->xAxisName}'");
+            $xAxisName = CJavaScript::encode($this->xAxisName);
+            $yAxisName = CJavaScript::encode($this->yAxisName);
+            $this->addCategoryAxisProperties('title',           "{$xAxisName}");
             $this->addCategoryAxisProperties('unitPosition',    "'left'");
             $this->addCategoryAxisProperties('unit',            "'{$this->xAxisUnitContent}'");
             $this->addCategoryAxisProperties('usePrefixes',     true);
@@ -579,7 +581,7 @@
             $this->addCategoryAxisProperties('gridAlpha',       0);
             $this->addCategoryAxisProperties('autoGridCount',   "'false'");
 
-            $this->addValueAxisProperties('title',              "'$this->yAxisName'");
+            $this->addValueAxisProperties('title',              $yAxisName);
             $this->addValueAxisProperties('unitPosition',       "'left'");
             $this->addValueAxisProperties('unit',               "'{$this->yAxisUnitContent}'");
             $this->addValueAxisProperties('usePrefixes',        true);
@@ -597,7 +599,9 @@
 
         protected function resolveLineGeneralProperties()
         {
-            $this->addCategoryAxisProperties('title',           "'{$this->xAxisName}'");
+            $xAxisName = CJavaScript::encode($this->xAxisName);
+            $yAxisName = CJavaScript::encode($this->yAxisName);
+            $this->addCategoryAxisProperties('title',           "{$xAxisName}");
             $this->addCategoryAxisProperties('unitPosition',    "'left'");
             $this->addCategoryAxisProperties('unit',            "'{$this->xAxisUnitContent}'");
             $this->addCategoryAxisProperties('usePrefixes',     true);
@@ -606,7 +610,7 @@
             $this->addCategoryAxisProperties('gridAlpha',       0);
             $this->addCategoryAxisProperties('autoGridCount',   "'false'");
 
-            $this->addValueAxisProperties('title',              "'$this->yAxisName'");
+            $this->addValueAxisProperties('title',              $yAxisName);
             $this->addValueAxisProperties('unitPosition',       "'left'");
             $this->addValueAxisProperties('unit',               "'{$this->yAxisUnitContent}'");
             $this->addValueAxisProperties('usePrefixes',        true);

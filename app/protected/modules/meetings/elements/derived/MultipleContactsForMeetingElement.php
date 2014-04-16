@@ -76,13 +76,12 @@
 
         protected function getWidgetSourceUrl()
         {
-            return  Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete');
+            return  Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsOrUsersForMultiSelectAutoComplete');
         }
 
         protected function getWidgetHintText()
         {
-            return Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
+            return Zurmo::t('MeetingsModule', 'Type a person: name or email address',
                                             LabelUtil::getTranslationParamsForAllModules());
         }
 
@@ -103,7 +102,7 @@
                 $contact = $model->castDown(array($this->modelDerivationPathToItemFromContact));
                 if (get_class($contact) == 'Contact')
                 {
-                    $existingContact = array('id' => $contact->id,
+                    $existingContact = array('id' => Meeting::CONTACT_ATTENDEE_PREFIX . $contact->id,
                                             'name' => self::renderHtmlContentLabelFromContactAndKeyword($contact, null));
                 }
             }
@@ -148,6 +147,40 @@
             {
                 return Zurmo::t('Core', 'Restricted');
             }
+        }
+
+        public static function renderHtmlContentLabelFromUserAndKeyword($user, $keyword)
+        {
+            assert('$user instanceof User && $user->id > 0');
+            assert('$keyword == null || is_string($keyword)');
+            try
+            {
+                if (substr($user->primaryEmail->emailAddress, 0, strlen($keyword)) === $keyword)
+                {
+                    $emailAddressToUse = $user->primaryEmail->emailAddress;
+                    return strval($user) . '&#160&#160<b>' . strval($emailAddressToUse) . '</b>';
+                }
+                else
+                {
+                    return strval($user);
+                }
+            }
+            catch (AccessDeniedSecurityException $exception)
+            {
+                return Zurmo::t('Core', 'Restricted');
+            }
+        }
+
+        protected function getExistingIdsAndLabels()
+        {
+            $existingRecords = parent::getExistingIdsAndLabels();
+            $userAttendees   = $this->model->userAttendees;
+            foreach ($userAttendees as $user)
+            {
+                $existingRecords[] = array('id'   => Meeting::USER_ATTENDEE_PREFIX . $user->id,
+                                           'name' => self::renderHtmlContentLabelFromUserAndKeyword($user, null));
+            }
+            return $existingRecords;
         }
     }
 ?>

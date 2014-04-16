@@ -133,7 +133,7 @@
         {
             $content  = $this->renderTitleContent();
             $content .= $this->renderFormContent();
-            $content  = ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix'), $content);
+            $content  = $this->wrapContentInLeftColumn($content);
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
@@ -141,6 +141,11 @@
             }
             $this->registerScripts();
             return $content;
+        }
+
+        protected function wrapContentInLeftColumn($content)
+        {
+            return ZurmoHtml::tag('div', array('class' => 'left-column full-width clearfix'), $content);
         }
 
         /**

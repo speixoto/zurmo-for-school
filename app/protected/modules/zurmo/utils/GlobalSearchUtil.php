@@ -96,7 +96,7 @@
          */
         public static function resolveModuleNamesAndLabelsDataWithAllOption(& $moduleNamesAndLabels)
         {
-            $moduleNamesAndLabels = array_merge(array('All' => Zurmo::t('ZurmoModule', 'All')), $moduleNamesAndLabels);
+            $moduleNamesAndLabels = array_merge(array('All' => Zurmo::t('Core', 'All')), $moduleNamesAndLabels);
         }
 
         /**

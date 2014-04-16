@@ -207,5 +207,18 @@
                 }
             }
         }
+
+        /**
+         * Override to add unique identifier thing.
+         * @param RedBeanModel $model
+         * @return array
+         */
+        public function getDerivedAttributeTypesData(RedBeanModel $model)
+        {
+            $derivedAttributeTypesData = parent::getDerivedAttributeTypesData($model);
+            $derivedAttributeTypesData['UniqueIdentifier'] = array('label' => UniqueIdentifierElement::getDisplayName(),
+                                                                   'derivedAttributeType' => 'UniqueIdentifier');
+            return $derivedAttributeTypesData;
+        }
     }
 ?>

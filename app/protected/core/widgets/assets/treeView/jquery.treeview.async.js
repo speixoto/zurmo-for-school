@@ -40,6 +40,9 @@ function load(settings, root, child, container) {
         if (this.wrapperClass) {
             current.addClass(this.wrapperClass);
         }
+        if (this.dataValue) {
+            current.attr('data-value', this.dataValue);
+        }
         if (this.classes) {
             current.children("span").addClass(this.classes);
         }

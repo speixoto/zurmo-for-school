@@ -164,6 +164,7 @@
                     array('rateToBase', 'required'),
                     array('rateToBase', 'type', 'type' => 'float'),
                 ),
+                'defaultSortAttribute'                  => 'code',
                 'lastAttemptedRateUpdateTimeStamp'      => null,
             );
             return $metadata;

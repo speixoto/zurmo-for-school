@@ -41,10 +41,11 @@
             return array_merge(parent::filters(),
                 array(
                     array(
-                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreateFromRelation,
+                        ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalCreateFromRelation, modalCreate,
                                             ModalEdit',
                         'moduleClassName' => get_class($this->getModule()),
                         'viewClassName'   => 'TaskModalEditView',
+                        'isModal'         => true,
                    ),
                     array(
                         ZurmoBaseController::REQUIRED_ATTRIBUTES_FILTER_PATH . ' + modalDetails',
@@ -679,7 +680,6 @@
             if (isset($_POST['ajax']) &&
                 ($_POST['ajax'] == 'task-left-column-form-data' || $_POST['ajax'] == 'task-right-column-form-data'))
             {
-                $oldStatus = $task->status;
                 $task = $this->attemptToSaveModelFromPost($task, null, false);
                 $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($task);
                 echo CJSON::encode($errorData);

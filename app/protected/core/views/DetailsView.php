@@ -146,7 +146,8 @@
             {
                 $errorSummaryContent = null;
             }
-            $formLayout = new DetailsViewFormLayout($metadataWithRenderedElements, $maxCellsPerRow,
+            $formLayoutClassName = static::getDetailsViewFormLayoutClass();
+            $formLayout          = new $formLayoutClassName($metadataWithRenderedElements, $maxCellsPerRow,
                                                     $errorSummaryContent, $this->getFormLayoutUniqueId());
             $formLayout->alwaysShowErrorSummary = $this->alwaysShowErrorSummary();
             $formLayout->labelsHaveOwnCells($this->doesLabelHaveOwnCell());
@@ -427,6 +428,15 @@
         protected function getFormLayoutUniqueId()
         {
             return null;
+        }
+
+        /**
+         * Gets details view form layout class name.
+         * @return string
+         */
+        protected function getDetailsViewFormLayoutClass()
+        {
+            return 'DetailsViewFormLayout';
         }
     }
 ?>

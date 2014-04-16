@@ -125,11 +125,10 @@
 .configuration-list{
 	list-style:none;
 	li{
-		
 		width:100%;
 		position: relative;
 		margin:0;
-		padding:20px 15px;
+		padding:20px 100px 20px 15px;
 		border-top:1px solid #ccc;
 		border-bottom:1px solid #fff;
 		&:last-child{
@@ -153,12 +152,6 @@
 		display:inline-block;
 	}
 	a{
-		//.z-button();
-		//float:right;
-		//position: absolute;
-		//right:15px;
-		//top:14px;
-		//vertical-align: middle;
 		margin:0;
 		.z-label{
 			.z-label-smaller();
@@ -252,6 +245,10 @@ table.configuration-list{
 }
 
 .AdministrativeArea{
+	> div{
+		float: left;
+		width: 100%;
+	}
 	#edit-form{
 		table{
 			width:100%;
@@ -472,7 +469,6 @@ table.configuration-list{
 }
 
 .reset-job-link{
-	//#gradient > .vertical(#c43d53, #a82d31 );
 	margin:0 !important;
 	float:right;
 }
@@ -543,7 +539,6 @@ table.configuration-list{
 	}
 }
 
-
 /*Languages*/
 #LanguagesCollectionView{
 	padding-bottom: 0 !important;
@@ -584,6 +579,9 @@ table.configuration-list{
 	}
 	.configuration-list{
 		border-top: 1px solid #ccc;
+		li{
+			padding-right: 15px;
+		}
 		li:first-child{
 			border-top: 1px solid #fff;
 		}
@@ -597,7 +595,6 @@ table.configuration-list{
 }
 
 /*Currency*/
-
 #currency-collection-form{
 	padding-bottom: 5px !important;
 	.portlet-toolbar{
@@ -605,7 +602,13 @@ table.configuration-list{
 		top:auto;
 		left:auto;
 		right:auto;
-		.form-toolbar();
+		padding-top:13px;
+		text-align:center;
+		border-top:1px solid #fff;
+		a{
+			display:inline-block;
+			margin:0 10px;
+		}
 	}
 	.view-toolbar-container{
 		margin-bottom:5px;
@@ -678,7 +681,6 @@ table.configuration-list{
 	clear: left;
 	input{
 		position: relative;
-		//padding-left:80px;
 	}
 	input + span{
 		background:url("@{path}lang-label.png") left top no-repeat;
@@ -710,12 +712,8 @@ table.configuration-list{
 }
 
 #UsersPageView{
-	.AppContent {
-		//padding-right:0;
-	}
+	.AppContent {}
 	.panel{
-		//width:100% !important;
-		
 		table{
 			margin-right:15px;
 			
@@ -938,9 +936,6 @@ table.configuration-list{
 		padding-left:15px !important;
 		border-bottom:1px solid #DFDFDF;
 	}
-	.column-import-data{
-		margin-top: 5px;
-	}
 	tr td:last-child{
 		padding-right:0;
 		vertical-align: top;
@@ -948,6 +943,15 @@ table.configuration-list{
 	td + td {
 		vertical-align: top;
 	}
+}
+
+.column-import-data,
+.column-import-data div{
+	margin-top: 5px;
+	padding-right:5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 #sample-column-header{
@@ -1108,14 +1112,6 @@ table.configuration-list{
 	}
 }
 
-.process-container-view{
-	//padding:15px 15px 0 15px;
-}
-
-#sequenceProcess{
-	//padding:15px 0 0 0;
-}
-
 .progressbar-container{
 	padding: 15px;
 }
@@ -1139,7 +1135,6 @@ table.configuration-list{
 	}
 	td{
 		padding: 5px !important;
-		//border-bottom: none;
 		h3{
 			margin: 0 !important;
 		}
@@ -1229,7 +1224,6 @@ table.configuration-list{
 		}
 	}
 	.led{
-		//float: right;
 		display: block;
 		margin-top: 5px;
 		width: 100%;
@@ -1273,14 +1267,11 @@ table.configuration-list{
 		.unstyle-panel();
 	}
 	.items{
-		//	background: #fff;
 		table-layout: fixed;
 	}
 	tr{
 		td:first-child, th:first-child{
 			width: 35px !important;
-			//text-align: center;
-			//table-layout: fixed;
 		}
 	}
 }
@@ -1292,18 +1283,16 @@ table.configuration-list{
 	width: 50%;
 	float: left;
 	display: inline-block !important;
-	clear: none;
+	clear: none !important;
 	span{
 		display: inline-block;
 		width:32px;
 		height:16px;
-		//margin-right:6px;
-		//.radius(2px);
 	}
 	label{
 		float: none !important;
 		top: -3px;
-		margin-left: 0;
+		margin-left: 0 !important;
 	}
 	input{
 		margin-right:12px !important;
@@ -1317,7 +1306,6 @@ table.configuration-list{
 	[id*="theme-color-tooltip"],
 	[id*="background-texture-tooltip"] { // [class*=" db3"]
 		width: auto !important;
-		position: relative;
 		left: -25px;
 		font-size: 18px;
 		top: -5px;
@@ -1382,11 +1370,6 @@ table.configuration-list{
 			margin-left: 0;
 		}
 	}
-	.iris-picker{
-		position: absolute;
-		left: 0;
-		top: 100%;
-	}
 }
 
 #theme-color-configuration{
@@ -1450,7 +1433,10 @@ table.configuration-list{
 
 /*Queues*/
 #QueuesListView{
-	.SecuredListView();
+	float:left;
+	width:100%;
+	margin-bottom:20px;
+	position: relative;
 }
 
 #queue-search-element{

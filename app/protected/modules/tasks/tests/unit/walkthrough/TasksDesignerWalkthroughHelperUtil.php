@@ -99,6 +99,13 @@
                                 array('cells' =>
                                     array(
                                         array(
+                                            'element' => 'status',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
                                             'detailViewOnly' => true,
                                             'element' => 'DateTimeCreatedUser',
                                         ),
@@ -438,6 +445,27 @@
                             ),
                         ),
                     ),
+            );
+        }
+
+        public static function getTaskEditAndDetailsViewLayoutWithoutAllRequiredFieldsPlaced()
+        {
+            return array(
+                'panels' => array(
+                    array(
+                        'title' => 'Panel Title',
+                        'panelDetailViewOnly' => 1,
+                        'rows' => array(
+                            array('cells' =>
+                                array(
+                                    array(
+                                        'element' => 'name',
+                                    ),
+                                )
+                            ),
+                        ),
+                    ),
+                ),
             );
         }
     }

@@ -103,14 +103,14 @@
             if (!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
             {
                 return ZurmoHtml::link(Zurmo::t('Core', 'Continue'), '#',
-                             array('class'   => 'close-ModalGameNotification',
-                                    'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
+                             array('class'   => 'close-ModalGameNotification default-btn',
+                                    'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close"); return false;'));
             }
             else
             {
                 $content = ZurmoHtml::link(Zurmo::t('Core', 'Skip'), '#',
                                  array('class'   => 'close-ModalGameNotification simple-link',
-                                       'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
+                                       'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close"); return false;'));
                 $content .= static::renderPostToProfileLinkContent($notification, $index);
                 return $content;
             }
@@ -128,8 +128,8 @@
             $content   = ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
-                                              $('#ModalGameNotification" . $index . "').dialog('close');}"),
-                         array('class'     => 'close-ModalGameNotification',
+                                              $('#ModalGameNotification" . $index . "').dialog('close'); return false;}"),
+                         array('class'     => 'close-ModalGameNotification  default-btn',
                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
                                               $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"), "dark");',
                          ));

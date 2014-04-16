@@ -44,42 +44,57 @@
         public static function renderDaySummaryContent(Meeting $meeting, $link)
         {
             $content = null;
-            $content .= '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
-            $content .= DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
+            $title       = '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';
+            $dateContent = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->startDateTime);
             $localEndDateTime = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($meeting->endDateTime);
             if ($localEndDateTime != null)
             {
-                $content .= ' - ' . $localEndDateTime;
+                $dateContent .= ' - ' . $localEndDateTime;
             }
-            $content .= '<br/>';
+            $dateContent .= '<br/>';
             $content .= self::renderActivityItemsContentsExcludingContacts($meeting);
-            if (count($meeting->activityItems) > 0)
+            if (count($meeting->activityItems) > 0 || count($meeting->userAttendees) > 0)
             {
-                $contactsContent = null;
+                $attendeesContent = null;
                 $contactLabels = self::getExistingContactRelationsLabels($meeting->activityItems);
                 foreach ($contactLabels as $label)
                 {
-                    if ($contactsContent != null)
+                    if ($attendeesContent != null)
                     {
-                        $contactsContent .= ', ';
+                        $attendeesContent .= '<br/>';
                     }
-                    $contactsContent .= $label;
+                    $attendeesContent .= $label;
                 }
-                $content .= $contactsContent . '<br/>';
+                foreach ($meeting->userAttendees as $user)
+                {
+                    if ($attendeesContent != null)
+                    {
+                        $attendeesContent .= '<br/>';
+                    }
+                    $params             = array('label' => strval($user), 'redirectUrl' => null, 'wrapLabel' => false);
+                    $moduleClassName    = $user->getModuleClassName();
+                    $moduleId           = $moduleClassName::getDirectoryName();
+                    $element            = new DetailsLinkActionElement('default', $moduleId, $user->id, $params);
+                    $attendeesContent  .= '<i class="icon-'.strtolower(get_class($user)).'"></i> ' . $element->render();
+                }
+                if ($attendeesContent != null )
+                {
+                    $content .= $attendeesContent . '<br/>';
+                }
             }
+            $content = $title . $dateContent . ZurmoHtml::tag('div', array('class' => 'meeting-details'), $content);
             if ($meeting->location != null)
             {
-                $content .= '<br/>';
-                $content .= Zurmo::t('ZurmoModule', 'Location') . ':<br/>';
+                $content .=  ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Location')) . '<br/>';
                 $content .= $meeting->location;
+                $content .= '<br/>';
             }
             if ($meeting->description != null)
             {
-                $content .= '<br/>';
-                $content .= Zurmo::t('ZurmoModule', 'Description') . ':<br/>';
+                $content .= ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Description')) . '<br/>';
                 $content .= $meeting->description;
             }
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'meeting-summary'), $content);
         }
 
         protected static function getExistingContactRelationsLabels($activityItems)
@@ -93,7 +108,11 @@
                     $contact = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($contact) == 'Contact')
                     {
-                        $existingContacts[] = strval($contact);
+                        $params             = array('label' => strval($contact), 'redirectUrl' => null, 'wrapLabel' => false);
+                        $moduleClassName    = $contact->getModuleClassName();
+                        $moduleId           = $moduleClassName::getDirectoryName();
+                        $element            = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
+                        $existingContacts[] = '<i class="icon-'.strtolower(get_class($contact)).'"></i> ' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -115,7 +134,11 @@
                     $contact = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($contact) == 'Contact')
                     {
-                        $existingContacts[] = strval($contact);
+                        $params          = array('label' => strval($contact), 'redirectUrl' => null, 'wrapLabel' => false);
+                        $moduleClassName = $contact->getModuleClassName();
+                        $moduleId        = $moduleClassName::getDirectoryName();
+                        $element          = new DetailsLinkActionElement('default', $moduleId, $contact->id, $params);
+                        $existingContacts[] = '<i class="icon-'.strtolower(get_class($contact)).'"></i> ' . $element->render();
                     }
                 }
                 catch (NotFoundException $e)
@@ -142,9 +165,15 @@
                         $castedDownModel           = $item->castDown(array($modelDerivationPathToItem));
                         if ($content != null)
                         {
-                            $content .= ', ';
+                            $content .= '<br/> ';
                         }
-                        $content .= strval($castedDownModel);
+                        $params          = array('label' => strval($castedDownModel), 'redirectUrl' => null, 'wrapLabel' => false);
+                        $moduleClassName = $castedDownModel->getModuleClassName();
+                        $moduleId        = $moduleClassName::getDirectoryName();
+                        $element          = new DetailsLinkActionElement('default', $moduleId, $castedDownModel->id, $params);
+                        //Render icon
+                        $content .= '<i class="icon-'.strtolower(get_class($castedDownModel)).'"></i> ';
+                        $content .= $element->render();
                         break;
                     }
                     catch (NotFoundException $e)
@@ -157,6 +186,32 @@
                 $content .= '<br/>';
             }
             return $content;
+        }
+
+        /**
+         * Gets full calendar item data.
+         * @return string
+         */
+        public function getCalendarItemData()
+        {
+            $name             = $this->name;
+            $location         = $this->location;
+            $startDateTime    = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                    $this->startDateTime,
+                                    DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
+                                    DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
+                                    true);
+            $endDateTime      = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
+                                    $this->endDateTime,
+                                    DateTimeUtil::DATETIME_FORMAT_DATE_WIDTH,
+                                    DateTimeUtil::DATETIME_FORMAT_TIME_WIDTH,
+                                    true);
+            $language         = Yii::app()->languageHelper->getForCurrentUser();
+            $translatedAttributeLabels = self::translatedAttributeLabels($language);
+            return array($translatedAttributeLabels['name']            => $name,
+                         $translatedAttributeLabels['location']        => $location,
+                         $translatedAttributeLabels['startDateTime']   => $startDateTime,
+                         $translatedAttributeLabels['endDateTime']     => $endDateTime);
         }
     }
 ?>

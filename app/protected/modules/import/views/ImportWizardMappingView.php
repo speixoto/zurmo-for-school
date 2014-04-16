@@ -121,14 +121,14 @@
             $content .= '<colgroup>';
             if (count($headerColumns) == 3)
             {
-                $content .= '<col style="width:70%" />';
-                $content .= '<col style="width:15%" />';
-                $content .= '<col style="width:15%" />';
+                $content .= '<col style="width:60%" />';
+                $content .= '<col style="width:20%" />';
+                $content .= '<col style="width:20%" />';
             }
             else
             {
-                $content .= '<col style="width:80%" />';
-                $content .= '<col style="width:20%" />';
+                $content .= '<col style="width:70%" />';
+                $content .= '<col style="width:30%" />';
             }
             $content .= '</colgroup>';
             $content .= '<tbody>';

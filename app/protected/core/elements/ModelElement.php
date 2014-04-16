@@ -118,13 +118,7 @@
                     ) . '/Modal.js',
                 CClientScript::POS_END
             );
-            $idInputHtmlOptions = array(
-                'name'     => $this->getNameForHiddenField(),
-                'id'       => $this->getIdForHiddenField(),
-                'disabled' => $this->getDisabledValue(),
-                'value'    => $this->getId(),
-            );
-            $content       = $this->form->hiddenField($this->model, $this->idAttributeId, $idInputHtmlOptions);
+            $content       = $this->form->hiddenField($this->model, $this->idAttributeId, $this->getIdInputHtmlOptions());
             if (!$this->showOnlyHiddenInputForEditable())
             {
                 $inputContent  = $this->renderTextField($this->getIdForHiddenField());
@@ -133,6 +127,17 @@
             }
             $content .= $this->renderExtraHtmlContent();
             return $content;
+        }
+
+        protected function getIdInputHtmlOptions()
+        {
+            $idInputHtmlOptions = array(
+                'name'     => $this->getNameForHiddenField(),
+                'id'       => $this->getIdForHiddenField(),
+                'disabled' => $this->getDisabledValue(),
+                'value'    => $this->getId(),
+            );
+            return $idInputHtmlOptions;
         }
 
         /**

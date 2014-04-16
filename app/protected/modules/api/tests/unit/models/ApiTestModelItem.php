@@ -69,6 +69,7 @@
                     'string',
                     'textArea',
                     'url',
+                    'language',
                 ),
                 'relations' => array(
                     'apiTestModelItem'  => array(static::HAS_MANY_BELONGS_TO,  'ApiTestModelItem'),
@@ -112,6 +113,8 @@
                     array('string',    'length',  'min'  => 1, 'max' => 64),
                     array('textArea',  'type',    'type' => 'string'),
                     array('url',       'url'),
+                    array('language', 'type',    'type'  => 'string'),
+                    array('language', 'length',  'max'   => 10),
                 ),
                 'elements' => array(
                     'apiTestModelItem' => 'ApiModelTestItem',
@@ -127,6 +130,7 @@
                     'radioDropDown'    => 'RadioDropDown',
                     'multiDropDown'    => 'MultiSelectDropDown',
                     'tagCloud'         => 'TagCloud',
+                    'language'         => 'LanguageStaticDropDown',
                 ),
                 'customFields' => array(
                     'dropDown'        => 'ApiTestDropDown',

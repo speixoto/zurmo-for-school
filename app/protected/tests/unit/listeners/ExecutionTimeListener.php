@@ -47,6 +47,7 @@
 
         public function startTest(PHPUnit_Framework_Test $test)
         {
+            echo PHP_EOL . "Starting: " . $test->getName();
         }
 
         public function endTest(PHPUnit_Framework_Test $test, $length)
