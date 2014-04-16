@@ -604,17 +604,6 @@
             echo $content;
         }
 
-        public function actionRenderBaseTemplateOptions($templateId, $elementClassName, $elementModelClassName,
-                                                        $elementAttributeName, $elementFormClassName,
-                                                        array $elementParams = array())
-        {
-            $model                      = new $elementModelClassName();
-            $model->id                  = $templateId;
-            $element                    = new $elementClassName($model, $elementAttributeName,
-                                                                new $elementFormClassName(), $elementParams);
-            echo $element->render();
-        }
-
         public function actionConvertEmail($id, $converter = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));

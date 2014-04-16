@@ -326,15 +326,18 @@
             $this->assertTrue(strpos($content, '<label class="hasCheckBox c_on"><input id="Campaign_supportsRichText"' .
                                                 ' name="Campaign[supportsRichText]" value="1" checked="checked"' .
                                                 ' type="checkbox"') !== false);
-            $this->assertTrue(strpos($content, '<tr><th></th><td colspan="1"><div class="hasDropDown">' .
-                                                '<span class="select-arrow"></span>') !== false);
-            $this->assertTrue(strpos($content, '<select name="Campaign[contactEmailTemplateNames]" ' .
-                                                'id="Campaign_contactEmailTemplateNames_value">') !== false);
-            $this->assertTrue(strpos($content, '<option value="">Select a template</option>') !== false);
-            $this->assertTrue(strpos($content, '>EmailTemplate 01</option>') !== false);
-            $this->assertTrue(strpos($content, '>EmailTemplate 02</option>') !== false);
-            $this->assertTrue(strpos($content, '>EmailTemplate 03</option>') !== false);
-            $this->assertTrue(strpos($content, '</select></div></td></tr>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th>Select a template</th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input name="Campaign[contactEmailTemplateNames][id]"' .
+                                                ' id="Campaign_contactEmailTemplateNames_id"' .
+                                                ' value="" type="hidden" />') !== false);
+            $this->assertTrue(strpos($content, '<div class="has-model-select">') !== false);
+            $this->assertTrue(strpos($content, '<input onblur="clearIdFromAutoCompleteField($(this).val(), &#039;' .
+                                                'Campaign_contactEmailTemplateNames_id&#039;);" id="Campaign_contact' .
+                                                'EmailTemplateNames_name" type="text" value="" ' .
+                                                'name="Campaign_contactEmailTemplateNames_name" />') !== false);
+            $this->assertTrue(strpos($content, '<a id="Campaign_contactEmailTemplateNames_SelectLink" href="#">' .
+                                                '<span class="model-select-icon"></span><span class="z-spinner">' .
+                                                '</span></a></div></td></tr>') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix">') !== false);
             $this->assertTrue(strpos($content, '<div class="addfileinput-button"><span>Y</span>') !== false);
@@ -615,13 +618,18 @@
                                                 'value="0" name="Campaign[supportsRichText]"') !== false);
             $this->assertTrue(strpos($content, '<label class="hasCheckBox"><input id="Campaign_supportsRichText" ' .
                                                 'name="Campaign[supportsRichText]" value="1" type="checkbox"') !== false);
-            $this->assertTrue(strpos($content, '<th></th><td colspan="1"><div class="hasDropDown"><span class=' .
-                                                '"select-arrow"></span><select name="Campaign[contactEmailTemplate' .
-                                                'Names]" id="Campaign_contactEmailTemplateNames_value">') !== false);
-            $this->assertTrue(strpos($content, '<option value="">Select a template</option>') !== false);
-            $this->assertTrue(strpos($content, 'EmailTemplate 01</option>') !== false);
-            $this->assertTrue(strpos($content, 'EmailTemplate 02</option>') !== false);
-            $this->assertTrue(strpos($content, 'EmailTemplate 03</option>') !== false);
+            $this->assertTrue(strpos($content, '<tr><th>Select a template</th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><input name="Campaign[contactEmailTemplateNames][id]"' .
+                                                ' id="Campaign_contactEmailTemplateNames_id"' .
+                                                ' value="" type="hidden" />') !== false);
+            $this->assertTrue(strpos($content, '<div class="has-model-select">') !== false);
+            $this->assertTrue(strpos($content, '<input onblur="clearIdFromAutoCompleteField($(this).val(), &#039;' .
+                                                'Campaign_contactEmailTemplateNames_id&#039;);" id="Campaign_contact' .
+                                                'EmailTemplateNames_name" type="text" value="" ' .
+                                                'name="Campaign_contactEmailTemplateNames_name" />') !== false);
+            $this->assertTrue(strpos($content, '<a id="Campaign_contactEmailTemplateNames_SelectLink" href="#">' .
+                                                '<span class="model-select-icon"></span><span class="z-spinner">' .
+                                                '</span></a></div></td></tr>') !== false);
             $this->assertTrue(strpos($content, '<th><label>Attachments</label></th>') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix">') !== false);
             $this->assertTrue(strpos($content, '<div class="addfileinput-button"><span>Y</span>') !== false);

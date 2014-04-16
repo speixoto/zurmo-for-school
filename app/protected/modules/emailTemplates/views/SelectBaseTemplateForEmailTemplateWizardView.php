@@ -157,7 +157,6 @@
             parent::registerScripts();
             $this->registerUpdateBaseTemplateIdHiddenInputOnSelectionChangeScript();
             $this->registerPreSelectBaseTemplateScript();
-            $this->registerPopulateBaseTemplatesScript();
             $this->registerUpdateBaseTemplatesByDivIdScript();
             $this->registerResetBaseTemplateIdScript();
             $this->registerResetOriginalBaseTemplateIdScript();
@@ -243,45 +242,6 @@
                     return true;
                 });
                 ", CClientScript::POS_END);
-        }
-
-        protected function registerPopulateBaseTemplatesScript()
-        {
-            // Begin Not Coding Standard
-            Yii::app()->clientScript->registerScript('populateBaseTemplatesScript', "
-                function populateBaseTemplates(elementClassName, elementModelClassName, elementAttributeName, elementFormClassName, elementParams, divId)
-                {
-                    var templateId     = $('" .
-                                            GeneralDataForEmailTemplateWizardView::
-                                                    resolveTemplateIdHiddenInputJQuerySelector($this->model) . "').val();
-                    var requestData    = { templateId: templateId, elementClassName: elementClassName,
-                                            elementModelClassName: elementModelClassName,
-                                            elementAttributeName: elementAttributeName,
-                                             elementFormClassName: elementFormClassName,
-                                             elementParams: elementParams };
-
-                    " . ZurmoHtml::ajax($this->resolvePopulateBaseTemplateAjaxOptions()) . "
-                }", CClientScript::POS_HEAD);
-            // End Not Coding Standard
-        }
-
-        protected function resolvePopulateBaseTemplateAjaxOptions()
-        {
-            $message   = Zurmo::t('EmailTemplatesModule',
-                                            'There was an error retrieving relevant EmailTemplatesModulePluralLabel',
-                                            LabelUtil::getTranslationParamsForAllModules());
-            $ajaxArray                  = static::resolveErrorAjaxCallback($message);
-            $ajaxArray['cache']         = 'false';
-            $ajaxArray['url']           = static::resolveBaseTemplateOptionsUrl();
-            $ajaxArray['type']          = 'GET';
-            $ajaxArray['data']          = "js:requestData";
-            // Begin Not Coding Standard
-            $ajaxArray['success']       = "js:function(data, status, request)
-                                        {
-                                            updateBaseTemplatesByDivId(divId, data);
-                                        }";
-            // End Not Coding Standard
-            return $ajaxArray;
         }
 
         protected function registerUpdateBaseTemplatesByDivIdScript()
