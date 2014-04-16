@@ -202,6 +202,10 @@
             $hash               = static::resolveHashForQueryStringArray(static::$baseQueryStringArray);
             $trackingUrl        = static::resolveAbsoluteTrackingUrlByHash($hash);
             $applicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            if (!isset($applicationName))
+            {
+                $applicationName    = 'Tracker';
+            }
             $imageTag           = ZurmoHtml::image($trackingUrl, $applicationName, array('width' => 1, 'height' => 1));
             $imageTag           = ZurmoHtml::tag('br') . $imageTag;
             if ($bodyTagPosition = strpos($content, '</body>'))
