@@ -94,18 +94,23 @@
         protected function resolvePreviewContainerContent()
         {
             $this->registerPreviewIFrameContainerCloserLinkClick();
-            $content  = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),Zurmo::t('Core', 'Close')),
+            $content  = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('Core', 'Close')),
                 '#', array('id' => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID, 'class' => 'default-btn'));
             $content .= ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
             $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
             return $content;
         }
 
-        protected function resolvePreviewIFrameContainerHtmlOptions()
+        protected function registerPreviewIFrameContainerCloserLinkClick()
         {
-            return array('id'    => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID,
-                'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
-                'style' => 'display:none');
+            Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
+                $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").unbind("click.reviewIFrameContainerCloserLinkClick")
+                                                    .bind("click.reviewIFrameContainerCloserLinkClick", function(event)
+                 {
+                    $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
+                    $("body").removeClass("previewing-builder");
+                    event.preventDefault();
+                 });');
         }
 
         protected function resolvePreviewIFrameHtmlOptions()
@@ -120,16 +125,11 @@
                 'frameborder' => 0);
         }
 
-        protected function registerPreviewIFrameContainerCloserLinkClick()
+        protected function resolvePreviewIFrameContainerHtmlOptions()
         {
-            Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
-                $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").unbind("click.reviewIFrameContainerCloserLinkClick")
-                                                    .bind("click.reviewIFrameContainerCloserLinkClick", function(event)
-                 {
-                    $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
-                    $("body").removeClass("previewing-builder");
-                    event.preventDefault();
-                 });');
+            return array('id'    => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID,
+                'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
+                'style' => 'display:none');
         }
     }
 ?>

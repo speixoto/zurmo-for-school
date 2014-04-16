@@ -120,12 +120,12 @@
         protected function renderActionBar()
         {
             $modelClassName = $this->resolveModelClassName();
-            $content = '
-					<div class="pills">
-						<a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
-						<a href="#" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
-					</div>
-			';
+            $content =  '
+                            <div class="pills">
+                                    <a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
+                                    <a href="#" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
+                            </div>
+                        ';
             $content .= $this->renderCloseSelectTemplatesButton();
             $content  = ZurmoHtml::tag('div', array('class' => 'mini-pillbox'), $content);
             return $content;
@@ -228,6 +228,7 @@
 
         protected function renderOnClickFilterLinksScript()
         {
+            // Begin Not Coding Standard
             $script = "
                 $('body').off('click', '.filter-link');
                 $('body').on('click', '.filter-link', function (event) {
@@ -246,6 +247,7 @@
                     return true;
                 });
             ";
+            // End Not Coding Standard
             return $script;
         }
 
