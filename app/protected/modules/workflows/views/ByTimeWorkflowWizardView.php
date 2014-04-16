@@ -93,7 +93,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                             $('#TimeTriggerForWorkflowWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView', $this->model->type) . "
                             $('#TriggersForWorkflowWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -166,7 +166,7 @@
                 $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        url = '" . Yii::app()->createUrl('workflows/default/index') . "';
+                        url = '" . Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/index') . "';
                         window.location.href = url;
                         return false;
                     }
@@ -245,7 +245,7 @@
         protected function renderLoadTimeTriggerAttributeScriptContent($formName)
         {
             assert('is_string($formName)');
-            $url    =  Yii::app()->createUrl('workflows/default/getAvailableAttributesForTimeTrigger',
+            $url    =  Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/getAvailableAttributesForTimeTrigger',
                 array_merge($_GET, array('type' => $this->model->type)));
             // Begin Not Coding Standard
             $script = "
@@ -272,7 +272,7 @@
         {
             $id         = 'ByTimeWorkflowWizardForm_timeTriggerAttribute';
             $inputDivId = 'time-trigger-container';
-            $url        =  Yii::app()->createUrl('workflows/default/addOrChangeTimeTriggerAttribute',
+            $url        =  Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/addOrChangeTimeTriggerAttribute',
                            array_merge($_GET, array('type' => $this->model->type)));
             // Begin Not Coding Standard
             $ajaxSubmitScript  = ZurmoHtml::ajax(array(

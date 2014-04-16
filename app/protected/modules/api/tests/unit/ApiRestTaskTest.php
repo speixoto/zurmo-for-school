@@ -113,6 +113,7 @@
             $data['completedDateTime'] = $completedStamp;
             $data['completed']         = 0;
             $data['description']       = "Task description";
+            $data['status']            = Task::STATUS_IN_PROGRESS;
 
             $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
@@ -241,6 +242,7 @@
                 'id' => $super->id,
                 'username' => 'super'
             );
+            $data['status'] = Task::STATUS_NEW;
 
             // unset explicit permissions, we won't use these in comparison.
             unset($response['data']['explicitReadWriteModelPermissions']);
@@ -335,6 +337,7 @@
                 'id' => $super->id,
                 'username' => 'super'
             );
+            $data['status'] = Task::STATUS_NEW;
 
             // We need to unset some empty values from response.
             unset($response['data']['createdDateTime']);

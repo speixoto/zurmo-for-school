@@ -90,7 +90,7 @@
 
         protected function getArray()
         {
-            $data = array(GameRewardsSearchForm::FILTERED_BY_ALL => Zurmo::t('ActivitiesModule', 'All'),
+            $data = array(GameRewardsSearchForm::FILTERED_BY_ALL => Zurmo::t('Core', 'All'),
                           GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM  => Zurmo::t('GameRewardsModule', 'Redeemable'));
             return $data;
         }

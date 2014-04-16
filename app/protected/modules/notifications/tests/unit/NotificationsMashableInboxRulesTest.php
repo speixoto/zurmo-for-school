@@ -42,6 +42,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createUsers();
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
@@ -68,12 +69,21 @@
         public function testReadUnread()
         {
             $super                      = User::getByUsername('super');
+            $billy                      = User::getByUsername('billy');
             Yii::app()->user->userModel = $super;
             $this->deleteAllNotifications();
             $createdNotification        = $this->createAndSaveNewNotificationForUser($super);
             $this->assertEquals(1, $this->rules->getUnreadCountForCurrentUser(), 0);
-            $this->rules->resolveMarkRead($createdNotification->id);
             $savedNotification          = Notification::getById($createdNotification->id);
+            $savedNotification->ownerHasReadLatest = 0;
+            $savedNotification->save();
+            $this->assertEquals(1, $this->rules->getUnreadCountForCurrentUser(), 0);
+            //Other users should have 0 unread notifications
+            Yii::app()->user->userModel = $billy;
+            $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 0);
+            //Mark notification as ready by super
+            $this->rules->resolveMarkRead($createdNotification->id);
+            Yii::app()->user->userModel = $super;
             $this->assertTrue((bool)$savedNotification->ownerHasReadLatest);
             $this->assertTrue((bool)$this->rules->hasCurrentUserReadLatest($createdNotification->id));
             $this->rules->resolveMarkUnread($createdNotification->id);

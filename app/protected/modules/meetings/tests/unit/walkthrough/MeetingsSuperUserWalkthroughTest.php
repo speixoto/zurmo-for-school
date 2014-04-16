@@ -162,9 +162,12 @@
             $this->assertEquals(0, count($meetings));
 
             //Test adding a meeting with multiple contacts
+            $contactItemPrefix    = Meeting::CONTACT_ATTENDEE_PREFIX;
+            $meetingAttendeesData = $contactItemPrefix . $superContactId . ',' . // Not Coding Standard
+                                    $contactItemPrefix . $superContactId2 . ',' . // Not Coding Standard
+                                    $contactItemPrefix . $superContactId3;
             $activityItemPostData = array('Account' => array('id' => $superAccountId),
-                                          'Contact' => array('ids' =>
-                                                $superContactId . ',' . $superContactId2 . ',' . $superContactId3)); // Not Coding Standard
+                                          'Contact' => array('ids' => $meetingAttendeesData)); // Not Coding Standard
             $this->setGetArray(array(   'relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
                                         'relationModuleId'      => 'accounts', 'redirectUrl' => 'someRedirect'));
             $this->setPostArray(array('ActivityItemForm' => $activityItemPostData,
@@ -178,6 +181,19 @@
             $this->assertEquals(4, $meetings[0]->activityItems->count());
             $activityItem1 = $meetings[0]->activityItems->offsetGet(0);
             $this->assertEquals($account, $activityItem1);
+        }
+
+        /**
+         * @depends testSuperUserAllDefaultControllerActions
+         */
+        public function testCreateMeetingWithTimeZoneAdjustment()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('redirectUrl' => 'someRedirect',
+                                     'startDate'   => '2014-03-03'));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('meetings/default/createMeeting');
+            $this->assertTrue(strpos($content, '3/3/2014 12:00 AM') !== false);
+            $this->assertFalse(strpos($content, '3/2/2014 11:00 PM') !== false);
         }
     }
 ?>

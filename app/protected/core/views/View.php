@@ -51,6 +51,11 @@
         protected $title;
 
         /**
+         * @var bool
+         */
+        protected $makeDefaultClassesFromClassHeirarchy = true;
+
+        /**
          * Tells View that it can render the extending class' divs with
          * and id matching their name. Must be overridden to return
          * false in extending classes that can be rendered multiple times
@@ -95,13 +100,13 @@
                 }
                 $content = "<!-- Start of $templateName -->$content<!-- End of $templateName -->";
             }
-            $classes = RuntimeUtil::getClassHierarchy(get_class($this), 'View');
-            if ($this->isUniqueToAPage())
+            $classes = $this->resolveDefaultClasses();
+            if ($this->isUniqueToAPage() && $this->renderContainerWrapperId())
             {
                 $id = " id=\"$name\"";
                 unset($classes[0]);
             }
-            else
+            elseif ($this->renderContainerWrapperId())
             {
                 $id = $this->getId();
                 if ($id != null)
@@ -109,22 +114,43 @@
                     $id = " id=\"$id\"";
                 }
             }
+            else
+            {
+                $id = null;
+            }
             $classes = join(' ', array_merge($this->getCssClasses(), $classes));
             if ($classes != '')
             {
                 $classes = " class=\"$classes\"";
             }
-            $calledClass = get_called_class();
-            if (YII_DEBUG)
+            $containerWrapperTag = $this->getContainerWrapperTag();
+            if ($containerWrapperTag == null)
             {
-                $reflection = new ReflectionClass( $calledClass );
-                $classFile = $reflection->getFileName();
-                return "<!--Called in: $classFile--><div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return $content;
             }
             else
             {
-                return "<div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return "<" . $this->getContainerWrapperTag() . $id . $classes . $this->getViewStyle() . ">$content</" . $this->getContainerWrapperTag() . ">";
             }
+        }
+
+        protected function resolveDefaultClasses()
+        {
+            if ($this->makeDefaultClassesFromClassHeirarchy)
+            {
+                return RuntimeUtil::getClassHierarchy(get_class($this), 'View');
+            }
+            return array();
+        }
+
+        protected function renderContainerWrapperId()
+        {
+            return true;
+        }
+
+        protected function getContainerWrapperTag()
+        {
+            return 'div';
         }
 
         /**

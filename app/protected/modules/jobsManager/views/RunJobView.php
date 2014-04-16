@@ -75,12 +75,11 @@
         {
             $imagePath = Yii::app()->themeManager->baseUrl . '/default/images/ajax-loader.gif';
             $progressBarImageContent = ZurmoHtml::image($imagePath, 'Progress Bar');
-            $content  = '<div>';
+            $content  = '<div class="wrapper">';
             $content .= ZurmoHtml::tag('h1', array(), $this->getJobLabel());
             $content .= '<div class="left-column full-width">';
             $content .= '<div id="complete-table" style="display:none;">';
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'The job has completed running.'));
-            $content .= $this->renderButtonsContent();
             $content .= '</div>';
             $content .= '<div id="progress-table" class="progress-bar">';
             $content .= Zurmo::t('JobsManagerModule', 'Job is running. Please wait.');
@@ -91,6 +90,7 @@
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'Job Output:'));
             $content .= ZurmoHtml::tag('ol', array(), '');
             $content .= '</div>';
+            $content .= $this->renderButtonsContent();
             $content .= '</div>';
             $content .= '</div>';
             return $content;
@@ -111,10 +111,12 @@
                 $queueJobUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/queueJob/',
                                  array('type' => $this->type));
                 $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::app()->jobQueue->getQueueJobLabel()),
-                                            $queueJobUrl, array('class' => 'z-button'));
+                                            $queueJobUrl, array('class' => 'secondary-button'));
             }
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
-                                        $jobManagerUrl, array('class' => 'z-button'));
+                                        $jobManagerUrl, array('class' => 'secondary-button'));
+            $content = '<div class="float-bar"><div class="view-toolbar-container clearfix dock"><div class="form-toolbar">'
+                       . $content . '</div></div></div>';
             return $content;
         }
     }

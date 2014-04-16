@@ -116,7 +116,12 @@
                 $content .= $nodeIdPrefix;
             }
             $content .= $relation;
-            return $this->treeType . '_' . $content;
+            return $this->resolveTreeTypeForMakingOrExplodingNodeId() . '_' . $content;
+        }
+
+        protected function resolveTreeTypeForMakingOrExplodingNodeId()
+        {
+            return $this->treeType;
         }
 
         /**
@@ -145,7 +150,7 @@
             {
                 return $nodeId;
             }
-            $nodeIdParts  = explode($this->treeType . '_', $nodeId);
+            $nodeIdParts  = explode($this->resolveTreeTypeForMakingOrExplodingNodeId() . '_', $nodeId);
             return $nodeIdParts[1];
         }
     }

@@ -651,8 +651,7 @@
                 }
                 else
                 {
-                    $messageView = new ErrorView(Zurmo::t('ImportModule', 'There was an error processing this import.'));
-                    $view        = new ErrorPageView($messageView);
+                    $view        = new ErrorPageView(Zurmo::t('ImportModule', 'There was an error processing this import.'));
                     echo $view->render();
                     Yii::app()->end(0, false);
                 }
@@ -688,7 +687,7 @@
         {
             $breadCrumbLinks = array(
                 Zurmo::t('ImportModule', 'Import'),
-                Zurmo::t('ZurmoModule',  'Create')
+                Zurmo::t('Core',         'Create')
             );
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
                 $this,

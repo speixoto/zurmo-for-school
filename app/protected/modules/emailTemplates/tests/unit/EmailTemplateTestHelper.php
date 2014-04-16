@@ -36,24 +36,40 @@
 
     class EmailTemplateTestHelper
     {
-        public static function createEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
+        public static function create($name, $subject, $modelClassName = 'Contact', $htmlContent = null,
+                                      $textContent = null, $type = EmailTemplate::TYPE_CONTACT, $isDraft = 0,
+                                      $builtType = EmailTemplate::BUILT_TYPE_PASTED_HTML, $serializedData = null,
+                                      $language = 'en')
         {
-            $emailTemplate                  = static::populateEmailTemplateByName($type, $subject, $modelClassName,
-                                              $name, $htmlContent, $textContent);
-            $saved                          = $emailTemplate->save();
+            $emailTemplate                  = static::populate($name, $subject, $modelClassName, $htmlContent,
+                                                                $textContent, $type, $isDraft, $builtType,
+                                                                $serializedData, $language);
+            $validate                       = isset($modelClassName);
+            $saved                          = $emailTemplate->save($validate);
+            if (!$saved)
+            {
+                var_dump($emailTemplate->getErrors());
+            }
             assert('$saved');
             return $emailTemplate;
         }
 
-        public static function populateEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
+        public static function populate($name, $subject, $modelClassName = 'Contact', $htmlContent = null,
+                                        $textContent = null, $type = EmailTemplate::TYPE_CONTACT, $isDraft = 0,
+                                        $builtType = EmailTemplate::BUILT_TYPE_PASTED_HTML, $serializedData = null,
+                                        $language = 'en')
         {
-            $emailTemplate = new EmailTemplate();
+            $emailTemplate                  = new EmailTemplate();
             $emailTemplate->type            = $type;
-            $emailTemplate->subject         = $subject;
+            $emailTemplate->builtType       = $builtType;
+            $emailTemplate->isDraft         = $isDraft;
             $emailTemplate->modelClassName  = $modelClassName;
+            $emailTemplate->language        = $language;
             $emailTemplate->name            = $name;
+            $emailTemplate->subject         = $subject;
             $emailTemplate->htmlContent     = $htmlContent;
             $emailTemplate->textContent     = $textContent;
+            $emailTemplate->serializedData  = $serializedData;
             return $emailTemplate;
         }
     }

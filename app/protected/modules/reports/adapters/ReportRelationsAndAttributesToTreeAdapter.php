@@ -116,7 +116,9 @@
             {
                 $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
-                                            'wrapperClass' => 'item-to-place');
+                                            'wrapperClass' => 'item-to-place',
+                );
+                $this->resolveChildNodeDataValueForAttributeNode($attributeNode, $attribute, $nodeIdPrefix);
                 $childrenNodeData[] = $attributeNode;
             }
             $selectableRelationsData = $modelToReportAdapter->
@@ -143,6 +145,16 @@
         }
 
         /**
+         * Override as needed
+         * @param $attributeNode
+         * @param $attribute
+         * @param $nodeIdPrefix
+         */
+        protected function resolveChildNodeDataValueForAttributeNode(& $attributeNode, $attribute, $nodeIdPrefix)
+        {
+        }
+
+        /**
          * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
          * @param RedBeanModel $precedingModel
          * @param null|string $precedingRelation
@@ -153,7 +165,7 @@
         {
             if ($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
-                return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForFilters();
             }
             elseif ($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {

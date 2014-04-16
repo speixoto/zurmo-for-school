@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateUser</title>
+<title>CheckDefaultPermissionsSave</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">CreateUser</td></tr>
+<tr><td rowspan="1" colspan="3">Check Default Permissions Save</td></tr>
 </thead><tbody>
 <tr>
     <td>setTimeout</td>
@@ -17,9 +17,19 @@
     <td></td>
 </tr>
 <tr>
-    <td>open</td>
-    <td>index.php/users/default/configurationEdit?id=1</td>
+    <td>setSpeed</td>
+    <td>3000</td>
     <td></td>
+</tr>
+<tr>
+	<td>storeGlobal</td>
+	<td>javascript{Math.floor(Math.random()*11000)}</td>
+	<td>randomSuffix</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=General</td>
+	<td></td>
 </tr>
 <tr>
     <td>waitForPageToLoad</td>
@@ -47,9 +57,9 @@
     <td></td>
 </tr>
 <tr>
-    <td>open</td>
-    <td>index.php/users/default/configurationEdit?id=1</td>
-    <td></td>
+	<td>clickAndWait</td>
+	<td>link=General</td>
+	<td></td>
 </tr>
 <tr>
     <td>waitForPageToLoad</td>
@@ -82,9 +92,9 @@
     <td></td>
 </tr>
 <tr>
-    <td>open</td>
-    <td>index.php/users/default/configurationEdit?id=1</td>
-    <td></td>
+	<td>clickAndWait</td>
+	<td>link=General</td>
+	<td></td>
 </tr>
 <tr>
     <td>waitForPageToLoad</td>
@@ -105,6 +115,11 @@
     <td>assertSelectedLabel</td>
     <td>UserConfigurationForm_defaultPermissionGroupSetting</td>
     <td>East</td>
+</tr>
+<tr>
+    <td>setSpeed</td>
+    <td>0</td>
+    <td></td>
 </tr>
 </tbody></table>
 </body>

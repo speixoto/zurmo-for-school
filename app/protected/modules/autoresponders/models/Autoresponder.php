@@ -60,6 +60,7 @@
 
         /**
          * Returns the display name for the model class.
+         * @param null $language
          * @return dynamic label name based on module.
          */
         protected static function getLabel($language = null)
@@ -69,6 +70,7 @@
 
         /**
          * Returns the display name for plural of the model class.
+         * @param null $language
          * @return dynamic label name based on module.
          */
         protected static function getPluralLabel($language = null)
@@ -96,7 +98,6 @@
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
                     array('htmlContent',            'AutoresponderMergeTagsValidator'),
                     array('textContent',            'AutoresponderMergeTagsValidator'),

@@ -42,8 +42,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'MarketingListsCancelLink'),
                             array('type'  => 'SaveButton'),
+                            array('type'  => 'MarketingListsCancelLink'),
                         ),
                     ),
                     'panels' => array(

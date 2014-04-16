@@ -83,7 +83,7 @@
                                             'elements' => array(
                                                 array('attributeName'   => 'null',
                                                       'type'            => 'MultipleProductCategoriesForProductTemplate',
-                                                      'inputPrefix'     => 'ProductTemplateCategoriesForm'),
+                                                ),
                                             ),
                                         ),
                                     )

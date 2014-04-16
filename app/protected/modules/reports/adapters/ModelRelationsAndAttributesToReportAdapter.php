@@ -387,7 +387,14 @@
             }
             if ($this->isDerivedAttribute($attribute))
             {
-                throw new NotSupportedException();
+                if ($attribute == 'UniqueIdentifier')
+                {
+                    return ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER;
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
             }
             $resolvedAttribute = static::resolveRealAttributeName($attribute);
             if (null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
@@ -992,7 +999,7 @@
                                                           'derivedAttributeType' => 'CalculatedNumber');
                 }
                 self::$derivedAttributesData[get_class($this->model)] =
-                    array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
+                    array_merge($attributes, $this->getDerivedAttributesDataByReportRules());
             }
             return self::$derivedAttributesData[get_class($this->model)];
         }
@@ -1035,11 +1042,20 @@
          * @param array $attributes
          * @param string $attribute
          */
-        private function resolveRelationToSelectableRelationData(& $attributes, $attribute)
+        protected function resolveRelationToSelectableRelationData(& $attributes, $attribute)
         {
             assert('is_array($attributes)');
             assert('is_string($attribute)');
             $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
+        }
+
+        /**
+         * Gets derived attribute date by report rules
+         * @return array
+         */
+        protected function getDerivedAttributesDataByReportRules()
+        {
+            return $this->rules->getDerivedAttributeTypesData($this->model);
         }
     }
 ?>

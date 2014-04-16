@@ -65,6 +65,8 @@
 
         public $labelPrefix        = null;
 
+        public $labelPrefixOptions = array();
+
         public $linkPrefix         = null;
 
         /**
@@ -228,7 +230,16 @@
         protected function resolveLabelContent(array $item)
         {
             $label      = $item['label'] . $this->resolveAndGetSpanAndDynamicLabelContent($item);
-            $content    = $this->renderLabelPrefix() . ZurmoHtml::tag('span', array(),  $label);
+            if (isset($item['labelSpanHtmlOptions']))
+            {
+                $labelSpanHtmlOptions = $item['labelSpanHtmlOptions'];
+            }
+            else
+            {
+                $labelSpanHtmlOptions = array();
+            }
+            $avatarImageContent = '<img id="avatar" src="http://zurmo.com/img/amit.png">';
+            $content    = $this->renderLabelPrefix() . ZurmoHtml::tag('span', $labelSpanHtmlOptions,  $label);
             return $content;
         }
 
@@ -346,7 +357,7 @@
         {
             if ($this->labelPrefix)
             {
-                return ZurmoHtml::tag($this->labelPrefix, array(), '');
+                return ZurmoHtml::tag($this->labelPrefix, $this->labelPrefixOptions, '');
             }
         }
 

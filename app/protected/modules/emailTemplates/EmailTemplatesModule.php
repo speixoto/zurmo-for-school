@@ -44,6 +44,7 @@
         {
             return array(
                 'emailMessages',
+                'zurmo'
             );
         }
 
@@ -105,6 +106,11 @@
         public static function getDemoDataMakerClassNames()
         {
             return array('EmailTemplatesDemoDataMaker');
+        }
+
+        public static function getDefaultDataMakerClassName()
+        {
+            return 'EmailTemplatesDefaultDataMaker';
         }
 
         public static function hasPermissions()

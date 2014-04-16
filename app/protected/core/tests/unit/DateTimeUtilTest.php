@@ -407,5 +407,77 @@
             $this->assertEquals('dd/MM/yyyy', $localDateFormatForInput);
             date_default_timezone_set($timeZone);
         }
+
+        public function testConvertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay()
+        {
+            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $super = Yii::app()->user->userModel;
+
+            $super->timeZone = 'Africa/Nairobi';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-03');
+            $this->assertEquals($startDateTime, '2014-03-02 21:00:00');
+
+            $super->timeZone = 'Asia/Hong_Kong';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-03');
+            $this->assertEquals($startDateTime, '2014-03-02 16:00:00');
+
+            $super->timeZone = 'America/Chicago';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-03');
+            $this->assertEquals($startDateTime, '2014-03-03 06:00:00');
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-29');
+            $this->assertEquals($startDateTime, '2014-03-29 05:00:00');
+        }
+
+        public function testconvertDateIntoTimeZoneAdjustedDateTimeEndOfDay()
+        {
+            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $super = Yii::app()->user->userModel;
+
+            $super->timeZone = 'Africa/Nairobi';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-03');
+            $this->assertEquals($endDateTime, '2014-03-03 20:59:59');
+
+            $super->timeZone = 'Asia/Hong_Kong';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-03');
+            $this->assertEquals($endDateTime, '2014-03-03 15:59:59');
+
+            $super->timeZone = 'America/Chicago';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-03');
+            $this->assertEquals($endDateTime, '2014-03-04 05:59:59');
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-29');
+            $this->assertEquals($endDateTime, '2014-03-30 04:59:59');
+        }
     }
 ?>

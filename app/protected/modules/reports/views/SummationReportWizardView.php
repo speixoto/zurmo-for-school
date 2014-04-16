@@ -87,7 +87,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView', $this->model->type) . "
                             $('#FiltersForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('25%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -97,7 +97,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView', $this->model->type) . "
                             $('#GroupBysForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('37.5%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -107,7 +107,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#GroupBysForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView', $this->model->type) . "
                             $('#DisplayAttributesForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('50%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -117,7 +117,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#DisplayAttributesForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'DrillDownDisplayAttributesForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'DrillDownDisplayAttributesForReportWizardView', $this->model->type) . "
                             $('#DrillDownDisplayAttributesForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('62.5%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -127,7 +127,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                             $('#DrillDownDisplayAttributesForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView', $this->model->type) . "
                             $('#OrderBysForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('75%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -137,7 +137,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
                             $('#OrderBysForReportWizardView').hide();
-                            " . $this->renderLoadChartSeriesAndRangesScriptContent($formName) . "
+                            " . static::renderLoadChartSeriesAndRangesScriptContent($formName) . "
                             $('#ChartForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('87.5%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -270,7 +270,7 @@
         protected function renderLoadChartSeriesAndRangesScriptContent($formName)
         {
             assert('is_string($formName)');
-            $url    =  Yii::app()->createUrl('reports/default/getAvailableSeriesAndRangesForChart',
+            $url    =  Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/getAvailableSeriesAndRangesForChart',
                        array_merge($_GET, array('type' => $this->model->type)));
             // Begin Not Coding Standard
             $script = "

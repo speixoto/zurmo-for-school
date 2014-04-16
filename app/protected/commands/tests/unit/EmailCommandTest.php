@@ -116,7 +116,10 @@
                 $messages = self::$userImap->getMessages();
                 $this->assertEquals(1, count($messages));
                 $this->assertEquals('A test email from Zurmo', trim($messages[0]->subject));
-                $this->assertEquals('A test html message from Zurmo.', trim($messages[0]->htmlBody));
+                $this->assertEquals('<!-- zurmo css inline -->' .
+                                    '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
+                                    '<html><body><p>A test html message from Zurmo.</p></body></html>',
+                                    preg_replace( "/\r|\n/", "", $messages[0]->htmlBody));
                 $this->assertEquals('A test text message from Zurmo.', trim($messages[0]->textBody));
                 $this->assertEquals(strval(Yii::app()->user->userModel), trim($messages[0]->fromName));
                 $this->assertEquals(Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel), trim($messages[0]->fromEmail));

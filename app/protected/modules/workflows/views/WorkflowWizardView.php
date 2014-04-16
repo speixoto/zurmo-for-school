@@ -42,7 +42,7 @@
         /**
          * @return string|void
          */
-        public static function getControllerId()
+        public static function getModuleId()
         {
             return 'workflows';
         }

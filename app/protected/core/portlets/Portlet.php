@@ -124,10 +124,15 @@
 
         public static function shiftPositionsBasedOnColumnReduction($portletCollection, $newColumnCount)
         {
-            $currentColumnCount = count($portletCollection);
+            //Current column count is determined by the max key of all collection items, instead of count($items)
+            $currentColumnCount = max(array_keys($portletCollection));
             if (!empty($portletCollection[1]))
             {
                 $maxPositionInColumn1 = count($portletCollection[1]);
+            }
+            else
+            {
+                $maxPositionInColumn1 = 0;
             }
             $shiftToPosition = $maxPositionInColumn1 + 1;
             for ($i = ($newColumnCount + 1); $i <= $currentColumnCount; $i++)
@@ -293,6 +298,39 @@
                 $placedViewTypes[] = $portlet->viewType;
             }
             return $placedViewTypes;
+        }
+
+        /**
+         * @param $layoutId
+         * Resolve portlet collection items sequence. Exclude missing indexes.
+         * This method is used as patch fix for ambiguous portlet items, that exist in database.
+         */
+        public static function resolvePortletCollectionColumnIndexes($layoutId)
+        {
+            $uniqueLayoutId    = 'HomeDashboard' . $layoutId;
+            $portletCollection = self::getByLayoutIdAndUserSortedByColumnIdAndPosition($uniqueLayoutId,
+                                 Yii::app()->user->userModel->id, array());
+            if (count($portletCollection) > 0)
+            {
+                $totalColumns = max(array_keys($portletCollection));
+            }
+            else
+            {
+                $totalColumns = 0;
+            }
+            if (count($portletCollection) < $totalColumns)
+            {
+                $columnIndex = 1;
+                foreach ($portletCollection as $portletItem)
+                {
+                    foreach ($portletItem as $position => $portlet)
+                    {
+                        $portlet->column = $columnIndex;
+                        $portlet->save();
+                    }
+                    $columnIndex++;
+                }
+            }
         }
     }
 ?>

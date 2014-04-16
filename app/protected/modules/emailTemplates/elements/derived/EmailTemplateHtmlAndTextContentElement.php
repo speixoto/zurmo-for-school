@@ -35,13 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Element used to display text and html areas on EmailTemplateEditAndDetailsView
+     * Base Element used to display text and html areas on email template,
+     * autoresponder and campaign edit and detail views
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
-        const HTML_CONTENT_INPUT_NAME = 'htmlContent';
+        const SELECTIVE_TAB_LOAD_KEY    = 'selectiveTabLoad';
 
-        const TEXT_CONTENT_INPUT_NAME = 'textContent';
+        const HTML_CONTENT_INPUT_NAME   = 'htmlContent';
+
+        const TEXT_CONTENT_INPUT_NAME   = 'textContent';
+
+        public $plugins = array('fontfamily', 'fontsize', 'fontcolor', 'mergetags');
 
         public static function getModelAttributeNames()
         {
@@ -76,9 +81,10 @@
 
         protected function resolveTabbedContent($plainTextContent, $htmlContent, $activeTab = 'text')
         {
-            $this->registerTabbedContentScripts();
             $textClass = 'active-tab';
             $htmlClass = null;
+            $htmlTabHyperLink = null;
+            $htmlContentDiv = null;
             if ($activeTab == 'html')
             {
                 $textClass = null;
@@ -87,9 +93,20 @@
             $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(),
                                                   '#tab1',
                                                   array('class' => $textClass));
-            $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(),
-                                                  '#tab2',
-                                                  array('class' => $htmlClass));
+            $plainTextDiv       = ZurmoHtml::tag('div', array('id' => 'tab1',
+                                                        'class' => $textClass . ' tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
+                                                    $plainTextContent);
+            if (isset($htmlContent))
+            {
+                $this->registerTabbedContentScripts();
+                $this->registerRedactorIframeHeightScripts();
+                $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(),
+                                                          '#tab2',
+                                                          array('class' => $htmlClass));
+                $htmlContentDiv     = ZurmoHtml::tag('div', array('id' => 'tab2',
+                                                        'class' => $htmlClass . ' tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
+                                                    $htmlContent);
+            }
             $tagsGuideLink      = null;
             if ($this->form)
             {
@@ -100,16 +117,12 @@
                 $tagsGuideLink          = $tagsGuideLinkElement->render();
             }
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
-
-            $plainTextDiv       = ZurmoHtml::tag('div',
-                                                array('id' => 'tab1',
-                                                      'class' => $textClass . ' tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
-                                                $plainTextContent);
-            $htmlContentDiv     = ZurmoHtml::tag('div',
-                                                array('id' => 'tab2',
-                                                      'class' => $htmlClass . ' tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
-                                                $htmlContent);
-            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+            $content            = ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+            if ($this->form)
+            {
+                $content           .= $this->renderTextAndHtmlContentAreaError();
+            }
+            return $content;
         }
 
         protected function registerTabbedContentScripts()
@@ -122,7 +135,7 @@
             else
             {
                 Yii::app()->clientScript->registerScript($scriptName, "
-                        $('.tabs-nav a:not(.simple-link)').click( function()
+                        $('.tabs-nav a:not(.simple-link)').click( function(event)
                         {
                             //the menu items
                             $('.active-tab', $(this).parent()).removeClass('active-tab');
@@ -135,36 +148,94 @@
                             {
                                     _old.removeClass('active-tab');
                                     _new.addClass('active-tab');
+                                    _new.trigger('tab-changed');
                             });
-                            return false;
+                            event.preventDefault();
                         });
                     ");
+            }
+        }
+
+        protected function registerRedactorIframeHeightScripts()
+        {
+            $scriptName = 'redactor-iframe-height';
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                // Begin Not Coding Standard
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('.redactor-iframe').load(function(){
+                            var contentHeight = $('.redactor-iframe').contents().find('body').outerHeight();
+                            $('.redactor-iframe').height(contentHeight + 50);
+                        });
+                    ");
+                // End Not Coding Standard
             }
         }
 
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == null');
-            $activeTab = $this->getActiveTab();
-            $url = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
-                                    array('id' => $this->model->id, 'className' => get_class($this->model)));
-            $htmlContent = "<iframe src='{$url}' class='redactor-iframe' width='100%' height='100%' frameborder='0' seamless></iframe>";
-            return $this->resolveTabbedContent($this->model->textContent, $htmlContent, $activeTab);
+            $textContent    = nl2br(Yii::app()->format->text($this->model->textContent));
+            $activeTab      = $this->getActiveTab();
+            $htmlContent    = $this->renderNonEditableHtmlContentArea();
+            $content        = $this->resolveTabbedContent($textContent, $htmlContent, $activeTab);
+            return $content;
         }
 
         protected function renderControlEditable()
         {
-            $activeTab = $this->getActiveTab();
-            return $this->resolveTabbedContent($this->renderTextContentArea(), $this->renderHtmlContentArea(), $activeTab);
+            $textContent    = $this->renderTextContentArea();
+            $activeTab      = $this->getActiveTab();
+            $htmlContent    = $this->renderEditableHtmlContentArea();
+            $content        = $this->resolveTabbedContent($textContent, $htmlContent, $activeTab);
+            return $content;
         }
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent))
+            // TODO: @Shoaibi: High: Refactor this
+            if ($this->resolveSelectiveLoadOfTabs() && isset($this->form))
+            {
+                if ($this->isPastedHtmlTemplate() && $this->isHtmlContentNotEmptyOrBothContentsEmpty())
+                {
+                    return 'html';
+                }
+                return 'text';
+            }
+            if ($this->isHtmlContentNotEmptyOrBothContentsEmpty())
             {
                 return 'html';
             }
             return 'text';
+        }
+
+        protected function isHtmlContentNotEmptyOrBothContentsEmpty()
+        {
+            return (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent)));
+        }
+
+        protected function renderEditableHtmlContentArea()
+        {
+            if (!$this->resolveSelectiveLoadOfTabs() || $this->isPastedHtmlTemplate())
+            {
+                return $this->renderHtmlContentArea();
+            }
+            return null;
+        }
+
+        protected function renderNonEditableHtmlContentArea()
+        {
+            if (!$this->resolveSelectiveLoadOfTabs() || !$this->isPlainTextTemplate())
+            {
+                $url            = Yii::app()->createUrl('emailTemplates/default/getHtmlContent',
+                                    array('id' => $this->model->id, 'className' => get_class($this->model)));
+                return "<iframe src='{$url}' class='redactor-iframe' width='100%' height='100%' frameborder='0' seamless></iframe>";
+            }
+            return null;
         }
 
         // REVIEW : @Shoaibi Create a HTML element out of it.
@@ -177,31 +248,45 @@
             $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_INPUT_NAME);
             $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
+            // Begin Not Coding Standard
             $cClipWidget->widget('application.core.widgets.Redactor', array(
-                                        'htmlOptions' => $htmlOptions,
-                                        'content'     => $htmlContent,
-                                        'paragraphy'  => "false",
-                                        'deniedTags'  => json_encode(array()),
-                                ));
+                                'htmlOptions'           => $htmlOptions,
+                                'content'               => $htmlContent,
+                                'paragraphy'            => "false",
+                                'fullpage'              => "true",
+                                'deniedTags'            => "false",
+                                'plugins'               => CJSON::encode($this->resolvePlugins()),
+                                'observeImages'         => 'true',
+                                'imageUpload'           => ImageFileModelUtil::getUrlForActionUpload(),
+                                'imageGetJson'          => ImageFileModelUtil::getUrlForActionGetUploaded(),
+                                'initCallback' => 'function(){
+                                    var contentHeight = $(".redactor_box iframe").contents().find("body").outerHeight();
+                                    $(".redactor_box iframe").height(contentHeight + 50);
+                                }'
+            ));
+            // End Not Coding Standard
             $cClipWidget->endClip();
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
             $content                .= $cClipWidget->getController()->clips['Redactor'];
-            $content                .= $this->renderHtmlContentAreaError();
             return $content;
         }
 
          protected function renderTextContentArea()
          {
             $textContentElement                         = new TextAreaElement($this->model, static::TEXT_CONTENT_INPUT_NAME, $this->form);
-            $textContentElement->editableTemplate       = $this->editableTemplate;
+            $textContentElement->editableTemplate       = str_replace('{error}', '', $this->editableTemplate);
             return $textContentElement->render();
          }
 
-        protected function renderHtmlContentAreaError()
+        protected function renderTextAndHtmlContentAreaError()
         {
             if (strpos($this->editableTemplate, '{error}') !== false)
             {
-                return $this->form->error($this->model, static::HTML_CONTENT_INPUT_NAME);
+                $textContentError = $this->form->error($this->model, static::TEXT_CONTENT_INPUT_NAME,
+                    array('inputID' => $this->getEditableInputId(static::TEXT_CONTENT_INPUT_NAME)));
+                $htmlContentError = $this->form->error($this->model, static::HTML_CONTENT_INPUT_NAME,
+                    array('inputID' => $this->getEditableInputId(static::HTML_CONTENT_INPUT_NAME)));
+                return $textContentError . $htmlContentError;
             }
             else
             {
@@ -227,6 +312,45 @@
         protected function getModuleId()
         {
             return 'emailTemplates';
+        }
+
+        protected function isPastedHtmlTemplate()
+        {
+            return $this->callMethodIfExistsElseReturnTrue('isPastedHtmlTemplate');
+        }
+
+        protected function isPlainTextTemplate()
+        {
+            return $this->callMethodIfExistsElseReturnTrue('isPlainTextTemplate');
+        }
+
+        protected function isBuilderTemplate()
+        {
+            return $this->callMethodIfExistsElseReturnTrue('isBuilderTemplate');
+        }
+
+        protected function callMethodIfExistsElseReturnTrue($method)
+        {
+            if (method_exists($this->model, $method))
+            {
+                return $this->model->$method();
+            }
+            return true;
+        }
+
+        protected function resolveDeniedTags()
+        {
+            return array();
+        }
+
+        protected function resolvePlugins()
+        {
+            return $this->plugins;
+        }
+
+        protected function resolveSelectiveLoadOfTabs()
+        {
+            return (bool)ArrayUtil::getArrayValue($this->params, static::SELECTIVE_TAB_LOAD_KEY);
         }
     }
 ?>

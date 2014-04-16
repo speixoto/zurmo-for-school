@@ -82,7 +82,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForWorkflowWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView', $this->model->type) . "
                             $('#TriggersForWorkflowWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('40%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -154,7 +154,7 @@
                 $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        url = '" . Yii::app()->createUrl('workflows/default/index') . "';
+                        url = '" . Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/index') . "';
                         window.location.href = url;
                         return false;
                     }

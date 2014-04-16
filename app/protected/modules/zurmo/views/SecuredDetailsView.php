@@ -70,8 +70,8 @@
         {
             $content                            = parent::renderAfterFormLayoutForDetailsContent();
             $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
-                $this->getModel(),
-                $content);
+                                                                                                        $this->getModel(),
+                                                                                                        $content);
             return $ownedSecurableItemDetailsContent;
         }
     }

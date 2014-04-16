@@ -458,7 +458,7 @@ HTML;
 
         public function testTextContentGetsCustomFooterAppended()
         {
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType('PlainTextFooter', false);
+            GlobalMarketingFooterUtil::setContentByType('PlainTextFooter', false);
             $content    = 'This is some text content';
             $result     = static::resolveContent($content, true, false);
             $this->assertTrue($result);
@@ -472,7 +472,7 @@ HTML;
          */
         public function testHtmlContentGetsCustomFooterAppended()
         {
-            UnsubscribeAndManageSubscriptionsPlaceholderUtil::setContentByType('RichTextFooter', true);
+            GlobalMarketingFooterUtil::setContentByType('RichTextFooter', true);
             $content    = 'This is some html content';
             $result     = static::resolveContent($content, true, true);
             $this->assertTrue($result);
@@ -483,8 +483,10 @@ HTML;
 
         protected static function resolveContent(& $content, $tracking = true, $isHtmlContent = true)
         {
-            return EmailMessageActivityUtil::resolveContentForTrackingAndFooter($tracking, $content, 1, 'AutoresponderItem',
-                                                                                                    1, 1, $isHtmlContent);
+            return (EmailMessageActivityUtil::resolveContentGlobalFooter($content, 1, 1, 1, 'AutoresponderItem',
+                                                                        $isHtmlContent) &&
+                    EmailMessageActivityUtil::resolveContentForTracking($tracking, $content, 1, 'AutoresponderItem',
+                                                                        1, $isHtmlContent));
         }
     }
 ?>

@@ -200,10 +200,10 @@ class Account extends OwnedSecurableItem implements StarredInterface
                     'industry'               => Zurmo::t('ZurmoModule',         'Industry',                            array(), null, $language),
                     'latestActivityDateTime' => Zurmo::t('ZurmoModule',         'Latest Activity Date Time',           array(), null, $language),
                     'meetings'               => Zurmo::t('MeetingsModule',      'MeetingsModulePluralLabel',           $params, null, $language),
-                    'name'                   => Zurmo::t('ZurmoModule',         'Name',                                array(), null, $language),
+                    'name'                   => Zurmo::t('Core',                'Name',                                array(), null, $language),
                     'notes'                  => Zurmo::t('NotesModule',         'NotesModulePluralLabel',              $params, null, $language),
-                    'officePhone'            => Zurmo::t('AccountsModule',      'Office Phone',                        array(), null, $language),
-                    'officeFax'              => Zurmo::t('AccountsModule',      'Office Fax',                          array(), null, $language),
+                    'officePhone'            => Zurmo::t('ZurmoModule',         'Office Phone',                        array(), null, $language),
+                    'officeFax'              => Zurmo::t('ZurmoModule',         'Office Fax',                          array(), null, $language),
                     'opportunities'          => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel',      $params, null, $language),
                     'primaryAccountAffiliations' =>
                         Zurmo::t('AccountAccountAffiliationsModule', '{primaryAccount} Affiliations', $paramsForAffiliations, null, $language),

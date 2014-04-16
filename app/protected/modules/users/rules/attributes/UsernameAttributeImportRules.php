@@ -41,7 +41,7 @@
     {
         public static function getSanitizerUtilTypesInProcessingOrder()
         {
-            return array('Truncate');
+            return array('Lowercase', 'Truncate');
         }
 
         public function getDisplayLabel()

@@ -39,6 +39,11 @@
         /**
          * @return string
          */
+        abstract protected function getFormName();
+
+        /**
+         * @return string
+         */
         abstract protected function getUnqualifiedNameForIdField();
 
         /**
@@ -81,14 +86,12 @@
 
         protected function getEditableInputId($attributeName = null, $relationAttributeName = null)
         {
-            $inputPrefix = $this->resolveInputIdPrefix();
-            return $inputPrefix . $this->getUnqualifiedIdForIdField();
+            return $this->getFormName() . $this->getUnqualifiedIdForIdField();
         }
 
         protected function getEditableInputName($attributeName = null, $relationAttributeName = null)
         {
-            $inputPrefix = $this->resolveInputNamePrefix();
-            return $inputPrefix . $this->getUnqualifiedNameForIdField();
+            return $this->getFormName() . $this->getUnqualifiedNameForIdField();
         }
 
         /**

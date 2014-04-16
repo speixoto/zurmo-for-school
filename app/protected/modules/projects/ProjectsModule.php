@@ -163,7 +163,7 @@
          */
         public static function getDefaultDataMakerClassName()
         {
-            return 'ProjectsDefaultDataMaker';
+            return null;
         }
 
         /**

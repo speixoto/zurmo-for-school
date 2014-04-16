@@ -101,7 +101,7 @@
          */
         public function readPermissionSubscriptionOnAfterOwnerChange(CEvent $event)
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionQuickUpdate', 5);
+            //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
             return true;
         }
 
@@ -113,7 +113,7 @@
         {
             if ($event->sender->getIsNewModel())
             {
-                Yii::app()->jobQueue->add('ReadPermissionSubscriptionQuickUpdate', 5);
+                //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
             }
             return true;
         }
@@ -124,7 +124,7 @@
          */
         public function readPermissionSubscriptionOnAfterDelete(CEvent $event)
         {
-            Yii::app()->jobQueue->add('ReadPermissionSubscriptionQuickUpdate', 5);
+            //Yii::app()->jobQueue->add('ReadPermissionSubscriptionUpdate', 5);
             return true;
         }
     }

@@ -134,6 +134,7 @@
                 'primaryEmail'      => null,
                 'primaryAddress'    => null,
                 'secondaryEmail'    => null,
+                'language'          => null,
                 'owner' => array(
                     'id'       => $super->id,
                     'username' => 'super'
@@ -240,6 +241,7 @@
                 'primaryEmail'      => null,
                 'primaryAddress'    => null,
                 'secondaryEmail'    => null,
+                'language'          => null,
                 'owner' => array(
                     'id' => $super->id,
                     'username' => 'super'
@@ -351,6 +353,7 @@
                 'primaryEmail'      => null,
                 'primaryAddress'    => null,
                 'secondaryEmail'    => null,
+                'language'          => null,
                 'owner' => array(
                     'id' => $super->id,
                     'username' => 'super'

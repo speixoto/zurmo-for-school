@@ -154,7 +154,7 @@
                     'comments'       => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
                     'description'    => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'files'          => Zurmo::t('ZurmoModule',  'Files',  array(), null, $language),
-                    'latestDateTime' => Zurmo::t('ActivitiesModule',  'Latest Date Time',  array(), null, $language),
+                    'latestDateTime' => Zurmo::t('ZurmoModule',  'Latest Date Time',  array(), null, $language),
                     'note'           => Zurmo::t('NotesModule', 'Note',  array(), null, $language),
                     'toUser'         => Zurmo::t('SocialItemsModule', 'To User',  array(), null, $language),
                 )

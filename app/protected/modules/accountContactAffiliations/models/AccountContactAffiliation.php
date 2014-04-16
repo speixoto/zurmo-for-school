@@ -92,7 +92,7 @@
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('AccountContactAffiliation');
             $where             = RedBeanModelDataProvider::makeWhere('AccountContactAffiliation', $searchAttributeData, $joinTablesAdapter);
-            $tableName         = static::getTableName('AccountContactAffiliation');
+            $tableName         = AccountContactAffiliation::getTableName();
             $q                 = DatabaseCompatibilityUtil::getQuote();
             $where .= " and {$q}{$tableName}{$q}.{$q}primary{$q} = '1'";
             return self::getSubset($joinTablesAdapter, null, null, $where);
