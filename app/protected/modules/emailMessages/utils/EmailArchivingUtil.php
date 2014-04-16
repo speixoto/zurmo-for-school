@@ -57,9 +57,14 @@
                         'relatedAttributeName' => 'emailAddress',
                         'operatorType'         => 'equals',
                         'value'                => $emailMessage->fromEmail,
+                    ),
+                    2 => array(
+                        'attributeName'        => 'isActive',
+                        'operatorType'         => 'equals',
+                        'value'                => 1,
                     )
                 );
-                $searchAttributeData['structure'] = '1';
+                $searchAttributeData['structure'] = '1 and 2';
                 $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
                 $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
                 $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
