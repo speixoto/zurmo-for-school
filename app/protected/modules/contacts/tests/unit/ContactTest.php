@@ -768,5 +768,41 @@
             $contact->state              = $contactStates[0];
             $this->assertTrue($contact->save());
         }
+
+        public function testDeleteContactCascadesMarketingListMemmers()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $contactStates              = ContactState::getByName('Qualified');
+            $contact = new Contact();
+            $contact->owner             = Yii::app()->user->userModel;
+            $contact->title->value      = 'Mr.';
+            $contact->firstName         = 'Member';
+            $contact->lastName          = 'One';
+            $contact->state             = $contactStates[0];
+            $this->assertTrue($contact->save());
+            $contactId = $contact->id;
+            $marketingList = MarketingListTestHelper::createMarketingListByName('Test Marketing List Member Deleted');
+            $member = MarketingListMemberTestHelper::populateMarketingListMember(1, $marketingList, $contact);
+            $this->assertTrue($member->unrestrictedSave());
+            $this->assertEquals(1, count(MarketingListMember::getByContactId($contactId)));
+            $testContact = new Contact();
+            $testContact->owner             = Yii::app()->user->userModel;
+            $testContact->title->value      = 'Mr.';
+            $testContact->firstName         = 'Member';
+            $testContact->lastName          = 'Two';
+            $testContact->state             = $contactStates[0];
+            $this->assertTrue($testContact->save());
+            $testContactId = $testContact->id;
+            $member2 = MarketingListMemberTestHelper::populateMarketingListMember(1, $marketingList, $testContact);
+            $this->assertTrue($member2->unrestrictedSave());
+            $this->assertEquals(1, count(MarketingListMember::getByContactId($testContact->id)));
+            $subscribedCount = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);
+            $this->assertEquals(2, $subscribedCount);
+            $this->assertTrue($contact->delete());
+            $this->assertEquals(0, count(MarketingListMember::getByContactId($contactId)));
+            $this->assertEquals(0, count(MarketingListMember::getByContactId($testContactId)));
+            $subscribedCount = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);
+            $this->assertEquals(0, $subscribedCount);
+        }
     }
 ?>
