@@ -210,10 +210,10 @@
             $this->unrestrictedSet('latestActivityDateTime', $dateTime);
         }
 
-        protected function beforeDelete()
+        protected function afterDelete()
         {
+            parent::afterDelete();
             ContactsUtil::resolveMarketingListMembersByContact($this);
-            return parent::beforeDelete();
         }
     }
 ?>
