@@ -800,6 +800,7 @@
             $this->assertEquals(2, $subscribedCount);
             $this->assertTrue($contact->delete());
             $this->assertEquals(0, count(MarketingListMember::getByContactId($contactId)));
+            $this->assertTrue($testContact->delete());
             $this->assertEquals(0, count(MarketingListMember::getByContactId($testContactId)));
             $subscribedCount = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);
             $this->assertEquals(0, $subscribedCount);
