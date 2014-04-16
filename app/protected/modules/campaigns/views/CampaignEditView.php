@@ -128,8 +128,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                      'type' => 'EmailTemplate')
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplate')
                                             ),
                                         ),
                                     )

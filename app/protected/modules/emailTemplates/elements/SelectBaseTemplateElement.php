@@ -120,12 +120,12 @@
         protected function renderActionBar()
         {
             $modelClassName = $this->resolveModelClassName();
-            $content = '
-					<div class="pills">
-						<a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
-						<a href="#" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
-					</div>
-			';
+            $content =  '
+                            <div class="pills">
+                                    <a href="#" class="filter-link active" data-filter="' . static::FILTER_BY_PREDEFINED_TEMPLATES . '">Layouts</a>
+                                    <a href="#" class="filter-link" data-filter="' . static::FILTER_BY_PREVIOUSLY_CREATED_TEMPLATES . '">Saved Templates</a>
+                            </div>
+                        ';
             $content .= $this->renderCloseSelectTemplatesButton();
             $content  = ZurmoHtml::tag('div', array('class' => 'mini-pillbox'), $content);
             return $content;
@@ -142,8 +142,9 @@
         {
             $pagerParams = array(
                 'class'            => 'BottomLinkPager',
-                'nextPageLabel'    => Zurmo::t('EmailTemplatesModule', 'Load More'),
+                'nextPageLabel'    => '<span>next</span>',
                 'header'           => '<div class="list-preloader"><span class="z-spinner"></span></div>',
+                'htmlOptions'      => array('class' => 'endless-list-pager')
             );
             return $pagerParams;
         }
@@ -227,6 +228,7 @@
 
         protected function renderOnClickFilterLinksScript()
         {
+            // Begin Not Coding Standard
             $script = "
                 $('body').off('click', '.filter-link');
                 $('body').on('click', '.filter-link', function (event) {
@@ -245,6 +247,7 @@
                     return true;
                 });
             ";
+            // End Not Coding Standard
             return $script;
         }
 

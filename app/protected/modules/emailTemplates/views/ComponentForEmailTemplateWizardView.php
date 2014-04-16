@@ -277,11 +277,6 @@
             return static::resolveRelativeUrl('renderCanvas', array('id' => $id));
         }
 
-        protected static function resolveBaseTemplateOptionsUrl()
-        {
-            return static::resolveRelativeUrl('renderBaseTemplateOptions');
-        }
-
         protected static function resolvePreviewActionUrl()
         {
             return static::resolveRelativeUrl('renderPreview');

@@ -139,7 +139,6 @@
             return array(
                 'class' => 'z-button ' . $this->useClass,
             );
-
         }
 
         protected function resolveThumbnail()

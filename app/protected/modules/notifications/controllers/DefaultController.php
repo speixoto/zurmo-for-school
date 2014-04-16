@@ -73,5 +73,11 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($notification);
             $notification->delete();
         }
+
+        public function actionRenderMessageHtmlContent($id)
+        {
+            $notificationMessage            = NotificationMessage::getById(intval($id));
+            echo Yii::app()->format->raw($notificationMessage->htmlContent);
+        }
     }
 ?>

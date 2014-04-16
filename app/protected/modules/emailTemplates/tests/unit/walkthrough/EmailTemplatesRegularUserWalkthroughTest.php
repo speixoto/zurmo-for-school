@@ -130,25 +130,11 @@
             $this->assertTrue(strpos($content, 'You have tried to access a page you do not have access to.') !== false);
         }
 
-        public function testRenderBaseTemplateOptionsForPreviouslyDefined()
-        {
-            $this->user->setRight('TasksModule', TasksModule::getAccessRight());
-            $this->assertTrue($this->user->save());
-            parent::testRenderBaseTemplateOptionsForPreviouslyDefined();
-        }
-
         public function testDetailsJsonActionForWorkflow()
         {
             $this->user->setRight('NotesModule', NotesModule::getAccessRight());
             $this->assertTrue($this->user->save());
             parent::testDetailsJsonActionForWorkflow();
-        }
-
-        public function testCreateActionForBuilderAndWorkflow()
-        {
-            $this->user->setRight('AccountsModule', AccountsModule::getAccessRight());
-            $this->assertTrue($this->user->save());
-            parent::testCreateActionForBuilderAndWorkflow();
         }
 
         protected function getTestUserName()

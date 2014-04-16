@@ -96,8 +96,7 @@
                                             // TODO: @Shoaibi: Low: change this to constant after refactoring
                                             'detailViewOnly' => 2, // using 2 here to mean: "do not render on details"
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                            'type' => 'AutoresponderContactEmailTemplateNamesDropDown')
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplate')
                                             ),
                                         ),
                                     )
@@ -182,6 +181,16 @@
                 return ($this->renderType != 'Details');// this if would only be true for contactEmailTemplateNamesDropDown.
             }
             return parent::shouldDisplayCell($detailViewOnly);
+        }
+
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            // we need this for EmailTemplate element because it extends ModelElement and usually ModelElements
+            // can't have a null attribute associated with them.
+            if ($elementInformation['attributeName'] === 'null')
+            {
+                return;
+            }
         }
     }
 ?>

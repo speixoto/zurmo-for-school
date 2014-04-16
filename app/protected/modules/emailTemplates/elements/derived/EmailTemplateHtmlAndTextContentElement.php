@@ -197,11 +197,25 @@
 
         protected function getActiveTab()
         {
-            if (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent)))
+            // TODO: @Shoaibi: High: Refactor this
+            if ($this->resolveSelectiveLoadOfTabs() && isset($this->form))
+            {
+                if ($this->isPastedHtmlTemplate() && $this->isHtmlContentNotEmptyOrBothContentsEmpty())
+                {
+                    return 'html';
+                }
+                return 'text';
+            }
+            if ($this->isHtmlContentNotEmptyOrBothContentsEmpty())
             {
                 return 'html';
             }
-                return 'text';
+            return 'text';
+        }
+
+        protected function isHtmlContentNotEmptyOrBothContentsEmpty()
+        {
+            return (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent)));
         }
 
         protected function renderEditableHtmlContentArea()
