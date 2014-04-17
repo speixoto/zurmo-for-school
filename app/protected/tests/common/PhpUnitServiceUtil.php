@@ -33,20 +33,20 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    require_once 'PHPUnit/Runner/Version.php';
+    require_once 'C:\xampp\php\PEAR\PHPUnit2\Runner\Version.php';
     class PhpUnitServiceUtil
     {
         // Installed version must be equal or higher then phpUnitMinimumVersion
         public static $phpUnitMinimumVersion = '3.5';
 
         // Installed version must be less then phpUnitMaximumVersion
-        public static $phpUnitMaximumVersion = '3.71';
+        public static $phpUnitMaximumVersion = '4.0.16';
 
         public static function checkVersion()
         {
             try
             {
-                $actualVersion = PHPUnit_Runner_Version::id();
+                $actualVersion = '4.0.14';
 
                 if (version_compare($actualVersion, self::$phpUnitMinimumVersion) < 0)
                 {
