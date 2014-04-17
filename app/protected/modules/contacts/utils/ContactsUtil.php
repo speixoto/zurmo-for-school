@@ -363,5 +363,22 @@
                 return strval($contact);
             }
         }
+
+        /**
+         * @param $contact
+         * Contact::beforeDelete() resolves associated marketingListMembers, cascades deletion
+         */
+        public static function resolveMarketingListMembersByContact($contact)
+        {
+            $contactId = $contact->id;
+            if ($contactId != null && $contactId > 0)
+            {
+                $marketingListMembers = MarketingListMember::getByContactId($contactId);
+                foreach ($marketingListMembers as $marketingListMember)
+                {
+                    $marketingListMember->delete();
+                }
+            }
+        }
     }
 ?>
