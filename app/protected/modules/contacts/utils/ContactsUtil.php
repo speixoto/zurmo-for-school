@@ -371,9 +371,9 @@
         public static function resolveMarketingListMembersByContact($contact)
         {
             $contactId = $contact->id;
-            if ($contactId != null && $contactId > 0)
+            if ($contact->id != null && $contact->id > 0)
             {
-                $marketingListMembers = MarketingListMember::getByContactId($contactId);
+                $marketingListMembers = MarketingListMember::getByContactId($contact->id);
                 foreach ($marketingListMembers as $marketingListMember)
                 {
                     $marketingListMember->delete();
