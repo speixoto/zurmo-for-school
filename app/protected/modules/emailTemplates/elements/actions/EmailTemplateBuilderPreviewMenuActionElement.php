@@ -38,7 +38,7 @@
     {
         protected function getDefaultLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Preview');
+            return Zurmo::t('ZurmoModule', 'Preview');
         }
 
         protected function getDefaultRoute()

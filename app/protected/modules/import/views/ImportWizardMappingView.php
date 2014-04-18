@@ -172,7 +172,7 @@
             $headerColumns[] = Zurmo::t('ImportModule', 'Zurmo Field', LabelUtil::getTranslationParamsForAllModules());
             if ($this->model->firstRowIsHeaderRow)
             {
-                $headerColumns[] = Zurmo::t('ImportModule', 'Header');
+                $headerColumns[] = Zurmo::t('Core', 'Header');
             }
             $headerColumns[] = ZurmoHtml::tag('div',
                                array('id' =>  MappingFormLayoutUtil::getSampleColumnHeaderId(),

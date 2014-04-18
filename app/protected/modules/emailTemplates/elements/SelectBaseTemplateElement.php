@@ -134,7 +134,7 @@
         protected function renderCloseSelectTemplatesButton()
         {
             $linkText  = ZurmoHtml::icon('icon-x');
-            $linkText .= Zurmo::t('EmailTemplatesModule', 'cancel');
+            $linkText .= Zurmo::t('Core', 'cancel');
             return ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . static::CLOSE_LINK_CLASS_NAME));
         }
 
