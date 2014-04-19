@@ -84,20 +84,19 @@
             assert('is_int($type)');
             $quote                         = DatabaseCompatibilityUtil::getQuote();
             $where                         = null;
-            $selectDistinct                = true;
             $campaignItemTableName         = CampaignItem::getTableName();
             $campaignItemActivityTableName = CampaignItemActivity::getTableName();
             $emailMessageActivityTableName = EmailMessageActivity::getTableName();
-            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter();
             $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('CampaignItemActivity');
-            $selectQueryAdapter->addClauseByQueryString("campaign_id");
+            $selectQueryAdapter->addClauseByQueryString("1");
             $joinTablesAdapter->addFromTableAndGetAliasName($emailMessageActivityTableName, 'emailmessageactivity_id',
                                              $campaignItemActivityTableName);
             $where                         = "type = " . $type . " and {$quote}{$campaignItemActivityTableName}{$quote}" .
                                              ".campaignitem_id = {$quote}{$campaignItemTableName}{$quote}.id";
             $sql                           = SQLQueryUtil::makeQuery($campaignItemActivityTableName, $selectQueryAdapter,
                                              $joinTablesAdapter, null, null, $where);
-            return $sql;
+            return $sql . ' limit 1';
         }
 
         /**
@@ -109,19 +108,18 @@
             assert('is_int($type)');
             $quote                         = DatabaseCompatibilityUtil::getQuote();
             $where                         = null;
-            $selectDistinct                = true;
             $autoresponderItemActivityTableName = AutoresponderItemActivity::getTableName();
             $emailMessageActivityTableName = EmailMessageActivity::getTableName();
-            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter();
             $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('AutoresponderItemActivity');
-            $selectQueryAdapter->addClauseByQueryString("autoresponder_id");
+            $selectQueryAdapter->addClauseByQueryString("1");
             $joinTablesAdapter->addFromTableAndGetAliasName($emailMessageActivityTableName, 'emailmessageactivity_id',
                                              $autoresponderItemActivityTableName);
             $where                         = "type = " . $type . " and {$quote}{$autoresponderItemActivityTableName}{$quote}" .
                                              ".autoresponderitem_id = autoresponderitem.id";
             $sql                           = SQLQueryUtil::makeQuery($autoresponderItemActivityTableName, $selectQueryAdapter,
                 $joinTablesAdapter, null, null, $where);
-            return $sql;
+            return $sql . ' limit 1';
         }
 
         /**
