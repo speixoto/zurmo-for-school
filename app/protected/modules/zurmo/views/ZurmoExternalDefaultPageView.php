@@ -96,23 +96,28 @@
                 Yii::app()->themeManager->registerThemeColorCss();
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
-                    $cs->registerCssFile($themeBaseUrl . '/css/commercial.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/commercial.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
                 }
                 if (file_exists("themes/$themeName/css/custom.css"))
                 {
-                    $cs->registerCssFile($themeBaseUrl . '/css/custom.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/custom.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
                 }
                 if (Yii::app()->userInterface->isMobile())
                 {
+                    //todo: remove this?
                     $cs->registerCssFile($themeBaseUrl . '/css/mobile.css');
                 }
                 if (Yii::app()->getRequest()->isContextiveExternalRequest())
                 {
-                    $cs->registerCssFile($themeBaseUrl . '/css/gmail.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/gmail.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
                 }
                 if (Yii::app()->getClientScript()->isIsolationMode())
                 {
-                    $cs->registerCssFile($themeBaseUrl . '/css/webforms-external.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/webforms-external.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
                 }
             }
             if (MINIFY_SCRIPTS)
@@ -122,7 +127,8 @@
             }
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {
-                $cs->registerCssFile($themeBaseUrl . '/css' . '/ie.css', 'screen, projection');
+                $cs->registerCssFile($themeBaseUrl . '/css' . '/ie.css' .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString(), 'screen, projection');
             }
 
             foreach ($this->getStyles() as $style)
@@ -131,7 +137,8 @@
                 {
                     if (file_exists("themes/$themeName/css/$style.css"))
                     {
-                        $cs->registerCssFile($themeBaseUrl . '/css/' . $style. '.css'); // Not Coding Standard
+                        $cs->registerCssFile($themeBaseUrl . '/css/' . $style. '.css' .
+                            ZurmoAssetManager::getCssAndJavascriptHashQueryString()); // Not Coding Standard
                     }
                 }
             }
