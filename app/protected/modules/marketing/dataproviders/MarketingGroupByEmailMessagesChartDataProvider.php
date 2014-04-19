@@ -95,8 +95,8 @@
             $where                         = "type = " . $type . " and {$quote}{$campaignItemActivityTableName}{$quote}" .
                                              ".campaignitem_id = {$quote}{$campaignItemTableName}{$quote}.id";
             $sql                           = SQLQueryUtil::makeQuery($campaignItemActivityTableName, $selectQueryAdapter,
-                                             $joinTablesAdapter, null, null, $where);
-            return $sql . ' limit 1';
+                                             $joinTablesAdapter, null, 1, $where);
+            return $sql;
         }
 
         /**
@@ -118,8 +118,8 @@
             $where                         = "type = " . $type . " and {$quote}{$autoresponderItemActivityTableName}{$quote}" .
                                              ".autoresponderitem_id = autoresponderitem.id";
             $sql                           = SQLQueryUtil::makeQuery($autoresponderItemActivityTableName, $selectQueryAdapter,
-                $joinTablesAdapter, null, null, $where);
-            return $sql . ' limit 1';
+                $joinTablesAdapter, null, 1, $where);
+            return $sql;
         }
 
         /**
