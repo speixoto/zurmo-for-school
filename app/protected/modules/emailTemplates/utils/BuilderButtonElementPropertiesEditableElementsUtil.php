@@ -44,13 +44,13 @@
                                             'TextElement',
                                             'text',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Text')));
+                                                Zurmo::t('Core', 'Text')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementFrontendPropertiesEditableElementUtil',
                                             'TextElement',
                                             'href',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'URL')));
+                                                Zurmo::t('Core', 'URL')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementFrontendPropertiesEditableElementUtil',
                                             'ButtonTargetStaticDropDownFormElement',
@@ -62,7 +62,7 @@
                                             'ButtonSizeStaticDropDownFormElement',
                                             'sizeClass',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Size')));
+                                                Zurmo::t('Core', 'Size')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
                                             'ButtonWidthStaticDropDownFormElement',

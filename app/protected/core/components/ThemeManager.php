@@ -298,8 +298,10 @@
             $themeBaseUrl   = $this->baseUrl . '/' . $themeName;
             if ($this->activeThemeColor != static::CUSTOM_NAME)
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $this->activeThemeColor . '.css');
-                $cs->registerCssFile($themeBaseUrl . '/css/imports-' . $this->activeThemeColor . '.css');
+                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $this->activeThemeColor . '.css' .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString());
+                $cs->registerCssFile($themeBaseUrl . '/css/imports-' . $this->activeThemeColor . '.css' .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString());
             }
             else
             {
@@ -309,8 +311,10 @@
                 {
                     Yii::app()->lessCompiler->compileCustom();
                 }
-                $cs->registerCssFile(Yii::app()->assetManager->publish($primaryFilePath));
-                $cs->registerCssFile(Yii::app()->assetManager->publish($secondaryFilePath));
+                $cs->registerCssFile(Yii::app()->assetManager->publish($primaryFilePath) .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString());
+                $cs->registerCssFile(Yii::app()->assetManager->publish($secondaryFilePath) .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString());
             }
         }
     }

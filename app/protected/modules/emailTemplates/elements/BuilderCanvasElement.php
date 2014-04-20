@@ -144,7 +144,8 @@
         {
             $cs = Yii::app()->getClientScript();
             $baseUrl = Yii::app()->themeManager->baseUrl . '/default';
-            $cs->registerCssFile($baseUrl . '/css/builder-iframe-tools.css');
+            $cs->registerCssFile($baseUrl . '/css/builder-iframe-tools.css' .
+                ZurmoAssetManager::getCssAndJavascriptHashQueryString());
         }
 
         protected function renderLess()

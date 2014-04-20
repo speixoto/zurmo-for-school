@@ -78,7 +78,7 @@
 
         protected function makeData(GameLevel $gameLevel)
         {
-            $data = array('' => '<span class="background-texture-1"></span>' . Zurmo::t('UsersModule', 'None'));
+            $data = array('' => '<span class="background-texture-1"></span>' . Zurmo::t('Core', 'None'));
             return array_merge($data, $this->resolveBackgroundTextureNamesAndLabelsForLocking($gameLevel));
         }
 
