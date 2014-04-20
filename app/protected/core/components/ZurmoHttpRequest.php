@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,12 +31,12 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoHttpRequest extends CHttpRequest
     {
-        public $tokenEnabledRoutes = array();
+        public $excludeCsrfValidationRoutes = array();
 
         const EXTERNAL_REQUEST_TOKEN = 'externalRequestToken';
 
@@ -54,20 +54,23 @@
 
         protected function isTrustedRequest()
         {
-            $safeUrls       = array();
-            foreach ($this->tokenEnabledRoutes as $tokenEnabledRoute)
+            $requestedUrl   = Yii::app()->getRequest()->getUrl();
+            foreach ($this->excludeCsrfValidationRoutes as $excludeCsrfValidationRoute)
             {
-                $safeUrls[] = Yii::app()->createUrl($tokenEnabledRoute);
-            }
-            $requestedUrl = Yii::app()->getRequest()->getUrl();
-            foreach ($safeUrls as $url)
-            {
-                if (strpos($requestedUrl, $url) === 0)
+                $safeUrl = Yii::app()->createUrl($excludeCsrfValidationRoute['route']);
+                if (strpos($requestedUrl, $safeUrl) === 0)
                 {
-                    $externalRequestToken = Yii::app()->getRequest()->getPost(self::EXTERNAL_REQUEST_TOKEN);
-                    if ($externalRequestToken === ZURMO_TOKEN)
+                    if ($excludeCsrfValidationRoute['tokenEnabled'] === false)
                     {
                         return true;
+                    }
+                    else
+                    {
+                        $externalRequestToken = Yii::app()->getRequest()->getPost(self::EXTERNAL_REQUEST_TOKEN);
+                        if ($externalRequestToken === ZURMO_TOKEN)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -120,6 +123,16 @@
             {
                 return false;
             }
+        }
+
+        public function isOAuthRequest()
+        {
+            $accessToken = Yii::app()->getRequest()->getParam('access_token');
+            if ($accessToken != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         /**

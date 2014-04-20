@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,11 +31,13 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MarketingListsManageSubscriptionsPageView extends ZurmoPageView
     {
+        const TOGGLE_UNSUBSCRIBED_COOKIE_NAME = 'toggleUnsubscribed_Message';
+
         /**
          * @param CController $controller
          * @param MetadataView $listView
@@ -46,7 +48,7 @@
             $gridView           = new GridView(3, 1);
             $gridView->setView($listView, 0, 0);
             $gridView->setView($flashMessageView, 1, 0);
-            $gridView->setView(new FooterView(false), 2, 0);
+            $gridView->setView(new FooterView(), 2, 0);
             $this->registerScripts();
             parent::__construct($gridView);
         }
@@ -99,7 +101,7 @@
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
                     var notificationBarId   = "FlashMessageBar";
-                    var cookieName          = "' . MarketingListsExternalController::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
+                    var cookieName          = "' . static::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
                     var cookieValue         = $.cookie(cookieName);
                     if (cookieValue)
                     {

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     // manually import the class
@@ -52,8 +52,8 @@
             {
                 $this->setId($this->htmlOptions['id']);
             }
-            $route=$this->getController()->getRoute();
-            $this->items=$this->normalizeItems($this->items,$route,$hasActiveChild);
+            $route = $this->getController()->getRoute();
+            $this->items = $this->normalizeItems($this->items, $route, $hasActiveChild);
         }
 
         protected function renderMenu($items)
@@ -89,21 +89,21 @@
         protected function renderMenuRecursive($items)
         {
             $item = $items[0];
-            $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
-            $class=array();
+            $options = isset($item['itemOptions']) ? $item['itemOptions'] : array();
+            $class = array();
             if ($item['active'] && $this->activeCssClass!='')
             {
-                $class[]=$this->activeCssClass;
+                $class[] = $this->activeCssClass;
             }
-            if ($class!==array())
+            if ($class !== array())
             {
                 if (empty($options['class']))
                 {
-                    $options['class']=implode(' ',$class);
+                    $options['class'] = implode(' ', $class);
                 }
                 else
                 {
-                    $options['class'].=' '.implode(' ',$class);
+                    $options['class'].=' '.implode(' ', $class);
                 }
             }
 
@@ -123,16 +123,16 @@
 
             if (isset($item['url']))
             {
-                $label = $this->linkLabelWrapper===null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
+                $label = $this->linkLabelWrapper === null ? $item['label'] : CHtml::tag($this->linkLabelWrapper, $this->linkLabelWrapperHtmlOptions, $item['label']);
                 $label = ZurmoHtml::tag('span', array('class' => 'button-label'), $label);
-                echo CHtml::link($icon . $label . $item['dynamicLabel'],$item['url'], array('class' => 'button-action'));
+                echo CHtml::link($icon . $label . $item['dynamicLabel'], $item['url'], array('class' => 'button-action'));
                             $spanForTrigger = null;
             }
             else
             {
                 $item['linkOptions']['class'] = 'button-label';
                 $spanForTrigger  = $icon;
-                $spanForTrigger .= CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']);
+                $spanForTrigger .= CHtml::tag('span',isset($item['linkOptions']) ? $item['linkOptions'] : array(), $item['label']); // Not Coding Standard
                 $spanForTrigger .= $item['dynamicLabel'];
             }
 
@@ -158,20 +158,21 @@
                 {
                     foreach ($item['items'] as $item)
                     {
-
-                        $options=isset($item['itemOptions']) ? $item['itemOptions'] : array();
-                        $class=array();
+                        $options = isset($item['itemOptions']) ? $item['itemOptions'] : array();
+                        $class = array();
                         if ($item['active'] && $this->activeCssClass!='')
-                            $class[]=$this->activeCssClass;
-                        if ($class!==array())
+                        {
+                            $class[] = $this->activeCssClass;
+                        }
+                        if ($class !== array())
                         {
                             if (empty($options['class']))
                             {
-                                $options['class']=implode(' ',$class);
+                                $options['class'] = implode(' ', $class);
                             }
                             else
                             {
-                                $options['class'].=' '.implode(' ',$class);
+                                $options['class'].=' '.implode(' ', $class);
                             }
                         }
                         echo ZurmoHtml::openTag('li', $options);

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -68,11 +68,6 @@
             return array_merge($this->model->attributeLabels(), $this->customDisplayLabels);
         }
 
-        public function rules()
-        {
-            return array_merge(parent::rules(), $this->customRequiredFields);
-        }
-
         public function isAttributeRequired($attribute)
         {
             if ($this->isCustomRequiredAttribute($attribute))
@@ -92,6 +87,28 @@
                 }
             }
             return false;
+        }
+
+        public function resolveRequiredValidatorsForModel(array $customRequiredFields)
+        {
+            foreach ($customRequiredFields as $customRequiredAttribute)
+            {
+                if (self::isRelation($customRequiredAttribute))
+                {
+                    $relationModelClassName = self::getRelationModelClassName($customRequiredAttribute);
+                    if ($relationModelClassName === 'Email')
+                    {
+                        $this->getModel()->$customRequiredAttribute->addValidator('emailAddress',
+                                                                                  'RedBeanModelRequiredValidator');
+                    }
+                    elseif ($relationModelClassName === 'Address')
+                    {
+                        $this->getModel()->$customRequiredAttribute->addValidator('street1, city, state, postalCode',
+                                                                                  'required');
+                    }
+                }
+                $this->getModel()->addValidator($customRequiredAttribute, 'RedBeanModelRequiredValidator');
+            }
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -70,7 +70,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata = array_merge($metadata, array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('MeetingsModule', 'Upcoming MeetingsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
+                    'title' => "eval:Zurmo::t('MeetingsModule', 'Upcoming MeetingsModulePluralLabel Calendar', LabelUtil::getTranslationParamsForAllModules())",
                 ),
                 'global' => array(
                     'toolbar' => array(
@@ -118,7 +118,8 @@
                                                         array_merge($_GET, array(
                                                             'redirectUrl'            => $this->params['redirectUrl'],
                                                             'relationModelId'        => $this->params['relationModel']->id,
-                                                            'relationModelClassName' => get_class($this->params['relationModel'])
+                                                            'relationModelClassName' => get_class($this->params['relationModel']),
+                                                            'relationModuleId'       => $this->params['relationModuleId']
                                                             )));
         }
 

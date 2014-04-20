@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class TaskTest extends ZurmoBaseTest
@@ -265,6 +265,7 @@
 
         /**
          * @depends testDeleteTask
+         * @covers beforeSave::resolveStatusAndSetCompletedFields
          */
         public function testAutomatedCompletedDateTimeAndLatestDateTimeChanges()
         {
@@ -295,6 +296,9 @@
             $this->assertEquals('Task', $modelClassNames[0]);
         }
 
+        /**
+         * @covers beforeSave::resolveAndSetDefaultSubscribers
+         */
         public function testAddSubscriberToTask()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -306,7 +310,8 @@
             $this->assertTrue($task->save());
             $this->assertEquals($user, $task->owner);
 
-            //$this->assertEquals(0, count($task->notificationSubscribers));
+            //There would be two here as default subscribers are added
+            $this->assertEquals(2, count($task->notificationSubscribers));
             $user = Yii::app()->user->userModel;
             $notificationSubscriber = new NotificationSubscriber();
             $notificationSubscriber->person = $user;
@@ -319,7 +324,7 @@
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('User');
             $subscribedUser = $subscriber->person->castDown(array($modelDerivationPathToItem));
             $this->assertEquals($user, $subscribedUser);
-            //$this->assertEquals(1, count($task->notificationSubscribers));
+            $this->assertEquals(3, count($task->notificationSubscribers));
         }
 
         public function testAddCheckListItemsToTask()
@@ -370,6 +375,17 @@
             $this->assertEquals(1, $task->comments->count());
             $fetchedComment = $task->comments[0];
             $this->assertEquals('My Description', $fetchedComment->description);
+        }
+
+        /**
+         * @covers doNotificationSubscribersContainPerson
+         */
+        public function testDoNotificationSubscribersContainPerson()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $tasks = Task::getByName('MyTest');
+            $isContained = $tasks[0]->doNotificationSubscribersContainPerson(Yii::app()->user->userModel);
+            $this->assertTrue($isContained);
         }
     }
 ?>

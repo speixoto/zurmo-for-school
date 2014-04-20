@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -63,16 +63,26 @@
             'Upgrade to v1.6',
         ),
         'htmlContent'                  => array(
-            '<p>We are offering <strong>10% discount</strong> on all packages to new clients.</p>',
-            '<p>Existing clients can upgrade to a higher package and enjoy a special one time <strong>5% discount</strong>.</p>',
-            '<p>We have done lot of infrastructure redesign in terms and <strong>seucrity and performance</strong>.</p>',
-            '<p>Brace yourselves. This year santa came bit early with a special gift for you, <strong>25% discount</strong> on all packages.</p>',
-            '<p>All existing clients have been <strong>upgraded to v1.6</strong> as of now. Please contact support if you face any issues.</p>',
-            '<p>We are offering <strong>10% discount</strong> on all packages to new clients.</p>',
-            '<p>Existing clients can upgrade to a higher package and enjoy a special one time <strong>5% discount</strong>.</p>',
-            '<p>We have done lot of infrastructure redesign in terms and <strong>seucrity and performance</strong>.</p>',
-            '<p>Brace yourselves. This year santa came bit early with a special gift for you, <strong>25% discount</strong> on all packages.</p>',
-            '<p>All existing clients have been <strong>upgraded to v1.6</strong> as of now. Please contact support if you face any issues.</p>',
+            '<html><head></head><body><p>We are offering <strong>10% discount</strong>' .
+                ' on all packages to new clients.</p></body></html>',
+            '<html><head></head><body><p>Existing clients can upgrade to a higher package ' .
+                'and enjoy a special one time <strong>5% discount</strong>.</p></body></html>',
+            '<html><head></head><body><p>We have done lot of infrastructure redesign in terms ' .
+                'and <strong>seucrity and performance</strong>.</p></body></html>',
+            '<html><head></head><body><p>Brace yourselves. This year santa came bit early with' .
+                ' a special gift for you, <strong>25% discount</strong> on all packages.</p></body></html>',
+            '<html><head></head><body><p>All existing clients have been <strong>upgraded to v1.6</strong> ' .
+                'as of now. Please contact support if you face any issues.</p></body></html>',
+            '<html><head></head><body><p>We are offering <strong>10% discount</strong> on all ' .
+                'packages to new clients.</p></body></html>',
+            '<html><head></head><body><p>Existing clients can upgrade to a higher package and' .
+                ' enjoy a special one time <strong>5% discount</strong>.</p></body></html>',
+            '<html><head></head><body><p>We have done lot of infrastructure redesign in terms ' .
+                'and <strong>seucrity and performance</strong>.</p></body></html>',
+            '<html><head></head><body><p>Brace yourselves. This year santa came bit early with a' .
+                ' special gift for you, <strong>25% discount</strong> on all packages.</p></body></html>',
+            '<html><head></head><body><p>All existing clients have been <strong>upgraded to v1.6</strong> ' .
+                'as of now. Please contact support if you face any issues.</p></body></html>',
         ),
         'textContent'                  => array(
             'We are offering 10% discount on all packages to new clients.',

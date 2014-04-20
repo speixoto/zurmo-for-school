@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class GameRewardRedeemSummaryListViewColumnAdapter extends TextListViewColumnAdapter
@@ -57,14 +57,11 @@
         public static function resolveSummary(GameReward $gameReward, $availableCoins)
         {
             assert('is_int($availableCoins)');
-            $content  = ZurmoHtml::tag('h4', array('class' => 'reward-name'),
-                        strval($gameReward));
-            if($gameReward->description != null)
+            $content  = ZurmoHtml::tag('h4', array('class' => 'reward-name'), strval($gameReward));
+            if ($gameReward->description != null)
             {
-                // $content .= ZurmoHtml::tag('h3', array('class' => 'reward-description'),
-                //             $gameReward->description);
+                 $content .= ZurmoHtml::tag('p', array('class' => 'reward-description'), $gameReward->description);
             }
-            $content .= '<br />';
             $content .= ZurmoHtml::tag('span', array('class' => 'reward-cost'), $gameReward->cost . ' x ');
             $content .= ZurmoHtml::tag('span', array(),
                         ' - ' . $gameReward->quantity . ' ' . Zurmo::t('Core', 'Available') .
@@ -88,6 +85,7 @@
             $url      = Yii::app()->createUrl('gameRewards/default/redeemReward', array('id' => $gameReward->id));
             $label    = Zurmo::t('ZurmoModule', 'Redeem');
             $aContent = ZurmoHtml::wrapLink($label);
+            // Begin Not Coding Standard
             return      ZurmoHtml::ajaxLink($aContent, $url,
                 array('type'       => 'GET',
                       'dataType'     => 'json',
@@ -102,6 +100,7 @@
                       }'
                 ),
                 self::resolveHtmlOptionsForRedeemLink($gameReward, $availableCoins));
+            // End Not Coding Standard
         }
 
         protected static function resolveHtmlOptionsForRedeemLink(GameReward $gameReward, $availableCoins)

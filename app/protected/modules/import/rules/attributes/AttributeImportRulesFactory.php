@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -51,13 +51,16 @@
          * Given an import rules type and an attribute index or derived type string, make an AttributeImportRules object.
          * @param string $importRulesType
          * @param string $attributeIndexOrDerivedType
+         * @param string $penultimateModelClassName
          * @return object AttributeImportRules
          */
         public static function makeByImportRulesTypeAndAttributeIndexOrDerivedType($importRulesType,
-                                                                                  $attributeIndexOrDerivedType)
+                                                                                  $attributeIndexOrDerivedType,
+                                                                                  $penultimateModelClassName = null)
         {
             assert('is_string($importRulesType)');
             assert('is_string($attributeIndexOrDerivedType)');
+            assert('($penultimateModelClassName === null) || is_string($penultimateModelClassName)');
             $importRulesTypeClassName = ImportRulesUtil::getImportRulesClassNameByType($importRulesType);
             $attributeImportRulesType = $importRulesTypeClassName::getAttributeImportRulesType(
                                         $attributeIndexOrDerivedType);
@@ -80,6 +83,16 @@
             if (is_subclass_of($attributeImportRulesClassName, 'DerivedAttributeImportRules'))
             {
                 return new $attributeImportRulesClassName($model);
+            }
+            if (is_subclass_of($attributeImportRulesClassName, 'NonDerivedAttributeImportRules'))
+            {
+                $attributeImportRules = new $attributeImportRulesClassName($model, $attributeName);
+                $attributeImportRules->setPenultimateModelClassName($penultimateModelClassName);
+                $penultimateAttributeName  = AttributeImportRulesFactory::
+                                            getAttributeNameFromAttributeNameByAttributeIndexOrDerivedType(
+                                                $attributeIndexOrDerivedType);
+                $attributeImportRules->setPenultimateAttributeName($penultimateAttributeName);
+                return $attributeImportRules;
             }
             return new $attributeImportRulesClassName($model, $attributeName);
         }
@@ -174,7 +187,7 @@
                                $attributeIndexOrDerivedType)
         {
             assert('is_string($attributeIndexOrDerivedType)');
-                    $relationNameAndAttributeName = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
+            $relationNameAndAttributeName = explode(FormModelUtil::DELIMITER, $attributeIndexOrDerivedType);
             if (count($relationNameAndAttributeName) == 1)
             {
                 return $attributeIndexOrDerivedType;

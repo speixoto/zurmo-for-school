@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class WorkflowMessageInQueueJobTest extends WorkflowBaseTest
@@ -71,6 +71,7 @@
         {
             Yii::app()->user->userModel    = User::getByUsername('super');
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->type           = 2;
@@ -128,10 +129,10 @@
             WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow, serialize(array($emailMessages[1])));
 
             RedBeanModelsCache::forgetAll(true); //simulates page change, required to confirm Item does not get trashed
-            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(1, WorkflowMessageInQueue::getCount());
             $job = new WorkflowMessageInQueueJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(0, WorkflowMessageInQueue::getCount());
 
             RedBeanModelsCache::forgetAll(true); //simulates page change, required to confirm Item does not get trashed
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
@@ -159,10 +160,10 @@
             $deleted = $savedWorkflow->delete();
             $this->assertTrue($deleted);
 
-            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(1, WorkflowMessageInQueue::getCount());
             $job = new WorkflowMessageInQueueJob();
             $this->assertTrue($job->run());
-            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(0, WorkflowMessageInQueue::getCount());
                         $model->forget();
         }
     }

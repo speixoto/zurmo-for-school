@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ZurmoImapTest extends ZurmoBaseTest
@@ -398,7 +398,34 @@
             sleep(20);
             $messages = $imap->getMessages();
             $this->assertEquals(1, count($messages));
-            $this->assertEquals("آزمایش", $messages[0]->subject);
+            $this->assertEquals(imap_utf8("=?utf-8?B?2KLYstmF2KfbjNi0?="), $messages[0]->subject); // Not Coding Standard
+        }
+
+        public function testGetMessagesWithNonUtf8Charset()
+        {
+            $this->skipTestIfMissingSettings();
+            $imap = EmailMessageTestHelper::resolveImapObject();
+            $this->assertTrue($imap->connect());
+
+            $imap->deleteMessages(true);
+            Yii::app()->emailHelper->sendRawEmail("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?=", // Not Coding Standard
+                                                   Yii::app()->emailHelper->outboundUsername,
+                                                   $imap->imapUsername,
+                                                   'test',
+                                                   '',
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   null,
+                                                   array('CC' => '=?ISO-8859-1?Q?Andr=E9?= <andre@zurmo.org>') // Not Coding Standard
+            );
+            sleep(20);
+            $messages = $imap->getMessages();
+            $this->assertEquals(1, count($messages));
+            $this->assertEquals(imap_utf8("=?ISO-8859-2?B?cPjtbGm5IL5sdbtvdehr/SBr+fIg+nDsbCDv4WJlbHNr6SDzZA==?="), // Not Coding Standard
+                                $messages[0]->subject);
+            $this->assertEquals(imap_utf8("=?ISO-8859-1?Q?Andr=E9?="), // Not Coding Standard
+                                $messages[0]->cc[0]['name']);
         }
 
         protected function skipTestIfMissingSettings($checkBounceSettingsToo = false)

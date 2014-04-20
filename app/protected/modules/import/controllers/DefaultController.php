@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ImportDefaultController extends ZurmoBaseController
@@ -272,7 +272,7 @@
                 $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
             $config               = array('pagination' => array('pageSize' => $pageSize));
-            $filteredByStatus       = $this->resolveFilteredByStatus();
+            $filteredByStatus     = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
                                                            $config, null, $filteredByStatus);
@@ -384,7 +384,7 @@
                 $pageSize             = Yii::app()->pagination->resolveActiveForCurrentUserByType('importPageSize');
             }
             $config               = array('pagination' => array('pageSize' => $pageSize));
-            $filteredByStatus       = $this->resolveFilteredByStatus();
+            $filteredByStatus     = $this->resolveFilteredByStatus();
             $dataProvider         = new ImportDataProvider($import->getTempTableName(),
                                                            (bool)$importWizardForm->firstRowIsHeaderRow,
                                                            $config, (int)$filteredByStatus);
@@ -477,7 +477,6 @@
                                                        new ZurmoActiveForm(),
                                                        $importWizardForm->importRulesType,
                                                        $mappableAttributeIndicesAndDerivedTypes);
-
             $content                                 = $mappingFormLayoutUtil->renderMappingRulesElements(
                                                        $columnName,
                                                        $attributeIndexOrDerivedType,
@@ -652,8 +651,7 @@
                 }
                 else
                 {
-                    $messageView = new ErrorView(Zurmo::t('ImportModule', 'There was an error processing this import.'));
-                    $view        = new ErrorPageView($messageView);
+                    $view        = new ErrorPageView(Zurmo::t('ImportModule', 'There was an error processing this import.'));
                     echo $view->render();
                     Yii::app()->end(0, false);
                 }
@@ -688,8 +686,8 @@
         protected function getImportPageView($progressBarAndStepsView, $importView)
         {
             $breadCrumbLinks = array(
-                Zurmo::t('ZurmoModule', 'Import'),
-                Zurmo::t('ZurmoModule', 'Create')
+                Zurmo::t('ImportModule', 'Import'),
+                Zurmo::t('Core',         'Create')
             );
             $view       = new ImportPageView(ZurmoDefaultAdminViewUtil::makeTwoViewsWithBreadcrumbsForCurrentUser(
                 $this,

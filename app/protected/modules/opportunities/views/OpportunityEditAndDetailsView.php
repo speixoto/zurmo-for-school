@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class OpportunityEditAndDetailsView extends SecuredEditAndDetailsView
@@ -152,7 +152,7 @@
         {
             parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
             $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
-            if($automaticMappingDisabled === false)
+            if ($automaticMappingDisabled === false)
             {
                 if ($elementInformation['attributeName'] == 'probability')
                 {
@@ -165,7 +165,7 @@
         {
             parent::renderAfterFormLayout($form);
             $automaticMappingDisabled = OpportunitiesModule::isAutomaticProbabilityMappingDisabled();
-            if($automaticMappingDisabled === false)
+            if ($automaticMappingDisabled === false)
             {
                 $this->registerStageToProbabilityMappingScript($form);
             }
@@ -180,7 +180,7 @@
             {
                 $jsonEncodedMapping = CJSON::encode($mappingData);
                 // In case of edit, we need the exact value from db
-                if($this->model->id > 0)
+                if ($this->model->id > 0)
                 {
                     $initialCallToFunction = "";
                 }
@@ -189,8 +189,8 @@
                     $initialCallToFunction = " stageToProbabilityMapping($('#" . $stageInputId . "'));";
                 }
                 Yii::app()->clientScript->registerScript('stageToProbabilityMapping', "
-                $('#" . $stageInputId . "').unbind('change');
-                $('#" . $stageInputId . "').bind('change', function()
+                $('#" . $stageInputId . "').unbind('change.probabilityMapping');
+                $('#" . $stageInputId . "').bind('change.probabilityMapping', function()
                     {
                         stageToProbabilityMapping($(this));
                     }
@@ -209,7 +209,7 @@
                         }
                     });
                  }
-                 ".$initialCallToFunction
+                 ".$initialCallToFunction // Not Coding Standard
                  );
             }
         }

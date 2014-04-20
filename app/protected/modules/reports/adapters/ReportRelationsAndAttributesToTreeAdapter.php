@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -116,7 +116,9 @@
             {
                 $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
-                                            'wrapperClass' => 'item-to-place');
+                                            'wrapperClass' => 'item-to-place',
+                );
+                $this->resolveChildNodeDataValueForAttributeNode($attributeNode, $attribute, $nodeIdPrefix);
                 $childrenNodeData[] = $attributeNode;
             }
             $selectableRelationsData = $modelToReportAdapter->
@@ -143,6 +145,16 @@
         }
 
         /**
+         * Override as needed
+         * @param $attributeNode
+         * @param $attribute
+         * @param $nodeIdPrefix
+         */
+        protected function resolveChildNodeDataValueForAttributeNode(& $attributeNode, $attribute, $nodeIdPrefix)
+        {
+        }
+
+        /**
          * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
          * @param RedBeanModel $precedingModel
          * @param null|string $precedingRelation
@@ -153,7 +165,7 @@
         {
             if ($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
-                return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
+                return $modelToReportAdapter->getAttributesForFilters();
             }
             elseif ($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {

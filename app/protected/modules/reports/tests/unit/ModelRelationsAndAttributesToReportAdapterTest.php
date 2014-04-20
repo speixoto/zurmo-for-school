@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ModelRelationsAndAttributesToReportAdapterTest extends ZurmoBaseTest
@@ -211,7 +211,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getAttributesIncludingDerivedAttributesData();
-            $this->assertEquals(27, count($attributes));
+            $this->assertEquals(28, count($attributes));
             $compareData        = array('label' => 'Id');
             $this->assertEquals($compareData, $attributes['id']);
             $compareData        = array('label' => 'Created Date Time');
@@ -262,6 +262,8 @@
             //Includes derived attributes as well
             $compareData        = array('label' => 'Test Calculated', 'derivedAttributeType' => 'CalculatedNumber');
             $this->assertEquals($compareData, $attributes['calculated']);
+            $compareData        = array('label' => 'ID',       'derivedAttributeType' => 'UniqueIdentifier');
+            $this->assertEquals($compareData, $attributes['UniqueIdentifier']);
             $compareData        = array('label' => 'Full Name',       'derivedAttributeType' => 'FullName');
             $this->assertEquals($compareData, $attributes['FullName']);
             //Add Dynamically Derived Attributes
@@ -511,7 +513,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getAttributesForDisplayAttributes();
-            $this->assertEquals(26, count($attributes));
+            $this->assertEquals(27, count($attributes));
 
             //Includes derived attributes as well
             $compareData        = array('label' => 'Test Calculated', 'derivedAttributeType' => 'CalculatedNumber');
@@ -1042,13 +1044,15 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
             $attributes = $adapter->getForDrillDownAttributes();
-            $this->assertEquals(26, count($attributes));
+            $this->assertEquals(27, count($attributes));
 
             //Includes derived attributes as well
             $compareData        = array('label' => 'Test Calculated', 'derivedAttributeType' => 'CalculatedNumber');
             $this->assertEquals($compareData, $attributes['calculated']);
             $compareData        = array('label' => 'Full Name',       'derivedAttributeType' => 'FullName');
             $this->assertEquals($compareData, $attributes['FullName']);
+            $compareData        = array('label' => 'ID',       'derivedAttributeType' => 'UniqueIdentifier');
+            $this->assertEquals($compareData, $attributes['UniqueIdentifier']);
         }
 
         /**

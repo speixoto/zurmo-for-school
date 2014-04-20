@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ModelStateChangesSubscriptionUtilTest extends ZurmoBaseTest
@@ -52,6 +52,7 @@
         {
             ReadPermissionsSubscriptionUtil::recreateTable('account_read_subscription');
             ModelCreationApiSyncUtil::buildTable();
+            $messageLogger = new DebuggingMessageLogger();
             $timestamp = time();
             sleep(1);
             $models = ModelStateChangesSubscriptionUtil::getCreatedModels('apiTest', 'Account', 5, 0, $timestamp);
@@ -63,7 +64,11 @@
             $this->assertEquals(false, $models);
 
             // Now run ReadPermissionSubscriptionUtil
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_STARTED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $models = ModelStateChangesSubscriptionUtil::getCreatedModels('apiTest', 'Account', 5, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(1, count($models));
@@ -78,7 +83,11 @@
             AccountTestHelper::createAccountByNameForOwner('First Test Account', Yii::app()->user->userModel);
             AccountTestHelper::createAccountByNameForOwner('Second Test Account', Yii::app()->user->userModel);
             AccountTestHelper::createAccountByNameForOwner('Third Test Account', Yii::app()->user->userModel);
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $models = ModelStateChangesSubscriptionUtil::getCreatedModels('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(2, count($models));
@@ -95,10 +104,15 @@
         {
             ReadPermissionsSubscriptionUtil::recreateTable('account_read_subscription');
             ModelCreationApiSyncUtil::buildTable();
+            $messageLogger = new DebuggingMessageLogger();
             $timestamp = time();
             sleep(1);
             $account1 = AccountTestHelper::createAccountByNameForOwner('First Test Delete Account', Yii::app()->user->userModel);
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $models = ModelStateChangesSubscriptionUtil::getDeletedModelIds('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertTrue(empty($models));
@@ -109,7 +123,11 @@
             $this->assertTrue(is_array($models));
             $this->assertTrue(empty($models));
 
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $models = ModelStateChangesSubscriptionUtil::getDeletedModelIds('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(1, count($models));
@@ -122,7 +140,11 @@
             $account2 = AccountTestHelper::createAccountByNameForOwner('Second Test Delete Account', Yii::app()->user->userModel);
             $account3 = AccountTestHelper::createAccountByNameForOwner('Third Test Delete Account', Yii::app()->user->userModel);
             $account4 = AccountTestHelper::createAccountByNameForOwner('Forth Test Delete Account', Yii::app()->user->userModel);
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
 
             $account2Id = $account2->id;
             $account3Id = $account3->id;
@@ -130,7 +152,11 @@
             $this->assertTrue($account2->delete());
             $this->assertTrue($account3->delete());
             $this->assertTrue($account4->delete());
-            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables();
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
+            ReadPermissionsSubscriptionUtil::updateAllReadSubscriptionTables($messageLogger);
+            $this->assertEquals(ReadPermissionsSubscriptionUtil::STATUS_COMPLETED,
+                ReadPermissionsSubscriptionUtil::getReadPermissionUpdateStatus());
             $models = ModelStateChangesSubscriptionUtil::getDeletedModelIds('apiTest', 'Account', 2, 0, $timestamp);
             $this->assertTrue(is_array($models));
             $this->assertEquals(2, count($models));
@@ -196,7 +222,7 @@
             $this->assertTrue($account4->name == $models[0]->name || $account4->name == $models[1]->name || $account4->name == $models[2]->name);
 
             // Not test for non super user
-            $job = new ReadPermissionSubscriptionQuickUpdateJob();
+            $job = new ReadPermissionSubscriptionUpdateJob();
             $mike = UserTestHelper::createBasicUser('Mike');
             $mikeAccount1 = AccountTestHelper::createAccountByNameForOwner('ABC Account', Yii::app()->user->userModel);
             $timestamp = time();

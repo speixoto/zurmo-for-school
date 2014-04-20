@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class NotificationsMashableInboxRulesTest extends ZurmoWalkthroughBaseTest
@@ -42,6 +42,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createUsers();
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
@@ -68,12 +69,21 @@
         public function testReadUnread()
         {
             $super                      = User::getByUsername('super');
+            $billy                      = User::getByUsername('billy');
             Yii::app()->user->userModel = $super;
             $this->deleteAllNotifications();
             $createdNotification        = $this->createAndSaveNewNotificationForUser($super);
             $this->assertEquals(1, $this->rules->getUnreadCountForCurrentUser(), 0);
-            $this->rules->resolveMarkRead($createdNotification->id);
             $savedNotification          = Notification::getById($createdNotification->id);
+            $savedNotification->ownerHasReadLatest = 0;
+            $savedNotification->save();
+            $this->assertEquals(1, $this->rules->getUnreadCountForCurrentUser(), 0);
+            //Other users should have 0 unread notifications
+            Yii::app()->user->userModel = $billy;
+            $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 0);
+            //Mark notification as ready by super
+            $this->rules->resolveMarkRead($createdNotification->id);
+            Yii::app()->user->userModel = $super;
             $this->assertTrue((bool)$savedNotification->ownerHasReadLatest);
             $this->assertTrue((bool)$this->rules->hasCurrentUserReadLatest($createdNotification->id));
             $this->rules->resolveMarkUnread($createdNotification->id);

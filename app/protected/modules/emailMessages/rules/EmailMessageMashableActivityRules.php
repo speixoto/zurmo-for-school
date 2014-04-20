@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -169,38 +169,44 @@
             return $content;
         }
 
-        public static function getSenderContent(EmailMessageSender $emailMessageSender)
+        public static function getSenderContent(EmailMessageSender $emailMessageSender, $additionalParams = array())
         {
-            $existingModels  = array();
+            $modelsStringContent  = array();
             if ($emailMessageSender->personsOrAccounts->count() == 0)
             {
-                $existingModels[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
+                $modelsStringContent[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
             }
             else
             {
                 foreach ($emailMessageSender->personsOrAccounts as $personOrAccount)
                 {
-                    $castedDownModel = self::castDownItem($personOrAccount);
                     try
                     {
+                        $castedDownModel = self::castDownItem($personOrAccount);
                         if (strval($castedDownModel) != null)
                         {
                             $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
                             $moduleClassName = $castedDownModel->getModuleClassName();
                             $moduleId        = $moduleClassName::getDirectoryName();
                             $element         = new DetailsLinkActionElement('default', $moduleId,
-                                $castedDownModel->id, $params);
-                            $existingModels[] = $element->render();
+                                                                            $castedDownModel->id,
+                                                                            array_merge($params, $additionalParams));
+                            $modelsStringContent[] = $element->render();
                         }
                     }
                     catch (AccessDeniedSecurityException $e)
                     {
-                        $existingModels[] = $emailMessageSender->fromAddress;
+                        $modelsStringContent[] = $emailMessageSender->fromAddress;
+                    }
+                    catch (NotSupportedException $e)
+                    {
+                        //If the personOrAccount no longer exists or something else isn't right with the model
+                        $modelsStringContent[] = $emailMessageSender->fromAddress . ' ' . $emailMessageSender->fromName;
                     }
                 }
             }
-            $senderString = self::resolveStringValueModelsDataToStringContent($existingModels);
-            if (count($existingModels) > 1)
+            $senderString = self::resolveStringValueModelsDataToStringContent($modelsStringContent);
+            if (count($modelsStringContent) > 1)
             {
                 return $emailMessageSender->fromAddress . '(' . $senderString . ')';
             }
@@ -229,7 +235,6 @@
                     {
                         foreach ($recipient->personsOrAccounts as $personOrAccount)
                         {
-
                             try
                             {
                                 $castedDownModel = self::castDownItem($personOrAccount);

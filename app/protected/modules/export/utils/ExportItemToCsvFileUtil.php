@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,12 +31,12 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ExportItemToCsvFileUtil extends ExportItemToOutputUtil
     {
-        const DEFAULT_DELIMITER = ',';
+        const DEFAULT_DELIMITER = ','; // Not Coding Standard
 
         const DEFAULT_ENCLOSURE = '"';
 
@@ -48,10 +48,11 @@
          * @param string $exportFileName
          * @param bool $download Should send generated csv string to output or not.
          * @param bool $allowHeaderOnlyConversion
+         * @param bool $shouldTrim Should trim data before exporting
          * @return string|void
          */
         public static function export($data, $headerData = array(), $exportFileName = 'exports.csv',
-                                                $download = false, $allowHeaderOnlyConversion = false)
+                                      $download = false, $allowHeaderOnlyConversion = false, $shouldTrim = false)
         {
             assert('is_array($headerData)');
             assert('is_string($exportFileName)');
@@ -67,6 +68,10 @@
                 }
                 foreach ($data as $row)
                 {
+                    if ($shouldTrim)
+                    {
+                        $row = array_map('trim', $row);
+                    }
                     $output .= self::arraytoCsv($row);
                 }
             }

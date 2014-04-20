@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>Search</title>
+<title>LeadStarredInListViewAndFilter</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Search</td></tr>
+<tr><td rowspan="1" colspan="3">Lead Starred In List View And Filter</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -18,7 +18,7 @@
 </tr>
 <tr>
   <td>open</td>
-  <td>index.php/leads/default?clearingSearch=1</td>
+  <td>index.php/leads/default</td>
   <td></td>
 </tr>
 <tr>
@@ -82,9 +82,19 @@
 	<td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=clear-search-link</td>
-  <td></td>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 <tr>
   <td>click</td>
@@ -112,9 +122,14 @@
 	<td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=starDataColumn_filterByStarred</td>
+  <td>open</td>
+  <td>index.php/leads/default?clearingSearch=1</td>
   <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>

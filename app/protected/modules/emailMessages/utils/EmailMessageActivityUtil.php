@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -43,28 +43,11 @@
 
         protected static $baseQueryStringArray;
 
-        /**
-         * @param bool $tracking
-         * @param string $content
-         * @param int $modelId
-         * @param $modelType
-         * @param int $personId
-         * @param int $marketingListId
-         * @param bool $isHtmlContent
-         * @return bool
-         */
-        public static function resolveContentForTrackingAndFooter($tracking, & $content, $modelId, $modelType, $personId,
-                                                                            $marketingListId, $isHtmlContent = false)
+        public static function resolveContentGlobalFooter(& $content, $personId, $marketingListId, $modelId,
+                                                                                         $modelType, $isHtmlContent)
         {
-            assert('is_int($modelId)');
-            assert('is_int($marketingListId)');
-            $trackingAdded = static::resolveContentForTracking($tracking, $content, $modelId, $modelType,
-                                                                                            $personId, $isHtmlContent);
-            if (!$trackingAdded)
-            {
-                return false;
-            }
-            static::resolveContentForUnsubscribeAndManageSubscriptionsUrls($content, $personId, $marketingListId, $modelId, $modelType, $isHtmlContent);
+            static::resolveContentForUnsubscribeAndManageSubscriptionsUrls($content, $personId, $marketingListId,
+                                                                            $modelId, $modelType, $isHtmlContent);
             return true;
         }
 
@@ -115,9 +98,10 @@
             return static::processActivityFromQueryStringArray($queryStringArray);
         }
 
-        protected static function resolveContentForTracking($tracking, & $content, $modelId, $modelType, $personId,
+        public static function resolveContentForTracking($tracking, & $content, $modelId, $modelType, $personId,
                                                                                                         $isHtmlContent)
         {
+            assert('is_int($modelId)');
             if (!$tracking)
             {
                 return true;
@@ -142,7 +126,9 @@
             $trackingType = static::resolveTrackingTypeByQueryStringArray($queryStringArray);
             if ($trackingType === EmailMessageActivity::TYPE_CLICK)
             {
-                return array('redirect' => true, 'url' => $queryStringArray['url']);
+                // this shouldn't be here, its here to suppose no-scheme urls from previous versions' database
+                $url    = StringUtil::addSchemeIfMissing($queryStringArray['url']);
+                return array('redirect' => true, 'url' => $url);
             }
             else
             {
@@ -216,6 +202,10 @@
             $hash               = static::resolveHashForQueryStringArray(static::$baseQueryStringArray);
             $trackingUrl        = static::resolveAbsoluteTrackingUrlByHash($hash);
             $applicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
+            if (!isset($applicationName))
+            {
+                $applicationName    = 'Tracker';
+            }
             $imageTag           = ZurmoHtml::image($trackingUrl, $applicationName, array('width' => 1, 'height' => 1));
             $imageTag           = ZurmoHtml::tag('br') . $imageTag;
             if ($bodyTagPosition = strpos($content, '</body>'))
@@ -244,7 +234,7 @@
             }
             else
             {
-                $callBack = 'static::resolveTrackingUrlForMatchedHrefLinkArray';
+                $callBack = 'static::resolveTrackingUrlForMatchedPlainLinkArray';
             }
             $content = preg_replace_callback($spacePrefixedAndSuffixedLinkRegex,
                                              $callBack,
@@ -295,10 +285,13 @@
 
         protected static function resolveTrackingUrlForLink($link)
         {
-            $queryStringArray = static::$baseQueryStringArray;
-            $queryStringArray['url'] = $link;
-            $hash = static::resolveHashForQueryStringArray($queryStringArray);
-            $link = static::resolveAbsoluteTrackingUrlByHash($hash);
+            if (!static::isMarketingExternalUrl($link))
+            {
+                $queryStringArray = static::$baseQueryStringArray;
+                $queryStringArray['url'] = StringUtil::addSchemeIfMissing($link);
+                $hash = static::resolveHashForQueryStringArray($queryStringArray);
+                $link = static::resolveAbsoluteTrackingUrlByHash($hash);
+            }
             return $link;
         }
 
@@ -382,27 +375,37 @@ PTN;
                                                                                          $marketingListId, $modelId,
                                                                                          $modelType, $isHtmlContent)
         {
-            $unsubscribePlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsPlaceholder = UnsubscribeAndManageSubscriptionsPlaceholderUtil::
-                                                                                MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
-            $replaceExisting    = false;
-            if (strpos($content, $unsubscribePlaceholder) !== false ||
-                strpos($content, $manageSubscriptionsPlaceholder) !== false)
-            {
-                $replaceExisting = true;
-            }
+            $replaceExisting = static::isFooterAlreadyPresent($content);
             static::resolveUnsubscribeAndManageSubscriptionPlaceholders($content, $personId, $marketingListId, $modelId,
                                                                     $modelType, $isHtmlContent, $replaceExisting, false);
         }
 
+        protected static function isFooterAlreadyPresent($content)
+        {
+            $footerContent  = array(
+                GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER,
+                GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER,
+                //'GLOBAL' . MergeTagsUtil::CAPITAL_DELIMITER . 'MARKETING' . MergeTagsUtil::CAPITAL_DELIMITER . 'FOOTER'
+            );
+
+            foreach ($footerContent as $footer)
+            {
+                if (strpos($content, $footer) !== false)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /**
-         * @param string $content
-         * @param int $personId
-         * @param int $marketingListId
-         * @param int $modelId
+         * @param $content
+         * @param $personId
+         * @param $marketingListId
+         * @param $modelId
          * @param $modelType
-         * @param bool $isHtmlContent
-         * @param bool $replaceExisting
+         * @param $isHtmlContent
+         * @param $replaceExisting
          * @param bool $preview
          */
         public static function resolveUnsubscribeAndManageSubscriptionPlaceholders(& $content, $personId,
@@ -419,8 +422,9 @@ PTN;
             static::resolvePlaceholderUrlsForHtmlContent($unsubscribeUrl, $manageSubscriptionsUrl, $isHtmlContent);
             if ($replaceExisting)
             {
-                static::resolveUnsubscribeAndManageSubscriptionPlaceholdersToUrls($content, $unsubscribeUrl,
-                                                                                                $manageSubscriptionsUrl);
+                static::resolveUnsubscribeAndManageSubscriptionPlaceholdersToUrls($content,
+                                                                                  $unsubscribeUrl,
+                                                                                  $manageSubscriptionsUrl);
             }
             else
             {
@@ -441,19 +445,27 @@ PTN;
 
         protected static function resolveUnsubscribeUrlForHtmlContent(& $unsubscribeUrl, $isHtmlContent)
         {
+            $unsubscribeTranslated          = Zurmo::t('Core', 'Unsubscribe');
             if ($isHtmlContent)
             {
-                $unsubscribeTranslated          = Zurmo::t('Core', 'Unsubscribe');
                 $unsubscribeUrl = ZurmoHtml::link($unsubscribeTranslated, $unsubscribeUrl);
+            }
+            else
+            {
+                $unsubscribeUrl = $unsubscribeTranslated . ': ' . $unsubscribeUrl;
             }
         }
 
         protected static function resolveManageSubscriptionsUrlForHtmlContent(& $manageSubscriptionsUrl, $isHtmlContent)
         {
+            $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
             if ($isHtmlContent)
             {
-                $manageSubscriptionsTranslated  = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
                 $manageSubscriptionsUrl = ZurmoHtml::link($manageSubscriptionsTranslated, $manageSubscriptionsUrl);
+            }
+            else
+            {
+                $manageSubscriptionsUrl = $manageSubscriptionsTranslated . ': ' . $manageSubscriptionsUrl;
             }
         }
 
@@ -467,19 +479,19 @@ PTN;
 
         protected static function resolveUnsubscribePlaceholderToUrl(& $content, $unsubscribeUrl)
         {
-            $placeholder      = UnsubscribeAndManageSubscriptionsPlaceholderUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
+            $placeholder      = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
             $content          = str_replace($placeholder, $unsubscribeUrl, $content);
         }
 
         protected static function resolveManageSubscriptionsPlaceholderToUrl(& $content, $manageSubscriptionsUrl)
         {
-            $placeholder    = UnsubscribeAndManageSubscriptionsPlaceholderUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $placeholder    = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
             $content        = str_replace($placeholder, $manageSubscriptionsUrl, $content);
         }
 
         protected static function resolveDefaultFooterPlaceholderContentByType($isHtmlContent)
         {
-            return UnsubscribeAndManageSubscriptionsPlaceholderUtil::getContentByType($isHtmlContent, true);
+            return GlobalMarketingFooterUtil::getContentByType($isHtmlContent, true);
         }
 
         public static function resolveHashForUnsubscribeAndManageSubscriptionsUrls($personId, $marketingListId, $modelId,
@@ -519,12 +531,22 @@ PTN;
 
         protected static function resolveUnsubscribeBaseUrl()
         {
-            return '/marketingLists/external/unsubscribe';
+            return static::resolveMarketingExternalControllerUrl(). '/unsubscribe';
         }
 
         protected static function resolveManageSubscriptionsBaseUrl()
         {
-            return '/marketingLists/external/manageSubscriptions';
+            return static::resolveMarketingExternalControllerUrl() . '/manageSubscriptions';
+        }
+
+        protected static function resolveMarketingExternalControllerUrl()
+        {
+            return '/marketingLists/external';
+        }
+
+        protected static function isMarketingExternalUrl($url)
+        {
+            return (strpos($url, static::resolveMarketingExternalControllerUrl()) !== false);
         }
 
         protected static function validateAndResolveFullyQualifiedQueryStringArrayForTracking(& $queryStringArray)

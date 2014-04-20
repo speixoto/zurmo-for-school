@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -50,11 +50,6 @@
                 is_string($this->model->{$this->attribute}) ||
                 is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
             );
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions             = array();
-                $htmlOptions['disabled'] = 'disabled';
-            }
             return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
         }
 
@@ -66,7 +61,7 @@
             if ($this->getDisabledValue())
             {
                 $htmlOptions['disabled'] = $this->getDisabledValue();
-                if (BooleanUtil::boolVal($this->model->{$this->attribute}))
+                if ((int)$this->model->{$this->attribute} == 1)
                 {
                     $htmlOptions['uncheckValue'] = 1;
                 }

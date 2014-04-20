@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class TaskNotificationUtilTest extends ZurmoBaseTest
@@ -206,6 +206,33 @@
                               'steve@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
         }
 
+        public function testTaskStatusBecomesAcceptedWhenOwnerIsCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'My Acceptance Task';
+            $task->owner                = self::$sally;
+            $task->requestedByUser      = self::$katie;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $taskId = $task->id;
+            $task->forget();
+            $task = Task::getById($taskId);
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change the logged in user
+            Yii::app()->user->userModel = self::$sally;
+            //Now change status
+            $task->status               = Task::STATUS_COMPLETED;
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(1, $emailMessages);
+            $this->assertTrue('katie@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
+                              'katie@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+        }
+
         public function testTaskAddCommentWithExtraSubscribers()
         {
             $task                       = new Task();
@@ -245,6 +272,43 @@
             $this->assertTrue('steve@zurmo.com' == $emailMessages[0]->recipients[0]->toAddress ||
                               'steve@zurmo.com' == $emailMessages[1]->recipients[0]->toAddress ||
                               'steve@zurmo.com' == $emailMessages[2]->recipients[0]->toAddress);
+        }
+
+        public function testTaskStatusBecomesRejectedNotificationWhenOwnerIsCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'Reject Task';
+            $task->requestedByUser      = self::$sally;
+            $task->owner                = Yii::app()->user->userModel;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            //Now change status
+            $task->status               = Task::STATUS_REJECTED;
+            $this->assertTrue($task->save());
+            //No emails should be queued up
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+        }
+
+        public function testTaskStatusBecomesRejectedNotificationWhenOwnerIsNotCurrentUser()
+        {
+            $task                       = new Task();
+            $task->name                 = 'RejectOwner Task';
+            $task->requestedByUser      = self::$sally;
+            $task->owner                = self::$katie;
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertTrue($task->save());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            EmailMessage::deleteAll();
+            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            //Now change status
+            $task->status               = Task::STATUS_REJECTED;
+            $this->assertTrue($task->save());
+            //One email should be queued up
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $emailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX);
+            $this->assertCount(1, $emailMessages);
+            $this->assertEquals(1,                   $emailMessages[0]->recipients->count());
+            $this->assertEquals('katie@zurmo.com',   $emailMessages[0]->recipients[0]->toAddress);
         }
     }
 ?>

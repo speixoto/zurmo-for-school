@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -177,7 +177,7 @@
         {
             $dom = new DOMDocument();
             libxml_use_internal_errors(true);
-            $dom->loadHTML($rawXHtml);
+            $dom->loadHTML('<?xml encoding="UTF-8">' . $rawXHtml);
             $externalScriptFilePath = Yii::getPathOfAlias('application.runtime.uploads') .
                                       DIRECTORY_SEPARATOR . self::EXTERNAL_SCRIPT_FILE_NAME;
             $publishedUrl = Yii::app()->getAssetManager()->getPublishedUrl($externalScriptFilePath);

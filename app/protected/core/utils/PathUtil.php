@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     abstract class PathUtil
@@ -78,7 +78,7 @@
                 $modules                            = Module::getModuleObjects();
                 foreach ($modules as $module)
                 {
-                    $modelClass	=  $module::getPrimaryModelName();
+                    $modelClass = $module::getPrimaryModelName();
                     if (!empty($modelClasses))
                     {
                         $allPrimaryModelClasses[] = $modelClass;
@@ -107,7 +107,7 @@
                 $modules                    = Module::getModuleObjects();
                 foreach ($modules as $module)
                 {
-                    $modelClasses	=  $module::getModelClassNames();
+                    $modelClasses = $module::getModelClassNames();
                     if (!empty($modelClasses))
                     {
                         $allModelClasses = CMap::mergeArray($allModelClasses, array_values($modelClasses));
@@ -146,6 +146,25 @@
                                                                     'static::filterMungableModels');
         }
 
+        public static function getAllEmailTemplateElementClassNames($filter = null)
+        {
+            $emailTemplatePathAliases  = 'application.modules.emailTemplates.elements';
+            $elements   = array_values(static::getAllClassNamesByPathAlias($emailTemplatePathAliases));
+            if ($filter && is_callable($filter))
+            {
+                $elements = array_filter($elements, $filter);
+            }
+            $elements = array_unique(array_values($elements));
+            return $elements;
+        }
+
+        public static function getAllUIAccessibleBuilderElementClassNames()
+        {
+            return static::getAllEmailTemplateElementClassNamesWithFilterFromCache(
+                                                                'uiAccessibleBuilderElementClassNames',
+                                                                'static::filterUIAccessibleBuilderElementClassNames');
+        }
+
         protected static function getAllModelClassNamesWithFilterFromCache($identifier, $filter)
         {
             try
@@ -173,6 +192,25 @@
         protected static function filterMungableModels($model)
         {
             return (is_subclass_of($model, 'SecurableItem') && $model::hasReadPermissionsOptimization());
+        }
+
+        protected static function getAllEmailTemplateElementClassNamesWithFilterFromCache($identifier, $filter)
+        {
+            try
+            {
+                $filteredElementClassNames = GeneralCache::getEntry($identifier);
+            }
+            catch (NotFoundException $e)
+            {
+                $filteredElementClassNames = static::getAllEmailTemplateElementClassNames($filter);
+                GeneralCache::cacheEntry($identifier, $filteredElementClassNames);
+            }
+            return $filteredElementClassNames;
+        }
+
+        protected static function filterUIAccessibleBuilderElementClassNames($className)
+        {
+            return (is_subclass_of($className, 'BaseBuilderElement') && $className::isUIAccessible());
         }
     }
 ?>

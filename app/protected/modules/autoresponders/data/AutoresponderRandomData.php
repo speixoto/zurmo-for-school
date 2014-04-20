@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -51,10 +51,10 @@
             'Your unsubscription triggered the next big bang',
         ),
         'htmlContent'                  => array(
-            '<p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</p>',
-            '<p>So you like <i>our</i> emails so far?</p>',
-            '<p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></p>',
-            '<p>So you are <strong>not</strong> coming back?</p>',
+            '<html><head></head><body><p>Thanks for <i>subscribing</i>. You are not gonna <strong>regret</strong> this.</body></html>',
+            '<html><head></head><body><p>So you like <i>our</i> emails so far?</body></html>',
+            '<html><head></head><body><p><strong>You are now unsubscribed. Its really sad to see you go but you can always subscribe</strong></body></html>',
+            '<html><head></head><body><p>So you are <strong>not</strong> coming back?</body></html>',
         ),
         'textContent'                  => array(
             'Thanks for subscribing. You are not gonna regret this.',

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MenuView extends View
@@ -44,13 +44,14 @@
 
         protected $showCount;
 
-        public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false, $showCount = 6)
+        public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false, $showCount = 6, $cssClasses = array())
         {
             assert('is_int($showCount)');
+            assert('is_array($cssClasses)');
             $this->items = $items;
             $this->useMinimalDynamicLabelMbMenu = $useMinimalDynamicLabelMbMenu;
             $this->showCount  = $showCount;
-            $this->cssClasses = $this->resolveMenuClassForNoHiddenItems();
+            $this->cssClasses = array_merge($cssClasses, $this->resolveMenuClassForNoHiddenItems());
         }
 
         /**
@@ -77,8 +78,7 @@
             $cClipWidget->beginClip("Tabs");
             $cClipWidget->widget($widgetPath, array(
                 'items'         => static::resolveForHiddenItems($this->items, $this->showCount),
-                'labelPrefix'   => 'em',
-                'linkPrefix'    => 'span',
+                'labelPrefix'   => 'i'
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Tabs'];
@@ -93,11 +93,15 @@
             $count = 1;
             foreach ($this->items as $key => $item)
             {
-                if ($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
+                if (isset($item['moduleId']))
                 {
-                    $items[$key]['itemOptions']['class'] = 'hidden-nav-item';
+                    $items[$key]['itemOptions']['class'] = 'type-' . $item['moduleId'];
+                    if ($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
+                    {
+                        $items[$key]['itemOptions']['class'] = 'hidden-nav-item type-' . $item['moduleId'];
+                    }
+                    $count++;
                 }
-                $count++;
             }
             return $items;
         }

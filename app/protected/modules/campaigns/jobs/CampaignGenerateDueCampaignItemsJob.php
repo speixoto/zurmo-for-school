@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,11 +40,43 @@
     class CampaignGenerateDueCampaignItemsJob extends AutoresponderOrCampaignBaseJob
     {
         /**
+         * @see BaseJob::$loadJobQueueOnCleanupAndFallback
+         * @var bool
+         */
+        protected static $loadJobQueueOnCleanupAndFallback = true;
+
+        /**
          * @returns Translated label that describes this job type.
          */
         public static function getDisplayName()
         {
            return Zurmo::t('CampaignsModule', 'Generate campaign items');
+        }
+
+        /**
+         * @see parent::resolveJobsForQueue()
+         */
+        public static function resolveJobsForQueue()
+        {
+            parent::resolveJobsForQueue();
+            $pageSize       = static::JOB_QUEUE_PAGE_SIZE;
+            $offset         = 0;
+            $timeStamp      = time();
+            do
+            {
+                $campaigns = Campaign::getByStatusAndSendingTime(
+                                Campaign::STATUS_ACTIVE, $timeStamp, $pageSize, $offset, false);
+                $offset    = $offset + $pageSize;
+                if (is_array($campaigns) && count($campaigns) > 0)
+                {
+                    foreach ($campaigns as $campaign)
+                    {
+                        Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($campaign, 'sendOnDateTime',
+                                                'CampaignGenerateDueCampaignItems');
+                    }
+                }
+            }
+            while (is_array($campaigns) && count($campaigns) > 0);
         }
 
         /**

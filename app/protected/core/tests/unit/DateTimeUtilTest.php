@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class DateTimeUtilTest extends BaseTest
@@ -406,6 +406,78 @@
             $localDateFormatForInput = DateTimeUtil::getLocaleDateFormatForInput();
             $this->assertEquals('dd/MM/yyyy', $localDateFormatForInput);
             date_default_timezone_set($timeZone);
+        }
+
+        public function testConvertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay()
+        {
+            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $super = Yii::app()->user->userModel;
+
+            $super->timeZone = 'Africa/Nairobi';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-03');
+            $this->assertEquals($startDateTime, '2014-03-02 21:00:00');
+
+            $super->timeZone = 'Asia/Hong_Kong';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-03');
+            $this->assertEquals($startDateTime, '2014-03-02 16:00:00');
+
+            $super->timeZone = 'America/Chicago';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-03');
+            $this->assertEquals($startDateTime, '2014-03-03 06:00:00');
+            $startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay('2014-03-29');
+            $this->assertEquals($startDateTime, '2014-03-29 05:00:00');
+        }
+
+        public function testconvertDateIntoTimeZoneAdjustedDateTimeEndOfDay()
+        {
+            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $super = Yii::app()->user->userModel;
+
+            $super->timeZone = 'Africa/Nairobi';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-03');
+            $this->assertEquals($endDateTime, '2014-03-03 20:59:59');
+
+            $super->timeZone = 'Asia/Hong_Kong';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-03');
+            $this->assertEquals($endDateTime, '2014-03-03 15:59:59');
+
+            $super->timeZone = 'America/Chicago';
+            $saved = $super->save();
+            if (!$saved)
+            {
+                throw new FailedToSaveModelException();
+            }
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-03');
+            $this->assertEquals($endDateTime, '2014-03-04 05:59:59');
+            $endDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay('2014-03-29');
+            $this->assertEquals($endDateTime, '2014-03-30 04:59:59');
         }
     }
 ?>

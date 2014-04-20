@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     Yii::import('ext.csvparser.CsvParser');
@@ -180,6 +180,49 @@
         public function testExportItemToCsvWorksWithDataContainingCommaAndLineBreaks()
         {
             $this->assertTrue($this->isValidCsvConversion("Data, \n with, \n ,linebreaks, \n")); // Not Coding Standard
+        }
+
+        public function testExportItemToCsvWorksWithShouldTrim()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $testItem = new ExportTestModelItem();
+            $testItem->firstName    = 'Bob3    ';
+            $testItem->lastName     = '    Bob3';
+            $testItem->boolean      = true;
+            $testItem->date         = '2002-04-03';
+            $testItem->dateTime     = '2002-04-03 02:00:43';
+            $testItem->float        = 54.22;
+            $testItem->integer      = 10;
+            $testItem->phone        = '21313213';
+            $testItem->string       = '  aString    ';
+            $testItem->textArea     = '         aText area \n new line    ';
+            $testItem->url          = 'http://www.asite.com';
+            $testItem->email        = 'a@a.com';
+
+            $testItem->save();
+            $id = $testItem->id;
+            $testItem->forget();
+            unset($testItem);
+
+            $testItem   = ExportTestModelItem::getById($id);
+            $adapter    = new ModelToExportAdapter($testItem);
+            $data       = array($adapter->getData());
+            $headerData = $adapter->getHeaderData();
+
+            // Export data to csv, and then revert csv back to array, so we compare data
+            $csvData      = ExportItemToCsvFileUtil::export($data, $headerData, 'exports.csv', false, false, true);
+            $revertedData = CsvParser::parseFromString($csvData);
+
+            $this->assertContains(trim($testItem->firstName),   array_values($revertedData[0]));
+            $this->assertContains(trim($testItem->lastName),    array_values($revertedData[0]));
+            $this->assertContains(trim($testItem->string),      array_values($revertedData[0]));
+            $this->assertContains(trim($testItem->textArea),    array_values($revertedData[0]));
+            $this->assertNotContains($testItem->firstName,   array_values($revertedData[0]));
+            $this->assertNotContains($testItem->lastName,    array_values($revertedData[0]));
+            $this->assertNotContains($testItem->string,      array_values($revertedData[0]));
+            $this->assertNotContains($testItem->textArea,    array_values($revertedData[0]));
         }
 
         protected function isValidCsvConversion($textAreaContent)

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -49,6 +49,8 @@
 
         const SELECTED_USER_INTERFACE_COOKIE_NAME = "UserInterfaceType";
 
+        const TOGGLE_COLLAPSE_KEY                 = "CollapseMenu";
+
         protected $defaultUserInterfaceType       = null;
 
         protected $selectedUserInterfaceType      = null;
@@ -65,6 +67,16 @@
         public function getSelectedUserInterfaceType()
         {
             return $this->selectedUserInterfaceType;
+        }
+
+        /**
+         * Used for demo and test purposes only!
+         * @param $selectedUserInterfaceType
+         */
+        public function setSelectedUserInterfaceType($selectedUserInterfaceType)
+        {
+            assert('is_string($selectedUserInterfaceType) || $selectedUserInterfaceType === null');
+            $this->selectedUserInterfaceType = $selectedUserInterfaceType;
         }
 
         /**
@@ -117,6 +129,31 @@
             else
             {
                 $this->selectedUserInterfaceType = Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME]->value;
+            }
+        }
+
+        public function toggleCollapseMenu()
+        {
+            $value = ZurmoConfigurationUtil::getForCurrentUserByModuleName('ZurmoModule', static::TOGGLE_COLLAPSE_KEY);
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName('ZurmoModule', static::TOGGLE_COLLAPSE_KEY, !$value);
+        }
+
+        public function isMenuCollapsed()
+        {
+            return (bool) ZurmoConfigurationUtil::getForCurrentUserByModuleName('ZurmoModule', static::TOGGLE_COLLAPSE_KEY);
+        }
+
+        public function resolveCollapseClassForBody(& $class)
+        {
+            assert('is_string($class) || $class === null');
+            $collapse = $this->isMenuCollapsed();
+            if ($collapse)
+            {
+                if (!empty($class))
+                {
+                    $class .= ' ';
+                }
+                $class .= 'nav-collapsed';
             }
         }
 

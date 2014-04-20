@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -67,6 +67,13 @@
                     {
                         throw new FailedToSaveModelException("Unable to save campaign");
                     }
+                    //Run queue job since the campaign items are all generated
+                    Yii::app()->jobQueue->add('CampaignQueueMessagesInOutbox', 5);
+                }
+                else
+                {
+                    //Run job again, since it has more items to generate
+                    Yii::app()->jobQueue->add('CampaignGenerateDueCampaignItems', 5);
                 }
             }
             return true;
@@ -78,22 +85,34 @@
             {
                 $pageSize = self::getCreatePageSize();
             }
-            $contacts = array();
-            $quote    = DatabaseCompatibilityUtil::getQuote();
-            $marketingListMemberTableName  = RedBeanModel::getTableName('MarketingListMember');
-            $campaignItemTableName = RedBeanModel::getTableName('CampaignItem');
+            $contacts                      = array();
+            $quote                         = DatabaseCompatibilityUtil::getQuote();
+            $marketingListMemberTableName  = MarketingListMember::getTableName();
+            $campaignItemTableName         = CampaignItem::getTableName();
+            $contactTableName              = Contact::getTableName();
             $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
-            $sql  .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
+            $sql .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
             $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";
             $sql .= "{$quote}{$campaignItemTableName}{$quote}.{$quote}contact_id{$quote} ";
-            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote}";
+            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
+            $sql .= "left join {$quote}{$contactTableName}{$quote} on ";
+            $sql .= "{$quote}{$contactTableName}{$quote}.{$quote}id{$quote} ";
+            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
-            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null limit " . $pageSize;
+            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null";
+            $sql .= " and {$quote}{$contactTableName}{$quote}.{$quote}id{$quote} is not null limit " . $pageSize;
             $ids = ZurmoRedBean::getCol($sql);
             foreach ($ids as $contactId)
             {
-                $contacts[] = Contact::getById((int)$contactId);
+                try
+                {
+                    $contacts[] = Contact::getById((int)$contactId);
+                }
+                catch (NotFoundException $e)
+                {
+                    //Do nothing, just skip
+                }
             }
             if (!empty($contacts))
             {
@@ -103,12 +122,15 @@
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return true;
             }
-            return false;
         }
 
         /**

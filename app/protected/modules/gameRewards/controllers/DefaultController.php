@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,12 +31,11 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class GameRewardsDefaultController extends ZurmoModuleController
     {
-
         /**
          * Override to exclude redeemList
          * since these are available to all users regardless
@@ -165,7 +164,6 @@
                             $breadCrumbLinks, 'GameRewardBreadCrumbView'));
             echo $view->render();
         }
-
 
         /**
          * Action for displaying a mass edit form and also action when that form is first submitted.
@@ -397,7 +395,7 @@
                 echo CJSON::encode(array('message' => $message));
                 Yii::app()->end(0, false);
             }
-            if($gameReward->quantity <= 0)
+            if ($gameReward->quantity <= 0)
             {
                 $message = Zurmo::t('GameRewardsModule', 'This reward is no longer available');
                 echo CJSON::encode(array('message' => $message));
@@ -432,6 +430,27 @@
             $message = Zurmo::t('GameRewardsModule', '{name} has been redeemed.', array('{name}' => strval($gameReward)));
             echo CJSON::encode(array('message' => $message));
             Yii::app()->end(0, false);
+        }
+
+        protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
+        {
+            if ($searchForm->filteredBy == GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM)
+            {
+                $gameCoin          = GameCoin::resolveByPerson(Yii::app()->user->userModel);
+                $totalCoinsForUser =  (int)$gameCoin->value;
+                $clauseNumber = count($metadata['clauses']) + 1;
+                $metadata['clauses'][$clauseNumber] = array('attributeName' => 'cost',
+                                               'operatorType' => 'lessThanOrEqualTo',
+                                               'value' => $totalCoinsForUser);
+                if ($metadata['structure'] == '')
+                {
+                    $metadata['structure'] = $clauseNumber;
+                }
+                else
+                {
+                    $metadata['structure'] .= ' AND ' . $clauseNumber;
+                }
+            }
         }
     }
 ?>

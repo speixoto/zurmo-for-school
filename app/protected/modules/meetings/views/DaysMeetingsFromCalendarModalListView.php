@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -43,6 +43,8 @@
 
         protected $ownerOnly = false;
 
+        protected $relationModuleId;
+
         /**
          * @param string $controllerId
          * @param string $moduleId
@@ -52,7 +54,7 @@
          * @param null|RedBeanModel $relationModel
          */
         public function __construct($controllerId, $moduleId, $stringTime, $redirectUrl,
-                                    $ownerOnly = false, $relationModel = null)
+                                    $ownerOnly = false, $relationModel = null, $relationModuleId = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -60,6 +62,7 @@
             assert('is_string($redirectUrl) || $redirectUrl == null');
             assert('is_bool($ownerOnly)');
             assert('$relationModel == null || $relationModel instanceof RedBeanModel');
+            assert('$relationModuleId == null || is_string($relationModuleId)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
             $this->stringTime             = $stringTime;
@@ -69,6 +72,7 @@
             $this->rowsAreSelectable      = false;
             $this->ownerOnly              = $ownerOnly;
             $this->relationModel          = $relationModel;
+            $this->relationModuleId       = $relationModuleId;
         }
 
         protected static function getPagerCssClass()
@@ -226,13 +230,52 @@
             return true;
         }
 
-        protected function getDataProvider()
+        public function getDataProvider()
         {
             if ($this->dataProvider == null)
             {
                 $this->dataProvider = $this->makeDataProviderBySearchAttributeData($this->makeSearchAttributeData());
             }
             return $this->dataProvider;
+        }
+
+        protected function getCreateMeetingUrl()
+        {
+            if (!$this->relationModel && !$this->relationModuleId)
+            {
+                return Yii::app()->createUrl('/meetings/default/createMeeting',
+                                             array('redirectUrl' => $this->redirectUrl, 'startDate' => $this->stringTime));
+            }
+            else
+            {
+                $params = array(
+                    'relationAttributeName' => get_class($this->relationModel),
+                    'relationModelId'       => $this->relationModel->id,
+                    'relationModuleId'      => $this->relationModuleId,
+                    'startDate'             => $this->stringTime,
+                    'redirectUrl'           => $this->redirectUrl,
+                );
+                return Yii::app()->createUrl($this->moduleId . '/' .
+                                        $this->controllerId . '/createFromRelationAndStartDate/', $params);
+            }
+        }
+
+        /**
+         * Override to add link for meeting creation
+         */
+        protected function renderContent()
+        {
+            $content = '';
+            if (RightsUtil::doesUserHaveAllowByRightName('MeetingsModule', MeetingsModule::getCreateRight(),
+                Yii::app()->user->userModel))
+            {
+                $spanContent = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('MeetingsModule', 'Create Meeting'));
+                $linkContent = ZurmoHtml::link($spanContent, $this->getCreateMeetingUrl(), array('class' => 'secondary-button'));
+                $divContent = ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $linkContent);
+                $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $divContent);
+            }
+            $content .= parent::renderContent();
+            return $content;
         }
     }
 ?>

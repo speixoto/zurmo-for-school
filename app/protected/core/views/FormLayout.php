@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -87,7 +87,7 @@
          * @param array $metadata
          * @param integer $maxCellsPerRow
          */
-        public function __construct($metadata, $maxCellsPerRow, $errorSummaryContent)
+        public function __construct($metadata, $maxCellsPerRow, $errorSummaryContent, $uniqueId = null)
         {
             assert('is_array($metadata)');
             assert('is_int($maxCellsPerRow)');
@@ -95,7 +95,14 @@
             $this->metadata            = $metadata;
             $this->maxCellsPerRow      = $maxCellsPerRow;
             $this->errorSummaryContent = $errorSummaryContent;
-            $this->uniqueId       = $this->makeUniqueId();
+            if ($uniqueId == null)
+            {
+                $this->uniqueId       = $this->makeUniqueId();
+            }
+            else
+            {
+                $this->uniqueId       = $uniqueId;
+            }
         }
 
         /**

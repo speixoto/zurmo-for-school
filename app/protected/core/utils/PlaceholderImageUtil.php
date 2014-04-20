@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -39,7 +39,11 @@
      */
     class PlaceholderImageUtil
     {
-        const ONE_BY_ONE_PIXEL_IMAGE_PATH            =   '/default/images/1x1-pixel.png';
+        const ONE_BY_ONE_PIXEL_IMAGE_PATH               =   '/default/images/1x1-pixel.png';
+
+        const TRANSPARENT_IMAGE_PATH                    =   '/default/images/email-builder/transparent.gif';
+
+        const PLACEHOLDER_IMAGE_PATH                    =   '/default/images/email-builder/image-placeholder.png';
 
         public static function resolveOneByOnePixelImageUrl($absolute = true)
         {
@@ -51,7 +55,22 @@
             return Yii::app()->themeManager->basePath . static::ONE_BY_ONE_PIXEL_IMAGE_PATH;
         }
 
-        protected static function resolveUrlForThemeFile($filePath, $absolute = true)
+        public static function resolveTransparentImageUrl($absolute = true)
+        {
+            return static::resolveUrlForThemeFile(static::TRANSPARENT_IMAGE_PATH, $absolute);
+        }
+
+        public static function resolveTransparentImagePath()
+        {
+            return Yii::app()->themeManager->basePath . static::TRANSPARENT_IMAGE_PATH;
+        }
+
+        public static function resolvePlaceholderImageUrl($absolute = true)
+        {
+            return static::resolveUrlForThemeFile(static::PLACEHOLDER_IMAGE_PATH, $absolute);
+        }
+
+        public static function resolveUrlForThemeFile($filePath, $absolute = true)
         {
             if (strpos($filePath, '/') !== 0)
             {

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -58,56 +58,87 @@
 
         protected function renderXHtmlHead()
         {
-            $theme        = 'themes/' . Yii::app()->theme->name;
+            $themeName              = Yii::app()->theme->name;
+            $themeBaseUrl           = Yii::app()->getRequest()->getHostInfo() .
+                                      Yii::app()->themeManager->baseUrl . '/' . $themeName;
             $cs = Yii::app()->getClientScript();
-            $absoluteBaseUrl    = Yii::app()->getBaseUrl(true);
-            $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/keyframes.css');
-
             $specialCssContent = null;
+            $publishedAssetsPath = Yii::app()->getRequest()->getHostInfo() . Yii::app()->assetManager->publish(
+                    Yii::getPathOfAlias("application.core.views.assets.fonts"));
+            $specialCssContent .= "<style>" .
+                                    "@font-face" .
+                                    "{" .
+                                    "font-family: 'zurmo_gamification_symbly_rRg';" .
+                                    "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot');" .
+                                    "src: url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.eot?#iefix') format('embedded-opentype'), " .
+                                    "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.woff') format('woff'), " .
+                                    "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.ttf') format('truetype'), " .
+                                    "url('{$publishedAssetsPath}/zurmogamificationsymblyregular-regular-webfont.svg#zurmo_gamification_symbly_rRg') format('svg');" .
+                                    "font-weight: normal;" .
+                                    "font-style: normal;" .
+                                    "unicode-range: U+00-FFFF;" . // Not Coding Standard
+                                    "}" .
+                                    "</style>";
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
-                    $absoluteBaseUrl . '/' . $theme . '/less/newui.less"/>';
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="default-theme" href="' .
+                    $themeBaseUrl . '/less/default-theme.less"/>';
                 if (Yii::app()->userInterface->isMobile())
                 {
                     $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
-                        $absoluteBaseUrl . '/' . $theme . '/less/mobile.less"/>';
+                        $themeBaseUrl . '/less/mobile.less"/>';
                 }
                 $specialCssContent .= '<!--[if lt IE 9]><link rel="stylesheet/less" type="text/css" href="' .
-                    $absoluteBaseUrl . '/' . $theme . '/less/ie.less"/><![endif]-->';
+                    $themeBaseUrl . '/less/ie.less"/><![endif]-->';
             }
             else
             {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/newui.css');
-                if (file_exists($theme . '/css/commercial.css'))
+                Yii::app()->themeManager->registerThemeColorCss();
+                if (file_exists("themes/$themeName/css/commercial.css"))
                 {
-                    $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/commercial.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/commercial.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
                 }
-                if (file_exists($theme . '/css/custom.css'))
+                if (file_exists("themes/$themeName/css/custom.css"))
                 {
-                    $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/custom.css');
+                    $cs->registerCssFile($themeBaseUrl . '/css/custom.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
                 }
                 if (Yii::app()->userInterface->isMobile())
                 {
-                    $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/mobile.css');
+                    //todo: remove this?
+                    $cs->registerCssFile($themeBaseUrl . '/css/mobile.css');
+                }
+                if (Yii::app()->getRequest()->isContextiveExternalRequest())
+                {
+                    $cs->registerCssFile($themeBaseUrl . '/css/gmail.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
+                }
+                if (Yii::app()->getClientScript()->isIsolationMode())
+                {
+                    $cs->registerCssFile($themeBaseUrl . '/css/webforms-external.css' .
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
                 }
             }
             if (MINIFY_SCRIPTS)
             {
                 Yii::app()->minScript->generateScriptMap('css');
+                Yii::app()->minScript->generateScriptMap('css-color');
             }
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {
-                $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css' . '/ie.css', 'screen, projection');
+                $cs->registerCssFile($themeBaseUrl . '/css' . '/ie.css' .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString(), 'screen, projection');
             }
 
             foreach ($this->getStyles() as $style)
             {
                 if ($style != 'ie')
                 {
-                    if (file_exists("$theme/css/$style.css"))
+                    if (file_exists("themes/$themeName/css/$style.css"))
                     {
-                        $cs->registerCssFile($absoluteBaseUrl . '/' . $theme . '/css/' . $style. '.css'); // Not Coding Standard
+                        $cs->registerCssFile($themeBaseUrl . '/css/' . $style. '.css' .
+                            ZurmoAssetManager::getCssAndJavascriptHashQueryString()); // Not Coding Standard
                     }
                 }
             }

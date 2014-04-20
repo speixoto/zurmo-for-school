@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -76,13 +76,12 @@
 
         protected function getWidgetSourceUrl()
         {
-            return  Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsForMultiSelectAutoComplete');
+            return  Yii::app()->createUrl('contacts/variableContactState/autoCompleteAllContactsOrUsersForMultiSelectAutoComplete');
         }
 
         protected function getWidgetHintText()
         {
-            return Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
+            return Zurmo::t('MeetingsModule', 'Type a person: name or email address',
                                             LabelUtil::getTranslationParamsForAllModules());
         }
 
@@ -103,7 +102,7 @@
                 $contact = $model->castDown(array($this->modelDerivationPathToItemFromContact));
                 if (get_class($contact) == 'Contact')
                 {
-                    $existingContact = array('id' => $contact->id,
+                    $existingContact = array('id' => Meeting::CONTACT_ATTENDEE_PREFIX . $contact->id,
                                             'name' => self::renderHtmlContentLabelFromContactAndKeyword($contact, null));
                 }
             }
@@ -148,6 +147,40 @@
             {
                 return Zurmo::t('Core', 'Restricted');
             }
+        }
+
+        public static function renderHtmlContentLabelFromUserAndKeyword($user, $keyword)
+        {
+            assert('$user instanceof User && $user->id > 0');
+            assert('$keyword == null || is_string($keyword)');
+            try
+            {
+                if (substr($user->primaryEmail->emailAddress, 0, strlen($keyword)) === $keyword)
+                {
+                    $emailAddressToUse = $user->primaryEmail->emailAddress;
+                    return strval($user) . '&#160&#160<b>' . strval($emailAddressToUse) . '</b>';
+                }
+                else
+                {
+                    return strval($user);
+                }
+            }
+            catch (AccessDeniedSecurityException $exception)
+            {
+                return Zurmo::t('Core', 'Restricted');
+            }
+        }
+
+        protected function getExistingIdsAndLabels()
+        {
+            $existingRecords = parent::getExistingIdsAndLabels();
+            $userAttendees   = $this->model->userAttendees;
+            foreach ($userAttendees as $user)
+            {
+                $existingRecords[] = array('id'   => Meeting::USER_ATTENDEE_PREFIX . $user->id,
+                                           'name' => self::renderHtmlContentLabelFromUserAndKeyword($user, null));
+            }
+            return $existingRecords;
         }
     }
 ?>

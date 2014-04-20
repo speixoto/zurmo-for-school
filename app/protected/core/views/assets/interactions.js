@@ -1,6 +1,6 @@
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
- * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
  *
  * Zurmo is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -30,7 +30,7 @@
  * these Appropriate Legal Notices must retain the display of the Zurmo
  * logo and Zurmo copyright notice. If the display of the logo is not reasonably
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
- * "Copyright Zurmo Inc. 2013. All rights reserved".
+ * "Copyright Zurmo Inc. 2014. All rights reserved".
  ********************************************************************************/
 
 //fgnass.github.com/spin.js#v1.2.5
@@ -680,7 +680,7 @@ $(window).ready(function(){
     );
 
     //Main nav hover
-     $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
+     /*$('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
             $('> span:first-child', this).stop(true, true).fadeTo( 50, 1, 'linear' );
             $('> span:last-child', this).stop(true, true).animate({ color : '#555', color: '#fff' }, 50, 'linear');
@@ -691,7 +691,7 @@ $(window).ready(function(){
                 $('> span:last-child', this).stop(true, true).animate({ color : '#fff', color: '#555' }, 100, 'linear');
             }
         }
-    );
+    );*/
 
     //Main nav toggle hidden items
     $('.toggle-hidden-nav-items').click(
@@ -700,6 +700,14 @@ $(window).ready(function(){
             $(this).toggleClass('point-up');
         }
     );
+
+    $('#app-search').on('click',
+        function(){
+            $('#globalSearchInput').addClass('overlay');
+            $('#app-search .z-spinner').show(0);
+        }
+    );
+
 
     $.fn.resizeWhiteArea = function(){
         /*Resizes the app to fill the browser's window case smaller'*/
@@ -737,11 +745,7 @@ $(window).ready(function(){
         }
     };
 
-    $(window).resize(function(){
-      $(this).resizeWhiteArea();
-    });
-
-    $(this).resizeWhiteArea();
+    //$(window).resize(function(){ $(this).resizeWhiteArea(); });
 
     /*Autogrow text areas*/
     $('textarea').autogrow();
@@ -752,15 +756,13 @@ $(window).ready(function(){
     });
 
     $(".overlay-label-field > input").live('blur', function(){
-        if($(this).val() == "")
-        {
+        if($(this).val() == ""){
             $(this).prev().fadeIn(250);
         }
     });
 
     $(".overlay-label-field input").live('change', function(){
-        if($(this).val() != "")
-        {
+        if($(this).val() != ""){
             $(this).prev().fadeOut(250);
         }
     });

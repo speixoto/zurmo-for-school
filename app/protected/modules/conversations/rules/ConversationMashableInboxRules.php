@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ConversationMashableInboxRules extends MashableInboxRules
@@ -89,8 +89,19 @@
                     'operatorType'         => 'equals',
                     'value'                => 0
                 ),
+                5 => array(
+                    'attributeName'    => 'ownerHasReadLatest',
+                    'operatorType'     => 'doesNotEqual',
+                    'value'            => (bool)1
+                ),
+                6 => array(
+                    'attributeName'        => 'conversationParticipants',
+                    'relatedAttributeName' => 'person',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->getClassId('Item')
+                )
             );
-            $searchAttributeData['structure'] = '(1 or 2) and (3 or 4)';
+            $searchAttributeData['structure'] = '(1 or 2) and (3 or 4 or 5 or 6)';
             return $searchAttributeData;
         }
 
@@ -136,7 +147,7 @@
                         'operatorType'         => 'equals',
                         'value'                => Yii::app()->user->userModel->id
                 );
-                $metadata['structure'] = "(1 and 4) or(2 and 3)";
+                $metadata['structure'] = "(1 and 4) or (2 and 3)";
             }
             else
             {

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -56,14 +56,14 @@
                 $gameReward           = new GameReward();
                 $gameReward->name     = $gameRewardRandomData['names'][$i];
                 $gameReward->owner    = $demoDataHelper->getRandomByModelName('User');
-                $gameReward->cost     = mt_rand(1,10);
-                $gameReward->quantity = mt_rand(1,20);
+                $gameReward->cost     = mt_rand(1, 10);
+                $gameReward->quantity = mt_rand(1, 20);
 
                 for ($j = 0; $j < 5; $j++)
                 {
                     $gameRewardTransaction           = new GameRewardTransaction();
                     $gameRewardTransaction->person   = $demoDataHelper->getRandomByModelName('User');
-                    $gameRewardTransaction->quantity = mt_rand(1,3);
+                    $gameRewardTransaction->quantity = mt_rand(1, 3);
                     $gameReward->transactions->add($gameRewardTransaction);
                 }
                 $gameReward->addPermissions(Group::getByName(Group::EVERYONE_GROUP_NAME), Permission::READ_WRITE_CHANGE_PERMISSIONS_CHANGE_OWNER);

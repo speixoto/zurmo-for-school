@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -99,12 +99,18 @@
         {
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
+            $personId                   = $contact->getClassId('Person');
+            $activityUtil               = static::resolveActivityUtilByModelType($modelType);
             static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-            static::resolveContentForTrackingAndFooter($textContent, $htmlContent, $enableTracking, $modelId,
-                                                                                $modelType, $contact, $marketingListId);
+            static::resolveContentForGlobalFooter($textContent, $htmlContent, $modelId, $modelType, $personId,
+                                                    $marketingListId, $activityUtil);
+            // TODO: @Shoaibi: Critical: Get rid of it once we revise EmailMessageActivityUtil
+            static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+            static::resolveContentForTracking($textContent, $htmlContent, $enableTracking, $modelId,
+                                                $modelType, $personId, $activityUtil);
         }
 
-        protected static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
+        public static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
         {
             // TODO: @Shoaibi/@Jason: Low: we might add support for language
             $language               = null;
@@ -133,22 +139,33 @@
             }
         }
 
-        protected static function resolveContentForTrackingAndFooter(& $textContent, & $htmlContent, $enableTracking, $modelId,
-                                                                        $modelType, Contact $contact, $marketingListId)
+        protected static function resolveContentForGlobalFooter(& $textContent, & $htmlContent, $modelId, $modelType,
+                                                                $personId, $marketingListId, $activityUtil)
         {
-            assert('is_int($modelId)');
-            assert('is_int($marketingListId)');
-            $personId                 = $contact->getClassId('Person');
-            $activityUtil             = $modelType . 'ActivityUtil';
-            if ($textContent != null)
+            if (!empty($textContent))
             {
-                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $textContent, $modelId, $modelType,
-                                                                                    $personId, $marketingListId, false);
+                $activityUtil::resolveContentGlobalFooter($textContent, $personId, $marketingListId, $modelId,
+                                                            $modelType, false);
             }
-            if ($htmlContent != null)
+            if (!empty($htmlContent))
             {
-                $activityUtil::resolveContentForTrackingAndFooter($enableTracking, $htmlContent, $modelId, $modelType,
-                                                                                    $personId, $marketingListId, true);
+                $activityUtil::resolveContentGlobalFooter($htmlContent, $personId, $marketingListId, $modelId,
+                                                            $modelType, true);
+            }
+        }
+
+        protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
+                                                            $modelType, $personId, $activityUtil)
+        {
+            if (!empty($textContent))
+            {
+                $activityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
+                                                            $personId, false);
+            }
+            if (!empty($htmlContent))
+            {
+                $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
+                                                            $personId, true);
             }
         }
 
@@ -280,6 +297,11 @@
             {
                 return EmailBox::CAMPAIGNS_NAME;
             }
+        }
+
+        protected static function resolveActivityUtilByModelType($modelType)
+        {
+            return $modelType . 'ActivityUtil';
         }
     }
 ?>

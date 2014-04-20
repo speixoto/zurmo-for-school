@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     Yii::import('zii.widgets.jui.CJuiWidget');
@@ -149,8 +149,9 @@
         {
             $content  = "<div class=\"juiportlet-widget-head\">\n";
             $content .= "<h3>" . $item['title'] . "</h3>";
-            $content .= static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent, $item['portletParams']);
-            $content .= $item['headContent'] . "\n";
+            $content .= "<div class=\"portlet-actions-container\">" .
+                        static::renderOptionsMenu($item, $uniqueLayoutId, $moduleId, $renderOnClickEvent, $item['portletParams']);
+            $content .= $item['headContent'] . "</div>\n";
             if (isset($item['collapsed']) && $item['collapsed'])
             {
                 $widgetContentStyle = "style=\"display:none;\"";
@@ -186,6 +187,14 @@
             {
                 $menuItems['items'][] = array('label' => Zurmo::t('Core', 'Remove Portlet'), 'url' => '#',
                     'linkOptions' => array('class' => 'remove-portlet'));
+            }
+            if (isset($item['additionalOptionMenuItems']) && !empty($item['additionalOptionMenuItems']) )
+            {
+                foreach ($item['additionalOptionMenuItems'] as $additionalOptionMenuItem)
+                {
+                    $menuItems['items'][] = array('label' => Zurmo::t('Core', $additionalOptionMenuItem['label']),
+                            'url' => $additionalOptionMenuItem['url']);
+                }
             }
             if (count($menuItems['items']) > 0)
             {

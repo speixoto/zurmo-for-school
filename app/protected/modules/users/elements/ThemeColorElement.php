@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -39,17 +39,25 @@
      */
     class ThemeColorElement extends Element
     {
+        protected $shouldDisableLocked = true;
+
+        protected $showLocked = true;
+
         /**
          * Renders the setting as a radio list.
          * @return A string containing the element's content.
          */
         protected function renderControlEditable()
         {
+            if (!$this->shouldRenderControlEditable())
+            {
+                return null;
+            }
             $gameLevel = GameLevel::resolveByTypeAndPerson(GameLevel::TYPE_GENERAL, Yii::app()->user->userModel);
             $content = null;
             $content .= $this->form->radioButtonList(
                 $this->model,
-                $this->attribute,
+                $this->getAttributeForRadioButtonList(),
                 $this->resolveThemeColorNamesAndLabelsForLocking($gameLevel),
                 $this->getEditableHtmlOptions(),
                 array(),
@@ -59,13 +67,27 @@
             return $content;
         }
 
+        protected function getAttributeForRadioButtonList()
+        {
+            return $this->attribute;
+        }
+
+        protected function shouldRenderControlEditable()
+        {
+            if (Yii::app()->themeManager->forceAllUsersTheme)
+            {
+                return false;
+            }
+            return true;
+        }
+
         protected function renderControlNonEditable()
         {
             throw new NotImplementedException();
         }
 
         /**
-         * Clear out html options for 'empty' since it is not applicable for a rado dropdown.
+         * Clear out html options for 'empty' since it is not applicable for a radio dropdown.
          * @see DropDownElement::getEditableHtmlOptions()
          */
         protected function getEditableHtmlOptions()
@@ -83,10 +105,32 @@
             {
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
+            $themeBaseUrl      =  Yii::app()->themeManager->baseUrl . '/default/css';
+            $primaryFilePath   = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+            $secondaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/imports-custom.css';
+            if (!is_file($primaryFilePath) || !is_file($secondaryFilePath))
+            {
+                Yii::app()->lessCompiler->compileCustom();
+            }
+            $primaryCustomCssUrl   = Yii::app()->assetManager->publish($primaryFilePath);
+            $secondaryCustomCssUrl = Yii::app()->assetManager->publish($secondaryFilePath);
             // Begin Not Coding Standard
-            $script = "$('input[name=\"" . $this->getEditableInputName() . "\"]').live('change', function(){
+            $script = "$('input[name=\"" . $this->getEditableInputName($this->getAttributeForRadioButtonList()) . "\"]').live('change', function(){
                           $removeScript
                           $(document.body).addClass(this.value);
+                          var themeBaseUrl          = '$themeBaseUrl';
+                          var primaryCustomCssUrl   = '$primaryCustomCssUrl';
+                          var secondaryCustomCssUrl = '$secondaryCustomCssUrl';
+                          var hashQueryString       = '" . ZurmoAssetManager::getCssAndJavascriptHashQueryString() . "'
+                          if(this.value === 'custom')
+                          {
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+primaryCustomCssUrl+hashQueryString+'\" type=\"text/css\" />');
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+secondaryCustomCssUrl+hashQueryString+'\" type=\"text/css\" />');
+                          }
+                          else
+                          {
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css' + hashQueryString + '\" type=\"text/css\" />');
+                          }
                           });
                       ";
             // End Not Coding Standard
@@ -99,13 +143,16 @@
             $data = array();
             foreach (Yii::app()->themeManager->getThemeColorNamesAndLabels() as $name => $label)
             {
-                $label = '<span class="theme-color-1"></span><span class="theme-color-2">' .
-                         '</span><span class="theme-color-3"></span>' . $label;
+                $colorArray = Yii::app()->themeManager->themeColorNamesAndColors[$name];
+                $spans  = '<span class="theme-color-1" style="background-color:' . $colorArray[1] . '"></span>';
+                $spans .= '<span class="theme-color-2" style="background-color:' . $colorArray[2] . '"></span>';
+                $spans .= '<span class="theme-color-3" style="background-color:' . $colorArray[4] . '"></span>';
+                $label  = $spans . $label;
                 $unlockedAtLevel = $namesAndUnlockedAtLevels[$name];
-                if ($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value && $this->shouldDisableLocked)
                 {
                     $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
-                    $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
+                    $content = '<span id="theme-color-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label; // Not Coding Standard
                     $qtip    = new ZurmoTip();
                     $qtip->addQTip("#theme-color-tooltip-" . $name);
                 }
@@ -113,7 +160,10 @@
                 {
                     $content = $label;
                 }
-                $data[$name] = $content;
+                if (($unlockedAtLevel <= 1) || $this->showLocked)
+                {
+                    $data[$name] = $content;
+                }
             }
             return $data;
         }
@@ -124,7 +174,7 @@
             foreach (Yii::app()->themeManager->getThemeColorNamesAndUnlockedAtLevel() as $name => $unlockedAtLevel)
             {
                 $dataHtmlOptions[$name] = array();
-                if ($unlockedAtLevel > (int)$gameLevel->value)
+                if ($unlockedAtLevel > (int)$gameLevel->value && $this->shouldDisableLocked)
                 {
                     $dataHtmlOptions[$name]['class']    = 'locked';
                     $dataHtmlOptions[$name]['disabled'] = 'disabled';

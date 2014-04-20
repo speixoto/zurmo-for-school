@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -50,9 +50,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'ConfigurationLink',
-                                            'label' => "eval:Zurmo::t('Core', 'Cancel')"),
                             array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'ConfigurationLink', 'label' => "eval:Zurmo::t('Core', 'Cancel')"),
                             array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
                     ),
@@ -169,15 +168,6 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'SettingsLogoFileUpload'),
-                                            ),
-                                        ),
-                                    )
-                                ),
                             ),
                         ),
                     ),
@@ -195,7 +185,7 @@
         {
             if ($element->getAttribute() == 'reCaptchaPrivateKey')
             {
-                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha private key can be generated at http://recpatcha.net');
+                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha private key can be generated at http://recaptcha.net');
                 $content  = '<span id="captcha-private-key-tooltip" class="tooltip"  title="' . $title . '">?</span>';
                 $qtip     = new ZurmoTip();
                 $qtip->addQTip("#captcha-private-key-tooltip");
@@ -204,7 +194,7 @@
             }
             elseif ($element->getAttribute() == 'reCaptchaPublicKey')
             {
-                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha public key can be generated at http://recpatcha.net');
+                $title    = Zurmo::t('ZurmoModule', 'ReCaptcha public key can be generated at http://recaptcha.net');
                 $content  = '<span id="captcha-public-key-tooltip" class="tooltip"  title="' . $title . '">?</span>';
                 $qtip     = new ZurmoTip();
                 $qtip->addQTip("#captcha-public-key-tooltip");

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class RoleTest extends ZurmoBaseTest
@@ -72,6 +72,27 @@
             $billy = User::getByUsername('billy');
             $this->assertTrue($billy->role->id > 0);
             $this->assertTrue($billy->role->isSame($role));
+        }
+
+        public function testAddingChildRoleAsAParentRole()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $childRole              = new Role();
+            $childRole->name        = 'childRole';
+            $parentRole             = new Role();
+            $parentRole->name       = 'parentRole';
+            $parentRole->roles->add($childRole);
+            $grandParentRole        = new Role();
+            $grandParentRole->name  = 'grandParentRole';
+            $grandParentRole->roles->add($parentRole);
+            $saved                  = $grandParentRole->save();
+            $this->assertTrue($saved);
+            $parentRole->role       = $childRole;
+            $this->assertFalse($parentRole->validate());
+            $this->assertEquals('You cannot select a child role for the parent role', $parentRole->getError('role'));
+            $grandParentRole->role  = $childRole;
+            $this->assertFalse($grandParentRole->validate());
+            $this->assertEquals('You cannot select a child role for the parent role', $grandParentRole->getError('role'));
         }
     }
 ?>

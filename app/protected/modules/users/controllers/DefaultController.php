@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class UsersDefaultController extends ZurmoModuleController
@@ -150,10 +150,7 @@
             $params = array(
                 'controllerId'     => $this->getId(),
                 'relationModuleId' => $this->getModule()->getId(),
-                'relationModel'    => $user,
-                'rankingData'      => GamePointUtil::getUserRankingData($user),
-                'statisticsData'   => GameLevelUtil::getUserStatisticsData($user),
-                'badgeData'        => GameBadge::getAllByPersonIndexedByType($user)
+                'relationModel'    => $user
             );
             $detailsAndRelationsView = new UserDetailsAndRelationsView($this->getId(),
                                                                        $this->getModule()->getId(),
@@ -280,7 +277,10 @@
          * Override to handle UserStatus processing.
          * @see ZurmoBaseController::attemptToSaveModelFromPost()
          */
-        protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
+        protected function attemptToSaveModelFromPost($model,
+                                                      $redirectUrlParams = null,
+                                                      $redirect = true,
+                                                      $returnOnValidate = false )
         {
             assert('$model instanceof User || $model instanceof UserPasswordForm || $model instanceof UserAvatarForm');
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
@@ -583,7 +583,6 @@
             $user = User::getById(intval($id));
             UserAccessUtil::resolveAccessingASystemUser($user);
             $title               = Zurmo::t('ZurmoModule', 'Dashboard');
-            $breadCrumbLinks     = array(strval($user) => array('default/gameDashboard',  'id' => $id), $title);
             $badgeData           = GameBadge::getAllByPersonIndexedByType($user);
             $generalLevelData    = GameLevelUtil::getStatisticsDataForAGivenLevelType($user, GameLevel::TYPE_GENERAL);
             $rankingData         = GamePointUtil::getUserRankingData($user);
@@ -626,7 +625,8 @@
         {
             if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
             {
-                $model->setAttributes($_POST[$postVariableName]);
+                $sanitizedPostdata = PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $_POST[$postVariableName]);
+                $model->setAttributes($sanitizedPostdata);
                 $model->validate();
                 $userStatus = UserStatusUtil::makeByPostData($_POST[$postVariableName]);
                 if ($model instanceof User)

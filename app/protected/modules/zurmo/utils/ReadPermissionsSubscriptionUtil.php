@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -31,13 +31,16 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     abstract class ReadPermissionsSubscriptionUtil
     {
         const TYPE_ADD    = 1;
         const TYPE_DELETE = 2;
+
+        const STATUS_STARTED    = 1;
+        const STATUS_COMPLETED = 2;
 
         /**
          * Rebuild read permission subscription table
@@ -67,53 +70,56 @@
         protected static function getReadSubscriptionTableSchemaByName($tableName)
         {
             assert('is_string($tableName) && $tableName  != ""');
-            return array($tableName =>  array('columns' => array(
-                                                            array(
-                                                                'name' => 'userid',
-                                                                'type' => 'INT(11)',
-                                                                'unsigned' => 'UNSIGNED',
-                                                                'notNull' => 'NOT NULL',
-                                                                'collation' => null,
-                                                                'default' => null,
-                                                            ),
-                                                            array(
-                                                                'name' => 'modelid',
-                                                                'type' => 'INT(11)',
-                                                                'unsigned' => 'UNSIGNED',
-                                                                'notNull' => 'NOT NULL',
-                                                                'collation' => null,
-                                                                'default' => null,
-                                                            ),
-                                                            array(
-                                                                'name' => 'modifieddatetime',
-                                                                'type' => 'DATETIME',
-                                                                'unsigned' => null,
-                                                                'notNull' => 'NULL',
-                                                                'collation' => null,
-                                                                'default' => 'NULL',
-                                                            ),
-                                                            array(
-                                                                'name' => 'subscriptiontype',
-                                                                'type' => 'TINYINT(4)',
-                                                                'unsigned' => null,
-                                                                'notNull' => 'NULL',
-                                                                'collation' => null,
-                                                                'default' => 'NULL',
-                                                            ),
-                                                        ),
-                                                'indexes' => array('userid_modelid' => array(
-                                                                        'columns' => array('userid', 'modelid'),
-                                                                        'unique' => true,
-                                                                    ),
-                                                    ),
-                                                )
-                                            );
+            return array($tableName =>  array(
+                'columns' => array(
+                array(
+                    'name' => 'userid',
+                    'type' => 'INT(11)',
+                    'unsigned' => 'UNSIGNED',
+                    'notNull' => 'NOT NULL', // Not Coding Standard
+                    'collation' => null,
+                    'default' => null,
+                ),
+                array(
+                    'name' => 'modelid',
+                    'type' => 'INT(11)',
+                    'unsigned' => 'UNSIGNED',
+                    'notNull' => 'NOT NULL', // Not Coding Standard
+                    'collation' => null,
+                    'default' => null,
+                ),
+                array(
+                    'name' => 'modifieddatetime',
+                    'type' => 'DATETIME',
+                    'unsigned' => null,
+                    'notNull' => 'NULL', // Not Coding Standard
+                    'collation' => null,
+                    'default' => 'NULL', // Not Coding Standard
+                ),
+                array(
+                    'name' => 'subscriptiontype',
+                    'type' => 'TINYINT(4)',
+                    'unsigned' => null,
+                    'notNull' => 'NULL', // Not Coding Standard
+                    'collation' => null,
+                    'default' => 'NULL', // Not Coding Standard
+                ),
+            ),
+            'indexes' =>
+                array('userid_modelid' =>
+                    array(
+                        'columns' => array('userid', 'modelid'),
+                        'unique' => true,
+                    ),
+                ),
+            )
+            );
         }
 
         protected static function getModelTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
+            return $modelClassName::getTableName();
         }
 
         public static function getSubscriptionTableName($modelClassName)
@@ -124,56 +130,76 @@
 
         /**
          * Update read subscription table for all users and models
-         * @param bool $partialBuild
+         * @param MessageLogger $messageLogger
+         * @return bool
          */
-        public static function updateAllReadSubscriptionTables($partialBuild = true)
+        public static function updateAllReadSubscriptionTables(MessageLogger $messageLogger)
         {
             $loggedUser = Yii::app()->user->userModel;
             $users = User::getAll();
+            $updateStartTimestamp = time();
+            static::setReadPermissionUpdateStatus(static::STATUS_STARTED);
+
+            $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                'Starting read permission building for all users.'));
+
             foreach ($users as $user)
             {
+                $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                    'Starting read permission building for userID: {id}', array('{id}' => $user->id)));
+                $startTime = microtime(true);
                 Yii::app()->user->userModel = $user;
                 $modelClassNames = PathUtil::getAllReadSubscriptionModelClassNames();
                 if (!empty($modelClassNames) && is_array($modelClassNames))
                 {
                     foreach ($modelClassNames as $modelClassName)
                     {
+                        $onlyOwnedModels = false;
                         if ($modelClassName != 'Account')
                         {
-                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                                Yii::app()->user->userModel, $partialBuild, true);
+                            $onlyOwnedModels = true;
                         }
-                        else
-                        {
-                            static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
-                                Yii::app()->user->userModel, $partialBuild, false);
-                        }
+                        static::updateReadSubscriptionTableByModelClassNameAndUser($modelClassName,
+                            Yii::app()->user->userModel, $updateStartTimestamp, $onlyOwnedModels,
+                            $messageLogger);
                     }
                 }
+                $endTime = microtime(true);
+                $executionTimeMs = $endTime - $startTime;
+                $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                    'Ending read permission building for userID: {id}', array('{id}' => $user->id)));
+                $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                    'Build time for userID: {id} - {miliSeconds}', array('{id}' => $user->id, '{miliSeconds}' => $executionTimeMs)));
             }
             Yii::app()->user->userModel = $loggedUser;
+            static::setTimeReadPermissionUpdateTimestamp($updateStartTimestamp);
+            static::setReadPermissionUpdateStatus(static::STATUS_COMPLETED);
+            return true;
         }
 
         /**
          * Update models in read subscription table based on modelId and userId(userId is used implicitly in getSubsetIds)
          * @param string $modelClassName
          * @param User $user
-         * @param bool $partialBuild
          * @param bool $onlyOwnedModels
+         * @param int $updateStartTimestamp
+         * @param MessageLogger $messageLogger
          */
-        public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user,
-                                                                                  $partialBuild = true, $onlyOwnedModels = false)
+        public static function updateReadSubscriptionTableByModelClassNameAndUser($modelClassName, User $user, $updateStartTimestamp,
+                                                                                  $onlyOwnedModels = false, MessageLogger $messageLogger)
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+            assert('is_int($updateStartTimestamp)');
             $metadata = array();
+            $startTime = microtime(true);
             $lastReadPermissionUpdateTimestamp = static::getLastReadPermissionUpdateTimestamp();
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastReadPermissionUpdateTimestamp);
-            $nowDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $updateDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($updateStartTimestamp);
 
             $metadata['clauses'][1] = array(
                 'attributeName'        => 'createdDateTime',
                 'operatorType'         => 'lessThanOrEqualTo',
-                'value'                => $nowDateTime
+                'value'                => $updateDateTime
             );
             $metadata['structure'] = "1";
 
@@ -186,25 +212,20 @@
                 );
                 $metadata['structure'] .= " AND 2";
             }
-            if ($partialBuild)
-            {
-                $metadata['clauses'][3] = array(
-                    'attributeName'        => 'createdDateTime',
-                    'operatorType'         => 'greaterThan',
-                    'value'                => $dateTime
-                );
-                $metadata['structure'] .= " AND 3";
-            }
 
             $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $where  = RedBeanModelDataProvider::makeWhere($modelClassName, $metadata, $joinTablesAdapter);
-            $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where, 'createdDateTime asc');
+            $userModelIds = $modelClassName::getSubsetIds($joinTablesAdapter, null, null, $where);
+
+            $endTime = microtime(true);
+            $executionTimeMs = $endTime - $startTime;
+            $messageLogger->addDebugMessage(Zurmo::t('ZurmoModule',
+                'SQL time {modelClassName}: {miliSeconds}', array('{modelClassName}' => $modelClassName, '{miliSeconds}' => $executionTimeMs)));
 
             // Get models from subscription table
             $tableName = static::getSubscriptionTableName($modelClassName);
             $sql = "SELECT modelid FROM $tableName WHERE userid = " . $user->id .
                 " AND subscriptiontype = " . static::TYPE_ADD;
-
             $permissionTableRows = ZurmoRedBean::getAll($sql);
             $permissionTableIds = array();
             if (is_array($permissionTableRows) && !empty($permissionTableRows))
@@ -221,13 +242,13 @@
                 foreach ($modelIdsToAdd as $modelId)
                 {
                     $sql = "DELETE FROM $tableName WHERE
-                                                userid = '" . $user->id . "'
-                                                AND modelid = '{$modelId}'
-                                                AND subscriptiontype='" . self::TYPE_DELETE . "';";
+                                                    userid = '" . $user->id . "'
+                                                    AND modelid = '{$modelId}'
+                                                    AND subscriptiontype='" . self::TYPE_DELETE . "';";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_ADD . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_ADD . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
@@ -237,18 +258,16 @@
                 foreach ($modelIdsToDelete as $modelId)
                 {
                     $sql = "DELETE FROM $tableName WHERE
-                                                userid = '" . $user->id . "'
-                                                AND modelid = '{$modelId}'
-                                                AND subscriptiontype='" . self::TYPE_ADD . "';";
+                                                    userid = '" . $user->id . "'
+                                                    AND modelid = '{$modelId}'
+                                                    AND subscriptiontype='" . self::TYPE_ADD . "';";
                     ZurmoRedBean::exec($sql);
 
                     $sql = "INSERT INTO $tableName VALUES
-                                                (null, '" . $user->id . "', '{$modelId}', '{$nowDateTime}', '" . self::TYPE_DELETE . "');";
+                                                    (null, '" . $user->id . "', '{$modelId}', '{$updateDateTime}', '" . self::TYPE_DELETE . "');";
                     ZurmoRedBean::exec($sql);
                 }
             }
-
-            static::setTimeReadPermissionUpdateTimestamp($lastReadPermissionUpdateTimestamp);
         }
 
         /**
@@ -258,10 +277,12 @@
          * @param $lastUpdateTimestamp
          * @param $type
          * @param $user
+         * @param $checkIfModelCreationApiSyncUtilIsNull
          * @return array
          */
         public static function getAddedOrDeletedModelsFromReadSubscriptionTable($serviceName, $modelClassName,
-                                                                                $lastUpdateTimestamp, $type, $user)
+                                                                                $lastUpdateTimestamp, $type, $user,
+                                                                                $checkIfModelCreationApiSyncUtilIsNull = true)
         {
             assert('$user instanceof User');
             $tableName = static::getSubscriptionTableName($modelClassName);
@@ -283,9 +304,12 @@
                     " AND isct.modelclassname = '" . $modelClassName . "'" .
                     " WHERE {$tableName}.userid = " . $user->id .
                     " AND {$tableName}.subscriptiontype = " . $type .
-                    " AND {$tableName}.modifieddatetime >= '" . $dateTime . "'" .
-                    " AND isct.modelid is null" .
-                    " order by {$tableName}.modifieddatetime ASC, {$tableName}.modelid  ASC";
+                    " AND {$tableName}.modifieddatetime >= '" . $dateTime . "'";
+                if ($checkIfModelCreationApiSyncUtilIsNull)
+                {
+                    $sql .= " AND isct.modelid is null";
+                }
+                $sql .= " order by {$tableName}.modifieddatetime ASC, {$tableName}.modelid  ASC";
             }
             $modelIdsRows = ZurmoRedBean::getAll($sql);
             $modelIds = array();
@@ -314,7 +338,7 @@
         {
             assert('$user instanceof User');
             $tableName = self::getSubscriptionTableName($modelClassName);
-            $modelTableName = RedBeanModel::getTableName($modelClassName);
+            $modelTableName = $modelClassName::getTableName();
             $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($lastUpdateTimestamp);
             $sql = "SELECT {$tableName}.modelid, {$modelTableName}.name FROM $tableName" .
                 " left join " . ModelCreationApiSyncUtil::TABLE_NAME . " isct " .
@@ -386,6 +410,50 @@
             $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
             $readSubscriptionUpdateDetails['lastReadPermissionUpdateTimestamp'] = $lastReadPermissionUpdateTimestamp;
             static::setReadSubscriptionUpdateDetails($readSubscriptionUpdateDetails);
+        }
+
+        /**
+         * Set status of ReadPermissionSubscription update(stored in configuration)
+         * @param int $status
+         */
+        public static function setReadPermissionUpdateStatus($status)
+        {
+            $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
+            $readSubscriptionUpdateDetails['status'] = $status;
+            static::setReadSubscriptionUpdateDetails($readSubscriptionUpdateDetails);
+        }
+
+        /**
+         * Get status of ReadPermissionSubscription update(stored in configuration)
+         * @return int
+         */
+        public static function getReadPermissionUpdateStatus()
+        {
+            $readSubscriptionUpdateDetails = static::getReadSubscriptionUpdateDetails();
+            if (isset($readSubscriptionUpdateDetails['status']))
+            {
+                return $readSubscriptionUpdateDetails['status'];
+            }
+            else
+            {
+                return static::STATUS_STARTED;
+            }
+        }
+
+        /**
+         * Check if ReadPermissionSubscription
+         * @return bool
+         */
+        public static function isReadPermissionSubscriptionUpdateCompleted()
+        {
+            if (static::getReadPermissionUpdateStatus() == static::STATUS_COMPLETED)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

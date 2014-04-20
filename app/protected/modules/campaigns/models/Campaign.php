@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Campaign extends OwnedSecurableItem
@@ -127,14 +127,24 @@
             return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
         }
 
-        public static function getByStatusAndSendingTime($status, $sendingTimestamp = null, $pageSize = null)
+        public static function getByStatusAndSendingTime($status, $sendingTimestamp = null, $pageSize = null, $offset = null, $inPast = true)
         {
+            assert('is_int($status)');
+            assert('$offset  === null || is_int($offset)');
+            assert('is_bool($inPast)');
             if (empty($sendingTimestamp))
             {
                 $sendingTimestamp = time();
             }
             $sendOnDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime($sendingTimestamp);
-            assert('is_int($status)');
+            if ($inPast)
+            {
+                $sendOnDateTimeOperator = 'lessThan';
+            }
+            else
+            {
+                $sendOnDateTimeOperator = 'greaterThan';
+            }
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -144,14 +154,14 @@
                 ),
                 2 => array(
                     'attributeName'             => 'sendOnDateTime',
-                    'operatorType'              => 'lessThan',
+                    'operatorType'              => $sendOnDateTimeOperator,
                     'value'                     => $sendOnDateTime,
                 ),
             );
             $searchAttributeData['structure'] = '(1 and 2)';
             $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
             $where = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+            return self::getSubset($joinTablesAdapter, $offset, $pageSize, $where, null);
         }
 
         public static function getDefaultMetadata()
@@ -195,10 +205,9 @@
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('textContent',            'AtLeastOneContentAreaRequiredValidator'),
-                    array('htmlContent',            'CampaignMergeTagsValidator'),
-                    array('textContent',            'CampaignMergeTagsValidator'),
+                    array('textContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'searchModel'),
+                    array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),
+                    array('textContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),
                     array('enableTracking',         'boolean'),
                     array('enableTracking',         'default', 'value' => false),
                     array('marketingList',          'required'),
@@ -215,7 +224,7 @@
                     'textContent'      => 'TextArea',
                     'supportsRichText' => 'CheckBox',
                     'enableTracking'   => 'CheckBox',
-                    'sendDateTime'     => 'DateTime',
+                    'sendOnDateTime'   => 'DateTime',
                     'status'           => 'CampaignStatus',
                 ),
                 'defaultSortAttribute' => 'name',
@@ -261,7 +270,10 @@
 
         public function beforeValidate()
         {
-            $this->validateHtmlOnly();
+            if ($this->getScenario() != 'searchModel')
+            {
+                $this->validateHtmlOnly();
+            }
             return parent::beforeValidate();
         }
 
@@ -282,6 +294,13 @@
                 return false;
             }
             return true;
+        }
+
+        protected function afterSave()
+        {
+            Yii::app()->jobQueue->resolveToAddJobTypeByModelByDateTimeAttribute($this, 'sendOnDateTime',
+                                                                                'CampaignGenerateDueCampaignItems');
+            parent::afterSave();
         }
     }
 ?>

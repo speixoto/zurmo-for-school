@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Role extends Item
@@ -153,6 +153,39 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+        }
+
+        protected function beforeValidate()
+        {
+            if (!$this->checkIfParentIsNotInChildRoles($this->roles))
+            {
+                $errorMessage = Zurmo::t('ZurmoModule', 'You cannot select a child role for the parent role');
+                $this->addError('role', $errorMessage);
+                return false;
+            }
+            return parent::beforeValidate();
+        }
+
+        /**
+         * Recursively
+         * @param $roles
+         * @return bool
+         */
+        protected function checkIfParentIsNotInChildRoles($roles)
+        {
+            $isNotInChildRoles = true;
+            foreach ($roles as $role)
+            {
+                if ($this->role->isSame($role))
+                {
+                    $isNotInChildRoles = false;
+                }
+                else
+                {
+                    $isNotInChildRoles &= $this->checkIfParentIsNotInChildRoles($role->roles);
+                }
+            }
+            return $isNotInChildRoles;
         }
     }
 ?>

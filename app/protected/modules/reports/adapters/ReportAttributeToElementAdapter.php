@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -108,13 +108,13 @@
                 }
                 if ($valueElement instanceof MixedNumberTypesElement)
                 {
-                    $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
+                    $valueElement->editableTemplate = '<div class="value-data two-value-areas">{content}{error}</div>';
                 }
                 elseif ($valueElement instanceof MixedDateTypesElement)
                 {
                     $valueElement->editableTemplate = '<div class="dynamic-row-operator">{valueType}</div>' .
-                                                      '<div class="value-data has-date-inputs">' .
-                                                      '<div class="first-value-area">{content}{error}</div></div>';
+                                                      '<div class="value-data one-value-area has-date-inputs">' .
+                                                      '<div class="first-value-area one-value-area">{content}{error}</div></div>';
                 }
                 else
                 {
@@ -124,7 +124,7 @@
                         $startingDivStyleFirstValue         = "display:none;";
                         $valueElement->params['disabled']   = 'disabled';
                     }
-                    $valueElement->editableTemplate = '<div class="value-data"><div class="first-value-area" style="' .
+                    $valueElement->editableTemplate = '<div class="value-data one-value-area"><div class="first-value-area" style="' .
                                                       $startingDivStyleFirstValue . '">{content}{error}</div></div>';
                 }
                 $valueContent                   = $valueElement->render();

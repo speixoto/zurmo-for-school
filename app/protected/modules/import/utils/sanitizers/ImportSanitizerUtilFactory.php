@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -40,7 +40,8 @@
     class ImportSanitizerUtilFactory
     {
         public static function make($attributeValueSanitizerUtilType, $modelClassName, $attributeName, $columnName,
-                                    $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil = null)
+                                    $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil = null,
+                                    $penultimateModelClassName = null, $penultimateAttributeName = null)
         {
             assert('is_string($attributeValueSanitizerUtilType)');
             assert('is_string($modelClassName)');
@@ -49,7 +50,7 @@
             assert('$columnMappingData == null || is_array($columnMappingData)');
             $sanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';
             return new $sanitizerUtilClassName($modelClassName, $attributeName, $columnName, $columnMappingData,
-                                               $importSanitizeResultsUtil);
+                                               $importSanitizeResultsUtil, $penultimateModelClassName, $penultimateAttributeName);
         }
     }
 ?>

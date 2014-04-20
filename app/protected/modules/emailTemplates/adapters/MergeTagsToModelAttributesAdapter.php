@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /*
@@ -46,8 +46,13 @@
                                                             'modelUrl'  => 'resolveModelUrlByModel',
                                                             );
 
-        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language = 'en', $errorOnFirstMissing = false)
+        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language, $errorOnFirstMissing = false)
         {
+            assert('$language == null || is_string($language)');
+            if ($language == null)
+            {
+                $language = Yii::app()->language;
+            }
             $resolvedMergeTags = array();
             foreach ($mergeTags as $mergeTag)
             {
@@ -98,7 +103,11 @@
             }
             else
             {
-                if (!$model->isAttribute($attributeName))
+                if (!isset($model))
+                {
+                    return static::PROPERTY_NOT_FOUND;
+                }
+                elseif (!$model->isAttribute($attributeName))
                 {
                     if ($model instanceof Activity)
                     {
@@ -124,7 +133,6 @@
                                     if (ucfirst($attributeName) == get_class($castedDownModel))
                                     {
                                         $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
-                                        $attributeAccessorString;
                                         return static::resolveMergeTagToStandardOrRelatedAttribute(
                                             $attributeAccessorString,
                                             $castedDownModel,

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     abstract class ReadPermissionsOptimizationUtil
@@ -84,7 +84,7 @@
                     }
                     else
                     {
-                        $modelTableName     = RedBeanModel::getTableName($modelClassName);
+                        $modelTableName     = $modelClassName::getTableName();
                         if (!is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                         {
                             throw new NotImplementedException();
@@ -97,7 +97,7 @@
                             }
                             else
                             {
-                                $modelTableName = Person::getTableName('Person');
+                                $modelTableName = Person::getTableName();
                             }
                         }
                         ZurmoDatabaseCompatibilityUtil::
@@ -922,7 +922,7 @@
                                                         'name' => 'securableitem_id',
                                                         'type' => 'INT(11)',
                                                         'unsigned' => 'UNSIGNED',
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => null,
                                                         'default' => null,
                                                     ),
@@ -930,7 +930,7 @@
                                                         'name' => 'munge_id',
                                                         'type' => 'VARCHAR(12)',
                                                         'unsigned' => null,
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => 'COLLATE utf8_unicode_ci',
                                                         'default' => null,
                                                     ),
@@ -938,7 +938,7 @@
                                                         'name' => 'count',
                                                         'type' => 'INT(8)',
                                                         'unsigned' => 'UNSIGNED',
-                                                        'notNull' => 'NOT NULL',
+                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                         'collation' => null,
                                                         'default' => null,
                                                     ),
@@ -1117,7 +1117,7 @@
         protected static function getMainTableName($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
-            return RedBeanModel::getTableName($modelClassName);
+            return $modelClassName::getTableName();
         }
 
         /**

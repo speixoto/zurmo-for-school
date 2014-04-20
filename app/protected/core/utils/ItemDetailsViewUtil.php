@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -41,7 +41,8 @@
     {
         protected static function shouldRenderDetailsContent($model)
         {
-            if ($model instanceof Item) {
+            if ($model instanceof Item)
+            {
                 return true;
             }
             return false;
@@ -63,8 +64,10 @@
         public static function renderAfterFormLayoutForDetailsContent($model, $content = null)
         {
             $detailsContent = null;
-            if (static::shouldRenderDetailsContent($model)) {
-                if ($content != null) {
+            if (static::shouldRenderDetailsContent($model))
+            {
+                if ($content != null)
+                {
                     $detailsContent .= ZurmoHtml::tag('br');
                 }
                 $detailsContent .= static::renderElementsContent(static::getElements($model));
@@ -77,14 +80,16 @@
         {
             $content = null;
             $elementsCount = count($elements);
-            foreach ($elements as $index => $elementDetails) {
+            foreach ($elements as $index => $elementDetails)
+            {
                 $elementClassName = $elementDetails['className'];
                 $elementParams = $elementDetails['parameters'];
                 $element = new $elementClassName($elementParams[0], $elementParams[1]);
                 $element->nonEditableTemplate = '{label} {content}';
                 $content .= $element->render();
                 $isLast = (($index + 1) == $elementsCount);
-                if (!$isLast) {
+                if (!$isLast)
+                {
                     $content .= '&#160;|&#160;';
                 }
             }

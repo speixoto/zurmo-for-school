@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     class CampaignItemsUtilTest extends ZurmoBaseTest
     {
@@ -479,7 +479,12 @@
             $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
             $this->assertEmpty($campaignItems);
             //Process open campaigns.
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
             $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(null, 50));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             $campaign           = Campaign::getById($campaignId);
             $this->assertNotNull($campaign);
             $this->assertEquals(Campaign::STATUS_PROCESSING, $campaign->status);
@@ -544,8 +549,20 @@
                 $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaignId);
                 $this->assertEmpty($campaignItems);
             }
-
-            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(5));
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            //First process 2 so we can show that the job gets queued up to run again
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(2));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]);
+            //Now process 3 more.
+            Yii::app()->jobQueue->deleteAll();
+            $this->assertCount(0, Yii::app()->jobQueue->getAll());
+            $this->assertTrue(CampaignItemsUtil::generateCampaignItemsForDueCampaigns(3));
+            $jobs = Yii::app()->jobQueue->getAll();
+            $this->assertCount(1, $jobs);
+            $this->assertEquals('CampaignQueueMessagesInOutbox', $jobs[5][0]);
             foreach ($campaignIds as $index => $campaignId)
             {
                 $campaign           = Campaign::getById($campaignId);
@@ -879,8 +896,8 @@
                                                                                                 null);
             $campaign                   = CampaignTestHelper::createCampaign('campaign 13',
                                                                                 'subject 13',
-                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}}',
-                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}}',
+                                                                                '{{UNSUBSCRIBE_URL}}',
+                                                                                '{{UNSUBSCRIBE_URL}}',
                                                                                 'testFromName',
                                                                                 'test@zurmo.com',
                                                                                 null,
@@ -897,7 +914,7 @@
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
             $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
@@ -922,8 +939,8 @@
                                                                                                 null);
             $campaign                   = CampaignTestHelper::createCampaign('campaign 14',
                                                                                 'subject 14',
-                                                                                'Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                'Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
                                                                                 'testFromName',
                                                                                 'test@zurmo.com',
                                                                                 null,
@@ -938,9 +955,9 @@
             $htmlContent                = $campaignItem->emailMessage->content->htmlContent;
             $this->assertNotEquals($campaign->textContent, $textContent);
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
-            $this->assertTrue(strpos($textContent, 'Manage: localhost') !== false);
+            $this->assertTrue(strpos($textContent, 'Manage Subscriptions: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Manage: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
@@ -965,10 +982,10 @@
                                                                                                 null);
             $campaign                   = CampaignTestHelper::createCampaign('campaign 15',
                                                                                 'subject 15',
-                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                'Unsubscribe: {{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' Manage: {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
+                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
+                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
                                                                                 'testFromName',
                                                                                 'test@zurmo.com',
                                                                                 null,
@@ -985,15 +1002,15 @@
             $this->assertNotEquals($campaign->htmlContent, $htmlContent);
             $this->assertTrue(strpos($textContent, 'Unsubscribe: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
-            $this->assertTrue(strpos($htmlContent, 'Unsubscribe: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($htmlContent, '">Unsubscribe</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Unsubscribe</a>'));
             $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
-            $this->assertTrue(strpos($textContent, ', Manage: localhost') !== false);
+            $this->assertTrue(strpos($textContent, ', Manage Subscriptions: localhost') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, ', Manage: <a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, ', <a href="localhost') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/marketingLists/external/manageSubscriptions?hash='));
             $this->assertTrue(strpos($htmlContent, '">Manage Subscriptions</a>') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '">Manage Subscriptions</a>'));
@@ -1038,7 +1055,8 @@
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/unsubscribe?hash='));
             $this->assertTrue(strpos($textContent, '/marketingLists/external/manageSubscriptions?hash=') !== false);
             $this->assertEquals(1, substr_count($textContent, '/marketingLists/external/manageSubscriptions?hash='));
-            $this->assertTrue(strpos($htmlContent, 'HTML<br /><img width="1" height="1" src="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, 'HTML<br /><br /><a href="localhost') !== false);
+            $this->assertTrue(strpos($htmlContent, '<img width="1" height="1" src="localhost') !== false);
             $this->assertTrue(strpos($htmlContent, '/tracking/default/track?id=') !== false);
             $this->assertEquals(1, substr_count($htmlContent, '/tracking/default/track?id='));
             $this->assertTrue(strpos($htmlContent, '/marketingLists/external/unsubscribe?hash=') !== false);

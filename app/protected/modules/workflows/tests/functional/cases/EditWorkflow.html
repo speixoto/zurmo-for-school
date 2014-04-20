@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateAccount</title>
+<title>EditWorkflow</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create Account</td></tr>
+<tr><td rowspan="1" colspan="3">Edit Workflow</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -20,7 +20,7 @@
 <!--Go to workflows list-->
 <tr>
 	<td>open</td>
-	<td>index.php/workflows/default?clearingSearch=1</td>
+	<td>index.php/workflows/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -120,12 +120,12 @@
     <td>//div[@id='WorkflowDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
 	<td>WorkflowTest ${randomSuffix}</td>
 </tr>
+<!--edit workflow-->
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
+	<td>waitForElementPresent</td>
+	<td>link=Edit</td>
 	<td></td>
 </tr>
-<!--edit workflow-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Edit</td>
@@ -140,11 +140,6 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -228,9 +223,9 @@
 </tr>
 <!--verify values after saving workflow-->
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
+	<td>waitForText</td>
+	<td>//div[@id='WorkflowDetailsView']/div/div[2]/div/table/tbody/tr[1]/td</td>
+	<td>WorkflowTest ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>assertText</td>
@@ -248,10 +243,34 @@
 	<td>New Records Only</td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>0</td>
+	<td>open</td>
+	<td>index.php/workflows/default</td>
 	<td></td>
 </tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

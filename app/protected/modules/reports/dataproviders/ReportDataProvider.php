@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -126,7 +126,7 @@
          */
         public function calculateTotalItemCount()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
             $count = ZurmoRedBean::getCell($sql);
             if ($count === null || empty($count))
@@ -141,7 +141,7 @@
          */
         public function makeTotalCountSqlQueryForDisplay()
         {
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             return $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
         }
 
@@ -152,7 +152,7 @@
         {
             $offset                 = $this->resolveOffset();
             $limit                  = $this->resolveLimit();
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             return $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
         }
 
@@ -326,7 +326,7 @@
         {
             assert('is_int($offset) || $offset == null');
             assert('is_int($limit) || $limit == null');
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $selectQueryAdapter     = $this->makeSelectQueryAdapter();
             $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
             $rows         = $this->getRowsData($sql);
             $resultsData  = array();
@@ -432,7 +432,7 @@
             $where                  = $this->makeFiltersContent($joinTablesAdapter);
             $orderBy                = $this->makeOrderBysContent($joinTablesAdapter);
             $groupBy                = $this->makeGroupBysContent($joinTablesAdapter);
-            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
 
@@ -455,14 +455,10 @@
             {
                 //Currently this is always expected as false. If it is true, we need to add support for SpecificCountClauses
                 //so we know which table/id the count is on.
-                if ($selectQueryAdapter->isDistinct())
-                {
-                    throw new NotSupportedException();
-                }
-                $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
+                $selectQueryAdapter = $this->resolveSqlQueryAdapterForCount($selectQueryAdapter);
                 $selectQueryAdapter->addNonSpecificCountClause();
             }
-            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
+            return                    SQLQueryUtil::makeQuery($modelClassName::getTableName(),
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
         }
 
@@ -486,7 +482,7 @@
         {
             try
             {
-                $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+                $selectQueryAdapter     = $this->makeSelectQueryAdapter();
                 $moduleClassName        = $this->report->getModuleClassName();
                 $modelClassName         = $moduleClassName::getPrimaryModelName();
                 $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
@@ -498,7 +494,7 @@
                 $groupBy                = $this->makeGroupBysContentForGrandTotals($joinTablesAdapter);
                 $offset                 = null;
                 $limit                  = null;
-                $sql = SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
+                $sql = SQLQueryUtil::makeQuery($modelClassName::getTableName(),
                             $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
             }
             catch (NotSupportedException $exception)
@@ -693,6 +689,30 @@
                     return $key;
                 }
             }
+        }
+
+        /**
+         * Makes sql query adapter.
+         * @param bool $isDistinct
+         */
+        protected function makeSelectQueryAdapter($isDistinct = false)
+        {
+            return new RedBeanModelSelectQueryAdapter($isDistinct);
+        }
+
+        /**
+         * Resolve sql query adapter for count query.
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @return RedBeanModelSelectQueryAdapter
+         * @throws NotSupportedException
+         */
+        protected function resolveSqlQueryAdapterForCount(RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        {
+            if ($selectQueryAdapter->isDistinct())
+            {
+                throw new NotSupportedException();
+            }
+            return $this->makeSelectQueryAdapter($selectQueryAdapter->isDistinct());
         }
     }
 ?>

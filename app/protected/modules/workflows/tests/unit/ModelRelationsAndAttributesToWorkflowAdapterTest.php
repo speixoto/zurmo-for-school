@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ModelRelationsAndAttributesToWorkflowAdapterTest extends WorkflowBaseTest
@@ -80,22 +80,6 @@
             $this->assertEquals($compareData, $relations['workflowModelTestItem9']);
             $compareData        = array('label' => 'Workflow Model Test Item 9s');
             $this->assertEquals($compareData, $relations['workflowModelTestItem9s']);
-        }
-
-        /**
-         * @depends testGetHasManyBelongsToRelations
-         */
-        public function testPassingPrecedingRelationThatHasAssumptiveLinkIsProperlyHandled()
-        {
-            $this->markTestSkipped("New autobuild requires this to be link type specific so this tests isn't needed.");
-            $model              = new WorkflowModelTestItem3();
-            $rules              = new WorkflowsTestWorkflowRules();
-            $workflow             = new Workflow();
-            $workflow->setType(Workflow::TYPE_ON_SAVE);
-            $workflow->setModuleClassName('WorkflowsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
-            $relations = $adapter->getSelectableRelationsData(new WorkflowModelTestItem(), 'hasMany');
-            $this->assertFalse(isset($relations['hasMany1']));
         }
 
         /**
@@ -193,7 +177,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesIncludingDerivedAttributesData();
-            $this->assertEquals(36, count($attributes));
+            $this->assertEquals(37, count($attributes));
             $compareData        = array('label' => 'Id');
             $this->assertEquals($compareData, $attributes['id']);
             $compareData        = array('label' => 'Created Date Time');
@@ -253,6 +237,8 @@
             $this->assertEquals($compareData, $attributes['createdByUser__User']);
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
         }
 
         /**
@@ -489,7 +475,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesForTriggers();
-            $this->assertEquals(33, count($attributes));
+            $this->assertEquals(34, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -543,6 +529,8 @@
             $this->assertEquals($compareData, $attributes['createdByUser__User']);
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
         }
 
         /**
@@ -567,7 +555,7 @@
             $this->assertEquals($compareData, $attributes['owner__User']);
 
             $attributes = $adapter->getNonRequiredAttributesForActions();
-            $this->assertEquals(38, count($attributes));
+            $this->assertEquals(39, count($attributes));
 
             $compareData        = array('label' => 'First Name');
             $this->assertEquals($compareData, $attributes['firstName']);
@@ -599,6 +587,8 @@
             $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Used As Attribute');
             $this->assertEquals($compareData, $attributes['usedAsAttribute']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
             //Currency is treated as a relation workflowed as an attribute just like drop downs
             $compareData        = array('label' => 'Currency Value');
             $this->assertEquals($compareData, $attributes['currencyValue']);
@@ -647,7 +637,7 @@
             $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules, $workflow->getType());
 
             $attributes = $adapter->getAllAttributesForActions();
-            $this->assertEquals(41, count($attributes));
+            $this->assertEquals(42, count($attributes));
             $compareData        = array('label' => 'Last Name');
             $this->assertEquals($compareData, $attributes['lastName']);
             $compareData        = array('label' => 'String');
@@ -684,6 +674,8 @@
             $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Used As Attribute');
             $this->assertEquals($compareData, $attributes['usedAsAttribute']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
             //Currency is treated as a relation workflowed as an attribute just like drop downs
             $compareData        = array('label' => 'Currency Value');
             $this->assertEquals($compareData, $attributes['currencyValue']);
@@ -814,7 +806,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToByTimeWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesForTriggers();
-            $this->assertEquals(33, count($attributes));
+            $this->assertEquals(34, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -868,6 +860,8 @@
             $this->assertEquals($compareData, $attributes['createdByUser__User']);
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
         }
 
         /**
@@ -882,7 +876,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToByTimeWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesForTimeTrigger();
-            $this->assertEquals(45, count($attributes));
+            $this->assertEquals(46, count($attributes));
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $attributes['owner__User']);
             $compareData        = array('label' => 'Modified By User');
@@ -943,6 +937,8 @@
             $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Used As Attribute');
             $this->assertEquals($compareData, $attributes['usedAsAttribute']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
             //Currency is treated as a relation workflowed as an attribute just like drop downs
             $compareData        = array('label' => 'Currency Value');
             $this->assertEquals($compareData, $attributes['currencyValue']);
@@ -1000,7 +996,7 @@
             $this->assertEquals($compareData, $attributes['owner__User']);
 
             $attributes = $adapter->getNonRequiredAttributesForActions();
-            $this->assertEquals(38, count($attributes));
+            $this->assertEquals(39, count($attributes));
 
             $compareData        = array('label' => 'First Name');
             $this->assertEquals($compareData, $attributes['firstName']);
@@ -1032,6 +1028,8 @@
             $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Used As Attribute');
             $this->assertEquals($compareData, $attributes['usedAsAttribute']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
             //Currency is treated as a relation workflowed as an attribute just like drop downs
             $compareData        = array('label' => 'Currency Value');
             $this->assertEquals($compareData, $attributes['currencyValue']);
@@ -1080,7 +1078,7 @@
             $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules, $workflow->getType());
 
             $attributes = $adapter->getAllAttributesForActions();
-            $this->assertEquals(41, count($attributes));
+            $this->assertEquals(42, count($attributes));
             $compareData        = array('label' => 'Last Name');
             $this->assertEquals($compareData, $attributes['lastName']);
             $compareData        = array('label' => 'String');
@@ -1117,6 +1115,8 @@
             $this->assertEquals($compareData, $attributes['tagCloud']);
             $compareData        = array('label' => 'Used As Attribute');
             $this->assertEquals($compareData, $attributes['usedAsAttribute']);
+            $compareData        = array('label' => 'Status');
+            $this->assertEquals($compareData, $attributes['status']);
             //Currency is treated as a relation workflowed as an attribute just like drop downs
             $compareData        = array('label' => 'Currency Value');
             $this->assertEquals($compareData, $attributes['currencyValue']);

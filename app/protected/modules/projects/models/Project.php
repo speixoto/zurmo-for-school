@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Project extends OwnedSecurableItem
@@ -41,7 +41,7 @@
          */
         const STATUS_ACTIVE     = 1;
 
-        const STATUS_ARCHIVED   = 0;
+        const STATUS_ARCHIVED   = 2;
 
         /**
          * @param string $name
@@ -127,7 +127,8 @@
                     array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('description',    'type',    'type' => 'string'),
                     array('status',         'type',    'type' => 'integer'),
-                    array('status',         'default', 'value' => Project::STATUS_ACTIVE)
+                    array('status',         'default', 'value' => Project::STATUS_ACTIVE),
+                    array('status',         'required'),
                 ),
                 'elements' => array(
                     'status' => 'ProjectStatusDropDown',
@@ -183,13 +184,13 @@
          */
         protected function beforeDelete()
         {
-            if(parent::beforeDelete())
+            if (parent::beforeDelete())
             {
-                foreach($this->tasks as $task)
+                foreach ($this->tasks as $task)
                 {
                     $task->delete();
                 }
-                foreach($this->auditEvents as $auditEvent)
+                foreach ($this->auditEvents as $auditEvent)
                 {
                     $auditEvent->delete();
                 }
@@ -203,14 +204,15 @@
          */
         protected function afterSave()
         {
-            if($this->getIsNewModel())
+            if ($this->getIsNewModel())
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $this, $this->name);
             }
-            elseif($this->status == Project::STATUS_ARCHIVED)
+            elseif ($this->status == Project::STATUS_ARCHIVED)
             {
                 ProjectAuditEvent::logAuditEvent(ProjectAuditEvent::PROJECT_ARCHIVED, $this, $this->name);
             }
+            parent::afterSave();
         }
     }
 ?>

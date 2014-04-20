@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -61,10 +61,7 @@
             {
                 $report->setName($data['name']);
             }
-            if (isset($data['filtersStructure']))
-            {
-                $report->setFiltersStructure($data['filtersStructure']);
-            }
+            self::resolveFiltersStructure($data, $report);
             if (null != ArrayUtil::getArrayValue($data, 'ownerId'))
             {
                 $owner = User::getById((int)$data['ownerId']);
@@ -311,6 +308,19 @@
                 $chart->setAttributes($chartData);
             }
             $report->setChart($chart);
+        }
+
+        /**
+         * Resolve filters structure
+         * @param array $data
+         * @param Report $report
+         */
+        public static function resolveFiltersStructure($data, Report $report)
+        {
+            if (isset($data['filtersStructure']))
+            {
+                $report->setFiltersStructure($data['filtersStructure']);
+            }
         }
     }
 ?>

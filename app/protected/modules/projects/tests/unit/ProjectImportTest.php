@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ProjectImportTest extends ImportBaseTest
@@ -42,8 +42,6 @@
             SecurityTestHelper::createSuperAdmin();
             Yii::import('application.core.data.*');
             Yii::import('application.modules.projects.data.*');
-            $defaultDataMaker = new ProjectsDefaultDataMaker();
-            $defaultDataMaker->make();
         }
 
         public function testSimpleUserImportWhereAllRowsSucceed()
@@ -56,7 +54,7 @@
             $this->assertTrue($import->save());
 
             ImportTestHelper::
-            createTempTableByFileNameAndTableName('projectsSample.csv', $import->getTempTableName(),true,
+            createTempTableByFileNameAndTableName('projectsSample.csv', $import->getTempTableName(), true,
                                                   Yii::getPathOfAlias('application.modules.projects.tests.unit.files'));
 
             $this->assertEquals(3, ImportDatabaseUtil::getCount($import->getTempTableName())); // includes header rows.
@@ -73,6 +71,7 @@
                 'column_0'  => $ownerColumnMappingData,
                 'column_1'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
                 'column_2'  => ImportMappingUtil::makeTextAreaColumnMappingData    ('description'),
+                'column_3'  => ImportMappingUtil::makeDropDownColumnMappingData    ('status'),
             );
 
             $importRules  = ImportRulesUtil::makeImportRulesByType('Projects');
@@ -97,6 +96,7 @@
             $this->assertEquals(1,                         count($projects[0]));
             $this->assertEquals('super',                   $projects[0]->owner->username);
             $this->assertEquals('My first project',        $projects[0]->name);
+            $this->assertEquals(2,                         $projects[0]->status);
             //todo ask Jason for it
             //$this->assertEquals('My first project Desc',   $projects[0]->description);
             $projects[0]->delete();
@@ -105,6 +105,7 @@
             $this->assertEquals(1,                         count($projects[0]));
             $this->assertEquals('super',                   $projects[0]->owner->username);
             $this->assertEquals('My second project',       $projects[0]->name);
+            $this->assertEquals(1,                         $projects[0]->status);
             //$this->assertEquals('My second project Desc',  $projects[0]->description);
 
             $projects[0]->delete();

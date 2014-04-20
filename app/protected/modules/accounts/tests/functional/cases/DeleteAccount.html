@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>Search</title>
+<title>DeleteAccount</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Search</td></tr>
+<tr><td rowspan="1" colspan="3">Delete Account</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -19,7 +19,7 @@
 <!--Go to accounts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/accounts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -94,12 +94,12 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
+<!--delete catalog item-->
 <tr>
 	<td>setSpeed</td>
 	<td>3000</td>
 	<td></td>
 </tr>
-<!--delete catalog item-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Delete</td>
@@ -133,7 +133,7 @@
 <!--clear search result-->
 <tr>
 	<td>open</td>
-	<td>index.php/productTemplates/default/list?clearingSearch=1</td>
+	<td>index.php/accounts/default?clearingSearch=1</td>
 	<td></td>
 </tr>
 <tr>

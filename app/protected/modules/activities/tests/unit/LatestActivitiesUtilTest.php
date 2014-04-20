@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class LatestActivitiesUtilTest extends ZurmoBaseTest
@@ -73,8 +73,11 @@
                 2 => array('attributeName' => 'startDateTime',
                            'operatorType' => 'lessThan',
                            'value' => DateTimeUtil::convertTimestampToDbFormatDateTime(time())),
+                3 => array('attributeName' => 'logged',
+                           'operatorType' => 'equals',
+                           'value' => true)
             );
-            $compareSearchAttributesData['Meeting']['structure'] = '1 and 2';
+            $compareSearchAttributesData['Meeting']['structure'] = '1 and (2 or 3)';
             $compareSearchAttributesData['Task']['clauses'] = array(
                 1 => array('attributeName' => 'activityItems',
                            'relatedAttributeName' => 'id',
@@ -102,8 +105,8 @@
                                         getSearchAttributesDataByModelClassNamesAndRelatedItemIds($modelClassNames,
                                                                                                   $relationItemIds,
                                                                                                   LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER);
-            $compareSearchAttributesData['Meeting']['structure'] = '1 and 2 and 3';
-            $compareSearchAttributesData['Meeting']['clauses'][3] = array(
+            $compareSearchAttributesData['Meeting']['structure'] = '1 and (2 or 3) and 4';
+            $compareSearchAttributesData['Meeting']['clauses'][4] = array(
                 'attributeName' => 'owner',
                 'operatorType' => 'equals',
                 'value' => Yii::app()->user->userModel->id
@@ -147,6 +150,32 @@
             $filteredModelClassNames = LatestActivitiesUtil::resolveMashableModelClassNamesByFilteredBy(
                                                                 $mashableModelClassNames, 'Task');
             $this->assertEquals(array('Task'), $filteredModelClassNames);
+        }
+
+        public function testGetCountByModelClassName()
+        {
+            $super = User::getByUsername('super');
+            $user = UserTestHelper::createBasicUserWithEmailAddress('newUser');
+            Yii::app()->user->userModel = $super;
+            $this->assertEquals(0, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $this->assertEquals(0, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER));
+            $this->assertEquals(0, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $super->id));
+            $this->assertEquals(0, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $user->id));
+            NoteTestHelper::createNoteByNameForOwner('test1', $super);
+            $this->assertEquals(1, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $this->assertEquals(1, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER));
+            $this->assertEquals(1, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $super->id));
+            $this->assertEquals(0, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $user->id));
+            NoteTestHelper::createNoteByNameForOwner('test1', $user);
+            $this->assertEquals(2, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL));
+            $this->assertEquals(1, LatestActivitiesUtil::
+                getCountByModelClassName('Note', array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_USER));
+            $this->assertEquals(1, LatestActivitiesUtil::getCountByModelClassName('Note', array(), $user->id));
         }
     }
 ?>

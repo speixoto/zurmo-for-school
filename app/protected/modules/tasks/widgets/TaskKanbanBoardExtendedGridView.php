@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -46,22 +46,45 @@
         public $columnsData;
 
         /**
+         * Heals sortOrder for kanbanItems if they are wrong.  It can be wrong if tasks are created from workflow actions
+         * because during that task creation, it doesn't know what project or other activityItem it is part of.
+         * This will at least heal the sortOrder for display. Then upon subsequent saves of the board, it will properly
+         * set the sortOrder in the database
          * @return array
          */
         protected function resolveDataIntoKanbanColumns()
         {
             $this->makeColumnsDataAndStructure();
-            $kanbanItemsArray = array();
-            foreach ($this->dataProvider->data as $notUsed => $data)
+            $kanbanItemsArray           = array();
+            $kanbanItems                = array();
+            $maximumKanbanItemSortOrder = 0;
+            foreach ($this->dataProvider->getData() as $notUsed => $task)
             {
-                $kanbanItem  = KanbanItem::getByTask($data->id);
+                $kanbanItem  = KanbanItem::getByTask($task->id);
                 if ($kanbanItem == null)
                 {
                     //Create KanbanItem here
-                    $kanbanItem = TasksUtil::createKanbanItemFromTask($data);
+                    $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
                 }
-
-                $kanbanItemsArray[$kanbanItem->type][intval($kanbanItem->sortOrder)] = $kanbanItem->task;
+                $kanbanItems[] = $kanbanItem;
+                if($kanbanItem->sortOrder > $maximumKanbanItemSortOrder)
+                {
+                    $maximumKanbanItemSortOrder = $kanbanItem->sortOrder;
+                }
+            }
+            foreach ($kanbanItems as $kanbanItem)
+            {
+                if(isset($kanbanItemsArray[$kanbanItem->type]) &&
+                   isset($kanbanItemsArray[$kanbanItem->type][intval($kanbanItem->sortOrder)]))
+                {
+                    $sortOrder                  = $maximumKanbanItemSortOrder + 1;
+                    $maximumKanbanItemSortOrder = $sortOrder;
+                }
+                else
+                {
+                    $sortOrder = intval($kanbanItem->sortOrder);
+                }
+                $kanbanItemsArray[$kanbanItem->type][$sortOrder] = $kanbanItem->task;
             }
             foreach ($kanbanItemsArray as $type => $kanbanData)
             {
@@ -139,8 +162,8 @@
         {
             Yii::app()->clientScript->registerScript('task-sortable-data', static::registerKanbanColumnSortableScript());
             $url = Yii::app()->createUrl('tasks/default/updateStatusInKanbanView', array());
-            $this->registerKanbanColumnStartActionScript('action-type-start' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
-            $this->registerKanbanColumnStartActionScript('action-type-restart' ,Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-start', Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
+            $this->registerKanbanColumnStartActionScript('action-type-restart', Zurmo::t('Core', 'Finish'), Task::STATUS_IN_PROGRESS, $url);
             $this->registerKanbanColumnFinishActionScript(Zurmo::t('Core', 'Accept'),
                         Zurmo::t('Core', 'Reject'), Task::STATUS_AWAITING_ACCEPTANCE, $url);
             $this->registerKanbanColumnAcceptActionScript('', Task::STATUS_COMPLETED, $url);
@@ -187,9 +210,10 @@
          */
         protected function registerKanbanColumnFinishActionScript($labelAccept, $labelReject, $targetStatus, $url)
         {
-            $acceptanceStatusLabel = Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE);
+            $acceptanceStatusLabel = ZurmoHtml::encode(Task::getStatusDisplayName(Task::STATUS_AWAITING_ACCEPTANCE));
             $acceptanceStatus      = Task::STATUS_AWAITING_ACCEPTANCE;
             $inProgressKanbanType  = KanbanItem::TYPE_IN_PROGRESS;
+            // Begin Not Coding Standard
             $script = "$(document).on('click','.action-type-finish',function()
                             {
                                 var element = $(this).parent().parent().parent().parent();
@@ -222,6 +246,7 @@
                                 );
                             }
                         );";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('finish-action-script', $script);
         }
 
@@ -272,7 +297,7 @@
 
         /**
          * Register button action script
-         * @param string $buttonClass
+         * @param string $sourceActionButtonClass
          * @param int $targetKanbanItemType
          * @param string $label
          * @param string $targetButtonClass
@@ -280,14 +305,17 @@
          * @param int $targetStatus
          * @return string
          */
-        protected function registerButtonActionScript($buttonClass, $targetKanbanItemType, $label,
+        protected function registerButtonActionScript($sourceActionButtonClass, $targetKanbanItemType, $label,
                                                       $targetButtonClass, $url, $targetStatus)
         {
-            $rejectStatusLabel    = Task::getStatusDisplayName(Task::STATUS_REJECTED);
-            $inProgressStatusLabel = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
-            $completedStatusLabel = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
-            $completedStatus      = Task::STATUS_COMPLETED;
-            return "$(document).on('click','." . $buttonClass . "',
+            $rejectStatusLabel       = Task::getStatusDisplayName(Task::STATUS_REJECTED);
+            $inProgressStatusLabel   = Task::getStatusDisplayName(Task::STATUS_IN_PROGRESS);
+            $completedStatusLabel    = Task::getStatusDisplayName(Task::STATUS_COMPLETED);
+            $completedStatus         = Task::STATUS_COMPLETED;
+            $rejectedStatusClass     = 'status-' . Task::STATUS_REJECTED;
+            $currentUserLoggedInName = '(' . Yii::app()->user->userModel->getFullName() . ')';
+            // Begin Not Coding Standard
+            return "$(document).on('click','." . $sourceActionButtonClass . "',
                         function()
                         {
                             var element = $(this).parent().parent().parent().parent();
@@ -305,17 +333,26 @@
                             }
                             if('{$targetStatus}' != '{$completedStatus}')
                             {
-                                var linkTag = $(element).find('.{$buttonClass}');
+                                var linkTag = $(element).find('.{$sourceActionButtonClass}');
                                 $(linkTag).find('.button-label').html('" . $label . "');
-                                $(linkTag).removeClass('" . $buttonClass . "').addClass('" . $targetButtonClass . "');
-                                if('{$buttonClass}' == 'action-type-reject')
+                                $(linkTag).removeClass('" . $sourceActionButtonClass . "').addClass('" . $targetButtonClass . "');
+                                if('{$sourceActionButtonClass}' == 'action-type-reject')
                                 {
                                     $(element).find('.action-type-accept').remove();
                                     $(element).find('.task-status').html('{$rejectStatusLabel}');
+                                    $(element).find('.task-status').parent().addClass('{$rejectedStatusClass}');
                                 }
-                                if('{$buttonClass}' == 'action-type-restart')
+                                else
+                                {
+                                    $(element).find('.task-status').parent().removeClass('{$rejectedStatusClass}');
+                                }
+                                if('{$sourceActionButtonClass}' == 'action-type-restart')
                                 {
                                     $(element).find('.task-status').html('{$inProgressStatusLabel}');
+                                }
+                                if('{$sourceActionButtonClass}' == 'action-type-start')
+                                {
+                                    $(element).find('h4 .task-owner').html('{$currentUserLoggedInName}');
                                 }
                             }
                             else
@@ -330,11 +367,13 @@
                                 type : 'GET',
                                 data : {'targetStatus':'{$targetStatus}', 'taskId':taskId, 'sourceKanbanType':columnType},
                                 url  : '{$url}',
+                                dataType : 'json',
                                 beforeSend : function(){
                                           $('.ui-overlay-block').fadeIn(50);
                                           $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block'); //- add spinner to block anything else
                                         },
                                 success: function(data){
+                                            $(element).find('.task-subscribers').html(data.subscriptionContent);
                                             $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
                                             $('.ui-overlay-block').fadeOut(50);
                                          }
@@ -342,6 +381,7 @@
                             );
                         }
                     );";
+            // End Not Coding Standard
         }
 
         /**
@@ -353,7 +393,7 @@
         protected function registerKanbanColumnAcceptActionScript($label, $targetStatus, $url)
         {
             $script = $this->registerButtonActionScript('action-type-accept', KanbanItem::TYPE_COMPLETED,
-                      $label, 'task-complete-action ui-state-disabled', $url,$targetStatus);
+                      $label, 'task-complete-action ui-state-disabled', $url, $targetStatus);
             Yii::app()->clientScript->registerScript('accept-action-script', $script);
         }
 
@@ -402,7 +442,7 @@
             $content .= ZurmoHtml::closeTag('div');
 
             $content .= ZurmoHtml::openTag('div', array('class' => 'task-subscribers'));
-            $content .= $this->resolveAndRenderTaskCardDetailsSubscribersContent($task);
+            $content .= TasksUtil::resolveAndRenderTaskCardDetailsSubscribersContent($task);
             $content .= $this->renderCardDataContent($this->cardColumns['subscribe'], $task, $row);
             $content .= ZurmoHtml::closeTag('div');
 
@@ -431,32 +471,13 @@
             }
         }
 
-        protected function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
+        /**
+         * Checks if max count has to be validated in the kanban view
+         * @return boolean
+         */
+        protected function isMaxCountCheckRequired()
         {
-            $content         = null;
-            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
-            foreach ($subscribedUsers as $user)
-            {
-                if ($user->isSame($task->owner))
-                {
-                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
-                    break;
-                }
-            }
-            //To take care of the case of duplicates
-            $addedSubscribers = array();
-            foreach ($subscribedUsers as $user)
-            {
-                if (!$user->isSame($task->owner))
-                {
-                    if (!in_array($user->id, $addedSubscribers))
-                    {
-                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
-                        $addedSubscribers[] = $user->id;
-                    }
-                }
-            }
-            return $content;
+            return false;
         }
     }
 ?>

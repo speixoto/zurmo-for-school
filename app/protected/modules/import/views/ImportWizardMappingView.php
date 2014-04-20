@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -121,14 +121,14 @@
             $content .= '<colgroup>';
             if (count($headerColumns) == 3)
             {
-                $content .= '<col style="width:70%" />';
-                $content .= '<col style="width:15%" />';
-                $content .= '<col style="width:15%" />';
+                $content .= '<col style="width:60%" />';
+                $content .= '<col style="width:20%" />';
+                $content .= '<col style="width:20%" />';
             }
             else
             {
-                $content .= '<col style="width:85%" />';
-                $content .= '<col style="width:15%" />';
+                $content .= '<col style="width:70%" />';
+                $content .= '<col style="width:30%" />';
             }
             $content .= '</colgroup>';
             $content .= '<tbody>';
@@ -172,7 +172,7 @@
             $headerColumns[] = Zurmo::t('ImportModule', 'Zurmo Field', LabelUtil::getTranslationParamsForAllModules());
             if ($this->model->firstRowIsHeaderRow)
             {
-                $headerColumns[] = Zurmo::t('ImportModule', 'Header');
+                $headerColumns[] = Zurmo::t('Core', 'Header');
             }
             $headerColumns[] = ZurmoHtml::tag('div',
                                array('id' =>  MappingFormLayoutUtil::getSampleColumnHeaderId(),
@@ -206,7 +206,7 @@
                                                                        $mappingDataRow['type'],
                                                                        $mappingDataRow['attributeIndexOrDerivedType'],
                                                                        $ajaxOnChangeUrl);
-                
+
                 $firstCell   .= $mappingFormLayoutUtil->renderMappingRulesElements(
                                       $columnName,
                                       $mappingDataRow['attributeIndexOrDerivedType'],
@@ -214,7 +214,7 @@
                                       $mappingDataRow['type'],
                                       $this->resolveMappingRuleFormsAndElementTypesByColumn($columnName));
                 $row['cells'][] = $firstCell;
-                        
+
                 if ($firstRowIsHeaderRow)
                 {
                     assert('$mappingDataRow["headerValue"] == null || is_string($mappingDataRow["headerValue"])');
@@ -222,7 +222,7 @@
                                                                                     $mappingDataRow['headerValue']);
                 }
                 $row['cells'][] = $mappingFormLayoutUtil->renderImportColumnContent ($columnName,
-                                                                                 $mappingDataRow['sampleValue']);                
+                                                                                 $mappingDataRow['sampleValue']);
                 $metadata['rows'][] = $row;
             }
             return $metadata;

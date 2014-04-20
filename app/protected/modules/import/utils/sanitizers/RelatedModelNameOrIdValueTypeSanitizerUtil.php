@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -76,8 +76,15 @@
             }
             elseif ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
             {
-                $found = $this->resolveFoundNameByValue($rowBean);
-                if($found === null)
+                try
+                {
+                    $found = $this->resolveFoundNameByValue($rowBean);
+                }
+                catch (NotFoundException $e)
+                {
+                    $found = null;
+                }
+                if ($found === null)
                 {
                     return;
                 }
@@ -170,7 +177,18 @@
                 {
                     throw new NotSupportedException();
                 }
-                $modelsFound = $relationModelClassName::getByName($value);
+                try
+                {
+                    $modelsFound = $relationModelClassName::getByName($value);
+                    if (!is_array($modelsFound))
+                    {
+                        $modelsFound = array($modelsFound);
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                    $modelsFound = array();
+                }
                 if (count($modelsFound) == 0)
                 {
                     $newRelatedModel       = new $relationModelClassName();
@@ -228,7 +246,10 @@
             {
                 throw new NotSupportedException();
             }
-            $this->maxNameLength = StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, 'name');
+            if ($this->mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_NAME)
+            {
+                $this->maxNameLength = StringValidatorHelper::getMaxLengthByModelAndAttributeName($model, 'name');
+            }
         }
 
         protected function resolveForFoundModel()

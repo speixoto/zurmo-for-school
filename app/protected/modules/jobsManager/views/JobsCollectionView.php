@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -169,12 +169,15 @@
                 $content .= '<td>' . $jobData['lastCompletedRunEncodedContent'] . '</td>';
                 $content .= '<td>' . ZurmoHtml::encode($jobData['statusContent']) . '</td>';
                 $content .= '<td class="button-column-right">' . $this->resolveActionContentByStatus($type, $jobData['status']) . '</td>';
+                $jobClassName           = $type . "Job";
+                $messageLoggerClassName = $jobClassName::getDefaultMessageLogger();
                 if ($this->showRunJobLink)
                 {
                     $runJobLink = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('ZurmoModule', 'Run')),
                                     Yii::app()->createUrl(
-                                        $this->moduleId . '/' . $this->controllerId . '/runJob', array('type' => $type)),
-                                    array('class' => 'z-button run-button'));
+                                        $this->moduleId . '/' . $this->controllerId . '/runJob',
+                                        array('type' => $type, 'messageLoggerClassName' => $messageLoggerClassName)),
+                                    array('class' => 'white-button run-button'));
                     $content .= '<td class="button-column-right">' . $runJobLink . '</td>';
                 }
                 $content .= '</tr>';

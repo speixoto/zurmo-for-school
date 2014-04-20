@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     class WorkflowMergeTagsUtilTest extends ZurmoBaseTest
     {
@@ -43,6 +43,8 @@
 
         protected static $content;
 
+        protected static $contact;
+
         protected $invalidTags;
 
         protected $mergeTagsUtil;
@@ -50,10 +52,15 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
+            ContactsModule::loadStartingData();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
             self::$super = User::getByUsername('super');
             Yii::app()->user->userModel = self::$super;
+            $emailSignature = new EmailSignature();
+            $emailSignature->htmlContent = 'my email signature';
+            self::$super->emailSignatures->add($emailSignature);
+            self::$super->save();
 
             $currencies                                         = Currency::getAll();
             $currencyValue1                                     = new CurrencyValue();
@@ -238,6 +245,8 @@
                 '[[WAS%LAST^NAME]] [[WAS%PHONE]]';
             self::$compareContent                               = 'Current: def Jane Bond 66778899 Old: abc James ' .
                 'Jackson 1122334455';
+            self::$contact                                  = ContactTestHelper::
+                                                              createContactByNameForOwner('Jason', self::$super);
         }
 
         public static function getDependentTestModelClassNames()
@@ -862,6 +871,9 @@
             $this->assertEmpty($this->invalidTags);
         }
 
+        /**
+         * @depends testBaseUrlMergeTag
+         */
         public function testActivityItemsMergeTag()
         {
             $account            = AccountTestHelper::createAccountByNameForOwner('testAccount', self::$super);
@@ -876,6 +888,74 @@
             $resolvedContent    = $mergeTagsUtil->resolveMergeTags($task, $this->invalidTags);
             $this->assertFalse($resolvedContent);
             $this->assertContains('CONTACT__NAME', $this->invalidTags);
+        }
+
+       /**
+         * @depends testActivityItemsMergeTag
+         */
+        public function testOwnersAvatarSmallMergeTag()
+        {
+            $content                        = '[[OWNERS^AVATAR^SMALL]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedAvatarImage = '<img class="gravatar" width="32" height="32" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $this->assertEquals($expectedAvatarImage, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnersAvatarSmallMergeTag
+         */
+        public function testOwnersAvatarMediumMergeTag()
+        {
+            $content                        = '[[OWNERS^AVATAR^MEDIUM]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $this->assertEquals($expectedAvatarImage, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnersAvatarMediumMergeTag
+         */
+        public function testOwnersAvatarLargeMergeTag()
+        {
+            $content                        = '[[OWNERS^AVATAR^LARGE]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $this->assertEquals($expectedAvatarImage, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnersAvatarLargeMergeTag
+         */
+        public function testOwnersEmailSignatureMergeTag()
+        {
+            $content                        = '[[OWNERS^EMAIL^SIGNATURE]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedEmailSignature = 'my email signature';
+            $this->assertEquals($expectedEmailSignature, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
         }
     }
 ?>

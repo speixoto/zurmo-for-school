@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -94,6 +94,49 @@
                 $autoCompleteResults[] = array(
                     'id'   => $contact->id,
                     'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromContactAndKeyword($contact, $term)
+                );
+            }
+            echo CJSON::encode($autoCompleteResults);
+        }
+
+        /**
+         * Given a partial name or e-mail address, search for all contacts or users regardless of contact state unless
+         * the current user has security restrictions on some states. If the adapter resolver returns false, then the
+         * user does not have access to the Leads or Contacts module.
+         * JSON encode the resulting array of contacts.
+         */
+        public function actionAutoCompleteAllContactsOrUsersForMultiSelectAutoComplete($term,
+                                                                                       $autoCompleteOptions = null)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                        'autoCompleteListPageSize', get_class($this->getModule()));
+            $adapterName  = ContactsUtil::resolveContactStateAdapterByModulesUserHasAccessTo('LeadsModule',
+                            'ContactsModule', Yii::app()->user->userModel);
+            if ($adapterName === false)
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $contacts = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, $adapterName,
+                        null, $autoCompleteOptions);
+            $autoCompleteResults  = array();
+            foreach ($contacts as $contact)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => Meeting::CONTACT_ATTENDEE_PREFIX . $contact->id,
+                    'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromContactAndKeyword($contact,
+                                                                                                             $term)
+                );
+            }
+            $users = UserSearch::getUsersByPartialFullNameOrAnyEmailAddress($term, $pageSize, null,
+                     null, $autoCompleteOptions);
+            foreach ($users as $user)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => Meeting::USER_ATTENDEE_PREFIX . $user->id,
+                    'name' => MultipleContactsForMeetingElement::renderHtmlContentLabelFromUserAndKeyword($user, $term)
                 );
             }
             echo CJSON::encode($autoCompleteResults);

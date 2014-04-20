@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -645,6 +645,57 @@
                                         ),
                                    );
             $this->assertEmpty($adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
+
+            //Test currency type is resolved
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $report->setCurrencyConversionType(Report::CURRENCY_CONVERSION_TYPE_BASE);
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_MATRIX);
+            $displayAttribute->attributeIndexOrDerivedType = 'currencyValue__Summation';
+            $report->addDisplayAttribute($displayAttribute);
+            $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'firstName';
+            $report->addGroupBy($groupBy);
+            $groupBy           = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'lastName';
+            $groupBy->axis = 'y';
+            $report->addGroupBy($groupBy);
+
+            $dataProvider       = new MatrixReportDataProvider($report);
+            $adapter            = ReportToExportAdapterFactory::createReportToExportAdapter($report, $dataProvider);
+            $compareRowData     = array(
+                                    array(
+                                        null,
+                                        'xFirst',
+                                        'xFirst',
+                                        'Total',
+                                    ),
+                                    array(
+                                        'Last Name',
+                                        'Currency Value -(Sum)',
+                                        'Currency Value -(Sum) Currency',
+                                        'Currency Value -(Sum)',
+                                        'Currency Value -(Sum) Currency',
+                                    ),
+                                    array(
+                                        'xLast',
+                                        200,
+                                        'USD',
+                                        200,
+                                        'USD',
+                                    ),
+                                    array(
+                                        'Total',
+                                        200,
+                                        null,
+                                    ),
+                                  );
             $this->assertEquals($compareRowData, $adapter->getData());
         }
 

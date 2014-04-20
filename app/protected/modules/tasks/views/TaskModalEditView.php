@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     /**
      * Modal window for creating and editing a task
@@ -184,7 +184,6 @@
             return array(
                 'onclick' => '$("#ModalView").parent().dialog("close");'
             );
-
         }
 
         protected function resolveModalIdFromGet()
@@ -213,6 +212,7 @@
             $copyAction       = Yii::app()->request->getParam('action', null);
             $action           = TasksUtil::resolveModalSaveActionNameForByRelationModelId($relationModelId, $copyAction);
             $url              = Yii::app()->createUrl('tasks/default/' . $action, GetUtil::getData());
+            // Begin Not Coding Standard
             return array('enableAjaxValidation' => true,
                         'clientOptions' => array(
                             'beforeValidate'    => 'js:$(this).beforeValidateAction',
@@ -233,6 +233,7 @@
                             'inputContainer'    => 'td'
                         )
             );
+            // End Not Coding Standard
         }
 
         protected function renderConfigSaveAjax($formId, $url, $sourceKanbanBoardId, $modalId, $sourceId)
@@ -247,6 +248,7 @@
                 $kanbanRefreshScript = TasksUtil::resolveExtraCloseScriptForModalAjaxOptions($sourceId);
             }
             $title   = TasksUtil::getModalDetailsTitle();
+            // Begin Not Coding Standard
             $options = array(
                 'type' => 'POST',
                 'data' => 'js:$("#' . $formId . '").serialize()',
@@ -256,6 +258,7 @@
                                     $('#" . $modalId .  "').dialog('option', 'title', '" . $title . "');
                                     " . $kanbanRefreshScript . "}"
             );
+            // End Not Coding Standard
             return ZurmoHtml::ajax($options);
         }
 
@@ -279,6 +282,15 @@
             {
                 $elementInformation['rows'] = 2;
             }
+        }
+
+        /**
+         * Gets form layout unique id
+         * @return null
+         */
+        protected function getFormLayoutUniqueId()
+        {
+            return 'task-modal-edit-form-layout';
         }
     }
 ?>

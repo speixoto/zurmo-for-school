@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -39,18 +39,8 @@
     */
     class ApiRestUserTest extends ApiRestTest
     {
-        public function testApiServerUrl()
-        {
-            if (!$this->isApiTestUrlConfigured())
-            {
-                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
-            }
-            $this->assertTrue(strlen($this->serverUrl) > 0);
-        }
+        protected static $createUsersAndGroups = false;
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testGetUser()
         {
             $super = User::getByUsername('super');
@@ -64,11 +54,9 @@
             );
 
             $user = UserTestHelper::createBasicUser('PeterSmith');
+            $compareData  =  $this->getModelToApiDataUtilData($user);
 
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($user);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
-
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/read/' . $user->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($compareData, $response['data']);
@@ -90,20 +78,17 @@
 
             $user = User::getByUsername('petersmith');
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/delete/' . $user->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $user->id, 'DELETE', $headers);
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/read/' . $user->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testCreateUser()
         {
             $super = User::getByUsername('super');
@@ -166,7 +151,7 @@
                 'id' => $currency->id
             );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
@@ -246,13 +231,12 @@
             );
 
             $user = User::getByUsername('diggy011');
-            $redBeanModelToApiDataUtil  = new RedBeanModelToApiDataUtil($user);
-            $compareData  = $redBeanModelToApiDataUtil->getData();
+            $compareData  =  $this->getModelToApiDataUtilData($user);
             $user->forget();
 
             $data['firstName']                = "John";
             $data['password']                 = "aswe019";
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
@@ -271,7 +255,7 @@
             $updatedUser = User::getByUsername('diggy011');
             $this->assertEquals(User::encryptPassword($data['password']), $updatedUser->hash);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/read/' . $user->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             unset($response['data']['modifiedDateTime']);
@@ -296,7 +280,7 @@
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/', 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/', 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -306,7 +290,6 @@
 
         public function testListUserAttributes()
         {
-            RedBeanModel::forgetAll();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -319,7 +302,7 @@
             );
             $allAttributes      = ApiRestTestHelper::getModelAttributes(new User());
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/listAttributes/' , 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('listAttributes/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals($allAttributes, $response['data']['items']);
@@ -357,17 +340,17 @@
                 'ZURMO_TOKEN: ' . $authenticationData['token'],
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/read/' . $user->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/update/' . $user->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $user->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/delete/' . $user->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $user->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals('You do not have rights to perform this action.', $response['message']);
@@ -378,20 +361,20 @@
             $saved = $notAllowedUser->save();
             $this->assertTrue($saved);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/read/' . $user->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/update/' . $user->id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $user->id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals('Sam', $response['data']['firstName']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/delete/' . $user->id, 'DELETE', $headers);
+            $response = $this->createApiCallWithRelativeUrl('delete/' . $user->id, 'DELETE', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/read/' . $user->id, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('read/' . $user->id, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
         }
@@ -399,7 +382,7 @@
         /**
         * @depends testUnprivilegedUserViewUpdateDeleteUsers
         */
-        public function testSearchUsers()
+        public function testBasicSearchUsers()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
@@ -429,7 +412,7 @@
                 'sort' => 'username',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -442,7 +425,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -456,7 +439,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['username'] = 'first';
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
@@ -468,7 +451,7 @@
             $searchParams['pagination']['page'] = 1;
             $searchParams['search']['username'] = 'first2';
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(0, $response['data']['totalCount']);
@@ -486,7 +469,7 @@
                 'sort' => 'username.desc',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -499,7 +482,7 @@
             // Second page
             $searchParams['pagination']['page'] = 2;
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(3, count($response['data']['items']));
@@ -521,7 +504,7 @@
                 'sort' => 'username',
             );
             $searchParamsQuery = http_build_query($searchParams);
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/' . $searchParamsQuery, 'GET', $headers);
+            $response = $this->createApiCallWithRelativeUrl('list/filter/' . $searchParamsQuery, 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals(1, count($response['data']['items']));
@@ -531,9 +514,9 @@
         }
 
         /**
-        * @depends testSearchUsers
+        * @depends testBasicSearchUsers
         */
-        public function testAdvancedSearchUsers()
+        public function testDynamicSearchUsers()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel        = $super;
@@ -569,7 +552,7 @@
                 'sort' => 'username.asc',
            );
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -581,7 +564,7 @@
 
             // Get second page
             $data['pagination']['page'] = 2;
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/list/filter/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('list/filter/', 'POST', $headers, array('data' => $data));
 
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
@@ -591,9 +574,67 @@
             $this->assertEquals('second', $response['data']['items'][0]['username']);
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
+        public function testNewSearchUsers()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel        = $super;
+
+            $authenticationData = $this->login();
+            $headers = array(
+                'Accept: application/json',
+                'ZURMO_SESSION_ID: ' . $authenticationData['sessionId'],
+                'ZURMO_TOKEN: ' . $authenticationData['token'],
+                'ZURMO_API_REQUEST_TYPE: REST',
+            );
+
+            $data = array(
+                'search' => array(
+                    'modelClassName' => 'User',
+                    'searchAttributeData' => array(
+                        'clauses' => array(
+                            1 => array(
+                                'attributeName'        => 'username',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Fi'
+                            ),
+                            2 => array(
+                                'attributeName'        => 'username',
+                                'operatorType'         => 'startsWith',
+                                'value'                => 'Se'
+                            ),
+                        ),
+                        'structure' => '1 OR 2',
+                    ),
+                ),
+                'pagination' => array(
+                    'page'     => 1,
+                    'pageSize' => 2,
+                ),
+                'sort' => 'username asc',
+            );
+
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(2, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(1, $response['data']['currentPage']);
+            $this->assertEquals('fifth', $response['data']['items'][0]['username']);
+            $this->assertEquals('first', $response['data']['items'][1]['username']);
+
+            // Get second page
+            $data['pagination']['page'] = 2;
+            $response = $this->createApiCallWithRelativeUrl('search/filter/', 'POST', $headers, array('data' => $data));
+
+            $response = json_decode($response, true);
+            $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
+            $this->assertEquals(1, count($response['data']['items']));
+            $this->assertEquals(3, $response['data']['totalCount']);
+            $this->assertEquals(2, $response['data']['currentPage']);
+            $this->assertEquals('second', $response['data']['items'][0]['username']);
+        }
+
         public function testEditUserWithIncompleteData()
         {
             $super = User::getByUsername('super');
@@ -611,7 +652,7 @@
             // Provide data without required fields.
             $data['username']         = "";
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(2, count($response['errors']));
@@ -619,15 +660,12 @@
             $id = $user->id;
             $data = array();
             $data['username']                = '';
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/update/' . $id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
         }
 
-        /**
-        * @depends testApiServerUrl
-        */
         public function testEditUserWIthIncorrectDataType()
         {
             $super = User::getByUsername('super');
@@ -645,7 +683,7 @@
             // Provide data with wrong type.
             $data['language']         = "AAAAAAAAAAAA";
 
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/create/', 'POST', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('create/', 'POST', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(3, count($response['errors']));
@@ -653,10 +691,21 @@
             $id = $user->id;
             $data = array();
             $data['language']         = "AAAAAAAAAAAA";
-            $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/users/user/api/update/' . $id, 'PUT', $headers, array('data' => $data));
+            $response = $this->createApiCallWithRelativeUrl('update/' . $id, 'PUT', $headers, array('data' => $data));
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
             $this->assertEquals(1, count($response['errors']));
+        }
+
+        protected function getApiControllerClassName()
+        {
+            Yii::import('application.modules.users.controllers.UserApiController', true);
+            return 'UsersUserApiController';
+        }
+
+        protected function getModuleBaseApiUrl()
+        {
+            return 'users/user/api/';
         }
     }
 ?>

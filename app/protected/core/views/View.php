@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -49,6 +49,11 @@
         protected $cssClasses = array();
 
         protected $title;
+
+        /**
+         * @var bool
+         */
+        protected $makeDefaultClassesFromClassHeirarchy = true;
 
         /**
          * Tells View that it can render the extending class' divs with
@@ -95,13 +100,13 @@
                 }
                 $content = "<!-- Start of $templateName -->$content<!-- End of $templateName -->";
             }
-            $classes = RuntimeUtil::getClassHierarchy(get_class($this), 'View');
-            if ($this->isUniqueToAPage())
+            $classes = $this->resolveDefaultClasses();
+            if ($this->isUniqueToAPage() && $this->renderContainerWrapperId())
             {
                 $id = " id=\"$name\"";
                 unset($classes[0]);
             }
-            else
+            elseif ($this->renderContainerWrapperId())
             {
                 $id = $this->getId();
                 if ($id != null)
@@ -109,22 +114,43 @@
                     $id = " id=\"$id\"";
                 }
             }
+            else
+            {
+                $id = null;
+            }
             $classes = join(' ', array_merge($this->getCssClasses(), $classes));
             if ($classes != '')
             {
                 $classes = " class=\"$classes\"";
             }
-            $calledClass = get_called_class();
-            if (YII_DEBUG)
+            $containerWrapperTag = $this->getContainerWrapperTag();
+            if ($containerWrapperTag == null)
             {
-                $reflection = new ReflectionClass( $calledClass );
-                $classFile = $reflection->getFileName();
-                return "<!--Called in: $classFile--><div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return $content;
             }
             else
             {
-                return "<div" . $id . $classes . $this->getViewStyle() . ">$content</div>";
+                return "<" . $this->getContainerWrapperTag() . $id . $classes . $this->getViewStyle() . ">$content</" . $this->getContainerWrapperTag() . ">";
             }
+        }
+
+        protected function resolveDefaultClasses()
+        {
+            if ($this->makeDefaultClassesFromClassHeirarchy)
+            {
+                return RuntimeUtil::getClassHierarchy(get_class($this), 'View');
+            }
+            return array();
+        }
+
+        protected function renderContainerWrapperId()
+        {
+            return true;
+        }
+
+        protected function getContainerWrapperTag()
+        {
+            return 'div';
         }
 
         /**

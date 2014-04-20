@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ContactsExternalController extends ZurmoModuleController
@@ -94,6 +94,7 @@
                                                             ContactExternalEditAndDetailsView::GOOGLE_WEB_TRACKING_ID_FIELD);
             $contactWebFormModelForm->setCustomDisplayLabels($customDisplayLabels);
             $contactWebFormModelForm->setCustomRequiredFields($customRequiredFields);
+            $contactWebFormModelForm->resolveRequiredValidatorsForModel($customRequiredFields);
             $postVariableName                        = get_class($contactWebFormModelForm);
             if (isset($_POST[$postVariableName]))
             {
@@ -281,6 +282,11 @@
                 if ($data['cells'][0]['elements'][0]['type'] == 'EmailAddressInformation')
                 {
                     $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['hideOptOut'] = true;
+                }
+                if ($data['cells'][0]['elements'][0]['type'] == 'TagCloud')
+                {
+                    $metadata['global']['panels'][0]['rows'][$index]['cells'][0]['elements'][0]['type'] =
+                    'MultiSelectDropDown';
                 }
             }
             return $metadata;

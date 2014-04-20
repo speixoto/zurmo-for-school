@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -95,6 +95,14 @@
             $view                  = new EmailMessagesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
+        }
+
+        public function actionRenderContent($id)
+        {
+            $emailMessage                   = EmailMessage::getById(intval($id));
+            $element                        = new EmailMessageContentElement($emailMessage, 'content');
+            $element->nonEditableTemplate   = "{content}";
+            echo $element->render();
         }
 
         public function actionConfigurationEdit()
@@ -248,13 +256,24 @@
                         }
                         else
                         {
+                            //todo: refactor to use ZurmoHtml::errorSummary after this supports that method
+                            //todo: supports nested messages better.
                             $errors = $emailMessage->getErrors();
-                            $data = array();
                             foreach ($errors as $attributeNameWithErrors)
                             {
                                 foreach ($attributeNameWithErrors as $attributeError)
                                 {
-                                    $messageContent .= reset($attributeError) . "\n";
+                                    if (is_array($attributeError))
+                                    {
+                                        foreach ($attributeError as $nestedAttributeError)
+                                        {
+                                            $messageContent .= reset($nestedAttributeError) . "\n";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $messageContent .= reset($attributeError) . "\n";
+                                    }
                                 }
                             }
                         }
@@ -531,6 +550,7 @@
                 $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
                 $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
                 ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessageForm->getModel());
+                Yii::app()->jobQueue->add('ProcessOutboundEmail');
             }
             else
             {
@@ -593,29 +613,40 @@
             $pageSize               = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'autoCompleteListPageSize', get_class($this->getModule()));
             $usersByFullName        = UserSearch::getUsersByPartialFullName($term, $pageSize, $autoCompleteOptions);
-            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true, $autoCompleteOptions);
-            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress($term, $pageSize, null, 'contains', $autoCompleteOptions);
+            $usersByEmailAddress    = UserSearch::getUsersByEmailAddress($term, 'contains', true,
+                                      $autoCompleteOptions, $pageSize);
+            $contacts               = ContactSearch::getContactsByPartialFullNameOrAnyEmailAddress(
+                                      $term, $pageSize, null, 'contains', $autoCompleteOptions);
             $autoCompleteResults    = array();
             foreach ($usersByEmailAddress as $user)
             {
-                $autoCompleteResults[] = array(
-                    'id'   => strval($user->primaryEmail),
-                    'name' => strval($user) . ' (' . $user->primaryEmail . ')',
-                );
+                if (isset($user->primaryEmail->emailAddress))
+                {
+                    $autoCompleteResults[] = array(
+                        'id'   => strval($user->primaryEmail),
+                        'name' => strval($user) . ' (' . $user->primaryEmail . ')',
+                    );
+                }
             }
             foreach ($usersByFullName as $user)
             {
-                $autoCompleteResults[] = array(
-                    'id'   => strval($user->primaryEmail),
-                    'name' => strval($user) . ' (' . $user->primaryEmail . ')',
-                );
+                if (isset($user->primaryEmail->emailAddress))
+                {
+                    $autoCompleteResults[] = array(
+                        'id'   => strval($user->primaryEmail),
+                        'name' => strval($user) . ' (' . $user->primaryEmail . ')',
+                    );
+                }
             }
             foreach ($contacts as $contact)
             {
-                $autoCompleteResults[] = array(
-                    'id'   => strval($contact->primaryEmail),
-                    'name' => strval($contact) . ' (' . $contact->primaryEmail . ')',
-                );
+                if (isset($contact->primaryEmail->emailAddress))
+                {
+                    $autoCompleteResults[] = array(
+                        'id'   => strval($contact->primaryEmail),
+                        'name' => strval($contact) . ' (' . $contact->primaryEmail . ')',
+                    );
+                }
             }
             $emailValidator = new CEmailValidator();
             if (count($autoCompleteResults) == 0 && $emailValidator->validateValue($term))

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,13 +31,19 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     /**
      * Action element which renders copy link on clicking of which opens a modal window
      */
-    class CopyModalLinkActionElement extends ModalLinkActionElement
+    class CopyModalLinkActionElement extends LinkActionElement
     {
+        public function render()
+        {
+            $content = ZurmoHtml::link($this->resolveLabelAndWrap(), '#', $this->getHtmlOptions());
+            return $content;
+        }
+
         /**
          * Gets default label
          * @return string
@@ -53,22 +59,7 @@
          */
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->getRouteModuleId() . '/' .
-                        $this->controllerId . '/modalCopy', array_merge(array('id' => $this->modelId, 'action' => 'copy'),
-                                                                                       $this->getCreateLinkUrlParams()));
-        }
-
-        /**
-         * Gets route module id
-         * @return string
-         */
-        protected function getRouteModuleId()
-        {
-            if (!isset($this->params['routeModuleId']))
-            {
-                return null;
-            }
-            return $this->params['routeModuleId'];
+            return '#';
         }
 
         /**
@@ -77,62 +68,6 @@
         public function getActionType()
         {
             return 'Edit';
-        }
-
-        /**
-         * @return array
-         */
-        protected function getCreateLinkUrlParams()
-        {
-            return $this->getModalTransferInformation();
-        }
-
-        /**
-         * @return array
-         */
-        protected function getModalTransferInformation()
-        {
-            return array_merge(array(
-                    'modalId'           => $this->getModalContainerId(),
-                    'portletId'         => $this->getPortletId(),
-                    'uniqueLayoutId'    => $this->getUniqueLayoutId()
-            ), $this->getRouteParameters());
-        }
-
-        /**
-         * @return string
-         */
-        protected function getModalContainerId()
-        {
-            if (!isset($this->params['modalContainerId']))
-            {
-                return array();
-            }
-            return $this->params['modalContainerId'];
-        }
-
-        /**
-         * @return string
-         */
-        protected function getPortletId()
-        {
-            if (!isset($this->params['portletId']))
-            {
-                return array();
-            }
-            return $this->params['portletId'];
-        }
-
-        /**
-         * @return string
-         */
-        protected function getUniqueLayoutId()
-        {
-            if (!isset($this->params['uniqueLayoutId']))
-            {
-                return array();
-            }
-            return $this->params['uniqueLayoutId'];
         }
     }
 ?>

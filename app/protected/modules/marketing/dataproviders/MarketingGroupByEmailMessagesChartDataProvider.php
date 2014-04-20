@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -47,7 +47,7 @@
         {
             assert('is_string($columnName)');
             $quote       = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $emailMessageTableName = EmailMessage::getTableName();
             $selectQueryAdapter->addDayDateClause($emailMessageTableName, $columnName, static::DAY_DATE);
         }
 
@@ -59,7 +59,7 @@
         {
             assert('is_string($columnName)');
             $quote                 = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $emailMessageTableName = EmailMessage::getTableName();
             $selectQueryAdapter->addFirstDayOfWeekDateClause($emailMessageTableName, $columnName, static::FIRST_DAY_OF_WEEK_DATE);
         }
 
@@ -71,7 +71,7 @@
         {
             assert('is_string($columnName)');
             $quote                 = DatabaseCompatibilityUtil::getQuote();
-            $emailMessageTableName = EmailMessage::getTableName('EmailMessage');
+            $emailMessageTableName = EmailMessage::getTableName();
             $selectQueryAdapter->addFirstDayOfMonthDateClause($emailMessageTableName, $columnName, static::FIRST_DAY_OF_MONTH_DATE);
         }
 
@@ -84,19 +84,18 @@
             assert('is_int($type)');
             $quote                         = DatabaseCompatibilityUtil::getQuote();
             $where                         = null;
-            $selectDistinct                = true;
-            $campaignItemTableName         = CampaignItem::getTableName('CampaignItem');
-            $campaignItemActivityTableName = CampaignItemActivity::getTableName('CampaignItemActivity');
-            $emailMessageActivityTableName = EmailMessageActivity::getTableName('EmailMessageActivity');
-            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $campaignItemTableName         = CampaignItem::getTableName();
+            $campaignItemActivityTableName = CampaignItemActivity::getTableName();
+            $emailMessageActivityTableName = EmailMessageActivity::getTableName();
+            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter();
             $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('CampaignItemActivity');
-            $selectQueryAdapter->addClauseByQueryString("campaign_id");
+            $selectQueryAdapter->addClauseByQueryString("1");
             $joinTablesAdapter->addFromTableAndGetAliasName($emailMessageActivityTableName, 'emailmessageactivity_id',
                                              $campaignItemActivityTableName);
             $where                         = "type = " . $type . " and {$quote}{$campaignItemActivityTableName}{$quote}" .
                                              ".campaignitem_id = {$quote}{$campaignItemTableName}{$quote}.id";
             $sql                           = SQLQueryUtil::makeQuery($campaignItemActivityTableName, $selectQueryAdapter,
-                                             $joinTablesAdapter, null, null, $where);
+                                             $joinTablesAdapter, null, 1, $where);
             return $sql;
         }
 
@@ -109,18 +108,17 @@
             assert('is_int($type)');
             $quote                         = DatabaseCompatibilityUtil::getQuote();
             $where                         = null;
-            $selectDistinct                = true;
-            $autoresponderItemActivityTableName = AutoresponderItemActivity::getTableName('AutoresponderItemActivity');
-            $emailMessageActivityTableName = EmailMessageActivity::getTableName('EmailMessageActivity');
-            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $autoresponderItemActivityTableName = AutoresponderItemActivity::getTableName();
+            $emailMessageActivityTableName = EmailMessageActivity::getTableName();
+            $selectQueryAdapter            = new RedBeanModelSelectQueryAdapter();
             $joinTablesAdapter             = new RedBeanModelJoinTablesQueryAdapter('AutoresponderItemActivity');
-            $selectQueryAdapter->addClauseByQueryString("autoresponder_id");
+            $selectQueryAdapter->addClauseByQueryString("1");
             $joinTablesAdapter->addFromTableAndGetAliasName($emailMessageActivityTableName, 'emailmessageactivity_id',
                                              $autoresponderItemActivityTableName);
             $where                         = "type = " . $type . " and {$quote}{$autoresponderItemActivityTableName}{$quote}" .
                                              ".autoresponderitem_id = autoresponderitem.id";
             $sql                           = SQLQueryUtil::makeQuery($autoresponderItemActivityTableName, $selectQueryAdapter,
-                $joinTablesAdapter, null, null, $where);
+                $joinTablesAdapter, null, 1, $where);
             return $sql;
         }
 

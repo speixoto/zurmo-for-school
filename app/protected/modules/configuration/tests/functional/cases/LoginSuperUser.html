@@ -4,18 +4,13 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>Create</title>
+<title>Login</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr><td rowspan="1" colspan="3">Login as Super User</td></tr>
 </thead><tbody>
-<tr>
-    <td>setSpeed</td>
-    <td>1000</td>
-    <td></td>
-</tr>
 <tr>
     <td>open</td>
     <td>index.php/zurmo/default/login</td>
@@ -48,7 +43,7 @@
 </tr>
 <tr>
     <td>waitForText</td>
-    <td>//div[@id='HeaderLinksView']/div/div[2]/ul/li/a/span</td>
+    <td>//ul[@id='user-header-menu']/li/a/span</td>
     <td>super</td>
 </tr>
 </tbody></table>

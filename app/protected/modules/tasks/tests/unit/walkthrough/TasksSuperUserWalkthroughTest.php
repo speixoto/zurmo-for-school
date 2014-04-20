@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -97,13 +97,23 @@
             $this->setPostArray(array('Task' => array('name' => 'myTask', 'status' => Task::STATUS_IN_PROGRESS)));
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalDetails');
 
+            //Test just going to the copy from relation
+            $this->setGetArray(array(   'relationAttributeName' => 'Account', 'relationModelId' => $superAccountId,
+                                        'relationModuleId'      => 'accounts', 'id' => $tasks[0]->id));
+            $this->runControllerWithNoExceptionsAndGetContent('tasks/default/modalCopyFromRelation');
+
+            $tasks = Task::getAll();
+            $this->assertEquals(2, count($tasks));
+            $this->assertEquals('myTask', $tasks[1]->name);
+            $this->assertEquals(1, $tasks[1]->activityItems->count());
+
             //test removing a task.
             $this->setGetArray(array('id' => $tasks[0]->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('tasks/default/delete', true);
             //Confirm no more tasks exist.
             $tasks = Task::getAll();
-            $this->assertEquals(0, count($tasks));
+            $this->assertEquals(1, count($tasks));
         }
    }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,60 +31,34 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ActiveProjectsPortletView extends ConfigurableMetadataView implements PortletViewInterface
+    class ActiveProjectsPortletView extends MyListView
     {
-        /**
-         * Portlet parameters passed in from the portlet.
-         * @var array
-         */
-        protected $params;
-
-        /**
-         * @var string
-         */
-        protected $controllerId;
-
-        /**
-         * @var string
-         */
-        protected $moduleId;
-
-        /**
-         * @var string
-         */
-        protected $uniqueLayoutId;
-
-        /**
-         * @var array
-         */
-        protected $viewData;
-
-        /**
-         * Some extra assertions are made to ensure this view is used in a way that it supports.
-         * @param array $viewData
-         * @param array $params
-         * @param string $uniqueLayoutId
-         */
-        public function __construct($viewData, $params, $uniqueLayoutId)
-        {
-            assert('is_array($viewData) || $viewData == null');
-            assert('isset($params["portletId"])');
-            assert('isset($params["layoutId"])');
-            assert('is_string($uniqueLayoutId)');
-            $this->moduleId       = 'projects';
-            $this->viewData       = $viewData;
-            $this->params         = $params;
-            $this->uniqueLayoutId = $uniqueLayoutId;
-        }
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'perUser' => array(
-                    'title' => "eval:Zurmo::t('ProjectsModule', 'Active ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())"
+                    'title' => "eval:Zurmo::t('ProjectsModule', 'Active ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
+                    'searchAttributes' => array('ownedItemsOnly' => false, 'status' => Project::STATUS_ACTIVE),
+                ),
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'DashboardActiveProject'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             );
             return $metadata;
@@ -99,38 +73,6 @@
         }
 
         /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
-         */
-        public static function getPortletRulesType()
-        {
-            return 'MyList';
-        }
-
-        /**
-         * Override to add a description for the view to be shown when adding a portlet
-         */
-        public static function getPortletDescription()
-        {
-        }
-
-        /**
-         * @return null
-         */
-        public function renderPortletHeadContent()
-        {
-            return null;
-        }
-
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
-        {
-            return 'ProjectsModule';
-        }
-
-        /**
          * @return string
          */
         public function getTitle()
@@ -139,32 +81,20 @@
             return $title;
         }
 
-        /**
-         * @return string
-         */
-        public function renderContent()
+        public static function getModuleClassName()
         {
-            $content  = null;
-            $content .= $this->renderActiveProjectsContent();
-            return $content;
+            return 'ProjectsModule';
         }
 
-        /**
-         * @return array
-         */
-        public function getPortletParams()
+        public static function getDisplayDescription()
         {
-            return array();
+            return Zurmo::t('ProjectsModule', 'My ProjectsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
         }
 
-        /**
-         * Renders active projects content
-         * @return string
-         */
-        protected function renderActiveProjectsContent()
+        protected function getSearchModel()
         {
-            $listView = ProjectZurmoControllerUtil::getActiveProjectsListView(Yii::app()->getController());
-            return $listView->render();
+            $modelClassName = $this->modelClassName;
+            return new ProjectsSearchForm(new $modelClassName(false));
         }
     }
 ?>

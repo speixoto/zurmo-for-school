@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -155,7 +155,7 @@
             {
                 $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
             }
-            $content .= $this->renderScripts();
+            $this->renderScripts();
             return $content;
         }
 
@@ -214,6 +214,7 @@
                 'pager'                => $this->getCGridViewPagerParams(),
                 'beforeAjaxUpdate'     => $this->getCGridViewBeforeAjaxUpdate(),
                 'afterAjaxUpdate'      => $this->getCGridViewAfterAjaxUpdate(),
+                'ajaxUrl'              => $this->getCGridViewAjaxUrl(),
                 'columns'              => $columns,
                 'nullDisplay'          => '&#160;',
                 'pagerCssClass'        => static::getPagerCssClass(),
@@ -399,6 +400,11 @@
             // End Not Coding Standard
         }
 
+        protected function getCGridViewAjaxUrl()
+        {
+            return null;
+        }
+
         /**
          * Returns meta data for use in automatically generating the view.
          * The meta data is comprised of columns. The parameters match the
@@ -428,6 +434,18 @@
         public static function getDefaultMetadata()
         {
             return array();
+        }
+
+        /**
+         * As you are rendering row columns, you can override this method to make it dependent on values within the
+         * data which is most likely a model.
+         * @param $element
+         * @param $data
+         * @return bool
+         */
+        public static function canRenderRowMenuColumnByElementAndData($element, $data)
+        {
+            return true;
         }
 
         protected function getCGridViewSelectableRowsCount()

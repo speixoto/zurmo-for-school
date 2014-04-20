@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -94,7 +94,7 @@
                 //We do not want to list properties from CustomFieldData objects
                 //This is also the case for related models, not only for custom fields
                 elseif ($this->model->isRelation($attributeName) &&
-                        $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE)
+                        $this->isHasOneVariationNotOwnedRelation($attributeName))
                 {
                     //Non-owned relation
                     if ($this->model->{$attributeName}->id > 0)
@@ -154,7 +154,7 @@
                 //We do not want to list properties from CustomFieldData objects
                 //This is also the case for related models, not only for custom fields
                 elseif ($this->model->isRelation($attributeName) &&
-                    $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE)
+                        $this->isHasOneVariationNotOwnedRelation($attributeName))
                 {
                     //Non-owned relation
                     if ($this->model->{$attributeName}->id > 0)
@@ -224,6 +224,22 @@
             if ($this->model->isOwnedRelation($attributeName) &&
                 ($this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
                  $this->model->getRelationType($attributeName) == RedBeanModel::HAS_MANY_BELONGS_TO))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param $attributeName
+         * @return bool
+         */
+        protected function isHasOneVariationNotOwnedRelation($attributeName)
+        {
+            assert('is_string($attributeName)');
+            if (!$this->model->isOwnedRelation($attributeName) &&
+                ($this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE ||
+                    $this->model->getRelationType($attributeName) == RedBeanModel::HAS_MANY_BELONGS_TO))
             {
                 return true;
             }

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     abstract class ModelCreationApiSyncUtil
     {
@@ -71,7 +71,7 @@
                                                                         'name' => 'servicename',
                                                                         'type' => 'VARCHAR(50)',
                                                                         'unsigned' => null,
-                                                                        'notNull' => 'NOT NULL',
+                                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                                         'collation' => 'COLLATE utf8_unicode_ci',
                                                                         'default' => null,
                                                                     ),
@@ -79,7 +79,7 @@
                                                                         'name' => 'modelid',
                                                                         'type' => 'INT(11)',
                                                                         'unsigned' => 'UNSIGNED',
-                                                                        'notNull' => 'NOT NULL',
+                                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                                         'collation' => null,
                                                                         'default' => null,
                                                                     ),
@@ -87,7 +87,7 @@
                                                                         'name' => 'modelclassname',
                                                                         'type' => 'VARCHAR(50)',
                                                                         'unsigned' => null,
-                                                                        'notNull' => 'NOT NULL',
+                                                                        'notNull' => 'NOT NULL', // Not Coding Standard
                                                                         'collation' => 'COLLATE utf8_unicode_ci',
                                                                         'default' => null,
                                                                     ),
@@ -95,9 +95,9 @@
                                                                         'name' => 'createddatetime',
                                                                         'type' => 'DATETIME',
                                                                         'unsigned' => null,
-                                                                        'notNull' => 'NULL',
+                                                                        'notNull' => 'NULL', // Not Coding Standard
                                                                         'collation' => null,
-                                                                        'default' => 'NULL',
+                                                                        'default' => 'NULL', // Not Coding Standard
                                                                     ),
                                                                 ),
                                                         'indexes' => array(),
@@ -117,7 +117,7 @@
                 " where servicename = '{$serviceName}'" .
                 " AND modelid = '{$modelId}'" .
                 " AND modelclassname = '{$modelClassName}'";
-            R::exec($sql);
+            ZurmoRedBean::exec($sql);
         }
     }
 ?>

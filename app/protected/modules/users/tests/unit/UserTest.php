@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class UserTest extends ZurmoBaseTest
@@ -829,6 +829,28 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
+
+            //Test creating a new user uses the everyone policy
+            $everyone = Group::getByName(Group::EVERYONE_GROUP_NAME);
+            $newUser = new User();
+            $this->assertEquals(null, $everyone->getEffectivePolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS));
+            $this->assertEquals(5,    $everyone->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH));
+            $this->assertEquals(3,    $everyone->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+            $this->assertEquals(null, $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS));
+            $this->assertEquals(5,    $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH));
+            $this->assertEquals(3,    $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS, Policy::YES);
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH, 3);
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH, 15);
+            $everyone->save();
+            $this->assertEquals(Policy::YES, $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_ENFORCE_STRONG_PASSWORDS));
+            $this->assertEquals(3,           $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH));
+            $this->assertEquals(15,          $newUser->getEffectivePolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH));
+
+            //Make the permission as the default for next tests
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_PASSWORD_LENGTH, 5);
+            $everyone->setPolicy('UsersModule', UsersModule::POLICY_MINIMUM_USERNAME_LENGTH, 3);
+            $everyone->save();
         }
 
         /**
@@ -905,10 +927,10 @@
          */
         public function testSavingExistingUserDoesntCreateRelatedBlankUsers()
         {
-            $userCount = count(User::getAll());
+            $userCount = User::getCount();
             $dick = User::getByUsername('dick');
             $this->assertTrue($dick->save());
-            $this->assertEquals($userCount, count(User::getAll()));
+            $this->assertEquals($userCount, User::getCount());
         }
 
         public function testMixedInPersonInUser()

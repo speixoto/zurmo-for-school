@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class GameRewardTest extends ZurmoBaseTest
@@ -92,7 +92,7 @@
             $this->assertEquals(1, $gameReward->transactions[0]->quantity);
             $this->assertEquals($sally->getClassId('Item'), $gameReward->transactions[0]->person->getClassId('Item'));
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */
@@ -102,7 +102,7 @@
             $this->assertEquals(1, count($gameReward));
             $this->assertEquals('50 dollar giftcard to somewhere', $gameReward[0]->name);
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */
@@ -113,7 +113,7 @@
             $this->assertEquals('Game Reward',  $gameReward[0]::getModelLabelByTypeAndLanguage('Singular'));
             $this->assertEquals('Game Rewards', $gameReward[0]::getModelLabelByTypeAndLanguage('Plural'));
         }
-        
+
         /**
          * @depends testGetGameRewardsByName
          */
@@ -122,7 +122,7 @@
             $gameReward = GameReward::getByName('59 dollar giftcard to somewhere');
             $this->assertEquals(0, count($gameReward));
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */
@@ -144,7 +144,7 @@
             $this->assertFalse($gameReward->validate());
             $gameReward->forget();
         }
-        
+
         /**
          * @depends testSetAndGetOwner
          */
@@ -162,7 +162,7 @@
             $this->assertEquals('sally', $user->username);
             unset($user);
         }
-        
+
         /**
          * @depends testCreateAndGetGameRewardById
          */

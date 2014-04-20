@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class DisplayAttributesReportQueryBuilderTest extends ZurmoBaseTest
@@ -1211,6 +1211,42 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testTwoAttributesDerivedRelationViaCastedUpModelAttributeThatJoinsCorrectlyWithLeftJoinOnActivityItem()
+        {
+            $q                                      = DatabaseCompatibilityUtil::getQuote();
+            $joinTablesAdapter                      = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $selectQueryAdapter                     = new RedBeanModelSelectQueryAdapter();
+            $builder                                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                       = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                                      Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType   = 'meetings___category';
+            $displayAttribute2                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+                                                               Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'meetings___name';
+            $content                                = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
+            $compareContent                         = "select {$q}meeting{$q}.{$q}id{$q} meetingid ";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item_id',        $leftTablesAndAliases[0]['tableJoinIdName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('id',             $leftTablesAndAliases[0]['onTableJoinIdName']);
+
+            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('id',             $leftTablesAndAliases[1]['tableJoinIdName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('activity_id',    $leftTablesAndAliases[1]['onTableJoinIdName']);
+
+            $this->assertEquals('meeting',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('activity_id',    $leftTablesAndAliases[2]['tableJoinIdName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('id',             $leftTablesAndAliases[2]['onTableJoinIdName']);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelOne()

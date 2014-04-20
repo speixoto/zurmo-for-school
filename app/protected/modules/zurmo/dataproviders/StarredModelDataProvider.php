@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class StarredModelDataProvider extends RedBeanModelDataProvider
@@ -44,9 +44,11 @@
             {
                 $where .= ' and ';
             }
-            $starredTableName       = RedBeanModel::getTableName(StarredUtil::getStarredModelClassName($this->modelClassName));
-            $modelIdColumnName      = RedBeanModel::getTableName($this->modelClassName) . '_id';
-            $baseStarredTableName   = RedBeanModel::getTableName('BaseStarredModel');
+            $modelClassName         = $this->modelClassName;
+            $starredClassName       = StarredUtil::getStarredModelClassName($modelClassName);
+            $starredTableName       = $starredClassName::getTableName();
+            $modelIdColumnName      = $modelClassName::getTableName() . '_id';
+            $baseStarredTableName   = BaseStarredModel::getTableName();
             $baseStarredColumnName  = $baseStarredTableName . '_id';
             $starredTableAliasName  = $joinTablesAdapter->addLeftTableAndGetAliasName(
                 $starredTableName,

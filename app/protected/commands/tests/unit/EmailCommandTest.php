@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class EmailCommandTest extends ZurmoBaseTest
@@ -116,7 +116,10 @@
                 $messages = self::$userImap->getMessages();
                 $this->assertEquals(1, count($messages));
                 $this->assertEquals('A test email from Zurmo', trim($messages[0]->subject));
-                $this->assertEquals('A test html message from Zurmo.', trim($messages[0]->htmlBody));
+                $this->assertEquals('<!-- zurmo css inline -->' .
+                                    '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">' .
+                                    '<html><body><p>A test html message from Zurmo.</p></body></html>',
+                                    preg_replace( "/\r|\n/", "", $messages[0]->htmlBody));
                 $this->assertEquals('A test text message from Zurmo.', trim($messages[0]->textBody));
                 $this->assertEquals(strval(Yii::app()->user->userModel), trim($messages[0]->fromName));
                 $this->assertEquals(Yii::app()->emailHelper->resolveFromAddressByUser(Yii::app()->user->userModel), trim($messages[0]->fromEmail));

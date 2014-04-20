@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,18 +31,11 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class FooterView extends View
     {
-        protected $showUserInterfaceTypeSelector;
-
-        public function __construct($showUserInterfaceTypeSelector = true)
-        {
-            $this->showUserInterfaceTypeSelector = $showUserInterfaceTypeSelector;
-        }
-
         protected function renderContent()
         {
             //Do not remove the Zurmo logo or Zurmo Copyright notice.
@@ -53,44 +46,16 @@
             //these Appropriate Legal Notices must retain the display of the Zurmo
             //logo and Zurmo copyright notice. If the display of the logo is not reasonably
             //feasible for technical reasons, the Appropriate Legal Notices must display the words
-            //"Copyright Zurmo Inc. 2013. All rights reserved".
+            //"Copyright Zurmo Inc. 2014. All rights reserved".
             $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
-                             'Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>';
-            if ($this->showUserInterfaceTypeSelector)
-            {
-                $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
-                return $copyrightHtml . $userInterfaceTypeSelectorHtml;
-            }
-            return $copyrightHtml;
+                             'Copyright &#169; Zurmo Inc., 2014. All rights reserved.</span></a>';
+            $content = ZurmoHtml::tag('div', array('class' => 'container'), $copyrightHtml);
+            return $content;
         }
 
-        /**
-         * Render section for selection user interface type.
-         * Show only if user is using mobile and tablet devices.
-         */
-        protected function renderUserInterfaceTypeSelector()
+        protected function getContainerWrapperTag()
         {
-            if (Yii::app()->userInterface->isMobile())
-            {
-                $mobileActive  = ' active';
-                $desktopActive = null;
-            }
-            else
-            {
-                $mobileActive  = null;
-                $desktopActive = ' active';
-            }
-            $content  = '<div class="ui-chooser">';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Mobile')),
-                            Yii::app()->createUrl('zurmo/default/userInterface',
-                            array('userInterface' => UserInterface::MOBILE)),
-                            array('class' => 'icon-mobile' . $mobileActive));
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('ZurmoModule', 'Show Full')),
-                Yii::app()->createUrl('zurmo/default/userInterface',
-                    array('userInterface' => UserInterface::DESKTOP)),
-                array('class' => 'icon-desktop' . $desktopActive));
-            $content .= '</div>';
-            return $content;
+            return 'footer';
         }
     }
 ?>

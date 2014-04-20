@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -86,7 +86,7 @@
         protected function renderControlNonEditable()
         {
             $selectedType    = $this->resolveSelectedType();
-            $permissionTypes = $this->getPermissionTypes();
+            $permissionTypes = static::getPermissionTypes();
             if ($selectedType == ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP)
             {
                 $selectedGroups = static::getSelectableGroupsData();
@@ -140,7 +140,7 @@
         protected function resolveData()
         {
             $selectableGroupsDropDownContent     =  $this->renderSelectableGroupsContent();
-            $data                                =  $this->getPermissionTypes();
+            $data                                =  static::getPermissionTypes();
             $dataIndex                           =  ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP;
             $dataSelectOption                    =  array();
             if ($selectableGroupsDropDownContent != null)
@@ -193,7 +193,7 @@
             return $selectedGroupId;
         }
 
-        protected function getPermissionTypes()
+        protected static function getPermissionTypes()
         {
             return array(
                 null => Zurmo::t('ZurmoModule', 'Owner'),
@@ -250,7 +250,12 @@
 
         protected function findFirstGroupPermitable()
         {
-            $permitablesCount = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitablesCount();
+            $modelPermissions   = $this->getExplicitReadWriteModelPermissions();
+            if ($modelPermissions === null)
+            {
+                return null;
+            }
+            $permitablesCount = $modelPermissions->getReadWritePermitablesCount();
             if ($permitablesCount)
             {
                 $permitables = $this->getExplicitReadWriteModelPermissions()->getReadWritePermitables();
@@ -263,6 +268,20 @@
                 }
             }
             return null;
+        }
+
+        public function resolveModelPermissionsArray()
+        {
+            $type               = $this->resolveSelectedType();
+            $nonEveryoneGroup   = $this->resolveSelectedGroup();
+            $explicitReadWriteModelPermissions  = compact('type', 'nonEveryoneGroup');
+            $permissions                        = compact('explicitReadWriteModelPermissions');
+            if ($this->model instanceof OwnedSecurableItem)
+            {
+                $owner          = array('id' => $this->model->owner->id);
+                $permissions    = compact('owner', 'explicitReadWriteModelPermissions');
+            }
+            return $permissions;
         }
     }
 ?>

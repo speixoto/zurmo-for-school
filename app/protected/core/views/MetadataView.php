@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -187,18 +187,6 @@
                     $content .= $renderedContent;
                 }
             }
-            if (!empty($dropDownItems))
-            {
-                $content .= ZurmoHtml::link('', '#', array('class' => 'mobile-actions'));
-                $content .= ZurmoHtml::tag('div', array( 'class' => 'mobile-view-toolbar-container'),
-                    ZurmoHtml::dropDownList(
-                        $dropDownId,
-                        '',
-                        $dropDownItems,
-                        $dropDownItemHtmlOptions
-                    )
-                );
-            }
             return $content;
         }
 
@@ -319,11 +307,12 @@
             return true;
         }
 
-        protected function renderWrapperAndActionElementMenu($title = null)
+        protected function renderWrapperAndActionElementMenu($title = null, $toolbar = 'toolbar')
         {
             assert('is_string($title) || $title === null');
+            assert('is_string($toolbar)');
             $content              = null;
-            $actionElementContent = $this->renderActionElementMenu($title);
+            $actionElementContent = $this->renderActionElementMenu($title, $toolbar);
             if ($actionElementContent != null)
             {
                 $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
@@ -337,20 +326,22 @@
          * Render a menu above the form layout. This includes buttons and/or
          * links to go to different views or process actions such as save or delete
          * @param null $title
+         * @param string $toolbar
          * @return mixed  A string containing the element's content.
          * @throws NotSupportedException
          */
-        protected function renderActionElementMenu($title = null)
+        protected function renderActionElementMenu($title = null, $toolbar = 'toolbar')
         {
+            assert('is_string($toolbar)');
             if ($title == null)
             {
                 $title = Zurmo::t('Core', 'Options');
             }
             $metadata  = $this::getMetadata();
             $menuItems = array('label' => $title, 'items' => array());
-            if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
+            if (isset($metadata['global'][$toolbar]) && is_array($metadata['global'][$toolbar]['elements']))
             {
-                foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
+                foreach ($metadata['global'][$toolbar]['elements'] as $elementInformation)
                 {
                     $elementClassName  = $elementInformation['type'] . 'ActionElement';
                     $params            = array_slice($elementInformation, 1);

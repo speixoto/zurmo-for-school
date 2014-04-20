@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -189,8 +189,7 @@
         {
             assert('is_string($columnName)');
             assert('is_string($sampleValue) || $sampleValue == null');
-            $sampleValueContent = self::renderChoppedStringContent($sampleValue);
-            $content = '<div id="' . self::resolveSampleColumnIdByColumnName($columnName) . '" class="column-import-data">' . $sampleValueContent . '</div>';
+            $content = ZurmoHtml::tag('div', array('id' => self::resolveSampleColumnIdByColumnName($columnName), 'class' => 'column-import-data', 'title' => $sampleValue), $sampleValue);
             return $content;
         }
 
@@ -229,7 +228,15 @@
                                                            $attributeIndexOrDerivedType,
                                                            $columnType);
                 }
-                $content .= ZurmoHtml::tag('h4', array(), Zurmo::t('ImportModule', 'Rules'));
+                if (count($mappingRuleFormsAndElementTypes) > 0)
+                {
+                    $title = Zurmo::t('ImportModule', 'Rules');
+                }
+                else
+                {
+                    $title = null;
+                }
+                $content .= ZurmoHtml::tag('h4', array(), $title);
                 foreach ($mappingRuleFormsAndElementTypes as $notUsed => $ruleFormAndElementType)
                 {
                     $mappingRuleForm        = $ruleFormAndElementType['mappingRuleForm'];
@@ -255,9 +262,9 @@
                     $content .= $element->render();
                 }
             }
-
+            $subDivsCssClass = 'has'.count($mappingRuleFormsAndElementTypes);
             $content = ZurmoHtml::tag('div', array('id' => self::getMappingRulesDivIdByColumnName($columnName),
-                                                   'class' => 'mapping-rules'), $content);
+                                                   'class' => 'mapping-rules '.$subDivsCssClass), $content); // Not Coding Standard
             return $content;
         }
 

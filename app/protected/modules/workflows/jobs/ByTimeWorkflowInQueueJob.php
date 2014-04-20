@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,19 +31,14 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
      * A job for processing expired By-Time workflow objects
      */
-    class ByTimeWorkflowInQueueJob extends BaseJob
+    class ByTimeWorkflowInQueueJob extends InQueueJob
     {
-        /**
-         * @var int
-         */
-        protected static $pageSize = 200;
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -74,20 +69,39 @@
             {
                 $originalUser               = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = BaseControlUserConfigUtil::getUserToRunAs();
-                foreach (ByTimeWorkflowInQueue::getModelsToProcess(self::$pageSize) as $byTimeWorkflowInQueue)
+                $processedModelsCount       = 0;
+                $batchSize                  = $this->resolveBatchSize();
+                if ($batchSize != null)
                 {
-                    try
+                    $resolvedBatchSize = $batchSize + 1;
+                }
+                else
+                {
+                    $resolvedBatchSize = null;
+                }
+                foreach (ByTimeWorkflowInQueue::getModelsToProcess($resolvedBatchSize) as $byTimeWorkflowInQueue)
+                {
+                    if ($processedModelsCount < $batchSize || $batchSize == null)
                     {
-                        $model = $this->resolveModel($byTimeWorkflowInQueue);
-                        $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
-                        $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                        try
+                        {
+                            $model = $this->resolveModel($byTimeWorkflowInQueue);
+                            $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
+                            $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                        }
+                        catch (NotFoundException $e)
+                        {
+                            WorkflowUtil::handleProcessingException($e,
+                                'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
+                        }
+                        $byTimeWorkflowInQueue->delete();
+                        $processedModelsCount++;
                     }
-                    catch (NotFoundException $e)
+                    else
                     {
-                        WorkflowUtil::handleProcessingException($e,
-                            'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
+                        Yii::app()->jobQueue->add('ByTimeWorkflowInQueue', 5);
+                        break;
                     }
-                    $byTimeWorkflowInQueue->delete();
                 }
                 Yii::app()->user->userModel = $originalUser;
                 return true;

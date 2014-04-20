@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /*
@@ -39,12 +39,23 @@
      */
     class SpecialMergeTagsAdapter
     {
+        protected static $containsNestedMergeTags   = array(
+                                'globalMarketingFooterHtml',
+                                'globalMarketingFooterPlainText'
+                                );
+
         protected static $specialAttributesResolver = array (
-                                'modelUrl'          => 'resolveModelUrlByModel',
-                                'baseUrl'           => 'resolveBaseUrl',
-                                'applicationName'   => 'resolveApplicationName',
-                                'currentYear'       => 'resolveCurrentYear',
-                                'lastYear'          => 'resolveLastYear',
+                                'modelUrl'                          => 'resolveModelUrlByModel',
+                                'baseUrl'                           => 'resolveBaseUrl',
+                                'applicationName'                   => 'resolveApplicationName',
+                                'currentYear'                       => 'resolveCurrentYear',
+                                'lastYear'                          => 'resolveLastYear',
+                                'ownersAvatarSmall'                 => 'resolveOwnersAvatarSmall',
+                                'ownersAvatarMedium'                => 'resolveOwnersAvatarMedium',
+                                'ownersAvatarLarge'                 => 'resolveOwnersAvatarLarge',
+                                'ownersEmailSignature'              => 'resolveOwnersEmailSignature',
+                                'globalMarketingFooterHtml'         => 'resolveGlobalMarketingFooterHtml',
+                                'globalMarketingFooterPlainText'    => 'resolveGlobalMarketingFooterPlainText',
                                 );
 
         public static function isSpecialMergeTag($attributeName, $timeQualifier)
@@ -54,8 +65,11 @@
 
         public static function resolve($attributeName, $model = null)
         {
-            $methodName = static::$specialAttributesResolver[$attributeName];
-            return static::$methodName($model); // we send $model to all, those which need it use it, other gets it as optional param.
+            $methodName                         = static::$specialAttributesResolver[$attributeName];
+            // we send $model to all, those which need it use it, other get it as optional param.
+            $resolvedSpecialMergeTagContent     = static::$methodName($model);
+            static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+            return $resolvedSpecialMergeTagContent;
         }
 
         // individual resolvers
@@ -90,6 +104,81 @@
         protected static function resolveLastYear()
         {
             return date('Y') - 1 ;
+        }
+
+        /**
+         * @param $model
+         */
+        protected static function resolveOwnersAvatarSmall($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                return $model->owner->getAvatarImage(32);
+            }
+        }
+
+        /**
+         * @param $model
+         */
+        protected static function resolveOwnersAvatarMedium($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                return $model->owner->getAvatarImage(64);
+            }
+        }
+
+        /**
+         * @param $model
+         * @return mixed
+         */
+        protected static function resolveOwnersAvatarLarge($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                return $model->owner->getAvatarImage(128);
+            }
+        }
+
+        /**
+         * Will only grab first available email signature for user if available
+         * @param $model
+         */
+        protected static function resolveOwnersEmailSignature($model)
+        {
+            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
+            {
+                if ($model->owner->emailSignatures->count() > 0)
+                {
+                    return $model->owner->emailSignatures[0]->htmlContent;
+                }
+            }
+        }
+
+        protected static function resolveGlobalMarketingFooterHtml()
+        {
+            return GlobalMarketingFooterUtil::getContentByType(true, true);
+        }
+
+        protected static function resolveGlobalMarketingFooterPlainText()
+        {
+            return GlobalMarketingFooterUtil::getContentByType(false, true);
+        }
+
+        protected static function resolveContentForNestedMergeTags(& $resolvedSpecialMergeTagContent, $model = null)
+        {
+            $language   = null;
+            $type       = EmailTemplate::TYPE_WORKFLOW;
+            if ($model instanceof Contact)
+            {
+                $type   = EmailTemplate::TYPE_CONTACT;
+            }
+            $util                           = MergeTagsUtilFactory::make($type, $language, $resolvedSpecialMergeTagContent);
+            $resolvedContent                = $util->resolveMergeTags($model);
+            if ($resolvedContent !== false)
+            {
+                $resolvedSpecialMergeTagContent = $resolvedContent;
+            }
         }
     }
 ?>

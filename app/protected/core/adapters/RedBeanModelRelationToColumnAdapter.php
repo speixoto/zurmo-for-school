@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -70,8 +70,8 @@
         public static function resolve($modelClassName, $relationName, array $relationMetadata, & $messageLogger)
         {
             $column = null;
-            if (!empty($modelClassName) && @class_exists($modelClassName) && !empty($relationName)
-                                            && count($relationMetadata) >= 2 && @class_exists($relationMetadata[1]))
+            if (!empty($modelClassName) && @class_exists($modelClassName) && !empty($relationName) &&
+                                                count($relationMetadata) >= 2 && @class_exists($relationMetadata[1]))
             {
                 $relationType           = $relationMetadata[0];
                 $relatedModelClass      = $relationMetadata[1];
@@ -90,7 +90,7 @@
                     RedBeanModelToJoinTableAdapter::resolve($modelClassName, $relationMetadata, $messageLogger);
                     return null;
                 }
-                else if (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
+                elseif (in_array($relationType, array(RedBeanModel::HAS_ONE, RedBeanModel::HAS_MANY_BELONGS_TO)))
                 {
                     $linkName               = null;
                     if ($linkType == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
@@ -101,7 +101,7 @@
                     $name   = $linkName . RedBeanModel::getForeignKeyName($modelClassName, $relationName);
                     $column = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata($name);
                 }
-                else if ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
+                elseif ($relationType == RedBeanModel::HAS_MANY && $linkType == RedBeanModel::LINK_TYPE_POLYMORPHIC)
                 {
                     static::setColumnsForPolymorphicLink($relatedModelClass, $relationMetadata[4]);
                 }
@@ -121,7 +121,7 @@
             $columns[]      = RedBeanModelMemberToColumnUtil::resolveForeignKeyColumnMetadata(
                                                 RedBeanModelMemberToColumnUtil::resolve($linkName). '_id');
             $columns[]      = static::resolvePolymorphicTypeColumnByLinkName($linkName);
-            $tableName      = RedBeanModel::getTableName($relatedModelClassName);
+            $tableName      = $relatedModelClassName::getTableName();
             $polymorphicLinkColumns             = GeneralCache::getEntry(static::CACHE_KEY, array());
             $polymorphicLinkColumns[$tableName] = $columns;
             GeneralCache::cacheEntry(static::CACHE_KEY, $polymorphicLinkColumns);

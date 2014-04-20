@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -62,7 +62,6 @@
 
             $polySideId = $polySide->id;
             $this->assertTrue($polySideId > 0);
-
 
             $oneSideId = $oneSide->id;
             $oneSide->forget();
@@ -139,7 +138,7 @@
          */
         public function testPolyOneToManyOwned()
         {
-            $this->assertEquals(0, count(TestPolyOneToManyPolySide::getAll()));
+            $this->assertEquals(0, TestPolyOneToManyPolySide::getCount());
 
             $polySide = new TestPolyOneToManyPolySideOwned();
             $polySide->name = 'polySideTest';
@@ -171,8 +170,8 @@
             $oneSide2->forget();
             unset($oneSide2);
 
-            $this->assertEquals(0, count(TestPolyOneToManyPolySide::getAll()));
-            $this->assertEquals(2, count(TestPolyOneToManyPolySideOwned::getAll()));
+            $this->assertEquals(0, TestPolyOneToManyPolySide::getCount());
+            $this->assertEquals(2, TestPolyOneToManyPolySideOwned::getCount());
 
             //Get oneSide and make sure it has one polySide that matches the appropriate id
             $oneSide = TestPolyOneToManyOneSide::getById($oneSideId);
@@ -185,9 +184,9 @@
             $this->assertEquals($polySide2Id, $oneSide2->ownedPolysTwo[0]->id);
 
             $this->assertTrue($oneSide->delete());
-            $this->assertEquals(1, count(TestPolyOneToManyPolySideOwned::getAll()));
+            $this->assertEquals(1, TestPolyOneToManyPolySideOwned::getCount());
             $this->assertTrue($oneSide2->delete());
-            $this->assertEquals(0, count(TestPolyOneToManyPolySideOwned::getAll()));
+            $this->assertEquals(0, TestPolyOneToManyPolySideOwned::getCount());
         }
     }
 ?>

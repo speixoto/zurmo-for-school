@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Task extends MashableActivity
@@ -112,15 +112,16 @@
                     'project'                   => array(static::HAS_ONE, 'Project'),
                 ),
                 'rules' => array(
-                    array('completedDateTime','type', 'type' => 'datetime'),
-                    array('completed',        'boolean'),
-                    array('dueDateTime',      'type', 'type' => 'datetime'),
-                    array('description',      'type',    'type' => 'string'),
-                    array('name',             'required'),
-                    array('name',             'type',    'type' => 'string'),
-                    array('name',             'length',  'min'  => 1, 'max' => 64),
-                    array('status',           'type', 'type' => 'integer'),
-                    array('status',           'default', 'value' => Task::STATUS_NEW),
+                    array('completedDateTime', 'type', 'type' => 'datetime'),
+                    array('completed',         'boolean'),
+                    array('dueDateTime',       'type', 'type' => 'datetime'),
+                    array('description',       'type',    'type' => 'string'),
+                    array('name',              'required'),
+                    array('name',              'type',    'type' => 'string'),
+                    array('name',              'length',  'min'  => 1, 'max' => 128),
+                    array('status',            'type', 'type' => 'integer'),
+                    array('status',            'default', 'value' => Task::STATUS_NEW),
+                    array('status',            'required'),
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
@@ -256,7 +257,7 @@
         public static function getStatusDisplayName($status)
         {
             $statusArray = self::getStatusDropDownArray();
-            if(array_key_exists($status, $statusArray))
+            if (array_key_exists($status, $statusArray))
             {
                 return $statusArray[$status];
             }
@@ -273,9 +274,9 @@
 
         public function doNotificationSubscribersContainPerson(Item $item)
         {
-            foreach($this->notificationSubscribers as $notificationSubscriber)
+            foreach ($this->notificationSubscribers as $notificationSubscriber)
             {
-                if($notificationSubscriber->person->getClassId('Item') == $item->getClassId('Item'))
+                if ($notificationSubscriber->person->getClassId('Item') == $item->getClassId('Item'))
                 {
                     return true;
                 }
@@ -286,6 +287,10 @@
         protected function afterSave()
         {
             $this->processNotificationsToBeSent();
+            if ($this->getScenario() != 'kanbanViewButtonClick' && $this->getScenario() != 'kanbanViewDrag')
+            {
+                TasksUtil::checkKanbanTypeByStatusAndUpdateIfRequired($this);
+            }
             parent::afterSave();
         }
 
@@ -294,44 +299,43 @@
          */
         private function processNotificationsToBeSent()
         {
-            if(array_key_exists('status', $this->originalAttributeValues))
+            if (array_key_exists('status', $this->originalAttributeValues))
             {
-                if($this->status == Task::STATUS_AWAITING_ACCEPTANCE &&
+                if ($this->status == Task::STATUS_AWAITING_ACCEPTANCE &&
                    $this->requestedByUser->id != Yii::app()->user->userModel->id)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_STATUS_BECOMES_AWAITING_ACCEPTANCE,
                         Yii::app()->user->userModel);
                 }
-                elseif($this->status == Task::STATUS_REJECTED &&
+                elseif ($this->status == Task::STATUS_REJECTED &&
                        $this->owner->id != Yii::app()->user->userModel->id)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_STATUS_BECOMES_REJECTED,
                         Yii::app()->user->userModel);
                 }
-                elseif($this->status == Task::STATUS_COMPLETED)
+                elseif ($this->status == Task::STATUS_COMPLETED)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_STATUS_BECOMES_COMPLETED,
                         Yii::app()->user->userModel);
                 }
             }
-            if($this->isNewModel)
+            if ($this->isNewModel)
             {
-                if($this->owner->id != $this->requestedByUser->id && $this->owner->id != Yii::app()->user->userModel->id)
+                if ($this->owner->id != $this->requestedByUser->id && $this->owner->id != Yii::app()->user->userModel->id)
                 {
                     TasksNotificationUtil::submitTaskNotificationMessage($this,
                         TasksNotificationUtil::TASK_NEW);
                 }
             }
-            elseif(array_key_exists('owner', $this->originalAttributeValues) &&
+            elseif (array_key_exists('owner', $this->originalAttributeValues) &&
                $this->owner->id != Yii::app()->user->userModel->id)
             {
                 TasksNotificationUtil::submitTaskNotificationMessage($this,
                                                          TasksNotificationUtil::TASK_OWNER_CHANGE);
             }
-
         }
 
         /**
@@ -340,7 +344,7 @@
         protected function resolveAndSetDefaultSubscribers()
         {
             //Add requested by user as default subscriber
-            if($this->requestedByUser->id > 0)
+            if ($this->requestedByUser->id > 0)
             {
                 TasksUtil::addSubscriber($this->requestedByUser, $this, false);
             }
@@ -352,7 +356,7 @@
          */
         protected function resolveStatusAndSetCompletedFields()
         {
-            if($this->completed != true && $this->status != Task::STATUS_COMPLETED)
+            if ($this->completed != true && $this->status != Task::STATUS_COMPLETED)
             {
                 $this->completed = false;
             }

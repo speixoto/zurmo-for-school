@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class KanbanItemTest extends ZurmoBaseTest
@@ -66,25 +66,16 @@
             $task->activityItems->add($accounts[0]);
             $task->status           = Task::STATUS_IN_PROGRESS;
             $this->assertTrue($task->save());
+            $this->assertEquals(1, KanbanItem::getCount());
             $id = $task->id;
             unset($task);
             $task = Task::getById($id);
 
-            //Create KanbanItem here
-            $kanbanItem                     = new KanbanItem();
-            $kanbanItem->type               = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            $kanbanItem->task               = $task;
-            $kanbanItem->kanbanRelatedItem  = $task->activityItems->offsetGet(0);
-            $sortOrder = KanbanItem::getMaximumSortOrderByType($kanbanItem->type, $task->activityItems->offsetGet(0));
-            $kanbanItem->sortOrder          = $sortOrder;
-            $saved = $kanbanItem->save();
-            $kanbanItemId = $kanbanItem->id;
-            $this->assertTrue($saved);
-
-            $kanbanItem                     = KanbanItem::getById($kanbanItemId);
+            //KanbanItem is created after saving Task
+            $kanbanItems = KanbanItem::getAll();
+            $this->assertCount(1, $kanbanItems);
+            $kanbanItem  = $kanbanItems[0];
             $this->assertEquals(KanbanItem::TYPE_IN_PROGRESS, $kanbanItem->type);
-
-            $this->assertEquals(1, count(KanbanItem::getAll()));
         }
 
         public function testGetKanbanItemByTask()

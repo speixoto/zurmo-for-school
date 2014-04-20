@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class RedBeanModelMemberRulesToColumnsAdapterTest extends BaseTest
@@ -120,9 +120,9 @@
             $this->assertEquals('memberone', $columns[0]['name']);
             $this->assertEquals('VARCHAR(255)', $columns[0]['type']);
             $this->assertNull($columns[0]['unsigned']);
-            $this->assertEquals('NULL', $columns[0]['notNull']);
+            $this->assertEquals('NULL', $columns[0]['notNull']); // Not Coding Standard
             $this->assertEquals('COLLATE utf8_unicode_ci', $columns[0]['collation']);
-            $this->assertEquals('DEFAULT NULL', $columns[0]['default']);
+            $this->assertEquals('DEFAULT NULL', $columns[0]['default']); // Not Coding Standard
         }
 
         /**
@@ -153,57 +153,57 @@
                     'name'      => 'type',
                     'type'      => 'INT(11)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => null,
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'modelclassname',
                     'type'      => 'VARCHAR(64)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'name',
                     'type'      => 'VARCHAR(64)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'subject',
                     'type'      => 'VARCHAR(64)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'language',
                     'type'      => 'VARCHAR(2)',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'htmlcontent',
                     'type'      => 'TEXT',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 ),
             array(
                     'name'      => 'textcontent',
                     'type'      => 'TEXT',
                     'unsigned'  => null,
-                    'notNull'   => 'NULL',
+                    'notNull'   => 'NULL', // Not Coding Standard
                     'collation' => 'COLLATE utf8_unicode_ci',
-                    'default'   => 'DEFAULT NULL',
+                    'default'   => 'DEFAULT NULL', // Not Coding Standard
                 )
 
             );
@@ -223,7 +223,7 @@
                 array('modelClassName',             'required'),
                 array('modelClassName',             'type',   'type' => 'string'),
                 array('modelClassName',             'length', 'max' => 64),
-                array('modelClassName',             'validateModelExists'),
+                array('modelClassName',             'ModelExistsAndIsReadableValidator'),
                 array('name',                       'required'),
                 array('name',                       'type',    'type' => 'string'),
                 array('name',                       'length',  'min'  => 3, 'max' => 64),
@@ -232,7 +232,7 @@
                 array('subject',                    'length',  'min'  => 3, 'max' => 64),
                 array('language',                   'type',    'type' => 'string'),
                 array('language',                   'length',  'min' => 2, 'max' => 2),
-                array('language',                   'setToUserDefaultLanguage'),
+                array('language',                   'SetToUserDefaultLanguageValidator'),
                 array('htmlContent',                'type',    'type' => 'string'),
                 array('textContent',                'type',    'type' => 'string'),
                 array('htmlContent',                'AtLeastOneContentAreaRequiredValidator'),

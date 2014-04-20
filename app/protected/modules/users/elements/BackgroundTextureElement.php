@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -78,7 +78,7 @@
 
         protected function makeData(GameLevel $gameLevel)
         {
-            $data = array('' => Zurmo::t('UsersModule', 'None'));
+            $data = array('' => '<span class="background-texture-1"></span>' . Zurmo::t('Core', 'None'));
             return array_merge($data, $this->resolveBackgroundTextureNamesAndLabelsForLocking($gameLevel));
         }
 
@@ -87,12 +87,12 @@
             $removeScript = null;
             foreach (Yii::app()->themeManager->getBackgroundTextureNamesAndLabels() as $value => $notUsed)
             {
-                $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
+                $removeScript .= '$(document.documentElement).removeClass("' . $value . '");' . "\n";
             }
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName() . "\"]').live('change', function(){
                           $removeScript
-                          $(document.body).addClass(this.value);
+                          $(document.documentElement).addClass(this.value);
                           });
                       ";
             // End Not Coding Standard
@@ -110,10 +110,9 @@
                 if ($unlockedAtLevel > (int)$gameLevel->value)
                 {
                     $title   = Zurmo::t('GamificationModule', 'Unlocked at level {level}', array('{level}' => $unlockedAtLevel));
-                    $content = '<span id="background-texture-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label;
+                    $content = '<span id="background-texture-tooltip-' . $name. '" title="' . $title . '"><i class="icon-lock"></i></span>' . $label; // Not Coding Standard
                     $qtip    = new ZurmoTip();
                     $qtip->addQTip("#background-texture-tooltip-" . $name);
-
                 }
                 else
                 {

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ContactTest extends ZurmoBaseTest
@@ -105,6 +105,9 @@
             $contactStates = ContactState::getByName('Qualified');
 
             $contact = new Contact();
+            $this->assertNull($contact->latestActivityDateTime);
+            $dateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $contact->setLatestActivityDateTime($dateTime);
             $contact->owner         = $user;
             $contact->title->value  = 'Mr.';
             $contact->firstName     = 'Super';
@@ -136,6 +139,7 @@
             $this->assertEquals('0987654321',       $contact->mobilePhone);
             $this->assertEquals('1222222222',       $contact->officeFax);
             $this->assertEquals('Qualified',        $contact->state->name);
+            $this->assertEquals($dateTime,          $contact->latestActivityDateTime);
         }
 
         /**
@@ -763,6 +767,43 @@
             $contact->jobTitle           = 'S';
             $contact->state              = $contactStates[0];
             $this->assertTrue($contact->save());
+        }
+
+        public function testDeleteContactCascadesMarketingListMemmers()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $contactStates              = ContactState::getByName('Qualified');
+            $contact = new Contact();
+            $contact->owner             = Yii::app()->user->userModel;
+            $contact->title->value      = 'Mr.';
+            $contact->firstName         = 'Member';
+            $contact->lastName          = 'One';
+            $contact->state             = $contactStates[0];
+            $this->assertTrue($contact->save());
+            $contactId = $contact->id;
+            $marketingList = MarketingListTestHelper::createMarketingListByName('Test Marketing List Member Deleted');
+            $member = MarketingListMemberTestHelper::populateMarketingListMember(1, $marketingList, $contact);
+            $this->assertTrue($member->unrestrictedSave());
+            $this->assertEquals(1, count(MarketingListMember::getByContactId($contactId)));
+            $testContact = new Contact();
+            $testContact->owner             = Yii::app()->user->userModel;
+            $testContact->title->value      = 'Mr.';
+            $testContact->firstName         = 'Member';
+            $testContact->lastName          = 'Two';
+            $testContact->state             = $contactStates[0];
+            $this->assertTrue($testContact->save());
+            $testContactId = $testContact->id;
+            $member2 = MarketingListMemberTestHelper::populateMarketingListMember(1, $marketingList, $testContact);
+            $this->assertTrue($member2->unrestrictedSave());
+            $this->assertEquals(1, count(MarketingListMember::getByContactId($testContact->id)));
+            $subscribedCount = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);
+            $this->assertEquals(2, $subscribedCount);
+            $this->assertTrue($contact->delete());
+            $this->assertEquals(0, count(MarketingListMember::getByContactId($contactId)));
+            $this->assertTrue($testContact->delete());
+            $this->assertEquals(0, count(MarketingListMember::getByContactId($testContactId)));
+            $subscribedCount = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);
+            $this->assertEquals(0, $subscribedCount);
         }
     }
 ?>

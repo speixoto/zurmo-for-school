@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateAccount</title>
+<title>AddCampaignsToMarketingList</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create Account</td></tr>
+<tr><td rowspan="1" colspan="3">Add Campaigns To MarketingList</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -126,7 +126,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//div[@id='MarketingListDetailsAndRelationsView']/div/div[2]/div/ul/li[3]/div[1]/div/div/a/span</td>
+	<td>//div[@id='MarketingListDetailsAndRelationsView']/div/div[2]/div/ul/li[3]/div[1]/div/div/div/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -197,7 +197,7 @@
 <!--check campaign link with marketing list-->
 <tr>
 	<td>open</td>
-	<td>index.php/marketingLists/default/list?clearingSearch=1</td>
+	<td>index.php/marketingLists/default/list</td>
 	<td></td>
 </tr>
 <tr>
@@ -258,7 +258,7 @@
 <!--clear search-->
 <tr>
 	<td>open</td>
-	<td>index.php/marketingLists/default/list?clearingSearch=1</td>
+	<td>index.php/marketingLists/default/list</td>
 	<td></td>
 </tr>
 <tr>
@@ -270,6 +270,21 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

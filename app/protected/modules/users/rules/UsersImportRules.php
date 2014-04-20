@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -55,14 +55,37 @@
          */
         public static function getNonImportableAttributeNames()
         {
-            return array_merge(parent::getNonImportableAttributeNames(), array('currency', 'isActive', 'language', 'locale',
-                               'timeZone', 'manager', 'hash', 'createdByUser', 'modifiedByUser',
-                               'createdDateTime', 'modifiedDateTime'));
+            return array_merge(parent::getNonImportableAttributeNames(), array('isActive', 'hash', 'createdByUser',
+                               'modifiedByUser', 'createdDateTime', 'modifiedDateTime', 'isRootUser', 'isSystemUser',
+                               'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
+                               'hideFromSelecting', 'hideFromLeaderboard', 'serializedAvatarData'));
         }
 
         public static function getModelClassName()
         {
             return 'User';
+        }
+
+        /**
+         * Override to add Password as a default field for mapping
+         * @param Array $attributesCollection
+         */
+        protected static function resolveRequiredDerivedAttributesCollection(& $attributesCollection)
+        {
+            $modelClassName = static::getModelClassName();
+            $model          = new $modelClassName(false);
+            $attributeImportRulesClassName = 'PasswordAttributeImportRules';
+            $attributeImportRules          = new $attributeImportRulesClassName($model);
+            $displayLabel                  = $attributeImportRules->getDisplayLabel();
+            ModelAttributeImportMappingCollectionUtil::populateCollection(
+                $attributesCollection,
+                'hash',
+                $displayLabel,
+                'hash',
+                'Password',
+                null,
+                true
+            );
         }
     }
 ?>

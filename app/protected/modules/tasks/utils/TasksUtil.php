@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -228,7 +228,7 @@
             assert('is_string($renderType)');
             $title = self::getModalTitleForCreateTask($renderType);
             return   ModalView::getAjaxOptionsForModalLink($title, self::getModalContainerId(), 'auto', 600,
-                     'center top+25', $class = "'task-dialog'",
+                     'center top+25', $class = "'task-dialog'", // Not Coding Standard
                      static::resolveExtraCloseScriptForModalAjaxOptions($sourceKanbanBoardId));
         }
 
@@ -237,7 +237,7 @@
             assert('is_string($sourceId) || $sourceId == null');
             if ($sourceId != null)
             {
-                return "$.fn.yiiGridView.update('{$sourceId}');";
+                return "$('#{$sourceId}').yiiGridView('update');";
             }
         }
 
@@ -255,12 +255,12 @@
                                                    $moduleClassName,
                                                    $isOwnerRequiredInDisplay = true)
         {
-            assert('is_string($controllerId) || is_null($controllerId)');
-            assert('is_string($moduleId)  || is_null($moduleId)');
+            assert('is_string($controllerId) || $controllerId === null');
+            assert('is_string($moduleId)  || $moduleId === null');
             assert('is_string($moduleClassName)');
             if ($isOwnerRequiredInDisplay)
             {
-                $label       = $task->name . ZurmoHtml::tag('span', array(), '(' . strval($task->owner) . ')');
+                $label       = $task->name . ZurmoHtml::tag('span', array('class' => 'task-owner'), '(' . strval($task->owner) . ')');
             }
             else
             {
@@ -324,7 +324,6 @@
                     break;
             }
             return $element->render();
-
         }
 
         /**
@@ -358,6 +357,41 @@
         }
 
         /**
+         * Some task status's are ok for multiple kanban item types.
+         * @param $kanbanItemType
+         * @param $taskStatus
+         * @return true if the task status is ok for the current kanbanItemType
+         */
+        public static function isKanbanItemTypeValidBasedOnTaskStatus($kanbanItemType, $taskStatus)
+        {
+            if($taskStatus == null && $kanbanItemType == KanbanItem::TYPE_SOMEDAY)
+            {
+                return true;
+            }
+            elseif($taskStatus == null)
+            {
+                return false;
+            }
+            if ($taskStatus == Task::STATUS_NEW)
+            {
+                if($kanbanItemType == KanbanItem::TYPE_SOMEDAY || $kanbanItemType == KanbanItem::TYPE_TODO)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            $data = self::getTaskStatusMappingToKanbanItemTypeArray();
+            if($data[intval($taskStatus)] == $kanbanItemType)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
          * Resolves Subscribe Url
          * @param int $taskId
          * @return string
@@ -374,14 +408,14 @@
         public static function resolveSubscriberAjaxOptions()
         {
             return array(
-                'type'    => 'GET',
-                'dataType'=> 'html',
-                'data'    => array(),
-                'success' => 'function(data)
-                              {
-                                $("#subscribe-task-link").hide();
-                                $("#subscriberList").replaceWith(data);
-                              }'
+                'type'     => 'GET',
+                'dataType' => 'html',
+                'data'     => array(),
+                'success'  => 'function(data)
+                               {
+                                 $("#subscribe-task-link").hide();
+                                 $("#subscriberList").replaceWith(data);
+                               }'
             );
         }
 
@@ -419,14 +453,14 @@
 
             if ($taskId == null)
             {
-                $url           = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
-                $script    = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
+                $url    = Yii::app()->createUrl('tasks/default/removeKanbanSubscriber');
+                $script = self::getKanbanSubscriptionScript($url, 'unsubscribe-task-link', 'subscribe-task-link', $subscribeLink);
                 Yii::app()->clientScript->registerScript('kanban-unsubscribe-task-link-script', $script);
             }
             else
             {
-                $url             = Yii::app()->createUrl('tasks/default/removeSubscriber', array('id' => $taskId));
-                $script    = self::getDetailSubscriptionScript($url, 'detail-unsubscribe-task-link', 'detail-subscribe-task-link', $subscribeLink, $taskId);
+                $url    = Yii::app()->createUrl('tasks/default/removeSubscriber', array('id' => $taskId));
+                $script = self::getDetailSubscriptionScript($url, 'detail-unsubscribe-task-link', 'detail-subscribe-task-link', $subscribeLink, $taskId);
                 Yii::app()->clientScript->registerScript('detail-unsubscribe-task-link-script', $script);
             }
         }
@@ -441,27 +475,35 @@
          */
         public static function getKanbanSubscriptionScript($url, $sourceClass, $targetClass, $link)
         {
+            // Begin Not Coding Standard
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
-                                                        var linkElement = $(this);
                                                         var element     = $(this).parent().parent().parent();
                                                         var id          = $(element).attr('id');
                                                         var idParts     = id.split('_');
                                                         var taskId      = parseInt(idParts[1]);
+                                                        var linkParent  = $(this).parent();
+                                                        console.log(linkParent);
                                                         $.ajax(
                                                         {
                                                             type : 'GET',
                                                             data : {'id':taskId},
                                                             url  : '" . $url . "',
+                                                            beforeSend : function(){
+                                                              $('.ui-overlay-block').fadeIn(50);
+                                                              $(this).makeLargeLoadingSpinner(true, '.ui-overlay-block');
+                                                            },
                                                             success : function(data)
                                                                       {
-                                                                        $(linkElement).html('" . $link . "');
-                                                                        $(linkElement).attr('class', '" . $targetClass . "');
+                                                                        $(linkParent).html(data);
+                                                                        $(this).makeLargeLoadingSpinner(false, '.ui-overlay-block');
+                                                                        $('.ui-overlay-block').fadeOut(100);
                                                                       }
                                                         }
                                                         );
                                                     }
                                                 );";
+            // End Not Coding Standard
         }
 
         /**
@@ -474,18 +516,22 @@
          */
         public static function getDetailSubscriptionScript($url, $sourceClass, $targetClass, $link, $taskId)
         {
+            // Begin Not Coding Standard
             return "$('body').on('click', '." . $sourceClass . "', function()
                                                     {
-                                                        var linkElement = $(this);
                                                         $.ajax(
                                                         {
                                                             type : 'GET',
                                                             url  : '" . $url . "',
+                                                            beforeSend : function(){
+                                                              $('#subscriberList').html('');
+                                                              $(this).makeLargeLoadingSpinner(true, '#subscriberList');
+                                                            },
                                                             success : function(data)
                                                                       {
-                                                                        $(linkElement).html('" . $link . "');
-                                                                        $(linkElement).attr('class', '" . $targetClass . "');
-                                                                        if(data == '')
+                                                                        $(this).html('" . $link . "');
+                                                                        $(this).attr('class', '" . $targetClass . "');
+                                                                        if (data == '')
                                                                         {
                                                                             $('#subscriberList').html('');
                                                                         }
@@ -493,11 +539,13 @@
                                                                         {
                                                                             $('#subscriberList').html(data);
                                                                         }
+                                                                        $(this).makeLargeLoadingSpinner(false, '#subscriberList');
                                                                       }
                                                         }
                                                         );
                                                     }
                                                 );";
+            // End Not Coding Standard
         }
 
         /**
@@ -534,6 +582,11 @@
         {
             assert('is_string($subscribeLinkClass)');
             assert('is_string($unsubscribeLinkClass)');
+            if ($task->owner->id == Yii::app()->user->userModel->id ||
+                            $task->requestedByUser->id == Yii::app()->user->userModel->id)
+            {
+                return null;
+            }
             if ($task->doNotificationSubscribersContainPerson(Yii::app()->user->userModel) === false)
             {
                 $label       = Zurmo::t('Core', 'Subscribe');
@@ -681,7 +734,7 @@
                                                             $params, null, array(), $kanbanBoard);
             $view                       = new $pageView(ZurmoDefaultViewUtil::
                                                              makeViewWithBreadcrumbsForCurrentUser(
-                                                                    $controller,$listView, $breadCrumbLinks, 'KanbanBoardBreadCrumbView'));
+                                                                    $controller, $listView, $breadCrumbLinks, 'KanbanBoardBreadCrumbView'));
             return $view;
         }
 
@@ -696,8 +749,9 @@
             $url = Yii::app()->createUrl('tasks/default/modalDetails');
             $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView('Details', $sourceId);
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
-            $script = "$(document).on('click', '#{$sourceId} .task-kanban-detail-link', function()
-                          {
+            $script = " $(document).off('click.taskDetailLink', '#{$sourceId} .task-kanban-detail-link');
+                        $(document).on('click.taskDetailLink',  '#{$sourceId} .task-kanban-detail-link', function()
+                        {
                             var id = $(this).attr('id');
                             var idParts = id.split('-');
                             var taskId = parseInt(idParts[1]);
@@ -709,6 +763,7 @@
                                 'update'     : '{$ajaxOptions['update']}',
                                 'success': function(html){jQuery('#{$modalId}').html(html)}
                             });
+                            return false;
                           }
                         );";
              Yii::app()->clientScript->registerScript('taskModalDetailsScript' . $sourceId, $script);
@@ -744,7 +799,7 @@
         public static function resolveFirstRelatedModelStringValue(Task $task)
         {
             $modelOrNull = static::resolveFirstRelatedModel($task);
-            if($modelOrNull === null)
+            if ($modelOrNull === null)
             {
                 return null;
             }
@@ -758,11 +813,11 @@
          */
         public static function resolveFirstRelatedModel(Task $task)
         {
-            if($task->project->id > 0)
+            if ($task->project->id > 0)
             {
                 return $task->project;
             }
-            elseif($task->activityItems->count() > 0)
+            elseif ($task->activityItems->count() > 0)
             {
                 try
                 {
@@ -841,16 +896,7 @@
         public static function addSubscriber(User $user, Task $task, $hasReadLatest = false)
         {
             assert('is_bool($hasReadLatest)');
-            $isAlreadySubscribed = false;
-            foreach ($task->notificationSubscribers as $notificationSubscriber)
-            {
-                if ($notificationSubscriber->person->getClassId('Item') == $user->getClassId('Item'))
-                {
-                    $isAlreadySubscribed = true;
-                    break;
-                }
-            }
-            if (!$isAlreadySubscribed)
+            if ($task->doNotificationSubscribersContainPerson($user) === false)
             {
                 $notificationSubscriber = new NotificationSubscriber();
                 $notificationSubscriber->person = $user;
@@ -879,9 +925,9 @@
             }
             elseif ($sourceKanbanType == KanbanItem::TYPE_IN_PROGRESS)
             {
-                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE
-                                    || $targetStatus == Task::STATUS_REJECTED
-                                        || $targetStatus == Task::STATUS_IN_PROGRESS)
+                if ($targetStatus == Task::STATUS_AWAITING_ACCEPTANCE ||
+                                       $targetStatus == Task::STATUS_REJECTED ||
+                                           $targetStatus == Task::STATUS_IN_PROGRESS)
                 {
                     $targetKanbanType = KanbanItem::TYPE_IN_PROGRESS;
                 }
@@ -898,7 +944,7 @@
                 $sortOrder = self::resolveAndGetSortOrderForTaskOnKanbanBoard($targetKanbanType, $task);
                 $kanbanItem->sortOrder = $sortOrder;
                 $kanbanItem->type      = $targetKanbanType;
-                if(!$kanbanItem->save())
+                if (!$kanbanItem->save())
                 {
                     throw new FailedToSaveModelException();
                 }
@@ -926,9 +972,13 @@
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->project);
             }
-            else
+            elseif ($task->activityItems->count() > 0)
             {
                 $sortOrder = KanbanItem::getMaximumSortOrderByType(intval($targetKanbanType), $task->activityItems->offsetGet(0));
+            }
+            else
+            {
+                $sortOrder = 1;
             }
             return $sortOrder;
         }
@@ -958,24 +1008,198 @@
         public static function checkKanbanTypeByStatusAndUpdateIfRequired(Task $task)
         {
             $kanbanItem = KanbanItem::getByTask($task->id);
-            $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
-            if ($kanbanItem->type != $kanbanTypeByStatus)
+            //It should be created here but check for create as well here
+            if ($kanbanItem == null)
             {
-                $sourceKanbanItemType = $kanbanItem->type;
-                //put the item at the end
-                $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
-                $kanbanItem->type = $kanbanTypeByStatus;
-                $kanbanItem->save();
-                //Resort the source column
-                if ($task->project->id > 0)
+                TasksUtil::createKanbanItemFromTask($task);
+            }
+            else
+            {
+                if (!TasksUtil::isKanbanItemTypeValidBasedOnTaskStatus($kanbanItem->type, $task->status))
                 {
-                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
-                }
-                else
-                {
-                    TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
+                    $kanbanTypeByStatus = TasksUtil::resolveKanbanItemTypeForTaskStatus($task->status);
+                    if ($kanbanItem->type != $kanbanTypeByStatus)
+                    {
+                        $sourceKanbanItemType = $kanbanItem->type;
+                        //put the item at the end
+                        $kanbanItem->sortOrder = TasksUtil::resolveAndGetSortOrderForTaskOnKanbanBoard($kanbanTypeByStatus, $task);
+                        $kanbanItem->type = $kanbanTypeByStatus;
+                        $kanbanItem->save();
+                        //Resort the source column
+                        if ($task->project->id > 0)
+                        {
+                            TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->project);
+                        }
+                        elseif ($task->activityItems->count() > 0)
+                        {
+                            TasksUtil::sortKanbanColumnItems($sourceKanbanItemType, $task->activityItems->offsetGet(0));
+                        }
+                    }
                 }
             }
+        }
+
+        /**
+         * Resolve and render task card details subscribers content
+         * @param Task $task
+         * @return type
+         */
+        public static function resolveAndRenderTaskCardDetailsSubscribersContent(Task $task)
+        {
+            $content         = null;
+            $subscribedUsers = TasksUtil::getTaskSubscribers($task);
+            foreach ($subscribedUsers as $user)
+            {
+                if ($user->isSame($task->owner))
+                {
+                    $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20, 'task-owner');
+                    break;
+                }
+            }
+            //To take care of the case of duplicates
+            $addedSubscribers = array();
+            foreach ($subscribedUsers as $user)
+            {
+                if (!$user->isSame($task->owner))
+                {
+                    if (!in_array($user->id, $addedSubscribers))
+                    {
+                        $content .= TasksUtil::renderSubscriberImageAndLinkContent($user, 20);
+                        $addedSubscribers[] = $user->id;
+                    }
+                }
+            }
+            return $content;
+        }
+
+        /**
+         * Register task modal edit script
+         * @param string $sourceId
+         * @param array $routeParams
+         */
+        public static function registerTaskModalEditScript($sourceId, $routeParams)
+        {
+            assert('is_string($sourceId)');
+            assert('is_array($routeParams)');
+            $modalId     = TasksUtil::getModalContainerId();
+            $url         = Yii::app()->createUrl('tasks/default/modalEdit', $routeParams);
+            $script      = self::registerTaskModalScript("Edit", $url, '.edit-related-open-task', $sourceId);
+            Yii::app()->clientScript->registerScript('taskModalEditScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Register task modal copy script
+         * @param string $sourceId
+         * @param array $routeParams
+         */
+        public static function registerTaskModalCopyScript($sourceId, $routeParams)
+        {
+            assert('is_string($sourceId)');
+            assert('is_array($routeParams)');
+            $modalId     = TasksUtil::getModalContainerId();
+            $url         = Yii::app()->createUrl('tasks/default/modalCopy',
+                                                    array_merge($routeParams, array('action' => 'copy')));
+            $script      = self::registerTaskModalScript("Copy", $url, '.copy-related-open-task', $sourceId);
+            Yii::app()->clientScript->registerScript('taskModalCopyScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Get task modal script
+         * @param string $type
+         * @param string $url
+         * @param string $selector
+         * @param mixed $sourceId
+         * @return string
+         */
+        public static function registerTaskModalScript($type, $url, $selector, $sourceId = null)
+        {
+            assert('is_string($type)');
+            assert('is_string($url)');
+            assert('is_string($selector)');
+            assert('is_string($sourceId) || $sourceId == null');
+            $modalId     = TasksUtil::getModalContainerId();
+            $ajaxOptions = TasksUtil::resolveAjaxOptionsForModalView($type, $sourceId);
+            $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
+            return "$(document).on('click', '{$selector}', function()
+                         {
+                            var id = $(this).attr('id');
+                            var idParts = id.split('-');
+                            var taskId = parseInt(idParts[1]);
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '&id=' + taskId,
+                                'beforeSend' : {$ajaxOptions['beforeSend']},
+                                'update'     : '{$ajaxOptions['update']}',
+                                'success': function(html){jQuery('#{$modalId}').html(html)}
+                            });
+                          }
+                        );";
+        }
+
+        /**
+         * Register task modal delete script
+         * @param string $sourceId
+         */
+        public static function registerTaskModalDeleteScript($sourceId)
+        {
+            assert('is_string($sourceId)');
+            $url = Yii::app()->createUrl('tasks/default/delete');
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            $confirmTitle  = Zurmo::t('Core', 'Are you sure you want to delete this {modelLabel}?',
+                                                        array('{modelLabel}' => Zurmo::t('TasksModule', 'TasksModuleSingularLabel', $params)));
+            $script = "$(document).on('click', '.delete-related-open-task', function()
+                         {
+                            if (!confirm('{$confirmTitle}'))
+                            {
+                                return false;
+                            }
+                            var id = $(this).attr('id');
+                            var idParts = id.split('-');
+                            var taskId = parseInt(idParts[3]);
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '?id=' + taskId,
+
+                                'success': function(data)
+                                           {
+                                             $.fn.yiiGridView.update('{$sourceId}');
+                                           }
+                            });
+                          }
+                        );";
+             Yii::app()->clientScript->registerScript('taskModalDeleteScript', $script, ClientScript::POS_END);
+        }
+
+        /**
+         * Resolve that should task be opened in modal detal view
+         */
+        public static function resolveShouldOpenToTask($gridId)
+        {
+            $getData = GetUtil::getData();
+            if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
+            {
+                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+            }
+        }
+
+        /**
+         * Gets full calendar item data.
+         * @return string
+         */
+        public function getCalendarItemData()
+        {
+            $name                      = $this->name;
+            $status                    = self::getStatusDisplayName($this->status);
+            $requestedByUser           = $this->requestedByUser->getFullName();
+            $owner                     = $this->owner->getFullName();
+            $language                  = Yii::app()->languageHelper->getForCurrentUser();
+            $translatedAttributeLabels = self::translatedAttributeLabels($language);
+            return array(Zurmo::t('Core',        'Name',    array(), null, $language)          => $name,
+                         Zurmo::t('ZurmoModule', 'Status',  array(), null, $language)       => $status,
+                         $translatedAttributeLabels['requestedByUser']                      => $requestedByUser,
+                         $translatedAttributeLabels['owner']                                => $owner);
         }
     }
 ?>

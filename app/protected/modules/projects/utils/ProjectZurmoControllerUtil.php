@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -174,45 +174,19 @@
          * Get latest activity feed list view
          * @return ListView
          */
-        public static function getProjectsLatestActivityFeedView($controller)
+        public static function getProjectsLatestActivityFeedView($controller, $pageSize)
         {
-            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', 'ProjectsModule');
             $project            = new Project(false);
             $searchForm         = new ProjectsSearchForm($project);
-            $listModelClassName = get_class($searchForm->getModel());
-            $dataCollection     = new SearchAttributesDataCollection($searchForm);
-            $dataProvider       = $controller->makeRedBeanDataProviderByDataCollection($searchForm, $pageSize,
-                                    null, $dataCollection);
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                array(),
+                'ProjectAuditEvent',
+                'RedBeanModelDataProvider',
+                'dateTime',
+                true,
+                $pageSize
+            );
             $listView           = new ProjectsFeedListView(
-                                   $controller->id,
-                                   $controller->getModule()->getId(),
-                                   get_class($searchForm->getModel()),
-                                   $dataProvider,
-                                   GetUtil::resolveSelectedIdsFromGet(),
-                                   null,
-                                   array(),
-                                   $searchForm->getListAttributesSelector(),
-                                   $searchForm->getKanbanBoard());
-            return $listView;
-        }
-
-        /**
-         * Get active projects list view
-         * @return ListView
-         */
-        public static function getActiveProjectsListView($controller)
-        {
-            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', 'ProjectsModule');
-            $project            = new Project(false);
-            $searchForm         = new ProjectsSearchForm($project);
-            $listModelClassName = get_class($searchForm->getModel());
-            $dataCollection     = new SearchAttributesDataCollection($searchForm);
-            $dataProvider       = $controller->makeRedBeanDataProviderByDataCollection($searchForm, $pageSize,
-                                    null, $dataCollection);
-            $_GET['Project_sort'] = 'createdDateTime.desc';
-            $listView           = new ActiveProjectsListView(
                                    $controller->id,
                                    $controller->getModule()->getId(),
                                    get_class($searchForm->getModel()),

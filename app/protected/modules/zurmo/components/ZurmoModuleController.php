@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -457,6 +457,73 @@
             if (!$saved)
             {
                 throw new FailedToSaveModelException();
+            }
+        }
+
+        /**
+         * Override to implement, it should return a json object with content and message to be used by
+         * @see DedupeRules::registerScriptForEditAndDetailsView
+         * @param string $attribute The attribute used to trigger the dedupe action
+         * @param string $value The value of the attribute for the new model
+         * @throws NotImplementedException
+         */
+        public function actionSearchForDuplicateModels($attribute, $value)
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
+         * Process list view merge for models
+         */
+        public function processListViewMerge($modelClassName,
+                                             $mergedModelFormClassName,
+                                             $viewPrefix,
+                                             $pageView,
+                                             $redirectUrl)
+        {
+            $getData                 = GetUtil::getData();
+            try
+            {
+                $modelsList              = ListViewMergeUtil::getSelectedModelsListForMerge($modelClassName, $getData);
+            }
+            catch (NotFoundException $exception)
+            {
+                $message = Zurmo::t('ZurmoModule', 'At least one record you are trying to merge does not exist.');
+                Yii::app()->user->setFlash('notification', $message);
+                $this->redirect('index');
+            }
+            $model                   = new $mergedModelFormClassName('listViewMerge');
+            $model->selectedModels   = $modelsList;
+            ListViewMergeUtil::setPrimaryModelForListViewMerge($model, $getData);
+            $redirectUrl             = Yii::app()->createUrl($redirectUrl);
+            if ($model->validate())
+            {
+                $titleBarAndEditView = $this->makeListMergeView(
+                                            $this->attemptToSaveModelFromPost($model->primaryModel, null, $redirectUrl),
+                                            $viewPrefix, array_values($modelsList));
+                $view                = new $pageView(ZurmoDefaultViewUtil::
+                                                    makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+                echo $view->render();
+            }
+            else
+            {
+                $this->redirect($redirectUrl);
+            }
+        }
+
+        /**
+         * Processing before redirecting
+         * @param RedBeanModel $model
+         */
+        protected function beforeRedirect($model)
+        {
+            assert('$model instanceof RedBeanModel');
+            $getData = GetUtil::getData();
+            if ($this->getAction()->id == 'listViewMerge')
+            {
+                Yii::app()->gameHelper->muteScoringModelsOnSave();
+                ListViewMergeUtil::processCopyRelationsAndDeleteNonPrimaryModelsInMerge($model, $getData);
+                Yii::app()->gameHelper->unmuteScoringModelsOnSave();
             }
         }
     }

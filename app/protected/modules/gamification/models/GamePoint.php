@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -203,6 +203,7 @@
                     'type',
                     'value',
                     'person',
+                    'transactions'
                 ),
             );
             return $metadata;
@@ -215,15 +216,20 @@
 
         /**
          * Add specified value.
-         * @param int $value
+         * @param $value
+         * @param bool $createTransaction
          */
-        public function addValue($value)
+        public function addValue($value, $createTransaction = true)
         {
             assert('is_int($value)');
+            assert('is_bool($createTransaction)');
             $this->unrestrictedSet('value', $this->value + $value);
-            $gamePointTransaction                   = new GamePointTransaction();
-            $gamePointTransaction->value            = $value;
-            $this->transactions->add($gamePointTransaction);
+            if ($createTransaction)
+            {
+                $gamePointTransaction                   = new GamePointTransaction();
+                $gamePointTransaction->value            = $value;
+                $this->transactions->add($gamePointTransaction);
+            }
         }
 
         /**
@@ -321,7 +327,7 @@
             else
             {
                 $pointType = $levelType;
-                return ' type = "' . $pointType . '" and ';
+                return " type = '" . $pointType . "' and ";
             }
         }
 

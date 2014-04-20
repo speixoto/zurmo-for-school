@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class GamificationDefaultController extends ZurmoModuleController
@@ -100,7 +100,7 @@
             $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
             $gameCoin->addValue(1);
             $saved = $gameCoin->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
@@ -109,17 +109,17 @@
         public function actionRedeemCollection($id)
         {
             $gameCollection = GameCollection::getById((int)$id);
-            if($gameCollection->person->getClassId('Item') != Yii::app()->user->userModel->getClassId('Item'))
+            if ($gameCollection->person->getClassId('Item') != Yii::app()->user->userModel->getClassId('Item'))
             {
                 throw new NotSupportedException();
             }
-            if($gameCollection->redeem())
+            if ($gameCollection->redeem())
             {
                 $gameCollectionRules = GameCollectionRulesFactory::createByType($gameCollection->type);
                 $gameCoin = GameCoin::resolveByPerson(Yii::app()->user->userModel);
                 $gameCoin->addValue($gameCollectionRules::getCoinRedemptionValue());
                 $saved = $gameCoin->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
@@ -127,12 +127,27 @@
             echo UserGameDashboardView::renderCollectionContent(Yii::app()->user->userModel, $gameCollection);
         }
 
-
         public function actionRefreshGameDashboardCoinContainer($id)
         {
             $user     = User::getById((int)$id);
             $gameCoin = GameCoin::resolveByPerson($user);
-            echo UserGameDashboardView::renderCoinsContent($gameCoin->value);
+            echo UserGameDashboardView::renderCoinsContent($gameCoin->value, $user);
+        }
+
+        public function actionClaimCollectionItem($key, $typeKey)
+        {
+            if (Yii::app()->request->isAjaxRequest)
+            {
+                $availableTypes = GameCollection::getAvailableTypes();
+                $collection     = GameCollection::resolveByTypeAndPerson($availableTypes[$typeKey], Yii::app()->user->userModel);
+                $itemsData      = $collection->getItemsData();
+                $itemsData[$key] = $itemsData[$key] + 1;
+                $collection->setItemsData($itemsData);
+                if (!$collection->save())
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
         }
     }
 ?>

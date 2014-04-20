@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -68,7 +68,7 @@
             {
                 return array(Zurmo::t('Core',         'Select Module'),
                              Zurmo::t('ZurmoModule',  'Upload File'),
-                             Zurmo::t('ZurmoModule', 'Map Fields'),
+                             Zurmo::t('ZurmoModule',  'Map Fields'),
                              Zurmo::t('ImportModule', 'Analyze Data'),
                              Zurmo::t('ImportModule', 'Import Data'));
             }
@@ -77,7 +77,7 @@
                 return array(Zurmo::t('Core',         'Select Module'),
                              Zurmo::t('ZurmoModule',  'Upload File'),
                              Zurmo::t('ZurmoModule',  'Select Permissions'),
-                             Zurmo::t('ZurmoModule', 'Map Fields'),
+                             Zurmo::t('ZurmoModule',  'Map Fields'),
                              Zurmo::t('ImportModule', 'Analyze Data'),
                              Zurmo::t('ImportModule', 'Import Data'));
             }

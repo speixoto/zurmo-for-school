@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -103,14 +103,14 @@
             if (!RightsUtil::canUserAccessModule('SocialItemsModule', Yii::app()->user->userModel))
             {
                 return ZurmoHtml::link(Zurmo::t('Core', 'Continue'), '#',
-                             array('class'   => 'close-ModalGameNotification',
-                                    'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
+                             array('class'   => 'close-ModalGameNotification default-btn',
+                                    'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close"); return false;'));
             }
             else
             {
                 $content = ZurmoHtml::link(Zurmo::t('Core', 'Skip'), '#',
                                  array('class'   => 'close-ModalGameNotification simple-link',
-                                       'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
+                                       'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close"); return false;'));
                 $content .= static::renderPostToProfileLinkContent($notification, $index);
                 return $content;
             }
@@ -128,8 +128,8 @@
             $content   = ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'     => 'GET',
                                'complete' => "function(XMLHttpRequest, textStatus){
-                                              $('#ModalGameNotification" . $index . "').dialog('close');}"),
-                         array('class'     => 'close-ModalGameNotification',
+                                              $('#ModalGameNotification" . $index . "').dialog('close'); return false;}"),
+                         array('class'     => 'close-ModalGameNotification  default-btn',
                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
                                               $(this).makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"), "dark");',
                          ));

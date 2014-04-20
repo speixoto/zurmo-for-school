@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ContactWebFormTest extends ZurmoBaseTest
@@ -70,9 +70,12 @@
             $this->assertEquals('Save'              , $contactWebForm->submitButtonLabel);
             $this->assertEquals('New'               , $contactWebForm->defaultState->name);
             $this->assertEquals($placedAttributes   , unserialize($contactWebForm->serializedData));
-            $contactWebForm->name                   = 'New Test Form';
-            $contactWebForm->redirectUrl            = 'http://zurmo.org';
-            $contactWebForm->submitButtonLabel      = 'Save and Redirect';
+            $this->assertNull($contactWebForm->defaultPermissionSetting);
+            $this->assertNull($contactWebForm->defaultPermissionGroupSetting);
+            $contactWebForm->name                     = 'New Test Form';
+            $contactWebForm->redirectUrl              = 'http://zurmo.org';
+            $contactWebForm->submitButtonLabel        = 'Save and Redirect';
+            $contactWebForm->defaultPermissionSetting = UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE;
             $this->assertTrue($contactWebForm->save());
             $id                                     = $contactWebForm->id;
             unset($contactWebForm);
@@ -80,6 +83,9 @@
             $this->assertEquals('New Test Form'     , $contactWebForm->name);
             $this->assertEquals('http://zurmo.org'  , $contactWebForm->redirectUrl);
             $this->assertEquals('Save and Redirect' , $contactWebForm->submitButtonLabel);
+            $this->assertEquals($contactWebForm->defaultPermissionSetting,
+                                UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
+            $this->assertNull($contactWebForm->defaultPermissionGroupSetting);
         }
 
         /**

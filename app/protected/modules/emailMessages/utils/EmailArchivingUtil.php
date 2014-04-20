@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -57,9 +57,14 @@
                         'relatedAttributeName' => 'emailAddress',
                         'operatorType'         => 'equals',
                         'value'                => $emailMessage->fromEmail,
+                    ),
+                    2 => array(
+                        'attributeName'        => 'isActive',
+                        'operatorType'         => 'equals',
+                        'value'                => 1,
                     )
                 );
-                $searchAttributeData['structure'] = '1';
+                $searchAttributeData['structure'] = '1 and 2';
                 $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
                 $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
                 $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
@@ -187,7 +192,8 @@
             $isForwarded = false;
             foreach ($emailMessage->to as $toAddress)
             {
-                if ($toAddress['email'] == Yii::app()->imap->imapUsername)
+                $dropboxEmail = strtolower(str_replace('+', '@', Yii::app()->imap->imapUsername)); // Not Coding Standard
+                if (strtolower($toAddress['email']) == $dropboxEmail)
                 {
                     $isForwarded = true;
                     break;

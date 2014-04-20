@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,33 +31,37 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Redactor extends ZurmoWidget
     {
-        public $scriptFile      = 'redactor.min.js';
+        public $scriptFile      = array('redactor.js');
 
-        public $cssFile         = 'redactor.css';
+        public $cssFile         = array('redactor.css');
+
+        public $assetFolderName = 'redactor';
 
         public $htmlOptions;
 
         public $content;
 
+        // this is css property of redactor, not the widget
+        public $css;
+
         public $buttons         = "['html', '|', 'formatting', 'bold', 'italic', 'deleted', '|',
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
-                                   'fontcolor', 'backcolor', '|', 'alignleft', 'aligncenter', 'alignright', 'justify', '|',
-                                   'horizontalrule']";
+                                   'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
 
-        public $source          = "false";
+        public $pastePlainText  = "true";
+
+        public $visual          = "true";
 
         public $paragraphy      = "true";
 
         public $cleanup         = "true";
 
-        public $fullpage        = "true";
-
-        public $iframe          = "false";
+        public $iframe          = "true";
 
         public $minHeight       = 100;
 
@@ -67,47 +71,136 @@
 
         public $wym             = "false";
 
-        public $deniedTags      = "['html', 'head', 'link', 'body', 'meta', 'script', 'style', 'applet']";
+        public $removeEmptyTags = "false";
+
+        public $tidyHtml        = "true";
+
+        public $xhtml           = "true";
+
+        public $fullpage;
+
+        public $toolbarExternal;
+
+        public $plugins;
+
+        public $deniedTags;
+
+        public $allowedTags;
+
+        public $imageUpload;
+
+        public $imageGetJson;
+
+        public $initCallback;
+
+        public $changeCallback;
+
+        public $focusCallback;
+
+        public $syncAfterCallback;
+
+        public $syncBeforeCallback;
+
+        public $textareaKeydownCallback;
 
         public function run()
         {
             $id         = $this->htmlOptions['id'];
             $name       = $this->htmlOptions['name'];
+            unset($this->htmlOptions['name']);
             $javaScript = "
                     $(document).ready(
                         function()
                         {
                             $('#{$id}').redactor(
                             {
-                                buttons:        {$this->buttons},
-                                cleanup:        {$this->cleanup},
-                                convertDivs:    {$this->convertDivs},
-                                deniedTags:     {$this->deniedTags},
-                                fullpage:       {$this->fullpage},
-                                iframe:         {$this->iframe},
-                                minHeight:      {$this->minHeight},
-                                observeImages:  {$this->observeImages},
-                                source:         {$this->source},
-                                paragraphy:     {$this->paragraphy},
-                                wym:            {$this->wym},
+                                {$this->renderRedactorParamForInit('initCallback')}
+                                {$this->renderRedactorParamForInit('changeCallback')}
+                                {$this->renderRedactorParamForInit('focusCallback')}
+                                {$this->renderRedactorParamForInit('syncAfterCallback')}
+                                {$this->renderRedactorParamForInit('syncBeforeCallback')}
+                                {$this->renderRedactorParamForInit('textareaKeydownCallback')}
+                                {$this->renderRedactorParamForInit('plugins')}
+                                {$this->renderRedactorParamForInit('toolbarExternal')}
+                                {$this->renderRedactorParamForInit('fullpage')}
+                                {$this->renderRedactorParamForInit('allowedTags')}
+                                {$this->renderRedactorParamForInit('deniedTags')}
+                                {$this->renderRedactorParamForInit('iframe')}
+                                {$this->renderRedactorParamForInit('css')}
+                                buttons:            {$this->buttons},
+                                cleanup:            {$this->cleanup},
+                                convertDivs:        {$this->convertDivs},
+                                imageGetJson:       '{$this->imageGetJson}',
+                                imageUpload:        '{$this->imageUpload}',
+                                minHeight:          {$this->minHeight},
+                                observeImages:      {$this->observeImages},
+                                paragraphy:         {$this->paragraphy},
+                                pastePlainText:     {$this->pastePlainText},
+                                removeEmptyTags:    {$this->removeEmptyTags},
+                                visual:             {$this->visual},
+                                tidyHtml:           {$this->tidyHtml},
+                                wym:                {$this->wym},
+                                xhtml:              {$this->xhtml},
                             });
                         }
                     );";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
-            echo "<textarea id='{$id}' name='{$name}'>" . CHtml::encode($this->content) . "</textarea>";
+            $content    = ZurmoHtml::textArea($name, $this->content, $this->htmlOptions);
+            echo $content;
         }
 
-        protected function resolvePackagePath()
+        protected function renderRedactorParamForInit($paramName)
         {
-            if ($this->scriptUrl === null || $this->themeUrl === null)
+            $paramValue = $this->$paramName;
+            if (isset($paramValue))
             {
-                $cs = Yii::app()->getClientScript();
-                if ($this->scriptUrl === null)
-                {
-                    $this->scriptUrl = Yii::app()->getAssetManager()->publish(
-                                        Yii::getPathOfAlias('application.core.widgets.assets.redactor'));
-                }
+                $config = "{$paramName}: {$paramValue},"; // Not Coding Standard
+                return $config;
             }
+        }
+
+        public function init()
+        {
+            $this->resolveSelectivePluginScriptLoad();
+            parent::init();
+            // TODO: @Shoaibi: Critical: Find a better way to deal with this.
+            //$this->resolveSelectiveCssLoad();
+        }
+
+        protected function resolveSelectiveCssLoad()
+        {
+            $this->resolveSelectiveCssLoadForIframeSetting();
+        }
+
+        protected function resolveSelectiveCssLoadForIframeSetting()
+        {
+            if ($this->iframe == 'true')
+            {
+                $this->css  = "'" . $this->scriptUrl . "/css/redactor-iframe.css'";
+            }
+        }
+
+        protected function resolveSelectivePluginScriptLoad()
+        {
+            $plugins        = CJSON::decode($this->plugins);
+            if (!empty($plugins))
+            {
+                $this->registerPluginScriptFiles($plugins);
+            }
+        }
+
+        protected function registerPluginScriptFiles(array $plugins)
+        {
+            $this->resolvePluginScriptNames($plugins);
+            $this->scriptFile   = CMap::mergeArray($plugins, $this->scriptFile);
+        }
+
+        protected function resolvePluginScriptNames(array & $pluginNames)
+        {
+            array_walk($pluginNames, function(&$pluginName)
+                                        {
+                                            $pluginName .= '.js';
+                                        });
         }
     }
 ?>

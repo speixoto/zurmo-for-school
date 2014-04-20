@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -39,6 +39,10 @@
      */
     class KanbanBoardExtendedGridView extends StackedExtendedGridView
     {
+        const CONFIG_KEY             = 'KanbanMaxCount';
+
+        const CONFIG_MODULE_NAME     = 'ZurmoModule';
+
         public static $maxCount = 50;
 
         /**
@@ -79,7 +83,20 @@
          */
         public static function resolvePageSizeForMaxCount()
         {
-            return static::$maxCount + 1;
+            return static::getMaxCount() + 1;
+        }
+
+        /**
+         * @return int
+         */
+        public static function getMaxCount()
+        {
+            $maxCount = ZurmoConfigurationUtil::getByModuleName(static::CONFIG_MODULE_NAME, static::CONFIG_KEY);
+            if ($maxCount == null)
+            {
+                $maxCount = static::$maxCount;
+            }
+            return (int) $maxCount;
         }
 
         public function init()
@@ -99,7 +116,7 @@
             $width       = 100 / count($columnsData);
             echo "<tbody>";
             echo "<tr><td id=\"kanban-holder\" class='". $this->selectedTheme . "'>";
-            if ($modelsCount > static::$maxCount)
+            if ($this->isMaxCountCheckRequired() && $modelsCount > static::getMaxCount())
             {
                 $this->renderOverMaxCountText();
             }
@@ -260,7 +277,6 @@
             $cardDetails = null;
             foreach ($this->cardColumns as $cardData)
             {
-
                 $content      = $this->renderCardDataContent($cardData, $this->dataProvider->data[$row], $row);
                 $cardDetails .= ZurmoHtml::tag('span', array('class' => $cardData['class']), $content);
             }
@@ -328,6 +344,15 @@
         protected function wrapCardDetailsContent($row)
         {
             return ZurmoHtml::tag('div', array(), $this->renderCardDetailsContent($row));
+        }
+
+        /**
+         * Checks if max count has to be validated in the kanban view
+         * @return boolean
+         */
+        protected function isMaxCountCheckRequired()
+        {
+            return true;
         }
     }
 ?>

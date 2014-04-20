@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -76,12 +76,57 @@
         }
 
         /**
+         * Override in children with correct moduleId
+         * @throws NotImplementedException
+         */
+        public static function getModuleId()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
          * Override in children with correct controllerId
          * @throws NotImplementedException
          */
         public static function getControllerId()
         {
-            throw new NotImplementedException();
+            return 'default';
+        }
+
+        /**
+         * @param string $formName
+         * @param string $componentViewClassName
+         * @param string $reportType
+         * @return string
+         */
+        public static function renderTreeViewAjaxScriptContent($formName, $componentViewClassName, $reportType)
+        {
+            assert('is_string($formName)');
+            assert('is_string($componentViewClassName)');
+            assert('is_string($reportType)');
+            $url    =  Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/relationsAndAttributesTree',
+                array_merge($_GET, array('type' => $reportType,
+                    'treeType' => $componentViewClassName::getTreeType())));
+            // Begin Not Coding Standard
+            $script = "
+                $('#" . $componentViewClassName::getTreeDivId() . "').addClass('loading');
+                $(this).makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
+                $.ajax({
+                    url : '" . $url . "',
+                    type : 'POST',
+                    data : $('#" . $formName . "').serialize(),
+                    success : function(data)
+                    {
+                        $('#" . $componentViewClassName::getTreeDivId() . "').html(data);
+                    },
+                    error : function()
+                    {
+                        //todo: error call
+                    }
+                });
+            ";
+            // End Not Coding Standard
+            return $script;
         }
 
         /**
@@ -163,8 +208,10 @@
             $content .= $this->renderContainingViews($form);
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderAfterFormContent();
             $content .= $this->renderUIOverLayBlock();
-            $content .= '</div></div>';
+            $content .= '</div>';
+            $content .= '</div>';
             $content .= $this->renderModalContainer();
             return $content;
         }
@@ -175,6 +222,10 @@
             return ZurmoHtml::tag('div', array('class' => 'ui-overlay-block'), $spinner);
         }
 
+        protected function renderAfterFormContent()
+        {
+        }
+
         /**
          * @return array
          */
@@ -183,10 +234,20 @@
             return array(
                         'validateOnSubmit'  => true,
                         'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'beforeValidate'    => $this->getBeforeValidateActionScript(),
                         'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
                         'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
                     );
+        }
+
+        /**
+         * The script to be triggered before validation action
+         * @see WizardView::getClientOptions
+         * @return string
+         */
+        protected function getBeforeValidateActionScript()
+        {
+            return 'js:$(this).beforeValidateAction';
         }
 
         protected function registerScripts()
@@ -207,71 +268,70 @@
          */
         protected function getFormActionUrl()
         {
-            return Yii::app()->createUrl(static::getControllerId() . '/default/save',
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/save',
                 array('type' => $this->model->type, 'id' => $this->model->id, 'isBeingCopied' => $this->isBeingCopied));
         }
 
         /**
-         * @param string $formName
+         * @param $formName
+         * @param bool $redirectAfterSave
+         * @param array $additionalAjaxOptions
          * @return string
          */
-        protected function getSaveAjaxString($formName)
+        protected function getSaveAjaxString($formName, $redirectAfterSave = true, array $additionalAjaxOptions = array())
         {
             assert('is_string($formName)');
-            $saveRedirectToDetailsUrl = Yii::app()->createUrl(static::getControllerId() . '/default/details');
-            $saveRedirectToListUrl    = Yii::app()->createUrl(static::getControllerId() . '/default/list');
-            return ZurmoHtml::ajax(array(
-                                            'type'     => 'POST',
-                                            'data'     => 'js:$("#' . $formName . '").serialize()',
-                                            'url'      =>  $this->getFormActionUrl(),
-                                            'dataType' => 'json',
-                                            'success'  => 'js:function(data)
-                                            {
-                                                if (data.redirectToList)
-                                                {
-                                                    url = "' . $saveRedirectToListUrl . '";
-                                                }
-                                                else
-                                                {
-                                                    url = "' . $saveRedirectToDetailsUrl . '" + "?id=" + data.id
-                                                }
-                                                window.location.href = url;
-                                            }'
-                                          ));
+            $ajaxArray              = $this->resolveSaveAjaxArray($formName, $redirectAfterSave, $additionalAjaxOptions);
+            return ZurmoHtml::ajax($ajaxArray);
         }
 
         /**
-         * @param string $formName
-         * @param string $componentViewClassName
+         * @param $formName
+         * @param bool $redirectAfterSave
+         * @param array $additionalAjaxOptions
+         * @return array
+         */
+        protected function resolveSaveAjaxArray($formName, $redirectAfterSave = true, array $additionalAjaxOptions = array())
+        {
+            $ajaxArray                  = array('type'      => 'POST',
+                                                'cache'     => 'false',
+                                                'data'      => 'js:$("#' . $formName . '").serialize()',
+                                                'url'       =>  'js:$("#' . $formName . '").attr("action")',
+                                                'dataType'  => 'json',
+                                            );
+            if ($redirectAfterSave)
+            {
+                $ajaxArray['success']  = 'js:function(data)
+                                            {
+                                                if (data.redirectToList)
+                                                {
+                                                    url = "' . $this->resolveSaveRedirectToListUrl() . '";
+                                                }
+                                                else
+                                                {
+                                                    url = "' . $this->resolveSaveRedirectToDetailsUrl() . '" + "?id=" + data.id
+                                                }
+                                                window.location.href = url;
+                                            }';
+            }
+            $ajaxArray                  = CMap::mergeArray($ajaxArray, $additionalAjaxOptions);
+            return $ajaxArray;
+        }
+
+        /**
          * @return string
          */
-        protected function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
+        protected function resolveSaveRedirectToDetailsUrl()
         {
-            assert('is_string($formName)');
-            assert('is_string($componentViewClassName)');
-            $url    =  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTree',
-                       array_merge($_GET, array('type' => $this->model->type,
-                                                'treeType' => $componentViewClassName::getTreeType())));
-            // Begin Not Coding Standard
-            $script = "
-                $('#" . $componentViewClassName::getTreeDivId() . "').addClass('loading');
-                $(this).makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
-                $.ajax({
-                    url : '" . $url . "',
-                    type : 'POST',
-                    data : $('#" . $formName . "').serialize(),
-                    success : function(data)
-                    {
-                        $('#" . $componentViewClassName::getTreeDivId() . "').html(data);
-                    },
-                    error : function()
-                    {
-                        //todo: error call
-                    }
-                });
-            ";
-            // End Not Coding Standard
-            return $script;
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/details');
+        }
+
+        /**
+         * @return string
+         */
+        protected function resolveSaveRedirectToListUrl()
+        {
+            return Yii::app()->createUrl(static::getModuleId() . '/' . static::getControllerId() . '/list');
         }
 
         protected function registerOperatorOnLoadAndOnChangeScript()

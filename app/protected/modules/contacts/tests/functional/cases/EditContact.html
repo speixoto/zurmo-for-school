@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>Create</title>
+<title>EditContact</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create</td></tr>
+<tr><td rowspan="1" colspan="3">Edit Contact</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -19,7 +19,7 @@
 <!--Go to contacts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td>index.php/contacts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -94,20 +94,20 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
+<!--edit contact-->
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
+	<td>waitForElementPresent</td>
+	<td>link=Edit</td>
 	<td></td>
 </tr>
-<!--edit contact-->
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Edit</td>
 	<td></td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>0</td>
+	<td>waitForElementPresent</td>
+	<td>Contact_state_id</td>
 	<td></td>
 </tr>
 <tr>
@@ -140,6 +140,21 @@
 	<td>assertVisible</td>
 	<td>//div[@id='zurmoView']/div/table/tbody/tr[2]/td</td>
 	<td>Qualified</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 </tbody></table>
 </body>

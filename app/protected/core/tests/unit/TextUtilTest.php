@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class TextUtilTest extends BaseTest
@@ -66,12 +66,12 @@
         {
             $textWithUrl = "Do you know the guys who made http://www.zurmo.com. They are awsome.";
             $textWithLink = TextUtil::textWithUrlToTextWithLink($textWithUrl);
-            $this->assertEquals('Do you know the guys who made <a href="http://www.zurmo.com">www.zurmo.com</a>. They are awsome.',
+            $this->assertEquals('Do you know the guys who made <a href="http://www.zurmo.com">http://www.zurmo.com</a>. They are awsome.',
                                 $textWithLink);
 
             $textWithUrl = "Do you know the guys who made https://www.zurmo.com. They are awsome.";
             $textWithLink = TextUtil::textWithUrlToTextWithLink($textWithUrl);
-            $this->assertEquals('Do you know the guys who made <a href="https://www.zurmo.com">www.zurmo.com</a>. They are awsome.',
+            $this->assertEquals('Do you know the guys who made <a href="https://www.zurmo.com">https://www.zurmo.com</a>. They are awsome.',
                 $textWithLink);
 
             $textWithUrl = "Do you know the guys who made www.zurmo.com. They are awsome.";
@@ -83,6 +83,13 @@
             $textWithLink = TextUtil::textWithUrlToTextWithLink($textWithUrl);
             $this->assertEquals('Please, send an email to <a href="mailto:jonny@zurmo.com">jonny@zurmo.com</a>',
                 $textWithLink);
+
+            $textWithUrl  = "Please, send an email to jonny@zurmo.com
+with a newline";
+            $textWithLink = TextUtil::textWithUrlToTextWithLink($textWithUrl);
+            $expectedResult  = 'Please, send an email to <a href="mailto:jonny@zurmo.com">jonny@zurmo.com</a><br />
+with a newline';
+            $this->assertEquals($expectedResult, $textWithLink);
         }
     }
 ?>

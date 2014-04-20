@@ -1,5 +1,5 @@
 // Zurmo is a customer relationship management program developed by
-// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+// Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
 //
 // Zurmo is free software; you can redistribute it and/or modify it under
 // the terms of the GNU Affero General Public License version 3 as published by the
@@ -29,16 +29,17 @@
 // these Appropriate Legal Notices must retain the display of the Zurmo
 // logo and Zurmo copyright notice. If the display of the logo is not reasonably
 // feasible for technical reasons, the Appropriate Legal Notices must display the words
-// "Copyright Zurmo Inc. 2013. All rights reserved".
+// "Copyright Zurmo Inc. 2014. All rights reserved".
 
 #ZurmoLogo{
-    background: url(../images/ZurmoLogo.png) left top no-repeat;
+    background: url("@{path}ZurmoLogo.png") left top no-repeat;
     width:170px;
     height:54px;
     margin-bottom:20px;
 }
-
-#InstallAccessFailurePageView, #ErrorPageView{
+/*
+#InstallAccessFailurePageView,
+#ErrorPageView{
     #gradient > .vertical-three-colors( #f6f6f6, #ffffff, 100px, #f6f6f6 );
     .b-shadow( ~"0 0 12px 5px rgba(153, 153, 153, 0.3)" );
     .radius( 5px );
@@ -49,8 +50,8 @@
     padding:20px;
     margin:40px auto;
     a{
-        //++.themeBackgroundColor;
-        padding:1px 4px;
+	    background-color: @themeColor;
+	    padding:1px 4px;
         .radius(2px);
         color:#fff;
         &:hover{
@@ -72,8 +73,8 @@
         margin:40px 40px 0 40px;
         .radius( 5px );
         a{
-            margin:auto 10px; 
-            ++.z-button;  
+            //margin:auto 10px;
+            //.z-button();
         }
     }
 	div.wide.form{
@@ -118,19 +119,20 @@
                 }
             }
         }
-        /*inside another table to prevent hover effect on the main table*/
+        //inside another table to prevent hover effect on the main table
         table tr:hover{
             background-color:none;
-            color:#545454;
+            color:@textColor;
         }
         td{
             padding:8px 2px;
         }
     }
     #install-form{
-        padding:15px !important;
+        .unstyle-panel;
+        //padding:0 !important;
         input[type="submit"]{
-            ++.z-button;
+            .z-button();
         }
         table{
             padding-bottom:15px;
@@ -157,11 +159,107 @@
         	padding-top:0;
         	margin-left:0;
         }
+	    .view-toolbar-container{
+		    border-top:1px solid #ccc;
+	    }
     }
+}
+*/
+#InstallView{
+	margin-left: 0;
+	padding: 75px 15% 15px 15%;
+	font-size: 14px;
+	line-height: 150%;
+	.z-label{
+		font-size: 12px;
+	}
+	ul{
+		list-style:inside;
+		margin-bottom:10px;
+		font-weight: bold;
+		li{
+			margin-bottom:5px;
+		}
+	}
+	table{
+		width:100%;
+		table{
+			border-color: #DDDEDE;
+			border-style: solid;
+			border-width: 0 0 1px 0;
+			border-spacing: 0;
+			border-collapse: collapse;
+			td{
+				border-color: #DDDEDE;
+				border-style: solid;
+				border-width: 1px 1px 0 0;
+				padding-left:10px;
+			}
+			tr{
+				border-color: #DDDEDE;
+				border-style: solid;
+				border-width: 0 0 0 1px;
+				border-spacing: 0;
+			}
+			tr:first-child{
+				border-left:none;
+				td{
+					border:none;
+					font-weight:bold;
+				}
+			}
+		}
+		/*inside another table to prevent hover effect on the main table*/
+		table tr:hover{
+			background-color:none;
+			color:@textColor;
+		}
+		td{
+			padding:8px 2px;
+		}
+	}
+}
+
+#install-form{
+	.unstyle-panel;
+	//padding:0 !important;
+	input[type="submit"]{
+		.z-button();
+	}
+	table{
+		padding-bottom:15px;
+	}
+	th{
+		width:26%;
+	}
+	td{
+		width:37%;
+	}
+	th+td{
+		vertical-align:top;
+	}
+	tr td:last-child{
+		padding-left:15px;
+	}
+	label{
+		font-size:12px !important;
+		font-weight:400 !important;
+	}
+	.hasCheckBox{
+		padding-top:0;
+		margin-left:0;
+	}
+	.view-toolbar-container{
+		//border-top:1px solid #ccc;
+	}
+	.form-toolbar{
+		border-top: none;
+	}
 }
 
 #logging-table, #progress-table{
     width:100%;
+	padding: 15px;
     img{
         width:128px;
         margin:10px auto;
@@ -193,4 +291,5 @@
     display:inline-block;
     position:relative;
     top:-10px;
+	margin: 0 10px;
 }

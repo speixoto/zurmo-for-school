@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class GamePointTest extends ZurmoBaseTest
@@ -64,7 +64,12 @@
             $this->assertEquals($user,       $gamePoint->person);
 
             $this->assertEquals(1, $gamePoint->transactions->count());
-            $gamePoint->addValue(50);
+            $gamePoint->addValue(50, false);
+            $this->assertTrue($gamePoint->save());
+            GamePointTransaction::addTransactionResolvedForOptimization($gamePoint, 50);
+            $this->assertEquals(60, $gamePoint->value);
+            $gamePoint::forgetAll();
+            $gamePoint = GamePoint::getById($id);
             $this->assertEquals(60, $gamePoint->value);
             $this->assertEquals(2, $gamePoint->transactions->count());
             $this->assertEquals(10, $gamePoint->transactions[0]->value);
@@ -93,7 +98,7 @@
             $gamePoint = GamePoint::resolveToGetByTypeAndPerson('SomeType',  Yii::app()->user->userModel);
             $this->assertEquals('SomeType',                   $gamePoint->type);
             $this->assertEquals(60,                           $gamePoint->value);
-            $this->assertEquals(Yii::app()->user->userModel,  $gamePoint->person);
+            $this->assertEquals(Yii::app()->user->userModel->getClassId('Item'),  $gamePoint->person->getClassId('Item'));
 
             $gamePoint = GamePoint::resolveToGetByTypeAndPerson('SomeType2',  Yii::app()->user->userModel);
             $this->assertTrue($gamePoint->id < 0);

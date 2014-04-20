@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class Contact extends Person implements StarredInterface
@@ -86,7 +86,10 @@
                     'googleWebTrackingId',
                 ),
                 'relations' => array(
-                    'account'          => array(static::HAS_ONE,   'Account'),
+                    'account'             => array(static::HAS_ONE,   'Account'),
+                    'accountAffiliations' => array(static::HAS_MANY, 'AccountContactAffiliation',
+                                                   static::OWNED, static::LINK_TYPE_SPECIFIC,
+                                                   'contactAffiliation'),
                     'industry'         => array(static::HAS_ONE,   'OwnedCustomField', static::OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'industry'),
                     'products'         => array(static::HAS_MANY, 'Product'),
@@ -117,12 +120,12 @@
                     array('googleWebTrackingId',    'type',    'type' => 'string'),
                 ),
                 'elements' => array(
-                    'account'          => 'Account',
-                    'description'      => 'TextArea',
+                    'account'                 => 'Account',
+                    'description'             => 'TextArea',
                     'latestActivityDateTime'  => 'DateTime',
-                    'secondaryEmail'   => 'EmailAddressInformation',
-                    'secondaryAddress' => 'Address',
-                    'state'            => 'ContactState',
+                    'secondaryEmail'          => 'EmailAddressInformation',
+                    'secondaryAddress'        => 'Address',
+                    'state'                   => 'ContactState',
                 ),
                 'customFields' => array(
                     'industry' => 'Industries',
@@ -199,6 +202,18 @@
         public static function supportsQueueing()
         {
             return true;
+        }
+
+        public function setLatestActivityDateTime($dateTime)
+        {
+            assert('is_string($dateTime)');
+            $this->unrestrictedSet('latestActivityDateTime', $dateTime);
+        }
+
+        protected function afterDelete()
+        {
+            parent::afterDelete();
+            ContactsUtil::resolveMarketingListMembersByContact($this);
         }
     }
 ?>

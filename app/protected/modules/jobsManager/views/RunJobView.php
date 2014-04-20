@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -75,12 +75,11 @@
         {
             $imagePath = Yii::app()->themeManager->baseUrl . '/default/images/ajax-loader.gif';
             $progressBarImageContent = ZurmoHtml::image($imagePath, 'Progress Bar');
-            $content  = '<div>';
+            $content  = '<div class="wrapper">';
             $content .= ZurmoHtml::tag('h1', array(), $this->getJobLabel());
             $content .= '<div class="left-column full-width">';
             $content .= '<div id="complete-table" style="display:none;">';
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'The job has completed running.'));
-            $content .= $this->renderButtonsContent();
             $content .= '</div>';
             $content .= '<div id="progress-table" class="progress-bar">';
             $content .= Zurmo::t('JobsManagerModule', 'Job is running. Please wait.');
@@ -91,6 +90,7 @@
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('JobsManagerModule', 'Job Output:'));
             $content .= ZurmoHtml::tag('ol', array(), '');
             $content .= '</div>';
+            $content .= $this->renderButtonsContent();
             $content .= '</div>';
             $content .= '</div>';
             return $content;
@@ -98,13 +98,25 @@
 
         protected function renderButtonsContent()
         {
+            $jobClassName           = $this->type . "Job";
+            $messageLoggerClassName = $jobClassName::getDefaultMessageLogger();
             $runAgainUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/runJob/',
-                                                   array('type' => $this->type, 'timeLimit' => $this->timeLimit));
+                                                   array('type' => $this->type, 'timeLimit' => $this->timeLimit,
+                                                         'messageLoggerClassName' => $messageLoggerClassName));
             $jobManagerUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
             $content  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Run Job Again')),
                                         $runAgainUrl, array('class' => 'z-button'));
+            if (Yii::app()->jobQueue->isEnabled())
+            {
+                $queueJobUrl   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/queueJob/',
+                                 array('type' => $this->type));
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::app()->jobQueue->getQueueJobLabel()),
+                                            $queueJobUrl, array('class' => 'secondary-button'));
+            }
             $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Job Manager')),
-                                        $jobManagerUrl, array('class' => 'z-button'));
+                                        $jobManagerUrl, array('class' => 'secondary-button'));
+            $content = '<div class="float-bar"><div class="view-toolbar-container clearfix dock"><div class="form-toolbar">'
+                       . $content . '</div></div></div>';
             return $content;
         }
     }

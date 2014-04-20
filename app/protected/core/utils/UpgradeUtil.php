@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class UpgradeUtil
@@ -52,11 +52,11 @@
         {
             try
             {
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Checking permissions, files, upgrade version....'));
                 $messageLogger = new MessageLogger($messageStreamer);
 
-                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
-                self::clearCache();
                 self::setUpgradeState('zurmoUpgradeTimestamp', time());
                 self::isApplicationInUpgradeMode();
                 self::checkPermissions();
@@ -88,8 +88,8 @@
                     self::processAfterFiles();
                 }
 
-                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Part 1 complete.'));
             }
             catch (CException $e)
@@ -114,12 +114,12 @@
         {
             try
             {
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $upgradeExtractPath = self::getUpgradeState('zurmoUpgradeFolderPath');
                 $messageLogger = new MessageLogger($messageStreamer);
 
                 self::isApplicationInUpgradeMode();
-                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
-                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Loading UpgraderComponent.'));
                 self::loadUpgraderComponent($upgradeExtractPath, $messageLogger);
                 $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
@@ -147,6 +147,8 @@
                 $messageStreamer->add(Zurmo::t('Core', 'Removing upgrade files.'));
                 self::removeUpgradeFiles($upgradeExtractPath);
                 self::unsetUpgradeState();
+                $messageStreamer->add(Zurmo::t('Core', 'Clearing cache.'));
+                self::clearCache();
                 $messageStreamer->add(Zurmo::t('Core', 'Upgrade process completed.'));
             }
             catch (CException $e)
@@ -171,6 +173,15 @@
                 throw new NotSupportedException($message);
             }
             return true;
+        }
+
+        /**
+        * Return path to upgrade folder
+        * @return string
+        */
+        public static function getUpgradeFolderPath()
+        {
+            return Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
         }
 
         /**
@@ -228,7 +239,7 @@
         protected static function checkForUpgradeZip()
         {
             $numberOfZipFiles = 0;
-            $upgradePath = Yii::app()->getRuntimePath() . DIRECTORY_SEPARATOR . 'upgrade';
+            $upgradePath = self::getUpgradeFolderPath();
             if (!is_dir($upgradePath))
             {
                 $message = Zurmo::t('Core', 'Please upload upgrade zip file to runtime/upgrade folder.');
@@ -298,7 +309,7 @@
             require_once($upgradeExtractPath . DIRECTORY_SEPARATOR . 'manifest.php');
             if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['fromVersion'], $upgradeFromVersionMatches) !== false) // Not Coding Standard
             {
-                if (preg_match('/^(\d+)\.(\d+)\.(\d+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false) // Not Coding Standard
+                if (preg_match('/^(\d+)\.(\d+)\.?(\d+|\w+)$/', $configuration['toVersion'], $upgradeToVersionMatches) !== false) // Not Coding Standard
                 {
                     $currentZurmoVersion = MAJOR_VERSION . '.' . MINOR_VERSION . '.' . PATCH_VERSION;
                     if (version_compare($currentZurmoVersion, $upgradeFromVersionMatches[0], '>=') &&

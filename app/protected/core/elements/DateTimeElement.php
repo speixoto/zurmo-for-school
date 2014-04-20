@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -49,10 +49,6 @@
             $htmlOptionsFromParams   = $this->getHtmlOptions();
             $htmlOptions             = $this->resolveHtmlOptions();
             $htmlOptions             = array_merge($htmlOptionsFromParams, $htmlOptions);
-            if ($this->getDisabledValue())
-            {
-                return ZurmoHtml::textField($this->getEditableInputName(), $this->renderControlNonEditable(), $htmlOptions);
-            }
             $themePath = Yii::app()->themeManager->baseUrl . '/' . Yii::app()->theme->name;
             $value     = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                             $this->model->{$this->attribute},
@@ -106,7 +102,27 @@
          */
         protected function resolveDatePickerOptions()
         {
-            return array();
+            if ($this->getDisabledValue() && $this->isDatePickerDisabled())
+            {
+                return array('disabled' => true);
+            }
+            else
+            {
+                return array();
+            }
+        }
+
+        /**
+         * Check if datepicker is disabled
+         * @return boolean
+         */
+        protected function isDatePickerDisabled()
+        {
+            if (isset($this->params['datePickerDisabled']))
+            {
+                return $this->params['datePickerDisabled'];
+            }
+            return true;
         }
     }
 ?>

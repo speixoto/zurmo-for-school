@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -122,6 +122,48 @@
                     $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
                     $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
                                                    array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_LAST_30_DAYS)
+                {
+                    $today                 = static::calculateNewDateByDaysFromNow(0);
+                    $todayMinusThirtyDays   = static::calculateNewDateByDaysFromNow(-30);
+                    $greaterThanValue      = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($todayMinusThirtyDays);
+                    $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_THIS_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfAMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfAMonthDate();
+                    $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_LAST_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfLastMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfLastMonthDate();
+                    $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_NEXT_MONTH)
+                {
+                    $firstDateValue        = DateTimeUtil::getFirstDayOfNextMonthDate();
+                    $secondDateValue       = DateTimeUtil::getLastDayOfNextMonthDate();
+                    $greaterThanValue  = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($firstDateValue);
+                    $lessThanValue     = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($secondDateValue);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'greaterThanOrEqualTo', $greaterThanValue, true),
+                                                   array($realAttributeName, null, 'lessThanOrEqualTo',    $lessThanValue, true));
+                }
+                elseif ($value['type'] == self::TYPE_BEFORE_TODAY)
+                {
+                    $today                 = static::calculateNewDateByDaysFromNow(0);
+                    $lessThanValue         = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($today);
+                    $attributeAndRelations = array(array($realAttributeName, null, 'lessThanOrEqualTo', $lessThanValue));
                 }
                 else
                 {

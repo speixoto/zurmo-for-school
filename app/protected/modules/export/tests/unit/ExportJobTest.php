@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class ExportJobTest extends ZurmoBaseTest
@@ -47,6 +47,12 @@
             SecurityTestHelper::createUsers();
             static::$asynchronousPageSize = ExportModule::$asynchronousPageSize;
             static::$asynchronousMaximumModelsToProcess = ExportModule::$asynchronousMaximumModelsToProcess;
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->jobQueue->deleteAll();
         }
 
         public function tearDown()
@@ -102,8 +108,13 @@
             $exportItem->forget();
             unset($exportItem);
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             $job = new ExportJob();
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
 
             $exportItem = ExportItem::getById($id);
             $fileModel  = $exportItem->exportFileModel;
@@ -164,8 +175,13 @@
             $exportItem->forget();
             unset($exportItem);
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             $job = new ExportJob();
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
 
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
@@ -231,8 +247,13 @@
 
             ExportModule::$asynchronousPageSize = 2;
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             $job = new ExportJob();
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
 
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
@@ -296,11 +317,18 @@
             $exportItem->forget();
             unset($exportItem);
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             ExportModule::$asynchronousPageSize = 2;
             ExportModule::$asynchronousMaximumModelsToProcess = 3;
 
             $job = new ExportJob();
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[5][0]);
 
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
@@ -334,8 +362,14 @@
 
             //Second run will finish the job
             $this->assertTrue($job->run());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[5][0]);
             //Third run is need to mark the exportItem as complete
             $this->assertTrue($job->run());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[5][0]);
 
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
@@ -403,10 +437,17 @@
             $exportItem->forget();
             unset($exportItem);
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             ExportModule::$asynchronousMaximumModelsToProcess = 6;
 
             $job = new ExportJob();
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[5][0]);
 
             $exportItem = ExportItem::getById($id1);
             $fileModel = $exportItem->exportFileModel;
@@ -439,6 +480,9 @@
             $this->assertNull($fileModel->fileContent->content);
 
             $this->assertTrue($job->run());
+            $queuedJobs = Yii::app()->jobQueue->getAll();
+            $this->assertEquals(1, count($queuedJobs));
+            $this->assertEquals('Export', $queuedJobs[5][0]);
 
             //The second item is processed
             $exportItem = ExportItem::getById($id2);
@@ -494,14 +538,19 @@
             $exportItem->forget();
             unset($exportItem);
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             $accounts = Account::getByName('Microsoft');
             $account  = $accounts[0];
             $account->owner = $super;
             $this->assertTrue($account->save());
 
             $job = new ExportJob();
+            //ReadPermissionSubscriptionUpdate should get added to jobQueue
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
-
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
 
@@ -560,8 +609,13 @@
             $exportItem->forget();
             unset($exportItem);
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             $job = new ExportJob();
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
 
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
@@ -620,10 +674,15 @@
             $exportItem->forget();
             unset($exportItem);
 
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
+
             ExportModule::$asynchronousPageSize = 2;
 
             $job = new ExportJob();
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
             $this->assertTrue($job->run());
+            $this->assertEquals(0, count(Yii::app()->jobQueue->getAll()));
 
             $exportItem = ExportItem::getById($id);
             $fileModel = $exportItem->exportFileModel;
@@ -682,6 +741,9 @@
             $id = $exportItem->id;
             $exportItem->forget();
             unset($exportItem);
+
+            //Delete queued jobs from test exportItems created above
+            Yii::app()->jobQueue->deleteAll();
 
             ExportModule::$asynchronousPageSize = 2;
 

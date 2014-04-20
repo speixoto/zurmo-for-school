@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -149,6 +149,11 @@
 
             //Load Model Security Detail View
             $this->setGetArray(array('id' => $aUser->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/securityDetails');
+
+            //Load Model Security Detail View for super user
+            $this->setGetArray(array('id' => $super->id));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('users/default/securityDetails');
 
@@ -679,7 +684,7 @@
                                                         'username' => $aUser->username,
                                                         'password' => 'bNewPassword',
                                                         'rememberMe' => '0')));
-            if(Yii::app()->edition == 'Community')
+            if (Yii::app()->edition == 'Community')
             {
                 $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/login');
             }
@@ -688,6 +693,35 @@
                 //Proper handling of license key infrastructure
                 $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/login');
             }
+        }
+
+        public function testDateAttributeIsSanitizedCorrectly()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $metadata = User::getMetadata();
+            if (!in_array('birthday', $metadata['User']['members']))
+            {
+                $metadata['User']['members'][]  = 'birthday';
+            }
+            if (!in_array(array('birthday', 'type', 'type' => 'date'), $metadata['User']['rules']))
+            {
+                $metadata['User']['rules'][]    = array('birthday', 'type', 'type' => 'date');
+                $metadata['User']['elements']['birthday'] = 'Date';
+            }
+            unset($metadata['Person']);
+            User::setMetadata($metadata);
+
+            $messageLogger = new MessageLogger();
+            RedBeanModelsToTablesAdapter::generateTablesFromModelClassNames(array('User'), $messageLogger);
+
+            UserTestHelper::createBasicUser('dateUser');
+            $dateUser = User::getByUsername('dateuser');
+            $this->setGetArray(array('id' => $dateUser->id));
+            $this->setPostArray(array('User' => array('birthday' => '12/05/2000')));
+            $this->runControllerWithRedirectExceptionAndGetContent('users/default/edit');
+            $dateUser = User::getById($dateUser->id);
+            $this->assertEquals('2000-12-05',  $dateUser->birthday);
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -1003,34 +1003,8 @@
         protected function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
                                                             $precedingRelation = null)
         {
-            assert('is_string($relation)');
-            if ($precedingModel == null || $precedingRelation == null)
-            {
-                return false;
-            }
-            //Check if the relation is a derived relation in which case return false because it is handled by
-            //@see self::inferredRelationLinksToPrecedingRelation
-            if (!$precedingModel->isAttribute($precedingRelation))
-            {
-                return false;
-            }
-            if (get_class($precedingModel) != $this->model->getRelationmodelClassName($relation))
-            {
-                return false;
-            }
-            if ( $precedingModel->getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
-                $this->model->getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
-            {
-                return true;
-            }
-            //Check for LINK_TYPE_SPECIFIC
-            if ( $precedingModel->getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
-                $this->model->getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
-                $precedingModel->getRelationLinkName($precedingRelation) == $this->model->getRelationLinkName($relation))
-            {
-                return true;
-            }
-            return false;
+            return RedBeanModel::relationLinksToPrecedingRelation(get_class($this->model), $relation,
+                                                                  get_class($precedingModel), $precedingRelation);
         }
 
         /**

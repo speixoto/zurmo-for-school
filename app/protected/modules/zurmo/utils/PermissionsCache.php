@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     // This is so that accessing a securable item several times, specifically
@@ -49,6 +49,8 @@
         private static $namedSecurableItemActualPermissions = array();
 
         public static $cacheType = 'P:';
+
+        public static $modulePermissionsDataCachePrefix = 'MD:';
 
         /**
          * @param SecurableItem $securableItem
@@ -212,6 +214,51 @@
                 }
             }
             throw new NotFoundException();
+        }
+
+        /**
+         * @param Permitable $permitable
+         * @return mixed
+         * @throws NotFoundException
+         */
+        public static function getAllModulePermissionsDataByPermitable($permitable)
+        {
+            assert('$permitable instanceof Permitable');
+            if ($permitable->getClassId('Permitable')    == 0)
+            {
+                throw new NotFoundException();
+            }
+            $permitableModelIdentifier = $permitable->getModelIdentifier();
+            if (static::supportsAndAllowsMemcache())
+            {
+                $prefix = static::$modulePermissionsDataCachePrefix . static::getCachePrefix(static::$cacheType);
+                $serializedData = Yii::app()->cache->get($prefix . $permitableModelIdentifier);
+                if ($serializedData !== false)
+                {
+                    return unserialize($serializedData);
+                }
+            }
+            throw new NotFoundException();
+        }
+
+        /**
+         * @param Permitable $permitable
+         * @param array $data
+         */
+        public static function cacheAllModulePermissionsDataByPermitables($permitable, array $data)
+        {
+            assert('$permitable instanceof Permitable');
+            if ($permitable->getClassId('Permitable') == 0)
+            {
+                return;
+            }
+            $permitableModelIdentifier   = $permitable->getModelIdentifier();
+            if (static::supportsAndAllowsMemcache())
+            {
+                $prefix = static::$modulePermissionsDataCachePrefix . static::getCachePrefix(static::$cacheType);
+
+                Yii::app()->cache->set($prefix . $permitableModelIdentifier, serialize($data));
+            }
         }
 
         // The $forgetDbLevel cache is for testing.

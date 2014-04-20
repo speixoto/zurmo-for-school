@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -71,8 +71,6 @@
                                                                     $enclosure, $firstRowIsHeaderRow);
             return true;
         }
-
-
 
         protected static function createTableByTableNameAndImportCsvIntoTable($fileHandle, $tableName, $delimiter,
                                                                                 $enclosure, $firstRowIsHeaderRow)
@@ -284,7 +282,7 @@
         {
             if ($columnCount > 0)
             {
-                if($columnCount > static::MAX_IMPORT_COLUMN_COUNT)
+                if ($columnCount > static::MAX_IMPORT_COLUMN_COUNT)
                 {
                     throw new TooManyColumnsFailedException(
                         Zurmo::t('ImportModule', 'The file has too many columns. The maximum is 100'));
@@ -292,7 +290,6 @@
                 static::createTableByTableNameAndImportColumns($tableName, $columns);
             }
         }
-
 
         /**
          * Writes provided array as csv to a temporary file
@@ -326,7 +323,7 @@
             {
                 $headerArray    = array_shift($importArray);
             }
-            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, '', false, true);
+            $csv = ExportItemToCsvFileUtil::export($importArray, $headerArray, '', false, true, true);
             return $csv;
         }
 
@@ -385,7 +382,7 @@
             {
                 if (strpos($e->getMessage(), ' 1148 ') !== false)
                 {
-                    $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections.");
+                    $e = new NotSupportedException("Please enable LOCAL INFILE in mysql config. Add local-infile=1 to [mysqld] and [mysql] sections."); // Not Coding Standard
                 }
                 throw $e;
             }
@@ -414,7 +411,7 @@
                 $importSubset       = ArrayUtil::chopArray($importArray, static::BULK_INSERT_COUNT);
                 // bulkInsert needs every subarray to have same number of columns as columnNames, pad with empty strings
                 static::padSubArrays($importSubset, count($columnNames));
-                DatabaseCompatibilityUtil::bulkInsert($tableName, $importSubset, $columnNames, static::BULK_INSERT_COUNT);
+                DatabaseCompatibilityUtil::bulkInsert($tableName, $importSubset, $columnNames, static::BULK_INSERT_COUNT, true);
             } while (count($importSubset) > 0);
         }
 
@@ -559,7 +556,6 @@
                 {
                     $update = true;
                 }
-
             }
             if ($update)
             {
@@ -590,7 +586,6 @@
             $columnLength = isset($results[2]) ? trim($results[2], '()') : null;
             return compact('columnType', 'columnLength');
         }
-
 
         /**
          * For the temporary import tables, some of the columns are reserved and not used by any of the import data

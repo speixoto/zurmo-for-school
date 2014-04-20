@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class TaskTestHelper
@@ -85,6 +85,31 @@
             $saved = $task->save();
             assert('$saved');
             return $task;
+        }
+
+        public static function createTaskByNameWithProjectAndStatus($name, $owner, $project, $status)
+        {
+            $dueStamp       = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 10000);
+            $completedStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 9000);
+            $task = new Task();
+            $task->name             = $name;
+            $task->owner            = $owner;
+            $task->dueDateTime      = $dueStamp;
+            $task->status           = $status;
+            $task->project          = $project;
+            $saved                  = $task->save();
+            assert('$saved');
+            return $task;
+        }
+
+        public static function createKanbanItemForTask($task)
+        {
+            $id = $task->id;
+            $kanbanItem  = KanbanItem::getByTask($id);
+            assert('$kanbanItem === null');
+            $kanbanItem = TasksUtil::createKanbanItemFromTask($task);
+            assert('$kanbanItem !== null');
+            return $kanbanItem;
         }
     }
 ?>

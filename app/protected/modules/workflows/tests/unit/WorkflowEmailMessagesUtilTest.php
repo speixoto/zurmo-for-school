@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class WorkflowEmailMessagesUtilTest extends WorkflowBaseTest
@@ -65,7 +65,7 @@
 
         public function testProcessAfterSaveWhenSendIsInFuture()
         {
-            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+            $this->assertEquals(0, WorkflowMessageInQueue::getCount());
             $workflow         = new Workflow();
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;
@@ -107,6 +107,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->textContent    = 'some content';
@@ -146,6 +147,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->textContent    = 'some content';
@@ -194,6 +196,7 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->textContent    = 'some content';

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class RedBeanModelMemberToColumnUtilTest extends BaseTest
@@ -52,7 +52,6 @@
             $this->assertEquals(strtolower($memberName), $columnName);
         }
 
-
         /**
          * @depends testResolve
          */
@@ -69,11 +68,11 @@
             $this->assertArrayHasKey('unsigned', $columnDefinition);
             $this->assertEquals('UNSIGNED', $columnDefinition['unsigned']);
             $this->assertArrayHasKey('notNull', $columnDefinition);
-            $this->assertEquals('NULL', $columnDefinition['notNull']);
+            $this->assertEquals('NULL', $columnDefinition['notNull']); // Not Coding Standard
             $this->assertArrayHasKey('collation', $columnDefinition);
             $this->assertNull($columnDefinition['collation']);
             $this->assertArrayHasKey('default', $columnDefinition);
-            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
+            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']); // Not Coding Standard
             $this->assertArrayNotHasKey('length', $columnDefinition);
         }
 
@@ -94,11 +93,11 @@
             $this->assertArrayHasKey('unsigned', $columnDefinition);
             $this->assertEquals('UNSIGNED', $columnDefinition['unsigned']);
             $this->assertArrayHasKey('notNull', $columnDefinition);
-            $this->assertEquals('NULL', $columnDefinition['notNull']);
+            $this->assertEquals('NULL', $columnDefinition['notNull']); // Not Coding Standard
             $this->assertArrayHasKey('collation', $columnDefinition);
             $this->assertNull($columnDefinition['collation']);
             $this->assertArrayHasKey('default', $columnDefinition);
-            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
+            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']); // Not Coding Standard
             $this->assertArrayNotHasKey('length', $columnDefinition);
         }
 
@@ -118,11 +117,11 @@
             $this->assertArrayHasKey('unsigned', $columnDefinition);
             $this->assertNull($columnDefinition['unsigned']);
             $this->assertArrayHasKey('notNull', $columnDefinition);
-            $this->assertEquals('NULL', $columnDefinition['notNull']);
+            $this->assertEquals('NULL', $columnDefinition['notNull']); // Not Coding Standard
             $this->assertArrayHasKey('collation', $columnDefinition);
             $this->assertEquals('COLLATE utf8_unicode_ci', $columnDefinition['collation']);
             $this->assertArrayHasKey('default', $columnDefinition);
-            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']);
+            $this->assertEquals('DEFAULT NULL', $columnDefinition['default']); // Not Coding Standard
             $this->assertArrayNotHasKey('length', $columnDefinition);
         }
     }

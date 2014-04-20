@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,17 +31,17 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
      * Base class of import rules that assist with importing data from an external system.  Extend this class to make
-     * a set of ImportRules that is for a specific module or a combiniation of modules and/or models.
+     * a set of ImportRules that is for a specific module or a combination of modules and/or models.
      */
     abstract class ImportRules
     {
         /**
-         * Array of cached data to avoid multiple calls to make the attriubte import rules data.  Indexed by the model
+         * Array of cached data to avoid multiple calls to make the attribute import rules data.  Indexed by the model
          * class name.
          * @var array
          */
@@ -142,7 +142,7 @@
             $model                                   = new $modelClassName(false);
             foreach ($attributesCollection as $attributeIndex => $attributeData)
             {
-                if (!in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()) &&
+                if (!static::resolveIsAttributeANonImportableAttributeName($attributeData) &&
                     !in_array($attributeData['attributeImportRulesType'], static::getNonImportableAttributeImportRulesTypes()))
                 {
                     $mappableAttributeIndicesAndDerivedTypes[$attributeIndex] = $attributeData['attributeLabel'];
@@ -157,6 +157,27 @@
             }
             natcasesort($mappableAttributeIndicesAndDerivedTypes);
             return $mappableAttributeIndicesAndDerivedTypes;
+        }
+
+        /**
+         * Resolves for relationAttributeNames as well.
+         * Inside static::getNonImportableAttributeNames() you could have billingAddress__latitude for example,
+         * and this would resolve correctly against the attributeName as billingAddress and the relationAttributeName
+         * as latitude
+         */
+        protected static function resolveIsAttributeANonImportableAttributeName($attributeData)
+        {
+            if (in_array($attributeData['attributeName'], static::getNonImportableAttributeNames()))
+            {
+                return true;
+            }
+            if (isset($attributeData['relationAttributeName']) &&
+               in_array($attributeData['attributeName'] . FormModelUtil::DELIMITER . $attributeData['relationAttributeName'],
+                        static::getNonImportableAttributeNames()))
+            {
+                return true;
+            }
+            return false;
         }
 
         /**
@@ -346,6 +367,15 @@
                 $labelsData[] = $attributeData['attributeLabel'];
             }
             return $labelsData;
+        }
+
+        /**
+         * Get fields for which dedupe ruled would be executed
+         * @return array
+         */
+        public static function getDedupeAttributes()
+        {
+            return array();
         }
     }
 ?>

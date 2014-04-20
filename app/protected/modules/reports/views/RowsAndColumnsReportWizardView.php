@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -81,7 +81,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView', $this->model->type) . "
                             $('#FiltersForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('40%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -91,7 +91,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView', $this->model->type) . "
                             $('#DisplayAttributesForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('60%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');
@@ -101,7 +101,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
                             $('#DisplayAttributesForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
+                            " . static::renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView', $this->model->type) . "
                             $('#OrderBysForReportWizardView').show();
                             $('.StepsAndProgressBarForWizardView').find('.progress-bar').width('80%');
                             $('.StepsAndProgressBarForWizardView').find('.current-step').removeClass('current-step').next().addClass('current-step');

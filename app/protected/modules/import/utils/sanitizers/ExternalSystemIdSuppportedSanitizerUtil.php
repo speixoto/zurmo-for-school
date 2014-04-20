@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -63,7 +63,7 @@
         {
             assert('$id != null && is_string($id)');
             assert('is_string($modelClassName)');
-            $tableName = $modelClassName::getTableName($modelClassName);
+            $tableName = $modelClassName::getTableName();
             $beans = ZurmoRedBean::find($tableName, ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME . " = '$id'");
             assert('count($beans) <= 1');
             if (count($beans) == 0)
@@ -94,7 +94,7 @@
                 $sqlReadyString = '\'' . $value . '\'';
             }
             $modelClassName = $this->attributeModelClassName;
-            $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
+            $sql = 'select id from ' . $modelClassName::getTableName() .
                    ' where id = ' . $sqlReadyString . ' limit 1';
             $ids =  ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');
@@ -141,7 +141,7 @@
             }
             $modelClassName = $this->attributeModelClassName;
             $columnName     = ExternalSystemIdUtil::EXTERNAL_SYSTEM_ID_COLUMN_NAME;
-            $sql = 'select id from ' . $modelClassName::getTableName($modelClassName) .
+            $sql = 'select id from ' . $modelClassName::getTableName() .
                 ' where ' . $columnName . ' = \'' . $value . '\' limit 1';
             $ids =  ZurmoRedBean::getCol($sql);
             assert('count($ids) <= 1');

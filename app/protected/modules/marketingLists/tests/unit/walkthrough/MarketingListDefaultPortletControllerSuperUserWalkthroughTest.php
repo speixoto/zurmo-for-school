@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MarketingListDefaultPortletControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
@@ -122,7 +122,7 @@
             $unsubscriberCount          = 2;
             $this->setGetArray(array('marketingListId' => $marketingListId));
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/countMembers');
-            $countArray                 = CJson::decode($content);
+            $countArray                 = CJSON::decode($content);
             $this->assertNotEmpty($countArray);
             $this->assertArrayHasKey('subscriberCount', $countArray);
             $this->assertArrayHasKey('unsubscriberCount', $countArray);
@@ -146,7 +146,7 @@
                                     'type'              => $type,
                                 ));
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -154,7 +154,7 @@
             $this->assertEquals('message', $contentArray['type']);
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -176,7 +176,7 @@
                                     'type'              => $type,
                                 ));
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -184,7 +184,7 @@
             $this->assertEquals('message', $contentArray['type']);
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
@@ -200,7 +200,7 @@
                                 ));
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $percent                    = round((2 / $contactCount) * 100,0) ; // Not Coding Standard
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
@@ -221,7 +221,7 @@
                                 ));
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
-            $contentArray               = CJson::decode($content);
+            $contentArray               = CJSON::decode($content);
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);

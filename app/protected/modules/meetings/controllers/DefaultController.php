@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,11 +31,16 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MeetingsDefaultController extends ActivityModelsDefaultController
     {
+        protected static function getZurmoControllerUtil()
+        {
+            return new MeetingHasRelatedItemsZurmoControllerUtil('activityItems', 'ActivityItemForm');
+        }
+
         public function actionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl)
         {
             if (isset($_GET['ownerOnly']))
@@ -55,17 +60,77 @@
             {
                 $relationModel = null;
             }
+            if (isset($_GET['relationModuleId']))
+            {
+                $relationModuleId = $_GET['relationModuleId'];
+            }
+            else
+            {
+                $relationModuleId = null;
+            }
             Yii::app()->getClientScript()->setToAjaxMode();
+            $meetingsView = $this->resolveViewForActionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl,
+                                                                                $ownerOnly, $relationModel, $relationModuleId);
+            $view = new ModalView($this, $meetingsView);
+            echo $view->render();
+        }
+
+        protected function resolveViewForActionDaysMeetingsFromCalendarModalList($stringTime, $redirectUrl,
+                                                                                $ownerOnly, $relationModel, $relationModuleId)
+        {
             $meetingsView = new DaysMeetingsFromCalendarModalListView(
                 $this->getId(),
                 $this->getModule()->getId(),
                 $stringTime,
                 $redirectUrl,
                 $ownerOnly,
-                $relationModel
+                $relationModel,
+                $relationModuleId
             );
-            $view = new ModalView($this, $meetingsView);
-            echo $view->render();
+
+            $dataProvider = $meetingsView->getDataProvider();
+            if ($dataProvider->getItemCount() > 0)
+            {
+                return $meetingsView;
+            }
+            else
+            {
+                return new NoMeetingsYetView($redirectUrl, $this->getId(),
+                                        $this->getModule()->getId(), $relationModel, $relationModuleId, $stringTime);
+            }
+        }
+
+        public function actionCreateMeeting($redirectUrl, $startDate = null)
+        {
+            assert('$startDate == null || is_string($startDate)');
+            $meeting = new Meeting();
+            if ($startDate != null)
+            {
+                $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
+            }
+            $this->actionCreateByModel($meeting, $redirectUrl);
+        }
+
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $meeting = Meeting::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($meeting);
+            $this->processEdit($meeting, $redirectUrl);
+        }
+
+        public function actionCreateFromRelationAndStartDate($relationAttributeName, $relationModelId,
+                                                            $relationModuleId, $redirectUrl, $startDate)
+        {
+            $modelClassName   = $this->getModule()->getPrimaryModelName();
+            $meeting          = $this->resolveNewModelByRelationInformation( new $modelClassName(),
+                                                                                $relationAttributeName,
+                                                                                (int)$relationModelId,
+                                                                                $relationModuleId);
+            if ($startDate != null)
+            {
+                $meeting->startDateTime = DateTimeUtil::convertDateIntoTimeZoneAdjustedDateTimeBeginningOfDay($startDate);
+            }
+            $this->actionCreateByModel($meeting, $redirectUrl);
         }
     }
 ?>

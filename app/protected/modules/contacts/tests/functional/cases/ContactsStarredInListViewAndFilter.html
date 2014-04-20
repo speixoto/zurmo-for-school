@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>Search</title>
+<title>ContactsStarredInListViewAndFilter</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Search</td></tr>
+<tr><td rowspan="1" colspan="3">Contacts Starred In List View And Filter</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -19,7 +19,7 @@
 <!--Go to contacts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td>index.php/contacts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -127,9 +127,14 @@
 	<td>30000</td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>id=starDataColumn_filterByStarred</td>
-  <td></td>
+	<td>open</td>
+	<td>index.php/contacts/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>

@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>SortingProductPortlet</title>
+<title>AddProductPortletAndCheckSorting</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Sorting Product Portlet</td></tr>
+<tr><td rowspan="1" colspan="3">Add Product Portlet And Check Sorting</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -31,7 +31,7 @@
 <!--go to accounts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/accounts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -135,7 +135,7 @@
 <!--remove existing product portlet-->
 <tr>
 	<td>click</td>
-	<td>//div[@id='AccountDetailsAndRelationsView']/div[2]/div/ul[2]/li[1]/div[1]/ul/li/ul/li/a</td>
+	<td>//div[@id='AccountDetailsAndRelationsView']/div[2]/div/ul[2]/li[1]/div[1]/div/ul/li/ul/li/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -156,7 +156,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='DetailsPortletSelectionView']/ul/li[2]/div/a/span</td>
+	<td>//div[@id='DetailsPortletSelectionView']/ul/li[4]/div/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -279,7 +279,7 @@
 <!--clear search accounts-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/accounts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -291,6 +291,21 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=clear-search-link</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextNotPresent</td>
+	<td>Criteria Selected</td>
+	<td></td>
 </tr>
 </tbody>
 </table>

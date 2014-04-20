@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateAccount</title>
+<title>CreateContactsAndLinkWithAccount</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create Account</td></tr>
+<tr><td rowspan="1" colspan="3">Create Contacts And Link With Account</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -20,7 +20,7 @@
 <!--Go to accounts list-->
 <tr>
 	<td>open</td>
-	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td>index.php/accounts/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -100,15 +100,15 @@
 	<td>Test Account ${randomSuffix}</td>
 	<td></td>
 </tr>
-<tr>
-	<td>setSpeed</td>
-	<td>2000</td>
-	<td></td>
-</tr>
 <!--create 1st contact link with account-->
 <tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>
+	<td></td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/a/span</td>
+	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -120,6 +120,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=Contact_firstName</td>
+	<td></td>
 </tr>
 <tr>
 	<td>type</td>
@@ -159,7 +164,7 @@
 <!--create 2nd contact link with account-->
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/a/span</td>
+	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -217,12 +222,12 @@
 	<td>Test Zurmo ${randomSuffix}</td>
 	<td></td>
 </tr>
+<!--to check if we cancel unlink, then it wont unlink contact-->
 <tr>
 	<td>setSpeed</td>
-	<td>2000</td>
+	<td>3000</td>
 	<td></td>
 </tr>
-<!--to check if we cancel unlink, then it wont unlink contact-->
 <tr>
 	<td>click</td>
 	<td>link=Unlink</td>
@@ -246,6 +251,11 @@
 <tr>
 	<td>waitForTextPresent</td>
 	<td>Test Zurmo ${randomSuffix}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
 	<td></td>
 </tr>
 <!--unlick contact from account-->
@@ -282,7 +292,7 @@
 <!-- Creating contact for testing delete-->
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/a/span</td>
+	<td>//div[@class='juiportlet-columns']/ul[2]/li[3]/div[1]/div/div/div/a/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -294,11 +304,6 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>1</td>
-	<td></td>
 </tr>
 <tr>
 	<td>type</td>
@@ -314,6 +319,16 @@
 	<td>select</td>
 	<td>id=Contact_state_id</td>
 	<td>label=Customer</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>There is 1 possible match.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='FlashMessageBar']/div/div/div/span</td>
+	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -334,4 +349,19 @@
 	<td>waitForTextPresent</td>
 	<td>Test Contact ${randomSuffix}</td>
 	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>index.php/accounts/default?clearingSearch=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>

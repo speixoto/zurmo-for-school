@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     abstract class ImapConfigurationEditAndDetailsView extends EditAndDetailsView
@@ -47,8 +47,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'ConfigurationLink'),
                             array('type' => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'ConfigurationLink'),
                             array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
                     ),
@@ -136,15 +136,20 @@
         {
             if ($element->getAttribute() == 'imapFolder')
             {
-                $message = Zurmo::t('EmailMessagesModule',
-                                    'Emails in the specified folder will be deleted by Zurmo after processing. ' .
-                                    'DO NOT use a personal email for Bounce handling');
+                $message = $this->getMessageForLabelInput();
                 $notification = ZurmoHtml::tag('span',
                                                array('class' => 'row-description'),
                                                $message);
                 $element->editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}' .
                     $notification . '{error}</td>';
             }
+        }
+
+        protected function getMessageForLabelInput()
+        {
+            return Zurmo::t('EmailMessagesModule',
+                'Emails in the specified folder will be deleted by {appLabel} after processing. ' .
+                'We do not recommend using a personal email for archiving', array('{appLabel}' => Yii::app()->label));
         }
     }
 ?>

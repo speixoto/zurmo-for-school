@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -185,7 +185,9 @@
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
             {
-                $this->actionValidate($postData, $model);
+                $errorData = ReportUtil::validateReportWizardForm($postData, $model);
+                echo CJSON::encode($errorData);
+                Yii::app()->end(0, false);
             }
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveByPostDataAndModelThenMake($postData[get_class($model)], $savedReport);
@@ -245,35 +247,7 @@
             $savedReport                        = null;
             $report                             = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id, (bool)$isBeingCopied);
-            $nodeIdWithoutTreeType              = ReportRelationsAndAttributesToTreeAdapter::
-                                                     removeTreeTypeFromNodeId($nodeId, $treeType);
-            $moduleClassName                    = $report->getModuleClassName();
-            $modelClassName                     = $moduleClassName::getPrimaryModelName();
-            $form                               = new WizardActiveForm();
-            $form->id                           = 'edit-form';
-            $form->enableAjaxValidation         = true; //ensures error validation populates correctly
-
-            $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
-            $model                              = ComponentForReportFormFactory::makeByComponentType($moduleClassName,
-                                                      $modelClassName, $report->getType(), $treeType);
-            $form->modelClassNameForError       = $wizardFormClassName;
-            $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveAttributeByNodeId($nodeIdWithoutTreeType);
-            $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveInputPrefixData($wizardFormClassName,
-                                                      $treeType, (int)$rowNumber);
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                      $form, $treeType);
-            $view                               = new AttributeRowForReportComponentView($adapter,
-                                                      (int)$rowNumber, $inputPrefixData, $attribute,
-                                                      (bool)$trackableStructurePosition, true, $treeType);
-            $content               = $view->render();
-            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
-            Yii::app()->getClientScript()->setToAjaxMode();
-            Yii::app()->getClientScript()->render($content);
-            echo $content;
+            ReportUtil::processAttributeAdditionFromTree($nodeId, $treeType, $report, $rowNumber, $trackableStructurePosition);
         }
 
         public function actionGetAvailableSeriesAndRangesForChart($type, $id = null, $isBeingCopied = false)
@@ -373,6 +347,10 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport, true);
             $report       = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $report->resolveGroupBysAsFilters(GetUtil::getData());
+            if (null != $stickyData = StickyReportUtil::getDataByKey($report->id))
+            {
+                StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            }
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsSubListPageSize', get_class($this->getModule()));
             $dataProvider = ReportDataProviderFactory::makeForSummationDrillDown($report, $pageSize);
@@ -527,26 +505,6 @@
                 Yii::app()->user->setFlash('notification', $notificationContent);
                 return true;
             }
-        }
-
-        protected function actionValidate($postData, ReportWizardForm $model)
-        {
-            if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
-            {
-                $model->setScenario($postData['validationScenario']);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $model->validate();
-            $errorData = array();
-            foreach ($model->getErrors() as $attribute => $errors)
-            {
-                    $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
-            }
-            echo CJSON::encode($errorData);
-            Yii::app()->end(0, false);
         }
 
         protected function makeReportDetailsAndRelationsView(SavedReport $savedReport, $redirectUrl,

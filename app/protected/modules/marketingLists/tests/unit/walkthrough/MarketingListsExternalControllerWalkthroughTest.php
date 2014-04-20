@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class MarketingListsExternalControllerWalkthroughTest extends ZurmoWalkthroughBaseTest
@@ -340,8 +340,6 @@
             ));
             $content = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Manage Subscriptions</title>') !== false);
-            $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
-                                                    'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') === false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
@@ -357,10 +355,10 @@
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
             $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
-            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2013. ' .
+            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2014. ' .
                                                     'All rights reserved.</span></a>') !== false);
         }
 
@@ -477,8 +475,6 @@
             ));
             $content    = $this->runControllerWithNoExceptionsAndGetContent($this->manageSubscriptionsUrl);
             $this->assertTrue(strpos($content, '<title>ZurmoCRM - Manage Subscriptions</title>') !== false);
-            $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsPageView" ' .
-                                                    'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
             $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') === false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsManageSubscriptionsListView" ' .
@@ -494,10 +490,10 @@
                                                     'SubscriptionListView-toggleUnsubscribed"') !== false);
             $this->assertTrue(strpos($content, '/marketingLists/external/optOut?hash=') !== false);
             $this->assertTrue(strpos($content, '>Unsubscribe All/OptOut</a></td>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<a href="http://www.zurmo.com" id="credit-link" ' .
                                                     'class="clearfix">') !== false);
-            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2013. ' .
+            $this->assertTrue(strpos($content, '<span>Copyright &#169; Zurmo Inc., 2014. ' .
                                                     'All rights reserved.</span></a>') !== false);
             $this->assertTrue(strpos($content, '<td>marketingList 02</td>') !== false);
             $this->assertTrue(strpos($content, '<td><div class="switch">') !== false);
@@ -1069,18 +1065,14 @@
                 'preview'   => 1,
             ));
             $content = $this->runControllerWithExitExceptionAndGetContent($this->unsubscribeUrl);
-            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
-                                                'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
                                                 'class="splash-view SplashView">') !== false);
             $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
             $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
             $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
             $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
         }
 
         /**
@@ -1093,18 +1085,14 @@
                 'preview'   => 1,
             ));
             $content = $this->runControllerWithExitExceptionAndGetContent($this->subscribeUrl);
-            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
-                                                'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
                                                 'class="splash-view SplashView">') !== false);
             $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
             $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
             $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
             $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
         }
 
         /**
@@ -1117,18 +1105,14 @@
                 'preview'   => 1,
             ));
             $content = $this->runControllerWithExitExceptionAndGetContent($this->optOutUrl);
-            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
-                                                'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
                                                 'class="splash-view SplashView">') !== false);
             $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
             $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
             $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
             $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
         }
 
         /**
@@ -1141,18 +1125,14 @@
                 'preview'   => 1,
             ));
             $content = $this->runControllerWithExitExceptionAndGetContent($this->manageSubscriptionsUrl);
-            $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPageView" ' .
-                                                'class="ZurmoPageView PageView">') !== false);
             $this->assertTrue(strpos($content, '<div class="GridView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="HeaderLinksView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="corp-logo">') !== false);
             $this->assertTrue(strpos($content, '<div id="MarketingListsExternalActionsPreviewView" ' .
                                                 'class="splash-view SplashView">') !== false);
             $this->assertTrue(strpos($content, '<div class="Warning">') !== false);
             $this->assertTrue(strpos($content, '<h2>Not so fast!</h2>') !== false);
             $this->assertTrue(strpos($content, '<div class="large-icon">') !== false);
             $this->assertTrue(strpos($content, '<p>Access denied due to preview mode being active.</p>') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
         }
     }
 ?>

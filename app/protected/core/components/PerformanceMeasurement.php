@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,11 +31,13 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     class PerformanceMeasurement extends CApplicationComponent
     {
+        const MAX_MEMORY_USAGE_RATIO = 0.8;
+
         protected $startTime;
 
         protected $memoryUsage;
@@ -122,11 +124,83 @@
         }
 
         /**
-         * @return integer - Memory usage
+         * @param bool $realUsage
+         * @return int - Memory usage
          */
-        public function getMemoryUsage()
+        public function getMemoryUsage($realUsage = false)
         {
-            return memory_get_usage();
+            return memory_get_usage($realUsage);
+        }
+
+        /**
+         * Get memory allocated for PHP scripts in bytes
+         */
+        public function getAllocatedMemoryInBytes()
+        {
+            $allocatedMemory = ini_get('memory_limit');
+            $allocatedMemoryInBytes = $this->convertToBytes($allocatedMemory);
+            return $allocatedMemoryInBytes;
+        }
+
+        /**
+         * Get ration between used and allocated memory
+         * @return float|int
+         */
+        public function getMemoryUsageRatio()
+        {
+            $memoryUsageRatio = 0;
+            $allocatedMemoryInBytes = $this->getAllocatedMemoryInBytes();
+            $usedMemory      = $this->getMemoryUsage(true);
+            if (is_int($allocatedMemoryInBytes) && $allocatedMemoryInBytes > 0 &&
+                $usedMemory > 0)
+            {
+                $memoryUsageRatio = $usedMemory/$allocatedMemoryInBytes;
+                if ($memoryUsageRatio < 0 || $memoryUsageRatio > 1)
+                {
+                    // SOme data are wrong, so reset this value
+                    $memoryUsageRatio = 0;
+                }
+            }
+            return $memoryUsageRatio;
+        }
+
+        /**
+         * Check if memory usage is safe
+         * @return bool
+         */
+        public function isMemoryUsageSafe()
+        {
+            $memoryUsageRatio = $this->getMemoryUsageRatio();
+            if ($memoryUsageRatio > self::MAX_MEMORY_USAGE_RATIO)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /**
+         * Convert kilobytes, megabytes, and gigabytes into bytes
+         * input value is in format $value{size} where size is in {'K','M','G'}
+         * @param $value
+         * @return int
+         */
+        protected function convertToBytes($value)
+        {
+            $strippedValue = substr($value, 0, -1);
+            switch(strtoupper(substr($value, -1)))
+            {
+                case "K":
+                    return $strippedValue * 1024;
+                case "M":
+                    return $strippedValue * pow(1024, 2);
+                case "G":
+                    return $strippedValue * pow(1024, 3);
+                default:
+                    return $value;
+            }
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,7 +31,7 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -70,6 +70,27 @@
             $currencyValueModel = $data->sellPrice;
             return Yii::app()->numberFormatter->formatCurrency( $currencyValueModel->value * $data->quantity,
                                                                 $currencyValueModel->currency->code);
+        }
+
+        /**
+         * Gets full calendar item data.
+         * @return string
+         */
+        public function getCalendarItemData()
+        {
+            $name                      = $this->name;
+            $quantity                  = $this->quantity;
+            $priceFrequency            = ProductTemplatePriceFrequencyDropDownElement
+                                                    ::renderNonEditableStringContent($this->priceFrequency);
+            $currencyValueModel        = $this->sellPrice;
+            $sellPrice                 = Yii::app()->numberFormatter->formatCurrency((float)$currencyValueModel->value,
+                                                                $currencyValueModel->currency->code);
+            $language                  = Yii::app()->languageHelper->getForCurrentUser();
+            $translatedAttributeLabels = self::translatedAttributeLabels($language);
+            return array(Zurmo::t('Core', 'Name',     array(), null, $language) => $name,
+                         Zurmo::t('Core', 'Quantity', array(), null, $language) => $quantity,
+                         $translatedAttributeLabels['priceFrequency']           => $priceFrequency,
+                         $translatedAttributeLabels['sellPrice']                => $sellPrice);
         }
     }
 ?>
