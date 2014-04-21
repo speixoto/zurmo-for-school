@@ -777,6 +777,11 @@
                 'noAudit' => array(
                     'serializedAvatarData',
                 ),
+                'indexes' => array(
+                    'permitable_id' => array(
+                        'members' => array('permitable_id'),
+                        'unique' => false),
+                ),
             );
             return $metadata;
         }

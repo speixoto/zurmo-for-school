@@ -270,6 +270,11 @@
                 'elements' => array(
                     'owner' => 'User',
                 ),
+                'indexes' => array(
+                    'owner__user_id' => array(
+                        'members' => array('owner__user_id'),
+                        'unique' => false),
+                ),
             );
             return $metadata;
         }
