@@ -407,7 +407,9 @@
             assert('is_int($size)');
             if (isset($this->avatarImageUrl))
             {
-                return $this->avatarImageUrl;
+                $avatarImageUrl = $this->avatarImageUrl;
+                $this->resolveAvatarImageUrlBySize($avatarImageUrl, $size);
+                return $avatarImageUrl;
             }
             else
             {
@@ -445,6 +447,11 @@
                 }
                 return $this->avatarImageUrl;
             }
+        }
+
+        private function resolveAvatarImageUrlBySize(& $avatarUrl, $size)
+        {
+            $avatarUrl = preg_replace("#(.*s=)(\d+)(.*)#", "\${1}{$size}\${3}", $avatarUrl);
         }
 
         public static function mangleTableName()
