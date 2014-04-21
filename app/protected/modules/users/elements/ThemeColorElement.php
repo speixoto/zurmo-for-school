@@ -105,6 +105,7 @@
             {
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
+            $themeName         = Yii::app()->theme->name;
             $themeBaseUrl      =  Yii::app()->themeManager->baseUrl . '/default/css';
             $primaryFilePath   = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
             $secondaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/imports-custom.css';
@@ -121,15 +122,16 @@
                           var themeBaseUrl          = '$themeBaseUrl';
                           var primaryCustomCssUrl   = '$primaryCustomCssUrl';
                           var secondaryCustomCssUrl = '$secondaryCustomCssUrl';
-                          var hashQueryString       = '" . ZurmoAssetManager::getCssAndJavascriptHashQueryString() . "'
+                          //use zurmo-blue since it is likely that all colors would change at same time. best we can do here for now
+                          var baseHashQueryString       = '" . ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/" . '/css/zurmo-blue.css') . "';
                           if(this.value === 'custom')
                           {
-                            $('head').append('<link rel=\"stylesheet\" href=\"'+primaryCustomCssUrl+hashQueryString+'\" type=\"text/css\" />');
-                            $('head').append('<link rel=\"stylesheet\" href=\"'+secondaryCustomCssUrl+hashQueryString+'\" type=\"text/css\" />');
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+primaryCustomCssUrl+'\" type=\"text/css\" />');
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+secondaryCustomCssUrl+'\" type=\"text/css\" />');
                           }
                           else
                           {
-                            $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css' + hashQueryString + '\" type=\"text/css\" />');
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css' + baseHashQueryString + '\" type=\"text/css\" />');
                           }
                           });
                       ";
