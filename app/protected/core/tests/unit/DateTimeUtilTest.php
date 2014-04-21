@@ -482,21 +482,6 @@
 
         public function testGetFirstDayOfAWeek()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $super = Yii::app()->user->userModel;
-            $super->timeZone = 'America/Chicago';
-            $super->save();
-            Yii::app()->setTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
-            $this->assertEquals('2014-04-21', DateTimeUtil::getFirstDayOfAWeek('2014-04-21 00:00:01'));
-            $this->assertEquals('2014-04-21', DateTimeUtil::getFirstDayOfAWeek('2014-04-23 12:00:00'));
-            $this->assertEquals('2014-04-21', DateTimeUtil::getFirstDayOfAWeek('2014-04-27 23:59:59'));
-            $this->assertEquals('2014-04-14', DateTimeUtil::getFirstDayOfAWeek('2014-04-20 23:59:59'));
-            $this->assertEquals('2014-04-21', DateTimeUtil::getFirstDayOfAWeek('2014-04-24 12:00:00'));
-            $this->assertEquals('2014-04-28', DateTimeUtil::getFirstDayOfAWeek('2014-04-28 00:00:01'));
-
-            $super->timeZone = 'Europe/Lisbon';
-            $super->save();
-            Yii::app()->setTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
             $this->assertEquals('2014-04-21', DateTimeUtil::getFirstDayOfAWeek('2014-04-21 00:00:01'));
             $this->assertEquals('2014-04-21', DateTimeUtil::getFirstDayOfAWeek('2014-04-23 12:00:00'));
             $this->assertEquals('2014-04-21', DateTimeUtil::getFirstDayOfAWeek('2014-04-27 23:59:59'));
@@ -507,22 +492,6 @@
 
         public function testGetLastDayOfAWeek()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $super = Yii::app()->user->userModel;
-
-            $super->timeZone = 'America/Chicago';
-            $super->save();
-            Yii::app()->setTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
-            $this->assertEquals('2014-04-27', DateTimeUtil::getLastDayOfAWeek('2014-04-21 00:00:01'));
-            $this->assertEquals('2014-04-27', DateTimeUtil::getLastDayOfAWeek('2014-04-23 12:00:00'));
-            $this->assertEquals('2014-04-27', DateTimeUtil::getLastDayOfAWeek('2014-04-27 23:59:59'));
-            $this->assertEquals('2014-04-20', DateTimeUtil::getLastDayOfAWeek('2014-04-20 23:59:59'));
-            $this->assertEquals('2014-04-27', DateTimeUtil::getLastDayOfAWeek('2014-04-24 12:00:00'));
-            $this->assertEquals('2014-05-04', DateTimeUtil::getLastDayOfAWeek('2014-04-28 00:00:01'));
-
-            $super->timeZone = 'Europe/Lisbon';
-            $super->save();
-            Yii::app()->setTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
             $this->assertEquals('2014-04-27', DateTimeUtil::getLastDayOfAWeek('2014-04-21 00:00:01'));
             $this->assertEquals('2014-04-27', DateTimeUtil::getLastDayOfAWeek('2014-04-23 12:00:00'));
             $this->assertEquals('2014-04-27', DateTimeUtil::getLastDayOfAWeek('2014-04-27 23:59:59'));

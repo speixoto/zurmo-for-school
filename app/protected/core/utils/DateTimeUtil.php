@@ -609,9 +609,8 @@
         public static function getFirstDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
-            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
             $dayOfTheWeek = date('w', strtotime($stringTime));
-            $dateTime = new DateTime($stringTime, $userTimeZone);
+            $dateTime = new DateTime($stringTime);
             $dateTime->modify('this week');
             if ($dayOfTheWeek == 0)
             {
@@ -629,10 +628,8 @@
         public static function getLastDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
-            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
-
             $dayOfTheWeek = date('w', strtotime($stringTime));
-            $dateTime = new DateTime($stringTime, $userTimeZone);
+            $dateTime = new DateTime($stringTime);
             $dateTime->modify('this week +6 days');
             if ($dayOfTheWeek == 0)
             {
