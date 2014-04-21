@@ -43,9 +43,10 @@
          * Append to end of .css or .js that is non minified or part of assets. This will ensure on version change that
          * a fresh version of the file is loaded
          */
-        public static function getCssAndJavascriptHashQueryString()
+        public static function getCssAndJavascriptHashQueryString($filePath)
         {
-            return '?v='. abs(crc32(Yii::getVersion() . VERSION));
+            assert('is_string($filePath)');
+            return '?v='. abs(filemtime($filePath));
         }
 
         /**
