@@ -269,5 +269,10 @@
 
             return $content;
         }
+
+        public static function getProductTemplatePriceFrequencyDisplayedGridValue($data)
+        {
+            return ProductTemplatePriceFrequencyDropDownElement::renderNonEditableStringContent($data->priceFrequency);
+        }
     }
 ?>

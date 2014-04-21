@@ -610,7 +610,7 @@
         {
             assert('is_string($stringTime) || $stringTime == null');
             $dateTime = new DateTime($stringTime);
-            $dateTime->modify('Monday this week');
+            $dateTime->modify('next monday -1 week');
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
@@ -624,7 +624,7 @@
         {
             assert('is_string($stringTime) || $stringTime == null');
             $dateTime = new DateTime($stringTime);
-            $dateTime->modify('Sunday this week');
+            $dateTime->modify('next sunday -1 week');
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }

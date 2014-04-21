@@ -40,6 +40,16 @@
     class ZurmoAssetManager extends CAssetManager
     {
         /**
+         * Append to end of .css or .js that is non minified or part of assets. This will ensure on version change that
+         * a fresh version of the file is loaded
+         */
+        public static function getCssAndJavascriptHashQueryString($filePath)
+        {
+            assert('is_string($filePath)');
+            return '?v='. abs(filemtime($filePath));
+        }
+
+        /**
         * Generate a CRC32 hash for the directory path. Collisions are higher
         * than MD5 but generates a much smaller hash string.
         * Function uses module path, Yii version and Zurmo version to generate hash value for asset folder.
@@ -48,7 +58,7 @@
         */
         protected function hash($path)
         {
-            return sprintf('%x', crc32($path.Yii::getVersion().VERSION));
+            return sprintf('%x', crc32($path.Yii::getVersion(). VERSION));
         }
     }
 ?>

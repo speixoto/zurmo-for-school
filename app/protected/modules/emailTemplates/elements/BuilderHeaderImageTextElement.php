@@ -69,7 +69,7 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Header');
+            return Zurmo::t('Core', 'Header');
         }
 
         protected static function resolveWidgetHtmlOptions()

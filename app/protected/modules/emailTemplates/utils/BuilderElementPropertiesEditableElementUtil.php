@@ -78,9 +78,10 @@
 
         protected static function getIconByProperty($property)
         {
-            if (isset(BaseBuilderElement::getPropertiesSuffixMappedArray()[$property]))
+            $propertiesSuffixMappedArray = BaseBuilderElement::getPropertiesSuffixMappedArray();
+            if (isset($propertiesSuffixMappedArray[$property]))
             {
-                $icon = BaseBuilderElement::getPropertiesSuffixMappedArray()[$property];
+                $icon = $propertiesSuffixMappedArray[$property];
                 switch ($icon)
                 {
                     case '%':

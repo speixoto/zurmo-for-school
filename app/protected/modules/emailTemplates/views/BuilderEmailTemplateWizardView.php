@@ -128,7 +128,7 @@
         protected function resolvePreviewIFrameContainerHtmlOptions()
         {
             return array('id'    => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID,
-                'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
+                'title' => Zurmo::t('ZurmoModule', 'Preview'),
                 'style' => 'display:none');
         }
     }

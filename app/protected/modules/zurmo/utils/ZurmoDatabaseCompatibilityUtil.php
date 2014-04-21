@@ -220,7 +220,7 @@
             READS SQL DATA
             begin
                 declare result tinyint;
-                declare _permitable_id tinyint;
+                declare _permitable_id int;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         return 0;
@@ -291,7 +291,7 @@
             READS SQL DATA
             begin                # but since PDO returns it as a string I am too, until I know if that is a bad thing.
                 declare result tinyint;
-                declare _permitable_id tinyint;
+                declare _permitable_id int;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         return 0;
@@ -338,7 +338,7 @@
             READS SQL DATA
             begin
                 declare result tinyint;
-                declare _permitable_id tinyint;
+                declare _permitable_id int;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         return 0;
@@ -363,7 +363,7 @@
             READS SQL DATA
             begin
                 declare result tinyint;
-                declare _permitable_id tinyint;
+                declare _permitable_id int;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         return 0;
@@ -411,7 +411,7 @@
             READS SQL DATA
             begin
                 declare result tinyint;
-                declare _permitable_id tinyint;
+                declare _permitable_id int;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         return 0;
@@ -436,7 +436,7 @@
             READS SQL DATA
             begin                # but since PDO returns it as a string I am too, until I know if that is a bad thing.
                 declare result tinyint;
-                declare _permitable_id tinyint;
+                declare _permitable_id int;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         return 0;
@@ -655,7 +655,7 @@
                                 out result      tinyint
                               )
             begin
-                declare _role_id tinyint;
+                declare _role_id int;
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         set result = 0;
