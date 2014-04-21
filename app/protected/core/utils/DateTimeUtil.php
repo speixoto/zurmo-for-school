@@ -609,8 +609,14 @@
         public static function getFirstDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
-            $dateTime = new DateTime($stringTime);
-            $dateTime->modify('next monday -1 week');
+            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
+            $dayOfTheWeek = date('w', strtotime($stringTime));
+            $dateTime = new DateTime($stringTime, $userTimeZone);
+            $dateTime->modify('this week');
+            if ($dayOfTheWeek == 0)
+            {
+                $dateTime->modify('-7 days');
+            }
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
@@ -623,8 +629,15 @@
         public static function getLastDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
-            $dateTime = new DateTime($stringTime);
-            $dateTime->modify('next sunday -1 week');
+            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
+
+            $dayOfTheWeek = date('w', strtotime($stringTime));
+            $dateTime = new DateTime($stringTime, $userTimeZone);
+            $dateTime->modify('this week +6 days');
+            if ($dayOfTheWeek == 0)
+            {
+                $dateTime->modify('-7 days');
+            }
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
