@@ -44,7 +44,7 @@
                                             'RowConfigurationStaticDropDownFormElement',
                                             'configuration',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Configuration')));
+                                                Zurmo::t('ConfigurationModule', 'Configuration')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementBackendPropertiesEditableElementUtil',
                                             'CheckBoxElement',

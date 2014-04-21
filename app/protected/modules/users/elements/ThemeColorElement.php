@@ -105,9 +105,9 @@
             {
                 $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
             }
-            $themeBaseUrl =  Yii::app()->themeManager->baseUrl . '/default/css';
-            $filePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
-            $primaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
+            $themeName         = Yii::app()->theme->name;
+            $themeBaseUrl      =  Yii::app()->themeManager->baseUrl . '/default/css';
+            $primaryFilePath   = Yii::app()->lessCompiler->compiledCustomCssPath . '/zurmo-custom.css';
             $secondaryFilePath = Yii::app()->lessCompiler->compiledCustomCssPath . '/imports-custom.css';
             if (!is_file($primaryFilePath) || !is_file($secondaryFilePath))
             {
@@ -122,6 +122,8 @@
                           var themeBaseUrl          = '$themeBaseUrl';
                           var primaryCustomCssUrl   = '$primaryCustomCssUrl';
                           var secondaryCustomCssUrl = '$secondaryCustomCssUrl';
+                          //use zurmo-blue since it is likely that all colors would change at same time. best we can do here for now
+                          var baseHashQueryString       = '" . ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/" . '/css/zurmo-blue.css') . "';
                           if(this.value === 'custom')
                           {
                             $('head').append('<link rel=\"stylesheet\" href=\"'+primaryCustomCssUrl+'\" type=\"text/css\" />');
@@ -129,7 +131,7 @@
                           }
                           else
                           {
-                            $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css\" type=\"text/css\" />');
+                            $('head').append('<link rel=\"stylesheet\" href=\"'+themeBaseUrl+'/zurmo-'+this.value+'.css' + baseHashQueryString + '\" type=\"text/css\" />');
                           }
                           });
                       ";

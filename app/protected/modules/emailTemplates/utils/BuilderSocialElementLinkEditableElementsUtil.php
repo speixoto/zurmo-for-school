@@ -53,7 +53,7 @@
                                                 'TextElement',
                                                 "services][${serviceName}][url",
                                                 static::resolveDefaultParams(
-                                                    Zurmo::t('EmailTemplatesModule', 'Url')));
+                                                    Zurmo::t('Core', 'Url')));
             }
             return $configurationItems;
         }

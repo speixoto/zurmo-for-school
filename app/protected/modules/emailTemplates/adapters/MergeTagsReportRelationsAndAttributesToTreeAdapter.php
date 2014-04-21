@@ -148,7 +148,7 @@
                       'dataValue' => MergeTagsUtil::TAG_PREFIX . 'BASE' . MergeTagsUtil::CAPITAL_DELIMITER . 'URL' .
                                    MergeTagsUtil::TAG_SUFFIX),
                 array('id'        => 'applicationName',
-                      'label'     => Zurmo::t('EmailTemplatesModule', 'Application Name'),
+                      'label'     => Zurmo::t('ZurmoModule', 'Application Name'),
                       'dataValue' => MergeTagsUtil::TAG_PREFIX . 'APPLICATION' . MergeTagsUtil::CAPITAL_DELIMITER . 'NAME' .
                                    MergeTagsUtil::TAG_SUFFIX),
                 array('id'        => 'currentYear',

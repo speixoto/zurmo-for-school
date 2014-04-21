@@ -326,8 +326,13 @@
             $baseColumnName = EmailMessageActivity::getTableName() . '_id';
             return array($baseColumnName . '_' . $relatedColumnName => array(
                                 'members' => array($baseColumnName, $relatedColumnName),
-                                'unique' => true,
-                            )
+                                'unique' => true),
+                         $baseColumnName => array(
+                                'members' => array($baseColumnName),
+                                'unique' => false),
+                         $relatedColumnName => array(
+                                'members' => array($relatedColumnName),
+                                'unique' => false)
                         );
         }
     }

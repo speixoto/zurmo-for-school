@@ -249,7 +249,7 @@
             $iframeOverlaySelector              = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
             $cachedSerializedSelector           = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
             $errorOnDeleteMessage               = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
-            $dropHereMessage                    = Zurmo::t('EmailTemplatesModule', 'Drop here');
+            $dropHereMessage                    = Zurmo::t('Core', 'Drop here');
             $csrfToken                          = Yii::app()->request->csrfToken;
             $doNotWrapInRow                     = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
             $wrapInRow                          = BuilderElementRenderUtil::WRAP_IN_ROW;

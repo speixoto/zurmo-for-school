@@ -114,7 +114,7 @@
         protected function renderPreviewLink()
         {
             $htmlOptions    = $this->htmlOptionsForPreviewLink();
-            $previewLabel   = Zurmo::t('EmailTemplatesModule', 'Preview');
+            $previewLabel   = Zurmo::t('ZurmoModule', 'Preview');
             $previewSpan    = ZurmoHtml::tag('span', array('class' => 'z-label'), $previewLabel);
             return ZurmoHtml::link($previewSpan, '#', $htmlOptions);
         }

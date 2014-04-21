@@ -144,5 +144,10 @@
         {
             return 'projects-feed-list-view';
         }
+
+        public static function getDesignerRulesType()
+        {
+            return 'NonModifiableListView';
+        }
     }
 ?>

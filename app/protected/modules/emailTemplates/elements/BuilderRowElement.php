@@ -40,7 +40,7 @@
 
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Row');
+            return Zurmo::t('Core', 'Row');
         }
 
         protected function resolveDefaultProperties()

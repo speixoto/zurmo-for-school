@@ -277,7 +277,7 @@
             }
             else
             {
-                Zurmo::t("CampaignsModule", "Save");
+                Zurmo::t('Core', 'Save');
             }
         }
     }

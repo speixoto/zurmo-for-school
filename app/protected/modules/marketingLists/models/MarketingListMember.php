@@ -180,6 +180,28 @@
             return $members;
         }
 
+        /**
+         * @param $contactId
+         * @return members associated to given contactId
+         */
+        public static function getByContactId($contactId)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'contact',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => intval($contactId),
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where             = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            $members           = self::getSubset($joinTablesAdapter, null, null, $where, null);
+            return $members;
+        }
+
         public function onCreated()
         {
             parent::onCreated();
