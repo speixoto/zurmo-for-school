@@ -108,7 +108,7 @@
 
         public function actionEdit($id)
         {
-            $group               = Group::getById(intval($id));
+            $group           = Group::getById(intval($id));
             $title           = Zurmo::t('Core', 'Edit');
             $breadCrumbLinks = array(strval($group) => array('group/' . static::resolveBreadCrumbActionByGroup($group),  'id' => $id), $title);
             $this->resolveCanGroupBeEdited($group);
