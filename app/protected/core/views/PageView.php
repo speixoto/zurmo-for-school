@@ -297,12 +297,12 @@
                 if (file_exists("themes/$themeName/css/commercial.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/commercial.css' .
-                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/css/commercial.css"));
                 }
                 if (file_exists("themes/$themeName/css/custom.css"))
                 {
                     $cs->registerCssFile($themeBaseUrl . '/css/custom.css' .
-                        ZurmoAssetManager::getCssAndJavascriptHashQueryString());
+                        ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/css/custom.css"));
                 }
             }
             if (MINIFY_SCRIPTS)
@@ -316,8 +316,8 @@
             }
             if (Yii::app()->browser->getName() == 'msie' && Yii::app()->browser->getVersion() < 9)
             {
-                $cs->registerCssFile($themeBaseUrl . '/css' . '/ie.css' .
-                    ZurmoAssetManager::getCssAndJavascriptHashQueryString(), 'screen, projection');
+                $cs->registerCssFile($themeBaseUrl . '/css/ie.css' .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/css/ie.css"), 'screen, projection');
             }
 
             foreach ($this->getStyles() as $style)
@@ -327,7 +327,7 @@
                     if (file_exists("themes/$themeName/css/$style.css"))
                     {
                         $cs->registerCssFile($themeBaseUrl . '/css/' . $style. '.css' .
-                            ZurmoAssetManager::getCssAndJavascriptHashQueryString()); // Not Coding Standard
+                            ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/css/$style.css")); // Not Coding Standard
                     }
                 }
             }

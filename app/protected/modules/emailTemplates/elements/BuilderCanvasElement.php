@@ -143,9 +143,10 @@
         protected function renderBuilderCssTools()
         {
             $cs = Yii::app()->getClientScript();
-            $baseUrl = Yii::app()->themeManager->baseUrl . '/default';
+            $themeName = Yii::app()->theme->name;
+            $baseUrl   = Yii::app()->themeManager->baseUrl . '/default';
             $cs->registerCssFile($baseUrl . '/css/builder-iframe-tools.css' .
-                ZurmoAssetManager::getCssAndJavascriptHashQueryString());
+                ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/css/builder-iframe-tools.css"));
         }
 
         protected function renderLess()
