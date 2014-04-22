@@ -92,7 +92,6 @@
         protected function registerScripts()
         {
             $this->registerPickerVisibilityScripts();
-            $this->registerPresetBorderColorScript();
         }
 
         protected function registerPickerVisibilityScripts()
@@ -111,16 +110,6 @@
                       ";
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('customColor', $script);
-        }
-
-        protected function registerPresetBorderColorScript()
-        {
-            // Begin Not Coding Standard
-            $script = "$('.color-picker').each(function(picker){
-                            $(this).css('border-color', $(this).val());
-                        });";
-            // End Not Coding Standard
-            Yii::app()->clientScript->registerScript('customColor-presetBorderColor', $script);
         }
     }
 ?>
