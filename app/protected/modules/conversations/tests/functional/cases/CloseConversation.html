@@ -17,11 +17,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>open</td>
 	<td>index.php/mashableInbox/default</td>
 	<td></td>
@@ -37,17 +32,17 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Combined</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Conversations</td>
 	<td></td>
 </tr>
@@ -72,7 +67,7 @@
   <td>New Conversation ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
+  <td>waitForTextPresent</td>
   <td>New Conversation ${randomSuffix}</td>
   <td></td>
 </tr>
@@ -100,6 +95,11 @@
   <td>waitForCondition</td>
   <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
   <td>30000</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[@id='ConversationDetailsView']/div/div[3]/div/div/div/div[2]/label</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
