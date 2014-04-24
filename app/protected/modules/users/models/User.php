@@ -410,16 +410,7 @@
                 {
                     $avatar = unserialize($this->serializedAvatarData);
                 }
-                // TODO: a config option should be added so SSL can be forced on or off
-                if (YII::app()->getRequest()->getIsSecureConnection())
-                {
-                    $scheme = 'https';
-                }
-                else
-                {
-                    $scheme = 'http';
-                }
-                $baseGravatarUrl = $scheme . '://www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
+                $baseGravatarUrl = '//www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
                 $gravatarUrlFormat        = $baseGravatarUrl . '&d=identicon';
                 $gravatarDefaultUrlFormat = $baseGravatarUrl . '&d=mm';
                 if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
