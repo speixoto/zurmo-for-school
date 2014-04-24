@@ -241,7 +241,7 @@
                                 if (strval($castedDownModel) != null)
                                             {
                                                 $params          = array('label' => strval($castedDownModel), 'wrapLabel' => false);
-                                                $moduleClassName = $castedDownModel->getModuleClassName();
+                                                $moduleClassName = ContactsStateMetadataAdapter::getModuleClassNameByModel($castedDownModel);
                                                 $moduleId        = $moduleClassName::getDirectoryName();
                                                 $element         = new DetailsLinkActionElement('default', $moduleId,
                                                                                                 $castedDownModel->id, $params);

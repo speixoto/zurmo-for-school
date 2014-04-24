@@ -405,11 +405,6 @@
         private function getAvatarImageUrl($size)
         {
             assert('is_int($size)');
-            if (isset($this->avatarImageUrl))
-            {
-                return $this->avatarImageUrl;
-            }
-            else
             {
                 if (isset($this->serializedAvatarData))
                 {
@@ -433,15 +428,22 @@
                 {
                     $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm"; // Not Coding Standard
                 }
-                //Check connection to gravatar and return offline picture
-                $htmlHeaders = @get_headers($avatarUrl);
-                if (preg_match("|200|", $htmlHeaders[0]))
+                if (isset($this->avatarImageUrl))
                 {
                     $this->avatarImageUrl = $avatarUrl;
                 }
                 else
                 {
-                    $this->avatarImageUrl = Yii::app()->theme->baseUrl . '/images/offline_user.png';
+                    //Check connection to gravatar and return offline picture
+                    $htmlHeaders = @get_headers($avatarUrl);
+                    if (preg_match("|200|", $htmlHeaders[0]))
+                    {
+                        $this->avatarImageUrl = $avatarUrl;
+                    }
+                    else
+                    {
+                        $this->avatarImageUrl = Yii::app()->theme->baseUrl . '/images/offline_user.png';
+                    }
                 }
                 return $this->avatarImageUrl;
             }
