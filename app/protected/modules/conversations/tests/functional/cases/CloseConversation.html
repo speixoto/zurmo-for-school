@@ -102,9 +102,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>//div[@id='ConversationDetailsView']/div/div[3]/div/div/div/div[2]/label</td>
 	<td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
 </tr>
 <tr>
   <td>waitForTextNotPresent</td>
