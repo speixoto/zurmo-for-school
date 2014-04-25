@@ -410,7 +410,7 @@
                 {
                     $avatar = unserialize($this->serializedAvatarData);
                 }
-                $baseGravatarUrl = 'http://www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
+                $baseGravatarUrl = '//www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
                 $gravatarUrlFormat        = $baseGravatarUrl . '&d=identicon';
                 $gravatarDefaultUrlFormat = $baseGravatarUrl . '&d=mm';
                 if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
