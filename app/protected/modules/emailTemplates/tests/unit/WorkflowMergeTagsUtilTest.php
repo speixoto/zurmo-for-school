@@ -919,7 +919,7 @@
             $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
-            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=64&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
             $this->assertEquals($expectedAvatarImage, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }
@@ -936,7 +936,7 @@
             $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
-            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=128&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
             $this->assertEquals($expectedAvatarImage, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }

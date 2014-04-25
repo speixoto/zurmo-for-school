@@ -46,6 +46,7 @@
             SecurityTestHelper::createUsers();
             SecurityTestHelper::createGroups();
             SecurityTestHelper::createRoles();
+            ContactsModule::loadStartingData();
             RedBeanModel::forgetAll();
             //do the rebuild to ensure the tables get created properly.
             ReadPermissionsOptimizationUtil::rebuild();

@@ -997,7 +997,7 @@
                 $calItem = $calendarItems[$k];
                 $fullCalendarItem['title'] = $calItem->getTitle();
                 $fullCalendarItem['start'] = $calItem->getStartDateTime();
-                if ($calItem->getEndDateTime() != null)
+                if (!DateTimeUtil::isDateTimeStringNull($calItem->getEndDateTime()))
                 {
                     $fullCalendarItem['end'] = $calItem->getEndDateTime();
                 }

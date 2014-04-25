@@ -772,17 +772,19 @@
             Yii::app()->clientScript->registerScript($scriptName, "
                     $('.edit-form-tab-content .tabs-nav a:not(.simple-link)').click( function(event){
                         event.preventDefault();
-                        //the menu items
-                        $('.active-tab', $(this).parent()).removeClass('active-tab');
-                        $(this).addClass('active-tab');
-                        //the sections
-                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
-                        _old.fadeToggle();
-                        var _new = $( $(this).attr('href') );
-                        _new.fadeToggle(150, 'linear', function(){
+                        if ( !$(this).hasClass('active-tab') )
+                        {
+                            //the menu items
+                            $('.active-tab', $(this).parent()).removeClass('active-tab');
+                            $(this).addClass('active-tab');
+                            //the sections
+                            var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                            _old.fadeToggle();
                             _old.removeClass('active-tab');
+                            var _new = $( $(this).attr('href') );
+                            _new.fadeToggle(150, 'linear');
                             _new.addClass('active-tab');
-                        });
+                        }
                     });
                 ");
             // End Not Coding Standard

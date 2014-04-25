@@ -210,13 +210,21 @@
         {
             if (parent::beforeSave())
             {
-                $this->resolveStatusAndSetCompletedFields();
                 $this->resolveAndSetDefaultSubscribers();
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+        public function __set($attributeName, $value)
+        {
+            parent::__set($attributeName, $value);
+            if ($attributeName == 'status')
+            {
+                $this->resolveStatusAndSetCompletedFields();
             }
         }
 
