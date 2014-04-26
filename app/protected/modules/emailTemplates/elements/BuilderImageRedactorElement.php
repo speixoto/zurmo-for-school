@@ -44,6 +44,10 @@
                 'allowedTags'               => $this->resolveAllowedTags(),
                 'buttons'                   => $this->resolveRedactorButtons(),
                 'imageUpload'               => ImageFileModelUtil::getUrlForActionUpload(),
+                'imageUploadErrorCallback'  => 'function(json)
+                                                {
+                                                    alert(json.error);
+                                                }',
                 'imageGetJson'              => ImageFileModelUtil::getUrlForActionGetUploaded(),
                 'syncBeforeCallback'        => $this->renderSyncBeforeCallbackScript()
             );
