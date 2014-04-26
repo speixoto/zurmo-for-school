@@ -56,7 +56,8 @@
             'ie.less',
             'mobile.less',
             'webforms-external.less',
-            'zurmo.less'
+            'zurmo.less',
+            'builder-iframe-tools.less'
         ),
     );
 

@@ -142,7 +142,7 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
             $model                                          = new EmailTemplateModelTestItem();
-            $model->string                                  = 'abc';
+            $model->string                                  = 'We will add a $100 discount to this deal';
             $model->firstName                               = 'James';
             $model->lastName                                = 'Jackson';
             $model->phone                                   = 1122334455;
@@ -173,7 +173,8 @@
             assert('$saved'); // Not Coding Standard
             self::$emailTemplate                            = $model;
             self::$content                                  = '[[STRING]] [[FIRST^NAME]] [[LAST^NAME]] [[PHONE]]';
-            self::$compareContent                           = 'abc James Jackson 1122334455';
+            self::$compareContent                           = 'We will add a $100 discount to this deal' .
+                                                                ' James Jackson 1122334455';
 
             self::$account                                  = AccountTestHelper::
                                                               createAccountByNameForOwner('Account1', self::$super);
@@ -303,7 +304,7 @@
         public function testStringMergeTag()
         {
             $content                = 'string: [[STRING]]';
-            $compareContent         = 'string: abc';
+            $compareContent         = 'string: We will add a $100 discount to this deal';
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
@@ -591,6 +592,23 @@
         /**
          * @depends testPrimaryEmailMergeTag
          */
+        public function testOwnerEmailMergeTag()
+        {
+            $content                        = 'owner: [[OWNER]]';
+            $compareContent                 = 'owner: Clark Kent';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $this->assertEquals($compareContent, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnerEmailMergeTag
+         */
         public function testSecondaryEmailMergeTag()
         {
             $content                        = 'secondaryEmail: [[SECONDARY^EMAIL]] [[SECONDARY^EMAIL__EMAIL^ADDRESS]] ' .
@@ -839,7 +857,7 @@
             $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
-            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=64&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
             $this->assertEquals($expectedAvatarImage, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }
@@ -856,7 +874,7 @@
             $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
-            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=128&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
             $this->assertEquals($expectedAvatarImage, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }

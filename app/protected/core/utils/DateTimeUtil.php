@@ -348,9 +348,7 @@
         {
             assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
             $greaterThanValue = $dateValue . ' 00:00:00';
-            $adjustedTimeStamp = Yii::app()->timeZoneHelper->convertFromLocalTimeStampForCurrentUser(
-                                 static::convertDbFormatDateTimeToTimestamp($greaterThanValue));
-            return               static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
+            return static::convertDbFormattedDateTimeToTimeZoneAdjustedDateTime($greaterThanValue);
         }
 
         /**
@@ -364,10 +362,22 @@
         public static function convertDateIntoTimeZoneAdjustedDateTimeEndOfDay($dateValue)
         {
             assert('is_string($dateValue) && DateTimeUtil::isValidDbFormattedDate($dateValue)');
-            $lessThanValue     = $dateValue . ' 23:59:59';
-            $adjustedTimeStamp = Yii::app()->timeZoneHelper->convertFromLocalTimeStampForCurrentUser(
-                                 static::convertDbFormatDateTimeToTimestamp($lessThanValue));
-            return               static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
+            $lessThanValue = $dateValue . ' 23:59:59';
+            return static::convertDbFormattedDateTimeToTimeZoneAdjustedDateTime($lessThanValue);
+        }
+
+        /**
+         * @param $dateTime
+         * @return mixed
+         */
+        public static function convertDbFormattedDateTimeToTimeZoneAdjustedDateTime($dateTime)
+        {
+            assert('is_string($dateTime) && DateTimeUtil::isValidDbFormattedDateTime($dateTime)');
+            $userTimeZone = new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser());
+            $adjustedDate = new DateTime($dateTime, $userTimeZone);
+            $adjustedDate->setTimezone(new DateTimeZone('GMT'));
+            $adjustedTimeStamp = $adjustedDate->getTimestamp();
+            return static::convertTimestampToDbFormatDateTime($adjustedTimeStamp);
         }
 
         public static function getFirstDayOfAMonthDate($stringTime = null)
@@ -384,6 +394,42 @@
             assert('is_string($stringTime) || $stringTime == null');
             $dateTime = new DateTime($stringTime);
             $dateTime->modify('last day of this month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        public static function getFirstDayOfLastMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('first day of last month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        public static function getLastDayOfLastMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('last day of last month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        public static function getFirstDayOfNextMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('first day of next month');
+            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+                        $dateTime->getTimestamp());
+        }
+
+        public static function getLastDayOfNextMonthDate($stringTime = null)
+        {
+            assert('is_string($stringTime) || $stringTime == null');
+            $dateTime = new DateTime($stringTime);
+            $dateTime->modify('last day of next month');
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
@@ -563,8 +609,13 @@
         public static function getFirstDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
+            $dayOfTheWeek = date('w', strtotime($stringTime));
             $dateTime = new DateTime($stringTime);
-            $dateTime->modify('Monday this week');
+            $dateTime->modify('this week');
+            if ($dayOfTheWeek == 0)
+            {
+                $dateTime->modify('-7 days');
+            }
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }
@@ -577,8 +628,13 @@
         public static function getLastDayOfAWeek($stringTime = null)
         {
             assert('is_string($stringTime) || $stringTime == null');
+            $dayOfTheWeek = date('w', strtotime($stringTime));
             $dateTime = new DateTime($stringTime);
-            $dateTime->modify('Sunday this week');
+            $dateTime->modify('this week +6 days');
+            if ($dayOfTheWeek == 0)
+            {
+                $dateTime->modify('-7 days');
+            }
             return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                         $dateTime->getTimestamp());
         }

@@ -86,6 +86,7 @@
             $testItem->textArea  = 'Some Text Area';
             $testItem->url       = 'http://www.asite.com';
             $testItem->owner     = $super;
+            $testItem->language  = 'en';
 
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 1';
@@ -112,6 +113,7 @@
             $testItem    = ApiTestModelItem::getById($id);
             $adapter     = new RedBeanModelToApiDataUtil($testItem);
             $data        = $adapter->getData();
+
             $compareData = array(
                 'id'                => $id,
                 'firstName'         => 'Bob',
@@ -134,6 +136,7 @@
                 'primaryEmail'      => null,
                 'primaryAddress'    => null,
                 'secondaryEmail'    => null,
+                'language'          => 'en',
                 'owner' => array(
                     'id'       => $super->id,
                     'username' => 'super'
@@ -236,6 +239,7 @@
                 'primaryEmail'      => null,
                 'primaryAddress'    => null,
                 'secondaryEmail'    => null,
+                'language'          => null,
                 'owner' => array(
                     'id' => $super->id,
                     'username' => 'super'
@@ -343,6 +347,7 @@
                 'primaryEmail'      => null,
                 'primaryAddress'    => null,
                 'secondaryEmail'    => null,
+                'language'          => null,
                 'owner' => array(
                     'id' => $super->id,
                     'username' => 'super'

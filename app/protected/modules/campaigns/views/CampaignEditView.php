@@ -42,8 +42,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'    => 'CancelLink'),
                             array('type'    => 'SaveButton', 'label' => 'eval:static::renderLabelForSaveButton()'),
+                            array('type'    => 'CancelLink'),
                             array('type'    => 'CampaignDeleteLink'),
                         ),
                     ),
@@ -128,8 +128,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                            'type' => 'CampaignContactEmailTemplateNamesDropDown')
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplate')
                                             ),
                                         ),
                                     )
@@ -154,31 +153,46 @@
         protected function renderContent()
         {
             $this->registerCopyInfoFromMarketingListScript();
+            $this->registerRedactorHeightScript();
             return parent::renderContent();
         }
 
         protected function renderAfterFormLayout($form)
         {
             $content = $this->renderHtmlAndTextContentElement($this->model, null, $form);
-            return $content;
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content left-column strong-right clearfix'), $content);
         }
 
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
+            $content = null;
             if (!$this->isCampaignEditable())
             {
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute);
             }
             else
             {
+                $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), $this->renderMergeTagsContent());
                 $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
+                $element->plugins = array('fontfamily', 'fontsize', 'fontcolor');
             }
             if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }
-            $spinner = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
-            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+            $content .= ZurmoHtml::tag('div', array('class' => 'email-template-combined-content right-column'), $element->render());
+            return $content;
+        }
+
+        protected function renderMergeTagsContent()
+        {
+            $title = ZurmoHtml::tag('h3', array(), Zurmo::t('Default', 'Merge Tags'));
+            $view = new MergeTagsView('Campaign',
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'textContent')),
+                            Element::resolveInputIdPrefixIntoString(array(get_class($this->model), 'htmlContent')),
+                            false);
+            $content = $view->render();
+            return $title . $content;
         }
 
         /**
@@ -243,6 +257,13 @@
             // End Not Coding Standard
         }
 
+        protected function registerRedactorHeightScript()
+        {
+            /*Yii::app()->clientScript->registerScript('redactorHeightScript', '
+                        var contentHeight = $(".redactor_box iframe").contents().find("html").outerHeight();
+                        $(".redactor_box iframe").height(contentHeight + 50);');*/
+        }
+
         protected function isCampaignEditable()
         {
             return ($this->model->status == Campaign::STATUS_ACTIVE);
@@ -256,7 +277,7 @@
             }
             else
             {
-                Zurmo::t("CampaignsModule", "Save");
+                Zurmo::t('Core', 'Save');
             }
         }
     }

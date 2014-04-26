@@ -264,7 +264,7 @@
                           'lime'        => array('#545454', '#2B434F', '#BCC98E', '#638270', '#464646'),
                           'turquoise'   => array('#545454', '#447799', '#44BBCC', '#44BBCC', '#464646'),
                           'violet'      => array('#545454', '#4A3970', '#91A1DC', '#91A1DC', '#464646'),
-                          'sunrise'     => array('#545454', '#34495e', '#2c3e50', '#97c43d', '#c0392b'),
+                          'sunrise'     => array('#545454', '#34495e', '#c0392b', '#97c43d', '#2c3e50'),
                           'marble'      => array('#545454', '#7f7f7f', '#333333', '#97c43d', '#323232'),
                           'purple-haze' => array('#545454', '#713b8a', '#854f9e', '#97c43d', '#34495e'),
                           'flat-cement' => array('#545454', '#2c3e50', '#2c3e50', '#97c43d', '#95a5a6'),
@@ -298,8 +298,10 @@
             $themeBaseUrl   = $this->baseUrl . '/' . $themeName;
             if ($this->activeThemeColor != static::CUSTOM_NAME)
             {
-                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $this->activeThemeColor . '.css');
-                $cs->registerCssFile($themeBaseUrl . '/css/imports-' . $this->activeThemeColor . '.css');
+                $cs->registerCssFile($themeBaseUrl . '/css/zurmo-' . $this->activeThemeColor . '.css' .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/" . '/css/zurmo-' . $this->activeThemeColor . '.css'));
+                $cs->registerCssFile($themeBaseUrl . '/css/imports-' . $this->activeThemeColor . '.css' .
+                    ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/" . '/css/imports-' . $this->activeThemeColor . '.css'));
             }
             else
             {

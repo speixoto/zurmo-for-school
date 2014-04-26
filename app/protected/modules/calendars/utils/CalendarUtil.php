@@ -47,7 +47,7 @@
             $calendarItem   = new CalendarItem();
             $startAttribute = $savedCalendar->startAttributeName;
             $endAttribute   = $savedCalendar->endAttributeName;
-            $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
+            Yii::app()->custom->setCalendarItemTitle($calendarItem, $model);
             $calendarItem->setStartDateTime($model->$startAttribute);
             if ($endAttribute != null)
             {
@@ -456,7 +456,7 @@
         {
             assert('is_int($savedCalendarSubscriptionId)');
             $elementContent = ZurmoHtml::tag('li', array(),
-                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('CalendarsModule', 'Unsubscribe')), '#',
+                                            ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Core', 'Unsubscribe')), '#',
                                                     array('data-value'  => $savedCalendarSubscriptionId,
                                                           'class'       => 'shared-cal-unsubscribe')));
             $elementContent = ZurmoHtml::tag('ul', array(), $elementContent);
@@ -571,12 +571,10 @@
         public static function registerSelectCalendarScript($startDate, $endDate)
         {
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
-            $url    = Yii::app()->createUrl('calendars/default/getEvents');
             $script = "$(document).on('click', '.mycalendar,.sharedcalendar',
                                         function(){
-                                                    $('#calendar').fullCalendar('removeEventSource', getCalendarEvents('{$url}', 'calendar'));
-                                                    $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$url}', 'calendar'));
-                                                   }
+                                                    $('#calendar').fullCalendar('refetchEvents');
+                                                  }
                                      );";
             $cs = Yii::app()->getClientScript();
             $cs->registerScript('mycalendarselectscript', $script);
@@ -999,7 +997,7 @@
                 $calItem = $calendarItems[$k];
                 $fullCalendarItem['title'] = $calItem->getTitle();
                 $fullCalendarItem['start'] = $calItem->getStartDateTime();
-                if ($calItem->getEndDateTime() != null)
+                if (!DateTimeUtil::isDateTimeStringNull($calItem->getEndDateTime()))
                 {
                     $fullCalendarItem['end'] = $calItem->getEndDateTime();
                 }

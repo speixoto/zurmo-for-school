@@ -71,6 +71,7 @@
         {
             Yii::app()->user->userModel    = User::getByUsername('super');
             $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->builtType      = EmailTemplate::BUILT_TYPE_PASTED_HTML;
             $emailTemplate->name           = 'the name';
             $emailTemplate->modelClassName = 'Account';
             $emailTemplate->type           = 2;

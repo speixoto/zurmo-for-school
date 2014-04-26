@@ -90,6 +90,13 @@
         public $fromAddress;
 
         /**
+         * Name of the html converter to use for outgoing html emails
+         * null to disable
+         * @var string
+         */
+        public $htmlConverter   = null;
+
+        /**
          * Contains array of settings to load during initialization from the configuration table.
          * @see loadOutboundSettings
          * @var array
@@ -310,6 +317,7 @@
             $mailer->username = $this->outboundUsername;
             $mailer->password = $this->outboundPassword;
             $mailer->security = $this->outboundSecurity;
+            $this->resolveMailerFromEmailAccount($mailer, $emailMessage->account);
             $mailer->Subject  = $emailMessage->subject;
             $mailer->headers  = unserialize($emailMessage->headers);
             if (!empty($emailMessage->content->textContent))
@@ -318,7 +326,9 @@
             }
             if (!empty($emailMessage->content->htmlContent))
             {
-                $mailer->body     = $emailMessage->content->htmlContent;
+                $mailer->body       = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByHtmlContent(
+                                                                                    $emailMessage->content->htmlContent,
+                                                                                    $this->htmlConverter);
             }
             $mailer->From = array($emailMessage->sender->fromAddress => $emailMessage->sender->fromName);
             foreach ($emailMessage->recipients as $recipient)
@@ -333,6 +343,18 @@
                     $mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
                     //$emailMessage->attach($attachment);
                 }
+            }
+        }
+
+        protected function resolveMailerFromEmailAccount(Mailer $mailer, EmailAccount $emailAccount)
+        {
+            if ($emailAccount->useCustomOutboundSettings)
+            {
+                $mailer->host     = $emailAccount->outboundHost;
+                $mailer->port     = $emailAccount->outboundPort;
+                $mailer->username = $emailAccount->outboundUsername;
+                $mailer->password = ZurmoPasswordSecurityUtil::decrypt($emailAccount->outboundPassword);
+                $mailer->security = $emailAccount->outboundSecurity;
             }
         }
 

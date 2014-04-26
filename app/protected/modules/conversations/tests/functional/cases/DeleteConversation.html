@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>ListAndDeleteConversation</title>
+<title>DeleteConversation</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">ListAndDeleteConversation</td></tr>
+<tr><td rowspan="1" colspan="3">Delete Conversation</td></tr>
 </thead><tbody>
 <tr>
 	<td>setTimeout</td>
@@ -32,17 +32,17 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Combined</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Conversations</td>
 	<td></td>
 </tr>
@@ -55,6 +55,11 @@
   <td>waitForCondition</td>
   <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
   <td>30000</td>
+</tr>
+<tr>
+    <td>waitForElementPresent</td>
+    <td>//div[@id='MashableInboxForm_optionForModel_area']/label[3]</td>
+    <td></td>
 </tr>
 <tr>
     <td>click</td>
@@ -142,17 +147,17 @@
   <td>30000</td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Combined</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Conversations</td>
 	<td></td>
 </tr>
@@ -175,6 +180,11 @@
   <td>waitForTextPresent</td>
   <td>No results found</td>
   <td></td>
+</tr>
+<tr>
+	<td>setSpeed</td>
+	<td>0</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>

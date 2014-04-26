@@ -106,7 +106,8 @@
                 'charset'        => 'utf8',
             ),
             'emailHelper' => array(
-                'class'       => 'application.modules.emailMessages.components.EmailHelper',
+                'class'                 => 'application.modules.emailMessages.components.EmailHelper',
+                'htmlConverter'         => 'cssin'
             ),
             'authenticationHelper' => array(
                 'class'       => 'application.modules.zurmo.components.ZurmoAuthenticationHelper',
@@ -176,7 +177,9 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.iframe-transport.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/treeView/jquery.treeview.async.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.min.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js'
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/iris.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/colorPicker/color.js',
                     )
                 ),
                 //Add scripts here that do not need to load when using an ajax request such as a modal search box.  The scripts
@@ -209,7 +212,9 @@
                     array('application.core.widgets.assets',            '/fileUpload/jquery.iframe-transport.js'),
                     array('application.core.widgets.assets',            '/treeView/jquery.treeview.async.js'),
                     array('application.extensions.timepicker.assets',   '/jquery-ui-timepicker-addon.min.js'),
-                    array('application.core.widgets.assets',            '/calendar/Calendar.js')
+                    array('application.core.widgets.assets',            '/calendar/Calendar.js'),
+                    array('application.core.widgets.assets',            '/colorPicker/iris.js'),
+                    array('application.core.widgets.assets',            '/colorPicker/color.js'),
                 ),
             ),
             'languageHelper' => array(
@@ -253,6 +258,7 @@
                 'enableCookieValidation' => false, //keep off until we can fix it on linux/windows servers.
                 'excludeCsrfValidationRoutes' => array(
                     array('route' => 'contacts/external/', 'tokenEnabled' => true),
+                    array('route' => 'zurmo/imageModel/upload/', 'tokenEnabled' => false), //TODO: @sergio: Remove this when implemented outside redactor
                 ),
             ),
             'sanitizer' => array(
@@ -357,7 +363,8 @@
                 'lessFilesToCompile'    => array(
                     'ie.less',
                     'mobile.less',
-                    'webforms-external.less'
+                    'webforms-external.less',
+                    'builder-iframe-tools.less'
                 ),
             ),
         ),
@@ -382,6 +389,7 @@
             'application.modules.api.components.ApiRequest',
             'application.extensions.wideImage.WideImage',
             'application.extensions.phaActiveColumn.*',
+            'application.extensions.userinterface.UserInterface',
         ),
         'modules' => array(
             'accountAccountAffiliations',

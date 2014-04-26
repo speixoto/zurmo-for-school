@@ -205,7 +205,6 @@
                     array('htmlContent',            'type',    'type' => 'string'),
                     array('textContent',            'type',    'type' => 'string'),
                     array('htmlContent',            'StripDummyHtmlContentFromOtherwiseEmptyFieldValidator'),
-                    array('htmlContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'searchModel'),
                     array('textContent',            'AtLeastOneContentAreaRequiredValidator', 'except' => 'searchModel'),
                     array('htmlContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),
                     array('textContent',            'CampaignMergeTagsValidator', 'except' => 'searchModel'),

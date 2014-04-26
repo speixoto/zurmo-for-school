@@ -36,6 +36,8 @@
 
     class MarketingListsManageSubscriptionsPageView extends ZurmoPageView
     {
+        const TOGGLE_UNSUBSCRIBED_COOKIE_NAME = 'toggleUnsubscribed_Message';
+
         /**
          * @param CController $controller
          * @param MetadataView $listView
@@ -46,7 +48,7 @@
             $gridView           = new GridView(3, 1);
             $gridView->setView($listView, 0, 0);
             $gridView->setView($flashMessageView, 1, 0);
-            $gridView->setView(new FooterView(false), 2, 0);
+            $gridView->setView(new FooterView(), 2, 0);
             $this->registerScripts();
             parent::__construct($gridView);
         }
@@ -99,7 +101,7 @@
                 // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript($scriptName, '
                     var notificationBarId   = "FlashMessageBar";
-                    var cookieName          = "' . MarketingListsExternalController::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
+                    var cookieName          = "' . static::TOGGLE_UNSUBSCRIBED_COOKIE_NAME. '";
                     var cookieValue         = $.cookie(cookieName);
                     if (cookieValue)
                     {

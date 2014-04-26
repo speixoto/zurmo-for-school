@@ -97,6 +97,14 @@
             echo $view->render();
         }
 
+        public function actionRenderContent($id)
+        {
+            $emailMessage                   = EmailMessage::getById(intval($id));
+            $element                        = new EmailMessageContentElement($emailMessage, 'content');
+            $element->nonEditableTemplate   = "{content}";
+            echo $element->render();
+        }
+
         public function actionConfigurationEdit()
         {
             $breadCrumbLinks = array(

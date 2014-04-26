@@ -78,7 +78,7 @@
 
         protected function makeData(GameLevel $gameLevel)
         {
-            $data = array('' => '<span class="background-texture-1"></span>' . Zurmo::t('UsersModule', 'None'));
+            $data = array('' => '<span class="background-texture-1"></span>' . Zurmo::t('Core', 'None'));
             return array_merge($data, $this->resolveBackgroundTextureNamesAndLabelsForLocking($gameLevel));
         }
 
@@ -87,12 +87,12 @@
             $removeScript = null;
             foreach (Yii::app()->themeManager->getBackgroundTextureNamesAndLabels() as $value => $notUsed)
             {
-                $removeScript .= '$(document.body).removeClass("' . $value . '");' . "\n";
+                $removeScript .= '$(document.documentElement).removeClass("' . $value . '");' . "\n";
             }
             // Begin Not Coding Standard
             $script = "$('input[name=\"" . $this->getEditableInputName() . "\"]').live('change', function(){
                           $removeScript
-                          $(document.body).addClass(this.value);
+                          $(document.documentElement).addClass(this.value);
                           });
                       ";
             // End Not Coding Standard

@@ -120,17 +120,21 @@
                         // Looks like an email address.
                         $completeUrl = "mailto:$url";
                         $linkText = $url;
+                        $linkHtml = '<a href="' . $completeUrl . '">' . $linkText . '</a>';
                     }
                     else
                     {
                         // Prepend http:// if no protocol specified
-                        $completeUrl = $protocol ? $url : "http://$url";
-                        $linkText = "$domain$port$path";
+                        if ($protocol)
+                        {
+                            $linkHtml = '<a href="' . $url . '">' . $url . '</a>';
+                        }
+                        else
+                        {
+                            $completeUrl = "http://$url";
+                            $linkHtml = '<a href="' . $completeUrl . '">' . $url . '</a>';
+                        }
                     }
-
-                    $linkHtml = '<a href="' . $completeUrl . '">'
-                        . $linkText
-                        . '</a>';
 
                     // Cheap e-mail obfuscation to trick the dumbest mail harvesters.
                     $linkHtml = str_replace('@', '@', $linkHtml);
@@ -149,7 +153,7 @@
             }
             // Add the remainder of the text.
             $html .= substr($text, $position);
-            return $html;
+            return nl2br($html);
         }
     }
 ?>

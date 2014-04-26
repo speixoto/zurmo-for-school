@@ -39,11 +39,11 @@
         public function __construct(CController $controller, SplashView $splashView)
         {
             $applicationName    = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
-            $header             = new HeaderLinksView(array(), array(), $applicationName);
+            $header             = new HeaderLinksView(array(), array());
             $gridView           = new GridView(3, 1);
             $gridView->setView($header, 0, 0);
             $gridView->setView($splashView, 1, 0);
-            $gridView->setView(new FooterView(false), 2, 0);
+            $gridView->setView(new FooterView(), 2, 0);
             parent::__construct($gridView);
         }
     }

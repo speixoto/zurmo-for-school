@@ -161,7 +161,7 @@
             $this->assertTrue(strpos($content, '<div id="ModalContainerView">') !== false);
             $this->assertTrue(strpos($content, '<div id="modalContainer">') !== false);
             $this->assertTrue(strpos($content, '<div id="ModalGameNotificationContainerView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<div class="ui-chooser">') !== false);
         }
 
@@ -254,7 +254,7 @@
             $this->assertTrue(strpos($content, '<div id="ModalContainerView">') !== false);
             $this->assertTrue(strpos($content, '<div id="modalContainer">') !== false);
             $this->assertTrue(strpos($content, '<div id="ModalGameNotificationContainerView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<div class="ui-chooser">') !== false);
         }
 
@@ -333,7 +333,7 @@
             $this->assertTrue(strpos($content, '<div id="ModalContainerView">') !== false);
             $this->assertTrue(strpos($content, '<div id="modalContainer">') !== false);
             $this->assertTrue(strpos($content, '<div id="ModalGameNotificationContainerView">') !== false);
-            $this->assertTrue(strpos($content, '<div id="FooterView">') !== false);
+            $this->assertTrue(strpos($content, '<footer id="FooterView">') !== false);
             $this->assertTrue(strpos($content, '<div class="ui-chooser">') !== false);
         }
 

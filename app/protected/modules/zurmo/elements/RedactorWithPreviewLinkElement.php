@@ -39,14 +39,14 @@
         protected function renderControlEditable()
         {
             $content                 = parent::renderControlEditable();
-            $selector                = '$("#' . $this->getEditableInputId() . '").html()';
+            $selector                = '$("#' . $this->getEditableInputId() . '").redactor("get")';
             $previewElementParams    = array('isHtmlContent' => 1,
                                                 'inputId' => $this->getEditableInputId(),
                                                 'selector' => $selector);
             $previewElementParams    = CMap::mergeArray($this->params, $previewElementParams);
             $controllerId            = Yii::app()->controller->id;
             $moduleId                = Yii::app()->controller->module->id;
-            $previewElement          = new AutoresponderOrCampaignFooterTextPreviewElement($controllerId, $moduleId,
+            $previewElement          = new GlobalMarketingFooterConfigurationPreviewElement($controllerId, $moduleId,
                                                                             $this->model->Id, $previewElementParams);
             $content                .= $previewElement->render();
             return $content;

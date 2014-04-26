@@ -122,7 +122,7 @@
             assert('$url != ""');
             $url       = trim($url);
             $className = __CLASS__;
-            $bean      = ZurmoRedBean::findOne($className::getTableName($className), "url = :url", array(':url' => $url));
+            $bean      = ZurmoRedBean::findOne($className::getTableName(), "url = :url", array(':url' => $url));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -146,7 +146,7 @@
             assert('is_string($hash)');
             assert('$hash != ""');
             $className = __CLASS__;
-            $bean = ZurmoRedBean::findOne($className::getTableName($className), "hash = :hash ", array(':hash' => $hash));
+            $bean = ZurmoRedBean::findOne($className::getTableName(), "hash = :hash ", array(':hash' => $hash));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {

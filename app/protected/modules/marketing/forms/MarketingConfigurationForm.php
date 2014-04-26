@@ -68,10 +68,10 @@
                                                                      LabelUtil::getTranslationParamsForAllModules()),
                 'campaignItemsToCreatePageSize'          => Zurmo::t('MarketingModule', 'Campaign Items creation page size'),
                 'autoresponderOrCampaignFooterPlainText' => Zurmo::t('MarketingModule',
-                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel Footer(Plain Text)',
+                                                                     'MarketingModuleSingularLabel Footer(Plain Text)',
                                                                      LabelUtil::getTranslationParamsForAllModules()),
                 'autoresponderOrCampaignFooterRichText'  => Zurmo::t('MarketingModule',
-                                                                     'AutorespondersModuleSingularLabel/CampaignsModuleSingularLabel Footer(Rich Text)',
+                                                                     'MarketingModuleSingularLabel Footer(Rich Text)',
                                                                      LabelUtil::getTranslationParamsForAllModules())
             );
         }

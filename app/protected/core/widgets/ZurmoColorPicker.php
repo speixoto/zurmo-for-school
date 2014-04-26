@@ -50,6 +50,8 @@
 
         public $inputValue;
 
+        public $palettes = 'false';
+
         /**
          * @var string a javascript function that will be invoked after the color changes.
          */
@@ -68,14 +70,26 @@
                 {
                     $('#{$this->inputId}').iris({
                         change: {$this->change},
+                        palettes: {$this->palettes},
                     });
                 }
                 );
             ";
             // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $javaScript, CClientScript::POS_END);
+            $this->resolveHtmlOptions();
+            $inputField = ZurmoHtml::textField($this->inputName, $this->inputValue, $this->htmlOptions);
+            $icon = ZurmoHtml::icon('icon-color-picker');
+            echo ZurmoHtml::tag('div', array('class' => 'has-color-picker'), $inputField . $icon);
+        }
+
+        protected function resolveHtmlOptions()
+        {
             $this->htmlOptions['id'] = $this->inputId;
-            echo ZurmoHtml::textField($this->inputName, $this->inputValue, $this->htmlOptions);
+            if ($this->inputValue != null)
+            {
+                $this->htmlOptions['style'] = 'border-color:' . $this->inputValue;
+            }
         }
     }
 ?>

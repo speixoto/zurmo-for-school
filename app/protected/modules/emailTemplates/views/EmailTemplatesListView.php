@@ -56,6 +56,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplateBuiltType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'owner', 'type' => 'User'),
                                             ),
                                         ),
@@ -72,6 +81,14 @@
         protected function getListActionId()
         {
             return Yii::app()->getController()->getAction()->getId();
+        }
+
+        protected function getCGridViewLastColumn()
+        {
+            $cGridViewLastColumn = parent::getCGridViewLastColumn();
+            $cGridViewLastColumn['buttons']['update']['url'] = 'Yii::app()->createUrl("' .
+                            $this->getGridViewActionRoute('edit') . '", array("id" => $data->id, "type" => $data->type))';
+            return $cGridViewLastColumn;
         }
     }
 ?>

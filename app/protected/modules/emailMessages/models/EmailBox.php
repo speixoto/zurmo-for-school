@@ -146,7 +146,7 @@
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'folders' => Zurmo::t('EmailMessagesModule', 'Folders', array(), null, $language),
-                    'name'    => Zurmo::t('ZurmoModule',         'Name',    array(), null, $language),
+                    'name'    => Zurmo::t('Core',                'Name',    array(), null, $language),
                     'users'   => Zurmo::t('UsersModule',         'Users',   array(), null, $language),
                 )
             );
