@@ -410,23 +410,28 @@
                 {
                     $avatar = unserialize($this->serializedAvatarData);
                 }
+                $baseGravatarUrl = 'http://www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
+                $gravatarUrlFormat        = $baseGravatarUrl . '&d=identicon';
+                $gravatarDefaultUrlFormat = $baseGravatarUrl . '&d=mm';
                 if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
                 {
-                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm"; // Not Coding Standard
+                    $avatarUrl = sprintf($gravatarDefaultUrlFormat, '');
                 }
                 elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
                 {
                     $email      = $this->primaryEmail->emailAddress;
-                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g"; // Not Coding Standard
+                    $emailHash  = md5(strtolower(trim($email)));
+                    $avatarUrl  = sprintf($gravatarUrlFormat, $emailHash);
                 }
                 elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_CUSTOM_EMAIL)
                 {
                     $email      = $avatar['customAvatarEmailAddress'];
-                    $avatarUrl   = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s={$size}&d=identicon&r=g"; // Not Coding Standard
+                    $emailHash  = md5(strtolower(trim($email)));
+                    $avatarUrl  = sprintf($gravatarUrlFormat, $emailHash);
                 }
                 else
                 {
-                    $avatarUrl = "http://www.gravatar.com/avatar/?s={$size}&r=g&d=mm"; // Not Coding Standard
+                    $avatarUrl = sprintf($gravatarDefaultUrlFormat, '');
                 }
                 if (isset($this->avatarImageUrl))
                 {
@@ -1041,4 +1046,3 @@
             return false;
         }
     }
-?>
