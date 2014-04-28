@@ -112,8 +112,13 @@
                             {
                                 $(htmlContentElement).redactor("toggle");
                             }
+                            if ($(".tabs-nav > a:first").hasClass("active-tab"))
+                            {
+                                $(".tabs-nav > a:eq(1)").click();
+                            }
                             updateElementWithData(textContentElement, data.textContent);
                             updateElementWithData(subjectElement, data.subject);
+                            $(htmlContentElement).redactor("selectionAll");
                             $(htmlContentElement).redactor("insertHtml", data.htmlContent);
                             var contentHeight = $(".redactor_box iframe").contents().find("html").outerHeight();
                             $(".redactor_box iframe").height(contentHeight + 50);
