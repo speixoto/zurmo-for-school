@@ -58,6 +58,7 @@
                     array('type',        'required'),
                     array('type',        'type',    'type' => 'string'),
                     array('type',        'length',  'min'  => 1, 'max' => 128),
+                    array('type',        'fileType'),
 
                 ),
                 'defaultSortAttribute' => 'name',
@@ -66,6 +67,11 @@
                 ),
             );
             return $metadata;
+        }
+
+        public function fileType($attribute, $params)
+        {
+            return true;
         }
 
         public static function isTypeDeletable()
