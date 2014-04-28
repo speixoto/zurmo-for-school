@@ -181,7 +181,7 @@
             }
         }
 
-        public function fileType($attribute, $params)
+        public function fileTypeValidator($attribute, $params)
         {
             if ($this->type == 'image/png'
                 || $this->type == 'image/jpg'
