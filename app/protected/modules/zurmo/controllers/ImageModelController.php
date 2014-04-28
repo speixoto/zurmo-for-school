@@ -40,26 +40,34 @@
         {
             //TODO: @sergio: Add test
             $uploadedFile = UploadedFileUtil::getByNameAndCatchError('file');
+
             $tempFilePath = $uploadedFile->getTempName();
 
             $fileContent = new FileContent();
             $fileContent->content = file_get_contents($tempFilePath);
 
-            //TODO: @sergio Retrict upload of image types only
             $imageFileModel = new ImageFileModel();
             $imageFileModel->name        = $uploadedFile->getName();
             $imageFileModel->size        = $uploadedFile->getSize();
             $imageFileModel->type        = $uploadedFile->getType();
             $imageFileModel->fileContent = $fileContent;
-            $imageFileModel->save();
 
-            $imageFileModel->createImageCache();
+            if ($imageFileModel->save())
+            {
+                $imageFileModel->createImageCache();
+                $array = array(
+                    'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
+                            array('fileName' => $imageFileModel->getImageCacheFileName()))
+                );
+                echo CJSON::encode($array);
+            }
+            else
+            {
+                $message = Zurmo::t('ZurmoModule', 'Error uploading the image');
+                $fileUploadData = array('error' => $message);
+                echo CJSON::encode(array($fileUploadData));
+            }
 
-            $array = array(
-                'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
-                                    array('fileName' => $imageFileModel->getImageCacheFileName()))
-            );
-            echo stripslashes(json_encode($array));
         }
 
         public function actionGetUploaded()
