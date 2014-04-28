@@ -78,6 +78,13 @@
                 ),
                 'elements' => array(
                 ),
+                'indexes' => array( 'campaign_id' => array(
+                                        'members' => array('campaign_id'),
+                                        'unique' => false),
+                                    'contact_id' => array(
+                                        'members' => array('contact_id'),
+                                        'unique' => false)
+                ),
             );
             return $metadata;
         }
