@@ -124,6 +124,10 @@
             if (static::supportsAndAllowsMemcache())
             {
                 static::incrementCacheIncrementValue(static::$cacheType);
+                if (ArrayUtil::getArrayValue(Yii::app()->params, 'allowMemcacheFlush'))
+                {
+                    Yii::app()->cache->flush();
+                }
             }
         }
     }

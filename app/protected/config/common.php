@@ -447,6 +447,8 @@
             'redBeanVersion'     => '3.2',
             'yiiVersion'         => '1.1.13',
             'memcacheServers'    => $memcacheServers,
+            // enable if you want to clear memcache data with clearCache=1
+            'allowMemcacheFlush' => true,
             'supportedLanguages' => array(
                 'en' => 'English',
                 'es' => 'Spanish',
