@@ -88,8 +88,8 @@
         {
             $view = new MergeTagsView('BuilderElementEditable', null,
                 'BuilderElementEditableModelForm_content_text'); //todo: get this value values dynamically
-            $view->moduleClassNameSelector = GeneralDataForEmailTemplateWizardView::
-                                                    resolveModuleClassNameHiddenInputJQuerySelector();
+            $view->modelClassNameSelector = GeneralDataForEmailTemplateWizardView::
+                                                    resolveModelClassNameHiddenInputJQuerySelector();
             $view->setCssClasses(array('clearfix wizard-merge-tags'));
             return $view->render();
         }
