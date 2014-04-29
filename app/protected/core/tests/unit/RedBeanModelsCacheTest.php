@@ -136,11 +136,14 @@
             try
             {
                 RedBeanModelsCache::getModel($modelIdentifier);
-                $this->fail('NotFoundException exception is not thrown.');
             }
             catch (NotFoundException $e)
             {
+                $this->fail('NotFoundException exception is thrown.');
             }
+            $prefix = RedBeanModelsCache::getCachePrefix($modelIdentifier, RedBeanModelsCache::$cacheType);
+            $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
+            $this->assertFalse($cachedData);
         }
     }
 ?>

@@ -60,7 +60,7 @@
             {
                 return static::$modelIdentifiersToModels[$modelIdentifier];
             }
-            if (static::supportsAndAllowsMemcache())
+            if (static::supportsAndAllowsMemcacheByModelIdentifier($modelIdentifier))
             {
                 $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
                 $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
@@ -101,10 +101,6 @@
          */
         public static function cacheModel(RedBeanModel $model)
         {
-            if (!$model::allowMemcacheCache())
-            {
-                return;
-            }
             $modelIdentifier = $model->getModelIdentifier();
             if (static::supportsAndAllowsPhpCaching())
             {
@@ -116,7 +112,7 @@
                                                                     static::MAX_MODELS_CACHED_IN_MEMORY);
                 }
             }
-            if (static::supportsAndAllowsMemcache())
+            if (static::supportsAndAllowsMemcacheByModel($model))
             {
                 $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
 
@@ -142,7 +138,7 @@
             {
                 unset(static::$modelIdentifiersToModels[$modelIdentifier]);
             }
-            if (static::supportsAndAllowsMemcache())
+            if (static::supportsAndAllowsMemcacheByModelIdentifier($modelIdentifier))
             {
                 $prefix = static::getCachePrefix($modelIdentifier, static::$cacheType);
                 Yii::app()->cache->delete($prefix . $modelIdentifier);
@@ -183,6 +179,24 @@
         public static function forgetAllModelIdentifiersToModels()
         {
             static::$modelIdentifiersToModels = array();
+        }
+
+        protected static function supportsAndAllowsMemcacheByModel(RedBeanModel $model)
+        {
+            $className  = get_class($model);
+            return static::supportsAndAllowsMemcacheByModelClassName($className);
+
+        }
+
+        protected static function supportsAndAllowsMemcacheByModelClassName($modelClassName)
+        {
+            return ($modelClassName::allowMemcacheCache() && static::supportsAndAllowsMemcache());
+        }
+
+        protected static function supportsAndAllowsMemcacheByModelIdentifier($modelIndetifier)
+        {
+            $className  = RedBeanModel::getModelClassNameByIdentifier($modelIndetifier);
+            return static::supportsAndAllowsMemcacheByModelClassName($className);
         }
     }
 ?>
