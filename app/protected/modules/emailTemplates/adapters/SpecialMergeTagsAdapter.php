@@ -68,7 +68,10 @@
             $methodName                         = static::$specialAttributesResolver[$attributeName];
             // we send $model to all, those which need it use it, other get it as optional param.
             $resolvedSpecialMergeTagContent     = static::$methodName($model);
-            static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+            if (in_array($attributeName, static::$containsNestedMergeTags))
+            {
+                static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+            }
             return $resolvedSpecialMergeTagContent;
         }
 

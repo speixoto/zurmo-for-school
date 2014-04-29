@@ -27,7 +27,7 @@
             </arguments>
         </listener>
         <!-- do no customize the paths here. Copy this file as phpunit-profiler.xml and change that instead -->
-        <!--listener class="PHPUnit_Util_Log_XHProf" file="PHPUnit/Util/Log/XHProf.php">
+        <listener class="PHPUnit_Util_Log_XHProf" file="/srv/http/phpunit-testlistener-xhprof/PHPUnit/Util/Log/XHProf.php">
             <arguments>
                 <array>
                     <element key="xhprofLibFile">
@@ -37,7 +37,7 @@
                         <string>/usr/share/pear/xhprof_lib/utils/xhprof_runs.php</string>
                     </element>
                     <element key="xhprofWeb">
-                        <string>http://localhost/xhprof/</string>
+                        <string>http://localhost/xhprof/index.php</string>
                     </element>
                     <element key="appNamespace">
                         <string>Zurmo</string>
@@ -46,11 +46,11 @@
                         <string>XHPROF_FLAGS_CPU,XHPROF_FLAGS_MEMORY</string>
                     </element>
                     <element key="xhprofIgnore">
-                        <string>call_user_func,call_user_func_array</string>
+                        <string>PHPUnit_Framework_Assert,debug_backtrace,get_testcase_object,ok,is,result_ok,xhprof_disable</string>
                     </element>
                 </array>
             </arguments>
-        </listener -->
+        </listener>
     </listeners>
 
 </phpunit>
