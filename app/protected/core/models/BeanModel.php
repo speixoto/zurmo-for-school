@@ -723,5 +723,14 @@
             }
             return false;
         }
+
+        /**
+         * Whether or not this model instances should be cached in memcache
+         * @return bool
+         */
+        public static function allowMemcacheCache()
+        {
+            return true;
+        }
     }
 ?>

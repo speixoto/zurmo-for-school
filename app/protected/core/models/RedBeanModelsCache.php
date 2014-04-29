@@ -101,6 +101,10 @@
          */
         public static function cacheModel(RedBeanModel $model)
         {
+            if (!$model::allowMemcacheCache())
+            {
+                return;
+            }
             $modelIdentifier = $model->getModelIdentifier();
             if (static::supportsAndAllowsPhpCaching())
             {
