@@ -125,5 +125,22 @@
                 $this->assertEquals(34, $value);
             }
         }
+
+        public function testFileContentModelNotBeingCached()
+        {
+            $fileContent            = new FileContent();
+            $fileContent->content   = str_repeat('a', 1000);
+            $this->assertTrue($fileContent->save());
+            $modelIdentifier        = $fileContent->getModelIdentifier();
+            RedBeanModelsCache::cacheModel($fileContent);
+            try
+            {
+                RedBeanModelsCache::getModel($modelIdentifier);
+                $this->fail('NotFoundException exception is not thrown.');
+            }
+            catch (NotFoundException $e)
+            {
+            }
+        }
     }
 ?>
