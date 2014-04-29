@@ -444,21 +444,21 @@
         ),
 
         'params' => array(
-            'redBeanVersion'     => '3.2',
-            'yiiVersion'         => '1.1.13',
-            'memcacheServers'    => $memcacheServers,
+            'redBeanVersion'            => '3.2',
+            'yiiVersion'                => '1.1.13',
+            'memcacheServers'           => $memcacheServers,
             // enable if you want to clear memcache data with clearCache=1
-            'allowMemcacheFlush' => true,
-            'supportedLanguages' => array(
+            'hasDedicatedMemcachePool'  => false,
+            'supportedLanguages'        => array(
                 'en' => 'English',
                 'es' => 'Spanish',
                 'it' => 'Italian',
                 'fr' => 'French',
                 'de' => 'German',
             ),
-            'sentryDsn'    => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
+            'sentryDsn'                 => 'http://5232100222bc4404b368026413df2d9a:47f7a2f1542348d68bea7b00f2261ede@sentry.zurmo.com/2',
         ),
-        'preload' => array(
+        'preload'                       => array(
             'browser',
             'sanitizer',
             'log'
