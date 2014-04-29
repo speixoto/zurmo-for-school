@@ -394,15 +394,15 @@
             $this->serializedAvatarData = serialize($avatar);
         }
 
-        public function getAvatarImage($size = 250)
+        public function getAvatarImage($size = 250, $addScheme = false)
         {
-            $avatarUrl = $this->getAvatarImageUrl($size);
+            $avatarUrl = $this->getAvatarImageUrl($size, $addScheme);
             return ZurmoHtml::image($avatarUrl, $this->getFullName(), array('class'  => 'gravatar',
                                                                               'width'  => $size,
                                                                               'height' => $size));
         }
 
-        private function getAvatarImageUrl($size)
+        private function getAvatarImageUrl($size, $addScheme = false)
         {
             assert('is_int($size)');
             {
@@ -449,6 +449,10 @@
                     {
                         $this->avatarImageUrl = Yii::app()->theme->baseUrl . '/images/offline_user.png';
                     }
+                }
+                if ($addScheme)
+                {
+                    return 'http:' . $this->avatarImageUrl;
                 }
                 return $this->avatarImageUrl;
             }

@@ -113,7 +113,7 @@
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(32);
+                return $model->owner->getAvatarImage(32, true);
             }
         }
 
@@ -124,7 +124,7 @@
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(64);
+                return $model->owner->getAvatarImage(64, true);
             }
         }
 
@@ -136,7 +136,7 @@
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(128);
+                return $model->owner->getAvatarImage(128, true);
             }
         }
 
