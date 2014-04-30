@@ -77,10 +77,13 @@
             {
                 return array();
             }
-            $users  = $group->users;
             if ($group->name == Group::EVERYONE_GROUP_NAME)
             {
                 $users = User::getByCriteria(true, null);
+            }
+            else
+            {
+                $users  = $group->users;
             }
             $recipients = array();
             foreach ($users as $user)
