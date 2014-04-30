@@ -189,7 +189,7 @@
 
         protected static function resolveFullNameToFirstAndLastName($name, $contact)
         {
-            @list($firstName, $lastName) = explode(' ', trim($name, '\'" \t\n\r\0\x0B'));
+            @list($firstName, $lastName) = explode(' ', trim($name, "'\" \t\n\r\0\x0B"));
             if ($lastName == null)
             {
                 $lastName  = $firstName;
