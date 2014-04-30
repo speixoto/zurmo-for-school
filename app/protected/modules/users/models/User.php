@@ -56,7 +56,7 @@
             {
                 throw new NotFoundException();
             }
-            RedBeansCache::cacheBean($bean, User::getTableName() . $bean->id);
+            RedBeansCache::cacheBean($bean, static::getTableName() . $bean->id);
             return self::makeModel($bean);
         }
 
@@ -74,7 +74,7 @@
             assert('is_string($username)');
             assert('$username != ""');
             assert('is_string($password)');
-            $user = User::getByUsername($username);
+            $user = static::getByUsername($username);
             if ($user->hash != self::encryptPassword($password))
             {
                 throw new BadPasswordException();
@@ -141,9 +141,9 @@
             //Rarely the person attributes are not part of the user, memcache needs to be restarted to solve this
             //problem as you can't use the system once this occurs. this check below will clear the specific cache
             //that causes this. Still need to figure out what is setting the cache wrong to begin with
-            if (!User::isAnAttribute('lastName'))
+            if (!static::isAnAttribute('lastName'))
             {
-                User::forgetBeanModel('User');
+                static::forgetBeanModel('User');
             }
             $this->setClassBean                  ($modelClassName, $personBean);
             $this->mapAndCacheMetadataAndSetHints($modelClassName, $personBean);
@@ -413,17 +413,17 @@
                 $baseGravatarUrl = '//www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
                 $gravatarUrlFormat        = $baseGravatarUrl . '&d=identicon';
                 $gravatarDefaultUrlFormat = $baseGravatarUrl . '&d=mm';
-                if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
+                if (isset($avatar['avatarType']) && $avatar['avatarType'] == static::AVATAR_TYPE_DEFAULT)
                 {
                     $avatarUrl = sprintf($gravatarDefaultUrlFormat, '');
                 }
-                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_PRIMARY_EMAIL)
+                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == static::AVATAR_TYPE_PRIMARY_EMAIL)
                 {
                     $email      = $this->primaryEmail->emailAddress;
                     $emailHash  = md5(strtolower(trim($email)));
                     $avatarUrl  = sprintf($gravatarUrlFormat, $emailHash);
                 }
-                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_CUSTOM_EMAIL)
+                elseif (isset($avatar['avatarType']) && $avatar['avatarType'] == static::AVATAR_TYPE_CUSTOM_EMAIL)
                 {
                     $email      = $avatar['customAvatarEmailAddress'];
                     $emailHash  = md5(strtolower(trim($email)));
@@ -849,7 +849,7 @@
 
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
-            $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
+            $models = static::getSubset($joinTablesAdapter, null, null, $where, null);
 
             if (count($models) > 0 && is_array($models))
             {
@@ -892,7 +892,33 @@
             $searchAttributeData['structure'] = '1 and (2 or 3) and (4 or 5)';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
-            return User::getCount($joinTablesAdapter, $where, null);
+            return static::getCount($joinTablesAdapter, $where, null);
+        }
+
+        public static function getByCriteria($active = true, $groupId = null)
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'isActive',
+                    'operatorType'         => 'equals',
+                    'value'                => (bool)$active,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+
+            if (isset($groupId))
+            {
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'        => 'groups',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $groupId,
+                );
+                $searchAttributeData['structure'] .= ' and 2';
+            }
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            return static::getSubset($joinTablesAdapter, null, null, $where);
         }
 
         public static function getRootUserCount()
@@ -907,7 +933,7 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
-            return User::getCount($joinTablesAdapter, $where, null);
+            return static::getCount($joinTablesAdapter, $where, null);
         }
 
         public static function isTypeDeletable()
@@ -952,7 +978,7 @@
          */
         public function setIsRootUser()
         {
-            if (User::getRootUserCount() > 0)
+            if (static::getRootUserCount() > 0)
             {
                 throw new ExistingRootUserException();
             }

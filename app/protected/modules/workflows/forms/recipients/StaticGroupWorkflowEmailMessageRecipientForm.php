@@ -77,8 +77,13 @@
             {
                 return array();
             }
+            $users  = $group->users;
+            if ($group->name == Group::EVERYONE_GROUP_NAME)
+            {
+                $users = User::getByCriteria(true, null);
+            }
             $recipients = array();
-            foreach ($group->users as $user)
+            foreach ($users as $user)
             {
                 if ($user->primaryEmail->emailAddress != null)
                 {
