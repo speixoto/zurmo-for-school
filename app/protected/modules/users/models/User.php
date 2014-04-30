@@ -75,13 +75,27 @@
             assert('$username != ""');
             assert('is_string($password)');
             $user = static::getByUsername($username);
-            if ($user->hash != self::encryptPassword($password))
+            if (!static::compareWithCurrentPasswordHash($password, $user))
             {
                 throw new BadPasswordException();
             }
             self::resolveAuthenticatedUserCanLogin($user);
             $user->login();
             return $user;
+        }
+
+        /**
+         * Compare provided password with the hash stored in database.
+         * @param $password
+         * @param User $user
+         * @return bool
+         */
+        protected static function compareWithCurrentPasswordHash($password, User $user)
+        {
+            $phpassHashObject       = static::resolvePhpassHashObject();
+            $hashedPassword         = static::hashPassword($password);
+            $databaseHash           = $user->hash;
+            return $phpassHashObject->checkPassword($hashedPassword, $databaseHash);
         }
 
         /**
@@ -386,7 +400,25 @@
 
         public static function encryptPassword($password)
         {
+            $hashedPassword     = static::hashPassword($password);
+            $phpassHashObject   = static::resolvePhpassHashObject();
+            $passwordHash       = $phpassHashObject->hashPassword($hashedPassword);
+            return $passwordHash;
+        }
+
+        public static function hashPassword($password)
+        {
+            // we keep this for legacy purposes
             return md5($password);
+        }
+
+        public static function resolvePhpassHashObject()
+        {
+            // workaround to get namespaces working.
+            // we don't need any special autoloading care thanks to author embedding that logic in Loader.php
+            Yii::setPathOfAlias('Phpass', Yii::getPathOfAlias('application.extensions.phpass.src.Phpass'));
+            $phpassHash = new \Phpass\Hash;
+            return $phpassHash;
         }
 
         public function serializeAndSetAvatarData(Array $avatar)
@@ -743,7 +775,7 @@
                 ),
                 'rules' => array(
                     array('hash',     'type',    'type' => 'string'),
-                    array('hash',     'length',  'min'   => 32, 'max' => 32),
+                    array('hash',     'length',  'min'   => 60, 'max' => 60),
                     array('language', 'type',    'type'  => 'string'),
                     array('language', 'length',  'max'   => 10),
                     array('locale',   'type',    'type'  => 'string'),
