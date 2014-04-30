@@ -52,6 +52,25 @@
             $super->forget(); //ensures the there is no emailBox caching going on that is not needed
         }
 
+        public function testResolveFullNameToFirstAndLastName()
+        {
+            /* Test basic case with quotes around name */
+            $fullname           = "'Chris Edwards'";
+            $contact            = new Contact();
+            ArchivedEmailMatchingUtil::resolveFullNameToFirstAndLastName($fullname, $contact);
+            $this->assertEquals($contact->firstName, 'Chris');
+            $this->assertEquals($contact->lastName, 'Edwards');
+            $contact->forget();
+            
+            /* Test case with last name starting with single quote */
+            $fullname           = "Chris 'Hedwards";
+            $contact            = new Contact();
+            ArchivedEmailMatchingUtil::resolveFullNameToFirstAndLastName($fullname, $contact);
+            $this->assertEquals($contact->firstName, 'Chris');
+            $this->assertEquals($contact->lastName, '\'Hedwards');
+            $contact->forget();
+        }
+        
         public function testResolveContactToSenderOrRecipientForReceivedEmail()
         {
             $super                      = User::getByUsername('super');
