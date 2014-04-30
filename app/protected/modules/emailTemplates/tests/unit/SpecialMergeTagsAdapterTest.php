@@ -120,15 +120,15 @@
             $contact = new Contact();
             $contact->owner = $super;
             $resolvedAvatarImage = SpecialMergeTagsAdapter::resolve('ownersAvatarSmall', $contact);
-            $expectedAvatarImage = '<img class="gravatar" width="32" height="32" src="//www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $expectedAvatarImage = '<img class="gravatar" width="32" height="32" src="http://www.gravatar.com/avatar/?s=32&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
             $this->assertEquals($expectedAvatarImage, $resolvedAvatarImage);
 
             $resolvedAvatarImage = SpecialMergeTagsAdapter::resolve('ownersAvatarMedium', $contact);
-            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="//www.gravatar.com/avatar/?s=64&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $expectedAvatarImage = '<img class="gravatar" width="64" height="64" src="http://www.gravatar.com/avatar/?s=64&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
             $this->assertEquals($expectedAvatarImage, $resolvedAvatarImage);
 
             $resolvedAvatarImage = SpecialMergeTagsAdapter::resolve('ownersAvatarLarge', $contact);
-            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="//www.gravatar.com/avatar/?s=128&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
+            $expectedAvatarImage = '<img class="gravatar" width="128" height="128" src="http://www.gravatar.com/avatar/?s=128&amp;r=g&amp;d=mm" alt="Clark Kent" />'; // Not Coding Standard
             $this->assertEquals($expectedAvatarImage, $resolvedAvatarImage);
         }
 

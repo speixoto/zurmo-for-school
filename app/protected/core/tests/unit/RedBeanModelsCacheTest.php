@@ -125,5 +125,25 @@
                 $this->assertEquals(34, $value);
             }
         }
+
+        public function testFileContentModelNotBeingCached()
+        {
+            $fileContent            = new FileContent();
+            $fileContent->content   = str_repeat('a', 1000);
+            $this->assertTrue($fileContent->save());
+            $modelIdentifier        = $fileContent->getModelIdentifier();
+            RedBeanModelsCache::cacheModel($fileContent);
+            try
+            {
+                RedBeanModelsCache::getModel($modelIdentifier);
+            }
+            catch (NotFoundException $e)
+            {
+                $this->fail('NotFoundException exception is thrown.');
+            }
+            $prefix = RedBeanModelsCache::getCachePrefix($modelIdentifier, RedBeanModelsCache::$cacheType);
+            $cachedData = Yii::app()->cache->get($prefix . $modelIdentifier);
+            $this->assertFalse($cachedData);
+        }
     }
 ?>

@@ -46,7 +46,7 @@
                         <string>XHPROF_FLAGS_CPU,XHPROF_FLAGS_MEMORY</string>
                     </element>
                     <!-- element key="xhprofIgnore">
-                        <string>call_user_func,call_user_func_array</string>
+                        <string>PHPUnit_Framework_Assert,debug_backtrace,get_testcase_object,ok,is,result_ok,xhprof_disable</string>
                     </element -->
                 </array>
             </arguments>

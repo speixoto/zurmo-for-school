@@ -444,10 +444,12 @@
         ),
 
         'params' => array(
-            'redBeanVersion'     => '3.2',
-            'yiiVersion'         => '1.1.13',
-            'memcacheServers'    => $memcacheServers,
-            'supportedLanguages' => array(
+            'redBeanVersion'            => '3.2',
+            'yiiVersion'                => '1.1.13',
+            'memcacheServers'           => $memcacheServers,
+            // enable if you want to clear memcache data with clearCache=1
+            'hasDedicatedMemcachePool'  => false,
+            'supportedLanguages'        => array(
                 'en' => 'English',
                 'es' => 'Spanish',
                 'it' => 'Italian',
@@ -459,7 +461,7 @@
             'processReadMungeAsWriteMunge' => true,
             'showFlashMessageWhenSecurityCacheShouldBeRebuilt' => false,
         ),
-        'preload' => array(
+        'preload'                       => array(
             'browser',
             'sanitizer',
             'log'

@@ -121,10 +121,7 @@
             {
                 static::$cachedEntries = array();
             }
-            if (static::supportsAndAllowsMemcache())
-            {
-                static::incrementCacheIncrementValue(static::$cacheType);
-            }
+            static::clearMemcacheCache();
         }
     }
 ?>

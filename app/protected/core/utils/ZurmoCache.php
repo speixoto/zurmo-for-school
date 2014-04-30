@@ -186,5 +186,23 @@
         {
             return (static::ALLOW_DB_CACHING && DB_CACHING_ON);
         }
+
+        /**
+         * Clear memcache cache if we support and allow memcache
+         */
+        protected static function clearMemcacheCache()
+        {
+            if (static::supportsAndAllowsMemcache())
+            {
+                if (ArrayUtil::getArrayValue(Yii::app()->params, 'hasDedicatedMemcachePool'))
+                {
+                    @Yii::app()->cache->flush();
+                }
+                else
+                {
+                    static::incrementCacheIncrementValue(static::$cacheType);
+                }
+            }
+        }
     }
 ?>
