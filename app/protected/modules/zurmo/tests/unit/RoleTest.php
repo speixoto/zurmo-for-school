@@ -98,7 +98,6 @@
             $this->assertEquals('You cannot select a child role for the parent role', $grandParentRole->getError('role'));
         }
 
-
         public function testCreateRoleWithNoUsersAndNoParents()
         {
             $this->roleWithNoUsers = $this->createRole('noUsers');
