@@ -2465,7 +2465,6 @@
             {
                 $this->assertTrue(strpos($content, '<option value="' . $key) !== false); // Not Coding Standard
             }
-            exit();
         }
 
         protected function assertContentHasDemoGroupNameOptionTags($content)
