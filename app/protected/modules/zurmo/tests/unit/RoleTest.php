@@ -36,6 +36,12 @@
 
     class RoleTest extends ZurmoBaseTest
     {
+        protected $roleWithNoUsers;
+
+        protected $roleWithOneUsers;
+
+        protected $roleWithTwoUsers;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -44,14 +50,15 @@
             SecurityTestHelper::createUsers();
         }
 
+        public function setup()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testAddingUserToRole()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $role = new Role();
-            $role->name = 'myRole';
-            $role->validate();
-            $saved = $role->save();
-            $this->assertTrue($saved);
+            $role = $this->createRole('myRole');
             $benny = User::getByUsername('benny');
             //Add the role to benny
             $benny->role = $role;
@@ -76,14 +83,10 @@
 
         public function testAddingChildRoleAsAParentRole()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            $childRole              = new Role();
-            $childRole->name        = 'childRole';
-            $parentRole             = new Role();
-            $parentRole->name       = 'parentRole';
+            $childRole              = $this->createRole('childRole');
+            $parentRole             = $this->createRole('parentRole');
             $parentRole->roles->add($childRole);
-            $grandParentRole        = new Role();
-            $grandParentRole->name  = 'grandParentRole';
+            $grandParentRole        = $this->createRole('grandParentRole');
             $grandParentRole->roles->add($parentRole);
             $saved                  = $grandParentRole->save();
             $this->assertTrue($saved);
@@ -93,6 +96,169 @@
             $grandParentRole->role  = $childRole;
             $this->assertFalse($grandParentRole->validate());
             $this->assertEquals('You cannot select a child role for the parent role', $grandParentRole->getError('role'));
+        }
+
+
+        public function testCreateRoleWithNoUsersAndNoParents()
+        {
+            $this->roleWithNoUsers = $this->createRole('noUsers');
+        }
+
+        /**
+         * @depends testCreateRoleWithNoUsersAndNoParents
+         */
+        public function testAddingUserToRoleWithNoParentsAndNoUsers()
+        {
+            // create a role with no parents
+            $role       = $this->createRole('OneUser');
+            // create a user.
+            $user       = UserTestHelper::createBasicUser(UserTestHelper::generateRandomUsername());
+            //Add the role to user
+            $this->addUserToRole($user, $role);
+
+            // ensure we have got the user part of the role.
+            $roleId     = $role->id;
+            $role->forgetAll();
+            unset($role);
+            $role       = Role::getById($roleId);
+            $this->assertEquals(1, $role->users->count());
+            $this->assertTrue($role->users[0]->isSame($user));
+            $this->roleWithOneUsers = $role;
+        }
+
+        /**
+         * @depends testAddingUserToRoleWithNoParentsAndNoUsers
+         */
+        public function testAddingUserToRoleWithNoParentsAndOneUser()
+        {
+            // create a role with no parents
+            $role       = $this->createRole('twoUsers');
+            // create 2 users
+            $users      = UserTestHelper::generateBasicUsers(2);
+            foreach ($users as $user)
+            {
+                $this->addUserToRole($user, $role);
+            }
+
+            // ensure we have got the user part of the role.
+            $roleId     = $role->id;
+            $role->forgetAll();
+            unset($role);
+            $role       = Role::getById($roleId);
+            $this->assertEquals(count($users), $role->users->count());
+            foreach ($users as $i => $user)
+            {
+                $this->assertTrue($role->users[$i]->isSame($user));
+            }
+            $this->roleWithTwoUsers = $role;
+        }
+
+        /**
+         * @depends testAddingUserToRoleWithNoParentsAndOneUser
+         */
+        public function testMovingRoleWithNoUsersToParent()
+        {
+            $this->moveRoleToParent('noUsers');
+        }
+
+        /**
+         * @depends testMovingRoleWithNoUsersToParent
+         */
+        public function testMovingRoleWithOneUserToParent()
+        {
+            $this->moveRoleToParent('oneUser');
+        }
+
+        /**
+         * @depends testMovingRoleWithOneUserToParent
+         */
+        public function testMovingRoleWithTwoUsersToParent()
+        {
+            $this->moveRoleToParent('twoUsers');
+        }
+
+        /**
+         * @depends testMovingRoleWithNoUsersToParent
+         */
+        public function testRemovingRoleWithNoUsersFromParent()
+        {
+            $this->removeRoleFromParent('noUsers');
+        }
+
+        /**
+         * @depends testMovingRoleWithOneUserToParent
+         */
+        public function testRemovingRoleWithOneUserFromParent()
+        {
+            $this->removeRoleFromParent('oneUser');
+        }
+
+        /**
+         * @depends testMovingRoleWithTwoUsersToParent
+         */
+        public function testRemovingRoleWithTwoUsersFromParent()
+        {
+            $this->removeRoleFromParent('twoUsers');
+        }
+
+        protected function createRole($name)
+        {
+            $role       = new Role();
+            $role->name = $name;
+            $saved      = $role->save();
+            $this->assertTrue($saved);
+            return $role;
+        }
+
+        protected function addUserToRole(User $user, Role $role)
+        {
+            $user->role = $role;
+            $saved      = $user->save();
+            $this->assertTrue($saved);
+        }
+
+        protected function moveRoleToParent($roleName, $parentName = null)
+        {
+            $this->addOrRemoveRoleFromParent($roleName, $parentName, true);
+        }
+
+        protected function removeRoleFromParent($roleName, $parentName = null)
+        {
+            $this->addOrRemoveRoleFromParent($roleName, $parentName, false);
+        }
+
+        protected function addOrRemoveRoleFromParent($roleName, $parentName = null, $add = true)
+        {
+            if (!isset($parentName))
+            {
+                $parentName = $roleName . 'Parent';
+            }
+            $role                   = Role::getByName($roleName);
+            try
+            {
+                $parentRole             = Role::getByName($parentName);
+            }
+            catch (NotFoundException $e)
+            {
+                $parentRole             = $this->createRole($parentName);
+            }
+            if ($add)
+            {
+                $parentRole->roles->add($role);
+            }
+            else
+            {
+                if ($parentRole->roles->contains($role))
+                {
+                    $parentRole->roles->remove($role);
+                }
+                else
+                {
+                    throw new NotFoundException('Child role not found in parent');
+                }
+            }
+            $saved                  = $parentRole->save();
+            $this->assertTrue($saved);
         }
     }
 ?>

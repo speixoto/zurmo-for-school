@@ -187,9 +187,15 @@
             throw new NotSupportedException();
         }
 
-        protected static function resolveFullNameToFirstAndLastName($name, $contact)
+        /** 
+         * Resolves full name with space in the middle to first and last name
+         * Removes excess white-space and cleans surrounding quotes left over from imap
+         * @param Full name of a person/contact $name
+         * @param Contact object $contact
+         */
+        public static function resolveFullNameToFirstAndLastName($name, $contact)
         {
-            @list($firstName, $lastName) = explode(' ', trim($name));
+            @list($firstName, $lastName) = explode(' ', trim($name, "'\" \t\n\r\0\x0B"));
             if ($lastName == null)
             {
                 $lastName  = $firstName;
