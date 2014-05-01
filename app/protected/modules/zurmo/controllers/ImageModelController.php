@@ -67,7 +67,6 @@
                 $fileUploadData = array('error' => $message);
                 echo CJSON::encode(array($fileUploadData));
             }
-
         }
 
         public function actionGetUploaded()
