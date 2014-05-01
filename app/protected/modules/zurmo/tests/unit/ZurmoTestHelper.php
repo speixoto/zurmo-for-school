@@ -53,6 +53,23 @@
             return $file;
         }
 
+        public static function createImageFileModel($fileName = 'testImage.png')
+        {
+            $pathToFiles          = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
+            $filePath             = $pathToFiles . DIRECTORY_SEPARATOR . $fileName;
+            $contents             = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . $fileName);
+            $fileContent          = new FileContent();
+            $fileContent->content = $contents;
+            $file                 = new ImageFileModel();
+            $file->fileContent    = $fileContent;
+            $file->name           = $fileName;
+            $file->type           = ZurmoFileHelper::getMimeType($pathToFiles . DIRECTORY_SEPARATOR . $fileName);
+            $file->size           = filesize($filePath);
+            $saved                = $file->save();
+            assert('$saved'); // Not Coding Standard
+            return $file;
+        }
+
         public static function isAuthenticationLdapTestConfigurationSet()
         {
             $isAuthenticationLdapTestConfigurationSet = false;
