@@ -87,6 +87,10 @@
         {
         }
 
+        public function resolveActionElementInformationDuringRender(MetadataView $view, & $elementInformation)
+        {
+        }
+
         /**
          * Called in CalendarUtil to set the title.
          * @param CalendarItem $calendarItem
