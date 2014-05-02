@@ -151,6 +151,7 @@
                 {
                     $renderedContent = null;
                     $this->resolveActionElementInformationDuringRender($elementInformation);
+                    Yii::app()->custom->resolveActionElementInformationDuringRender($this, $elementInformation);
                     array_walk($elementInformation, array($this, 'resolveEvaluateSubString'));
                     $params = array_slice($elementInformation, 1);
                     $elementClassName = $elementInformation['type'] . 'ActionElement';

@@ -84,7 +84,6 @@
          */
         public function getImageCachePath($shouldGetThumbnail = false)
         {
-            //TODO: @sergio: Add test
             if ($shouldGetThumbnail)
             {
                 return static::getPathToCachedFiles() . static::THUMB_FILE_NAME_PREFIX . $this->getImageCacheFileName();

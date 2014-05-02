@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://localhost/" />
-<title>CreateEmailTemplateUsingTemplateBuilderForAccountOwnerOnly</title>
+<title>CreateEmailTemplateUsingTemplateBuilderForNoteOwnerOnly</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Create Email Template Using Template Builder For Account Owner Only</td></tr>
+<tr><td rowspan="1" colspan="3">Create Email Template Using Template Builder For Note Owner Only</td></tr>
 </thead>
 <tbody>
 <tr>
@@ -20,7 +20,7 @@
 <!--Go to create email template-->
 <tr>
 	<td>open</td>
-	<td>index.php/workflows/default</td>
+	<td>index.php/marketing/default/dashboardDetails</td>
 	<td></td>
 </tr>
 <tr>
@@ -35,12 +35,12 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Create</td>
+	<td>Dashboard</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Workflows</td>
+	<td>Lists</td>
 	<td></td>
 </tr>
 <tr>
@@ -50,17 +50,7 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Time Queue</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Message Queue</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Ordering</td>
+	<td>Campaigns</td>
 	<td></td>
 </tr>
 <tr>
@@ -157,7 +147,7 @@
 </tr>
 <tr>
 	<td>assertElementPresent</td>
-	<td>BuilderEmailTemplateWizardForm_modelClassName_value</td>
+	<td>BuilderEmailTemplateWizardForm_modelClassName</td>
 	<td></td>
 </tr>
 <tr>
@@ -205,11 +195,11 @@
 	<td>BuilderEmailTemplateWizardForm_hiddenId</td>
 	<td></td>
 </tr>
-<tr>
+<!--tr>
 	<td>assertElementPresent</td>
-	<td>modelClassNameForMergeTagsViewId</td>
+	<td>moduleClassNameForMergeTagsViewId</td>
 	<td></td>
-</tr>
+</tr-->
 <tr>
 	<td>assertElementPresent</td>
 	<td>BuilderEmailTemplateWizardForm_ownerId</td>
@@ -221,6 +211,11 @@
 	<td>0</td>
 </tr>
 <!--add email template details-->
+<!--tr>
+	<td>select</td>
+	<td>id=BuilderEmailTemplateWizardForm_modelClassName_value</td>
+	<td>label=Notes</td>
+</tr-->
 <tr>
 	<td>type</td>
 	<td>id=BuilderEmailTemplateWizardForm_name</td>
@@ -234,7 +229,7 @@
 <tr>
     <td>type</td>
     <td>id=BuilderEmailTemplateWizardForm_files</td>
-    <td>C:\selenium\zurmo\app\protected\modules\emailTemplates\tests\functional\files\testLogo.png</td>
+    <td>C:\Inetpub\selenium\zurmo_bleeding\app\protected\modules\emailTemplates\tests\functional\files\testLogo.png</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -261,11 +256,11 @@
 	<td>BuilderEmailTemplateWizardForm_hiddenId</td>
 	<td>0</td>
 </tr>
-<tr>
+<!--tr>
 	<td>assertValue</td>
-	<td>modelClassNameForMergeTagsViewId</td>
-	<td>Account</td>
-</tr>
+	<td>moduleClassNameForMergeTagsViewId</td>
+	<td>NotesModule</td>
+</tr-->
 <tr>
 	<td>assertValue</td>
 	<td>BuilderEmailTemplateWizardForm_serializedData_baseTemplateId</td>
@@ -826,11 +821,11 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>//a[@id='contentFinishLink']/span[3]</td>
 	<td></td>
 </tr>
-<tr>
+<!--tr>
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
@@ -839,25 +834,25 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
-</tr>
+</tr-->
 <tr>
 	<td>waitForTextPresent</td>
 	<td>Test Email Template Using Template Builder ${randomSuffix}</td>
 	<td></td>
 </tr>
+<!--tr>
+	<td>assertText</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[1]/td</td>
+	<td>Notes</td>
+</tr-->
 <tr>
 	<td>assertText</td>
 	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[1]/td</td>
-	<td>Accounts</td>
-</tr>
-<tr>
-	<td>assertText</td>
-	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[2]/td</td>
 	<td>Test Email Template Using Template Builder ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[3]/td</td>
+	<td>//div[@id='EmailTemplateDetailsView']/div/div[2]/div[1]/table/tbody/tr[2]/td</td>
 	<td>test email subject.</td>
 </tr>
 <tr>
