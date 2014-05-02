@@ -183,6 +183,13 @@
                         'order'  => 4,
                         'mobile' => false,
                     ),
+                    array(
+                        'label'  => "eval:Zurmo::t('UsersModule', 'Switch User')",
+                        'url'    => array('/users/default/switch'),
+                        'right'  => self::RIGHT_CREATE_USERS,
+                        'order'  => 3,
+                        'mobile' => false,
+                    ),
                 ),
                 'userHeaderMenuItems' => array(
                         array(
