@@ -54,7 +54,7 @@
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
                     ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
                     'configurationEdit, emailConfiguration, securityDetails, ' .
-                    'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar, gameDashboard',
+                    'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, switch, switchTo changeAvatar, gameDashboard',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -654,6 +654,66 @@
         protected function resolveStateMetadataAdapterClassNameForExport()
         {
             return 'NonSystemUsersStateMetadataAdapter';
+        }
+
+        public function actionSwitch()
+        {
+            // TODO: @Shoaibi: Critical0: visible to admin or if the state is set.
+            $primaryUser    = SwitchUserIdentity::getPrimaryUser();
+            echo ZurmoHtml::tag('h3', array(), "Current user");
+            var_dump(Yii::app()->user->userModel->username);
+            echo ZurmoHtml::tag('h3', array(), "Primary User");
+            var_dump($primaryUser);
+            echo nl2br(str_repeat(PHP_EOL, 2));
+
+
+            if (isset($primaryUser) || Yii::app()->user->userModel->isSuperAdministrator())
+            {
+                if (isset($primaryUser))
+                {
+                    // this should not show for normal users.
+                    // how do we save if its switched or not?
+                    echo ZurmoHtml::link('Switch back to ' . $primaryUser, $this->resolveSwitchToUrlByUsername($primaryUser));
+                    echo nl2br(str_repeat(PHP_EOL, 2));
+                }
+
+                echo ZurmoHtml::link('Switch to jim', $this->resolveSwitchToUrlByUsername('jim'));
+                echo nl2br(str_repeat(PHP_EOL, 2));
+                echo ZurmoHtml::link('Switch to john', $this->resolveSwitchToUrlByUsername('john'));
+                echo nl2br(str_repeat(PHP_EOL, 2));
+                echo ZurmoHtml::link('Switch to jill', $this->resolveSwitchToUrlByUsername('jill'));
+                echo nl2br(str_repeat(PHP_EOL, 2));
+                echo ZurmoHtml::link('Switch to sam', $this->resolveSwitchToUrlByUsername('sam'));
+                echo nl2br(str_repeat(PHP_EOL, 2));
+                echo ZurmoHtml::link('Switch to sally', $this->resolveSwitchToUrlByUsername('sally'));
+                echo nl2br(str_repeat(PHP_EOL, 2));
+            }
+
+            echo nl2br(str_repeat(PHP_EOL, 5));
+            echo ZurmoHtml::tag('h3', array(), "Session");
+            var_dump($_SESSION);
+            echo ZurmoHtml::tag('h3', array(), "Cookies");
+            var_dump($_COOKIE);
+        }
+
+        public function actionSwitchTo($username)
+        {
+            // TODO: @Shoaibi: Critical0: visible to admin or if state is set.
+            $identity   = new SwitchUserIdentity($username, null);
+            if ($identity->authenticate())
+            {
+                Yii::app()->user->login($identity);
+                $this->redirect('switch');
+            }
+            else
+            {
+                throw new NotSupportedException("Can not switch user");
+            }
+        }
+
+        protected function resolveSwitchToUrlByUsername($username)
+        {
+            return $this->createUrl('/users/default/switchTo', compact('username'));
         }
     }
 ?>

@@ -48,10 +48,13 @@
             assert('$attributeName != ""');
             try
             {
-                if ($attributeName != 'isGuest' && $this->userModel === null)
+                if ($attributeName != 'isGuest')
                 {
-                    $username = parent::__get('username');
-                    $this->userModel = User::getByUsername($username);
+                    $username       = parent::__get('username');
+                    if ($this->userModel === null || $this->userModel->username != $username)
+                    {
+                        $this->userModel = User::getByUsername($username);
+                    }
                 }
                 if ($attributeName == 'userModel')
                 {
