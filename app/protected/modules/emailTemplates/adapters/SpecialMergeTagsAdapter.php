@@ -68,7 +68,10 @@
             $methodName                         = static::$specialAttributesResolver[$attributeName];
             // we send $model to all, those which need it use it, other get it as optional param.
             $resolvedSpecialMergeTagContent     = static::$methodName($model);
-            static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+            if (in_array($attributeName, static::$containsNestedMergeTags))
+            {
+                static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+            }
             return $resolvedSpecialMergeTagContent;
         }
 
@@ -113,7 +116,7 @@
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(32);
+                return $model->owner->getAvatarImage(32, true);
             }
         }
 
@@ -124,7 +127,7 @@
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(64);
+                return $model->owner->getAvatarImage(64, true);
             }
         }
 
@@ -136,7 +139,7 @@
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(128);
+                return $model->owner->getAvatarImage(128, true);
             }
         }
 

@@ -40,12 +40,16 @@
      */
     class ParentRoleElement extends RoleElement
     {
+        const CLEAR_PARENT_ROLE_LINK_ID = 'clear-parent-role-link';
+
         protected static $modalActionId = 'modalParentList';
 
         protected function renderControlEditable()
         {
             assert('$this->model instanceof Role');
-            return parent::renderControlEditable();
+            $content = parent::renderControlEditable();
+            $content .= $this->renderClearParentRoleLink();
+            return $content;
         }
 
         /**
@@ -67,6 +71,57 @@
         protected function getModalTitleForSelectingModel()
         {
             return Zurmo::t('ZurmoModule', 'Select a Parent Role');
+        }
+
+        protected function renderClearParentRoleLink()
+        {
+            $this->registerClearParentRoleLinkScripts();
+            $htmlOptions    = $this->resolveClearParentRoleLinkHtmlOptions();
+            $label          = Zurmo::t('Core', 'Clear');
+            $link           = ZurmoHtml::link(ZurmoHtml::wrapLabel($label), '#', $htmlOptions);
+            return $link;
+        }
+
+        protected function resolveClearParentRoleLinkHtmlOptions()
+        {
+            $htmlOptions    = array('id' => static::CLEAR_PARENT_ROLE_LINK_ID, 'class' => 'simple-link');
+            if ($this->model->role->id < 0)
+            {
+                $htmlOptions['style'] = 'display:none;';
+            }
+            return $htmlOptions;
+        }
+
+        protected function registerClearParentRoleLinkScripts()
+        {
+            $this->registerRoleIdHiddenInputChangeScript();
+            $this->registerClearParentRoleLinkClickScript();
+        }
+
+        protected function registerRoleIdHiddenInputChangeScript()
+        {
+            Yii::app()->clientScript->registerScript('roleIdHiddenInputChangeScript', '
+                $("#Role_role_id").unbind("change.roleIdHiddenInputChangeScript")
+                                                        .bind("change.roleIdHiddenInputChangeScript", function(event)
+                 {
+                    if ($("#' . static::CLEAR_PARENT_ROLE_LINK_ID .'").is(":hidden"))
+                    {
+                        $("#' . static::CLEAR_PARENT_ROLE_LINK_ID .'").show();
+                    }
+                 });');
+        }
+
+        protected function registerClearParentRoleLinkClickScript()
+        {
+            Yii::app()->clientScript->registerScript('clearParentRoleLinkClickScript', '
+                $("#' . static::CLEAR_PARENT_ROLE_LINK_ID . '").unbind("click.clearParentRoleLinkClickScript")
+                                                        .bind("click.clearParentRoleLinkClickScript", function(event)
+                 {
+                    $("#Role_role_id").val("");
+                    $("#Role_role_name").val("");
+                    $(this).hide();
+                    event.preventDefault();
+                 });');
         }
     }
 ?>

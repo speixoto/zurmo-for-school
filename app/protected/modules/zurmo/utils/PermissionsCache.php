@@ -303,10 +303,7 @@
                 ZurmoDatabaseCompatibilityUtil::callProcedureWithoutOuts("clear_cache_all_actual_permissions()");
             }
 
-            if (static::supportsAndAllowsMemcache())
-            {
-                static::incrementCacheIncrementValue(static::$cacheType);
-            }
+            static::clearMemcacheCache();
         }
     }
 ?>

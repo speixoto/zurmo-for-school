@@ -67,7 +67,7 @@
          * The selector for the input where is stored the related moduleClassName
          * @var string
          */
-        public $moduleClassNameSelector;
+        public $modelClassNameSelector;
 
         /**
          * @return string
@@ -134,9 +134,9 @@
 
         protected function resolveUrl(& $url)
         {
-            if ($this->moduleClassNameSelector !== null)
+            if ($this->modelClassNameSelector !== null)
             {
-                $url = "'" . $url . "&moduleClassName='+$('{$this->moduleClassNameSelector}').val()";
+                $url = "'" . $url . "&modelClassName='+$('{$this->modelClassNameSelector}').val()";
             }
             else
             {

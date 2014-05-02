@@ -82,5 +82,13 @@
         {
             return Yii::app()->getController()->getAction()->getId();
         }
+
+        protected function getCGridViewLastColumn()
+        {
+            $cGridViewLastColumn = parent::getCGridViewLastColumn();
+            $cGridViewLastColumn['buttons']['update']['url'] = 'Yii::app()->createUrl("' .
+                            $this->getGridViewActionRoute('edit') . '", array("id" => $data->id, "type" => $data->type))';
+            return $cGridViewLastColumn;
+        }
     }
 ?>

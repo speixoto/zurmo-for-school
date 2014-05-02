@@ -71,9 +71,10 @@
         public function testDefaultCalculatedDates()
         {
             $now = time();
-            $thing         = new ThingWithCalculatedDates();
-            $thingNowValue = $thing->now;
-            $this->assertEquals(DateTimeUtil::convertTimestampToDbFormatDateTime($now), $thing->now);
+            $thing            = new ThingWithCalculatedDates();
+            $thingNowValue    = $thing->now;
+            $dateTimeThingNow = new DateTime($thing->now);
+            $this->assertEquals($now, $dateTimeThingNow->getTimestamp(), '', 2);
             $this->assertTrue($thing->save());
             $this->assertEquals($thingNowValue, $thing->now);
             $stamp = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(), $now);

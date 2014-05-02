@@ -103,6 +103,8 @@
 
         public $textareaKeydownCallback;
 
+        public $imageUploadErrorCallback;
+
         public function run()
         {
             $id         = $this->htmlOptions['id'];
@@ -120,6 +122,7 @@
                                 {$this->renderRedactorParamForInit('syncAfterCallback')}
                                 {$this->renderRedactorParamForInit('syncBeforeCallback')}
                                 {$this->renderRedactorParamForInit('textareaKeydownCallback')}
+                                {$this->renderRedactorParamForInit('imageUploadErrorCallback')}
                                 {$this->renderRedactorParamForInit('plugins')}
                                 {$this->renderRedactorParamForInit('toolbarExternal')}
                                 {$this->renderRedactorParamForInit('fullpage')}
