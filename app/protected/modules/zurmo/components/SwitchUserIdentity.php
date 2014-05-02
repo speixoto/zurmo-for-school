@@ -43,6 +43,8 @@
 
         const PRIMARY_USER                  = 'primaryUser';
 
+        const LAST_USER                     = 'lastUser';
+
         const PACKED_SESSION_KEY            = 'primaryUserPackedSession';
 
         const PACKED_COOKIES_KEY            = 'primaryUserPackedCookies';
@@ -62,6 +64,7 @@
             }
             else
             {
+                $primaryUser    = static::getPrimaryUser();
                 if (Yii::app()->user->userModel->isSuperAdministrator() && !isset($primaryUser))
                 {
                     // we are switching from admin to someone else, store the admin
@@ -74,7 +77,7 @@
                     $this->setPrimaryUser(Yii::app()->user->userModel->username);
                     $this->packSessionAndCookies();
                 }
-                else if ($this->username == static::getPrimaryUser())
+                else if ($this->username == $primaryUser)
                 {
                     // we don't want to remember primary user anymore as we are there.
                     $this->unsetPrimaryUser();
@@ -86,6 +89,8 @@
                     $this->clearSessionAndCookiesForNormalUserSwitch();
                 }
                 $this->setState('username', $this->username);
+                Yii::app()->user->setState('identityUser', $this->username);
+                Yii::app()->user->switched  = true;
                 $this->errorCode = self::ERROR_NONE;
                 return true;
             }
@@ -93,24 +98,39 @@
 
         protected static function hasPrimaryUser()
         {
-            return Yii::app()->request->cookies->contains(static::PRIMARY_USER);
+            return static::doesCookieExist(static::PRIMARY_USER);
         }
 
         public static function getPrimaryUser()
         {
-            if (static::hasPrimaryUser())
+           return static::getEncryptedCookieValue(static::PRIMARY_USER);
+        }
+
+        protected static function setPrimaryUser($username)
+        {
+            static::setEncryptedCookie(static::PRIMARY_USER, $username);
+        }
+
+        protected static function doesCookieExist($name)
+        {
+            return Yii::app()->request->cookies->contains($name);
+        }
+
+        protected static function getEncryptedCookieValue($name)
+        {
+            if (static::doesCookieExist($name))
             {
-                $encryptedValue = Yii::app()->request->cookies[static::PRIMARY_USER]->value;
+                $encryptedValue = Yii::app()->request->cookies[$name]->value;
                 $decryptedValue = ZurmoPasswordSecurityUtil::decrypt($encryptedValue);
                 return $decryptedValue;
             }
         }
 
-        protected static function setPrimaryUser($username)
+        protected static function setEncryptedCookie($name, $value)
         {
             // we encrypt the cookie value so its not so easy to read
-            $cookieValue    = ZurmoPasswordSecurityUtil::encrypt($username);
-            Yii::app()->request->cookies->add(static::PRIMARY_USER, new CHttpCookie(static::PRIMARY_USER, $cookieValue));
+            $cookieValue    = ZurmoPasswordSecurityUtil::encrypt($value);
+            Yii::app()->request->cookies->add($name, new CHttpCookie($name, $cookieValue));
         }
 
         protected static function unsetPrimaryUser()
@@ -228,13 +248,6 @@
         protected function isCookieNotRequiredForSwitchingUser($name)
         {
             return ($name != static::PRIMARY_USER);
-        }
-
-        protected function removeStateKeyPrefixFromKey($key)
-        {
-            $prefix     = Yii::app()->user->getStateKeyPrefix();
-            $key        = str_replace($prefix, '', $key);
-            return $key;
         }
     }
 ?>
