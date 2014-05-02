@@ -62,8 +62,7 @@
                                                                User $userToSendMessagesFrom)
         {
             $postVariableName   = get_class($emailMessageForm);
-            Yii::app()->emailHelper->loadOutboundSettingsFromUserEmailAccount($userToSendMessagesFrom);
-            $toRecipients = explode(",", $postData[$postVariableName]['recipientsData']['to']); // Not Coding Standard
+            $toRecipients       = explode(",", $postData[$postVariableName]['recipientsData']['to']); // Not Coding Standard
             static::attachRecipientsToMessage($toRecipients,
                                               $emailMessageForm->getModel(),
                                               EmailMessageRecipient::TYPE_TO);
@@ -92,10 +91,6 @@
             $sender->personsOrAccounts->add($userToSendMessagesFrom);
             $emailMessageForm->sender               = $sender;
             $emailMessageForm->account              = $emailAccount;
-            $emailMessageForm->content->textContent = EmailMessageUtil::resolveTextContent(
-                                                        ArrayUtil::getArrayValue(
-                                                            $postData[$postVariableName]['content'], 'htmlContent'),
-                                                            null);
             $box                                    = EmailBoxUtil::getDefaultEmailBoxByUser($userToSendMessagesFrom);
             $emailMessageForm->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
             return $emailMessageForm;

@@ -108,13 +108,15 @@
                 Yii::app()->clientScript->registerScript($scriptName, '
                         function updateContentElementsWithData(textContentElement, htmlContentElement, subjectElement, data)
                         {
-                            if ($(htmlContentElement).css("display") !== "none")
+                            if ($(".tabs-nav > a:first").hasClass("active-tab"))
                             {
-                                $(htmlContentElement).redactor("toggle");
+                                $(".tabs-nav > a:eq(1)").click();
                             }
                             updateElementWithData(textContentElement, data.textContent);
                             updateElementWithData(subjectElement, data.subject);
-                            $(htmlContentElement).redactor("insertHtml", data.htmlContent);
+                            $(htmlContentElement).redactor("set", data.htmlContent);
+                            $(htmlContentElement).redactor("toggle");
+                            $(htmlContentElement).redactor("toggle");
                             var contentHeight = $(".redactor_box iframe").contents().find("html").outerHeight();
                             $(".redactor_box iframe").height(contentHeight + 50);
                         }

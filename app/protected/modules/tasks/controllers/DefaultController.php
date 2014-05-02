@@ -168,8 +168,6 @@
             $task                    = Task::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($task);
             $task->status            = Task::STATUS_COMPLETED;
-            $task->completedDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-            $task->completed         = true;
             $saved                   = $task->save();
             if (!$saved)
             {

@@ -77,10 +77,19 @@
             ";
             // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $javaScript, CClientScript::POS_END);
-            $this->htmlOptions['id'] = $this->inputId;
+            $this->resolveHtmlOptions();
             $inputField = ZurmoHtml::textField($this->inputName, $this->inputValue, $this->htmlOptions);
             $icon = ZurmoHtml::icon('icon-color-picker');
             echo ZurmoHtml::tag('div', array('class' => 'has-color-picker'), $inputField . $icon);
+        }
+
+        protected function resolveHtmlOptions()
+        {
+            $this->htmlOptions['id'] = $this->inputId;
+            if ($this->inputValue != null)
+            {
+                $this->htmlOptions['style'] = 'border-color:' . $this->inputValue;
+            }
         }
     }
 ?>

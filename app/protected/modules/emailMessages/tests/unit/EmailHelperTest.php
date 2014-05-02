@@ -104,7 +104,7 @@
             Yii::app()->user->userModel = $super;
 
             //add a message in the outbox_error folder.
-            $emailMessage = EmailMessageTestHelper::createDraftSystemEmail('a test email 2', $super);
+            $emailMessage         = EmailMessageTestHelper::createDraftSystemEmail('a test email 2', $super);
             $box                  = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             $emailMessage->folder = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_ERROR);
             $emailMessage->save();
@@ -158,6 +158,7 @@
             try
             {
                 $emailHelper->loadOutboundSettingsFromUserEmailAccount($billy);
+                $this->fail();
             }
             catch (NotFoundException $e)
             {
@@ -168,7 +169,8 @@
             EmailMessageTestHelper::createEmailAccount($billy);
             $emailHelper->loadOutboundSettingsFromUserEmailAccount($billy);
             $this->assertEquals('smtp', $emailHelper->outboundType);
-            $this->assertEquals(25, $emailHelper->outboundPort);
+            $this->assertEquals(Yii::app()->params['emailTestAccounts']['smtpSettings']['outboundPort'], $emailHelper->outboundPort);
+            //outboundHost was set on @testLoadOutboundSettingsFromUserEmailAccount
             $this->assertEquals('xxx', $emailHelper->outboundHost);
             $this->assertEquals($emailHelper->defaultTestToAddress, $emailHelper->fromAddress);
             $this->assertEquals(strval($billy), $emailHelper->fromName);
@@ -293,6 +295,46 @@
             {
                 $this->markTestSkipped();
             }
+        }
+
+        public function testSendMessagePopulatesEmailAccountSettings()
+        {
+            $jane                      = User::getByUsername('jane');
+            Yii::app()->user->userModel = $jane;
+            $emailHelper = new EmailHelper;
+            EmailMessageTestHelper::createEmailAccount($jane);
+            $emailAccount = EmailAccount::getByUserAndName($jane);
+            $emailAccount->useCustomOutboundSettings = true;
+            $emailAccount->outboundType     = 'abc';
+            $emailAccount->outboundPort     = 11;
+            $emailAccount->outboundHost     = 'dumb.domain';
+            $emailAccount->outboundUsername = 'jane';
+            $emailAccount->outboundPassword = 'janepass';
+            $emailAccount->outboundSecurity = 'ssl';
+            $emailAccount->save();
+
+            $emailMessage = EmailMessageTestHelper::createOutboxEmail(
+                                $jane,
+                                'Test email',
+                                'Raw content',
+                                'Html content',
+                                'Zurmo',
+                                Yii::app()->emailHelper->outboundUsername,
+                                'John Doe',
+                                Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
+            $emailMessage->account = $emailAccount;
+            $emailMessage->save();
+
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            Yii::app()->emailHelper->sendQueued($emailMessage);
+
+            $job = new ProcessOutboundEmailJob();
+            $this->assertTrue($job->run());
+            //Since user email account has invalid settings message is not sent
+            $this->assertContains('Connection could not be established with host dumb.domain', strval($emailMessage->error));
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
         }
 
         public function testResolveAndGetDefaultFromAddress()

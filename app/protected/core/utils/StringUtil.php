@@ -154,7 +154,7 @@
         {
             if (empty($characterSet))
             {
-                $characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                $characterSet = implode(range("A", "Z")) . implode(range("a", "z")) . implode(range("0", "9"));
             }
             $characterSetLength = strlen($characterSet);
             $randomString = '';

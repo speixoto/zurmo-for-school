@@ -554,6 +554,7 @@
             {
                 // not using default value to save cpu cycles on requests that follow the first exception.
                 $cachedData = BeanModelCache::getEntry(self::CACHE_IDENTIFIER . get_called_class());
+                static::resolveCachedMetadataForIntegrity($cachedData);
                 self::$attributeNamesToClassNames[get_called_class()]                              =
                     $cachedData['attributeNamesToClassNames'][get_called_class()];
                 self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]                    =
@@ -577,6 +578,17 @@
                     self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()];
                 BeanModelCache::cacheEntry(self::CACHE_IDENTIFIER . get_called_class(), $cachedData);
             }
+        }
+
+        /**
+         * This function only exists because there is a strange bug in GameBadge metadata where the metadata
+         * is getting cached, but then it is missing everything except empty arrays. Since we don't know why
+         * this happens, this hack is the only way to ensure the cache returned is treated as non existant.
+         * @see override in GameBagde.
+         * @param $cachedData
+         */
+        protected static function resolveCachedMetadataForIntegrity($cachedData)
+        {
         }
 
         /**

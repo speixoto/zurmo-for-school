@@ -77,5 +77,37 @@
             assert('$saved');
             return $user;
         }
+
+        public static function generateRandomUsername($safe = false)
+        {
+            $username = StringUtil::generateRandomString(5, implode(range("a", "z")));
+            if ($safe)
+            {
+                do
+                {
+                    try
+                    {
+                        $userFound  = User::getByUsername($username);
+                        $username   = StringUtil::generateRandomString(5, implode(range("a", "z")));
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        $userFound = false;
+                    }
+                } while ($userFound);
+            }
+            return $username;
+        }
+
+        public static function generateBasicUsers($count)
+        {
+            $baseUsername   = static::generateRandomUsername(true);
+            $users          = array();
+            for ($i = 0; $i < $count; $i++ )
+            {
+                $users[] = UserTestHelper::createBasicUser($baseUsername . $i);
+            }
+            return $users;
+        }
     }
 ?>
