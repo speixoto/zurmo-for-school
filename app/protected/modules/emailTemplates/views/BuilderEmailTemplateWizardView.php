@@ -47,9 +47,9 @@
         protected static function resolveContainingViewClassNames()
         {
             return array('GeneralDataForEmailTemplateWizardView',
-                            'SelectBaseTemplateForEmailTemplateWizardView',
-                            'BuilderCanvasWizardView',
-                            'ContentForEmailTemplateWizardView');
+                         'SelectBaseTemplateForEmailTemplateWizardView',
+                         'BuilderCanvasWizardView',
+                         'ContentForEmailTemplateWizardView');
         }
 
         protected function getBeforeValidateActionScript()
@@ -82,6 +82,54 @@
                 }
             ");
             // End Not Coding Standard
+        }
+
+        protected function renderContainingViews(WizardActiveForm $form)
+        {
+            $content            = parent::renderContainingViews($form);
+            $content            .= $this->resolvePreviewContainerContent();
+            return $content;
+        }
+
+        protected function resolvePreviewContainerContent()
+        {
+            $this->registerPreviewIFrameContainerCloserLinkClick();
+            $content  = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('Core', 'Close')),
+                '#', array('id' => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID, 'class' => 'default-btn'));
+            $content .= ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
+            $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
+            return $content;
+        }
+
+        protected function registerPreviewIFrameContainerCloserLinkClick()
+        {
+            Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
+                $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").unbind("click.reviewIFrameContainerCloserLinkClick")
+                                                    .bind("click.reviewIFrameContainerCloserLinkClick", function(event)
+                 {
+                    $("#' . BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
+                    $("body").removeClass("previewing-builder");
+                    event.preventDefault();
+                 });');
+        }
+
+        protected function resolvePreviewIFrameHtmlOptions()
+        {
+            return array('id' => BuilderCanvasWizardView::PREVIEW_IFRAME_ID,
+                // we set it to about:blank instead of preview url to save request and to also have some
+                // sort of basic html structure there which we can replace.
+                'src'         => 'about:blank',
+                'width'       => '100%',
+                'height'      => '100%',
+                'seamless'    => 'seamless',
+                'frameborder' => 0);
+        }
+
+        protected function resolvePreviewIFrameContainerHtmlOptions()
+        {
+            return array('id'    => BuilderCanvasWizardView::PREVIEW_IFRAME_CONTAINER_ID,
+                'title' => Zurmo::t('ZurmoModule', 'Preview'),
+                'style' => 'display:none');
         }
     }
 ?>

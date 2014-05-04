@@ -46,6 +46,10 @@
                                                                 $serializedData, $language);
             $validate                       = isset($modelClassName);
             $saved                          = $emailTemplate->save($validate);
+            if (!$saved)
+            {
+                var_dump($emailTemplate->getErrors());
+            }
             assert('$saved');
             return $emailTemplate;
         }

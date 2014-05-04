@@ -38,7 +38,7 @@
     {
         protected static function resolveLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Title');
+            return Zurmo::t('ZurmoModule', 'Title');
         }
 
         protected function resolveDefaultContent()

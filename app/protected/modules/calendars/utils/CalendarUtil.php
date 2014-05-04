@@ -571,12 +571,10 @@
         public static function registerSelectCalendarScript($startDate, $endDate)
         {
             //refer to http://stackoverflow.com/questions/9801095/jquery-fullcalendar-send-custom-parameter-and-refresh-calendar-with-json
-            $url    = Yii::app()->createUrl('calendars/default/getEvents');
             $script = "$(document).on('click', '.mycalendar,.sharedcalendar',
                                         function(){
-                                                    $('#calendar').fullCalendar('removeEventSource', getCalendarEvents('{$url}', 'calendar'));
-                                                    $('#calendar').fullCalendar('addEventSource', getCalendarEvents('{$url}', 'calendar'));
-                                                   }
+                                                    $('#calendar').fullCalendar('refetchEvents');
+                                                  }
                                      );";
             $cs = Yii::app()->getClientScript();
             $cs->registerScript('mycalendarselectscript', $script);
@@ -999,7 +997,7 @@
                 $calItem = $calendarItems[$k];
                 $fullCalendarItem['title'] = $calItem->getTitle();
                 $fullCalendarItem['start'] = $calItem->getStartDateTime();
-                if ($calItem->getEndDateTime() != null)
+                if (!DateTimeUtil::isDateTimeStringNull($calItem->getEndDateTime()))
                 {
                     $fullCalendarItem['end'] = $calItem->getEndDateTime();
                 }

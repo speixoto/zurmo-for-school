@@ -53,6 +53,8 @@
                                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'table', 'link', '|',
                                    'alignleft', 'aligncenter', 'alignright', '|', 'horizontalrule', '|', 'image']";
 
+        public $pastePlainText  = "true";
+
         public $visual          = "true";
 
         public $paragraphy      = "true";
@@ -101,6 +103,8 @@
 
         public $textareaKeydownCallback;
 
+        public $imageUploadErrorCallback;
+
         public function run()
         {
             $id         = $this->htmlOptions['id'];
@@ -118,6 +122,7 @@
                                 {$this->renderRedactorParamForInit('syncAfterCallback')}
                                 {$this->renderRedactorParamForInit('syncBeforeCallback')}
                                 {$this->renderRedactorParamForInit('textareaKeydownCallback')}
+                                {$this->renderRedactorParamForInit('imageUploadErrorCallback')}
                                 {$this->renderRedactorParamForInit('plugins')}
                                 {$this->renderRedactorParamForInit('toolbarExternal')}
                                 {$this->renderRedactorParamForInit('fullpage')}
@@ -133,6 +138,7 @@
                                 minHeight:          {$this->minHeight},
                                 observeImages:      {$this->observeImages},
                                 paragraphy:         {$this->paragraphy},
+                                pastePlainText:     {$this->pastePlainText},
                                 removeEmptyTags:    {$this->removeEmptyTags},
                                 visual:             {$this->visual},
                                 tidyHtml:           {$this->tidyHtml},

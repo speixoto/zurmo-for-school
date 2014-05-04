@@ -179,7 +179,7 @@
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == null');
-            $textContent    = $this->model->textContent;
+            $textContent    = nl2br(Yii::app()->format->text($this->model->textContent));
             $activeTab      = $this->getActiveTab();
             $htmlContent    = $this->renderNonEditableHtmlContentArea();
             $content        = $this->resolveTabbedContent($textContent, $htmlContent, $activeTab);
@@ -197,11 +197,25 @@
 
         protected function getActiveTab()
         {
-            if (empty($this->model->textContent) && (!$this->resolveSelectiveLoadOfTabs() || $this->isPastedHtmlTemplate()))
+            // TODO: @Shoaibi: High: Refactor this
+            if ($this->resolveSelectiveLoadOfTabs() && isset($this->form))
+            {
+                if ($this->isPastedHtmlTemplate() && $this->isHtmlContentNotEmptyOrBothContentsEmpty())
+                {
+                    return 'html';
+                }
+                return 'text';
+            }
+            if ($this->isHtmlContentNotEmptyOrBothContentsEmpty())
             {
                 return 'html';
             }
             return 'text';
+        }
+
+        protected function isHtmlContentNotEmptyOrBothContentsEmpty()
+        {
+            return (!empty($this->model->htmlContent) || (empty($this->model->textContent) && empty($this->model->htmlContent)));
         }
 
         protected function renderEditableHtmlContentArea()

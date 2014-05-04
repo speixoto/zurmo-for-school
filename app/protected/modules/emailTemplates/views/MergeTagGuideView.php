@@ -134,23 +134,38 @@
                                         MergeTagsUtil::CAPITAL_DELIMITER . "YEAR" . MergeTagsUtil::TAG_SUFFIX) .
                                         " : prints last year.";
 
-            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^AVATAR^SMALL' .
-                                      MergeTagsUtil::TAG_SUFFIX) .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'AVATAR' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'SMALL' .
+                                        MergeTagsUtil::TAG_SUFFIX) .
                                       " : prints the owner's small avatar image (32x32).";
-            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^AVATAR^MEDIUM ' .
-                                      MergeTagsUtil::TAG_SUFFIX) .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'AVATAR' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'MEDIUM ' .
+                                        MergeTagsUtil::TAG_SUFFIX) .
                                       " : prints the owner's medium avatar image (64x64).";
-            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^AVATAR^LARGE' .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS' .
+                    MergeTagsUtil::CAPITAL_DELIMITER . 'AVATAR' .
+                    MergeTagsUtil::CAPITAL_DELIMITER . 'LARGE' .
                                       MergeTagsUtil::TAG_SUFFIX) .
                                       " : prints the owner's large avatar image (128x128).";
-            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS^EMAIL^SIGNATURE' .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'OWNERS' .
+                    MergeTagsUtil::CAPITAL_DELIMITER . 'EMAIL' .
+                    MergeTagsUtil::CAPITAL_DELIMITER . 'SIGNATURE' .
                                       MergeTagsUtil::TAG_SUFFIX) .
                                       " : prints the owner's email signature.";
             $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .
-                                        'GLOBAL^MARKETING^FOOTER^PLAIN^TEXT' .
+                                        'GLOBAL' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'MARKETING' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'FOOTER' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'PLAIN' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'TEXT' .
                                         MergeTagsUtil::TAG_SUFFIX) .
                                         " : prints the Global Marketing Footer(Plain Text).";
-            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'GLOBAL^MARKETING^FOOTER^HTML' .
+            $specialTagsItems[]     = $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .'GLOBAL' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'MARKETING' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'FOOTER' .
+                                        MergeTagsUtil::CAPITAL_DELIMITER . 'HTML' .
                                         MergeTagsUtil::TAG_SUFFIX) .
                                         " : prints the Global Marketing Footer(Rich Text).";
             $specialTagsItems[]     = $this->renderBoldMergeTag('{{UNSUBSCRIBE_URL}}') .

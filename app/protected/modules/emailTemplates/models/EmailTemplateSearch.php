@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,52 +31,50 @@
      * these Appropriate Legal Notices must retain the display of the Zurmo
      * logo and Zurmo copyright notice. If the display of the logo is not reasonably
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
-     * "Copyright Zurmo Inc. 2013. All rights reserved".
+     * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class SelectBaseTemplateFromPreviouslyCreatedTemplatesElement extends SelectBaseTemplateBaseElement
+    /**
+     * Helper class for working with emailTemplate search
+     */
+    class EmailTemplateSearch
     {
-        protected function resolveBaseTemplates()
+        /**
+         * @param $partialName
+         * @param $pageSize
+         * @param null|string $moduleClassName
+         * @param null|string $type
+         * @return Array of SavedReport models
+         */
+        public static function getEmailTemplatesByPartialName($partialName, $pageSize, $modelClassName = null, $type = null)
         {
-            $templates  = EmailTemplate::getPreviouslyCreatedBuilderTemplates($this->resolveModelClassName());
-            $templates  = array_filter($templates, array($this, 'excludeSelf'));
-            return $templates;
-        }
-
-        protected function excludeSelf($template)
-        {
-            return ($template->id != $this->model->id);
-        }
-
-        protected function resolveModelClassName()
-        {
-            if (isset($this->params['modelClassName']))
-            {
-                return $this->params['modelClassName'];
-            }
-
-            if (isset($this->model->modelClassName))
-            {
-                return $this->model->modelClassName;
-            }
-
-            if ($this->model->isWorkflowTemplate())
-            {
-                $availableModels    = EmailTemplateModelClassNameElement::getAvailableModelNamesArray();
-                reset($availableModels);
-                return key($availableModels);
-            }
-            return 'Contact';
-        }
-
-        protected function resolveThumbnailByModel(EmailTemplate $template)
-        {
-            // add custom logic here to load user template specific thumbnails
-            // once we have the ability to generate those.
-            // these could be stored in serializedData, or a column.
-            // a column would be better because we would love to have thumbnails for
-            // html and plaintext templates too.
-            return ZurmoHtml::tag('i', array('class' => 'icon-user-template'), '');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'type',
+                    'operatorType'         => 'equals',
+                    'value'                => intval($type),
+                ),
+                2 => array(
+                    'attributeName'         => 'modelClassName',
+                    'operatorType'          => 'equals',
+                    'value'                 => $modelClassName,
+                ),
+                3 => array(
+                    'attributeName'         => 'isDraft',
+                    'operatorType'          => 'equals',
+                    'value'                 => intval(false),
+                ),
+                4 => array(
+                    'attributeName'             => 'name',
+                    'operatorType'              => 'contains',
+                    'value'                     => $partialName
+                ),
+            );
+            $searchAttributeData['structure'] = '1 and 2 and 3 and 4';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('EmailTemplate');
+            $where = RedBeanModelDataProvider::makeWhere('EmailTemplate', $searchAttributeData, $joinTablesAdapter);
+            return EmailTemplate::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
         }
     }
 ?>

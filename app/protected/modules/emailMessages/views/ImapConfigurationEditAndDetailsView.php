@@ -148,8 +148,8 @@
         protected function getMessageForLabelInput()
         {
             return Zurmo::t('EmailMessagesModule',
-                'Emails in the specified folder will be deleted by Zurmo after processing. ' .
-                'We do not recommend using a personal email for archiving');
+                'Emails in the specified folder will be deleted by {appLabel} after processing. ' .
+                'We do not recommend using a personal email for archiving', array('{appLabel}' => Yii::app()->label));
         }
     }
 ?>

@@ -41,6 +41,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             ProductTestHelper::createProductByNameForOwner('First Product', User::getByUsername('super'));
+            sleep(3);
             ProductTestHelper::createProductByNameForOwner('Second Product', User::getByUsername('super'));
         }
 
@@ -55,7 +56,8 @@
             $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_MONTH);
             $this->assertEquals(date('Y-m-01'), $startDateTime);
             $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_WEEK);
-            $this->assertEquals(date('Y-m-d', strtotime('last monday', strtotime('tomorrow'))), $startDateTime);
+            $days = date('w') - 1;
+            $this->assertEquals(date('Y-m-d', strtotime("-{$days} days")), $startDateTime);
             $startDateTime = CalendarUtil::getStartDate(SavedCalendar::DATERANGE_TYPE_DAY);
             $this->assertEquals(date('Y-m-d'), $startDateTime);
         }

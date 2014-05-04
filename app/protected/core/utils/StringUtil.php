@@ -154,7 +154,7 @@
         {
             if (empty($characterSet))
             {
-                $characterSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                $characterSet = implode(range("A", "Z")) . implode(range("a", "z")) . implode(range("0", "9"));
             }
             $characterSetLength = strlen($characterSet);
             $randomString = '';
@@ -184,6 +184,21 @@
         public static function endsWith($haystack, $needle)
         {
             return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+        }
+
+        /**
+         * Add a default scheme to url
+         * @param $url
+         * @param string $scheme
+         * @return string
+         */
+        public static function addSchemeIfMissing($url, $scheme = 'http')
+        {
+            if (!preg_match("~^(?:f|ht)tps?://~i", $url))
+            {
+                $url = $scheme ."://" . $url;
+            }
+            return $url;
         }
     }
 ?>

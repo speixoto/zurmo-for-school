@@ -117,7 +117,8 @@
             {
                 $gridView->setView($view, $row, 0);
             }
-            return $gridView->render();
+            $content            = $gridView->render();
+            return $content;
         }
 
         protected function renderConfigSaveAjax($formName)
@@ -166,8 +167,8 @@
                 $view = new MergeTagsView('EmailTemplate',
                     get_class($this->model) . '_textContent',
                     get_class($this->model) . '_htmlContent', false); //todo: get these last 2 values dynamically
-                $view->moduleClassNameSelector = GeneralDataForEmailTemplateWizardView::
-                    resolveModuleClassNameHiddenInputJQuerySelector();
+                $view->modelClassNameSelector = GeneralDataForEmailTemplateWizardView::
+                    resolveModelClassNameHiddenInputJQuerySelector();
                 return $view->renderTreeViewAjaxScriptContent();
             }
         }
@@ -198,7 +199,7 @@
         {
             $nextPageClassName  = static::resolveNextPageClassName($stepCount);
             $ajaxOptions        = $viewClassName::resolveAdditionalAjaxOptions($formName, $validationInputId,
-                                                                                $progressPerStep, $stepCount, $nextPageClassName);
+                                                                                $progressPerStep, $stepCount, $nextPageClassName, $this->model);
             return $ajaxOptions;
         }
 
@@ -270,6 +271,11 @@
         protected function resolvePreviousPageClassName($currentId)
         {
             return ArrayUtil::getArrayValue(static::resolveContainingViewClassNames(), $currentId - 1 );
+        }
+
+        protected function wrapContentInDiv(& $content, $htmlOptions = array())
+        {
+            $content = ZurmoHtml::tag('div', $htmlOptions, $content);
         }
     }
 ?>

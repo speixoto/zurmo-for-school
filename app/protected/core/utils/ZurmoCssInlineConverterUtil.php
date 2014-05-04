@@ -36,7 +36,7 @@
 
     abstract class ZurmoCssInlineConverterUtil
     {
-        public static function convertAndPrettifyEmailByModel(EmailTemplate $emailTemplate, $converter = null, $prettyPrint = true)
+        public static function convertAndPrettifyEmailByModel(EmailTemplate $emailTemplate, $converter = null, $prettyPrint = false)
         {
             $htmlContent        = $emailTemplate->htmlContent;
             if (empty($htmlContent))
@@ -47,7 +47,7 @@
             return $htmlContent;
         }
 
-        public static function convertAndPrettifyEmailByHtmlContent($htmlContent, $converter = null, $prettyPrint = true)
+        public static function convertAndPrettifyEmailByHtmlContent($htmlContent, $converter = null, $prettyPrint = false)
         {
             if (isset($converter))
             {

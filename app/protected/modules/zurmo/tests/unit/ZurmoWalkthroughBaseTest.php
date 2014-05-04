@@ -293,6 +293,8 @@
             {
                 $_POST[$key] = $value;
             }
+            // this is to get getIsPostRequest() working in CHTTPRequest
+            $_SERVER['REQUEST_METHOD'] = 'POST';
         }
 
         protected static function getModelIdByModelNameAndName($modelName, $name)

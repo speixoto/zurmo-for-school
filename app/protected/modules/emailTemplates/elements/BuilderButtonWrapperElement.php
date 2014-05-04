@@ -38,7 +38,8 @@
     {
         public static function isUIAccessible()
         {
-            return true;
+            //TODO: @sergio: Changed since we reverted to 753baf temporary. Check if we will use this or remove
+            return false;
         }
 
         protected static function resolveLabel()
@@ -51,7 +52,7 @@
             $properties              = array(
                 'backend'       => array(
                     'sizeClass'         => 'button',
-                    'text'              => Zurmo::t('EmailTemplatesModule', 'Click Here'),
+                    'text'              => Zurmo::t('Core', 'Click Here'),
                     'width'             => '100%',
                 ),
                 'frontend'      => array(

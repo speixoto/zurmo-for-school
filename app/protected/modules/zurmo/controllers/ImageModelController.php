@@ -38,33 +38,34 @@
     {
         public function actionUpload()
         {
-            //TODO: @sergio: Add test
             $uploadedFile = UploadedFileUtil::getByNameAndCatchError('file');
             $tempFilePath = $uploadedFile->getTempName();
-
-            $fileContent = new FileContent();
+            $fileContent  = new FileContent();
             $fileContent->content = file_get_contents($tempFilePath);
-
-            //TODO: @sergio Retrict upload of image types only
             $imageFileModel = new ImageFileModel();
             $imageFileModel->name        = $uploadedFile->getName();
             $imageFileModel->size        = $uploadedFile->getSize();
             $imageFileModel->type        = $uploadedFile->getType();
             $imageFileModel->fileContent = $fileContent;
-            $imageFileModel->save();
-
-            $imageFileModel->createImageCache();
-
-            $array = array(
-                'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
-                                    array('fileName' => $imageFileModel->getImageCacheFileName()))
-            );
-            echo stripslashes(json_encode($array));
+            if ($imageFileModel->save())
+            {
+                $imageFileModel->createImageCache();
+                $array = array(
+                    'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
+                            array('fileName' => $imageFileModel->getImageCacheFileName()))
+                );
+                echo CJSON::encode($array);
+            }
+            else
+            {
+                $message = Zurmo::t('ZurmoModule', 'Error uploading the image');
+                $fileUploadData = array('error' => $message);
+                echo CJSON::encode($fileUploadData);
+            }
         }
 
         public function actionGetUploaded()
         {
-            //TODO: @sergio: Add test
             $array = array();
             $imageFileModels = ImageFileModel::getAll();
             foreach ($imageFileModels as $imageFileModel)

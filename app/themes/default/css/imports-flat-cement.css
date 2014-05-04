@@ -11682,6 +11682,12 @@ a + .project-stats {
 div[id^="builderimageelement"] ~ .redactor_box iframe {
   background: url("../images/psd-light.png") left top repeat;
 }
+#SelectBaseTemplateForEmailTemplateWizardView > .left-column {
+  padding: 0 !important;
+}
+#SelectBaseTemplateForEmailTemplateWizardView .mini-pillbox {
+  padding: 0 15px;
+}
 #chosen-layout {
   margin: 30px auto;
 }
@@ -11804,7 +11810,7 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 #templates .template-info .after-form-details-content {
   margin-top: 15px;
   text-align: left;
-  color: #ddd;
+  color: #ccc !important;
   padding-left: 0;
 }
 #saved-templates .template-info .button-actions,
@@ -11829,9 +11835,6 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
     width: 33.33%;
   }
 }
-.templates-chooser-list {
-  margin-bottom: 30px;
-}
 .templates-chooser-list > h3 {
   font-weight: normal;
   color: #777;
@@ -11848,28 +11851,6 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   color: #2c3e50;
   border-bottom: 1px solid #2c3e50;
   margin-right: 30px !important;
-}
-.templates-chooser-list li {
-  list-style: none;
-  width: 150px;
-  height: 150px;
-  float: left;
-  text-align: center;
-  position: relative;
-  margin: 0 15px 15px 0;
-  cursor: pointer;
-}
-.templates-chooser-list li input[type="radio"] {
-  visibility: hidden;
-  display: none;
-}
-.templates-chooser-list li input[type="radio"]:checked + label {
-  overflow: hidden;
-  -webkit-box-shadow: 0 0 3px 0px #2c3e50;
-  -moz-box-shadow: 0 0 3px 0px #2c3e50;
-  -ms-box-shadow: 0 0 3px 0px #2c3e50;
-  -o-box-shadow: 0 0 3px 0px #2c3e50;
-  box-shadow: 0 0 3px 0px #2c3e50;
 }
 .templates-chooser-list label {
   display: block;
@@ -11910,6 +11891,28 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 }
 .templates-chooser-list img {
   margin: 5px auto 0 auto;
+}
+.base-template-selection {
+  list-style: none;
+  width: 150px;
+  height: 150px;
+  float: left;
+  text-align: center;
+  position: relative;
+  margin: 0 15px 15px 0;
+  cursor: pointer;
+}
+.base-template-selection input[type="radio"] {
+  visibility: hidden;
+  display: none;
+}
+.base-template-selection input[type="radio"]:checked + label {
+  overflow: hidden;
+  -webkit-box-shadow: 0 0 3px 0px #2c3e50;
+  -moz-box-shadow: 0 0 3px 0px #2c3e50;
+  -ms-box-shadow: 0 0 3px 0px #2c3e50;
+  -o-box-shadow: 0 0 3px 0px #2c3e50;
+  box-shadow: 0 0 3px 0px #2c3e50;
 }
 .MergeTagsView {
   padding-right: 15px;

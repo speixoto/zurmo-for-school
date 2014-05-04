@@ -772,17 +772,19 @@
             Yii::app()->clientScript->registerScript($scriptName, "
                     $('.edit-form-tab-content .tabs-nav a:not(.simple-link)').click( function(event){
                         event.preventDefault();
-                        //the menu items
-                        $('.active-tab', $(this).parent()).removeClass('active-tab');
-                        $(this).addClass('active-tab');
-                        //the sections
-                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
-                        _old.fadeToggle();
-                        var _new = $( $(this).attr('href') );
-                        _new.fadeToggle(150, 'linear', function(){
+                        if ( !$(this).hasClass('active-tab') )
+                        {
+                            //the menu items
+                            $('.active-tab', $(this).parent()).removeClass('active-tab');
+                            $(this).addClass('active-tab');
+                            //the sections
+                            var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                            _old.fadeToggle();
                             _old.removeClass('active-tab');
+                            var _new = $( $(this).attr('href') );
+                            _new.fadeToggle(150, 'linear');
                             _new.addClass('active-tab');
-                        });
+                        }
                     });
                 ");
             // End Not Coding Standard
@@ -795,49 +797,49 @@
         protected function renderFormActionLinks()
         {
             $content    = $this->renderApplyLink();
-            $content   .= $this->renderCancelLink();
+            $content   .= $this->renderBackLink();
             $content    = ZurmoHtml::tag('div', array('class' => 'form-toolbar'), $content);
             $content    = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'), $content);
             return $content;
         }
 
         /**
-         * Render Cancel Action Link
+         * Render Back Action Link
          * @return string
          */
-        protected function renderCancelLink()
+        protected function renderBackLink()
         {
-            $this->registerCancelScript();
-            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $this->renderCancelLinkLabel());
-            $link   = ZurmoHtml::link($label, '#', $this->resolveCancelLinkHtmlOptions());
+            $this->registerBackScript();
+            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $this->renderBackLinkLabel());
+            $link   = ZurmoHtml::link($label, '#', $this->resolveBackLinkHtmlOptions());
             return $link;
         }
 
         /**
-         * Resolve Cancel Link html options
+         * Resolve Back Link html options
          * @return array
          */
-        protected function resolveCancelLinkHtmlOptions()
+        protected function resolveBackLinkHtmlOptions()
         {
-            return array('id' => $this->resolveCancelLinkId(), 'class' => 'cancel-button');
+            return array('id' => $this->resolveBackLinkId(), 'class' => 'cancel-button');
         }
 
         /**
-         * Resolve link id for Cancel Link
+         * Resolve link id for back Link
          * @return string
          */
-        protected function resolveCancelLinkId()
+        protected function resolveBackLinkId()
         {
-            return 'elementEditFormCancelLink';
+            return 'elementEditFormBackLink';
         }
 
         /**
-         * Render Label for Cancel Link
+         * Render Label for Back Link
          * @return string
          */
-        protected function renderCancelLinkLabel()
+        protected function renderBackLinkLabel()
         {
-            return Zurmo::t('Core', 'Cancel');
+            return Zurmo::t('Core', 'Back');
         }
 
         /**
@@ -919,12 +921,12 @@
         }
 
         /**
-         * Register javascript snippet to handle clicking cancel link
+         * Register javascript snippet to handle clicking back link
          */
-        protected function registerCancelScript()
+        protected function registerBackScript()
         {
-            Yii::app()->clientScript->registerScript('cancelLinkClick', "
-                $('#" . $this->resolveCancelLinkId() . "').unbind('click.cancelLinkClick').bind('click.cancelLinkClick', function()
+            Yii::app()->clientScript->registerScript('backLinkClick', "
+                $('#" . $this->resolveBackLinkId() . "').unbind('click.backLinkClick').bind('click.backLinkClick', function()
                 {
                     hideElementEditFormOverlay();
                     $('#" . BuilderCanvasWizardView::ELEMENTS_CONTAINER_ID . "').show();

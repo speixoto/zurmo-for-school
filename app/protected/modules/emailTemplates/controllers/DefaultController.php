@@ -164,6 +164,10 @@
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->type        = $type;
             $emailTemplate->builtType   = $builtType;
+            if ($emailTemplate->isWorkflowTemplate())
+            {
+                $emailTemplate->modelClassName = 'Account';
+            }
             $breadCrumbLink             = Zurmo::t('Core', 'Create');
             if ($emailTemplate->isPlainTextTemplate()|| $emailTemplate->isPastedHtmlTemplate())
             {
@@ -218,9 +222,7 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                             resolveByPostDataAndModelThenMake($postData[get_class($model)],
                                                                                                 $emailTemplate);
-            // we have false here to avoid any issues with EmailTemplateAtLeastOneContentAreaRequiredValidator
-            // throwing errors for content being empty. Plus we already validate it using the wizard form.
-            if ($emailTemplate->save(false))
+            if ($emailTemplate->save())
             {
                 if ($unmuteScoring)
                 {
@@ -283,9 +285,11 @@
                 $textContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
                                                                                                             $textContent);
                 $htmlContent = str_replace(array($unsubscribePlaceholder, $manageSubscriptionsPlaceholder), null,
-                                                                                                        $htmlContent);
+                                                                                                            $htmlContent);
+                $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(true);
                 $emailTemplate->textContent = $textContent;
                 $emailTemplate->htmlContent = $htmlContent;
+                $emailTemplate->setTreatCurrentUserAsOwnerForPermissions(false);
             }
             $emailTemplate = $this->resolveEmailTemplateAsJson($emailTemplate, $includeFilesInJson);
             echo $emailTemplate;
@@ -360,7 +364,6 @@
 
         public function actionGetSerializedToHtmlContent($id)
         {
-            assert('is_string($className)');
             $modelId = (int) $id;
             $model = EmailTemplate::getById($modelId);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
@@ -370,10 +373,11 @@
         /**
          * @param null $uniqueId
          * @param null $nodeId
-         * @param string $moduleClassName
+         * @param string $modelClassName
          */
-        public function actionRelationsAndAttributesTreeForMergeTags($uniqueId = null, $nodeId = null, $moduleClassName = 'ContactsModule')
+        public function actionRelationsAndAttributesTreeForMergeTags($uniqueId = null, $nodeId = null, $modelClassName = 'Contact')
         {
+            $moduleClassName = $modelClassName::getModuleClassName();
             $type     = Report::TYPE_ROWS_AND_COLUMNS;
             $treeType = ComponentForReportForm::TYPE_FILTERS;
             $report   = new Report();
@@ -461,11 +465,18 @@
         protected function resolveEmailTemplateByPostData(array $postData, & $emailTemplate, $builtType)
         {
             $formName   = EmailTemplateToWizardFormAdapter::getFormClassNameByBuiltType($builtType);
-            $id         = $postData[$formName][GeneralDataForEmailTemplateWizardView::HIDDEN_ID];
+            $formData   = ArrayUtil::getArrayValue($postData, $formName);
+            if (!is_array($formData))
+            {
+                Yii::app()->end(0, false);
+            }
+            $id         = intval(ArrayUtil::getArrayValue($formData, GeneralDataForEmailTemplateWizardView::HIDDEN_ID));
             if ($id <= 0)
             {
                 $this->resolveCanCurrentUserAccessEmailTemplates();
                 $emailTemplate               = new EmailTemplate();
+                // this is just here for: testSaveInvalidDataWithoutValidationScenario()
+                $emailTemplate->builtType    = $builtType;
             }
             else
             {
@@ -532,6 +543,7 @@
             if (isset($id))
             {
                 $emailTemplate  = EmailTemplate::getById(intval($id));
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
                 $content        = $emailTemplate->htmlContent;
                 if (!$useHtmlContent || empty($content))
                 {
@@ -541,7 +553,6 @@
                 echo $content;
                 Yii::app()->end(0, false);
             }
-            // serializedData['dom'] = json_encoded_dom
             $serializedDataArray    = Yii::app()->request->getPost('serializedData');
             if (!Yii::app()->request->isPostRequest || $serializedDataArray === null)
             {
@@ -575,41 +586,33 @@
             $id                 = ArrayUtil::getArrayValue($editableForm, 'id');
             $properties         = ArrayUtil::getArrayValue($editableForm, 'properties');
             $content            = ArrayUtil::getArrayValue($editableForm, 'content');
+            $params             = ArrayUtil::getArrayValue($editableForm, 'params');
             $renderForCanvas    = Yii::app()->request->getPost('renderForCanvas', !$editable);
             $wrapElementInRow   = Yii::app()->request->getPost('wrapElementInRow', BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW);
 
-            // at bare minimum we should have classname. Without these it does not make sense.
+            // at bare minimum we should have classname. Without it, it does not make sense.
             if (!Yii::app()->request->isPostRequest || !isset($className))
             {
                 Yii::app()->end(0, false);
             }
             if ($editable)
             {
-                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties, $content);
+                $content = BuilderElementRenderUtil::renderEditable($className, $renderForCanvas, $id, $properties,
+                                                                    $content, $params);
             }
             else
             {
                 $content = BuilderElementRenderUtil::renderNonEditable($className, $renderForCanvas, $wrapElementInRow,
-                                                                        $id, $properties, $content);
+                                                                        $id, $properties, $content, $params);
             }
             Yii::app()->clientScript->render($content);
             echo $content;
         }
 
-        public function actionRenderBaseTemplateOptions($templateId, $elementClassName, $elementModelClassName,
-                                                        $elementAttributeName, $elementFormClassName,
-                                                        array $elementParams = array())
-        {
-            $model                      = new $elementModelClassName();
-            $model->id                  = $templateId;
-            $element                    = new $elementClassName($model, $elementAttributeName,
-                                                                new $elementFormClassName(), $elementParams);
-            echo $element->render();
-        }
-
         public function actionConvertEmail($id, $converter = null)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $htmlContent    = ZurmoCssInlineConverterUtil::convertAndPrettifyEmailByModel($emailTemplate, $converter);
             echo $htmlContent;
         }
@@ -617,6 +620,7 @@
         public function actionSendTestEmail($id, $contactId = null, $emailAddress = null, $useHtmlContent = 1)
         {
             $emailTemplate  = EmailTemplate::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
             $htmlContent    = $emailTemplate->htmlContent;
             if (!$useHtmlContent)
             {
@@ -694,6 +698,32 @@
         protected static function resolveDefaultRecipient()
         {
             return Yii::app()->user->userModel;
+        }
+
+        public function actionModalList($stateMetadataAdapterClassName = null)
+        {
+            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+                $_GET['modalTransferInformation']['sourceIdFieldId'],
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
+            );
+            echo ModalSearchListControllerUtil::
+                setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider, $stateMetadataAdapterClassName);
+        }
+
+        public function actionAutoComplete($term, $autoCompleteOptions = null, $type = null)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('autoCompleteListPageSize',
+                                        get_class($this->getModule()));
+            $autoCompleteResults = EmailTemplateAutoCompleteUtil::getByPartialName($term, $pageSize, null,
+                                                $type, $autoCompleteOptions);
+            if (empty($autoCompleteResults))
+            {
+                $autoCompleteResults = array(array('id'    => null,
+                    'value' => null,
+                    'label' => Zurmo::t('Core', 'No results found')));
+            }
+            echo CJSON::encode($autoCompleteResults);
         }
     }
 ?>

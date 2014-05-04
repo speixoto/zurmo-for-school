@@ -85,18 +85,23 @@
             {
                 $pageSize = self::getCreatePageSize();
             }
-            $contacts = array();
-            $quote    = DatabaseCompatibilityUtil::getQuote();
+            $contacts                      = array();
+            $quote                         = DatabaseCompatibilityUtil::getQuote();
             $marketingListMemberTableName  = MarketingListMember::getTableName();
-            $campaignItemTableName = CampaignItem::getTableName();
+            $campaignItemTableName         = CampaignItem::getTableName();
+            $contactTableName              = Contact::getTableName();
             $sql  = "select {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
-            $sql  .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
+            $sql .= "from {$quote}{$marketingListMemberTableName}{$quote} ";
             $sql .= "left join {$quote}{$campaignItemTableName}{$quote} on ";
             $sql .= "{$quote}{$campaignItemTableName}{$quote}.{$quote}contact_id{$quote} ";
-            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote}";
+            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql .= "AND {$quote}{$campaignItemTableName}{$quote}.{$quote}campaign_id{$quote} = " . $campaign->id . " " ;
+            $sql .= "left join {$quote}{$contactTableName}{$quote} on ";
+            $sql .= "{$quote}{$contactTableName}{$quote}.{$quote}id{$quote} ";
+            $sql .= "= {$quote}{$marketingListMemberTableName}{$quote}.{$quote}contact_id{$quote} ";
             $sql .= "where {$quote}{$marketingListMemberTableName}{$quote}.{$quote}marketinglist_id{$quote} = " . $campaign->marketingList->id ;
-            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null limit " . $pageSize;
+            $sql .= " and {$quote}{$campaignItemTableName}{$quote}.{$quote}id{$quote} is null";
+            $sql .= " and {$quote}{$contactTableName}{$quote}.{$quote}id{$quote} is not null limit " . $pageSize;
             $ids = ZurmoRedBean::getCol($sql);
             foreach ($ids as $contactId)
             {

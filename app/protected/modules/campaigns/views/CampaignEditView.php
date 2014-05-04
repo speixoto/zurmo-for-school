@@ -128,8 +128,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null',
-                                                            'type' => 'CampaignContactEmailTemplateNamesDropDown')
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplate')
                                             ),
                                         ),
                                     )
@@ -278,7 +277,7 @@
             }
             else
             {
-                Zurmo::t("CampaignsModule", "Save");
+                Zurmo::t('Core', 'Save');
             }
         }
     }

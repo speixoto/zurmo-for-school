@@ -209,5 +209,11 @@
             assert('is_string($dateTime)');
             $this->unrestrictedSet('latestActivityDateTime', $dateTime);
         }
+
+        protected function afterDelete()
+        {
+            parent::afterDelete();
+            ContactsUtil::resolveMarketingListMembersByContact($this);
+        }
     }
 ?>

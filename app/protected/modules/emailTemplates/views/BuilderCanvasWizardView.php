@@ -98,14 +98,13 @@
          */
         protected function renderFormContent()
         {
-            $previewContainerContent   = $this->resolvePreviewContainerContent();
             $freezeOverlayContent      = $this->renderFreezeOverlayContent();
             $toolbarContent            = $this->renderLeftSidebarToolbarContent();
             $leftSidebarContent        = $this->renderLeftSidebarContent();
             $rightSidebarContent       = $this->resolveCanvasContent();
             $this->wrapContentForLeftSideBar($leftSidebarContent);
             $this->wrapContentForRightSideBar($rightSidebarContent);
-            $content = $freezeOverlayContent . $previewContainerContent . $toolbarContent .
+            $content = $freezeOverlayContent . $toolbarContent .
                        $leftSidebarContent . $rightSidebarContent;
             $content = ZurmoHtml::tag('div', $this->resolveContentHtmlOptions(), $content);
             return $content;
@@ -212,34 +211,6 @@
                             'frameborder' => 0);
         }
 
-        protected function resolvePreviewContainerContent()
-        {
-            $content  = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),Zurmo::t('Core', 'Close')),
-                        '#', array('id' => static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID, 'class' => 'default-btn'));
-            $content .= ZurmoHtml::tag('iframe', $this->resolvePreviewIFrameHtmlOptions(), '');
-            $this->wrapContentInDiv($content, $this->resolvePreviewIFrameContainerHtmlOptions());
-            return $content;
-        }
-
-        protected function resolvePreviewIFrameHtmlOptions()
-        {
-            return array('id' => static::PREVIEW_IFRAME_ID,
-                            // we set it to about:blank instead of preview url to save request and to also have some
-                            // sort of basic html structure there which we can replace.
-                            'src'         => 'about:blank',
-                            'width'       => '100%',
-                            'height'      => '100%',
-                            'seamless'    => 'seamless',
-                            'frameborder' => 0);
-        }
-
-        protected function resolvePreviewIFrameContainerHtmlOptions()
-        {
-            return array('id'    => static::PREVIEW_IFRAME_CONTAINER_ID,
-                         'title' => Zurmo::t('EmailTemplatesModule', 'Preview'),
-                         'style' => 'display:none');
-        }
-
         protected function registerScripts()
         {
             parent::registerScripts();
@@ -278,7 +249,7 @@
             $iframeOverlaySelector              = '#' . static::ELEMENT_IFRAME_OVERLAY_ID;
             $cachedSerializedSelector           = static::resolveCachedSerializedDataHiddenInputJQuerySelector();
             $errorOnDeleteMessage               = Zurmo::t('EmailTemplatesModule', 'Cannot delete last row');
-            $dropHereMessage                    = Zurmo::t('EmailTemplatesModule', 'Drop here');
+            $dropHereMessage                    = Zurmo::t('Core', 'Drop here');
             $csrfToken                          = Yii::app()->request->csrfToken;
             $doNotWrapInRow                     = BuilderElementRenderUtil::DO_NOT_WRAP_IN_ROW;
             $wrapInRow                          = BuilderElementRenderUtil::WRAP_IN_ROW;
@@ -332,7 +303,6 @@
             $this->registerElementsMenuButtonClickScript();
             $this->registerCanvasConfigurationMenuButtonClickScript();
             $this->registerPreviewMenuButtonClickScript();
-            $this->registerPreviewIFrameContainerCloserLinkClick();
         }
 
         protected function registerElementsMenuButtonClickScript()
@@ -416,18 +386,6 @@
             return $ajaxArray;
         }
 
-        protected function registerPreviewIFrameContainerCloserLinkClick()
-        {
-            Yii::app()->clientScript->registerScript('previewIFrameContainerCloserLinkClick', '
-                $("#' . static::PREVIEW_IFRAME_CONTAINER_CLOSE_LINK_ID . '").unbind("click.reviewIFrameContainerCloserLinkClick")
-                                                    .bind("click.reviewIFrameContainerCloserLinkClick", function(event)
-                 {
-                    $("#' . static::PREVIEW_IFRAME_CONTAINER_ID . '").hide();
-                    $("body").removeClass("previewing-builder");
-                    event.preventDefault();
-                 });');
-        }
-
         protected static function resolveCompleteAjaxCallbackForSpinnerRemoval($formName)
         {
             $script             = "emailTemplateEditor.unfreezeLayoutEditor();";
@@ -438,14 +396,14 @@
 
         protected static function resolveSuccessAjaxCallbackForPageTransition($formName, $nextPageClassName,
                                                                               $validationInputId, $progressPerStep,
-                                                                              $stepCount)
+                                                                              $stepCount, $model)
         {
             $script                     = static::resolveHideCanvasScript();
             $parentScript               = parent::resolveSuccessAjaxCallbackForPageTransition($formName,
                                                                                                 $nextPageClassName,
                                                                                                 $validationInputId,
                                                                                                 $progressPerStep,
-                                                                                                $stepCount);
+                                                                                                $stepCount, $model);
             $script                     = $script . PHP_EOL . $parentScript;
             return $script;
         }

@@ -41,7 +41,7 @@
     {
         protected function renderLabel()
         {
-            return Zurmo::t('EmailTemplates', 'Module');
+            return Zurmo::t('Core', 'Module');
         }
 
         protected function getDropDownArray()

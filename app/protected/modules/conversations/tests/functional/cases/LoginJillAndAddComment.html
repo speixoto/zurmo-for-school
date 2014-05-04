@@ -12,8 +12,8 @@
 <tr><td rowspan="1" colspan="3">Login Jill And Add Comment</td></tr>
 </thead><tbody>
 <tr>
-	<td>setSpeed</td>
-	<td>500</td>
+	<td>setTimeout</td>
+	<td>45000</td>
 	<td></td>
 </tr>
 <tr>
@@ -27,6 +27,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>type</td>
 	<td>LoginForm_username</td>
 	<td>jill</td>
@@ -37,7 +42,7 @@
 	<td>jill</td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>Login</td>
 	<td></td>
 </tr>
@@ -45,6 +50,11 @@
 	<td>waitForPageToLoad</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
 </tr>
 <tr>
 	<td>waitForText</td>
@@ -73,17 +83,17 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Combined</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
+	<td>waitForTextPresent</td>
 	<td>Conversations</td>
 	<td></td>
 </tr>
@@ -108,7 +118,7 @@
   <td>New Conversation ${randomSuffix}</td>
 </tr>
 <tr>
-  <td>verifyTextPresent</td>
+  <td>waitForTextPresent</td>
   <td>New Conversation ${randomSuffix}</td>
   <td></td>
 </tr>
@@ -133,14 +143,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>waitForTextPresent</td>
 	<td>New Conversation ${randomSuffix}</td>
 	<td></td>
+</tr>
+<tr>
+  <td>waitForElementPresent</td>
+  <td>Comment_description</td>
+  <td></td>
 </tr>
 <tr>
   <td>type</td>
@@ -150,6 +160,11 @@
 <tr>
 	<td>click</td>
 	<td>save</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Test Comment by jill</td>
 	<td></td>
 </tr>
 <tr>
@@ -166,11 +181,6 @@
   <td>waitForCondition</td>
   <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
   <td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
 </tr>
 </tbody></table>
 </body>

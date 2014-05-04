@@ -61,7 +61,7 @@
                     return $this->breadCrumbLinks;
                 }
             }
-            return array_merge($breadCrumbLinks, $this->breadCrumbLinks);
+            return $breadCrumbLinks + $this->breadCrumbLinks;
         }
 
         protected function getModuleTitle()

@@ -34,11 +34,57 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class CampaignContactEmailTemplateNamesDropDownElement extends ContactEmailTemplateNamesDropDownElement
+    class EmailTemplatesModalSearchView extends SearchView
     {
-        protected function getModuleId()
+        public static function getDefaultMetadata()
         {
-            return 'Campaign';
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+//                        array(
+//                            'title' => 'Advanced Search',
+//                            'rows' => array(
+//                                array('cells' =>
+//                                    array(
+//                                        array(
+//                                            'elements' => array(
+//                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
+//                                            ),
+//                                        ),
+//                                    )
+//                                ),
+//                            ),
+//                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function getDesignerRulesType()
+        {
+            return 'ModalSearchView';
+        }
+
+        public static function getModelForMetadataClassName()
+        {
+            return 'EmailTemplatesSearchForm';
         }
     }
 ?>

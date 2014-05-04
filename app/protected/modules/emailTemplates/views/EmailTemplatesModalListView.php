@@ -34,11 +34,39 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class AutoresponderContactEmailTemplateNamesDropDownElement extends  ContactEmailTemplateNamesDropDownElement
+    class EmailTemplatesModalListView extends ModalListView
     {
-        protected function getModuleId()
+        public static function getDefaultMetadata()
         {
-            return 'Autoresponder';
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'EmailTemplateBuiltType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

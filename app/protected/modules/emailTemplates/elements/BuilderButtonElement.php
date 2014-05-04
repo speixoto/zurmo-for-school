@@ -41,6 +41,11 @@
          */
         protected $inlineStylesToKeepOnATag = array('color', 'font-size', 'font-family', 'font-weight');
 
+        public static function isUIAccessible()
+        {
+            return true;
+        }
+
         protected static function resolveLabel()
         {
             return Zurmo::t('EmailTemplatesModule', 'Button');
@@ -51,7 +56,7 @@
             $properties              = array(
                 'backend'       => array(
                     'sizeClass'         => 'button',
-                    'text'              => Zurmo::t('EmailTemplatesModule', 'Click Here'),
+                    'text'              => Zurmo::t('Core', 'Click Here'),
                     'width'             => '100%',
                 ),
                 'frontend'      => array(
@@ -249,14 +254,9 @@
         protected function resolveWrapperTdNonEditableByContent($content)
         {
             $options            = $this->resolveNonEditableContentWrappingTdOptions();
-            $options            = CMap::mergeArray($options, array('class'=>'button-td'));
+            $options            = CMap::mergeArray($options, array('class' => 'button-td'));
             $content            = ZurmoHtml::tag('td', $options, $content);
             return $content;
-        }
-
-        protected function resolveAvailableNonEditableActionsArray()
-        {
-            return array();
         }
     }
 ?>

@@ -317,6 +317,7 @@
             $mailer->username = $this->outboundUsername;
             $mailer->password = $this->outboundPassword;
             $mailer->security = $this->outboundSecurity;
+            $this->resolveMailerFromEmailAccount($mailer, $emailMessage->account);
             $mailer->Subject  = $emailMessage->subject;
             $mailer->headers  = unserialize($emailMessage->headers);
             if (!empty($emailMessage->content->textContent))
@@ -342,6 +343,18 @@
                     $mailer->attachDynamicContent($file->fileContent->content, $file->name, $file->type);
                     //$emailMessage->attach($attachment);
                 }
+            }
+        }
+
+        protected function resolveMailerFromEmailAccount(Mailer $mailer, EmailAccount $emailAccount)
+        {
+            if ($emailAccount->useCustomOutboundSettings)
+            {
+                $mailer->host     = $emailAccount->outboundHost;
+                $mailer->port     = $emailAccount->outboundPort;
+                $mailer->username = $emailAccount->outboundUsername;
+                $mailer->password = ZurmoPasswordSecurityUtil::decrypt($emailAccount->outboundPassword);
+                $mailer->security = $emailAccount->outboundSecurity;
             }
         }
 
