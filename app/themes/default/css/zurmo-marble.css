@@ -1516,10 +1516,10 @@ body > .ui-autocomplete {
   width: 80%;
 }
 #MenuView .over > a,
-#MenuView .active a,
+#MenuView .active > a,
 #MenuView a:hover,
 #RecentlyViewedView .over > a,
-#RecentlyViewedView .active a,
+#RecentlyViewedView .active > a,
 #RecentlyViewedView a:hover {
   color: #fff !important;
   background-color: #333333;
@@ -1535,10 +1535,10 @@ body > .ui-autocomplete {
   text-shadow: 0px 1px 0 #6a8a2a !important;
 }
 #MenuView .over > a i,
-#MenuView .active a i,
+#MenuView .active > a i,
 #MenuView a:hover i,
 #RecentlyViewedView .over > a i,
-#RecentlyViewedView .active a i,
+#RecentlyViewedView .active > a i,
 #RecentlyViewedView a:hover i {
   color: #2e3c12 !important;
   -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
