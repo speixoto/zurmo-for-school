@@ -2948,6 +2948,10 @@ input[type="button"]:hover:after {
   display: inline-block;
   margin: 0 10px;
 }
+.modal-view-toolbar .simple-link,
+.form-toolbar .simple-link {
+  display: inline;
+}
 .portlet-toolbar {
   float: right;
   margin-right: 10px;
@@ -3734,7 +3738,6 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -4449,6 +4452,12 @@ div.wide.form label.hasCheckBox {
 .has-color-picker input,
 .has-unit-input input {
   width: 100%;
+}
+.clear-select {
+  float: left;
+  margin-top: -22px;
+  margin-left: 3px;
+  display: inline;
 }
 .has-model-select {
   clear: left;
@@ -7302,7 +7311,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -7361,7 +7369,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -7432,7 +7439,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
