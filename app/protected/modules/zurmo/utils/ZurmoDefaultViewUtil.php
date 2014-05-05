@@ -286,26 +286,34 @@
                     $items[$key]['active'] = true;
                     if (isset($items[$key]['items']))
                     {
-                        foreach ($items[$key]['items'] as $subItemKey => $subItem)
+                        try
                         {
                             $url        = Yii::app()->urlManager->parseUrl(Yii::app()->request);
-                            $subItemUrl = $subItem['url'];
-                            if (stristr($subItemUrl[0], $url) == $url)
+                            foreach ($items[$key]['items'] as $subItemKey => $subItem)
                             {
-                                if (isset($_GET['moduleClassName']) && isset($subItemUrl['moduleClassName']) && $_GET['moduleClassName'] == $subItemUrl['moduleClassName'])
+                                $subItemUrl = $subItem['url'];
+                                if (stristr($subItemUrl[0], $url) == $url)
                                 {
-                                    $items[$key]['items'][$subItemKey]['active'] = true;
-                                }
-                                elseif (isset($_GET['moduleClassName']) && isset($subItemUrl['moduleClassName']) && $_GET['moduleClassName'] != $subItemUrl['moduleClassName'])
-                                {
-                                    $items[$key]['items'][$subItemKey]['active'] = false;
-                                }
-                                else
-                                {
-                                    $items[$key]['items'][$subItemKey]['active'] = true;
+                                    if (isset($_GET['moduleClassName']) && isset($subItemUrl['moduleClassName']) && $_GET['moduleClassName'] == $subItemUrl['moduleClassName'])
+                                    {
+                                        $items[$key]['items'][$subItemKey]['active'] = true;
+                                    }
+                                    elseif (isset($_GET['moduleClassName']) && isset($subItemUrl['moduleClassName']) && $_GET['moduleClassName'] != $subItemUrl['moduleClassName'])
+                                    {
+                                        $items[$key]['items'][$subItemKey]['active'] = false;
+                                    }
+                                    else
+                                    {
+                                        $items[$key]['items'][$subItemKey]['active'] = true;
+                                    }
                                 }
                             }
                         }
+                        catch (Exception $exception)
+                        {
+                            //Do nothing
+                        }
+
                     }
                 }
             }
