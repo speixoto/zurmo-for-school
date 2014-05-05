@@ -77,12 +77,6 @@
                        $this->renderXHtmlBodyEnd()   .
                        $this->renderXHtmlEnd();
             Yii::app()->getClientScript()->render($content);
-            $performanceMessage = null;
-            if (YII_DEBUG && SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
-            {
-                $endTime = microtime(true);
-                $performanceMessage .= 'Page render time: ' . number_format(($endTime - $startTime), 3) . ' seconds.<br />';
-            }
             if (YII_DEBUG)
             {
                 if (defined('XHTML_VALIDATION') && XHTML_VALIDATION)
@@ -96,42 +90,6 @@
                         }
                     }
                 }
-                if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
-                {
-                    $endTime      = microtime(true);
-                    $endTotalTime = Yii::app()->performance->endClockAndGet();
-                    if (defined('XHTML_VALIDATION') && XHTML_VALIDATION)
-                    {
-                        $performanceMessage .= '<span>Total page view time including validation: ' . number_format(($endTime - $startTime), 3) . ' seconds.</span><br />';
-                    }
-                    else
-                    {
-                        $performanceMessage .= '<span>Total page view time: ' . number_format(($endTime - $startTime), 3) . ' seconds.</span><br />';
-                    }
-                    $performanceMessage .= '<span>Total page time: ' . number_format(($endTotalTime), 3) . ' seconds.</span><br />';
-                }
-            }
-            else
-            {
-                if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
-                {
-                    $endTime      = microtime(true);
-                    $endTotalTime = Yii::app()->performance->endClockAndGet();
-                    $performanceMessage .= 'Load time: ' . number_format(($endTotalTime), 3) . ' seconds.<br />';
-                }
-            }
-            if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
-            {
-                if (SHOW_QUERY_DATA)
-                {
-                    $performanceMessage .= self::makeShowQueryDataContent();
-                }
-                foreach (Yii::app()->performance->getTimings() as $id => $time)
-                {
-                    $performanceMessage .= 'Timing: ' . $id . ' total time: ' . number_format(($time), 3) . "</br>";
-                }
-                $performanceMessageHtml = '<div class="performance-info">' . $performanceMessage . '</div>';
-                $content = $this->appendContentBeforeXHtmlBodyEndAndXHtmlEnd($content, $performanceMessageHtml);
             }
             if (YII_DEBUG && Yii::app()->isApplicationInstalled())
             {
@@ -398,28 +356,6 @@
         protected function renderXHtmlEnd()
         {
             return '</html>';
-        }
-
-        public static function makeShowQueryDataContent()
-        {
-            $performanceMessage  = static::getTotalAndDuplicateQueryCountContent();
-            $duplicateData = Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesData();
-            if (count($duplicateData) > 0)
-            {
-                $performanceMessage .= '</br></br>' . 'Duplicate Queries:' . '</br>';
-            }
-            foreach ($duplicateData as $query => $count)
-            {
-                $performanceMessage .= 'Count: ' . $count . '&#160;&#160;&#160;Query: ' . $query . '</br>';
-            }
-            return $performanceMessage;
-        }
-
-        public static function getTotalAndDuplicateQueryCountContent()
-        {
-            $performanceMessage  = 'Total/Duplicate Queries: ' . Yii::app()->performance->getRedBeanQueryLogger()->getQueriesCount();
-            $performanceMessage .= '/'   . Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesCount();
-            return $performanceMessage;
         }
 
         public static function makeNonHtmlDuplicateCountAndQueryContent()
