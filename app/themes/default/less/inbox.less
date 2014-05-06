@@ -82,12 +82,23 @@
 	div + span{
 		display: block;
 		padding-right: 80px;
-		overflow:hidden;
+		//overflow:hidden;
 	}
 	.list-item-details{
 		position: absolute;
 		top: 0;
 		right: 0;
+	}
+	.z-link{
+		margin-left: 5px;
+		&:before{
+			.symbly(14px);
+			content: "÷";
+			line-height: 1;
+			margin-right: 3px;
+			display:inline-block;
+			text-decoration: none !important;
+		}
 	}
 }
 
@@ -125,4 +136,8 @@
 
 .back-to-inbox-link{
 	color: @themeColor;
+}
+
+.notification-message-html-content-div{
+	padding:15px 0;
 }

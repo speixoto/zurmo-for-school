@@ -7187,12 +7187,24 @@ a.user-link {
 .inbox-item div + span {
   display: block;
   padding-right: 80px;
-  overflow: hidden;
 }
 .inbox-item .list-item-details {
   position: absolute;
   top: 0;
   right: 0;
+}
+.inbox-item .z-link {
+  margin-left: 5px;
+}
+.inbox-item .z-link:before {
+  font-weight: normal !important;
+  font-size: 14px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  content: "÷";
+  line-height: 1;
+  margin-right: 3px;
+  display: inline-block;
+  text-decoration: none !important;
 }
 .model-tag {
   display: inline-block;
@@ -7250,6 +7262,9 @@ a.user-link {
 }
 .back-to-inbox-link {
   color: #7f7f7f;
+}
+.notification-message-html-content-div {
+  padding: 15px 0;
 }
 .toolbar-mbmenu i[class^="icon"] {
   display: none !important;

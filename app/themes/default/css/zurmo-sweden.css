@@ -2697,6 +2697,9 @@ tr.even {
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
 }
+td.checkbox-column {
+  vertical-align: top !important;
+}
 .button-column {
   width: 35px;
   text-align: center;
