@@ -139,6 +139,13 @@
                                         $this->model->getAttributeLabel('subject'));
                 $element->editableTemplate = '<td><div class="overlay-label-field">' . $label . '{content}{error}</div></td>';
             }
+            elseif (get_class($element) == 'EmailMessageEmailTemplateElement')
+            {
+                $label = ZurmoHtml::tag('label',
+                                        array('for' => get_class($this->model) . '_contactEmailTemplateNames_name'),
+                                        Zurmo::t('EmailTemplatesModule', 'Select a template'));
+                $element->editableTemplate = '<td><div class="overlay-label-field">' . $label . '{content}{error}</div></td>';
+            }
             else
             {
                 $element->editableTemplate = '<td>{content}{error}</td>';
