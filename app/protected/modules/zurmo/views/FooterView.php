@@ -92,7 +92,7 @@
                 {
                     $endTime      = microtime(true);
                     $endTotalTime = Yii::app()->performance->endClockAndGet();
-                    $performanceMessage .= 'Load time: ' . number_format(($endTotalTime), 3) . ' seconds.<br />';
+                    $performanceMessage .= 'Load time: <strong>' . number_format(($endTotalTime), 3) . ' seconds.</strong><br />';
                 }
             }
             if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
@@ -116,19 +116,19 @@
             $duplicateData = Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesData();
             if (count($duplicateData) > 0)
             {
-                $performanceMessage .= '</br></br>' . 'Duplicate Queries:' . '</br>';
+                $performanceMessage .= '</br></br>' . '<h4>Duplicate Queries:</h4>' . '</br>';
             }
             foreach ($duplicateData as $query => $count)
             {
-                $performanceMessage .= 'Count: ' . $count . '&#160;&#160;&#160;Query: ' . $query . '</br>';
+                $performanceMessage .= 'Count: <strong>' . $count . '</strong>&#160;&#160;&#160;Query: <strong>' . $query . '</strong></br>';
             }
             return $performanceMessage;
         }
 
         public static function getTotalAndDuplicateQueryCountContent()
         {
-            $performanceMessage  = 'Total/Duplicate Queries: ' . Yii::app()->performance->getRedBeanQueryLogger()->getQueriesCount();
-            $performanceMessage .= '/'   . Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesCount();
+            $performanceMessage  = 'Total/Duplicate Queries: <strong>' . Yii::app()->performance->getRedBeanQueryLogger()->getQueriesCount();
+            $performanceMessage .= '/' . Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesCount() . '</strong>';
             return $performanceMessage;
         }
     }
