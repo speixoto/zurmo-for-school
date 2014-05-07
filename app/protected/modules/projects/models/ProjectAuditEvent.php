@@ -116,8 +116,7 @@
                 ),
                 'relations' => array(
                     'user'    => array(static::HAS_ONE,  'User'),
-                    'project' => array(static::HAS_ONE, 'CustomField', static::NOT_OWNED,
-                        static::LINK_TYPE_SPECIFIC, 'industry'),
+                    'project' => array(static::HAS_ONE,  'Project'),
                 ),
                 'rules' => array(
                     array('dateTime',       'required'),
