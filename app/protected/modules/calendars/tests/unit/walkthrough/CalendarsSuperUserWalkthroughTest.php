@@ -64,8 +64,8 @@
 
             $this->setGetArray(array('id' => $superCalId));
             $this->runControllerWithNoExceptionsAndGetContent('calendars/default/edit');
-            //Save product.
-            $superCal       = SavedCalendar::getById($superCalId);
+            //Save Calendar
+            SavedCalendar::getById($superCalId);
             $this->setPostArray(array('SavedCalendar' => array('name' => 'My New Cal 1')));
 
             //Test having a failed validation on the saved calendar during save.
@@ -110,7 +110,7 @@
                                                                                                     'value'              => '2/18/2014',
                                                                                                     'availableAtRunTime' => '0')
                                                                                                   ))));
-            $content = $this->runControllerWithExitExceptionAndGetContent('calendars/default/edit');
+            $this->runControllerWithExitExceptionAndGetContent('calendars/default/edit');
 
             //Load Model Detail Views
             $this->resetPostArray();
@@ -171,7 +171,7 @@
 
             $calendar                   = CalendarTestHelper::createSavedCalendarByName("My Cal 3", '#66367b');
 
-            //Delete a product
+            //Delete a calendar
             $this->setGetArray(array('id' => $calendar->id));
             $this->resetPostArray();
             $calendars                  = SavedCalendar::getAll();
