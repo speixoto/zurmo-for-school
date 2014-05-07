@@ -130,12 +130,6 @@
                     $contentForSpan = Yii::app()->format->text($model->notificationMessage->textContent);
                 }
                 $content .= $contentForSpan;
-                            //@TODO: AA: Sergio, do we need it here? I don't think notification as plain text added to it after like mission/conversation
-                            /*ZurmoHtml::tag(
-                                    'span',
-                                    array("class" => "last-comment"),
-                                    $contentForSpan
-                                );*/
             }
             return $content;
         }
