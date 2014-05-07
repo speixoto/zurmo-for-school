@@ -76,7 +76,8 @@
             $projectAuditEvent->user           = $user;
             $projectAuditEvent->project        = $project;
             $projectAuditEvent->serializedData = serialize($data);
-            $saved                             = $projectAuditEvent->save();
+            //Removed the validation on save to fix: https://www.pivotaltracker.com/story/show/70712466
+            $saved                             = $projectAuditEvent->save(false);
             if ($saved)
             {
                 return true;
@@ -115,7 +116,8 @@
                 ),
                 'relations' => array(
                     'user'    => array(static::HAS_ONE,  'User'),
-                    'project' => array(static::HAS_ONE,  'Project'),
+                    'project' => array(static::HAS_ONE, 'CustomField', static::NOT_OWNED,
+                        static::LINK_TYPE_SPECIFIC, 'industry'),
                 ),
                 'rules' => array(
                     array('dateTime',       'required'),
