@@ -34,48 +34,61 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Report rules to be used with the Users module.
-     */
-    class UsersReportRules extends PermitableReportRules
+    class EmailTemplateModelTestItem2 extends Item
     {
-        /**
-         * @return array
-         */
+        public function __toString()
+        {
+            return $this->name;
+        }
+
+        public static function getByName($name)
+        {
+            return self::getByNameOrEquivalent('name', $name);
+        }
+
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'Item' => array(
-                    'nonReportable' =>
-                        array(  'createdByUser',
-                                'createdDateTime',
-                                'modifiedByUser',
-                                'modifiedDateTime'),
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
                 ),
-                'Person' => array(
-                    'nonReportable' =>
-                    array(      'primaryAddress',
-                                'primaryEmail'),
-                ),
-                'User' => array(
-                    'nonReportable' =>
-                        array(  'currency',
-                                'emailAccounts',
-                                'emailBoxes',
-                                'emailSignatures',
-                                'hash',
-                                'groups',
-                                'language',
-                                'locale',
-                                'manager',
-                                'role',
-                                'serializedAvatarData',
-                                'timeZone'),
-                    'derivedAttributeTypes' =>
-                        array('FullName')
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
                 ),
             );
-            return array_merge(parent::getDefaultMetadata(), $metadata);
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'EmailTemplatesModule';
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return 'ImportModelTestItem2';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ImportModelTestItem2s';
         }
     }
 ?>
