@@ -81,12 +81,12 @@
             $project->name            = null;
 
             $projectAuditEvent = new ProjectAuditEvent();
-            $saved = $projectAuditEvent->logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project,  $project->name, $user);
+            $saved = $projectAuditEvent->logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project,  'name', $user);
             $this->assertTrue($saved);
             $events = ProjectAuditEvent::getAll('dateTime', true);
             $this->assertEquals(ProjectAuditEvent::PROJECT_CREATED, $events[0]->eventName);
             $this->assertEquals($project->id, $events[0]->project->id);
-            $this->assertEquals($project->name, unserialize($events[0]->serializedData));
+            $this->assertEquals('Project 1', unserialize($events[0]->serializedData));
         }
 
         public function testTimeDifference()
