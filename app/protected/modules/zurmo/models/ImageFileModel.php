@@ -182,10 +182,10 @@
 
         public function fileTypeValidator($attribute, $params)
         {
-            if ($this->type == 'image/png'
-                || $this->type == 'image/jpg'
-                || $this->type == 'image/gif'
-                || $this->type == 'image/jpeg')
+            if ($this->type == 'image/png' ||
+                 $this->type == 'image/jpg' ||
+                 $this->type == 'image/gif' ||
+                 $this->type == 'image/jpeg')
             {
                 return true;
             }

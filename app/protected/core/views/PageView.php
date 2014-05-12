@@ -284,8 +284,10 @@
                 {
                     if (file_exists("themes/$themeName/css/$style.css"))
                     {
+                        // Begin Not Coding Standard
                         $cs->registerCssFile($themeBaseUrl . '/css/' . $style. '.css' .
-                            ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/css/$style.css")); // Not Coding Standard
+                            ZurmoAssetManager::getCssAndJavascriptHashQueryString("themes/$themeName/css/$style.css"));
+                        // End Not Coding Standard
                     }
                 }
             }
