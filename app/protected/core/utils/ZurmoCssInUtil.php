@@ -214,7 +214,10 @@
                 $cloneNodeStyle = self::styleToArray($cloneNodesArray[$index]->style);
                 $style = $this->mergeStyles(self::styleToArray($node->style), self::styleToArray($cloneNodesArray[$index]->style));
                 $style = self::arrayToStyle($style);
-                $node->style = $style;
+                if ($style != '')
+                {
+                    $node->style = $style;
+                }
             }
             // Let simple_html_dom give us back our HTML with inline CSS!
             $html = $this->moveStyleBlocks((string)$html);
