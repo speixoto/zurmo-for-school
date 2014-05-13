@@ -133,6 +133,10 @@
             $adapter = new $modelAttributesAdapterClassName(new EmailTemplateModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
 
+            //ManyMany
+            $manyModel                                          = new EmailTemplateModelTestItem2();
+            $manyModel->name                                    = 'manyOriginalName';
+
             $model                                              = new EmailTemplateModelTestItem();
             $model->string                                      = 'abc';
             $model->firstName                                   = 'James';
@@ -161,6 +165,7 @@
             $model->tagCloud->values->add($tagCustomFieldValue1);
             $model->tagCloud->values->add($tagCustomFieldValue2);
             $model->customCstm                                  = 'text custom';
+            $model->hasMany->add($manyModel);
             $saved                                              = $model->save();
             assert('$saved'); // Not Coding Standard
             self::$emailTemplate                                = $model;
@@ -189,6 +194,11 @@
             $tagCustomFieldValue3->value                        = 'Python';
             $tagCustomFieldValue4                               = new CustomFieldValue();
             $tagCustomFieldValue4->value                        = 'Nginx';
+
+            $manyModel->name                                    = 'manyChangedName';
+            $manyModel2                                         = new EmailTemplateModelTestItem2();
+            $manyModel2->name                                   = 'newOriginalName';
+            self::$emailTemplate->hasMany->add($manyModel2);
 
             self::$emailTemplate->string                        = 'def';
             self::$emailTemplate->firstName                     = 'Jane';
@@ -251,7 +261,7 @@
 
         public static function getDependentTestModelClassNames()
         {
-            return array('EmailTemplateModelTestItem');
+            return array('EmailTemplateModelTestItem', 'EmailTemplateModelTestItem2');
         }
 
         public function setUp()
@@ -955,6 +965,23 @@
             $this->assertNotEquals($resolvedContent, $content);
             $expectedEmailSignature = 'my email signature';
             $this->assertEquals($expectedEmailSignature, $resolvedContent);
+            $this->assertEmpty($this->invalidTags);
+        }
+
+        /**
+         * @depends testOwnersEmailSignatureMergeTag
+         */
+        public function testHasManyRelation()
+        {
+            $content                        = '[[HAS^MANY__EMAIL^TEMPLATE^MODEL^TEST^ITEM2]]';
+            $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_WORKFLOW, null, $content);
+            $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
+            $this->assertTrue($mergeTagsUtil instanceof WorkflowMergeTagsUtil);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
+            $this->assertTrue($resolvedContent !== false);
+            $this->assertNotEquals($resolvedContent, $content);
+            $expectedContent = 'manyChangedName, newOriginalName';
+            $this->assertEquals($expectedContent, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }
     }

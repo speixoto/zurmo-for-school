@@ -121,7 +121,7 @@
             }
             if ($model->notificationMessage->id > 0)
             {
-                if ($model->notificationMessage->htmlContent != null)
+                if (true || $model->notificationMessage->htmlContent != null)
                 {
                     $contentForSpan = $this->resolveHtmlContent($model->notificationMessage->id);
                 }
@@ -129,11 +129,7 @@
                 {
                     $contentForSpan = Yii::app()->format->text($model->notificationMessage->textContent);
                 }
-                $content .= ZurmoHtml::tag(
-                                    'span',
-                                    array("class" => "last-comment"),
-                                    $contentForSpan
-                                );
+                $content .= $contentForSpan;
             }
             return $content;
         }
@@ -246,8 +242,7 @@
             $buttonContent      = $this->resolveHtmlContentDivToggleButton();
             $iframeContent      = ZurmoHtml::tag('iframe', $this->resolveHtmlContentIFrameHtmlOptions($id), '');
             $iframeDivContent   = ZurmoHtml::tag('div', $this->resolveHtmlContentDivHtmlOptions() , $iframeContent);
-            $content            = $buttonContent . $iframeDivContent;
-            $content            = ZurmoHtml::tag('div', $this->resolveHtmlContentWrapperDivHtmlOptions(), $content);
+            $content            = $buttonContent . ZurmoHtml::tag('div', $this->resolveHtmlContentWrapperDivHtmlOptions(), $iframeDivContent);
             return $content;
         }
 
@@ -284,15 +279,14 @@
         protected function resolveHtmlContentDivToggleButton()
         {
             $this->registerHtmlContentDivToggleScript();
-            $label  = Zurmo::t('NotificationsModule', 'Toggle Content');
-            $label  = ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
-            $link   = ZurmoHtml::link($label, '#', $this->resolveHtmlContentDivToggleButtonHtmlOptions());
+            $label = Zurmo::t('NotificationsModule', 'Toggle Content');
+            $link  = ZurmoHtml::link($label, '#', $this->resolveHtmlContentDivToggleButtonHtmlOptions());
             return $link;
         }
 
         protected function resolveHtmlContentDivToggleButtonHtmlOptions()
         {
-            return array('class' => 'cancel-button ' . static::HTML_CONTENT_DIV_TOGGLE_BUTTON_CLASS);
+            return array('class' => 'z-link ' . static::HTML_CONTENT_DIV_TOGGLE_BUTTON_CLASS);
         }
 
         protected function registerHtmlContentDivToggleScript()
@@ -304,7 +298,7 @@
                     $('." . static::HTML_CONTENT_DIV_TOGGLE_BUTTON_CLASS . "').unbind('click').bind('click', function(event)
                     {
                         var self                = $(this);
-                        var htmlContentDiv      = self.siblings('.notification-message-html-content-div');
+                        var htmlContentDiv      = self.parent().find('.notification-message-html-content-div');
                         var iframe              = htmlContentDiv.find('.notification-message-html-content-iframe');
                         var iframeSourceUrl     = iframe.attr('src');
                         var iframeDataSourceUrl = iframe.data('src');
@@ -312,7 +306,8 @@
                         {
                             iframe.attr('src', iframeDataSourceUrl);
                         }
-                        htmlContentDiv.slideToggle();
+                        htmlContentDiv.slideToggle(300);
+                        event.preventDefault();
                     });
                     ");
             }

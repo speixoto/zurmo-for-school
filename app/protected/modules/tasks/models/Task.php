@@ -125,6 +125,7 @@
                 ),
                 'elements' => array(
                     'completedDateTime' => 'DateTime',
+                    'description'       => 'TextArea',
                     'dueDateTime'       => 'DateTime',
                     'requestedByUser'   => 'User',
                     'comment'           => 'Comment',

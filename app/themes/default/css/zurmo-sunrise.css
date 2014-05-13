@@ -1516,10 +1516,10 @@ body > .ui-autocomplete {
   width: 80%;
 }
 #MenuView .over > a,
-#MenuView .active a,
+#MenuView .active > a,
 #MenuView a:hover,
 #RecentlyViewedView .over > a,
-#RecentlyViewedView .active a,
+#RecentlyViewedView .active > a,
 #RecentlyViewedView a:hover {
   color: #fff !important;
   background-color: #c0392b;
@@ -1535,10 +1535,10 @@ body > .ui-autocomplete {
   text-shadow: 0px 1px 0 #6a8a2a !important;
 }
 #MenuView .over > a i,
-#MenuView .active a i,
+#MenuView .active > a i,
 #MenuView a:hover i,
 #RecentlyViewedView .over > a i,
-#RecentlyViewedView .active a i,
+#RecentlyViewedView .active > a i,
 #RecentlyViewedView a:hover i {
   color: #2e3c12 !important;
   -webkit-text-shadow: 0px 1px 0 #b6d678 !important;
@@ -2424,8 +2424,9 @@ form .view-toolbar-container,
 .performance-info {
   color: #34495e;
   text-align: left;
-  margin: 0 3% 15px 3%;
-  font-style: italic;
+  margin: 15px 0;
+  padding-right: 15px;
+  line-height: 1.4;
   font-size: 11px;
 }
 #credit-link {
@@ -2696,6 +2697,9 @@ tr.even {
 .checkbox-column .hasCheckBox {
   margin: -4px auto 0 auto;
 }
+td.checkbox-column {
+  vertical-align: top !important;
+}
 .button-column {
   width: 35px;
   text-align: center;
@@ -2947,6 +2951,10 @@ input[type="button"]:hover:after {
 .form-toolbar a {
   display: inline-block;
   margin: 0 10px;
+}
+.modal-view-toolbar .simple-link,
+.form-toolbar .simple-link {
+  display: inline;
 }
 .portlet-toolbar {
   float: right;
@@ -3734,7 +3742,6 @@ div.wide.form label.hasCheckBox {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -4449,6 +4456,12 @@ div.wide.form label.hasCheckBox {
 .has-color-picker input,
 .has-unit-input input {
   width: 100%;
+}
+.clear-select {
+  float: left;
+  margin-top: -22px;
+  margin-left: 3px;
+  display: inline;
 }
 .has-model-select {
   clear: left;
@@ -5475,6 +5488,7 @@ div.radio-input .hasDropDown {
   color: #999;
   font-size: 12px;
   font-weight: normal;
+  z-index: 10;
 }
 .hasParallelFields,
 .hasHalfs {
@@ -7303,7 +7317,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -7362,7 +7375,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -7433,7 +7445,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;

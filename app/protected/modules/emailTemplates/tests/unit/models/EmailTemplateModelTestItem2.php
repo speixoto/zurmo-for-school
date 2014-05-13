@@ -1,4 +1,4 @@
-    <?php
+<?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2014 Zurmo Inc.
@@ -34,36 +34,61 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * UpdateSchemaCommand allows the schema to be updated.  This is useful if you are developing
-     * and make changes to metadata that affects the database schema.
-     */
-    class LessCompilerCommand extends CConsoleCommand
+    class EmailTemplateModelTestItem2 extends Item
     {
-        public function getHelp()
+        public function __toString()
         {
-            return <<<EOD
-    USAGE
-      zurmoc lessCompiler
+            return $this->name;
+        }
 
-    DESCRIPTION
-      This command create css files based on less files. This job should probably be done as cronjob, maybe once per day.
+        public static function getByName($name)
+        {
+            return self::getByNameOrEquivalent('name', $name);
+        }
 
-    PARAMETERS
-     * no params
-EOD;
-    }
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'EmailTemplatesModule';
+        }
 
         /**
-         * Execute the action.
-         * @param array $args
-         * @return int|void
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
          */
-        public function run($args)
+        protected static function getLabel($language = null)
         {
-            set_time_limit('900');
-            Yii::app()->lessCompiler->compile();
-            Yii::app()->lessCompiler->compileCustom();
+            return 'ImportModelTestItem2';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ImportModelTestItem2s';
         }
     }
 ?>

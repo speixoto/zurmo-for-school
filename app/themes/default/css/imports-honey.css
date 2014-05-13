@@ -146,7 +146,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -205,7 +204,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -276,7 +274,6 @@ a:active .z-label {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -913,7 +910,6 @@ a.simple-link .icon-x {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -1447,6 +1443,9 @@ table.configuration-list tr:last-child td {
   font-size: 12px;
   text-decoration: underline !important;
 }
+#RoleEditAndDetailsView .has-model-select input {
+  text-indent: 21px;
+}
 #JobsCollectionView div.wide.form {
   float: none;
 }
@@ -1806,7 +1805,6 @@ table.configuration-list tr:last-child td {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -1923,7 +1921,6 @@ table.configuration-list tr:last-child td {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -2936,7 +2933,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -3379,7 +3375,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -3443,7 +3438,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -3687,6 +3681,7 @@ div.wide.form .errorMessage {
   border-bottom: 1px solid #bbb;
 }
 #ui-datepicker-div {
+  z-index: 9999 !important;
   max-width: 250px;
   background-color: #f5f5f5 ;
   background-repeat: no-repeat ;
@@ -3939,7 +3934,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -4497,7 +4491,6 @@ div.wide.form .errorMessage {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  overflow: hidden;
   position: relative;
   display: inline-block;
   text-indent: 0;
@@ -7194,12 +7187,24 @@ a.user-link {
 .inbox-item div + span {
   display: block;
   padding-right: 80px;
-  overflow: hidden;
 }
 .inbox-item .list-item-details {
   position: absolute;
   top: 0;
   right: 0;
+}
+.inbox-item .z-link {
+  margin-left: 5px;
+}
+.inbox-item .z-link:before {
+  font-weight: normal !important;
+  font-size: 14px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  content: "÷";
+  line-height: 1;
+  margin-right: 3px;
+  display: inline-block;
+  text-decoration: none !important;
 }
 .model-tag {
   display: inline-block;
@@ -7257,6 +7262,9 @@ a.user-link {
 }
 .back-to-inbox-link {
   color: #46201C;
+}
+.notification-message-html-content-div {
+  padding: 15px 0;
 }
 .toolbar-mbmenu i[class^="icon"] {
   display: none !important;
@@ -11330,6 +11338,7 @@ a#claim-item-link {
   margin: 0;
 }
 .task-activity #comment-inline-edit-form .form-toolbar {
+  margin-top: 5px;
   padding-right: 0;
 }
 .task-activity .comment {

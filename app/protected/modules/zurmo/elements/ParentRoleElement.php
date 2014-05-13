@@ -47,7 +47,7 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof Role');
-            $content = parent::renderControlEditable();
+            $content  = parent::renderControlEditable();
             $content .= $this->renderClearParentRoleLink();
             return $content;
         }
@@ -77,14 +77,14 @@
         {
             $this->registerClearParentRoleLinkScripts();
             $htmlOptions    = $this->resolveClearParentRoleLinkHtmlOptions();
-            $label          = Zurmo::t('Core', 'Clear');
-            $link           = ZurmoHtml::link(ZurmoHtml::wrapLabel($label), '#', $htmlOptions);
+            $icon           = ZurmoHtml::tag('i', array('class' => 'icon-x'), '');
+            $link           = ZurmoHtml::link($icon, '#', $htmlOptions);
             return $link;
         }
 
         protected function resolveClearParentRoleLinkHtmlOptions()
         {
-            $htmlOptions    = array('id' => static::CLEAR_PARENT_ROLE_LINK_ID, 'class' => 'simple-link');
+            $htmlOptions    = array('id' => static::CLEAR_PARENT_ROLE_LINK_ID, 'class' => 'clear-select');
             if ($this->model->role->id < 0)
             {
                 $htmlOptions['style'] = 'display:none;';
