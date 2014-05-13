@@ -75,7 +75,7 @@
 
         protected function renderFormLayout($form = null)
         {
-            $content  = '<table>';
+            $content  = '<table class="form-fields">';
             $content .= '<colgroup>';
             $content .= '<col style="width:100%" />';
             $content .= '</colgroup>';
@@ -89,7 +89,6 @@
             $content .= '</table>';
             $cancelLink = new CancelConvertLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
             $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
-            $content .= $cancelLink->render() . '&#160;';
             $element  =   new SaveButtonActionElement($this->controllerId, $this->moduleId,
                                                       null,
                                                       array('htmlOptions' =>
@@ -97,6 +96,7 @@
                                                                 'params' => array('AccountSkip' => true)),
                                                                 'label'  => Zurmo::t('ZurmoModule', 'Complete Conversion')));
             $content .= $element->render();
+            $content .= $cancelLink->render();
             $content .= '</div></div>';
             return $content;
         }
