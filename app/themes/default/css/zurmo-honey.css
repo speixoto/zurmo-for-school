@@ -1821,6 +1821,11 @@ body > .ui-autocomplete {
   background-image: -o-linear-gradient(top,#c43d53,#a82d31) !important;
   background-image: -moz-linear-gradient(top,#c43d53,#a82d31) !important;
   background-image: linear-gradient(top,#c43d53,#a82d31) !important;
+  -webkit-box-shadow: 0 1px 0 0 #c43d53;
+  -moz-box-shadow: 0 1px 0 0 #c43d53;
+  -ms-box-shadow: 0 1px 0 0 #c43d53;
+  -o-box-shadow: 0 1px 0 0 #c43d53;
+  box-shadow: 0 1px 0 0 #c43d53;
 }
 #MenuView.admin-menu .parent ul {
   display: none;
@@ -4247,7 +4252,9 @@ div.wide.form label.hasCheckBox {
 }
 #modal-edit-form,
 #edit-form,
-#delete-form {
+#delete-form,
+#select-account-form,
+#account-skip-form {
   *zoom: 1;
   position: relative;
 }
@@ -4256,28 +4263,40 @@ div.wide.form label.hasCheckBox {
 #edit-form:before,
 #edit-form:after,
 #delete-form:before,
-#delete-form:after {
+#delete-form:after,
+#select-account-form:before,
+#select-account-form:after,
+#account-skip-form:before,
+#account-skip-form:after {
   content: " ";
   display: table;
 }
 #modal-edit-form:after,
 #edit-form:after,
-#delete-form:after {
+#delete-form:after,
+#select-account-form:after,
+#account-skip-form:after {
   clear: both;
 }
 #modal-edit-form .panel table,
 #edit-form .panel table,
-#delete-form .panel table {
+#delete-form .panel table,
+#select-account-form .panel table,
+#account-skip-form .panel table {
   width: 100% !important;
 }
 #modal-edit-form h3,
 #edit-form h3,
-#delete-form h3 {
+#delete-form h3,
+#select-account-form h3,
+#account-skip-form h3 {
   margin: 0 0 15px 0;
 }
 #modal-edit-form .panelTitle,
 #edit-form .panelTitle,
-#delete-form .panelTitle {
+#delete-form .panelTitle,
+#select-account-form .panelTitle,
+#account-skip-form .panelTitle {
   margin: 0 0 10px 0;
   padding: 0;
   font-size: 12px;
@@ -4285,17 +4304,23 @@ div.wide.form label.hasCheckBox {
 }
 #modal-edit-form .view-toolbar-container,
 #edit-form .view-toolbar-container,
-#delete-form .view-toolbar-container {
+#delete-form .view-toolbar-container,
+#select-account-form .view-toolbar-container,
+#account-skip-form .view-toolbar-container {
   border-top: 1px solid #CCCCCC;
 }
 #modal-edit-form .hasCheckBox,
 #edit-form .hasCheckBox,
-#delete-form .hasCheckBox {
+#delete-form .hasCheckBox,
+#select-account-form .hasCheckBox,
+#account-skip-form .hasCheckBox {
   display: block;
 }
 #modal-edit-form .hasCheckBox input[type="checkbox"],
 #edit-form .hasCheckBox input[type="checkbox"],
-#delete-form .hasCheckBox input[type="checkbox"] {
+#delete-form .hasCheckBox input[type="checkbox"],
+#select-account-form .hasCheckBox input[type="checkbox"],
+#account-skip-form .hasCheckBox input[type="checkbox"] {
   margin-bottom: 0 !important;
 }
 .form-fields {
@@ -6885,6 +6910,7 @@ div.radio-input .hasDropDown {
   border-bottom: 1px dotted #ccc;
   width: auto;
   display: inline-block;
+  word-break: break-word;
 }
 .editable-cell:after {
   content: "!";
@@ -7267,6 +7293,11 @@ i[class^="icon"] {
   padding: 0 25px;
   line-height: 24px;
   white-space: nowrap;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   -webkit-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
   -moz-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
   -ms-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
@@ -7558,6 +7589,9 @@ a:active .z-label {
   -o-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
 }
+button[type="button"]:focus {
+  outline: none;
+}
 input[type="button"].default-btn,
 input[type="button"].white-button,
 input[type="button"].cancel-button,
@@ -7568,7 +7602,14 @@ input[type="button"].portlet-create-button {
   -ms-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   -o-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
   text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
-  background: transparent url("../images/view-toolbar-gradient.png") left bottom repeat-x;
+  background-color: #f5f5f5;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fefefe),color-stop(100%,#f5f5f5));
+  background-image: -webkit-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -o-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -moz-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: linear-gradient(top,#fefefe,#f5f5f5);
 }
 input[type="button"].default-btn:hover,
 input[type="button"].white-button:hover,
