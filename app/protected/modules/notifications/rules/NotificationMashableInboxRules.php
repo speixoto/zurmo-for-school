@@ -121,7 +121,7 @@
             }
             if ($model->notificationMessage->id > 0)
             {
-                if (true || $model->notificationMessage->htmlContent != null)
+                if ($model->notificationMessage->htmlContent != null)
                 {
                     $contentForSpan = $this->resolveHtmlContent($model->notificationMessage->id);
                 }
