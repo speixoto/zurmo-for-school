@@ -77,13 +77,13 @@
                     $endTotalTime = Yii::app()->performance->endClockAndGet();
                     if (defined('XHTML_VALIDATION') && XHTML_VALIDATION)
                     {
-                        $performanceMessage .= '<span>Total page view time including validation: ' . number_format(($endTime - $this->startTime), 3) . ' seconds.</span><br />';
+                        $performanceMessage .= '<span>Total page view time including validation: <strong>' . number_format(($endTime - $this->startTime), 3) . ' seconds.</strong></span><br />';
                     }
                     else
                     {
-                        $performanceMessage .= '<span>Total page view time: ' . number_format(($endTime - $this->startTime), 3) . ' seconds.</span><br />';
+                        $performanceMessage .= '<span>Total page view time: <strong>' . number_format(($endTime - $this->startTime), 3) . ' seconds.</strong></span><br />';
                     }
-                    $performanceMessage .= '<span>Total page time: ' . number_format(($endTotalTime), 3) . ' seconds.</span><br />';
+                    $performanceMessage .= '<span>Total page time: <strong>' . number_format(($endTotalTime), 3) . ' seconds.</strong></span><br />';
                 }
             }
             else
@@ -103,7 +103,7 @@
                 }
                 foreach (Yii::app()->performance->getTimings() as $id => $time)
                 {
-                    $performanceMessage .= 'Timing: ' . $id . ' total time: ' . number_format(($time), 3) . "</br>";
+                    $performanceMessage .= 'Timing: <strong>' . $id . '</strong> total time: <strong>' . number_format(($time), 3) . "</strong></br>";
                 }
                 $performanceMessage = '<div class="performance-info">' . $performanceMessage . '</div>';
             }

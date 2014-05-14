@@ -162,13 +162,24 @@
 		padding:5px 0;
 		.clearfix();
 	}
+	.ui-datepicker-current,
+	.ui-datepicker-close{
+		.secondary-button();
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		color:#666;
+		border: none !important;
+		.z-label{
+			border-top:   1px solid rgba(200, 200, 200, 0.4);
+			border-left:  1px solid rgba(185, 185, 185, 0.4);
+			border-right: 1px solid rgba(185, 185, 185, 0.4);
+			border-bottom:1px solid rgba(170, 170, 170, 0.4);
+		}
+	}
 	.ui-datepicker-current{
-		.z-button();
 		float:left;
 		margin:0 10px;
 	}
 	.ui-datepicker-close{
-		.z-button();
 		float:right;
 		margin:0 10px;
 	}

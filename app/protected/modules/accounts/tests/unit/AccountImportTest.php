@@ -212,5 +212,65 @@
             $parentAccount = Account::getById($parentAccountId);
             $this->assertEquals(3, $parentAccount->accounts->count());
         }
+
+        public function testImportWithLatestActivityDateTime()
+        {
+            Yii::app()->user->userModel            = User::getByUsername('super');
+            $accounts                              = Account::deleteAll();
+            $import                                = new Import();
+            $serializedData['importRulesType']     = 'Accounts';
+            $serializedData['firstRowIsHeaderRow'] = true;
+            $import->serializedData                = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            ImportTestHelper::
+                createTempTableByFileNameAndTableName('importWithLatestActivityDateTimeTest.csv', $import->getTempTableName(), true,
+                    Yii::getPathOfAlias('application.modules.accounts.tests.unit.files'));
+            $mappingData = array(
+                'column_0'  => ImportMappingUtil::makeStringColumnMappingData      ('name'),
+                'column_1'  => ImportMappingUtil::makeDateTimeColumnMappingData    ('latestActivityDateTime'),
+            );
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('Accounts');
+            $page         = 0;
+            $config       = array('pagination' => array('pageSize' => 50)); //This way all rows are processed.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+            $dataProvider->getPagination()->setCurrentPage($page);
+            $importResultsUtil = new ImportResultsUtil($import);
+            $messageLogger     = new ImportMessageLogger();
+            ImportUtil::importByDataProvider($dataProvider,
+                $importRules,
+                $mappingData,
+                $importResultsUtil,
+                new ExplicitReadWriteModelPermissions(),
+                $messageLogger);
+            $importResultsUtil->processStatusAndMessagesForEachRow();
+
+            //Confirm that 2 models where created.
+            $accounts = Account::getAll();
+            $this->assertCount(2, $accounts);
+
+            $accounts = Account::getByName('company1');
+            $this->assertEquals('2011-12-22 05:03', substr($accounts[0]->latestActivityDateTime, 0, -3));
+
+            $accounts = Account::getByName('company2');
+            $this->assertNull($accounts[0]->latestActivityDateTime);
+
+            //Confirm 2 rows were processed as 'created'.
+            $this->assertEquals(2, ImportDatabaseUtil::getCount($import->getTempTableName(), "status = "
+                . ImportRowDataResultsUtil::CREATED));
+
+            //Confirm that 0 rows were processed as 'updated'.
+            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+                . ImportRowDataResultsUtil::UPDATED));
+
+            //Confirm 0 rows were processed as 'errors'.
+            $this->assertEquals(0, ImportDatabaseUtil::getCount($import->getTempTableName(),  "status = "
+                . ImportRowDataResultsUtil::ERROR));
+
+            $beansWithErrors = ImportDatabaseUtil::getSubset($import->getTempTableName(),     "status = "
+                . ImportRowDataResultsUtil::ERROR);
+            $this->assertEquals(0, count($beansWithErrors));
+        }
     }
 ?>

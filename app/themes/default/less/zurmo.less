@@ -1214,6 +1214,7 @@ body > .ui-autocomplete{
 		@topColor: #c43d53;
 		@bottomColor: #a82d31;
 		#gradient > .vertical(@topColor, @bottomColor ) !important;
+		.b-shadow(0 1px 0 0 @topColor);
 	}
 	&.admin-menu{
 		.parent ul{
@@ -1902,6 +1903,10 @@ tr.even{
 	.hasCheckBox{
 		margin:-4px auto 0 auto;
 	}
+}
+
+td.checkbox-column{
+	vertical-align:top !important;
 }
 
 .button-column{
@@ -3245,7 +3250,9 @@ div.wide.form{
 
 #modal-edit-form,
 #edit-form,
-#delete-form{
+#delete-form,
+#select-account-form,
+#account-skip-form{
 	.clearfix();
 
 	position: relative;
@@ -3555,7 +3562,7 @@ div.wide.form{
 		}
 	}
 	.iris-picker{
-		z-index: 9999;
+		z-index: 99999;
 		position: absolute;
 	}
 }
@@ -4290,21 +4297,17 @@ div.radio-input{
 /*=Temp Addreess Fields*/
 .overlay-label-field{
 	position:relative;
-	//padding-bottom:15px;
 	.clearfix();
-}
-
-.overlay-label-field label {
-	position: absolute !important;
-	text-indent: 4px;
-	top: 6px;
-	color: #999;
-	font-size: 12px;
-	font-weight: normal;
-}
-
-.overlay-label-field input{
-
+	input{ }
+	label {
+		position: absolute !important;
+		text-indent: 4px;
+		top: 6px;
+		color: #999;
+		font-size: 12px;
+		font-weight: normal;
+		z-index: 10;
+	}
 }
 
 .hasParallelFields,
@@ -5437,8 +5440,7 @@ div.radio-input{
 	border-bottom: 1px dotted #ccc;
 	width: auto;
 	display: inline-block;
-	//padding-bottom: 2px;
-	//margin-top: 3px;
+	word-break: break-word;
 	&:after{
 		content:"!";
 		.symbly(20px);

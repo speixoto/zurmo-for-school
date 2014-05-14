@@ -34,37 +34,61 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Cancel conversion link.
-     */
-    class CancelConvertLinkActionElement extends LinkActionElement
+    class EmailTemplateModelTestItem2 extends Item
     {
-        public function getActionType()
+        public function __toString()
         {
-            return 'Details';
+            return $this->name;
         }
 
-        protected function getDefaultLabel()
+        public static function getByName($name)
         {
-            return Zurmo::t('Core', 'Cancel');
+            return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected function getDefaultRoute()
+        public static function getDefaultMetadata()
         {
-            if (!empty($this->modelId))
-            {
-                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/', array('id' => $this->modelId));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+            );
+            return $metadata;
         }
 
-        protected function resolveHtmlOptionsForRendering()
+        public static function isTypeDeletable()
         {
-            $htmlOptions = array('class' => 'cancel-button');
-            return $htmlOptions;
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'EmailTemplatesModule';
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return 'ImportModelTestItem2';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ImportModelTestItem2s';
         }
     }
 ?>
