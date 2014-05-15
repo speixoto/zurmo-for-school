@@ -363,5 +363,15 @@
             return array_merge(parent::getSelectLinkUrlParams(),
                 array('stateMetadataAdapterClassName' => 'EmailTemplatesForMarketingStateMetadataAdapter'));
         }
+
+        protected function getNameForHiddenField()
+        {
+            return '';
+        }
+
+        protected function getNameForTextField()
+        {
+            return '';
+        }
     }
 ?>
