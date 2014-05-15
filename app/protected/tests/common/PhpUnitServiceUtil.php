@@ -52,7 +52,7 @@
                     $actualVersion = PHPUnit_Runner_Version::id();
                 }
                 // For PHPUnit > 3.7
-                elseif (method_exists('PHPUnit_Runner_Version','id'))
+                elseif (method_exists('PHPUnit_Runner_Version', 'id'))
                 {
                     $actualVersion = PHPUnit_Runner_Version::id();
                 }

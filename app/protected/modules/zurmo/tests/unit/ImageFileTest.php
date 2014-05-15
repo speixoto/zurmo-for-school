@@ -129,10 +129,12 @@
             $pathToFiles  = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $fileContents = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testImage.png');
             $imageFile    = ImageFileModel::getById($this->imageFile1Id);
-            if (file_exists($imageFile->getImageCachePath())) {
+            if (file_exists($imageFile->getImageCachePath()))
+            {
                 unlink($imageFile->getImageCachePath());
             }
-            if (file_exists($imageFile->getImageCachePath(true))) {
+            if (file_exists($imageFile->getImageCachePath(true)))
+            {
                 unlink($imageFile->getImageCachePath(true));
             }
             $this->assertEquals($fileContents, $imageFile->fileContent->content);

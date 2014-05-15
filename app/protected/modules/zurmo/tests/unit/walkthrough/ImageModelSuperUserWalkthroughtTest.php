@@ -59,10 +59,12 @@
         {
             $super     = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $imageFile = ImageFileModel::getById($this->imageFile1Id);
-            if (file_exists($imageFile->getImageCachePath())) {
+            if (file_exists($imageFile->getImageCachePath()))
+            {
                 unlink($imageFile->getImageCachePath());
             }
-            if (file_exists($imageFile->getImageCachePath(true))) {
+            if (file_exists($imageFile->getImageCachePath(true)))
+            {
                 unlink($imageFile->getImageCachePath(true));
             }
             //Test all default controller actions that do not require any POST/GET variables to be passed.
@@ -99,7 +101,7 @@
             self::resetAndPopulateFilesArrayByFilePathAndName('file', $filePath, 'testImage.png');
             $content        = $this->runControllerWithNoExceptionsAndGetContent('zurmo/imageModel/upload');
             $returnedObject = CJSON::decode($content);
-            $this->assertContains('zurmo/imageModel/getImage?fileName=2_testImage.png', $returnedObject['filelink']);
+            $this->assertContains('zurmo/imageModel/getImage?fileName=2_testImage.png', $returnedObject['filelink']); // Not Coding Standard
             $createdImageFile = ImageFileModel::getById(2);
             $this->assertEquals($fileContents, $createdImageFile->fileContent->content);
         }
