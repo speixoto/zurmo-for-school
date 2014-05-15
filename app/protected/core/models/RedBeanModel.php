@@ -2359,6 +2359,7 @@
         public static function forgetAll()
         {
             self::forgetAllBeanModels();
+            self::$attributeLabelsByLanguage = array();
             RedBeanModelsCache::forgetAll();
             RedBeansCache::forgetAll();
         }
