@@ -74,5 +74,17 @@
         {
             return Yii::app()->createAbsoluteUrl('zurmo/imageModel/getUploaded');
         }
+
+        public static function getUrlForGetImageFromImageFileName($fileName, $shouldReturnForThumbnail = false)
+        {
+            assert('is_string($fileName)');
+            assert('is_bool($shouldReturnForThumbnail)');
+            $path = 'zurmo/imageModel/getImage';
+            if ($shouldReturnForThumbnail)
+            {
+                $path = 'zurmo/imageModel/getThumb';
+            }
+            return Yii::app()->createAbsoluteUrl($path, array('fileName' => $fileName));
+        }
     }
 ?>

@@ -45,6 +45,22 @@
         const THUMB_FILE_NAME_PREFIX   = 'thumb_';
         const FILE_NAME_SEPARATOR      = '_';
 
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'isPublic',
+                ),
+                'rules' => array(
+                    array('isPublic', 'boolean'),
+                    array('isPublic', 'default', 'value' => false),
+
+                ),
+            );
+            return $metadata;
+        }
+
         /**
          * Get the model by the fileName
          * @param $fileName The filename of the model

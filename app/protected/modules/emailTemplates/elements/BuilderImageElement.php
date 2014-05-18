@@ -48,12 +48,7 @@
 
         protected function resolveDefaultContent()
         {
-            return array('image' => ZurmoHtml::image($this->resolveDefaultImageUrl()));
-        }
-
-        protected function resolveDefaultImageUrl()
-        {
-            return PlaceholderImageUtil::resolvePlaceholderImageUrl();
+            return array('image' => '');
         }
 
         protected function renderSettingsTab(ZurmoActiveForm $form)
@@ -66,7 +61,7 @@
 
         protected function resolveContentElementClassName()
         {
-            return 'BuilderImageRedactorElement';
+            return 'ImageElement';
         }
 
         protected function resolveContentElementAttributeName()

@@ -34,46 +34,50 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderImageRedactorElement extends RedactorElement
+    /**
+     * Display an image selection
+     */
+    class ImageElement extends Element implements ElementActionTypeInterface
     {
-        protected function resolveRedactorOptions()
+        protected function renderControlEditable()
         {
-            $parentOptions          = parent::resolveRedactorOptions();
-            $options                = array(
-                'observeImages'             => 'true',
-                'allowedTags'               => $this->resolveAllowedTags(),
-                'buttons'                   => $this->resolveRedactorButtons(),
-                'imageUpload'               => ImageFileModelUtil::getUrlForActionUpload(),
-                'imageUploadErrorCallback'  => 'function(json)
-                                                {
-                                                    alert(json.error);
-                                                }',
-                'imageGetJson'              => ImageFileModelUtil::getUrlForActionGetUploaded(),
-                'syncBeforeCallback'        => $this->renderSyncBeforeCallbackScript()
-            );
-            $options            = CMap::mergeArray($parentOptions, $options);
-            return $options;
+//            assert('$this->model->{$this->attribute} instanceof ImageModel');
+            $content  = $this->renderImage(true);
+            $content .= ZurmoHtml::textField($this->getEditableInputName(), $this->model->{$this->attribute});
+            return $content;
+            // TODO: Implement renderControlEditable() method.
         }
 
-        protected function resolveAllowedTags()
+        protected function renderControlNonEditable()
         {
-            return CJSON::encode(array('img', 'p'));
+            // TODO: Implement renderControlNonEditable() method.
+            return $this->renderImage();
         }
 
-        protected function resolveRedactorButtons()
+        public static function getEditableActionType()
         {
-            $buttons         = array('zurmoImage');
-            return CJSON::encode($buttons);
+            return 'ModalList';
         }
 
-        protected function renderSyncBeforeCallbackScript()
+        public static function getNonEditableActionType()
         {
-            // Begin Not Coding Standard
-            return "function(html)
-                    {
-                        return this.getEditor().contents().find('img:first').wrap('<p/>').parent().html();
-                    }";
-            // End Not Coding Standard
+            throw new NotSupportedException;
+        }
+
+        protected function renderImage($isThumb = false)
+        {
+            $id = (int) $this->model->{$this->attribute};
+            if ($id > 0 )
+            {
+                $image = ImageFileModel::getById($id);
+                $url   = ImageFileModelUtil::getUrlForGetImageFromImageFileName($image->getImageCacheFileName(), $isThumb);
+                return ZurmoHtml::image($url);
+            }
+            else
+            {
+                $url = PlaceholderImageUtil::resolvePlaceholderImageUrl();
+                return ZurmoHtml::image($url);
+            }
         }
     }
 ?>

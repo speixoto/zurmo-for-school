@@ -152,5 +152,11 @@
             $this->assertTrue(file_exists($imageFile->getImageCachePath()));
             $this->assertTrue(file_exists($imageFile->getImageCachePath(true)));
         }
+
+        public function testCreateImageIsPublicDefaultValue()
+        {
+            $imageFile = new ImageFileModel();
+            $this->assertFalse((bool) $imageFile->isPublic);
+        }
     }
 ?>
