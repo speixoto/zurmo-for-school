@@ -89,5 +89,15 @@
             assert('is_string($fileName)');
             ImageFileModelUtil::readImageFromCache($fileName, true);
         }
+
+        public function actionModalList()
+        {
+            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+                $_GET['modalTransferInformation']['sourceIdFieldId'],
+                $_GET['modalTransferInformation']['sourceNameFieldId'],
+                $_GET['modalTransferInformation']['modalId']
+            );
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+        }
     }
 ?>

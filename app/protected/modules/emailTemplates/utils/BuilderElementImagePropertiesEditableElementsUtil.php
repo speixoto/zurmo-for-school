@@ -40,29 +40,47 @@
         {
             $configurationItems         = array();
             $configurationItems[]       = static::resolveConfigurationItem(
-                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'BuilderElementFrontendPropertiesEditableElementUtil',
                 'ImageAlignmentStaticDropDownFormElement',
                 'float',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Image Alignment')));
             $configurationItems[]       = static::resolveConfigurationItem(
-                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'BuilderElementFrontendPropertiesEditableElementUtil',
                 'TextElement',
                 'height',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Height')));
             $configurationItems[]       = static::resolveConfigurationItem(
-                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'BuilderElementFrontendPropertiesEditableElementUtil',
                 'TextElement',
                 'width',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Width')));
             $configurationItems[]       = static::resolveConfigurationItem(
-                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'BuilderElementFrontendPropertiesEditableElementUtil',
                 'TextElement',
                 'alt',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Alt Text')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementFrontendPropertiesEditableElementUtil',
+                'TextElement',
+                'title',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Title')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementFrontendPropertiesEditableElementUtil',
+                'TextElement',
+                'href',
+                static::resolveDefaultParams(
+                    Zurmo::t('Core', 'URL')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementFrontendPropertiesEditableElementUtil',
+                'ButtonTargetStaticDropDownFormElement',
+                'target',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Open in')));
             return $configurationItems;
         }
     }

@@ -116,7 +116,7 @@
                 $linkText = Zurmo::t('ZurmoModule', 'Upload');
             }
             $content = ZurmoHtml::ajaxLink($linkText . '<span class="z-spinner"></span>',
-                            Yii::app()->createUrl('zurmo/image/modalList/', $this->getSelectLinkUrlParams()),
+                            Yii::app()->createUrl('zurmo/imageModel/modalList/', $this->getSelectLinkUrlParams()),
                             $this->resolveAjaxOptionsForSelectingModel($id),
                             array(
                                 'id'        => $id,
@@ -128,6 +128,13 @@
 
         protected function renderImage($isThumb = false)
         {
+            $altText = '';
+            $htmlOptions = array();
+            if (!$isThumb)
+            {
+                $altText = $this->getAltText();
+                $htmlOptions = $this->getHtmlOptions();
+            }
             if ($this->image != null)
             {
                 $url = ImageFileModelUtil::getUrlForGetImageFromImageFileName($this->image->getImageCacheFileName(), $isThumb);
@@ -136,7 +143,7 @@
             {
                 $url = PlaceholderImageUtil::resolvePlaceholderImageUrl();
             }
-            return ZurmoHtml::image($url);
+            return ZurmoHtml::image($url, $altText, $htmlOptions);
         }
 
         protected function getIdForSelectLink()
@@ -158,6 +165,10 @@
 //                'sourceNameFieldId' => $this->getIdForTextField(),
 //                'modalId'           => $this->getModalContainerId(),
 //                'sourceModelId'     => $this->model->id
+                'sourceIdFieldId'   => $this->getEditableInputName(),
+                'sourceNameFieldId' => $this->getEditableInputName(),
+                'modalId'           => $this->getModalContainerId(),
+                'sourceModelId'     => (int) $this->model->{$this->attribute}
             );
         }
 
@@ -176,6 +187,15 @@
         protected function getModalContainerId()
         {
             return self::MODAL_CONTAINER_PREFIX . '-' . $this->form->id;
+        }
+
+        protected function getAltText()
+        {
+            if (!isset($this->params['alt']))
+            {
+                return '';
+            }
+            return $this->params['alt'];
         }
     }
 ?>

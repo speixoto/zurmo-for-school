@@ -73,7 +73,65 @@
         {
             $params                     = parent::resolveContentElementParams();
             $params['labelHtmlOptions'] = array('label' => 'Image');
-            return $params;
+            $frontendOptions            = $this->resolveContentElementParamsFromFrontendOptions();
+            return array_merge($params, $frontendOptions);
+        }
+
+        protected function resolveContentElementParamsFromFrontendOptions()
+        {
+            $properties = array();
+            $frontendProperties = ArrayUtil::getArrayValue($this->properties, 'frontend');
+            if ($frontendProperties)
+            {
+                $properties['alt'] = ArrayUtil::getArrayValue($frontendProperties, 'alt');
+                $properties['htmlOptions']['width']  = ArrayUtil::getArrayValue($frontendProperties, 'width');
+                $properties['htmlOptions']['height'] = ArrayUtil::getArrayValue($frontendProperties, 'height');
+                $properties['htmlOptions']['align']  = ArrayUtil::getArrayValue($frontendProperties, 'float');
+            }
+            return $properties;
+        }
+
+        protected function renderControlContentNonEditable()
+        {
+            $content = parent::renderControlContentNonEditable();
+            $this->wrapContentWithLink($content);
+            return $content;
+        }
+
+        protected function wrapContentWithLink(& $content)
+        {
+            $href    = null;
+            $options = array();
+            $frontendProperties = ArrayUtil::getArrayValue($this->properties, 'frontend');
+            if ($frontendProperties)
+            {
+                $href = ArrayUtil::getArrayValue($frontendProperties, 'href');
+                if ($href)
+                {
+                    $options['href'] = $href;
+                }
+                $target = ArrayUtil::getArrayValue($frontendProperties, 'target');
+                if ($target)
+                {
+                    $options['target'] = $target;
+                }
+                $title = ArrayUtil::getArrayValue($frontendProperties, 'title');
+                if ($title)
+                {
+                    $options['title'] = $title;
+                }
+            }
+            if ($href != null)
+            {
+                $content = ZurmoHtml::link($content, $href, $options);
+            }
+        }
+
+        protected function resolveFrontendPropertiesNonEditable()
+        {
+            $properties = array();
+            $this->resolveInlineStylePropertiesNonEditable($properties);
+            return $properties;
         }
     }
 ?>
