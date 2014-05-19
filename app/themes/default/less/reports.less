@@ -394,11 +394,29 @@
 .value-data{
     float: right;
     width:80%;
-    
 	.has-model-select{
 		width: 100%;
 	}
 }
+
+.two-value-areas_{
+	> div{
+		width: 45%;
+		float: left;
+	}
+	> div + div{
+		width: 55%;
+		.dynamic-and-for-mixed{
+			padding-left: 15px;
+			padding-right: 5px;
+			width: 20%;
+		}
+		input{
+			width: 80%;
+		}
+	}
+}
+
 
 .first-value-area + .second-value-area{
     //margin-top:10px;
@@ -943,12 +961,10 @@
 }
 
 .static-address-field{
-    
     float: left;
     width: 80%;
     .value-data{
         width: 100%;
-        //float: left;
 	    + .value-data{
 			margin-top: 10px;
 	    }
