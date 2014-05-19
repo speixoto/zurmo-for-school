@@ -39,10 +39,39 @@
      */
     class ImageElement extends Element implements ElementActionTypeInterface
     {
+        const MODAL_CONTAINER_PREFIX = 'modalContainer';
+
+        protected $image;
+
+        public function __construct($model, $attribute, $form = null, array $params = array())
+        {
+            parent::__construct($model, $attribute, $form, $params);
+            $this->setImage($this->model->{$this->attribute});
+        }
+
+        protected function setImage($imageId)
+        {
+            $id = (int) $imageId;
+            if ($id > 0 )
+            {
+                try
+                {
+                    $image = ImageFileModel::getById($id);
+                    $this->image = $image;
+                }
+                catch (NotFoundException $exception)
+                {
+                    //Do nothing
+                }
+            }
+        }
+
         protected function renderControlEditable()
         {
 //            assert('$this->model->{$this->attribute} instanceof ImageModel');
             $content  = $this->renderImage(true);
+            $content .= $this->renderImageDetails();
+            $content .= $this->renderReplaceOrBrowseLink();
             $content .= ZurmoHtml::textField($this->getEditableInputName(), $this->model->{$this->attribute});
             return $content;
             // TODO: Implement renderControlEditable() method.
@@ -64,20 +93,89 @@
             throw new NotSupportedException;
         }
 
+        protected function renderImageDetails()
+        {
+            if ($this->image != null)
+            {
+                $name = ZurmoHtml::tag('strong', array(), $this->image->name);
+                $size = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $this->image->size);
+                return ZurmoHtml::tag('div', array(), $name . $size);
+            }
+            else
+            {
+                return ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image'));
+            }
+        }
+
+        protected function renderReplaceOrBrowseLink()
+        {
+            $id = $this->getIdForSelectLink();
+            $linkText = Zurmo::t('ZurmoModule', 'Browse');
+            if ($this->image != null)
+            {
+                $linkText = Zurmo::t('ZurmoModule', 'Upload');
+            }
+            $content = ZurmoHtml::ajaxLink($linkText . '<span class="z-spinner"></span>',
+                            Yii::app()->createUrl('zurmo/image/modalList/', $this->getSelectLinkUrlParams()),
+                            $this->resolveAjaxOptionsForSelectingModel($id),
+                            array(
+                                'id'        => $id,
+                                'namespace' => 'selectLink',
+                            )
+            );
+            return $content;
+        }
+
         protected function renderImage($isThumb = false)
         {
-            $id = (int) $this->model->{$this->attribute};
-            if ($id > 0 )
+            if ($this->image != null)
             {
-                $image = ImageFileModel::getById($id);
-                $url   = ImageFileModelUtil::getUrlForGetImageFromImageFileName($image->getImageCacheFileName(), $isThumb);
-                return ZurmoHtml::image($url);
+                $url = ImageFileModelUtil::getUrlForGetImageFromImageFileName($this->image->getImageCacheFileName(), $isThumb);
             }
             else
             {
                 $url = PlaceholderImageUtil::resolvePlaceholderImageUrl();
-                return ZurmoHtml::image($url);
             }
+            return ZurmoHtml::image($url);
+        }
+
+        protected function getIdForSelectLink()
+        {
+            return $this->getEditableInputId($this->attribute, 'SelectLink');
+        }
+
+        protected function getSelectLinkUrlParams()
+        {
+            return array(
+                'modalTransferInformation' => $this->getModalTransferInformation(),
+            );
+        }
+
+        protected function getModalTransferInformation()
+        {
+            return array(
+//                'sourceIdFieldId'   => $this->getIdForHiddenField(),
+//                'sourceNameFieldId' => $this->getIdForTextField(),
+//                'modalId'           => $this->getModalContainerId(),
+//                'sourceModelId'     => $this->model->id
+            );
+        }
+
+        protected function resolveAjaxOptionsForSelectingModel($formId)
+        {
+            assert('is_string($formId)');
+            $title = $this->getModalTitleForSelectingModel();
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
+        }
+
+        protected function getModalTitleForSelectingModel()
+        {
+            return Zurmo::t('ZurmoModule', 'Image Search');
+        }
+
+        protected function getModalContainerId()
+        {
+            return self::MODAL_CONTAINER_PREFIX . '-' . $this->form->id;
         }
     }
 ?>

@@ -45,6 +45,24 @@
                 'float',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Image Alignment')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'TextElement',
+                'height',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Height')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'TextElement',
+                'width',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Width')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'TextElement',
+                'alt',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Alt Text')));
             return $configurationItems;
         }
     }

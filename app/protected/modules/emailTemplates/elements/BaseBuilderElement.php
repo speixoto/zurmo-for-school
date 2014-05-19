@@ -1366,6 +1366,8 @@
                 'border-width'      => 'px',
                 'border-top-width'  => 'px',
                 'divider-padding'   => 'px',
+                'height'            => 'px',
+                'width'             => 'px',
             );
             return $mappedArray;
         }
