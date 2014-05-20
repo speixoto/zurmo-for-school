@@ -93,6 +93,12 @@
             ImageFileModelUtil::readImageFromCache($fileName, true);
         }
 
+        public function actionDelete($id)
+        {
+            $imageFileModel = ImageFileModel::getById((int)$id);
+            $imageFileModel->delete();
+        }
+
         public function actionModalList()
         {
             $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
@@ -131,7 +137,7 @@
 //                $dataProvider,
 //                'modal'
 //            );
-            $searchAndListView = new ImagesModalListView($this->id, $this->module->id, 'modalList', $modelClassName,  new NullModalListLinkProvider(), $dataProvider, 'modal');
+            $searchAndListView = new ImagesModalListView($this->id, $this->module->id, 'modalList', $modelClassName, $modalListLinkProvider, $dataProvider, 'modal');
             $view = new ModalView($this, $searchAndListView);
             echo $view->render();
         }

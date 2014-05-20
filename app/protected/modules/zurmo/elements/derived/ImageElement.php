@@ -67,8 +67,7 @@
         protected function renderControlEditable()
         {
 //            assert('$this->model->{$this->attribute} instanceof ImageModel');
-            $content  = $this->renderImage(true);
-            $content .= $this->renderImageDetails();
+            $content  = $this->renderImageDetails();
             $content .= $this->renderReplaceOrBrowseLink();
             $content .= ZurmoHtml::textField($this->getEditableInputName(), $this->model->{$this->attribute});
             return $content;
@@ -100,7 +99,8 @@
             }
             else
             {
-                return ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image'));
+                $content = $this->renderImage(true);
+                return $content . ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image'));
             }
         }
 

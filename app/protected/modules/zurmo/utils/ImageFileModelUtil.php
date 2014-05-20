@@ -77,6 +77,7 @@
 
         public static function getUrlForGetImageFromImageFileName($fileName, $shouldReturnForThumbnail = false)
         {
+            //TODO: @sergio: Add test
             assert('is_string($fileName)');
             assert('is_bool($shouldReturnForThumbnail)');
             $path = 'zurmo/imageModel/getImage';
@@ -87,14 +88,19 @@
             return Yii::app()->createAbsoluteUrl($path, array('fileName' => $fileName));
         }
 
-        public static function getImageSummary(ImageFileModel $imageFileModel)
+        public static function getImageSummary(ImageFileModel $imageFileModel,
+                                               $layout = '{image} <strong>{name}</strong> </br> {size} {dimensions} {creator} {createdTime}')
         {
-            $name = ZurmoHtml::tag('strong', array(), $imageFileModel->name);
-            $size = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $imageFileModel->size);
-            $dimentions = $imageFileModel->width . ' x ' . $imageFileModel->height;
-            $createdBy = $imageFileModel->createdByUser;
-            $createAt = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($imageFileModel->createdDateTime);
-            return $name . '</br>' . $size . ' : ' . $dimentions . ' : ' . $createdBy . ' : ' . $createAt;
+            //TODO: @sergio: Add test
+            $data = array();
+            $url  = static::getUrlForGetImageFromImageFileName($imageFileModel->getImageCacheFileName(), true);
+            $data['{image}']       = ZurmoHtml::image($url);
+            $data['{name}']        = $imageFileModel->name;
+            $data['{size}']        = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $imageFileModel->size);
+            $data['{dimensions}']  = $imageFileModel->width . ' x ' . $imageFileModel->height;
+            $data['{creator}']     = $imageFileModel->createdByUser;
+            $data['{createdTime}'] = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($imageFileModel->createdDateTime);
+            return strtr($layout, $data);
         }
     }
 ?>

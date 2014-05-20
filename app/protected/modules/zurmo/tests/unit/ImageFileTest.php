@@ -153,10 +153,10 @@
             $this->assertTrue(file_exists($imageFile->getImageCachePath(true)));
         }
 
-        public function testCreateImageIsPublicDefaultValue()
+        public function testCreateImageIsSharedDefaultValue()
         {
             $imageFile = new ImageFileModel();
-            $this->assertFalse((bool) $imageFile->isPublic);
+            $this->assertFalse((bool) $imageFile->isShared);
         }
     }
 ?>

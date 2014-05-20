@@ -36,6 +36,15 @@
 
     class FileModel extends Item
     {
+        public function __toString()
+        {
+            if (trim($this->name) == '')
+            {
+                return Zurmo::t('Core', '(Unnamed)');
+            }
+            return $this->name;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();

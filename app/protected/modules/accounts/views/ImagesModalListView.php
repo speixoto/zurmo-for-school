@@ -47,7 +47,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'name', 'type' => 'Image'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'isShared', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -59,24 +68,29 @@
             );
             return $metadata;
         }
-
-        //TODO: @sergio: Add a delete and select button
         protected function getCGridViewLastColumn()
         {
-            $url  = 'Yii::app()->createUrl("' . $this->getGridViewActionRoute('edit');
+            $url  = 'Yii::app()->createUrl("' . $this->getGridViewActionRoute('delete');
             $url .= '", array("id" => $data->id))';
             return array(
                 'class'           => 'ButtonColumn',
                 'template'        => '{delete}',
                 'buttons' => array(
-                    'update' => array(
+                    'delete' => array(
                         'url' => $url,
                         'imageUrl'        => false,
-                        'options'         => array('class' => 'pencil', 'title' => 'Update'),
-                        'label'           => '!'
+                        'label'           => '<i class="icon-delete"></i>',
+                        'options'         => array('title' => 'Delete',
+                                                   'id' => get_class($this) . '-delete-' . $this->getLinkId(),
+                        ),
                     ),
                 ),
             );
+        }
+
+        protected function getLinkId()
+        {
+            return ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++;;
         }
     }
 ?>
