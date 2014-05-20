@@ -83,7 +83,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'name' => Zurmo::t('ZurmoModule', 'Owner', array(), null, $language),
+                    'name' => Zurmo::t('Core', 'Name', array(), null, $language),
                     'size' => Zurmo::t('Core', 'Size',  array(), null, $language),
                     'type' => Zurmo::t('Core', 'Type',  array(), null, $language),
                 )

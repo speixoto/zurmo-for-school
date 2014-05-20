@@ -86,5 +86,15 @@
             }
             return Yii::app()->createAbsoluteUrl($path, array('fileName' => $fileName));
         }
+
+        public static function getImageSummary(ImageFileModel $imageFileModel)
+        {
+            $name = ZurmoHtml::tag('strong', array(), $imageFileModel->name);
+            $size = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $imageFileModel->size);
+            $dimentions = $imageFileModel->width . ' x ' . $imageFileModel->height;
+            $createdBy = $imageFileModel->createdByUser;
+            $createAt = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($imageFileModel->createdDateTime);
+            return $name . '</br>' . $size . ' : ' . $dimentions . ' : ' . $createdBy . ' : ' . $createAt;
+        }
     }
 ?>

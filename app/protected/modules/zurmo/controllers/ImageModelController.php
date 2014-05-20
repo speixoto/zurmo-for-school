@@ -42,10 +42,13 @@
             $tempFilePath = $uploadedFile->getTempName();
             $fileContent  = new FileContent();
             $fileContent->content = file_get_contents($tempFilePath);
+            list($width, $height, $type, $attr) = getimagesize($tempFilePath);
             $imageFileModel = new ImageFileModel();
             $imageFileModel->name        = $uploadedFile->getName();
             $imageFileModel->size        = $uploadedFile->getSize();
             $imageFileModel->type        = $uploadedFile->getType();
+            $imageFileModel->width       = $width;
+            $imageFileModel->height      = $height;
             $imageFileModel->fileContent = $fileContent;
             if ($imageFileModel->save())
             {
@@ -97,7 +100,40 @@
                 $_GET['modalTransferInformation']['sourceNameFieldId'],
                 $_GET['modalTransferInformation']['modalId']
             );
-            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $className           = 'ImageModalSearchAndListView';
+            $modelClassName      = 'ImageFileModel';
+            $stateMetadataAdapterClassName = null;
+            $searchViewClassName = $className::getSearchViewClassName();
+            if ($searchViewClassName::getModelForMetadataClassName() != null)
+            {
+                $formModelClassName   = $searchViewClassName::getModelForMetadataClassName();
+                $model                = new $modelClassName(false);
+                $searchModel          = new $formModelClassName($model);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            $pageSize          = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                'modalListPageSize', get_class($this->getModule()));
+            $dataProvider      = $this->makeRedBeanDataProviderByDataCollection(
+                $searchModel,
+                $pageSize,
+                $stateMetadataAdapterClassName);
+//            $searchAndListView = new $className(
+//                $controller->getId(),
+//                $controller->getModule()->getId(),
+//                $controller->getAction()->getId(),
+//                $modalListLinkProvider,
+//                $searchModel,
+//                $model,
+//                $dataProvider,
+//                'modal'
+//            );
+            $searchAndListView = new ImagesModalListView($this->id, $this->module->id, 'modalList', $modelClassName,  new NullModalListLinkProvider(), $dataProvider, 'modal');
+            $view = new ModalView($this, $searchAndListView);
+            echo $view->render();
         }
     }
 ?>

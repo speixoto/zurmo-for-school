@@ -39,8 +39,6 @@
      */
     class ImageElement extends Element implements ElementActionTypeInterface
     {
-        const MODAL_CONTAINER_PREFIX = 'modalContainer';
-
         protected $image;
 
         public function __construct($model, $attribute, $form = null, array $params = array())
@@ -97,9 +95,8 @@
         {
             if ($this->image != null)
             {
-                $name = ZurmoHtml::tag('strong', array(), $this->image->name);
-                $size = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $this->image->size);
-                return ZurmoHtml::tag('div', array(), $name . $size);
+                $summary = ImageFileModelUtil::getImageSummary($this->image);
+                return ZurmoHtml::tag('div', array(), $summary);
             }
             else
             {
@@ -186,7 +183,7 @@
 
         protected function getModalContainerId()
         {
-            return self::MODAL_CONTAINER_PREFIX . '-' . $this->form->id;
+            return ModelElement::MODAL_CONTAINER_PREFIX . '-' . $this->form->id;
         }
 
         protected function getAltText()

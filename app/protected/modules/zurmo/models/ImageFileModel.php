@@ -51,14 +51,29 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'isPublic',
+                    'width',
+                    'height',
                 ),
                 'rules' => array(
                     array('isPublic', 'boolean'),
                     array('isPublic', 'default', 'value' => false),
+                    array('width',    'type',    'type' => 'integer'),
+                    array('height',   'type',    'type' => 'integer'),
 
                 ),
             );
             return $metadata;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'isPublic'  => Zurmo::t('ZurmoModule', 'Is Public', array(), null, $language),
+                    'width'     => Zurmo::t('ZurmoModule', 'Width',  array(), null, $language),
+                    'height'    => Zurmo::t('ZurmoModule', 'Height',  array(), null, $language),
+                )
+            );
         }
 
         /**
