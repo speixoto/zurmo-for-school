@@ -110,7 +110,7 @@
             $linkText = Zurmo::t('ZurmoModule', 'Browse');
             if ($this->image != null)
             {
-                $linkText = Zurmo::t('ZurmoModule', 'Upload');
+                $linkText = Zurmo::t('ZurmoModule', 'Replace');
             }
             $content = ZurmoHtml::ajaxLink($linkText . '<span class="z-spinner"></span>',
                             Yii::app()->createUrl('zurmo/imageModel/modalList/', $this->getSelectLinkUrlParams()),
