@@ -92,5 +92,10 @@
         {
             return ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++;;
         }
+
+        public function getLinkString($attributeString, $attribute)
+        {
+            return $this->modalListLinkProvider->getLinkString($attributeString, $attribute);
+        }
     }
 ?>

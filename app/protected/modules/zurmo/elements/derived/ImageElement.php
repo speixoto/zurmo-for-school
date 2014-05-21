@@ -67,16 +67,22 @@
         protected function renderControlEditable()
         {
 //            assert('$this->model->{$this->attribute} instanceof ImageModel');
+            $cs = Yii::app()->getClientScript();
+            $cs->registerCoreScript('bbq');
+            $cs->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.elements.assets')
+                ) . '/Modal.js',
+                CClientScript::POS_END
+            );
             $content  = $this->renderImageDetails();
             $content .= $this->renderReplaceOrBrowseLink();
             $content .= ZurmoHtml::textField($this->getEditableInputName(), $this->model->{$this->attribute});
             return $content;
-            // TODO: Implement renderControlEditable() method.
         }
 
         protected function renderControlNonEditable()
         {
-            // TODO: Implement renderControlNonEditable() method.
             return $this->renderImage();
         }
 
@@ -158,12 +164,8 @@
         protected function getModalTransferInformation()
         {
             return array(
-//                'sourceIdFieldId'   => $this->getIdForHiddenField(),
-//                'sourceNameFieldId' => $this->getIdForTextField(),
-//                'modalId'           => $this->getModalContainerId(),
-//                'sourceModelId'     => $this->model->id
-                'sourceIdFieldId'   => $this->getEditableInputName(),
-                'sourceNameFieldId' => $this->getEditableInputName(),
+                'sourceIdFieldId'   => $this->getEditableInputId(),
+                'sourceNameFieldId' => $this->getEditableInputId(),
                 'modalId'           => $this->getModalContainerId(),
                 'sourceModelId'     => (int) $this->model->{$this->attribute}
             );

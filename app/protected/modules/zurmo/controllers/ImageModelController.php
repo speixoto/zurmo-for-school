@@ -101,7 +101,7 @@
 
         public function actionModalList()
         {
-            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+            $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(
                 $_GET['modalTransferInformation']['sourceIdFieldId'],
                 $_GET['modalTransferInformation']['sourceNameFieldId'],
                 $_GET['modalTransferInformation']['modalId']
