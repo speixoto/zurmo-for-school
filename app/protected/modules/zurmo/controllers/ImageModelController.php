@@ -123,23 +123,46 @@
             }
             $pageSize          = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                 'modalListPageSize', get_class($this->getModule()));
-            $dataProvider      = $this->makeRedBeanDataProviderByDataCollection(
+
+            $dataProvider = $this->resolveSearchDataProvider(
                 $searchModel,
                 $pageSize,
-                $stateMetadataAdapterClassName);
-//            $searchAndListView = new $className(
-//                $controller->getId(),
-//                $controller->getModule()->getId(),
-//                $controller->getAction()->getId(),
-//                $modalListLinkProvider,
-//                $searchModel,
-//                $model,
-//                $dataProvider,
-//                'modal'
-//            );
-            $searchAndListView = new ImagesModalListView($this->id, $this->module->id, 'modalList', $modelClassName, $modalListLinkProvider, $dataProvider, 'modal');
+                $stateMetadataAdapterClassName,
+                'ImagesSearchView'
+            );
+
+            $searchAndListView = new ImageModalSearchAndListView(
+                $this->id,
+                $this->module->id,
+                'modalList',
+                $modalListLinkProvider,
+                $searchModel,
+                $model,
+                $dataProvider,
+                'modal'
+            );
             $view = new ModalView($this, $searchAndListView);
             echo $view->render();
+        }
+
+        protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
+        {
+            if ($searchForm->filteredBy == ImagesSearchForm::FILTERED_BY_I_CREATED)
+            {
+                $user = Yii::app()->user->userModel;
+                $clauseNumber = count($metadata['clauses']) + 1;
+                $metadata['clauses'][$clauseNumber] = array('attributeName' => 'createdByUser',
+                                                            'operatorType' => 'equals',
+                                                            'value' => $user);
+                if ($metadata['structure'] == '')
+                {
+                    $metadata['structure'] = $clauseNumber;
+                }
+                else
+                {
+                    $metadata['structure'] .= ' AND ' . $clauseNumber;
+                }
+            }
         }
     }
 ?>

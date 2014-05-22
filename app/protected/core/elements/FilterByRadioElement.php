@@ -37,7 +37,7 @@
     /**
      * Element for displaying a filter by for search view
      */
-    class FilterByRadioElement extends Element
+    abstract class FilterByRadioElement extends Element
     {
         /**
          * Renders the setting as a radio list.
@@ -45,7 +45,6 @@
          */
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof GameRewardsSearchForm');
             $content  = ZurmoHtml::tag('strong', array(), Zurmo::t('Core', 'View') . ':');
             $content .= $this->form->radioButtonList(
                 $this->model,
@@ -88,12 +87,11 @@
             return $htmlOptions;
         }
 
-        protected function getArray()
-        {
-            $data = array(GameRewardsSearchForm::FILTERED_BY_ALL => Zurmo::t('Core', 'All'),
-                          GameRewardsSearchForm::FILTERED_BY_CAN_REDEEM  => Zurmo::t('GameRewardsModule', 'Redeemable'));
-            return $data;
-        }
+        /**
+         * Mapped array with filters and labels
+         * @return array
+         */
+        abstract protected function getArray();
 
         protected function renderEditableScripts()
         {

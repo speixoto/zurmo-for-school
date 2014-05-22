@@ -40,49 +40,23 @@
         {
             $metadata = array(
                 'global' => array(
-//                    'nonPlaceableAttributeNames' => array(
-//                        'account',
-//                    ),
                     'panels' => array(
-//                        array(
-//                            'locked' => true,
-//                            'title'  => 'Basic Search',
-//                            'rows'   => array(
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'anyMixedAttributes',
-//                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
-//                            ),
-//                        ),
-//                        array(
-//                            'title' => 'Advanced Search',
-//                            'rows' => array(
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'industry', 'type' => 'DropDownAsMultiSelect', 'addBlank' => true),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
-//                                array('cells' =>
-//                                    array(
-//                                        array(
-//                                            'elements' => array(
-//                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
-//                                            ),
-//                                        ),
-//                                    )
-//                                ),
-//                            ),
-//                        ),
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                    'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
                     ),
                 ),
             );
@@ -97,6 +71,14 @@
         public static function getModelForMetadataClassName()
         {
             return 'ImagesSearchForm';
+        }
+
+        //TODO: @sergio: Why this is not working in the modal
+        protected function renderFiltersContent($form)
+        {
+            $element = new ImagesFilterByRadioElement($this->model, 'filteredBy', $form);
+            $element->editableTemplate = "{content}";
+            return $element->render();
         }
     }
 ?>

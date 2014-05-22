@@ -75,9 +75,15 @@
                 ) . '/Modal.js',
                 CClientScript::POS_END
             );
-            $content  = $this->renderImageDetails();
+            $cs->registerScript(get_class($this), "
+                        function replaceImageSummary(id, value)
+                        {
+                            $('#' + id).html(value);
+                        };
+                    ");
+            $content  = ZurmoHtml::tag('div', array('id' => $this->getIdForPreviewDiv()), $this->renderImageDetails());
             $content .= $this->renderReplaceOrBrowseLink();
-            $content .= ZurmoHtml::textField($this->getEditableInputName(), $this->model->{$this->attribute});
+            $content .= ZurmoHtml::hiddenField($this->getEditableInputName(), $this->model->{$this->attribute});
             return $content;
         }
 
@@ -165,7 +171,7 @@
         {
             return array(
                 'sourceIdFieldId'   => $this->getEditableInputId(),
-                'sourceNameFieldId' => $this->getEditableInputId(),
+                'sourceNameFieldId' => $this->getIdForPreviewDiv(),
                 'modalId'           => $this->getModalContainerId(),
                 'sourceModelId'     => (int) $this->model->{$this->attribute}
             );
@@ -195,6 +201,11 @@
                 return '';
             }
             return $this->params['alt'];
+        }
+
+        protected function getIdForPreviewDiv()
+        {
+            return $this->getEditableInputId($this->attribute, 'preview');
         }
     }
 ?>

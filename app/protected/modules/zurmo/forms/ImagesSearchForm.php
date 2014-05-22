@@ -34,9 +34,15 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ImagesSearchForm extends OwnedSearchForm
+    class ImagesSearchForm extends SearchForm
     {
-        //TODO: @sergio: Adapt this and remove what is not need
+        const FILTERED_BY_ALL = 'all';
+
+        const FILTERED_BY_I_CREATED = 'iCreated';
+
+        const FILTERED_BY_SHARED = 'shared';
+
+        public $filteredBy = self::FILTERED_BY_ALL;
 
         protected static function getRedBeanModelClassName()
         {
@@ -47,71 +53,5 @@
         {
             parent::__construct($model);
         }
-
-//        public function rules()
-//        {
-//            return array_merge(parent::rules(), array(
-//                array('anyCity', 'safe'),
-//                array('anyStreet', 'safe'),
-//                array('anyState', 'safe'),
-//                array('anyPostalCode', 'safe'),
-//                array('anyCountry', 'safe'),
-//                array('anyEmail', 'safe'),
-//                array('anyInvalidEmail', 'boolean'),
-//                array('anyOptOutEmail', 'boolean'),
-//            ));
-//        }
-
-//        public function attributeLabels()
-//        {
-//            return array_merge(parent::attributeLabels(), array(
-//                'anyCity'            => Zurmo::t('ZurmoModule', 'Any City'),
-//                'anyStreet'          => Zurmo::t('ZurmoModule', 'Any Street'),
-//                'anyState'           => Zurmo::t('ZurmoModule', 'Any State'),
-//                'anyPostalCode'      => Zurmo::t('ZurmoModule', 'Any Postal Code'),
-//                'anyCountry'         => Zurmo::t('ZurmoModule', 'Any Country'),
-//                'anyEmail'           => Zurmo::t('ZurmoModule', 'Any Email Address'),
-//                'anyInvalidEmail'    => Zurmo::t('ZurmoModule', 'Any Invalid Email'),
-//                'anyOptOutEmail'     => Zurmo::t('ZurmoModule', 'Any Opted Out Email'),
-//            ));
-//        }
-
-//        public function getAttributesMappedToRealAttributesMetadata()
-//        {
-//            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-//                'anyCity' => array(
-//                    array('billingAddress',  'city'),
-//                    array('shippingAddress', 'city'),
-//                ),
-//                'anyStreet' => array(
-//                    array('billingAddress',  'street1'),
-//                    array('shippingAddress', 'street1'),
-//                ),
-//                'anyState' => array(
-//                    array('billingAddress',  'state'),
-//                    array('shippingAddress', 'state'),
-//                ),
-//                'anyPostalCode' => array(
-//                    array('billingAddress',  'postalCode'),
-//                    array('shippingAddress', 'postalCode'),
-//                ),
-//                'anyCountry' => array(
-//                    array('billingAddress',  'country'),
-//                    array('shippingAddress', 'country'),
-//                ),
-//                'anyEmail' => array(
-//                    array('primaryEmail',   'emailAddress'),
-//                    array('secondaryEmail', 'emailAddress'),
-//                ),
-//                'anyInvalidEmail' => array(
-//                    array('primaryEmail',   'isInvalid'),
-//                    array('secondaryEmail', 'isInvalid'),
-//                ),
-//                'anyOptOutEmail' => array(
-//                    array('primaryEmail',   'optOut'),
-//                    array('secondaryEmail', 'optOut'),
-//                ),
-//            ));
-//        }
     }
 ?>

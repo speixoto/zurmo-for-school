@@ -226,5 +226,10 @@
                 return false;
             }
         }
+
+        public static function getModuleClassName()
+        {
+            return 'ImagesModule';
+        }
     }
 ?>
