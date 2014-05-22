@@ -49,6 +49,7 @@
                 ),
                 'rules' => array(
                     array('amount', 'required'),
+                    array('floatStandard',    'type', 'type' => 'float'),
                 ),
                 'elements' => array(
                     'amount'      => 'CurrencyValue',
