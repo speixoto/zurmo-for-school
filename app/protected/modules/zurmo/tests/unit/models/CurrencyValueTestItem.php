@@ -42,6 +42,7 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'amount',
+                    'floatStandard'
                 ),
                 'relations' => array(
                     'amount'        => array(static::HAS_ONE,   'CurrencyValue',    static::OWNED,
