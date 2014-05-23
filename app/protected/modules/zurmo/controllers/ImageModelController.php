@@ -53,18 +53,22 @@
             if ($imageFileModel->save())
             {
                 $imageFileModel->createImageCache();
-                $array = array(
+                $fileUploadData = array(
+                    'id'   => $imageFileModel->id,
+                    'name' => $imageFileModel->name,
+                    'size' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($imageFileModel->size),
+                    'thumbnail_url' => $this->createAbsoluteUrl('imageModel/getThumb',
+                                                               array('fileName' => $imageFileModel->getImageCacheFileName())),
                     'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
-                            array('fileName' => $imageFileModel->getImageCacheFileName()))
+                                                           array('fileName' => $imageFileModel->getImageCacheFileName()))
                 );
-                echo CJSON::encode($array);
             }
             else
             {
                 $message = Zurmo::t('ZurmoModule', 'Error uploading the image');
                 $fileUploadData = array('error' => $message);
-                echo CJSON::encode($fileUploadData);
             }
+            echo CJSON::encode(array($fileUploadData));
         }
 
         public function actionGetUploaded()
@@ -141,7 +145,14 @@
                 $dataProvider,
                 'modal'
             );
-            $view = new ModalView($this, $searchAndListView);
+
+            $imageUploadView = new ImageFilesUploadView();
+
+            $gridView = new GridView(2,1);
+            $gridView->setView($searchAndListView, 0,0);
+            $gridView->setView($imageUploadView, 1, 0);
+
+            $view = new ModalView($this, $gridView);
             echo $view->render();
         }
 

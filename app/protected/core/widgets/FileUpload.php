@@ -41,10 +41,6 @@
      */
     class FileUpload extends ZurmoWidget
     {
-        const DOWNLOAD_TEMPLATE_ID  = 'template-download';
-
-        const UPLOAD_TEMPLATE_ID    = 'template-upload';
-
         public $scriptFile = array('jquery.fileupload.js',
                                    'jquery.fileupload-ui.js', 'jquery.tmpl.min.js', 'jquery.iframe-transport.js');
 
@@ -141,7 +137,6 @@
         {
             assert('is_string($this->uploadUrl) && $this->uploadUrl != ""');
             assert('is_string($this->deleteUrl) && $this->deleteUrl != ""');
-            assert('is_string($this->formName)  && $this->formName  != ""');
             assert('is_string($this->inputId)   && $this->inputId   != ""');
             assert('is_string($this->inputName) && $this->inputName != ""');
             assert('is_string($this->hiddenInputName) && $this->hiddenInputName != ""');
@@ -162,6 +157,7 @@
             }
             else
             {
+                assert('is_string($this->formName)  && $this->formName  != ""');
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
                 $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
             }
@@ -178,6 +174,8 @@ $(function () {
         sequentialUploads: true,
         maxFileSize: {$this->maxSize},
         dropZone: $('#dropzone{$id}'),
+        uploadTemplateId: '{$this->getUploadTemplateId()}',
+        downloadTemplateId: '{$this->getDownloadTemplateId()}',
         add: function (e, data) {
             {$this->beforeUploadAction}
             {$sendAction}
@@ -254,18 +252,21 @@ EOD;
         {
             $deleteLabel = 'Delete';
             $removeLabel = Zurmo::t('Core', 'Remove');
-            $templateId  = static::DOWNLOAD_TEMPLATE_ID;
 $scriptContent = <<<EOD
-<script id="{$templateId}" type="text/x-jquery-tmpl">
-    <tr class="{$templateId}{{if error}} ui-state-error{{/if}}">
+<script id="{$this->getDownloadTemplateId()}" type="text/x-jquery-tmpl">
+    <tr class="{$this->getDownloadTemplateId()}{{if error}} ui-state-error{{/if}}">
         {{if error}}
             <td class="error" colspan="4">\${error}</td>
         {{else}}
             <td class="name">
+                {{if thumbnail_url}} <span class="uploaded-logo"><img src="\${thumbnail_url}"/></span>{{/if}}
                 \${name} <span class="file-size">(\${size})</span>
+                {{if thumbnail_url}}
+                {{else}}
                 <span class="upload-actions delete">
                     <button class="icon-delete" title="{$removeLabel}" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
                 </span>
+                {{/if}}
                 <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
             </td>
         {{/if}}
@@ -273,17 +274,14 @@ $scriptContent = <<<EOD
 </script>
 EOD;
             return $scriptContent;
-            return $js;
         }
 
         protected function makeUploadRowScriptContent()
         {
-            $startLabel  = Zurmo::t('Core', 'Start');
             $cancelLabel = Zurmo::t('Core', 'Cancel');
-            $templateId  = static::UPLOAD_TEMPLATE_ID;
 $scriptContent = <<<EOD
-<script id="{$templateId}" type="text/x-jquery-tmpl">
-    <tr class="{$templateId}{{if error}} ui-state-error{{/if}}">
+<script id="{$this->getUploadTemplateId()}" type="text/x-jquery-tmpl">
+    <tr class="{$this->getUploadTemplateId()}{{if error}} ui-state-error{{/if}}">
         <td class="name">
             <span class="z-spinner"></span>
             \${name} <span class="file-size">(\${sizef})</span>
@@ -312,6 +310,16 @@ EOD;
             $content = '<span class="max-upload-size">' . Zurmo::t('Core', 'Max upload size: {maxSize}',
                        array('{maxSize}' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($maxSize))) . '</span>';
             return $content;
+        }
+
+        protected function getDownloadTemplateId()
+        {
+            return 'template-download';
+        }
+
+        protected function getUploadTemplateId()
+        {
+            return 'template-upload';
         }
     }
 ?>
