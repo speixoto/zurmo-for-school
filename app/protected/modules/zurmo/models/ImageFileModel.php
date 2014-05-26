@@ -231,5 +231,27 @@
         {
             return 'ImagesModule';
         }
+
+        public function toggle($attribute)
+        {
+            if ($this->isToggleable($attribute))
+            {
+                $this->{$attribute} = !$this->{$attribute};
+                $this->save();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public function isToggleable($attribute)
+        {
+            if (Yii::app()->user->userModel->isSame($this->createdByUser) && $attribute == 'isShared')
+            {
+                return true;
+            }
+            return false;
+        }
     }
 ?>

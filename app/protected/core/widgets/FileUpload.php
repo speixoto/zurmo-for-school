@@ -41,6 +41,10 @@
      */
     class FileUpload extends ZurmoWidget
     {
+        const DOWNLOAD_TEMPLATE_ID  = 'template-download';
+
+        const UPLOAD_TEMPLATE_ID    = 'template-upload';
+
         public $scriptFile = array('jquery.fileupload.js',
                                    'jquery.fileupload-ui.js', 'jquery.tmpl.min.js', 'jquery.iframe-transport.js');
 
@@ -157,7 +161,6 @@
             }
             else
             {
-                assert('is_string($this->formName)  && $this->formName  != ""');
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
                 $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
             }
@@ -314,12 +317,12 @@ EOD;
 
         protected function getDownloadTemplateId()
         {
-            return 'template-download';
+            return static::DOWNLOAD_TEMPLATE_ID;
         }
 
         protected function getUploadTemplateId()
         {
-            return 'template-upload';
+            return static::UPLOAD_TEMPLATE_ID;
         }
     }
 ?>

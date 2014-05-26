@@ -56,7 +56,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'isShared', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'isShared', 'type' => 'Toggle'),
                                             ),
                                         ),
                                     )

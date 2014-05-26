@@ -175,5 +175,14 @@
                 }
             }
         }
+
+        public function actionToggle($id, $attribute)
+        {
+            if (Yii::app()->request->isAjaxRequest && Yii::app()->request->isPostRequest)
+            {
+                $imageFile = ImageFileModel::getById((int) $id);
+                $imageFile->toggle($attribute);
+            }
+        }
     }
 ?>
