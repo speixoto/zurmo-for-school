@@ -1351,8 +1351,6 @@ body > .ui-autocomplete {
     -moz-transform: translate(0px,0);
     -webkit-transform: translate3d(0px,0,0);
     transform: translate(0px,0);
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
   }
   body .AppNavigation:hover {
     z-index: 99999;
@@ -1410,8 +1408,6 @@ body > .ui-autocomplete {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .nav-collapsed .AppNavigation:hover {
   z-index: 99999;
@@ -2436,8 +2432,6 @@ form .view-toolbar-container,
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .xhtml-validation-info,
 .performance-info {
@@ -2505,16 +2499,16 @@ form .view-toolbar-container,
   position: relative;
 }
 .ui-chooser .active {
-  color: #7CB830;
+  color: #933140;
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
-  -webkit-text-shadow: 0 0 15px #7CB830;
-  -moz-text-shadow: 0 0 15px #7CB830;
-  -ms-text-shadow: 0 0 15px #7CB830;
-  -o-text-shadow: 0 0 15px #7CB830;
-  text-shadow: 0 0 15px #7CB830;
+  -webkit-text-shadow: 0 0 15px #933140;
+  -moz-text-shadow: 0 0 15px #933140;
+  -ms-text-shadow: 0 0 15px #933140;
+  -o-text-shadow: 0 0 15px #933140;
+  text-shadow: 0 0 15px #933140;
 }
 .ui-chooser .icon-mobile:after,
 .ui-chooser .icon-desktop:after {
@@ -2693,8 +2687,6 @@ tr.odd {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 tr.even {
   -webkit-transition: all 0.05s cubic-bezier(0.390,0.575,0.565,1.000);
@@ -2706,8 +2698,6 @@ tr.even {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .checkbox-column {
   width: 30px;
@@ -3779,8 +3769,6 @@ div.wide.form label.hasCheckBox {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(185,62,81,0.8);
   border-left: 1px solid rgba(147,49,64,0.8);
   border-right: 1px solid rgba(147,49,64,0.8);
@@ -4954,8 +4942,6 @@ div.wide.form label.hasCheckBox {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   text-align: center;
   border-top: 1px solid rgba(200,200,200,0.4);
   border-left: 1px solid rgba(185,185,185,0.4) !important;
@@ -6672,8 +6658,6 @@ div.radio-input .hasDropDown {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   background-color: transparent !important;
   background-color: #afafaf !important;
   background-repeat: repeat-x !important;
@@ -7380,8 +7364,6 @@ a:active .z-label {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .button-layout:before,
 .button-layout:after {
@@ -7438,8 +7420,6 @@ a:active .z-label {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(185,62,81,0.8);
   border-left: 1px solid rgba(147,49,64,0.8);
   border-right: 1px solid rgba(147,49,64,0.8);
@@ -7508,8 +7488,6 @@ a:active .z-label {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(200,200,200,0.4);
   border-left: 1px solid rgba(185,185,185,0.4);
   border-right: 1px solid rgba(185,185,185,0.4);
@@ -8550,8 +8528,6 @@ a.simple-link .icon-x {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .hasTree .big-spinner {
   margin-left: 45%;
@@ -8593,8 +8569,6 @@ a.simple-link .icon-x {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .activate-drop-zone .drop-zone {
   filter: alpha(opacity=100);
@@ -8614,8 +8588,6 @@ a.simple-link .icon-x {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   width: 100%;
   height: 100%;
   display: block;
@@ -8737,8 +8709,6 @@ a.simple-link .icon-x {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .dynamic-row .dynamic-row-number-label {
   position: absolute;
@@ -8871,6 +8841,21 @@ a.simple-link .icon-x {
 }
 .value-data .has-model-select {
   width: 100%;
+}
+.two-value-areas_ > div {
+  width: 45%;
+  float: left;
+}
+.two-value-areas_ > div + div {
+  width: 55%;
+}
+.two-value-areas_ > div + div .dynamic-and-for-mixed {
+  padding-left: 15px;
+  padding-right: 5px;
+  width: 20%;
+}
+.two-value-areas_ > div + div input {
+  width: 80%;
 }
 .report-runtime-availability {
   min-width: 145px;
@@ -9337,8 +9322,6 @@ a.simple-link .icon-x {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .email-message-recipient-type-selector-container {
   width: 22%;
