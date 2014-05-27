@@ -83,6 +83,7 @@
                 'id'        => $this->getEditableInputId(),
                 'separator' => '',
                 'template'  => '{input}{label}',
+                'ignoreIdPrefix' => true,
             );
             return $htmlOptions;
         }
@@ -93,22 +94,9 @@
          */
         abstract protected function getArray();
 
-        protected function renderEditableScripts()
+        protected  function renderEditableScripts()
         {
-            $buttonAreaId = $this->getEditableInputId() . '_area';
-            $script  = "$('#{$buttonAreaId}').off('change.filterBy');
-                        $('#{$buttonAreaId}').on('change.filterBy', function()
-                        {
-                            $(this).parent('label').siblings().removeClass('ui-state-active');
-                            $(this).parent('label').addClass('ui-state-active');
-                            $(this).closest('form').submit();
-                        });
-                        ";
-            Yii::app()->clientScript->registerScript('searchFilterByFor' . $buttonAreaId, $script . $this->getScriptForButtonset());
-        }
-
-        private function getScriptForButtonset()
-        {
+            $id = $this->getEditableInputId();
             $buttonAreaId = $this->getEditableInputId() . '_area';
             $script = "
                     $('#{$buttonAreaId}').find('input:checked').next().addClass('ui-state-active');
@@ -119,11 +107,15 @@
                                     {
                                         $('#{$buttonAreaId}').find('label').each(function(){\$(this).removeClass('ui-state-active')});
                                         \$(this).addClass('ui-state-active');
+                                        var inputIdSelector = '#' + $(this).attr('for');
+                                        $(inputIdSelector).prop('checked', true);
+                                        $('#{$id}').val($(inputIdSelector).val());
+                                        $(this).closest('form').submit();
                                      })
                                 }
                             );
                 ";
-            return $script;
+            Yii::app()->clientScript->registerScript('searchFilterByFor' . $buttonAreaId, $script, CClientScript::POS_READY);
         }
     }
 ?>

@@ -158,20 +158,56 @@
 
         protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
         {
+            $userId = Yii::app()->user->userModel->id;
             if ($searchForm->filteredBy == ImagesSearchForm::FILTERED_BY_I_CREATED)
             {
-                $user = Yii::app()->user->userModel;
                 $clauseNumber = count($metadata['clauses']) + 1;
                 $metadata['clauses'][$clauseNumber] = array('attributeName' => 'createdByUser',
-                                                            'operatorType' => 'equals',
-                                                            'value' => $user);
+                                                            'operatorType'  => 'equals',
+                                                            'value'         => $userId);
                 if ($metadata['structure'] == '')
                 {
-                    $metadata['structure'] = $clauseNumber;
+                    $metadata['structure'] = '(' . $clauseNumber . ')';
                 }
                 else
                 {
-                    $metadata['structure'] .= ' AND ' . $clauseNumber;
+                    $metadata['structure'] .= ' AND (' . $clauseNumber . ')';
+                }
+            }
+            elseif ($searchForm->filteredBy == ImagesSearchForm::FILTERED_BY_SHARED)
+            {
+                $clauseNumber = count($metadata['clauses']) + 1;
+                $metadata['clauses'][$clauseNumber] = array('attributeName' => 'createdByUser',
+                                                            'operatorType'  => 'doesNotEqual',
+                                                            'value'         => $userId);
+                $metadata['clauses'][$clauseNumber + 1] = array('attributeName' => 'isShared',
+                                                                'operatorType'  => 'equals',
+                                                                'value'         => true);
+                if ($metadata['structure'] == '')
+                {
+                    $metadata['structure'] = '(' . $clauseNumber . ' AND ' . ($clauseNumber + 1) . ')';
+                }
+                else
+                {
+                    $metadata['structure'] .= ' AND (' . $clauseNumber . ' AND ' . ($clauseNumber + 1) . ')';
+                }
+            }
+            else
+            {
+                $clauseNumber = count($metadata['clauses']) + 1;
+                $metadata['clauses'][$clauseNumber] = array('attributeName' => 'createdByUser',
+                                                            'operatorType'  => 'equals',
+                                                            'value'         => $userId);
+                $metadata['clauses'][$clauseNumber + 1] = array('attributeName' => 'isShared',
+                                                                'operatorType'  => 'equals',
+                                                                'value'         => 1);
+                if ($metadata['structure'] == '')
+                {
+                    $metadata['structure'] = '(' . $clauseNumber . ' OR ' . ($clauseNumber + 1) . ')';
+                }
+                else
+                {
+                    $metadata['structure'] .= ' AND (' . $clauseNumber . ' OR ' . ($clauseNumber + 1) . ')';
                 }
             }
         }
