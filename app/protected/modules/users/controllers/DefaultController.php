@@ -55,7 +55,6 @@
             $filters = array();
             $filters[] = array(
                 static::USER_SWITCHER_RIGHTS_FILTER_PATH . ' + switch, switchTo',
-                'moduleClassName'   => 'UsersModule',
             );
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
