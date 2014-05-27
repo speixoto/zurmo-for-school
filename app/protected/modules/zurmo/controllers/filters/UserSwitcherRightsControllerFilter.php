@@ -34,16 +34,12 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by controllers to ascertain whether
-     * the current user has allow depending on his rights or system state
-     */
-    class UserSwitcherRightsControllerFilter extends RightsControllerFilter
+    class UserSwitcherRightsControllerFilter extends AccessControllerFilter
     {
         protected function hasAccess()
         {
             $primaryUser = SwitchUserIdentity::getPrimaryUser();
-            return (isset($primaryUser) || parent::hasAccess());
+            return (isset($primaryUser) || Group::isUserASuperAdministrator(Yii::app()->user->userModel));
         }
     }
 ?>
