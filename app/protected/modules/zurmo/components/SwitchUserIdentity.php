@@ -203,7 +203,7 @@
 
         protected function packIntoSession($key, array $value)
         {
-            Yii::app()->session->add($key, serialize($value));
+            Yii::app()->session->add($key, ZurmoPasswordSecurityUtil::encrypt(serialize($value)));
         }
 
         protected function unpackFromSession($key, $unpackToSession = true)
@@ -211,7 +211,7 @@
             $packedValue        = ArrayUtil::getArrayValue($_SESSION, $key);
             if (!empty($packedValue))
             {
-                $unpackedValue  = unserialize($packedValue);
+                $unpackedValue  = unserialize(ZurmoPasswordSecurityUtil::decrypt($packedValue));
                 // we can't use variable variable for super globals, neither can we pass them by reference
                 if ($unpackToSession)
                 {
