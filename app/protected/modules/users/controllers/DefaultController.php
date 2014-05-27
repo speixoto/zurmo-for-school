@@ -39,6 +39,9 @@
         const EMAIL_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.EmailConfigurationCheckControllerFilter';
 
+        const USER_SWITCHER_RIGHTS_FILTER_PATH =
+                'application.modules.zurmo.controllers.filters.UserSwitcherRightsControllerFilter';
+
         /**
          * Override to exclude modalSearchList and autoComplete
          * since these are available to all users regardless
@@ -51,10 +54,16 @@
         {
             $filters = array();
             $filters[] = array(
+                static::USER_SWITCHER_RIGHTS_FILTER_PATH . ' + switch, switchTo',
+                'moduleClassName'   => 'UsersModule',
+                // TODO: @Shoaibi: Critical: Is this alright?
+                'rightName' => UsersModule::RIGHT_CREATE_USERS,
+            );
+            $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
+                    ' - modalList, - switch, - switchTo, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
                     'configurationEdit, emailConfiguration, securityDetails, ' .
-                    'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, switch, switchTo changeAvatar, gameDashboard',
+                    'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar, gameDashboard',
                     'moduleClassName' => 'UsersModule',
                     'rightName' => UsersModule::getAccessRight(),
             );
@@ -658,7 +667,7 @@
 
         public function actionSwitch()
         {
-            // TODO: @Shoaibi: Critical0: visible to admin or if the state is set.
+            // TODO: @Shoaibi: Critical: This is a dummy action.
             $primaryUser    = SwitchUserIdentity::getPrimaryUser();
             echo ZurmoHtml::tag('h3', array(), "Current user");
             var_dump(Yii::app()->user->userModel->username);
@@ -698,7 +707,6 @@
 
         public function actionSwitchTo($username)
         {
-            // TODO: @Shoaibi: Critical0: visible to admin or if state is set.
             $identity   = new SwitchUserIdentity($username, null);
             if ($identity->authenticate())
             {

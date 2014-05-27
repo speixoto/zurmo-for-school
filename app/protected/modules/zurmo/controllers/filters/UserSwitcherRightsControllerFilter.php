@@ -36,42 +36,14 @@
 
     /**
      * Filter used by controllers to ascertain whether
-     * the current user has allow on a certain right
+     * the current user has allow depending on his rights or system state
      */
-    class RightsControllerFilter extends CFilter
+    class UserSwitcherRightsControllerFilter extends RightsControllerFilter
     {
-        public $moduleClassName;
-
-        public $rightName;
-
-        protected function preFilter($filterChain)
-        {
-            if ($this->hasAccess())
-            {
-                return true;
-            }
-            static::processAccessFailure();
-            Yii::app()->end(0, false);
-        }
-
-        protected static function processAccessFailure()
-        {
-            static::renderAccessFailureContent();
-        }
-
-        protected static function renderAccessFailureContent()
-        {
-            $messageView = new AccessFailureView();
-            $view        = new AccessFailurePageView($messageView);
-            echo $view->render();
-        }
-
         protected function hasAccess()
         {
-            return (RightsUtil::doesUserHaveAllowByRightName(
-                        $this->moduleClassName,
-                        $this->rightName,
-                        Yii::app()->user->userModel));
+            $primaryUser = SwitchUserIdentity::getPrimaryUser();
+            return (isset($primaryUser) || parent::hasAccess());
         }
     }
 ?>
