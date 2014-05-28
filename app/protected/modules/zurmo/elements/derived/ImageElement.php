@@ -155,6 +155,20 @@
             return ZurmoHtml::image($url, $altText, $htmlOptions);
         }
 
+        protected function getHtmlOptions()
+        {
+            $htmlOptions = parent::getHtmlOptions();
+            if (!isset($htmlOptions['width']))
+            {
+                $htmlOptions['width'] = $this->image->width;
+            }
+            if (!isset($htmlOptions['height']))
+            {
+                $htmlOptions['height'] = $this->image->height;
+            }
+            return $htmlOptions;
+        }
+
         protected function getIdForSelectLink()
         {
             return $this->getEditableInputId($this->attribute, 'SelectLink');
