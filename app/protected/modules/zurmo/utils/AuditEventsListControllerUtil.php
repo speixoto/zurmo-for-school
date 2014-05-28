@@ -100,8 +100,8 @@
                     'operatorType'         => 'equals',
                     'value'                => $model->id,
                 );
+                $searchAttributeData['structure'] .= ' or ((4 or 5) and 6)';
             }
-            $searchAttributeData['structure'] .= ' or ((4 or 5) and 6)';
             return $searchAttributeData;
         }
 
