@@ -98,44 +98,44 @@
 
         protected static function hasPrimaryUser()
         {
-            return static::doesCookieExist(static::PRIMARY_USER);
+            return static::doesSessionValueExist(static::PRIMARY_USER);
         }
 
         public static function getPrimaryUser()
         {
-           return static::getEncryptedCookieValue(static::PRIMARY_USER);
+           return static::getEncryptedSessionValue(static::PRIMARY_USER);
         }
 
         protected static function setPrimaryUser($username)
         {
-            static::setEncryptedCookie(static::PRIMARY_USER, $username);
+            static::setEncryptedSessionValue(static::PRIMARY_USER, $username);
         }
 
-        protected static function doesCookieExist($name)
+        protected static function doesSessionValueExist($name)
         {
-            return Yii::app()->request->cookies->contains($name);
+            return Yii::app()->session->contains($name);
         }
 
-        protected static function getEncryptedCookieValue($name)
+        protected static function getEncryptedSessionValue($name)
         {
-            if (static::doesCookieExist($name))
+            if (static::doesSessionValueExist($name))
             {
-                $encryptedValue = Yii::app()->request->cookies[$name]->value;
+                $encryptedValue = Yii::app()->session->get($name);
                 $decryptedValue = ZurmoPasswordSecurityUtil::decrypt($encryptedValue);
                 return $decryptedValue;
             }
         }
 
-        protected static function setEncryptedCookie($name, $value)
+        protected static function setEncryptedSessionValue($name, $value)
         {
-            // we encrypt the cookie value so its not so easy to read
-            $cookieValue    = ZurmoPasswordSecurityUtil::encrypt($value);
-            Yii::app()->request->cookies->add($name, new CHttpCookie($name, $cookieValue));
+            // we encrypt the session value so its not so easy to read
+            $value      = ZurmoPasswordSecurityUtil::encrypt($value);
+            Yii::app()->session->add($name, $value);
         }
 
         protected static function unsetPrimaryUser()
         {
-            Yii::app()->request->cookies->remove(static::PRIMARY_USER);
+            Yii::app()->session->remove(static::PRIMARY_USER);
         }
 
         protected function clearSessionAndCookiesForNormalUserSwitch()
@@ -146,14 +146,8 @@
 
         protected function clearCookiesForNormalUserSwitch()
         {
-            $cookies        = Yii::app()->request->cookies;
-            foreach ($cookies as $name => $cookieObject)
-            {
-                if ($this->isCookieNotRequiredForSwitchingUser($name))
-                {
-                    Yii::app()->request->cookies->remove($name);
-                }
-            }
+            Yii::app()->user->logout(false);
+            Yii::app()->request->cookies->clear();
         }
 
         protected function clearSessionForNormalUserSwitch()
@@ -203,51 +197,66 @@
 
         protected function packIntoSession($key, array $value)
         {
-            Yii::app()->session->add($key, ZurmoPasswordSecurityUtil::encrypt(serialize($value)));
+            Yii::app()->session->add($key, $this->resolveValueForPacking($value));
+        }
+
+        protected function resolveValueForPacking(array $value)
+        {
+            return ZurmoPasswordSecurityUtil::encrypt(serialize($value));
+        }
+
+        protected function resolveValueForUnpacking($packedValue)
+        {
+            return unserialize(ZurmoPasswordSecurityUtil::decrypt($packedValue));
         }
 
         protected function unpackFromSession($key, $unpackToSession = true)
         {
-            $packedValue        = ArrayUtil::getArrayValue($_SESSION, $key);
+            $packedValue        = Yii::app()->session->get($key);
             if (!empty($packedValue))
             {
-                $unpackedValue  = unserialize(ZurmoPasswordSecurityUtil::decrypt($packedValue));
+                $unpackedValue  = $this->resolveValueForUnpacking($packedValue);
                 // we can't use variable variable for super globals, neither can we pass them by reference
                 if ($unpackToSession)
                 {
-                    Yii::app()->session->clear();
-                    foreach ($unpackedValue as $key => $value)
-                    {
-                        // exclude the values we used for packing user data, we can restore them but they don't
-                        // serve any purpose.
-                        if ($this->isSessionKeyNotForForSwitchingUser($key))
-                        {
-                            // we use session instead of state because not all sessions keys were part of state array
-                            // also if we use state to store the value we would also have to remove the StateKeyPrefix
-                            // from the keys else we would end up with 2 state key prefixes in same keys.
-                            Yii::app()->session->add($key, $value);
-                        }
-                    }
+                    $this->unpackSessionByValue($unpackedValue);
                 }
                 else
                 {
-                    Yii::app()->request->cookies->clear();
-                    foreach ($unpackedValue as $name => $value)
-                    {
-                        Yii::app()->request->cookies->add($name, new CHttpCookie($name, $value));
-                    }
+                    $this->unpackCookiesByValue($unpackedValue);
                 }
+            }
+        }
+
+        protected function unpackSessionByValue(array $unpackedValue)
+        {
+            Yii::app()->session->clear();
+            foreach ($unpackedValue as $key => $value)
+            {
+                // exclude the values we used for packing user data, we can restore them but they don't
+                // serve any purpose.
+                if ($this->isSessionKeyNotForForSwitchingUser($key))
+                {
+                    // we use session instead of state because not all sessions keys were part of state array
+                    // also if we use state to store the value we would also have to remove the StateKeyPrefix
+                    // from the keys else we would end up with 2 state key prefixes in same keys.
+                    Yii::app()->session->add($key, $value);
+                }
+            }
+        }
+
+        protected function unpackCookiesByValue(array $unpackedValue)
+        {
+            $this->clearCookiesForNormalUserSwitch();
+            foreach ($unpackedValue as $name => $value)
+            {
+                Yii::app()->request->cookies->add($name, new CHttpCookie($name, $value));
             }
         }
 
         protected function isSessionKeyNotForForSwitchingUser($key)
         {
-            return ($key != static::PACKED_COOKIES_KEY && $key != static::PACKED_SESSION_KEY);
-        }
-
-        protected function isCookieNotRequiredForSwitchingUser($name)
-        {
-            return ($name != static::PRIMARY_USER);
+            return ($key != static::PACKED_COOKIES_KEY && $key != static::PACKED_SESSION_KEY && $key !== static::PRIMARY_USER);
         }
     }
 ?>
