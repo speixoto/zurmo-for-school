@@ -83,6 +83,25 @@
                 )
             );
             $searchAttributeData['structure'] = '1 and 2 and 3';
+            if ($model instanceof User)
+            {
+                $searchAttributeData['clauses'][4] = array(
+                    'attributeName'        => 'eventName',
+                    'operatorType'         => 'equals',
+                    'value'                => UsersModule::AUDIT_EVENT_USER_LOGGED_IN,
+                );
+                $searchAttributeData['clauses'][5] = array(
+                    'attributeName'        => 'eventName',
+                    'operatorType'         => 'equals',
+                    'value'                => UsersModule::AUDIT_EVENT_USER_LOGGED_OUT,
+                );
+                $searchAttributeData['clauses'][6] = array(
+                    'attributeName'        => 'user',
+                    'operatorType'         => 'equals',
+                    'value'                => $model->id,
+                );
+            }
+            $searchAttributeData['structure'] .= ' or ((4 or 5) and 6)';
             return $searchAttributeData;
         }
 
