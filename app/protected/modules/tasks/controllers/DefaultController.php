@@ -404,7 +404,8 @@
         protected function processModalDetails(Task $task)
         {
             TasksUtil::markUserHasReadLatest($task, Yii::app()->user->userModel);
-            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalDetailsView($this, 'TaskModalDetailsView',
+            $taskDetailsView = Yii::app()->custom->resolveTaskModalDetailsView($task);
+            echo ModalEditAndDetailsControllerUtil::setAjaxModeAndRenderModalDetailsView($this, $taskDetailsView,
                 $task,
                 'Details');
         }

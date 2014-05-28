@@ -172,9 +172,11 @@
                         'url'             => $url,
                         'imageUrl'        => false,
                         'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
-                        'options'         => array('class' => 'pencil', 'title' => 'Update'),
+                        'options'         => array('class' => 'pencil', 'title' => 'Update', 'url' => Yii::app()->createUrl('home/default')),
                         'label'           => '!',
-                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit')
+                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit'),
+                        'redirectUrl'     => Yii::app()->createUrl('home/default'),
+                        'gridId'          => $this->getGridViewId()
                     ),
                 ),
             );
@@ -196,14 +198,22 @@
         }
 
         /**
-         * Renders portlet head content
+         * Renders portlet head content.
          * @return string
          */
         public function renderPortletHeadContent()
         {
-            $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('TasksModule', 'All Tasks'));
-            $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'), array('class' => 'default-btn'));
-            return ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $link);
+            return Yii::app()->custom->renderPortletHeadContentForMyTasksListView();
+        }
+
+        /**
+         * Renders content
+         * @return string
+         */
+        protected function renderContent()
+        {
+            TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
+            return parent::renderContent();
         }
     }
 ?>

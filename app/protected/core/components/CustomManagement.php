@@ -100,5 +100,192 @@
         {
             $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
         }
+
+        /**
+         * Resolve row menu column class for open task portlet.
+         * @param string $relationAttributeName
+         * @return string
+         */
+        public function resolveRowMenuColumnClassForOpenTaskPortlet($relationAttributeName)
+        {
+            return 'RowMenuColumn';
+        }
+
+        /**
+         * Register task modal detail script.
+         * @param string $gridViewId
+         */
+        public function registerTaskModalDetailsScript($gridViewId)
+        {
+            assert('is_string($gridViewId)');
+            TasksUtil::registerTaskModalDetailsScript($gridViewId);
+        }
+
+        /**
+         * Resolve data provider by search model.
+         * @param TasksByOpportunitySearchForm $searchModel
+         * @return string
+         */
+        public function resolveDataProviderBySearchModel($searchModel)
+        {
+            if ($searchModel->filterByStarred)
+            {
+                return 'StarredModelDataProvider';
+            }
+            return 'RedBeanModelDataProvider';
+        }
+
+        /**
+         * Resolves model metadata
+         * @param string $modelClassName
+         * @param array $metadata
+         */
+        public function resolveModelMetadata($modelClassName, & $metadata)
+        {
+
+        }
+
+        /**
+         * Resolve edit and details view metadata.
+         * @param string $viewClassName
+         * @param array $metadata
+         */
+        public function resolveEditAndDetailsViewMetadata($viewClassName, & $metadata)
+        {
+
+        }
+
+        /**
+         * Resolve button url.
+         * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
+         * See {@link buttons} for more details.
+         * @param integer $row the row number (zero-based)
+         * @param mixed $data the data object associated with the row
+         */
+        public function resolveTaskModalButtonColumnUrl($button, $row, $data)
+        {
+            if (isset($button['url']))
+            {
+                $url = $this->evaluateExpression($button['url'], array('data'=>$data, 'row'=>$row)); // Not Coding Standard
+            }
+            else
+            {
+                $url = '#';
+            }
+            return $url;
+        }
+
+        /**
+         * Resolve task modal button column link.
+         * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
+         * See {@link buttons} for more details.
+         * @param string $label
+         * @param array $options
+         * @param string $url
+         * @param Task $data
+         * @return string
+         */
+        public function resolveTaskModalButtonColumnLink($button, $label, $options, $url, $data)
+        {
+            return ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
+        }
+
+        /**
+         * Resolve task modal detail view.
+         * @param Task $task
+         * @return string
+         */
+        public function resolveTaskModalDetailsView(Task $task)
+        {
+            return 'TaskModalDetailsView';
+        }
+
+        /**
+         * Resolve modal task detail view edit element.
+         * There might be a scenario where the edit link takes to a new page. In that scenario
+         * the function could be overridden.
+         * @param string $label
+         * @param string $defaultRoute
+         * @param array $htmlOptions
+         * @param int $modelId
+         * @param array $ajaxLinkOptions
+         * @param int $id
+         * @param array $routeParameters
+         * @return array
+         */
+        public function resolveTaskModalDetailsViewEditActionElementMenuItem($action,
+                                                                             $label,
+                                                                             $defaultRoute,
+                                                                             $htmlOptions,
+                                                                             $modelId,
+                                                                             $ajaxLinkOptions,
+                                                                             $id,
+                                                                             $routeParameters)
+        {
+            if (!empty($modelId) && $modelId > 0)
+            {
+                return array('label'  => $label,
+                    'url'             => $defaultRoute,
+                    'linkOptions'     => array_merge(array('namespace'   => 'modalLink'), $htmlOptions),
+                    'itemOptions'     => array('id' => $id),
+                    'ajaxLinkOptions' => $ajaxLinkOptions
+                );
+            }
+        }
+
+        /**
+         * Register script for special task detail link. This is from a redirect of something like
+         * tasks/default/details and it should open up the task immediately.
+         * @param int $taskId
+         * @param string $sourceId
+         */
+        public function registerOpenToTaskModalDetailsScript($taskId, $sourceId)
+        {
+            TasksUtil::registerOpenToTaskModalDetailsScript($taskId, $sourceId);
+        }
+
+        /**
+         * Renders portlet head content for my tasks list view portlet.
+         * @return string.
+         */
+        public function renderPortletHeadContentForMyTasksListView()
+        {
+            $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('TasksModule', 'All Tasks'));
+            $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'), array('class' => 'default-btn'));
+            return ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $link);
+        }
+
+        /**
+         * Render kanban search view.
+         * @param TasksSearchForm $searchFormModel
+         * @param array $params
+         * @return string
+         */
+        public function renderKanbanSearchView($searchFormModel, $params)
+        {
+            return null;
+        }
+
+        /**
+         * Resolve kanban columns.
+         * @param array $columns
+         * @return array
+         */
+        public function resolveKanbanCardColumns($columns)
+        {
+            assert('is_array($columns)');
+            return $columns;
+        }
+
+        /**
+         * Renders extra attributes with name in kanban card.
+         * @param array $cardColumns
+         * @param Task $task
+         * @param int $row
+         */
+        public function renderExtraAttributesWithNameInKanbanCard($cardColumns, Task $task, $row)
+        {
+            return null;
+        }
     }
 ?>

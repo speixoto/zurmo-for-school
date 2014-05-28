@@ -63,15 +63,14 @@
 
         public function renderMenuItem()
         {
-            if (!empty($this->modelId) && $this->modelId > 0)
-            {
-                return array('label'  => $this->getLabel(),
-                    'url'             => $this->getDefaultRoute(),
-                    'linkOptions'     => array_merge(array('namespace'   => 'modalLink'), $this->getHtmlOptions()),
-                    'itemOptions'     => array('id' => get_class($this)),
-                    'ajaxLinkOptions' => $this->getAjaxLinkOptions()
-                );
-            }
+            return Yii::app()->custom->resolveTaskModalDetailsViewEditActionElementMenuItem('Copy',
+                                                                                            $this->getLabel(),
+                                                                                            $this->getDefaultRoute(),
+                                                                                            $this->getHtmlOptions(),
+                                                                                            $this->modelId,
+                                                                                            $this->getAjaxLinkOptions(),
+                                                                                            get_class($this),
+                                                                                            $this->resolveRouteParameters());
         }
 
         protected function getAjaxLinkOptions()

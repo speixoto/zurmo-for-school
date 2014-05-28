@@ -68,13 +68,6 @@
             );
         }
 
-        public function getNonPlaceableLayoutAttributeNames()
-        {
-            return array(
-                'id'
-            );
-        }
-
         public function canAddPanels()
         {
             return false;

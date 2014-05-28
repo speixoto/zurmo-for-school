@@ -1180,7 +1180,7 @@
             $getData = GetUtil::getData();
             if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
             {
-                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+                Yii::app()->custom->registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
             }
         }
 
