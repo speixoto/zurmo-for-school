@@ -156,84 +156,6 @@
         }
 
         /**
-         * Resolve button url.
-         * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
-         * See {@link buttons} for more details.
-         * @param integer $row the row number (zero-based)
-         * @param mixed $data the data object associated with the row
-         */
-        public function resolveTaskModalButtonColumnUrl($button, $row, $data)
-        {
-            if (isset($button['url']))
-            {
-                $url = $this->evaluateExpression($button['url'], array('data'=>$data, 'row'=>$row)); // Not Coding Standard
-            }
-            else
-            {
-                $url = '#';
-            }
-            return $url;
-        }
-
-        /**
-         * Resolve task modal button column link.
-         * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
-         * See {@link buttons} for more details.
-         * @param string $label
-         * @param array $options
-         * @param string $url
-         * @param Task $data
-         * @return string
-         */
-        public function resolveTaskModalButtonColumnLink($button, $label, $options, $url, $data)
-        {
-            return ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
-        }
-
-        /**
-         * Resolve task modal detail view.
-         * @param Task $task
-         * @return string
-         */
-        public function resolveTaskModalDetailsView(Task $task)
-        {
-            return 'TaskModalDetailsView';
-        }
-
-        /**
-         * Resolve modal task detail view edit element.
-         * There might be a scenario where the edit link takes to a new page. In that scenario
-         * the function could be overridden.
-         * @param string $label
-         * @param string $defaultRoute
-         * @param array $htmlOptions
-         * @param int $modelId
-         * @param array $ajaxLinkOptions
-         * @param int $id
-         * @param array $routeParameters
-         * @return array
-         */
-        public function resolveTaskModalDetailsViewEditActionElementMenuItem($action,
-                                                                             $label,
-                                                                             $defaultRoute,
-                                                                             $htmlOptions,
-                                                                             $modelId,
-                                                                             $ajaxLinkOptions,
-                                                                             $id,
-                                                                             $routeParameters)
-        {
-            if (!empty($modelId) && $modelId > 0)
-            {
-                return array('label'  => $label,
-                    'url'             => $defaultRoute,
-                    'linkOptions'     => array_merge(array('namespace'   => 'modalLink'), $htmlOptions),
-                    'itemOptions'     => array('id' => $id),
-                    'ajaxLinkOptions' => $ajaxLinkOptions
-                );
-            }
-        }
-
-        /**
          * Register script for special task detail link. This is from a redirect of something like
          * tasks/default/details and it should open up the task immediately.
          * @param int $taskId
@@ -286,6 +208,15 @@
         public function renderExtraAttributesWithNameInKanbanCard($cardColumns, Task $task, $row)
         {
             return null;
+        }
+
+        /**
+         * Resolve task modal button column class for tasks my list view.
+         * @return string
+         */
+        public function resolveTaskModalButtonColumnForTasksMyListView()
+        {
+            return 'TaskModalButtonColumn';
         }
     }
 ?>

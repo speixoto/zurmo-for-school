@@ -41,17 +41,6 @@
     class TaskModalButtonColumn extends ButtonColumn
     {
         /**
-         * The url for redirection.
-         * @var string
-         */
-        public $redirectUrl;
-        /**
-         * The id of the grid on which button column is used.
-         * @var string
-         */
-        public $gridId;
-        
-        /**
          * Renders an ajaxlink button.
          * @param string $id the ID of the button
          * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
@@ -67,13 +56,16 @@
                 return;
             }
             $label = isset($button['label']) ? $button['label'] : $id;
-            $url        = Yii::app()->custom->resolveTaskModalButtonColumnUrl($button, $row, $data);
+            $url     = Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id));
             $options = isset($button['options']) ? $button['options'] : array();
             if (!isset($options['title']))
             {
                 $options['title'] = $label;
             }
-            echo Yii::app()->custom->resolveTaskModalButtonColumnLink($button, $label, $options, $url, $data);
+            //Required else id assigned to update button is same as create task link in top nav bar
+            //opening create task instead of edit task
+            $options['id'] = $button['gridId'] . '-' . $data->id;
+            echo ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
         }
     }
 ?>

@@ -165,14 +165,14 @@
         {
             $url  = 'Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id))';
             return array(
-                'class'           => 'TaskModalButtonColumn',
+                'class'           => Yii::app()->custom->resolveTaskModalButtonColumnForTasksMyListView(),
                 'template'        => '{update}',
                 'buttons' => array(
                     'update' => array(
                         'url'             => $url,
                         'imageUrl'        => false,
                         'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
-                        'options'         => array('class' => 'pencil', 'title' => 'Update', 'url' => Yii::app()->createUrl('home/default')),
+                        'options'         => array('class' => 'pencil', 'title' => 'Update'),
                         'label'           => '!',
                         'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit'),
                         'redirectUrl'     => Yii::app()->createUrl('home/default'),
@@ -188,7 +188,7 @@
         protected function renderScripts()
         {
             parent::renderScripts();
-            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
+            Yii::app()->custom->registerTaskModalDetailsScript($this->getGridViewId());
         }
 
         protected function getCGridViewAjaxUrl()
