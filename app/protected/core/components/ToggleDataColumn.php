@@ -42,12 +42,12 @@
         /**
          * @var string The icon for toggle button "checked" state.
          */
-        public $checkedIcon = 'icon-checked';
+        public $checkedIcon = 'icon-delete';
 
         /**
          * @var string The icon for toggle button "unchecked" state.
          */
-        public $uncheckedIcon = 'icon-unchecked';
+        public $uncheckedIcon = 'icon-edit';
 
         /**
          * @var string Name of the action to call for toggle values
@@ -75,15 +75,15 @@
 
         protected function renderDataCellContent($row, $data)
         {
-            if (!call_user_func(array($data, $this->toggleCheckerMethod), $this->name))
+            $checked   = ZurmoHtml::value($data, $this->name);
+            $iconClass = $checked ? $this->checkedIcon : $this->uncheckedIcon;
+            $icon      = ZurmoHtml::icon($iconClass);
+            if (isset($this->visible) && !$this->evaluateExpression($this->visible, array('row' => $row, 'data' => $data)))
             {
-                parent::renderDataCellContent($row, $data);
+                echo $icon;
             }
             else
             {
-                $checked   = ZurmoHtml::value($data, $this->name);
-                $iconClass = $checked ? $this->checkedIcon : $this->uncheckedIcon;
-                $icon      = ZurmoHtml::icon($iconClass);
                 echo ZurmoHtml::link($icon, $this->getUrl($data), $this->getHtmlOptions());
             }
         }

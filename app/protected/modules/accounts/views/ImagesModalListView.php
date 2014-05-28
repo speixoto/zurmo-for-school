@@ -77,17 +77,18 @@
                 'template'        => '{delete}',
                 'buttons' => array(
                     'delete' => array(
-                        'url' => $url,
+                        'url'             => $url,
                         'imageUrl'        => false,
                         'label'           => '<i class="icon-delete"></i>',
                         'options'         => array('title' => 'Delete',
                                                    'id' => get_class($this) . '-delete-' . $this->getLinkId(),
                         ),
+                        'visible'         => '$data->canDelete()',
                     ),
                 ),
             );
         }
-
+        
         protected function getLinkId()
         {
             return ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++;;

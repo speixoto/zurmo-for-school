@@ -39,9 +39,10 @@
         public function renderGridViewData()
         {
             return array(
-                'class' => 'ToggleDataColumn',
-                'name'  => $this->attribute,
-                'type'  => 'Boolean',
+                'class'     => 'ToggleDataColumn',
+                'name'      => $this->attribute,
+                'type'      => 'Boolean',
+                'visible'   => "\$data->isToggleable('{$this->attribute}')",
             );
         }
     }

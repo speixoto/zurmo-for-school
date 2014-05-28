@@ -193,5 +193,24 @@
             Yii::app()->user->userModel = UserTestHelper::createBasicUser('test');
             $this->assertFalse($imageFile->isToggleable('isShared'));
         }
+
+        public function testCanDelete()
+        {
+            $fileContent = new FileContent();
+            $fileContent->content = 'testContent';
+            $imageFile              = new ImageFileModel();
+            $imageFile->name        = 'testImage';
+            $imageFile->size        = 123;
+            $imageFile->type        = 'image/gif';
+            $imageFile->fileContent = $fileContent;
+            $imageFile->save();
+            $this->assertTrue($imageFile->isToggleable('isShared'));
+            $this->assertFalse($imageFile->isToggleable('name'));
+            $this->assertFalse($imageFile->isToggleable('size'));
+            $this->assertFalse($imageFile->isToggleable('content'));
+
+            Yii::app()->user->userModel = UserTestHelper::createBasicUser('test');
+            $this->assertFalse($imageFile->isToggleable('isShared'));
+        }
     }
 ?>

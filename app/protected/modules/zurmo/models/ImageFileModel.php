@@ -253,5 +253,14 @@
             }
             return false;
         }
+
+        public function canDelete()
+        {
+            if (Yii::app()->user->userModel->isSame($this->createdByUser))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 ?>

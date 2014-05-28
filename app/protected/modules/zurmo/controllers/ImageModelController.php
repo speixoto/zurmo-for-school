@@ -100,6 +100,10 @@
         public function actionDelete($id)
         {
             $imageFileModel = ImageFileModel::getById((int)$id);
+            if (!$imageFileModel->canDelete())
+            {
+                throw new NotSupportedException();
+            }
             $imageFileModel->delete();
         }
 
