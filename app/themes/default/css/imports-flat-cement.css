@@ -7370,6 +7370,9 @@ a.user-link {
 .split-button.active .icon-trigger:after {
   color: #656565 !important;
 }
+.split-button.active .button-trigger:hover .icon-trigger:after {
+  color: #2c3e50 !important;
+}
 .split-button.active .button-actions a {
   color: #fff;
 }
