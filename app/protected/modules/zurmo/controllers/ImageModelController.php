@@ -139,24 +139,17 @@
                 'ImagesSearchView'
             );
 
-            $searchAndListView = new ImageModalSearchAndListView(
-                $this->id,
-                $this->module->id,
-                'modalList',
-                $modalListLinkProvider,
-                $searchModel,
-                $model,
-                $dataProvider,
-                'modal'
-            );
-
-            $imageUploadView = new ImageFilesUploadView();
-
-            $gridView = new GridView(2,1);
-            $gridView->setView($searchAndListView, 0,0);
-            $gridView->setView($imageUploadView, 1, 0);
-
-            $view = new ModalView($this, $gridView);
+            $imageModalSearchAndListAndUploadVew = new ImageModalSearchAndListAndUploadView(
+                                                            $this->id,
+                                                            $this->module->id,
+                                                            'modalList',
+                                                            $modalListLinkProvider,
+                                                            $searchModel,
+                                                            $model,
+                                                            $dataProvider,
+                                                            'modal'
+                                                        );
+            $view = new ModalView($this, $imageModalSearchAndListAndUploadVew);
             echo $view->render();
         }
 

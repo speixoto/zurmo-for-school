@@ -70,5 +70,10 @@
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['imageFilesElement'];
         }
+
+        protected function getViewStyle()
+        {
+            return " style=' display:none;'";
+        }
     }
 ?>

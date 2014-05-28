@@ -158,13 +158,16 @@
         protected function getHtmlOptions()
         {
             $htmlOptions = parent::getHtmlOptions();
-            if (!isset($htmlOptions['width']))
+            if ($this->image != null)
             {
-                $htmlOptions['width'] = $this->image->width;
-            }
-            if (!isset($htmlOptions['height']))
-            {
-                $htmlOptions['height'] = $this->image->height;
+                if (!isset($htmlOptions['width']))
+                {
+                    $htmlOptions['width'] = $this->image->width;
+                }
+                if (!isset($htmlOptions['height']))
+                {
+                    $htmlOptions['height'] = $this->image->height;
+                }
             }
             return $htmlOptions;
         }
