@@ -204,13 +204,10 @@
             $imageFile->type        = 'image/gif';
             $imageFile->fileContent = $fileContent;
             $imageFile->save();
-            $this->assertTrue($imageFile->isToggleable('isShared'));
-            $this->assertFalse($imageFile->isToggleable('name'));
-            $this->assertFalse($imageFile->isToggleable('size'));
-            $this->assertFalse($imageFile->isToggleable('content'));
+            $this->assertTrue($imageFile->canDelete());
 
-            Yii::app()->user->userModel = UserTestHelper::createBasicUser('test');
-            $this->assertFalse($imageFile->isToggleable('isShared'));
+            Yii::app()->user->userModel = UserTestHelper::createBasicUser('test2');
+            $this->assertFalse($imageFile->canDelete());
         }
     }
 ?>
