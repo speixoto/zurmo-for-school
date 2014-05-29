@@ -84,6 +84,14 @@
         public $formName;
 
         /**
+         * Additional form data to be sent along with the file uploads can be set using this option,
+         * which accepts an array of objects with name and value properties, a function returning such an array,
+         * a FormData object (for XHR file uploads), or a simple object.
+         * @var string
+         */
+        public $formData;
+
+        /**
          * Name of the file input field.
          * @var string
          */
@@ -179,6 +187,7 @@ $(function () {
         dropZone: $('#dropzone{$id}'),
         uploadTemplateId: '{$this->getUploadTemplateId()}',
         downloadTemplateId: '{$this->getDownloadTemplateId()}',
+        {$this->renderParamForInit('formData')}
         add: function (e, data) {
             {$this->beforeUploadAction}
             {$sendAction}
@@ -262,11 +271,13 @@ $scriptContent = <<<EOD
             <td class="error" colspan="4">\${error}</td>
         {{else}}
             <td class="name">
-                {{if thumbnail_url}} <span class="uploaded-logo"><img src="\${thumbnail_url}"/></span>{{/if}}
-                \${name} <span class="file-size">(\${size})</span>
-                {{if thumbnail_url}}
+                {{if insert_link}}
+                    {{if thumbnail_url}} <span class="uploaded-logo"><img src="\${thumbnail_url}"/></span>{{/if}}
+                    <span class="file-size">(\${size})</span>
+                    <a href="\${insert_link}">\${name}</a>
                 {{else}}
-                <span class="upload-actions delete">
+                    \${name} <span class="file-size">(\${size})</span>
+                    <span class="upload-actions delete">
                     <button class="icon-delete" title="{$removeLabel}" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
                 </span>
                 {{/if}}
@@ -323,6 +334,16 @@ EOD;
         protected function getUploadTemplateId()
         {
             return static::UPLOAD_TEMPLATE_ID;
+        }
+
+        protected function renderParamForInit($paramName)
+        {
+            $paramValue = $this->$paramName;
+            if (isset($paramValue))
+            {
+                $config = "{$paramName}: {$paramValue},"; // Not Coding Standard
+                return $config;
+            }
         }
     }
 ?>

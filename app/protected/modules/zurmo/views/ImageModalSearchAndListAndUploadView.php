@@ -52,7 +52,7 @@
             );
             $this->setView($searchAndListView, 0,0);
 
-            $imageUploadView = new ImageFilesUploadView();
+            $imageUploadView = new ImageFilesUploadView($modalListLinkProvider);
             $this->setView($imageUploadView, 1, 0);
             $this->registerScripts();
         }

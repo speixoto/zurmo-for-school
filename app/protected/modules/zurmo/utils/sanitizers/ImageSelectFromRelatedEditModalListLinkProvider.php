@@ -73,11 +73,25 @@
 
         public function getLinkString($model)
         {
+            return ZurmoHtml::link($model->name, $this->getScriptForClick($model));
+        }
+
+        public function getJsonParamsInitObject()
+        {
+            $params = array(
+                        'sourceIdFieldId' => $this->sourceIdFieldId,
+                        'sourceNameFieldId' => $this->sourceNameFieldId,
+                        'modalId' => $this->modalId
+            );
+            return CJSON::encode($params);
+        }
+
+        public function getScriptForClick($model)
+        {
             $summary    = ImageFileModelUtil::getImageSummary($model);
             $data       =  CJavaScript::encode(array($this->sourceIdFieldId => $model->id));
-            return ZurmoHtml::link($model->name,
-                                    "javascript:transferModalValues('#{$this->modalId}', {$data});
-                                                replaceImageSummary('{$this->sourceNameFieldId}', '{$summary}')");
+            return "javascript:parent.transferModalValues('#{$this->modalId}', {$data});
+                               parent.replaceImageSummary('{$this->sourceNameFieldId}', '{$summary}')";
         }
     }
 ?>

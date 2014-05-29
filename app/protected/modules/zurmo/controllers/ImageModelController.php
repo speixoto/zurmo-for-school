@@ -60,7 +60,8 @@
                     'thumbnail_url' => $this->createAbsoluteUrl('imageModel/getThumb',
                                                                array('fileName' => $imageFileModel->getImageCacheFileName())),
                     'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
-                                                           array('fileName' => $imageFileModel->getImageCacheFileName()))
+                                                           array('fileName' => $imageFileModel->getImageCacheFileName())),
+                    'insert_link' => $this->resolveInsertLink($imageFileModel),
                 );
             }
             else
@@ -69,6 +70,21 @@
                 $fileUploadData = array('error' => $message);
             }
             echo CJSON::encode(array($fileUploadData));
+        }
+
+        protected function resolveInsertLink($imageFileModel)
+        {
+            $postData = PostUtil::getData();
+            if (isset($postData['sourceIdFieldId']) &&
+                isset($postData['sourceNameFieldId']) && isset($postData['modalId']))
+            {
+                $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(
+                    $postData['sourceIdFieldId'],
+                    $postData['sourceNameFieldId'],
+                    $postData['modalId']
+                );
+                return $modalListLinkProvider->getScriptForClick($imageFileModel);
+            }
         }
 
         public function actionGetUploaded()
