@@ -126,7 +126,7 @@
          * @param TasksByOpportunitySearchForm $searchModel
          * @return string
          */
-        public function resolveDataProviderBySearchModel($searchModel)
+        public function resolveDataProviderClassNameForControllerBySearchModel($searchModel)
         {
             if ($searchModel->filterByStarred)
             {
@@ -167,17 +167,6 @@
         }
 
         /**
-         * Renders portlet head content for my tasks list view portlet.
-         * @return string.
-         */
-        public function renderPortletHeadContentForMyTasksListView()
-        {
-            $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('TasksModule', 'All Tasks'));
-            $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'), array('class' => 'default-btn'));
-            return ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $link);
-        }
-
-        /**
          * Render kanban search view.
          * @param TasksSearchForm $searchFormModel
          * @param array $params
@@ -214,7 +203,7 @@
          * Resolve task modal button column class for tasks my list view.
          * @return string
          */
-        public function resolveTaskModalButtonColumnForTasksMyListView()
+        public function resolveTaskModalButtonColumnClassNameForTasksMyListView()
         {
             return 'TaskModalButtonColumn';
         }

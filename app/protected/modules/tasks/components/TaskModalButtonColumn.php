@@ -56,7 +56,14 @@
                 return;
             }
             $label = isset($button['label']) ? $button['label'] : $id;
-            $url     = Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id));
+            if (isset($button['url']))
+            {
+                $url = $this->evaluateExpression($button['url'], array('data'=>$data, 'row'=>$row)); // Not Coding Standard
+            }
+            else
+            {
+                $url = '#';
+            }
             $options = isset($button['options']) ? $button['options'] : array();
             if (!isset($options['title']))
             {

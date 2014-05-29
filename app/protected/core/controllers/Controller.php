@@ -106,7 +106,7 @@
             $this->resolveKanbanBoardMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveFilteredByMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveMetadataBeforeMakingDataProvider($metadata);
-            $dataProviderClassName = Yii::app()->custom->resolveDataProviderBySearchModel($searchModel);
+            $dataProviderClassName = Yii::app()->custom->resolveDataProviderClassNameForControllerBySearchModel($searchModel);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,

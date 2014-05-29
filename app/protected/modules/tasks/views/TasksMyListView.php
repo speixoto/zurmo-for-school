@@ -165,7 +165,7 @@
         {
             $url  = 'Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id))';
             return array(
-                'class'           => Yii::app()->custom->resolveTaskModalButtonColumnForTasksMyListView(),
+                'class'           => Yii::app()->custom->resolveTaskModalButtonColumnClassNameForTasksMyListView(),
                 'template'        => '{update}',
                 'buttons' => array(
                     'update' => array(
@@ -203,7 +203,9 @@
          */
         public function renderPortletHeadContent()
         {
-            return Yii::app()->custom->renderPortletHeadContentForMyTasksListView();
+            $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('TasksModule', 'All Tasks'));
+            $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'), array('class' => 'default-btn'));
+            return ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $link);
         }
 
         /**

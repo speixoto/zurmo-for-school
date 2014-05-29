@@ -94,13 +94,9 @@
          */
         protected function renderContent()
         {
-            $getData = GetUtil::getData();
-            //This would be required in case edit of task navigates to a new page and not modal
-            if (null != $gridId = ArrayUtil::getArrayValue($getData, 'sourceId'))
-            {
-                TasksUtil::resolveShouldOpenToTask($gridId);
-            }
-            return parent::renderContent();
+            $content = parent::renderContent();
+            TasksUtil::resolveShouldOpenToTaskForDetailsAndRelationsView();
+            return $content;
         }
     }
 ?>
