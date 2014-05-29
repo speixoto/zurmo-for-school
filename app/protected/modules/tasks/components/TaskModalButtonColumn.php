@@ -40,5 +40,39 @@
      */
     class TaskModalButtonColumn extends ButtonColumn
     {
+        /**
+         * Renders an ajaxlink button.
+         * @param string $id the ID of the button
+         * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
+         * See {@link buttons} for more details.
+         * @param integer $row the row number (zero-based)
+         * @param mixed $data the data object associated with the row
+         */
+        protected function renderButton($id, $button, $row, $data)
+        {
+            if (isset($button['visible']) && !$this->evaluateExpression($button['visible'],
+                    array('row' => $row, 'data' => $data)))
+            {
+                return;
+            }
+            $label = isset($button['label']) ? $button['label'] : $id;
+            if (isset($button['url']))
+            {
+                $url = $this->evaluateExpression($button['url'], array('data'=>$data, 'row'=>$row)); // Not Coding Standard
+            }
+            else
+            {
+                $url = '#';
+            }
+            $options = isset($button['options']) ? $button['options'] : array();
+            if (!isset($options['title']))
+            {
+                $options['title'] = $label;
+            }
+            //Required else id assigned to update button is same as create task link in top nav bar
+            //opening create task instead of edit task
+            $options['id'] = $button['gridId'] . '-' . $data->id;
+            echo ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
+        }
     }
 ?>

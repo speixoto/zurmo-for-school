@@ -363,5 +363,46 @@
             $this->assertEquals(1, $marketingList->marketingListMembers->count());
             $this->assertEquals(0, $marketingList->marketingListMembers[0]->unsubscribed);
         }
+
+        /**
+         * Tests that a bug involving creating a required custom picklist on projects causes the workflow
+         * to break when creating a task
+         */
+        public function testProcessWorkflowForTaskWhenProjectAsARequiredCustomPicklist()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            //Create a required picklist for projects
+            ModulesSearchWithDataProviderTestHelper::createDropDownAttribute(new Project(), 'pick', true);
+
+            //Create workflow
+            $workflow = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('TasksModule');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_BY_TIME);
+            $workflow->setTriggersStructure('1');
+            //Add trigger
+            $trigger = new TimeTriggerForWorkflowForm('TasksModule', 'Task', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'dueDateTime';
+            $trigger->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR;
+            $trigger->durationInterval            = 5;
+            $trigger->durationType                = TimeDurationUtil::DURATION_TYPE_MONTH;
+            $trigger->durationSign                = TimeDurationUtil::DURATION_SIGN_NEGATIVE;
+            $workflow->setTimeTrigger($trigger);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            //Confirm that the workflow processes
+            $model = new Task();
+            $model->name   = 'aTask';
+            $model->dueDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $this->assertTrue($model->save());
+        }
     }
 ?>
