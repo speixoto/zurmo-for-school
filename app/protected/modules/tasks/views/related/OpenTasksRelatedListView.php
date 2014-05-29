@@ -174,7 +174,7 @@
         protected function renderScripts()
         {
             parent::renderScripts();
-            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
+            Yii::app()->custom->registerTaskModalDetailsScript($this->getGridViewId());
             TasksUtil::registerTaskModalEditScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
             TasksUtil::registerTaskModalCopyScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
             TasksUtil::registerTaskModalDeleteScript($this->getGridViewId());
@@ -197,6 +197,19 @@
             }
         }
 
+        /**
+         * Resolve row menu column class.
+         * @return string
+         */
+        protected function resolveRowMenuColumnClass()
+        {
+            return Yii::app()->custom->resolveRowMenuColumnClassForOpenTaskPortlet($this->getRelationAttributeName());
+        }
+
+        /**
+         * Gets sort attribute for data provider.
+         * @return string
+         */
         protected function getSortAttributeForDataProvider()
         {
             return 'dueDateTime';

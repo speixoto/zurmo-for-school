@@ -80,6 +80,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'id', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'null', 'type' => 'TasksForModalActivityItems'),
                                             ),
                                         ),
@@ -413,6 +422,10 @@
             if (get_class($element) == 'NullElement')
             {
                 $element->nonEditableTemplate = '';
+            }
+            elseif($element->getAttribute() == 'id')
+            {
+                $element->nonEditableTemplate = '<td colspan="{colspan}"><label>{label}</label><strong>{content}</strong></td>';
             }
             else
             {

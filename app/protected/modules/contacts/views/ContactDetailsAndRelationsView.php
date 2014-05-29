@@ -87,5 +87,16 @@
             );
             return $metadata;
         }
+
+        /**
+         * Renders content.
+         * @return string
+         */
+        protected function renderContent()
+        {
+            $content = parent::renderContent();
+            TasksUtil::resolveShouldOpenToTaskForDetailsAndRelationsView();
+            return $content;
+        }
     }
 ?>
