@@ -214,8 +214,9 @@
          */
         protected function renderContent()
         {
+            $content = parent::renderContent();
             TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
-            return parent::renderContent();
+            return $content;
         }
     }
 ?>
