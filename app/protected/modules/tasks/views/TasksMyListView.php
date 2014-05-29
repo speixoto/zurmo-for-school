@@ -165,7 +165,7 @@
         {
             $url  = 'Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id))';
             return array(
-                'class'           => Yii::app()->custom->resolveTaskModalButtonColumnClassNameForTasksMyListView(),
+                'class'           => $this->resolveTaskModalButtonColumnClassName(),
                 'template'        => '{update}',
                 'buttons' => array(
                     'update' => array(
@@ -217,6 +217,15 @@
             $content = parent::renderContent();
             TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
             return $content;
+        }
+
+        /**
+         * Get task modal button column class name.
+         * @return string
+         */
+        protected function resolveTaskModalButtonColumnClassName()
+        {
+            return Yii::app()->custom->resolveTaskModalButtonColumnClassNameForTasksMyListView();
         }
     }
 ?>
