@@ -12052,6 +12052,121 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 #AutoresponderEditAndDetailsView .redactor_box iframe {
   min-height: 600px !important;
 }
+.image-tabs > a {
+  display: block;
+  width: 50%;
+  float: left;
+  line-height: 26px;
+  font-weight: bold;
+  text-align: center;
+  color: #666;
+  -webkit-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  -o-text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  text-shadow: 0px -1px 0 rgba(255,255,255,0.75) !important;
+  background-color: #f5f5f5;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fefefe),color-stop(100%,#f5f5f5));
+  background-image: -webkit-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -o-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: -moz-linear-gradient(top,#fefefe,#f5f5f5);
+  background-image: linear-gradient(top,#fefefe,#f5f5f5);
+}
+.image-tabs .active {
+  color: #fff;
+  -webkit-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  background-color: #2f9eae;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#44BBCC,#2f9eae);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#44BBCC),color-stop(100%,#2f9eae));
+  background-image: -webkit-linear-gradient(top,#44BBCC,#2f9eae);
+  background-image: -o-linear-gradient(top,#44BBCC,#2f9eae);
+  background-image: -moz-linear-gradient(top,#44BBCC,#2f9eae);
+  background-image: linear-gradient(top,#44BBCC,#2f9eae);
+}
+.image-tabs > a:hover {
+  color: #0f3135 !important;
+  background-color: #44BBCC;
+  background-repeat: repeat-x;
+  background-image: -ms-linear-gradient(top,#2f9eae,#44BBCC);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#2f9eae),color-stop(100%,#44BBCC));
+  background-image: -webkit-linear-gradient(top,#2f9eae,#44BBCC);
+  background-image: -o-linear-gradient(top,#2f9eae,#44BBCC);
+  background-image: -moz-linear-gradient(top,#2f9eae,#44BBCC);
+  background-image: linear-gradient(top,#2f9eae,#44BBCC);
+  -webkit-text-shadow: 0px 1px 0 #80d1dc !important;
+  -moz-text-shadow: 0px 1px 0 #80d1dc !important;
+  -ms-text-shadow: 0px 1px 0 #80d1dc !important;
+  -o-text-shadow: 0px 1px 0 #80d1dc !important;
+  text-shadow: 0px 1px 0 #80d1dc !important;
+}
+#ImageFilesUploadView {
+  padding: 15px 15px 30px 15px;
+  border-top: 1px solid #DFDFDF;
+}
+#dropzoneImageFilesUploadView {
+  border: 2px dashed #447799;
+  min-height: 100px;
+  width: 100%;
+  display: block;
+  margin-bottom: 15px;
+}
+#fileUploadImageFilesUploadView .fileupload-buttonbar {
+  margin-bottom: 15px;
+}
+#fileUploadImageFilesUploadView .fileupload-content {
+  float: left;
+  width: 100%;
+  margin-bottom: 15px;
+}
+#ImagesModalSearchView #search-formmodal {
+  padding-bottom: 0;
+  border-right: none;
+  border-left: none;
+}
+#ImagesModalSearchView .filter-portlet-model-bar {
+  float: left;
+  width: 100%;
+  margin-top: 15px;
+  border-bottom: none;
+  border-top: 1px solid #DFDFDF;
+}
+#ImagesModalSearchView .filters-bar {
+  padding-top: 13px;
+  position: static;
+  border-bottom: none;
+}
+#ImagesModalSearchView .filters-bar label {
+  float: none;
+  line-height: 1 !important;
+  font-size: 11px !important;
+  padding: 3px !important;
+  margin: 0 3px;
+  white-space: nowrap;
+}
+#ImagesModalSearchView .filters-bar label.ui-state-active {
+  color: #fff !important;
+}
+.isShared-toggle {
+  display: block;
+  background: url("../images/checkbox.png") left 4px no-repeat;
+  width: 16px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+}
+.isShared-toggle.c_on {
+  background: url("../images/checkbox.png") left -21px no-repeat;
+}
+.isShared-toggle span {
+  display: none;
+}
 .merge-view {
   width: 100% !important;
   margin: 0 auto !important;

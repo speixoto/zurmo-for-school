@@ -119,7 +119,7 @@
             else
             {
                 $content = $this->renderImage(true);
-                return $content . ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image'));
+                return $content;
             }
         }
 
@@ -131,15 +131,14 @@
             {
                 $linkText = Zurmo::t('ZurmoModule', 'Replace');
             }
-            $content = ZurmoHtml::ajaxLink($linkText . '<span class="z-spinner"></span>',
+            $content = ZurmoHtml::ajaxLink(
+	                        '<span class="z-spinner"></span>' . ZurmoHtml::tag('span', array('class' => 'z-label'), $linkText),
                             Yii::app()->createUrl('zurmo/imageModel/modalList/', $this->getSelectLinkUrlParams()),
                             $this->resolveAjaxOptionsForSelectingModel($id),
-                            array(
-                                'id'        => $id,
-                                'namespace' => 'selectLink',
-                            )
+                            array('id' => $id, 'namespace' => 'selectLink', 'class' => 'secondary-button')
             );
-            return $content;
+	        $title = ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image')) . '<br>';
+            return $title . $content;
         }
 
         protected function renderImage($isThumb = false)

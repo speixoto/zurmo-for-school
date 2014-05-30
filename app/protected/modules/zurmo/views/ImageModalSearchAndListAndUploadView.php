@@ -66,14 +66,14 @@
         protected function renderTabs()
         {
             $content  = ZurmoHtml::link(
-                            Zurmo::t('ZurmoModule', 'Choose'),
+                            Zurmo::t('ZurmoModule', 'Library'),
                             '#',
                             array('class' => 'choose-tab active', 'data-view' => 'ImageModalSearchAndListView'));
             $content .= ZurmoHtml::link(
                             Zurmo::t('ZurmoModule', 'Upload'),
                             '#',
                             array('class' => 'upload-tab', 'data-view' => 'ImageFilesUploadView'));
-            return ZurmoHtml::tag('div', array('class' => 'image-tabs'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'image-tabs clearfix'), $content);
         }
 
         protected function registerScripts()

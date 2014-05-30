@@ -623,3 +623,105 @@ div[id^="builderimageelement"]{
 		min-height: 600px !important;
 	}
 }
+
+.image-tabs{
+	//border-left:1px solid #DFDFDF;
+	//border-right: 1px solid #DFDFDF;
+	> a{
+		display:block;
+		width: 50%;
+		float: left;
+		line-height: 26px;
+		font-weight: bold;
+		text-align: center;
+		color:#666;
+		.t-shadow( 0px -1px 0 rgba(255, 255, 255, 0.75) ) !important;
+		#gradient > .vertical( #fefefe, #f5f5f5 );
+	}
+	> a:first-child{
+		//border-right:1px solid #dfdfdf;
+	}
+	> a + a{
+		//border-left: 1px solid #fff;
+	}
+	.active{
+		color: #fff;
+		.t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
+		#gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
+	}
+	> a:hover{
+		color: darken(@themeColorBtnDefault, 40%) !important;
+		#gradient > .vertical( @themeColorBtn2Default, @themeColorBtnDefault);
+		.t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
+	}
+}
+
+#ImageFilesUploadView{
+	padding:15px 15px 30px 15px;
+	border-top:1px solid #DFDFDF;
+}
+
+#dropzoneImageFilesUploadView{
+	border: 2px dashed @themeColor;
+	min-height: 100px;
+	width: 100%;
+	display: block;
+	margin-bottom: 15px;
+}
+
+#fileUploadImageFilesUploadView{
+	.fileupload-buttonbar{
+		margin-bottom: 15px;
+	}
+	.fileupload-content{
+		float: left;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+}
+
+#ImagesModalSearchView{
+	#search-formmodal{
+		padding-bottom: 0;
+		border-right:none;
+		border-left: none;
+	}
+	.filter-portlet-model-bar{
+		float: left;
+		width: 100%;
+		margin-top: 15px;
+		border-bottom: none;
+		border-top: 1px solid #DFDFDF;
+	}
+	.filters-bar{
+		padding-top: 13px;
+		position: static;
+		border-bottom: none;
+		label{
+			float: none;
+			line-height: 1 !important;
+			font-size: 11px !important;
+			padding: 3px !important;
+			margin: 0 3px;
+			white-space: nowrap;
+			&.ui-state-active{
+				color: #fff !important;
+			}
+		}
+	}
+}
+
+.isShared-toggle{
+	display: block;
+	background: url("@{path}checkbox.png") left 4px no-repeat;
+	width:16px;
+	height:20px;
+	padding:0;
+	margin:0;
+	&.c_on {
+		background: url("@{path}checkbox.png") left -21px no-repeat;
+	}
+	span{
+		display: none;
+	}
+}

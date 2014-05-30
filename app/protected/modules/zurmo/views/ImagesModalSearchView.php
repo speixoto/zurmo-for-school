@@ -78,7 +78,7 @@
         {
             $element = new ImagesFilterByRadioElement($this->model, 'filteredBy', $form);
             $element->editableTemplate = "{content}";
-            return $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'filter-portlet-model-bar'), $element->render());
         }
     }
 ?>
