@@ -37,7 +37,6 @@
     {
         define('IS_TEST', true);
     }
-
     $common_config = CMap::mergeArray(
         require('main.php'),
         array(
