@@ -42,12 +42,12 @@
         /**
          * @var string The icon for toggle button "checked" state.
          */
-        public $checkedIcon = 'icon-delete';
+        public $checkedIcon = 'icon-checked';
 
         /**
          * @var string The icon for toggle button "unchecked" state.
          */
-        public $uncheckedIcon = 'icon-edit';
+        public $uncheckedIcon = 'icon-unchecked';
 
         /**
          * @var string Name of the action to call for toggle values

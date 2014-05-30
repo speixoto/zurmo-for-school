@@ -36,12 +36,12 @@
 
     class ImageModalSearchAndListAndUploadView extends GridView
     {
-        public function __construct($controllerId, $moduleId, $actionId, $modalListLinkProvider,
+        public function __construct(CController $controller, $moduleId, $actionId, $modalListLinkProvider,
                                     ModelForm $searchForm,  RedBeanModel $model, CDataProvider $dataProvider, $gridIdSuffix = null)
         {
-            parent::__construct(2, 1);
+            parent::__construct(3, 1);
             $searchAndListView = new ImageModalSearchAndListView(
-                $controllerId,
+                $controller->id,
                 $moduleId,
                 $actionId,
                 $modalListLinkProvider,
@@ -54,6 +54,9 @@
 
             $imageUploadView = new ImageFilesUploadView($modalListLinkProvider);
             $this->setView($imageUploadView, 1, 0);
+
+            $imageFilesImportFromUrlView = new ImageFilesImportFromUrlView($controller, new ImportImageFromUrlForm());
+            $this->setView($imageFilesImportFromUrlView, 2, 0);
             $this->registerScripts();
         }
 
@@ -73,6 +76,10 @@
                             Zurmo::t('ZurmoModule', 'Upload'),
                             '#',
                             array('class' => 'upload-tab', 'data-view' => 'ImageFilesUploadView'));
+            $content .= ZurmoHtml::link(
+                            Zurmo::t('ZurmoModule', 'Import From Url'),
+                            '#',
+                            array('class' => 'upload-tab', 'data-view' => 'ImageFilesImportFromView'));
             return ZurmoHtml::tag('div', array('class' => 'image-tabs clearfix'), $content);
         }
 

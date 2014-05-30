@@ -36,19 +36,45 @@
 
     class ZurmoImageModelController extends ZurmoModuleController
     {
+        public function actionUploadFromUrl()
+        {
+            $form = new ImportImageFromUrlForm();
+            if (isset($_POST['ajax']) && $_POST['ajax'] === 'image-import-form')
+            {
+                echo CActiveForm::validate($form);
+                Yii::app()->end();
+            }
+            if(isset($_POST['ImportImageFromUrlForm']))
+            {
+                $url = $_POST['ImportImageFromUrlForm']['url'];
+                $tempFilePath = tempnam(sys_get_temp_dir(), 'upload_image_from_url_');
+                $name = preg_replace("#.*\/#", '', $url);
+                file_put_contents($tempFilePath, file_get_contents($url));
+                $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath, $name);
+                echo CJSON::encode(array($fileUploadData));
+            }
+        }
+
         public function actionUpload()
         {
-            $uploadedFile = UploadedFileUtil::getByNameAndCatchError('file');
-            $tempFilePath = $uploadedFile->getTempName();
+            $uploadedFile   = UploadedFileUtil::getByNameAndCatchError('file');
+            $tempFilePath   = $uploadedFile->getTempName();
+            $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath,
+                                                                $uploadedFile->getName());
+            echo CJSON::encode(array($fileUploadData));
+        }
+
+        protected function saveImageFromTemporaryFile($tempFilePath, $name)
+        {
             $fileContent  = new FileContent();
             $fileContent->content = file_get_contents($tempFilePath);
-            list($width, $height, $type, $attr) = getimagesize($tempFilePath);
-            $imageFileModel = new ImageFileModel();
-            $imageFileModel->name        = $uploadedFile->getName();
-            $imageFileModel->size        = $uploadedFile->getSize();
-            $imageFileModel->type        = $uploadedFile->getType();
-            $imageFileModel->width       = $width;
-            $imageFileModel->height      = $height;
+            $imageProperties = getimagesize($tempFilePath);
+            $imageFileModel  = new ImageFileModel();
+            $imageFileModel->name        = $name;
+            $imageFileModel->size        = filesize($tempFilePath);
+            $imageFileModel->type        = $imageProperties['mime'];
+            $imageFileModel->width       = $imageProperties[0];
+            $imageFileModel->height      = $imageProperties[1];
             $imageFileModel->fileContent = $fileContent;
             if ($imageFileModel->save())
             {
@@ -58,9 +84,9 @@
                     'name' => $imageFileModel->name,
                     'size' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($imageFileModel->size),
                     'thumbnail_url' => $this->createAbsoluteUrl('imageModel/getThumb',
-                                                               array('fileName' => $imageFileModel->getImageCacheFileName())),
+                            array('fileName' => $imageFileModel->getImageCacheFileName())),
                     'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
-                                                           array('fileName' => $imageFileModel->getImageCacheFileName())),
+                            array('fileName' => $imageFileModel->getImageCacheFileName())),
                     'insert_link' => $this->resolveInsertLink($imageFileModel),
                 );
             }
@@ -69,7 +95,7 @@
                 $message = Zurmo::t('ZurmoModule', 'Error uploading the image');
                 $fileUploadData = array('error' => $message);
             }
-            echo CJSON::encode(array($fileUploadData));
+            return $fileUploadData;
         }
 
         protected function resolveInsertLink($imageFileModel)
@@ -156,7 +182,7 @@
             );
 
             $imageModalSearchAndListAndUploadVew = new ImageModalSearchAndListAndUploadView(
-                                                            $this->id,
+                                                            $this,
                                                             $this->module->id,
                                                             'modalList',
                                                             $modalListLinkProvider,
