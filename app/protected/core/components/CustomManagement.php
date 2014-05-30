@@ -136,26 +136,6 @@
         }
 
         /**
-         * Resolves model metadata
-         * @param string $modelClassName
-         * @param array $metadata
-         */
-        public function resolveModelMetadata($modelClassName, & $metadata)
-        {
-
-        }
-
-        /**
-         * Resolve edit and details view metadata.
-         * @param string $viewClassName
-         * @param array $metadata
-         */
-        public function resolveEditAndDetailsViewMetadata($viewClassName, & $metadata)
-        {
-
-        }
-
-        /**
          * Register script for special task detail link. This is from a redirect of something like
          * tasks/default/details and it should open up the task immediately.
          * @param int $taskId
@@ -206,6 +186,21 @@
         public function resolveTaskModalButtonColumnClassNameForTasksMyListView()
         {
             return 'TaskModalButtonColumn';
+        }
+
+        /**
+         * @param $viewClassName string
+         * @param $params array
+         * @param $defaultOptionsContent string
+         * @param $parentContent string
+         * @return string
+         */
+        public function renderPortletHeadContentForOpenTaskPortletOnDetailsAndRelationsView($viewClassName,
+                                                                                            $params,
+                                                                                            $defaultOptionsContent,
+                                                                                            $parentContent)
+        {
+            return $parentContent;
         }
     }
 ?>
