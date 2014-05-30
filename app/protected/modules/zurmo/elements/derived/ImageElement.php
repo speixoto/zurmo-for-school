@@ -43,6 +43,7 @@
 
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
+            assert('is_int($model->{$attribute}) || is_string($model->{$attribute})');
             parent::__construct($model, $attribute, $form, $params);
             $this->setImage($this->model->{$this->attribute});
         }
@@ -66,7 +67,6 @@
 
         protected function renderControlEditable()
         {
-//            assert('$this->model->{$this->attribute} instanceof ImageModel');
             $cs = Yii::app()->getClientScript();
             $cs->registerCoreScript('bbq');
             $cs->registerScriptFile(
@@ -89,7 +89,14 @@
 
         protected function renderControlNonEditable()
         {
-            return $this->renderImage();
+            if ($this->image instanceof ImageFileModel)
+            {
+                return $this->renderImage();
+            }
+            else
+            {
+                return $this->model->{$this->attribute};
+            }
         }
 
         public static function getEditableActionType()
