@@ -90,8 +90,7 @@
 
         protected function renderPreviewImportedImageScript()
         {
-            //TODO: @sergio: What to do here? Insert a preview or close the modal and transfer values?
-            return '';
+            return 'transferModalImageValues(data.id, data.summary)';
         }
 
         protected function getViewStyle()

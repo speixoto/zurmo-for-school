@@ -39,5 +39,9 @@
      */
     class ImageFileUpload extends FileUpload
     {
+        protected function getDropZoneContent()
+        {
+            return Zurmo::t('ZurmoModule', 'Drop your images in this area');
+        }
     }
 ?>

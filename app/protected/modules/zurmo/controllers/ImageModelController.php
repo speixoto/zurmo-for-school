@@ -41,8 +41,12 @@
             $form = new ImportImageFromUrlForm();
             if (isset($_POST['ajax']) && $_POST['ajax'] === 'image-import-form')
             {
-                echo CActiveForm::validate($form);
-                Yii::app()->end();
+                $errors = ZurmoActiveForm::validate($form);
+                if ($form->hasErrors())
+                {
+                    echo $errors;
+                    Yii::app()->end();
+                }
             }
             if(isset($_POST['ImportImageFromUrlForm']))
             {
@@ -51,7 +55,7 @@
                 $name = preg_replace("#.*\/#", '', $url);
                 file_put_contents($tempFilePath, file_get_contents($url));
                 $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath, $name);
-                echo CJSON::encode(array($fileUploadData));
+                echo CJSON::encode($fileUploadData);
             }
         }
 
@@ -82,6 +86,7 @@
                 $fileUploadData = array(
                     'id'   => $imageFileModel->id,
                     'name' => $imageFileModel->name,
+                    'summary' => ImageFileModelUtil::getImageSummary($imageFileModel),
                     'size' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($imageFileModel->size),
                     'thumbnail_url' => $this->createAbsoluteUrl('imageModel/getThumb',
                             array('fileName' => $imageFileModel->getImageCacheFileName())),
@@ -100,17 +105,8 @@
 
         protected function resolveInsertLink($imageFileModel)
         {
-            $postData = PostUtil::getData();
-            if (isset($postData['sourceIdFieldId']) &&
-                isset($postData['sourceNameFieldId']) && isset($postData['modalId']))
-            {
-                $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(
-                    $postData['sourceIdFieldId'],
-                    $postData['sourceNameFieldId'],
-                    $postData['modalId']
-                );
-                return $modalListLinkProvider->getScriptForClick($imageFileModel);
-            }
+            $summary = ImageFileModelUtil::getImageSummary($imageFileModel);
+            return "javascript:parent.transferModalImageValues({$imageFileModel->id}, '{$summary}')";
         }
 
         public function actionGetUploaded()

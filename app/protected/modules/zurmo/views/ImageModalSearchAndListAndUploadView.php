@@ -37,7 +37,8 @@
     class ImageModalSearchAndListAndUploadView extends GridView
     {
         public function __construct(CController $controller, $moduleId, $actionId, $modalListLinkProvider,
-                                    ModelForm $searchForm,  RedBeanModel $model, CDataProvider $dataProvider, $gridIdSuffix = null)
+                                    ModelForm $searchForm,  RedBeanModel $model, CDataProvider $dataProvider,
+                                    $gridIdSuffix = null)
         {
             parent::__construct(3, 1);
             $searchAndListView = new ImageModalSearchAndListView(
@@ -52,12 +53,12 @@
             );
             $this->setView($searchAndListView, 0,0);
 
-            $imageUploadView = new ImageFilesUploadView($modalListLinkProvider);
+            $imageUploadView = new ImageFilesUploadView();
             $this->setView($imageUploadView, 1, 0);
 
             $imageFilesImportFromUrlView = new ImageFilesImportFromUrlView($controller, new ImportImageFromUrlForm());
             $this->setView($imageFilesImportFromUrlView, 2, 0);
-            $this->registerScripts();
+            $this->registerScripts($modalListLinkProvider);
         }
 
         protected function renderContent()
@@ -79,11 +80,11 @@
             $content .= ZurmoHtml::link(
                             Zurmo::t('ZurmoModule', 'Import From Url'),
                             '#',
-                            array('class' => 'upload-tab', 'data-view' => 'ImageFilesImportFromView'));
+                            array('class' => 'upload-tab', 'data-view' => 'ImageFilesImportFromUrlView'));
             return ZurmoHtml::tag('div', array('class' => 'image-tabs clearfix'), $content);
         }
 
-        protected function registerScripts()
+        protected function registerScripts($modalListLinkProvider)
         {
             $javaScript = "
                 $('div.image-tabs > a').click(function(){
@@ -91,7 +92,15 @@
                     $('div.image-tabs > a').removeClass('active');
                     $(this).addClass('active');
                     $('#' + $(this).data('view')).show();
-                })
+                });
+                function transferModalImageValues(id, summary)
+                {
+                    data = {
+                        {$modalListLinkProvider->getSourceIdFieldId()} : id,
+                    }
+                    transferModalValues('#{$modalListLinkProvider->getModalId()}', data);
+                    replaceImageSummary('{$modalListLinkProvider->getSourcesNameFieldId()}', summary);
+                };
             ";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
         }

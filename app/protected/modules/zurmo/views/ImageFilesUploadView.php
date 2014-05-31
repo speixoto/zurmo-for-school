@@ -40,13 +40,6 @@
      */
     class ImageFilesUploadView extends View
     {
-        protected $modalListLinkProvider;
-
-        public function __construct(ImageSelectFromRelatedEditModalListLinkProvider $modalListLinkProvider)
-        {
-            $this->modalListLinkProvider = $modalListLinkProvider;
-        }
-
         /**
          * Renders the view content.
          */
@@ -66,7 +59,6 @@
                 'deleteUrl'            => Yii::app()->createUrl("zurmo/imageModel/delete"),
                 'inputName'            => $inputNameAndId,
                 'inputId'              => $inputNameAndId,
-                'formData'             => $this->getFormData(),
                 'hiddenInputName'      => 'filesIds',
                 'allowMultipleUpload'  => true,
                 'existingFiles'        => array(),
@@ -82,11 +74,6 @@
         protected function getViewStyle()
         {
             return " style=' display:none;'";
-        }
-
-        protected function getFormData()
-        {
-            return $this->modalListLinkProvider->getJsonParamsInitObject();
         }
     }
 ?>

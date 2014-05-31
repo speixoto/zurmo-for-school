@@ -246,9 +246,12 @@ $(function () {
 EOD;
             // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
-
             $htmlOptions = array('id' => $this->inputId);
-            $html  = '<div id="dropzone' . $id . '"></div>';
+            if ($this->allowMultipleUpload)
+            {
+                $htmlOptions['multiple'] = 'multiple';
+            }
+            $html  = '<div id="dropzone' . $id . '">' . $this->getDropZoneContent() . '</div>';
             $html .= '<div id="fileUpload' . $id . '">';
             $html .= '<div class="fileupload-buttonbar clearfix">';
             $html .= '<div class="addfileinput-button"><span>Y</span>' . $addLabel;
@@ -258,6 +261,11 @@ EOD;
             $html .= $this->makeUploadRowScriptContent();
             $html .= $this->makeDownloadRowScriptContent();
             echo $html;
+        }
+
+        protected function getDropZoneContent()
+        {
+            return null;
         }
 
         protected function makeDownloadRowScriptContent()
