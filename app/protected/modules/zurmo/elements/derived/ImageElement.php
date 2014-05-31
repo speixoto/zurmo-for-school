@@ -93,6 +93,10 @@
             {
                 return $this->renderImage();
             }
+            elseif ((int) ($this->model->{$this->attribute}) > 0)
+            {
+                return $this->renderImage();
+            }
             else
             {
                 return $this->model->{$this->attribute};

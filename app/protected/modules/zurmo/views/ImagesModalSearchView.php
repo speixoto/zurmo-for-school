@@ -36,6 +36,8 @@
 
     class ImagesModalSearchView extends SearchView
     {
+        protected $showAdvancedSearch = false;
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
