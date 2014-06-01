@@ -125,10 +125,12 @@
 
         protected function renderReplaceOrBrowseLink()
         {
-            $id = $this->getIdForSelectLink();
-            $linkText = Zurmo::t('ZurmoModule', 'Browse');
+            $id         = $this->getIdForSelectLink();
+            $title      = ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image')) . '<br>';
+            $linkText   = Zurmo::t('ZurmoModule', 'Browse');
             if ($this->image != null)
             {
+                $title = '';
                 $linkText = Zurmo::t('ZurmoModule', 'Replace');
             }
             $content = ZurmoHtml::ajaxLink(
@@ -137,7 +139,6 @@
                             $this->resolveAjaxOptionsForSelectingModel($id),
                             array('id' => $id, 'namespace' => 'selectLink', 'class' => 'secondary-button')
             );
-	        $title = ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image')) . '<br>';
             return $title . $content;
         }
 
