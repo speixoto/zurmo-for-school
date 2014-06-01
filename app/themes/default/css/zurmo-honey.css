@@ -2825,6 +2825,7 @@ td.empty {
 }
 input[type="text"],
 input[type="password"],
+input[type="url"],
 select.multiple,
 textarea {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -2851,6 +2852,7 @@ textarea {
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="url"]:focus,
 select.multiple:focus,
 textarea:focus {
   -webkit-box-shadow: 0 0 1px 1px #46201C;
@@ -2861,6 +2863,7 @@ textarea:focus {
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="url"]:focus,
 select.multiple:focus,
 textarea:focus {
   -webkit-box-shadow: 0 0 1px 1px #46201C;

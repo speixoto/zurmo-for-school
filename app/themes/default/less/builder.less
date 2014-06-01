@@ -247,6 +247,12 @@ div[id^="builderimageelement"]{
 	}
 }
 
+.image-element-edit-form .element-edit-form-content-tab{
+	padding-top: 15px;
+	padding-bottom: 15px;
+	text-align: center;
+}
+
 /*Template Chooser*/
 
 #SelectBaseTemplateForEmailTemplateWizardView{
@@ -659,13 +665,29 @@ div[id^="builderimageelement"]{
 }
 
 #ImageFilesUploadView{
-	padding:15px 15px 30px 15px;
+	.portlet-gradient();
+	padding:15px;
 	border-top:1px solid #DFDFDF;
+	.files{
+		float: none !important;
+	}
+	.file-size{
+		vertical-align: baseline;
+	}
+	.error{
+		padding: 10px 0 0 0 !important;
+	}
 }
 
 #dropzoneImageFilesUploadView{
 	border: 2px dashed @themeColor;
-	min-height: 100px;
+	font-size: 18px;
+	font-weight: bold;
+	//min-height: 100px;
+	line-height: 100px;
+	text-align: center;
+	color: @themeColor;
+
 	width: 100%;
 	display: block;
 	margin-bottom: 15px;
@@ -676,9 +698,7 @@ div[id^="builderimageelement"]{
 		margin-bottom: 15px;
 	}
 	.fileupload-content{
-		float: left;
 		width: 100%;
-		margin-bottom: 15px;
 	}
 }
 
@@ -706,14 +726,14 @@ div[id^="builderimageelement"]{
 			padding: 3px !important;
 			margin: 0 3px;
 			white-space: nowrap;
-			&.ui-state-active{
+			&.ui-state-active, &:hover{
 				color: #fff !important;
 			}
 		}
 	}
 }
 
-.isShared-toggle{
+.toggle-column{
 	.icon-checked,
 	.icon-unchecked{
 		&:after{
@@ -728,5 +748,37 @@ div[id^="builderimageelement"]{
 	}
 	.icon-unchecked{
 		background: url("@{path}checkbox.png") left 4px no-repeat;
+	}
+}
+
+#image-import-form{
+	padding:15px 15px 30px 15px;
+	border-top:1px solid #DFDFDF;
+	.portlet-gradient();
+	label{
+		width: 15%;
+		display: inline-block;
+	}
+	input[type="url"]{
+		width: 65%;
+		margin-right: 15px;
+	}
+	.secondary-button{
+		float: right;
+	}
+}
+
+.builder-uploaded-image-thumb{
+	float: left;
+	width: 20%;
+}
+
+.builder-image-details{
+	width: 80%;
+	padding-left: 15px;
+	line-height: 1.5;
+	float: left;
+	a{
+		font-weight: bold;
 	}
 }

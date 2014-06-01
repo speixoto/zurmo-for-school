@@ -52,7 +52,8 @@
         public function renderDataCellContent($data, $row)
         {
             $stringValue = $this->view->getLinkString($data, $this->attribute);
-            $layout = '{image} <strong>' . $stringValue . '</strong> </br> {size} {dimensions} {creator} {createdTime}';
+            $layout = '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details">'
+                      . $stringValue . '<br />{size} · {dimensions} · {creator} · {createdTime}</div>';
             return ImageFileModelUtil::getImageSummary($data, $layout);
         }
 
