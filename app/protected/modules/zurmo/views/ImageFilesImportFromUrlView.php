@@ -83,7 +83,7 @@
             $content .= $form->labelEx ($this->formModel, 'url');
             $content .= $form->urlField($this->formModel, 'url');
             $content .= $form->error   ($this->formModel, 'url');
-            $content .= ZurmoHtml::submitButton(Zurmo::t('ZurmoModule', 'Import'));
+            $content .= ZurmoHtml::link(Zurmo::t('ZurmoModule', 'Import'), "#", array('onclick' => "$(this).closest('form').submit()"));
             $content .= $this->controller->renderEndWidget();
             return $content;
         }

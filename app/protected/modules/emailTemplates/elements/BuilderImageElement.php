@@ -133,5 +133,12 @@
             $this->resolveInlineStylePropertiesNonEditable($properties);
             return $properties;
         }
+
+        protected function resolveFormHtmlOptions()
+        {
+            $formHtmlOptions = parent::resolveFormHtmlOptions();
+            $formHtmlOptions['class'] .= ' image-element-edit-form';
+            return $formHtmlOptions;
+        }
     }
 ?>

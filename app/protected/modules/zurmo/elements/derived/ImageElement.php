@@ -89,11 +89,7 @@
 
         protected function renderControlNonEditable()
         {
-            if ($this->image instanceof ImageFileModel)
-            {
-                return $this->renderImage();
-            }
-            elseif ((int) ($this->model->{$this->attribute}) > 0)
+            if ($this->image instanceof ImageFileModel || (int) ($this->model->{$this->attribute}) > 0 || $this->model->{$this->attribute} == '')
             {
                 return $this->renderImage();
             }
