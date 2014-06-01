@@ -77,7 +77,7 @@
         {
             $checked   = ZurmoHtml::value($data, $this->name);
             $iconClass = $checked ? $this->checkedIcon : $this->uncheckedIcon;
-            $icon      = ZurmoHtml::icon($iconClass);
+            $icon      = ZurmoHtml::tag('span', array('class' => 'toggle-column'), ZurmoHtml::tag('i', array('class' => $iconClass), ''));
             if (isset($this->visible) && !$this->evaluateExpression($this->visible, array('row' => $row, 'data' => $data)))
             {
                 echo $icon;
