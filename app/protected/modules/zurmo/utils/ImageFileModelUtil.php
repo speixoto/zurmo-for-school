@@ -89,7 +89,7 @@
         }
 
         public static function getImageSummary(ImageFileModel $imageFileModel,
-                                               $layout = '{image} <strong>{name}</strong> </br> {size} {dimensions} {creator} {createdTime}')
+           $layout = '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details"><strong>{name}</strong><br />{size} · {dimensions} · {creator} · {createdTime}</div>')
         {
             //TODO: @sergio: Add test
             $data = array();
@@ -97,7 +97,7 @@
             $data['{image}']       = ZurmoHtml::image($url);
             $data['{name}']        = $imageFileModel->name;
             $data['{size}']        = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $imageFileModel->size);
-            $data['{dimensions}']  = $imageFileModel->width . ' x ' . $imageFileModel->height;
+            $data['{dimensions}']  = $imageFileModel->width . ' × ' . $imageFileModel->height;
             $data['{creator}']     = $imageFileModel->createdByUser;
             $data['{createdTime}'] = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($imageFileModel->createdDateTime);
             return strtr($layout, $data);

@@ -182,7 +182,7 @@
 
 #element-edit-form-overlay-container{
 	position: relative;
-	padding:10px;
+	padding:0 10px 10px 10px;
 	//.portlet-gradient();
 	.panel{
 		width: 100%;
@@ -248,9 +248,8 @@ div[id^="builderimageelement"]{
 }
 
 .image-element-edit-form .element-edit-form-content-tab{
-	padding-top: 15px;
-	padding-bottom: 15px;
-	text-align: center;
+	padding: 15px;
+	text-align: left;
 }
 
 /*Template Chooser*/
@@ -780,5 +779,22 @@ div[id^="builderimageelement"]{
 	float: left;
 	a{
 		font-weight: bold;
+	}
+}
+
+.element-edit-form-content-tab{
+	.builder-uploaded-image-thumb{
+		float: none;
+		width: 100%;
+		padding: 0 0 15px 0;
+	}
+	.builder-image-details{
+		width: 100%;
+		padding: 0 0 15px 0;
+		line-height: 1.5;
+		float: none;
+		a, strong{
+			font-weight: bold;
+		}
 	}
 }

@@ -11607,7 +11607,7 @@ a + .project-stats {
 }
 #element-edit-form-overlay-container {
   position: relative;
-  padding: 10px;
+  padding: 0 10px 10px 10px;
 }
 #element-edit-form-overlay-container .panel {
   width: 100%;
@@ -11674,9 +11674,8 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   background: url("../images/psd-light.png") left top repeat;
 }
 .image-element-edit-form .element-edit-form-content-tab {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  text-align: center;
+  padding: 15px;
+  text-align: left;
 }
 #SelectBaseTemplateForEmailTemplateWizardView > .left-column {
   padding: 0 !important;
@@ -12242,6 +12241,21 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   float: left;
 }
 .builder-image-details a {
+  font-weight: bold;
+}
+.element-edit-form-content-tab .builder-uploaded-image-thumb {
+  float: none;
+  width: 100%;
+  padding: 0 0 15px 0;
+}
+.element-edit-form-content-tab .builder-image-details {
+  width: 100%;
+  padding: 0 0 15px 0;
+  line-height: 1.5;
+  float: none;
+}
+.element-edit-form-content-tab .builder-image-details a,
+.element-edit-form-content-tab .builder-image-details strong {
   font-weight: bold;
 }
 .merge-view {
