@@ -55,7 +55,16 @@
                 $name = preg_replace("#.*\/#", '', $url);
                 file_put_contents($tempFilePath, file_get_contents($url));
                 $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath, $name);
-                echo CJSON::encode($fileUploadData);
+                if (isset($fileUploadData['error']))
+                {
+                    $result[CHtml::activeId($form, 'url')] = array($fileUploadData['error']);
+                    echo CJSON::encode($result);
+                    Yii::app()->end();
+                }
+                else
+                {
+                    echo CJSON::encode($fileUploadData);
+                }
             }
         }
 

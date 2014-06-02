@@ -91,20 +91,7 @@
 
         protected function renderPreviewImportedImageScript()
         {
-            return "if (data.error)
-                    {
-                        $('#FlashMessageBar').jnotifyAddMessage({
-                                                text: data.error,
-                                                permanent: false,
-                                                clickOverlay : true,
-                                                showIcon: false,
-                                            });
-                    }
-                    else
-                    {
-                        transferModalImageValues(data.id, data.summary)
-                    }
-            ";
+            return "transferModalImageValues(data.id, data.summary)";
         }
 
         protected function getViewStyle()
