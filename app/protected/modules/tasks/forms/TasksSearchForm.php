@@ -63,7 +63,7 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'uniqueIdentifier' => Zurmo::t('TasksModule', 'Id'),
+                'uniqueIdentifier' => Zurmo::t('Core', 'Id'),
             ));
         }
 
