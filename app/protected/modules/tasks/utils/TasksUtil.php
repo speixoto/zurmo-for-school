@@ -1222,15 +1222,15 @@
          */
         public static function resolveOpenTasksActionsRedirectUrlForDetailsAndRelationsView($redirectUrl)
         {
-            if($redirectUrl != null)
+            if ($redirectUrl != null)
             {
                 $routeData      = explode('?', $redirectUrl);
-                if(count($routeData) > 1)
+                if (count($routeData) > 1)
                 {
                     $queryData      = explode('&', $routeData[1]);
-                    foreach($queryData as $val)
+                    foreach ($queryData as $val)
                     {
-                        if(strpos($val, 'id=') !== false)
+                        if (strpos($val, 'id=') !== false)
                         {
                             $routeData[1] = $val;
                             break;

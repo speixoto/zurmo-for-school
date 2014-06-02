@@ -423,7 +423,7 @@
             {
                 $element->nonEditableTemplate = '';
             }
-            elseif($element->getAttribute() == 'id')
+            elseif ($element->getAttribute() == 'id')
             {
                 $element->nonEditableTemplate = '<td colspan="{colspan}"><label>{label}</label><strong>{content}</strong></td>';
             }

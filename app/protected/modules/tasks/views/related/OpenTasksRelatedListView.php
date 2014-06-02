@@ -166,7 +166,7 @@
         {
             $routeParams = array_merge( array('sourceId' => $this->getGridViewId()),
                                         parent::getCreateLinkRouteParameters());
-            if(($redirectUrl = ArrayUtil::getArrayValue($routeParams, 'redirectUrl')) != null)
+            if (($redirectUrl = ArrayUtil::getArrayValue($routeParams, 'redirectUrl')) != null)
             {
                 $routeParams['redirectUrl'] = TasksUtil::resolveOpenTasksActionsRedirectUrlForDetailsAndRelationsView($redirectUrl);
             }
