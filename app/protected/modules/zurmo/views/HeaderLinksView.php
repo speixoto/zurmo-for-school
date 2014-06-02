@@ -94,8 +94,33 @@
                 $content .= static::renderHeaderCalendarContent();
             }
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
+	        $content     .= static::resolveUserSwitcher();
             return $content;
         }
+
+	    protected static function resolveUserSwitcher()
+	    {
+		    $script = '<script>$("#user-switcher-link").click(function(){$("#user-switcher-wrapper").toggleClass("switcher-open"); })</script>';
+
+		    //IF there's another user 'active' then the wrapper div should know about it and the class 'switched-user' should be on it.
+		    $content = '<div id="user-switcher-wrapper" class="user-menu-item _switched-user">
+		                    <a id="user-switcher-link" href="#">“</a>
+							<div id="user-switcher">
+								<h5>Use Zurmo as another User</h5>
+
+								<!-- these first <p> should not show if there is no user selected-->
+
+								<p class="clearfix">You are set to <a href="#">John Smith</a> <a href="#" class="reset-user"><i class="icon-x"></i>Reset to your user</a></p>
+
+								<p class="clearfix">
+									<!--This Input should be replaced with an AutoComplete component-->
+									<input type="text" placeholder="Type to find user.." />
+									<a id="claim-item-link" class="mini-button" href="#">Switch</a>
+								</p>
+							</div>
+		                </div>';
+		    return $content . $script;
+	    }
 
         protected static function resolveUserMenuItemsWithTopLevelItem($menuItems)
         {
@@ -143,12 +168,11 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("headerMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'items'                   => $menuItems,
-                'htmlOptions' => array('id'     => $menuId,
-                    'class'  => 'user-menu-item'),
+                'items'       => $menuItems,
+                'htmlOptions' => array('id' => $menuId, 'class'  => 'user-menu-item'),
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['headerMenu'];
+	        return $cClipWidget->getController()->clips['headerMenu'];
         }
 
         protected static function renderHeaderGameDashboardContent()
