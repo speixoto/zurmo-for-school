@@ -110,5 +110,35 @@
             TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
             return parent::renderContent();
         }
+
+        /**
+         * Override to handle security/access resolution on links.
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            return array($this, 'resolveLinkString');
+        }
+
+        /**
+         * Resolves the link string for task detail modal view
+         * @param array $data
+         * @param int $row
+         * @return string
+         */
+        public function resolveLinkString($data, $row)
+        {
+            $content = TasksUtil::getModalDetailsLink($data, $this->controllerId,
+                       $this->moduleId, $this->getActionModuleClassName(), false);
+            return $content;
+        }
+
+        /**
+         * Register the additional script for task detail modal
+         */
+        protected function renderScripts()
+        {
+            parent::renderScripts();
+            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
+        }
     }
 ?>

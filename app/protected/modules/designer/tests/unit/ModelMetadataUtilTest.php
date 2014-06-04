@@ -359,6 +359,7 @@
             ModelMetadataUtil::addOrUpdateMember('A', 'isSilly', $attributeLabels,
                 null, 10, null, null, null, false, false, null, array());
 
+            RedBeanModel::forgetAll();
             $a = new A();
             $a->a = 1;
             $this->assertTrue($a->isAttribute('isSillyCstm'));

@@ -34,29 +34,51 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ModelNumberOrCurrencyAttributesAdapterTest extends ZurmoBaseTest
+    class ReportModelTestItem12 extends OwnedSecurableItem
     {
-        public static function setUpBeforeClass()
+        public static function getDefaultMetadata()
         {
-            parent::setUpBeforeClass();
-            $user = SecurityTestHelper::createSuperAdmin();
-            Yii::app()->user->userModel = $user;
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                    'emailAddress',
+                ),
+                'rules' => array(
+                    array('emailAddress', 'email'),
+                ),
+            );
+            return $metadata;
         }
 
-        public function testGetAttributes()
+        public static function isTypeDeletable()
         {
-            $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new TestOperatorTypeModel());
-            $attributes  = $adapter->getAttributes();
-            $this->assertEquals(3, count($attributes));
-            $this->assertTrue(isset($attributes['integerS']));
-            $this->assertTrue(isset($attributes['integerStandard']));
-            $this->assertTrue(isset($attributes['floatStandard']));
+            return true;
+        }
 
-            $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new CurrencyValueTestItem());
-            $attributes  = $adapter->getAttributes();
-            $compareData = array();
-            $this->assertEquals(2, count($attributes));
-            $this->assertTrue(isset($attributes['amount']));
+        public static function getModuleClassName()
+        {
+            return 'ReportsTestModule';
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return 'ReportModelTestItem12';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ReportModelTestItem12s';
         }
     }
 ?>

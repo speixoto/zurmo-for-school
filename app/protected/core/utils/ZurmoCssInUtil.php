@@ -145,6 +145,12 @@
                 return false;
             }
 
+            $cloneNodesArray = array();
+            foreach ($html->nodes as $node)
+            {
+                $cloneNodesArray[] = clone $node;
+            }
+
             $css_urls = array();
 
             // Find all stylesheets and determine their absolute URLs to retrieve them
@@ -178,14 +184,7 @@
                 foreach ($html->find($rule['selector']) as $node)
                 {
                     // Unserialize the style array, merge the rule's CSS into it...
-                    if ($node->hasChildNodes() && $node->tag != 'a' && !$this->isBuilderButtonElement($node))
-                    {
-                        $style = array_merge(self::styleToArray($node->style), $rule['properties']);
-                    }
-                    else
-                    {
-                        $style = array_merge($rule['properties'], self::styleToArray($node->style));
-                    }
+                    $style = array_merge(self::styleToArray($node->style), $rule['properties']);
                     // And put the CSS back as a string!
                     $node->style = self::arrayToStyle($style);
                 }
@@ -204,9 +203,20 @@
                         {
                             $style = self::styleToArray($node->style);
                             $style[$key] = $value;
-                            $node->style = self::arrayToStyle($style);
                         }
                     }
+                }
+            }
+
+            foreach ($html->nodes as $index => $node)
+            {
+                $nodeStyle = self::styleToArray($node->style);
+                $cloneNodeStyle = self::styleToArray($cloneNodesArray[$index]->style);
+                $style = $this->mergeStyles(self::styleToArray($node->style), self::styleToArray($cloneNodesArray[$index]->style));
+                $style = self::arrayToStyle($style);
+                if ($style != '')
+                {
+                    $node->style = $style;
                 }
             }
             // Let simple_html_dom give us back our HTML with inline CSS!
@@ -214,20 +224,29 @@
             return $html;
         }
 
-        protected function isBuilderButtonElement($node)
+        protected function mergeStyles(Array $firstStyle, Array $secondStyle)
         {
-            $parentNode = $node->parentNode()->parentNode()->parentNode();
-            if (!is_object($parentNode))
+            $stylesToRemove = array();
+            foreach ($secondStyle as $styleTag => $value)
             {
-                return false;
+                $matches = array();
+                preg_match('#(.*)-(.*)#i', $styleTag, $matches);
+                if (isset($matches[1]))
+                {
+                    $stylesToRemove[] = $matches[1];
+                }
             }
-            $id = $parentNode->getAttribute('id');
-            $id = preg_replace('#_.*#i', '', $id);
-            if ($id == 'builderbuttonelement')
+            $stylesToAddInTheBegining = array();
+            foreach ($stylesToRemove as $styleRoRemove)
             {
-                return true;
+                if (isset($firstStyle[$styleRoRemove]))
+                {
+                    $stylesToAddInTheBegining[$styleRoRemove] = $firstStyle[$styleRoRemove];
+                    unset($firstStyle[$styleRoRemove]);
+                }
             }
-            return false;
+            $mergeArray = array_merge($firstStyle, $secondStyle);
+            return array_merge($stylesToAddInTheBegining, $mergeArray);
         }
 
         protected function processStylesCleanup($html)
@@ -249,11 +268,6 @@
 
             // init var
             $specifity = 0;
-
-            if ($selector == 'div img')
-            {
-                return 0;
-            }
 
             // split the selector into chunks based on spaces
             $chunks = explode(' ', $selector);

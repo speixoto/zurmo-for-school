@@ -114,7 +114,7 @@
         private $validators                                                  = array();
         private $attributeNameToErrors                                       = array();
         private $scenarioName                                                = '';
-        // An object is automatcally savable if it is new or contains
+        // An object is automatically savable if it is new or contains
         // modified members or related objects.
         // If it is newly created and has never had any data put into it
         // it can be saved explicitly but it wont be saved automatically
@@ -153,6 +153,12 @@
             'dateTimeDefault'        => 'RedBeanModelDateTimeDefaultValueValidator',
             'probability'            => 'RedBeanModelProbabilityValidator',
         );
+
+        /**
+         * Stores the attributeLabelsByLanguage
+         * @var array
+         */
+        protected static $attributeLabelsByLanguage = array();
 
         /**
          * Returns the static model of the specified AR class.
@@ -2142,9 +2148,7 @@
                                       array(self::HAS_ONE_BELONGS_TO,
                                             self::HAS_MANY_BELONGS_TO)))
                         {
-                            if ($this->$relationName->isModified() ||
-                                $this->isAttributeRequired($relationName) &&
-                                $this->$relationName->id <= 0)
+                            if ($this->$relationName->isModified())
                             {
                                 $this->isInIsModified = false;
                                 return true;
@@ -2376,6 +2380,7 @@
         public static function forgetAll()
         {
             self::forgetAllBeanModels();
+            self::$attributeLabelsByLanguage = array();
             RedBeanModelsCache::forgetAll();
             RedBeansCache::forgetAll();
         }
@@ -2493,22 +2498,28 @@
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
+            if (isset(static::$attributeLabelsByLanguage[$language][$attributeName]))
+            {
+                return static::$attributeLabelsByLanguage[$language][$attributeName];
+            }
             $labels       = static::translatedAttributeLabels($language);
             $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
             if ($customLabel != null)
             {
-                return $customLabel;
+                $label = $customLabel;
             }
             elseif (isset($labels[$attributeName]))
             {
-                return $labels[$attributeName];
+                $label = $labels[$attributeName];
             }
             else
             {
                 //This is a last resort if the translated attribute was not located.  Make sure to define all
                 //attributes in translatedAttributeLabels($language)
-                return Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
+                $label = Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
+            static::$attributeLabelsByLanguage[$language][$attributeName] = $label;
+            return $label;
         }
 
         /**

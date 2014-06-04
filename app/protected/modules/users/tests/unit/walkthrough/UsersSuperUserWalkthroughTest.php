@@ -723,5 +723,17 @@
             $dateUser = User::getById($dateUser->id);
             $this->assertEquals('2000-12-05',  $dateUser->birthday);
         }
+
+        public function testAuditEventsModalList()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            AuditEvent::logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_LOGGED_IN);
+            AuditEvent::logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_LOGGED_OUT);
+            $this->setGetArray(array('id' => $super->id));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/auditEventsModalList');
+            $this->assertContains('User Logged In', $content);
+            $this->assertContains('User Logged Out', $content);
+        }
     }
 ?>

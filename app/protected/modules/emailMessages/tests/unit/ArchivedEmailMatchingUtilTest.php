@@ -61,7 +61,7 @@
             $this->assertEquals($contact->firstName, 'Chris');
             $this->assertEquals($contact->lastName, 'Edwards');
             $contact->forget();
-            
+
             /* Test case with last name starting with single quote */
             $fullname           = "Chris 'Hedwards";
             $contact            = new Contact();
@@ -70,7 +70,7 @@
             $this->assertEquals($contact->lastName, '\'Hedwards');
             $contact->forget();
         }
-        
+
         public function testResolveContactToSenderOrRecipientForReceivedEmail()
         {
             $super                      = User::getByUsername('super');

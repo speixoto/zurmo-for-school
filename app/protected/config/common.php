@@ -447,7 +447,7 @@
             'redBeanVersion'            => '3.2',
             'yiiVersion'                => '1.1.13',
             'memcacheServers'           => $memcacheServers,
-            // enable if you want to clear memcache data with clearCache=1
+            // enable if you want to clear memcache data with clearCache=1 // Not Coding Standard
             'hasDedicatedMemcachePool'  => false,
             'supportedLanguages'        => array(
                 'en' => 'English',

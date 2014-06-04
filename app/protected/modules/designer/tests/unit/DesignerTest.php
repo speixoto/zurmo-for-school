@@ -646,6 +646,7 @@
                 $this->fail();
             }
 
+            RedBeanModel::forgetAll();
             $account = new Account();
             $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($account, 'industry');
             $this->assertEquals('industry', $attributeForm->attributeName);

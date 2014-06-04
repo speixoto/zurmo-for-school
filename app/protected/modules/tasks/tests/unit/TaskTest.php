@@ -387,5 +387,16 @@
             $isContained = $tasks[0]->doNotificationSubscribersContainPerson(Yii::app()->user->userModel);
             $this->assertTrue($isContained);
         }
+
+        public function testProjectValidationWithCustomPickList()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            //Create a required picklist for projects
+            ModulesSearchWithDataProviderTestHelper::createDropDownAttribute(new Project(), 'pick', true);
+            $task = new Task();
+            $task->name = 'MyTestWithCustomPickList';
+            $this->assertTrue($task->save());
+            $this->assertCount(0, $task->getErrors());
+        }
     }
 ?>

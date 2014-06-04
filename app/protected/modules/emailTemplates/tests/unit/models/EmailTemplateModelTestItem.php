@@ -127,6 +127,7 @@
                                                 static::LINK_TYPE_SPECIFIC, 'likeContactState'),
                     'user'                => array(static::HAS_ONE, 'User', static::NOT_OWNED),
                     'user2'               => array(static::HAS_ONE, 'User', static::NOT_OWNED),
+                    'hasMany'             => array(static::MANY_MANY, 'EmailTemplateModelTestItem2'),
                 ),
                 'rules' => array(
                     array('firstName', 'type',   'type' => 'string'),

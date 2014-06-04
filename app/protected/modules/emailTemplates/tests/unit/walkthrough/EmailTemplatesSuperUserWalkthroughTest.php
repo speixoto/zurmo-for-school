@@ -1121,7 +1121,7 @@
                                                 'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
@@ -1290,7 +1290,7 @@
                                                 'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
@@ -1466,7 +1466,7 @@
                                                 'subject" name="BuilderEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadBuilderEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
@@ -1791,7 +1791,7 @@
                                                 'subject" name="BuilderEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64" value="builder 01"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadBuilderEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);

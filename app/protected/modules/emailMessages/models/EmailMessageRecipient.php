@@ -102,7 +102,7 @@
                     array('toAddress', 'required'),
                     array('toAddress', 'email'),
                     array('toName',    'type',    'type' => 'string'),
-                    array('toName',    'length',  'max' => 64),
+                    array('toName',    'length',  'max' => 128),
                     array('type',      'required'),
                     array('type',      'type',    'type' => 'integer'),
                 ),

@@ -34,29 +34,61 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ModelNumberOrCurrencyAttributesAdapterTest extends ZurmoBaseTest
+    class EmailTemplateModelTestItem2 extends Item
     {
-        public static function setUpBeforeClass()
+        public function __toString()
         {
-            parent::setUpBeforeClass();
-            $user = SecurityTestHelper::createSuperAdmin();
-            Yii::app()->user->userModel = $user;
+            return $this->name;
         }
 
-        public function testGetAttributes()
+        public static function getByName($name)
         {
-            $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new TestOperatorTypeModel());
-            $attributes  = $adapter->getAttributes();
-            $this->assertEquals(3, count($attributes));
-            $this->assertTrue(isset($attributes['integerS']));
-            $this->assertTrue(isset($attributes['integerStandard']));
-            $this->assertTrue(isset($attributes['floatStandard']));
+            return self::getByNameOrEquivalent('name', $name);
+        }
 
-            $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new CurrencyValueTestItem());
-            $attributes  = $adapter->getAttributes();
-            $compareData = array();
-            $this->assertEquals(2, count($attributes));
-            $this->assertTrue(isset($attributes['amount']));
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'EmailTemplatesModule';
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return 'ImportModelTestItem2';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ImportModelTestItem2s';
         }
     }
 ?>

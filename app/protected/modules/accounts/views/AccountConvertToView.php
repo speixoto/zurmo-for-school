@@ -59,8 +59,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelConvertLink'),
                             array('type'  => 'SaveButton', 'label' => "eval:Zurmo::t('ZurmoModule', 'Complete Conversion')"),
+                            array('type'  => 'CancelConvertLink'),
                         ),
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
@@ -106,8 +106,7 @@
                 $disableFloatContent = null;
             }
             $content = ZurmoHtml::tag('div', array('class' => 'form-toolbar'), $content);
-            $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix dock' .
-            $disableFloatContent), $content);
+            $content = ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix dock' . $disableFloatContent), $content);
             return $content;
         }
     }
