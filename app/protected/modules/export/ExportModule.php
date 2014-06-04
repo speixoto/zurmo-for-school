@@ -52,7 +52,7 @@
          * Page size for asynchronus paging when processing export
          * @var int
          */
-        public static $asynchronousPageSize  = 500;
+        public static $asynchronousPageSize  = 250;
 
         /**
          * How many total models to process in a given export job run
