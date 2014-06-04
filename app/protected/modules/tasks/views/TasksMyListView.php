@@ -165,7 +165,7 @@
         {
             $url  = 'Yii::app()->createUrl("tasks/default/modalEdit", array("id" => $data->id))';
             return array(
-                'class'           => 'TaskModalButtonColumn',
+                'class'           => $this->resolveTaskModalButtonColumnClassName(),
                 'template'        => '{update}',
                 'buttons' => array(
                     'update' => array(
@@ -174,7 +174,9 @@
                         'visible'         => 'ActionSecurityUtil::canCurrentUserPerformAction("Edit", $data)',
                         'options'         => array('class' => 'pencil', 'title' => 'Update'),
                         'label'           => '!',
-                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit')
+                        'ajaxOptions'     => TasksUtil::resolveAjaxOptionsForModalView('Edit'),
+                        'redirectUrl'     => Yii::app()->createUrl('home/default'),
+                        'gridId'          => $this->getGridViewId()
                     ),
                 ),
             );
@@ -186,7 +188,7 @@
         protected function renderScripts()
         {
             parent::renderScripts();
-            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
+            Yii::app()->custom->registerTaskModalDetailsScript($this->getGridViewId());
         }
 
         protected function getCGridViewAjaxUrl()
@@ -196,7 +198,7 @@
         }
 
         /**
-         * Renders portlet head content
+         * Renders portlet head content.
          * @return string
          */
         public function renderPortletHeadContent()
@@ -204,6 +206,26 @@
             $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('TasksModule', 'All Tasks'));
             $link  = ZurmoHtml::link($label, Yii::app()->createUrl('tasks/default/list'), array('class' => 'default-btn'));
             return ZurmoHtml::tag('div', array('class' => 'portlet-toolbar'), $link);
+        }
+
+        /**
+         * Renders content
+         * @return string
+         */
+        protected function renderContent()
+        {
+            $content = parent::renderContent();
+            TasksUtil::resolveShouldOpenToTask($this->getGridViewId());
+            return $content;
+        }
+
+        /**
+         * Get task modal button column class name.
+         * @return string
+         */
+        protected function resolveTaskModalButtonColumnClassName()
+        {
+            return Yii::app()->custom->resolveTaskModalButtonColumnClassNameForTasksMyListView();
         }
     }
 ?>

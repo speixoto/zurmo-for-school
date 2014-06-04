@@ -169,8 +169,6 @@ a:active .z-label {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .button-layout:before,
 .button-layout:after {
@@ -227,8 +225,6 @@ a:active .z-label {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(108,202,215,0.8);
   border-left: 1px solid rgba(68,187,204,0.8);
   border-right: 1px solid rgba(68,187,204,0.8);
@@ -297,8 +293,6 @@ a:active .z-label {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(200,200,200,0.4);
   border-left: 1px solid rgba(185,185,185,0.4);
   border-right: 1px solid rgba(185,185,185,0.4);
@@ -943,8 +937,6 @@ a.simple-link .icon-x {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(108,202,215,0.8);
   border-left: 1px solid rgba(68,187,204,0.8);
   border-right: 1px solid rgba(68,187,204,0.8);
@@ -1838,8 +1830,6 @@ table.configuration-list tr:last-child td {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(108,202,215,0.8);
   border-left: 1px solid rgba(68,187,204,0.8);
   border-right: 1px solid rgba(68,187,204,0.8);
@@ -1954,8 +1944,6 @@ table.configuration-list tr:last-child td {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(108,202,215,0.8);
   border-left: 1px solid rgba(68,187,204,0.8);
   border-right: 1px solid rgba(68,187,204,0.8);
@@ -2966,8 +2954,6 @@ div.wide.form .errorMessage {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(108,202,215,0.8);
   border-left: 1px solid rgba(68,187,204,0.8);
   border-right: 1px solid rgba(68,187,204,0.8);
@@ -3409,8 +3395,6 @@ div.wide.form .errorMessage {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(200,200,200,0.4);
   border-left: 1px solid rgba(185,185,185,0.4);
   border-right: 1px solid rgba(185,185,185,0.4);
@@ -3961,8 +3945,6 @@ div.wide.form .errorMessage {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(108,202,215,0.8);
   border-left: 1px solid rgba(68,187,204,0.8);
   border-right: 1px solid rgba(68,187,204,0.8);
@@ -4518,8 +4500,6 @@ div.wide.form .errorMessage {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   border-top: 1px solid rgba(108,202,215,0.8);
   border-left: 1px solid rgba(68,187,204,0.8);
   border-right: 1px solid rgba(68,187,204,0.8);
@@ -7390,6 +7370,9 @@ a.user-link {
 .split-button.active .icon-trigger:after {
   color: #656565 !important;
 }
+.split-button.active .button-trigger:hover .icon-trigger:after {
+  color: #44BBCC !important;
+}
 .split-button.active .button-actions a {
   color: #fff;
 }
@@ -9137,8 +9120,6 @@ a + .autoresponder-stats {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   background-color: #97c43d;
   background-repeat: repeat-x;
   background-image: -ms-linear-gradient(left,#6fa82d,#97c43d);
@@ -10427,8 +10408,6 @@ div.special-pager .hidden.next:after {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
   -webkit-transform: rotateY(0deg);
   -moz-transform: rotateY(0deg);
   -o-transform: rotateY(0deg);
@@ -11497,8 +11476,6 @@ a + .project-stats {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 #building-blocks li:active {
   cursor: move;
@@ -11548,8 +11525,6 @@ a + .project-stats {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 #building-blocks li div span {
   position: absolute;
@@ -11608,8 +11583,6 @@ a + .project-stats {
   -moz-transform: translate(0px,0);
   -webkit-transform: translate3d(0px,0,0);
   transform: translate(0px,0);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
 }
 .draggable-element-clone span {
   position: absolute;

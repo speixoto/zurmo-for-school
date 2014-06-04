@@ -129,7 +129,7 @@ table.Twitter:hover td {
 
 table.GooglePlus td {
     color: #ffffff;
-    background-color: #DB4A39;
+    background: #DB4A39;
     border-color: #CC0000;
 }
 
@@ -139,7 +139,7 @@ table.GooglePlus:hover td {
 
 table.YouTube td {
     color: #ffffff;
-    background-color: #db1925;
+    background: #db1925;
     border-color: #cc0f29;
 }
 

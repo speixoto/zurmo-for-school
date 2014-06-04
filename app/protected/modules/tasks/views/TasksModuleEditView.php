@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class TasksModuleEditView extends ModuleEditView
+    class TasksModuleEditView extends GlobalSearchEnabledModuleEditView
     {
     }
 ?>

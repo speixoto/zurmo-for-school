@@ -485,7 +485,7 @@
             if (isset($metadata['global']['rowMenu']) && is_array($metadata['global']['rowMenu']['elements']))
             {
                 return array(
-                    'class'           => 'RowMenuColumn',
+                    'class'           => $this->resolveRowMenuColumnClass(),
                     'rowMenu'         => $metadata['global']['rowMenu'],
                     'listView'        => $this,
                     'redirectUrl'     => ArrayUtil::getArrayValue($this->params, 'redirectUrl'),
@@ -605,6 +605,15 @@
         protected function isHeaderHidden()
         {
             return false;
+        }
+
+        /**
+         * Resolve row menu column class.
+         * @return string
+         */
+        protected function resolveRowMenuColumnClass()
+        {
+            return 'RowMenuColumn';
         }
     }
 ?>

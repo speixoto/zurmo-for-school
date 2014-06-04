@@ -2127,9 +2127,7 @@
                                       array(self::HAS_ONE_BELONGS_TO,
                                             self::HAS_MANY_BELONGS_TO)))
                         {
-                            if ($this->$relationName->isModified() ||
-                                $this->isAttributeRequired($relationName) &&
-                                $this->$relationName->id <= 0)
+                            if ($this->$relationName->isModified())
                             {
                                 $this->isInIsModified = false;
                                 return true;

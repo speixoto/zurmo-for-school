@@ -89,13 +89,7 @@
                     {
                             continue;
                     }
-                    $params = array_slice($elementInformation, 1);
-                    if (!isset($params['redirectUrl']))
-                    {
-                        $params['redirectUrl'] = $this->redirectUrl;
-                    }
-                    $params['modelClassName'] = $this->modelClassName;
-                    $params['gridId'] = $this->grid->getId();
+                    $params   = $this->resolveParams($elementInformation, $data, $row);
                     array_walk($params, array($this->listView, 'resolveEvaluateSubString'));
                     $element  = new $elementclassname($this->listView->getControllerId(),
                                                       $this->listView->getModuleId(),
@@ -133,6 +127,25 @@
         public function renderDataCellContentFromOutsideClass($row, $data)
         {
             $this->renderDataCellContent($row, $data);
+        }
+
+        /**
+         * Resolve params for the column
+         * @param type $elementInformation
+         * @param integer $row the row number (zero-based)
+         * @param mixed $data the data associated with the row
+         * @return array
+         */
+        protected function resolveParams($elementInformation, $data, $row)
+        {
+            $params = array_slice($elementInformation, 1);
+            if (!isset($params['redirectUrl']))
+            {
+                $params['redirectUrl'] = $this->redirectUrl;
+            }
+            $params['modelClassName'] = $this->modelClassName;
+            $params['gridId']         = $this->grid->getId();
+            return $params;
         }
     }
 ?>
