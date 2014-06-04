@@ -59,12 +59,20 @@
             {
                 // we have an adventurous user here. He isn't admin and he hasn't got the primaryUser state
                 // set yet he wants to try.
-                $this->errorCode = static::ERROR_NO_RIGHT_SWITCH_USER;
-                return false;
+                return $this->noRightToSwitchUser();
             }
             else
             {
                 $primaryUser    = static::getPrimaryUser();
+                if ($this->username != $primaryUser)
+                {
+                    $switchToUser   = User::getByUsername($this->username);
+                    if ($switchToUser->isRootUser)
+                    {
+                        // an adventurous user who is trying to switch to another Root User
+                        return $this->noRightToSwitchUser();
+                    }
+                }
                 if (Yii::app()->user->userModel->isSuperAdministrator() && !isset($primaryUser))
                 {
                     // we are switching from admin to someone else, store the admin
@@ -94,6 +102,12 @@
                 $this->errorCode = self::ERROR_NONE;
                 return true;
             }
+        }
+
+        protected function noRightToSwitchUser()
+        {
+            $this->errorCode    = static::ERROR_NO_RIGHT_SWITCH_USER;
+            return false;
         }
 
         protected static function hasPrimaryUser()
