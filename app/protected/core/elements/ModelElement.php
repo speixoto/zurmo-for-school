@@ -43,7 +43,9 @@
      */
     abstract class ModelElement extends Element implements ElementActionTypeInterface
     {
-        const MODAL_CONTAINER_PREFIX = 'modalContainer';
+        const MODAL_CONTAINER_PREFIX    = 'modalContainer';
+
+        const CLEAR_LINK_ID             = 'clear-link';
 
         /**
          * Override in child element with a specific moduleId
@@ -508,7 +510,68 @@
          */
         protected function renderExtraHtmlContent()
         {
-            return null;
+            $content    = null;
+            if ($this->renderClearLink())
+            {
+                $content = $this->renderClearLinkContent();
+            }
+            return $content;
+        }
+
+        protected function renderClearLink()
+        {
+            return false;
+        }
+
+        protected function renderClearLinkContent()
+        {
+            $this->registerClearLinkScripts();
+            $htmlOptions    = $this->resolveClearLinkHtmlOptions();
+            $icon           = ZurmoHtml::tag('i', array('class' => 'icon-x'), '');
+            $link           = ZurmoHtml::link($icon, '#', $htmlOptions);
+            return $link;
+        }
+
+        protected function resolveClearLinkHtmlOptions()
+        {
+            $htmlOptions    = array('id' => static::CLEAR_LINK_ID, 'class' => 'clear-select');
+            if (intval($this->getId()) <= 0)
+            {
+                $htmlOptions['style'] = 'display:none;';
+            }
+            return $htmlOptions;
+        }
+
+        protected function registerClearLinkScripts()
+        {
+            $this->registerIdHiddenInputChangeScript();
+            $this->registerClearLinkClickScript();
+        }
+
+        protected function registerIdHiddenInputChangeScript()
+        {
+            Yii::app()->clientScript->registerScript('idHiddenInputChangeScript', '
+                $("#'. $this->getIdForHiddenField() . '").unbind("change.idHiddenInputChangeScript")
+                                                        .bind("change.idHiddenInputChangeScript", function(event)
+                 {
+                    if ($("#' . static::CLEAR_LINK_ID .'").is(":hidden"))
+                    {
+                        $("#' . static::CLEAR_LINK_ID .'").show();
+                    }
+                 });');
+        }
+
+        protected function registerClearLinkClickScript()
+        {
+            Yii::app()->clientScript->registerScript('clearLinkClickScript', '
+                $("#' . static::CLEAR_LINK_ID . '").unbind("click.clearLinkClickScript")
+                                                        .bind("click.clearLinkClickScript", function(event)
+                 {
+                    $("#'. $this->getIdForHiddenField() . '").val("");
+                    $("#' . $this->getNameForTextField() . '").val("");
+                    $(this).hide();
+                    event.preventDefault();
+                 });');
         }
     }
 ?>
