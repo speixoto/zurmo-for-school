@@ -36,10 +36,10 @@
 
     class UserSwitcherRightsControllerFilter extends AccessControllerFilter
     {
-        protected function hasAccess()
+        public function hasAccess()
         {
             $primaryUser = SwitchUserIdentity::getPrimaryUser();
-            return (isset($primaryUser) || Group::isUserASuperAdministrator(Yii::app()->user->userModel));
+            return (isset($primaryUser) || Yii::app()->user->userModel->isSuperAdministrator());
         }
     }
 ?>

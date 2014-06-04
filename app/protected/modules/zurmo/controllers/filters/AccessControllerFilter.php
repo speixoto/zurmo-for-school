@@ -36,7 +36,7 @@
 
     abstract class AccessControllerFilter extends CFilter
     {
-        abstract protected function hasAccess();
+        abstract public function hasAccess();
 
         protected function preFilter($filterChain)
         {

@@ -44,7 +44,7 @@
 
         public $rightName;
 
-        protected function hasAccess()
+        public function hasAccess()
         {
             return (RightsUtil::doesUserHaveAllowByRightName(
                         $this->moduleClassName,

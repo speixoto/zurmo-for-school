@@ -58,7 +58,7 @@
             );
             $filters[] = array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH .
-                    ' - modalList, - switch, - switchTo, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
+                    ' - modalList, - switchTo, autoComplete, details, profile, edit, auditEventsModalList, changePassword, ' .
                     'configurationEdit, emailConfiguration, securityDetails, ' .
                     'autoCompleteForMultiSelectAutoComplete, confirmTimeZone, changeAvatar, gameDashboard',
                     'moduleClassName' => 'UsersModule',
@@ -674,11 +674,6 @@
             {
                 throw new NotSupportedException("Can not switch user");
             }
-        }
-
-        protected function resolveSwitchToUrlByUsername($username)
-        {
-            return $this->createUrl('/users/default/switchTo', compact('username'));
         }
     }
 ?>
