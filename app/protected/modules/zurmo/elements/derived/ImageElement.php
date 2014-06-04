@@ -131,7 +131,7 @@
             if ($this->image != null)
             {
                 $title = '';
-                $linkText = Zurmo::t('ZurmoModule', 'Replace');
+                $linkText = Zurmo::t('ZurmoModule', 'Change');
             }
             $content = ZurmoHtml::ajaxLink(
 	                        '<span class="z-spinner"></span>' . ZurmoHtml::tag('span', array('class' => 'z-label'), $linkText),
@@ -210,7 +210,7 @@
 
         protected function getModalTitleForSelectingModel()
         {
-            return Zurmo::t('ZurmoModule', 'Image Search');
+            return Zurmo::t('ZurmoModule', 'Select an Image');
         }
 
         protected function getModalContainerId()

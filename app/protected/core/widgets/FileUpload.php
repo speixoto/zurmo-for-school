@@ -165,12 +165,12 @@
             if ($this->allowMultipleUpload)
             {
                 $sendAction = null;
-                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
+                $addLabel   = $this->getAddLabel();
             }
             else
             {
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
-                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
+                $addLabel   = $this->getAddLabel();
             }
             // Begin Not Coding Standard
             $javaScript = <<<EOD
@@ -266,6 +266,11 @@ EOD;
         protected function getDropZoneContent()
         {
             return null;
+        }
+
+        protected function getAddLabel()
+        {
+            return ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
         }
 
         protected function makeDownloadRowScriptContent()

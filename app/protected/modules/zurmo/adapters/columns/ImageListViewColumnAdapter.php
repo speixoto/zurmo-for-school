@@ -51,9 +51,12 @@
 
         public function renderDataCellContent($data, $row)
         {
+            $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
+            $onLabel        = Zurmo::t('ZurmoModule', 'on');
             $stringValue = $this->view->getLinkString($data, $this->attribute);
-            $layout = '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details">'
-                      . $stringValue . '<br />{size} · {dimensions} · {creator} · {createdTime}</div>';
+            $layout = '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details">' .
+                      $stringValue . '<br />{size} · {dimensions} · ' . $createdByLabel .
+                      ' {creator} ' . $onLabel . ' {createdTime}</div>';
             return ImageFileModelUtil::getImageSummary($data, $layout);
         }
 

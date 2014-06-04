@@ -43,5 +43,10 @@
         {
             return Zurmo::t('ZurmoModule', 'Drop your images in this area');
         }
+
+        protected function getAddLabel()
+        {
+            return ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Or add images'));
+        }
     }
 ?>

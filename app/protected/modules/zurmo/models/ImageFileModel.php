@@ -69,7 +69,7 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'isShared'  => Zurmo::t('ZurmoModule', 'Is Shared', array(), null, $language),
+                    'isShared'  => Zurmo::t('ZurmoModule', 'Shared', array(), null, $language),
                     'width'     => Zurmo::t('ZurmoModule', 'Width',  array(), null, $language),
                     'height'    => Zurmo::t('ZurmoModule', 'Height',  array(), null, $language),
                 )

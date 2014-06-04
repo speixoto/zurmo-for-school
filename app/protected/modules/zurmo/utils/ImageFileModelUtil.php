@@ -88,11 +88,14 @@
             return Yii::app()->createAbsoluteUrl($path, array('fileName' => $fileName));
         }
 
-        public static function getImageSummary(ImageFileModel $imageFileModel,
-           $layout = '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details"><strong>{name}</strong><br />{size} · {dimensions} · {creator} · {createdTime}</div>')
+        public static function getImageSummary(ImageFileModel $imageFileModel, $layout = null)
         {
             //TODO: @sergio: Add test
             $data = array();
+            if ($layout == null)
+            {
+                $layout = static::getDefaultLayout();
+            }
             $url  = static::getUrlForGetImageFromImageFileName($imageFileModel->getImageCacheFileName(), true);
             $data['{image}']       = ZurmoHtml::image($url);
             $data['{name}']        = $imageFileModel->name;
@@ -101,6 +104,15 @@
             $data['{creator}']     = $imageFileModel->createdByUser;
             $data['{createdTime}'] = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($imageFileModel->createdDateTime);
             return strtr($layout, $data);
+        }
+
+        protected static function getDefaultLayout()
+        {
+            $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
+            $onLabel        = Zurmo::t('ZurmoModule', 'on');
+            return '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details">' .
+                   '<strong>{name}</strong><br />{size} · {dimensions} · ' . $createdByLabel .
+                   ' {creator} ' . $onLabel . ' {createdTime}</div>';
         }
     }
 ?>
