@@ -1450,6 +1450,7 @@ table.configuration-list tr:last-child td {
   font-size: 12px;
   text-decoration: underline !important;
 }
+#GroupEditAndDetailsView .has-model-select input,
 #RoleEditAndDetailsView .has-model-select input {
   text-indent: 21px;
 }
