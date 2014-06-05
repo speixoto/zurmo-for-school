@@ -62,8 +62,8 @@
         public function testGetByContentTypeReturnsDefaultWithNoneSet()
         {
             $isHtmlContent                      = false;
-            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag();
+            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag();
             $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
@@ -74,8 +74,8 @@
             $this->assertEquals($defaultFooter, $plainTextFooter);
 
             $isHtmlContent                      = true;
-            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag();
+            $manageSubscriptionsUrlPlaceHolder  = GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag();
             $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);

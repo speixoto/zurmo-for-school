@@ -380,7 +380,7 @@
                                                             <table align="left" bgcolor="#cccccc" text="#333333" width="280" cellpadding="10" cellspacing="0" border="0" class="footer-left">
                                                                 <tr>
                                                                     <td style="color:#333333;">
-                                                                             <p>{{UNSUBSCRIBE_URL}} <br/> {{MANAGE_SUBSCRIPTIONS_URL}}</p>
+                                                                             <p> '. GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ' <br/> ' . GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag() . '</p>
                                                                     </td>
                                                                 </tr>
                                                             </table>

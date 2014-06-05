@@ -449,6 +449,26 @@
         /**
          * @depends testCreateAndGetEmailTemplateById
          */
+        public function testUnsubscribeAndManageSubscriptionsMergeTagsValidation()
+        {
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->name            = 'Another Test Email Template';
+            $emailTemplate->textContent     = GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' .
+                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag();
+            $emailTemplate->htmlContent     = GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' .
+                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag();
+            $emailTemplate->builtType       = EmailTemplate::BUILT_TYPE_PASTED_HTML;
+            $emailTemplate->modelClassName  = 'Contact';
+            $validated                      = $emailTemplate->validate(null, false, true);
+            $this->assertTrue($validated);
+            $this->assertEmpty($emailTemplate->getErrors());
+        }
+
+        /**
+         * @depends testCreateAndGetEmailTemplateById
+         */
         public function testDummyHtmlContentThrowsValidationErrorWhenTextContentIsEmpty()
         {
             $emailTemplate                  = new EmailTemplate();

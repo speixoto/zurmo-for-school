@@ -896,8 +896,8 @@
                                                                                                 null);
             $campaign                   = CampaignTestHelper::createCampaign('campaign 13',
                                                                                 'subject 13',
-                                                                                '{{UNSUBSCRIBE_URL}}',
-                                                                                '{{UNSUBSCRIBE_URL}}',
+                                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag(),
+                                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag(),
                                                                                 'testFromName',
                                                                                 'test@zurmo.com',
                                                                                 null,
@@ -939,8 +939,8 @@
                                                                                                 null);
             $campaign                   = CampaignTestHelper::createCampaign('campaign 14',
                                                                                 'subject 14',
-                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
                                                                                 'testFromName',
                                                                                 'test@zurmo.com',
                                                                                 null,
@@ -982,10 +982,10 @@
                                                                                                 null);
             $campaign                   = CampaignTestHelper::createCampaign('campaign 15',
                                                                                 'subject 15',
-                                                                                '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' . // Not Coding Standard
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
+                                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' . // Not Coding Standard
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
                                                                                 'testFromName',
                                                                                 'test@zurmo.com',
                                                                                 null,

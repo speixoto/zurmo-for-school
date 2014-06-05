@@ -42,10 +42,6 @@
 
         const CONFIG_MODULE_NAME                    = 'AutorespondersModule';
 
-        const UNSUBSCRIBE_URL_PLACEHOLDER           = '{{UNSUBSCRIBE_URL}}';
-
-        const MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER  = '{{MANAGE_SUBSCRIPTIONS_URL}}';
-
         /**
          * @param $isHtmlContent
          * @param bool $returnDefault
@@ -75,6 +71,87 @@
             ZurmoConfigurationUtil::setByModuleName(static::CONFIG_MODULE_NAME, $key, $content);
         }
 
+        public static function resolveUnsubscribeUrlMergeTag()
+        {
+            return MergeTagsUtil::resolveAttributeStringToMergeTagString('unsubscribeUrl');
+        }
+
+        public static function resolveManageSubscriptionsMergeTag()
+        {
+            return MergeTagsUtil::resolveAttributeStringToMergeTagString('manageSubscriptionsUrl');
+        }
+
+        public static function resolveGlobalMarketingFooterMergeTag($suffix = null) // Html or PlainText
+        {
+            return MergeTagsUtil::resolveAttributeStringToMergeTagString('globalMarketingFooter' . $suffix);
+        }
+
+        public static function resolveHash($personId, $marketingListId, $modelId, $modelType,
+                                           $createNewActivity = true)
+        {
+            $queryStringArray       = static::resolveHashArray($personId, $marketingListId, $modelId, $modelType,
+                                                                $createNewActivity);
+            return static::resolveHashByArray($queryStringArray);
+        }
+
+        public static function resolveFooterMergeTagsArray($personId, $marketingListId, $modelId, $modelType,
+                                                $createNewActivity = true, $preview = false, $isHtmlContent = false)
+        {
+            $hashArray              = static::resolveHashArray($personId, $marketingListId, $modelId, $modelType, $createNewActivity);
+            $queryStringArray       = CMap::mergeArray($hashArray, compact('preview', 'isHtmlContent'));
+            return $queryStringArray;
+        }
+
+        public static function resolveHashByArray(array $queryStringArray)
+        {
+            if (!static::isValidQueryStringArray($queryStringArray))
+            {
+                throw new NotSupportedException();
+            }
+            unset($queryStringArray['preview']);
+            unset($queryStringArray['isHtmlContent']);
+            ArrayUtil::setToDefaultValueIfMissing($queryStringArray, 'createNewActivity', false);
+            return StringUtil::resolveHashForQueryStringArray($queryStringArray);
+        }
+
+        public static function resolveUnsubscribeUrlByArray(array $queryStringArray)
+        {
+            $hash = $preview = null;
+            extract(static::resolvePreviewAndHashFromArray($queryStringArray));
+            return static::resolveUnsubscribeUrl($hash, $preview);
+        }
+
+        public static function resolveManageSubscriptionsUrlByArray(array $queryStringArray, $preview = false)
+        {
+            $hash = $preview = null;
+            extract(static::resolvePreviewAndHashFromArray($queryStringArray));
+            return static::resolveManageSubscriptionsUrl($hash, $preview);
+        }
+
+        public static function resolveContentGlobalFooter(& $content, $isHtmlContent)
+        {
+            static::resolveContentForUnsubscribeAndManageSubscriptionsUrls($content, $isHtmlContent);
+            return true;
+        }
+
+        public static function resolveHashArray($personId, $marketingListId, $modelId, $modelType,
+                                                           $createNewActivity = true)
+        {
+            $queryStringArray       = compact('personId', 'marketingListId', 'modelId', 'modelType', 'createNewActivity');
+            return $queryStringArray;
+        }
+
+        public static function removeFooterMergeTags(& $content)
+        {
+            $mergeTags = array(
+                static::resolveUnsubscribeUrlMergeTag(),
+                static::resolveManageSubscriptionsMergeTag(),
+                static::resolveGlobalMarketingFooterMergeTag('PlainText'),
+                static::resolveGlobalMarketingFooterMergeTag('Html'),
+            );
+            $content    = str_replace($mergeTags, null, $content);
+        }
+
         protected static function resolveConfigKeyByContentType($isHtmlContent)
         {
             assert('is_bool($isHtmlContent)');
@@ -90,8 +167,8 @@
 
         protected static function resolveDefaultValue($isHtmlContent)
         {
-            $unsubscribeUrlPlaceHolder          = static::UNSUBSCRIBE_URL_PLACEHOLDER;
-            $manageSubscriptionsUrlPlaceHolder  = static::MANAGE_SUBSCRIPTIONS_URL_PLACEHOLDER;
+            $unsubscribeUrlPlaceHolder          = static::resolveUnsubscribeUrlMergeTag();
+            $manageSubscriptionsUrlPlaceHolder  = static::resolveManageSubscriptionsMergeTag();
             $recipientMention                   = 'This email was sent to [[PRIMARY^EMAIL]].';
             StringUtil::prependNewLine($unsubscribeUrlPlaceHolder, $isHtmlContent);
             StringUtil::prependNewLine($manageSubscriptionsUrlPlaceHolder, $isHtmlContent);
@@ -100,6 +177,107 @@
             $content        .= $manageSubscriptionsUrlPlaceHolder;
             $content        .= $recipientMention;
             return $content;
+        }
+
+        protected static function isValidQueryStringArray(array $queryStringArray)
+        {
+            return ArrayUtil::arrayHasKeys($queryStringArray, static::resolveValidQueryStringArrayKeys());
+        }
+
+        protected static function resolveValidQueryStringArrayKeys()
+        {
+            return array('personId', 'marketingListId', 'modelId', 'modelType'); // createNewActivity and preview indices are optional
+        }
+
+        protected static function resolvePreviewAndHashFromArray(array $queryStringArray)
+        {
+            $preview    = static::resolvePreviewFromArray($queryStringArray);
+            $hash       = static::resolveHashByArray($queryStringArray);
+            return compact('hash', 'preview');
+        }
+
+        protected static function resolvePreviewFromArray(array & $queryStringArray)
+        {
+            $preview    = ArrayUtil::getArrayValue($queryStringArray, 'preview', false);
+            return $preview;
+        }
+
+        protected static function resolveUnsubscribeUrl($hash, $preview = false)
+        {
+            $baseUrl = static::resolveUnsubscribeBaseUrl();
+            return static::resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview);
+        }
+
+        protected static function resolveManageSubscriptionsUrl($hash, $preview = false)
+        {
+            $baseUrl = static::resolveManageSubscriptionsBaseUrl();
+            return static::resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview);
+        }
+
+        protected static function resolveAbsoluteUrlWithHashAndPreviewForFooter($baseUrl, $hash, $preview = false)
+        {
+            $routeParams   = static::resolveFooterUrlParams($hash, $preview);
+            return Yii::app()->createAbsoluteUrl($baseUrl, $routeParams);
+        }
+
+        protected static function resolveUnsubscribeBaseUrl()
+        {
+            return ContentTrackingUtil::resolveMarketingExternalControllerUrl(). '/unsubscribe';
+        }
+
+        protected static function resolveManageSubscriptionsBaseUrl()
+        {
+            return ContentTrackingUtil::resolveMarketingExternalControllerUrl() . '/manageSubscriptions';
+        }
+
+        protected static function resolveFooterUrlParams($hash, $preview = false)
+        {
+            $routeParams    = array('hash'  => $hash);
+            if ($preview)
+            {
+                $routeParams['preview'] = intval($preview);
+            }
+            return $routeParams;
+        }
+
+        protected static function resolveContentForUnsubscribeAndManageSubscriptionsUrls(& $content, $isHtmlContent)
+        {
+            $found = static::isFooterAlreadyPresent($content);
+            if (!$found)
+            {
+                static::appendDefaultFooter($content, $isHtmlContent);
+            }
+        }
+
+        protected static function isFooterAlreadyPresent($content)
+        {
+            $footerContent  = array(
+                static::resolveUnsubscribeUrlMergeTag(),
+                static::resolveManageSubscriptionsMergeTag(),
+                static::resolveGlobalMarketingFooterMergeTag(), // intentionally not sending suffix
+            );
+            $found = false;
+            foreach ($footerContent as $footer)
+            {
+                if (strpos($content, $footer) !== false)
+                {
+                    // we are good as long as even one of the merge tags is found.
+                    $found = true;
+                }
+            }
+            return $found;
+        }
+
+        protected static function appendDefaultFooter(& $content, $isHtmlContent)
+        {
+            $placeholderContent = static::resolveDefaultFooterPlaceholderContentByType($isHtmlContent);
+            StringUtil::prependNewLine($placeholderContent, $isHtmlContent);
+            $content            .= $placeholderContent;
+        }
+
+        protected static function resolveDefaultFooterPlaceholderContentByType($isHtmlContent)
+        {
+            return static::getContentByType($isHtmlContent, true);
         }
     }
 ?>

@@ -42,11 +42,7 @@
     {
         const PROPERTY_NOT_FOUND = "!MERGETAG-TO-ATTR-FAILED";
 
-        protected static $specialAttributesResolver = array (
-                                                            'modelUrl'  => 'resolveModelUrlByModel',
-                                                            );
-
-        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language, $errorOnFirstMissing = false)
+        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language, $errorOnFirstMissing = false, $params = array())
         {
             assert('$language == null || is_string($language)');
             if ($language == null)
@@ -58,7 +54,7 @@
             {
                 $attributeAccessorString    = static::resolveStringToAttributeAccessor($mergeTag);
                 $timeQualifier              = static::stripTimeDelimiterAndReturnQualifier($attributeAccessorString);
-                $resolvedValue              = static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
+                $resolvedValue              = static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier, $params);
                 if ($resolvedValue === static::PROPERTY_NOT_FOUND)
                 {
                     if ($errorOnFirstMissing)
@@ -94,12 +90,12 @@
             }
         }
 
-        protected static function resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier)
+        protected static function resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier, $params)
         {
             $attributeName = strtok($attributeAccessorString, '->');
             if (SpecialMergeTagsAdapter::isSpecialMergeTag($attributeName, $timeQualifier))
             {
-                return SpecialMergeTagsAdapter::resolve($attributeName, $model);
+                return SpecialMergeTagsAdapter::resolve($attributeName, $model, $params);
             }
             else
             {
@@ -122,7 +118,8 @@
                                     $attributeAccessorString,
                                     $activityItem,
                                     $language,
-                                    $timeQualifier);
+                                    $timeQualifier,
+                                    $params);
                             }
                             if (get_class($activityItem) == 'Item' && array_search(ucfirst($attributeName), $activityItemsModelClassNamesData) !== false)
                             {
@@ -137,7 +134,8 @@
                                             $attributeAccessorString,
                                             $castedDownModel,
                                             $language,
-                                            $timeQualifier);
+                                            $timeQualifier,
+                                            $params);
                                     }
                                 }
                                 catch (NotFoundException $e)
@@ -157,7 +155,8 @@
                                     $attributeAccessorString,
                                     $model,
                                     $language,
-                                    $timeQualifier);
+                                    $timeQualifier,
+                                    $params);
                             }
                         }
                     }
@@ -209,7 +208,7 @@
                             return ArrayUtil::stringify($values);
                         }
                     }
-                    return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
+                    return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier, $params);
                 }
                 else
                 {

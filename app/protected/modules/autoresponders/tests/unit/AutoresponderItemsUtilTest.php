@@ -548,8 +548,8 @@
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 10',
-                                                                '{{UNSUBSCRIBE_URL}}',
-                                                                '{{UNSUBSCRIBE_URL}}',
+                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag(),
+                                                                GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag(),
                                                                 1,
                                                                 Autoresponder::OPERATION_SUBSCRIBE,
                                                                 true,
@@ -592,8 +592,8 @@
                                                                                                 'CustomFromName',
                                                                                                 'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 11',
-                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                                '{{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
+                                                                                GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
                                                                                 1,
                                                                                 Autoresponder::OPERATION_SUBSCRIBE,
                                                                                 true,
@@ -636,10 +636,10 @@
                                                                                             'CustomFromName',
                                                                                             'custom@from.com');
             $autoresponder              = AutoresponderTestHelper::createAutoresponder('subject 12',
-                                                                            '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
-                                                                            '{{UNSUBSCRIBE_URL}},' . // Not Coding Standard
-                                                                                ' {{MANAGE_SUBSCRIPTIONS_URL}}',
+                                                                            GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' . // Not Coding Standard
+                                                                            GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
+                                                                            GlobalMarketingFooterUtil::resolveUnsubscribeUrlMergeTag() . ', ' . // Not Coding Standard
+                                                                            GlobalMarketingFooterUtil::resolveManageSubscriptionsMergeTag(),
                                                                             1,
                                                                             Autoresponder::OPERATION_SUBSCRIBE,
                                                                             true,
