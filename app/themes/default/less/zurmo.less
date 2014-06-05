@@ -1209,7 +1209,7 @@ body > .ui-autocomplete{
 		}
 	}
 	.over > a,
-	.active a,
+	.active > a,
 	a:hover{
 		color: #fff !important;
 		background-color: @themeColor2;
@@ -1328,18 +1328,6 @@ body > .ui-autocomplete{
 		background: none;
 		color: #999;
 	}
-	.unread-inbox-count{
-		display: inline-block;
-		.radius(4px);
-		font-size: 11px;
-		width: auto;
-		padding: 1px 4px 3px 4px;
-		line-height: 1;
-		color:#fff !important;
-		@topColor: #c43d53;
-		@bottomColor: #a82d31;
-		#gradient > .vertical(@topColor, @bottomColor ) !important;
-	}
 	&.admin-menu{
 		.parent ul{
 			display: none;
@@ -1413,6 +1401,32 @@ body > .ui-autocomplete{
 				display: none;
 			}
 		}
+	}
+}
+
+#mashableInbox{
+	a > span{
+		overflow: visible;
+		top: 0;
+	}
+	.unread-inbox-count{
+		overflow: visible;
+		position: absolute;
+		top: -1px;
+		left: 35%;
+		margin-left: 0;
+		display: inline-block;
+		.radius(3px);
+		font-size: 9px;
+		width: auto;
+		padding:2px 4px 3px 4px;
+		line-height: 1;
+		color:#fff !important;
+		@topColor: #c43d53;
+		@bottomColor: #a82d31;
+		#gradient > .vertical(@topColor, @bottomColor ) !important;
+		.b-shadow(inset 0 1px 0 0 @topColor);
+		.t-shadow(none) !important;
 	}
 }
 
@@ -1783,8 +1797,9 @@ form,
 .performance-info{
 	color: @themeColor;
 	text-align: left;
-	margin:0 3% 15px 3%;
-	font-style: italic;
+	margin:15px 0;
+	padding-right: 15px;
+	line-height: 1.4;
 	.smaller();
 }
 
@@ -1831,9 +1846,9 @@ form,
 		position: relative;
 	}
 	.active{
-		color:#7CB830;
+		color:@themeColor2;
 		.opacity(100);
-		.t-shadow(0 0 15px #7CB830);
+		.t-shadow(0 0 15px @themeColor2);
 	}
 	.icon-mobile:after,
 	.icon-desktop:after{
@@ -2026,6 +2041,10 @@ tr.even{
 	.hasCheckBox{
 		margin:-4px auto 0 auto;
 	}
+}
+
+td.checkbox-column{
+	vertical-align:top !important;
 }
 
 .button-column{
@@ -2268,6 +2287,9 @@ input[type="button"]:hover:after{
 	a{
 		display:inline-block;
 		margin:0 10px;
+	}
+	.simple-link{
+		display: inline;
 	}
 }
 
@@ -3366,7 +3388,9 @@ div.wide.form{
 
 #modal-edit-form,
 #edit-form,
-#delete-form{
+#delete-form,
+#select-account-form,
+#account-skip-form{
 	.clearfix();
 
 	position: relative;
@@ -3547,6 +3571,13 @@ div.wide.form{
 	}
 }
 
+.clear-select{
+	float: left;
+	margin-top: -22px;
+	margin-left: 3px;
+	display: inline;
+}
+
 .has-model-select{
 	clear:left;
 	padding:0 !important;
@@ -3639,7 +3670,6 @@ div.wide.form{
 	}
 }
 
-
 .has-color-picker{
 	> span{
 		background: url("@{path}dropdown-general.png") left top no-repeat;
@@ -3670,7 +3700,7 @@ div.wide.form{
 		}
 	}
 	.iris-picker{
-		z-index: 9999;
+		z-index: 99999;
 		position: absolute;
 	}
 }
@@ -4405,21 +4435,17 @@ div.radio-input{
 /*=Temp Addreess Fields*/
 .overlay-label-field{
 	position:relative;
-	//padding-bottom:15px;
 	.clearfix();
-}
-
-.overlay-label-field label {
-	position: absolute !important;
-	text-indent: 4px;
-	top: 6px;
-	color: #999;
-	font-size: 12px;
-	font-weight: normal;
-}
-
-.overlay-label-field input{
-
+	input{ }
+	label {
+		position: absolute !important;
+		text-indent: 4px;
+		top: 6px;
+		color: #999;
+		font-size: 12px;
+		font-weight: normal;
+		z-index: 10;
+	}
 }
 
 .hasParallelFields,
@@ -5552,8 +5578,7 @@ div.radio-input{
 	border-bottom: 1px dotted #ccc;
 	width: auto;
 	display: inline-block;
-	//padding-bottom: 2px;
-	//margin-top: 3px;
+	word-break: break-word;
 	&:after{
 		content:"!";
 		.symbly(20px);

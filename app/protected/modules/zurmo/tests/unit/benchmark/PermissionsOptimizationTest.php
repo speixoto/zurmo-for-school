@@ -57,6 +57,7 @@
 
             Permission::deleteAll();
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         public function setUp()
@@ -139,6 +140,7 @@
             // The false tells it to not forget the
             // db level cached permissions.
             PermissionsCache::forgetAll(false);
+            AllPermissionsOptimizationCache::forgetAll();
 
             $startTime = microtime(true);
             $permissions = $account->getEffectivePermissions($user);
@@ -147,6 +149,7 @@
 
             // Will forget the db level cached permissions.
             PermissionsCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
 
             $startTime = microtime(true);
             $permissions = $account->getEffectivePermissions($user);
@@ -211,6 +214,7 @@
                 // The false tells it to not forget the
                 // db level cached permissions.
                 PermissionsCache::forgetAll(false);
+                AllPermissionsOptimizationCache::forgetAll();
 
                 $startTime = microtime(true);
                 $permissions = $account->getEffectivePermissions($user);
@@ -219,6 +223,7 @@
 
                 // Will forget the db level cached permissions.
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
 
                 $startTime = microtime(true);
                 $permissions = $account->getEffectivePermissions($user);
@@ -228,6 +233,7 @@
                 // Will forget the db level cached permissions
                 // to leave it clean for the next loop.
                 PermissionsCache::forgetAll();
+                AllPermissionsOptimizationCache::forgetAll();
             }
 
             $firstTime  /= $loops;

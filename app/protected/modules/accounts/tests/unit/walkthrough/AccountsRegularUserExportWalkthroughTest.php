@@ -49,7 +49,7 @@
 
             self::$asynchronousThreshold = ExportModule::$asynchronousThreshold;
             ExportModule::$asynchronousThreshold = 3;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public static function tearDownAfterClass()
@@ -153,7 +153,7 @@
             foreach ($accounts as $account)
             {
                 $account->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
-                ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $nobody);
+                AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($account, $nobody);
                 $this->assertTrue($account->save());
             }
 

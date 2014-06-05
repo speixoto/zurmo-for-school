@@ -84,7 +84,6 @@
          */
         public function getImageCachePath($shouldGetThumbnail = false)
         {
-            //TODO: @sergio: Add test
             if ($shouldGetThumbnail)
             {
                 return static::getPathToCachedFiles() . static::THUMB_FILE_NAME_PREFIX . $this->getImageCacheFileName();
@@ -183,10 +182,10 @@
 
         public function fileTypeValidator($attribute, $params)
         {
-            if ($this->type == 'image/png'
-                || $this->type == 'image/jpg'
-                || $this->type == 'image/gif'
-                || $this->type == 'image/jpeg')
+            if ($this->type == 'image/png' ||
+                 $this->type == 'image/jpg' ||
+                 $this->type == 'image/gif' ||
+                 $this->type == 'image/jpeg')
             {
                 return true;
             }

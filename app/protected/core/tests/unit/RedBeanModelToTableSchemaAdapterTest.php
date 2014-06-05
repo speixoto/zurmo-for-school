@@ -100,7 +100,10 @@
                             'default' => 'DEFAULT NULL', // Not Coding Standard
                         ),
                     ),
-                    'indexes' => array(),
+                    'indexes' => array(
+                        'owner__user_id' => array('columns' => array('owner__user_id'),
+                        'unique'         => false),
+                    ),
                 ),
             );
             $schema             = RedBeanModelToTableSchemaAdapter::resolve($modelClassName, static::$messageLogger);
@@ -258,7 +261,9 @@
                             'columns' => array('username'),
                             'unique' => true,
                             ),
-                        ),
+                        'permitable_id' => array('columns' => array('permitable_id'),
+                            'unique'         => false),
+                    ),
                     ),
                 );
             $modelClassName     = 'User';

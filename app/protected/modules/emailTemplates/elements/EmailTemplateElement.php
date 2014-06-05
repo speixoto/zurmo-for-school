@@ -49,20 +49,17 @@
 
         const NOTIFICATION_BAR_ID                      = 'FlashMessageBar';
 
+        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}"><div class="has-model-select">{content}</div>{error}</td>';
+
         protected static $moduleId = 'emailTemplates';
 
         protected $name;
 
         protected $id;
 
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Account Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        public function __construct($model, $attribute, $form = null, array $params = array())
         {
+            parent::__construct($model, $attribute, $form, $params);
             if ($this->attribute == 'null')
             {
                 $this->attribute = 'contactEmailTemplateNames';
@@ -74,8 +71,22 @@
                 $this->name      = parent::getName();
                 $this->id        = parent::getId();
             }
+        }
+
+        /**
+         * Render a hidden input, a text input with an auto-complete
+         * event, and a select button. These three items together
+         * form the Account Editable Element
+         * @return The element's content as a string.
+         */
+        protected function renderControlEditable()
+        {
             $this->registerScripts();
             return $this->renderEditableContent();
+        }
+
+        protected function wrapHasModelSelectInput(& $content)
+        {
         }
 
         protected function getName()
@@ -108,18 +119,15 @@
                 Yii::app()->clientScript->registerScript($scriptName, '
                         function updateContentElementsWithData(textContentElement, htmlContentElement, subjectElement, data)
                         {
-                            if ($(htmlContentElement).css("display") !== "none")
-                            {
-                                $(htmlContentElement).redactor("toggle");
-                            }
                             if ($(".tabs-nav > a:first").hasClass("active-tab"))
                             {
                                 $(".tabs-nav > a:eq(1)").click();
                             }
                             updateElementWithData(textContentElement, data.textContent);
                             updateElementWithData(subjectElement, data.subject);
-                            $(htmlContentElement).redactor("selectionAll");
-                            $(htmlContentElement).redactor("insertHtml", data.htmlContent);
+                            $(htmlContentElement).redactor("set", data.htmlContent);
+                            $(htmlContentElement).redactor("toggle");
+                            $(htmlContentElement).redactor("toggle");
                             var contentHeight = $(".redactor_box iframe").contents().find("html").outerHeight();
                             $(".redactor_box iframe").height(contentHeight + 50);
                         }
@@ -290,7 +298,15 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Select a template');
+            $label = Zurmo::t('EmailTemplatesModule', 'Select a template');
+            if ($this->form === null)
+            {
+                return $label;
+            }
+            $id = $this->getIdForTextField();
+            return ZurmoHtml::tag('label',
+                                  array('for' => $id),
+                                  $label);
         }
 
         protected function renderError()
@@ -346,6 +362,16 @@
         {
             return array_merge(parent::getSelectLinkUrlParams(),
                 array('stateMetadataAdapterClassName' => 'EmailTemplatesForMarketingStateMetadataAdapter'));
+        }
+
+        protected function getNameForHiddenField()
+        {
+            return '';
+        }
+
+        protected function getNameForTextField()
+        {
+            return '';
         }
     }
 ?>

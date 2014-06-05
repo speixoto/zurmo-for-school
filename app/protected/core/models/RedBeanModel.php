@@ -67,6 +67,11 @@
     abstract class RedBeanModel extends BeanModel implements Serializable
     {
         /**
+         * Character used as delimiter when generating model identifiers
+         */
+        const   MODEL_IDENTIFIER_DELIMITER  = '_';
+
+        /**
          * Models that have not been saved yet have no id as far
          * as the database is concerned. Until they are saved they are
          * assigned a negative id, so that they have identity.
@@ -109,7 +114,7 @@
         private $validators                                                  = array();
         private $attributeNameToErrors                                       = array();
         private $scenarioName                                                = '';
-        // An object is automatcally savable if it is new or contains
+        // An object is automatically savable if it is new or contains
         // modified members or related objects.
         // If it is newly created and has never had any data put into it
         // it can be saved explicitly but it wont be saved automatically
@@ -122,6 +127,7 @@
         protected $isInGetErrors          = false;
         protected $isValidating           = false;
         protected $isSaving               = false;
+        protected $isDeleting             = false;
         protected $isNewModel             = false;
         protected $isCopied               = false;
 
@@ -147,6 +153,12 @@
             'dateTimeDefault'        => 'RedBeanModelDateTimeDefaultValueValidator',
             'probability'            => 'RedBeanModelProbabilityValidator',
         );
+
+        /**
+         * Stores the attributeLabelsByLanguage
+         * @var array
+         */
+        protected static $attributeLabelsByLanguage = array();
 
         /**
          * Returns the static model of the specified AR class.
@@ -557,6 +569,7 @@
                 $this->isInGetErrors              = false;
                 $this->isValidating               = false;
                 $this->isSaving                   = false;
+                $this->isDeleting                 = false;
             }
             catch (Exception $e)
             {
@@ -959,7 +972,21 @@
 
         public function getModelIdentifier()
         {
-            return get_class($this) . strval($this->getPrimaryBean()->id);
+            $className          = get_class($this);
+            $beanId             = strval($this->getPrimaryBean()->id);
+            $modelIdentifier    = static::getModelIdentifierByClassNameAndBeanId($className, $beanId);
+            return $modelIdentifier;
+        }
+
+        protected static function getModelIdentifierByClassNameAndBeanId($modelClassName, $beanId)
+        {
+            return $modelClassName . static::MODEL_IDENTIFIER_DELIMITER . $beanId;
+        }
+
+        public static function getModelClassNameByIdentifier($identifier)
+        {
+            $identifierTokens = explode(static::MODEL_IDENTIFIER_DELIMITER, $identifier);
+            return $identifierTokens[0];
         }
 
         /**
@@ -2121,9 +2148,7 @@
                                       array(self::HAS_ONE_BELONGS_TO,
                                             self::HAS_MANY_BELONGS_TO)))
                         {
-                            if ($this->$relationName->isModified() ||
-                                $this->isAttributeRequired($relationName) &&
-                                $this->$relationName->id <= 0)
+                            if ($this->$relationName->isModified())
                             {
                                 $this->isInIsModified = false;
                                 return true;
@@ -2161,7 +2186,9 @@
             }
             if ($this->beforeDelete())
             {
+                $this->isDeleting = true;
                 $deleted = $this->unrestrictedDelete();
+                $this->isDeleting = false;
                 $this->afterDelete();
                 return $deleted;
             }
@@ -2353,6 +2380,7 @@
         public static function forgetAll()
         {
             self::forgetAllBeanModels();
+            self::$attributeLabelsByLanguage = array();
             RedBeanModelsCache::forgetAll();
             RedBeansCache::forgetAll();
         }
@@ -2470,22 +2498,28 @@
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
+            if (isset(static::$attributeLabelsByLanguage[$language][$attributeName]))
+            {
+                return static::$attributeLabelsByLanguage[$language][$attributeName];
+            }
             $labels       = static::translatedAttributeLabels($language);
             $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
             if ($customLabel != null)
             {
-                return $customLabel;
+                $label = $customLabel;
             }
             elseif (isset($labels[$attributeName]))
             {
-                return $labels[$attributeName];
+                $label = $labels[$attributeName];
             }
             else
             {
                 //This is a last resort if the translated attribute was not located.  Make sure to define all
                 //attributes in translatedAttributeLabels($language)
-                return Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
+                $label = Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
+            static::$attributeLabelsByLanguage[$language][$attributeName] = $label;
+            return $label;
         }
 
         /**
@@ -3014,7 +3048,7 @@
             {
                 $modelClassName = get_called_class();
             }
-            $modelIdentifier = $modelClassName . strval($bean->id);
+            $modelIdentifier = static::getModelIdentifierByClassNameAndBeanId($modelClassName, strval($bean->id));
             try
             {
                 $model = RedBeanModelsCache::getModel($modelIdentifier);
@@ -3212,6 +3246,15 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Whether or not this model instances should be cached in memcache
+         * @return bool
+         */
+        public static function allowMemcacheCache()
+        {
+            return true;
         }
     }
 ?>

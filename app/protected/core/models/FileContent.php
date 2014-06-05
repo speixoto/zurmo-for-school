@@ -63,5 +63,10 @@
         {
             return false;
         }
+
+        public static function allowMemcacheCache()
+        {
+            return false;
+        }
     }
 ?>

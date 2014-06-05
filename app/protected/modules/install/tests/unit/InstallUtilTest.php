@@ -508,7 +508,7 @@
             $messageLogger = new MessageLogger();
             InstallUtil::autoBuildDatabase($messageLogger, true);
             $this->assertFalse($messageLogger->isErrorMessagePresent());
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $tableNames = ZurmoRedBean::$writer->getTables();
             $expectedTables = array(
                                     '_group',

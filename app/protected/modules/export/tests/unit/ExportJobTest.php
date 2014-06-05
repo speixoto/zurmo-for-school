@@ -509,7 +509,7 @@
             SecurityTestHelper::createAccounts();
             $billy = User::getByUsername('billy');
             Yii::app()->user->userModel = $billy;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
 
             $numberOfUserNotifications = Notification::getCountByTypeAndUser('ExportProcessCompleted', $billy);
 

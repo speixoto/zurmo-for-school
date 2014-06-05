@@ -55,7 +55,7 @@
             $group1->name  = 'Group1';
             $group1->users->add($nobody);
             assert($group1->save()); // Not Coding Standard
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function testRegularUserAllControllerActionsNoElevation()

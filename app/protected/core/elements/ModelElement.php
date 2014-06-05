@@ -123,10 +123,16 @@
             {
                 $inputContent  = $this->renderTextField($this->getIdForHiddenField());
                 $inputContent .= $this->renderSelectLink();
-                $content       = $content . ZurmoHtml::tag('div', array('class' => 'has-model-select'), $inputContent);
+                $this->wrapHasModelSelectInput($inputContent);
+                $content       .= $inputContent;
             }
             $content .= $this->renderExtraHtmlContent();
             return $content;
+        }
+
+        protected function wrapHasModelSelectInput(& $content)
+        {
+            $content = ZurmoHtml::tag('div', array('class' => 'has-model-select'), $content);
         }
 
         protected function getIdInputHtmlOptions()

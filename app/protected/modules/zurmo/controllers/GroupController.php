@@ -398,6 +398,7 @@
             PermissionsCache::forgetAll();
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
+            AllPermissionsOptimizationCache::forgetAll();
         }
 
         protected function resolveActionToGoToAfterSave(Group $group)

@@ -103,10 +103,10 @@ EOD;
             $messageStreamer->add(Zurmo::t('Commands', 'Autobuild complete, rebuilding read permissions.'));
             if (SHOW_QUERY_DATA)
             {
-                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                $messageStreamer->add(FooterView::getTotalAndDuplicateQueryCountContent());
             }
             $messageStreamer->add($overwriteReadTablesMessage);
-            ReadPermissionsOptimizationUtil::rebuild($overwriteExistingReadTables, false, $messageStreamer);
+            AllPermissionsOptimizationUtil::rebuild($overwriteExistingReadTables, false, $messageStreamer);
             $messageStreamer->add(Zurmo::t('Commands', 'Rebuild read permissions complete.'));
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('Commands', 'Schema update complete.'));
@@ -114,7 +114,7 @@ EOD;
                                          array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
             if (SHOW_QUERY_DATA)
             {
-                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                $messageStreamer->add(FooterView::getTotalAndDuplicateQueryCountContent());
             }
         }
     }

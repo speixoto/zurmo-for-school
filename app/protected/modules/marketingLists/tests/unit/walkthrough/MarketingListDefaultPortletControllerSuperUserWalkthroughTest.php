@@ -65,7 +65,7 @@
             MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList2, $contact1);
             MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList2, $contact2);
 
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function setUp()

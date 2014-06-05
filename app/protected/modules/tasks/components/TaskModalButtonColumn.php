@@ -69,6 +69,9 @@
             {
                 $options['title'] = $label;
             }
+            //Required else id assigned to update button is same as create task link in top nav bar
+            //opening create task instead of edit task
+            $options['id'] = $button['gridId'] . '-' . $data->id;
             echo ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
         }
     }

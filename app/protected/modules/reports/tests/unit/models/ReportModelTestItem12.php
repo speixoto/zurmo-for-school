@@ -34,31 +34,51 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Controller Class for managing currency actions.
-     *
-     */
-    class ZurmoReadPermissionsController extends Controller
+    class ReportModelTestItem12 extends OwnedSecurableItem
     {
-        public function filters()
+        public static function getDefaultMetadata()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION, //Use this right until a more specific right is in place.
-               ),
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                    'emailAddress',
+                ),
+                'rules' => array(
+                    array('emailAddress', 'email'),
+                ),
             );
+            return $metadata;
         }
 
-        public function actionRebuildMunge()
+        public static function isTypeDeletable()
         {
-            ReadPermissionsOptimizationUtil::rebuild();
-            echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.') . "<BR>";
-            if (SHOW_QUERY_DATA)
-            {
-                echo PageView::makeShowQueryDataContent();
-            }
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ReportsTestModule';
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return 'ReportModelTestItem12';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ReportModelTestItem12s';
         }
     }
 ?>

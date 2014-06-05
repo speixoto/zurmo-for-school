@@ -764,7 +764,7 @@
             );
             $billPasswordForm->setAttributes($_FAKEPOST['UserPasswordForm']);
             $this->assertFalse($billPasswordForm->save());
-            $this->assertEquals(md5('abcdefg'), $bill->hash);
+
             $errors = array(
                 'newPassword' => array(
                     'The password must have at least one uppercase letter',
@@ -815,7 +815,7 @@
             //Now attempt to login as bill
             $bill->forget();
             $bill       = User::getByUsername('abcdefg');
-            $this->assertEquals(md5('abcdefgN4'), $bill->hash);
+            $this->assertEquals($bill, User::authenticate('abcdefg', 'abcdefgN4'));
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $authenticated = $identity->authenticate();
             $this->assertEquals(0, $identity->errorCode);

@@ -75,13 +75,27 @@
             assert('$username != ""');
             assert('is_string($password)');
             $user = static::getByUsername($username);
-            if ($user->hash != self::encryptPassword($password))
+            if (!static::compareWithCurrentPasswordHash($password, $user))
             {
                 throw new BadPasswordException();
             }
             self::resolveAuthenticatedUserCanLogin($user);
             $user->login();
             return $user;
+        }
+
+        /**
+         * Compare provided password with the hash stored in database.
+         * @param $password
+         * @param User $user
+         * @return bool
+         */
+        protected static function compareWithCurrentPasswordHash($password, User $user)
+        {
+            $phpassHashObject       = static::resolvePhpassHashObject();
+            $hashedPassword         = static::hashPassword($password);
+            $databaseHash           = $user->hash;
+            return $phpassHashObject->checkPassword($hashedPassword, $databaseHash);
         }
 
         /**
@@ -251,7 +265,7 @@
             if (((isset($this->originalAttributeValues['role'])) || $this->isNewModel) &&
                 $this->role != null && $this->role->id > 0)
             {
-                ReadPermissionsOptimizationUtil::userAddedToRole($this);
+                AllPermissionsOptimizationUtil::userAddedToRole($this);
                 $this->onChangeRights();
                 $this->onChangePolicies();
             }
@@ -274,7 +288,7 @@
             {
                 if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
                 {
-                    ReadPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));
+                    AllPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));
                     $this->onChangeRights();
                     $this->onChangePolicies();
                 }
@@ -292,7 +306,7 @@
             {
                 return false;
             }
-            ReadPermissionsOptimizationUtil::userBeingDeleted($this);
+            AllPermissionsOptimizationUtil::userBeingDeleted($this);
             return true;
         }
 
@@ -386,7 +400,25 @@
 
         public static function encryptPassword($password)
         {
+            $hashedPassword     = static::hashPassword($password);
+            $phpassHashObject   = static::resolvePhpassHashObject();
+            $passwordHash       = $phpassHashObject->hashPassword($hashedPassword);
+            return $passwordHash;
+        }
+
+        public static function hashPassword($password)
+        {
+            // we keep this for legacy purposes
             return md5($password);
+        }
+
+        public static function resolvePhpassHashObject()
+        {
+            // workaround to get namespaces working.
+            // we don't need any special autoloading care thanks to author embedding that logic in Loader.php
+            Yii::setPathOfAlias('Phpass', Yii::getPathOfAlias('application.extensions.phpass.src.Phpass'));
+            $phpassHash = new \Phpass\Hash;
+            return $phpassHash;
         }
 
         public function serializeAndSetAvatarData(Array $avatar)
@@ -743,7 +775,7 @@
                 ),
                 'rules' => array(
                     array('hash',     'type',    'type' => 'string'),
-                    array('hash',     'length',  'min'   => 32, 'max' => 32),
+                    array('hash',     'length',  'min'   => 60, 'max' => 60),
                     array('language', 'type',    'type'  => 'string'),
                     array('language', 'length',  'max'   => 10),
                     array('locale',   'type',    'type'  => 'string'),
@@ -787,6 +819,11 @@
                 ),
                 'noAudit' => array(
                     'serializedAvatarData',
+                ),
+                'indexes' => array(
+                    'permitable_id' => array(
+                        'members' => array('permitable_id'),
+                        'unique' => false),
                 ),
             );
             return $metadata;
@@ -1065,14 +1102,14 @@
 
         /**
          * @return bool
+         * @throws NotSupportedException
          */
         public function isSuperAdministrator()
         {
-            $superGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            if ($this->groups->contains($superGroup))
+            if ($this->id < 0)
             {
-                return true;
+                throw new NotSupportedException();
             }
-            return false;
+            return Group::isUserASuperAdministrator($this);
         }
     }

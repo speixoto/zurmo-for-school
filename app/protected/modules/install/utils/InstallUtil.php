@@ -691,6 +691,9 @@
         public static function autoBuildDatabase(& $messageLogger, $autoBuildTestModels = false)
         {
             ZurmoDatabaseCompatibilityUtil::createStoredFunctionsAndProcedures();
+            ZurmoDatabaseCompatibilityUtil::createActualPermissionsCacheTable();
+            ZurmoDatabaseCompatibilityUtil::createNamedSecurableActualPermissionsCacheTable();
+            ZurmoDatabaseCompatibilityUtil::createActualRightsCacheTable();
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Searching for models'));
             $rootModels = PathUtil::getAllCanHaveBeanModelClassNames();
             $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Models catalog built.'));
@@ -1030,12 +1033,12 @@
                 array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
             if (SHOW_QUERY_DATA)
             {
-                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                $messageStreamer->add(FooterView::getTotalAndDuplicateQueryCountContent());
                 $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
             }
             $messageStreamer->add(Zurmo::t('InstallModule', 'Database schema creation complete.'));
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Permissions.'));
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Read Permissions Subscription tables.'));
             ReadPermissionsSubscriptionUtil::buildTables();
             $messageStreamer->add(Zurmo::t('InstallModule', 'Writing Configuration File.'));
@@ -1170,7 +1173,7 @@
                                           array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
                     if (SHOW_QUERY_DATA)
                     {
-                        $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                        $messageStreamer->add(FooterView::getTotalAndDuplicateQueryCountContent());
                         $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
                     }
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Finished loading demo data.'));

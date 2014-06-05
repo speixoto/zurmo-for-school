@@ -46,7 +46,7 @@
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
 
             //Setup test data owned by the super user.
             AccountTestHelper::createAccountByNameForOwner('superAccount', $super);

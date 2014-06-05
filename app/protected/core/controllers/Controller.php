@@ -45,6 +45,14 @@
             parent::__construct($id, $module);
         }
 
+        /**
+         * Override if the module is a nested module such as groups or roles.
+         */
+        public function resolveAndGetModuleId()
+        {
+            return $this->getModule()->getId();
+        }
+
         public function renderBeginWidget($className, $properties = array())
         {
             ob_start();
@@ -106,11 +114,7 @@
             $this->resolveKanbanBoardMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveFilteredByMetadataBeforeMakingDataProvider($searchModel, $metadata);
             $this->resolveMetadataBeforeMakingDataProvider($metadata);
-            $dataProviderClassName = 'RedBeanModelDataProvider';
-            if ($searchModel->filterByStarred)
-            {
-                $dataProviderClassName = 'StarredModelDataProvider';
-            }
+            $dataProviderClassName = Yii::app()->custom->resolveDataProviderClassNameForControllerBySearchModel($searchModel);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,

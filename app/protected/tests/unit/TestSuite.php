@@ -212,7 +212,7 @@
         protected static function rebuildReadPermissionsTables($forceOverwrite, $forcePhp, $messageStreamer)
         {
             echo 'Rebuilding read permissions' . PHP_EOL;
-            ReadPermissionsOptimizationUtil::rebuild($forceOverwrite, $forcePhp, $messageStreamer);
+            AllPermissionsOptimizationUtil::rebuild($forceOverwrite, $forcePhp, $messageStreamer);
             echo 'Read permissions rebuild complete.' . PHP_EOL;
         }
 
