@@ -495,8 +495,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		}
 	}
 	ul{
-		display:block;
-		width:110px;
+		//display:block;
+		min-width:110px;
 	}
 }
 
@@ -587,7 +587,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 #user-switcher-wrapper,
 #header-calendar-link-wrapper,
 #header-game-dashboard-link-wrapper{
-	a{
+	> a{
 		color: #ddd;
 		&:hover{
 			color: #fff;
@@ -681,7 +681,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		border-top: 1px solid #353535;
 		border-bottom: none;
 	}
-	a{
+	/*a{
 		font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 		font-size:12px;
 		line-height: 1;
@@ -689,10 +689,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 		margin: 0;
 		padding: 0;
 		text-decoration: underline;
-	}
+	}*/
 	input{
-		width: 80%;
-		float: left;
+		//width: 80%;
+		//float: left;
 	}
 	.mini-button {
 		top:7px;
@@ -989,9 +989,9 @@ body > .ui-autocomplete{
 			color:#fff !important;
 		}
 	}
-	ul{
+	li ul{
 		.headerDropDownSpecial;
-		display: none !important;
+		display: none;// !important;
 		list-style: none;
 	}
 }
