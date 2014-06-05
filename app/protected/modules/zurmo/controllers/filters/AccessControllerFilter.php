@@ -34,22 +34,30 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by controllers to ascertain whether
-     * the current user has allow on a certain right
-     */
-    class RightsControllerFilter extends AccessControllerFilter
+    abstract class AccessControllerFilter extends CFilter
     {
-        public $moduleClassName;
+        abstract public function hasAccess();
 
-        public $rightName;
-
-        public function hasAccess()
+        protected function preFilter($filterChain)
         {
-            return (RightsUtil::doesUserHaveAllowByRightName(
-                        $this->moduleClassName,
-                        $this->rightName,
-                        Yii::app()->user->userModel));
+            if ($this->hasAccess())
+            {
+                return true;
+            }
+            static::processAccessFailure();
+            Yii::app()->end(0, false);
+        }
+
+        protected static function processAccessFailure()
+        {
+            static::renderAccessFailureContent();
+        }
+
+        protected static function renderAccessFailureContent()
+        {
+            $messageView = new AccessFailureView();
+            $view        = new AccessFailurePageView($messageView);
+            echo $view->render();
         }
     }
 ?>

@@ -34,22 +34,12 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Filter used by controllers to ascertain whether
-     * the current user has allow on a certain right
-     */
-    class RightsControllerFilter extends AccessControllerFilter
+    class UserSwitcherRightsControllerFilter extends AccessControllerFilter
     {
-        public $moduleClassName;
-
-        public $rightName;
-
         public function hasAccess()
         {
-            return (RightsUtil::doesUserHaveAllowByRightName(
-                        $this->moduleClassName,
-                        $this->rightName,
-                        Yii::app()->user->userModel));
+            $primaryUser = SwitchUserIdentity::getPrimaryUser();
+            return (isset($primaryUser) || Yii::app()->user->userModel->isSuperAdministrator());
         }
     }
 ?>
