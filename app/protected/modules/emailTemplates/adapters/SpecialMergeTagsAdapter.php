@@ -56,6 +56,8 @@
                                 'ownersEmailSignature'              => 'resolveOwnersEmailSignature',
                                 'globalMarketingFooterHtml'         => 'resolveGlobalMarketingFooterHtml',
                                 'globalMarketingFooterPlainText'    => 'resolveGlobalMarketingFooterPlainText',
+                                'unsubscribeUrl'                    => 'resolveUnsubscribeUrl',
+                                'manageSubscriptionsUrl'            => 'resolveManageSubscriptionsUrl',
                                 );
 
         public static function isSpecialMergeTag($attributeName, $timeQualifier)
@@ -63,14 +65,14 @@
             return (empty($timeQualifier) && array_key_exists($attributeName, static::$specialAttributesResolver));
         }
 
-        public static function resolve($attributeName, $model = null)
+        public static function resolve($attributeName, $model = null, $params = array())
         {
             $methodName                         = static::$specialAttributesResolver[$attributeName];
             // we send $model to all, those which need it use it, other get it as optional param.
-            $resolvedSpecialMergeTagContent     = static::$methodName($model);
+            $resolvedSpecialMergeTagContent     = static::$methodName($model, $params);
             if (in_array($attributeName, static::$containsNestedMergeTags))
             {
-                static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model);
+                static::resolveContentForNestedMergeTags($resolvedSpecialMergeTagContent, $model, $params);
             }
             return $resolvedSpecialMergeTagContent;
         }
@@ -168,16 +170,59 @@
             return GlobalMarketingFooterUtil::getContentByType(false, true);
         }
 
-        protected static function resolveContentForNestedMergeTags(& $resolvedSpecialMergeTagContent, $model = null)
+        protected static function resolveUnsubscribeUrl($model, $params = array())
         {
-            $language   = null;
-            $type       = EmailTemplate::TYPE_WORKFLOW;
+            $prefix     = Zurmo::t('Core', 'Unsubscribe');
+            $content    = static::resolveGlobalMarketingFooterUrl('resolveUnsubscribeUrlByArray', $params, $prefix);
+            return $content;
+        }
+
+        protected static function resolveManageSubscriptionsUrl($model, $params = array())
+        {
+            $prefix     = Zurmo::t('MarketingListsModule', 'Manage Subscriptions');
+            $content    = static::resolveGlobalMarketingFooterUrl('resolveManageSubscriptionsUrlByArray', $params, $prefix);
+            return $content;
+        }
+
+        protected static function resolveGlobalMarketingFooterUrl($method, $params = array(), $prefix)
+        {
+            try
+            {
+                $content = GlobalMarketingFooterUtil::$method($params);
+                if ($prefix)
+                {
+                    // TODO: @Shoaibi: Critical0: Is this ok?
+                    $isHtmlContent  = ArrayUtil::getArrayValue($params, 'isHtmlContent', false);
+                    if ($isHtmlContent)
+                    {
+                        $content    = ZurmoHtml::link($prefix, $content);
+                    }
+                    else
+                    {
+                        $content = $prefix . ': ' . $content;
+                    }
+                }
+                return $content;
+            }
+            catch (NotSupportedException $e)
+            {
+                return MergeTagsToModelAttributesAdapter::PROPERTY_NOT_FOUND;
+            }
+        }
+
+        protected static function resolveContentForNestedMergeTags(& $resolvedSpecialMergeTagContent, $model = null, $params = array())
+        {
+            $language               = null;
+            $type                   = EmailTemplate::TYPE_WORKFLOW;
+            $invalidTags            = array();
+            $language               = null;
+            $errorOnFirstMissing    = false;
             if ($model instanceof Contact)
             {
                 $type   = EmailTemplate::TYPE_CONTACT;
             }
             $util                           = MergeTagsUtilFactory::make($type, $language, $resolvedSpecialMergeTagContent);
-            $resolvedContent                = $util->resolveMergeTags($model);
+            $resolvedContent                = $util->resolveMergeTags($model, $invalidTags, $language, $errorOnFirstMissing, $params);
             if ($resolvedContent !== false)
             {
                 $resolvedSpecialMergeTagContent = $resolvedContent;

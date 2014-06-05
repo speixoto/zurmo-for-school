@@ -143,7 +143,7 @@
             {
                 $createNewActivity  = true;
             }
-            $hash               = EmailMessageActivityUtil::resolveHashForUnsubscribeAndManageSubscriptionsUrls($this->personId, $marketingListId,
+            $hash               = GlobalMarketingFooterUtil::resolveHash($this->personId, $marketingListId,
                                                                 $this->modelId, $this->modelType, $createNewActivity);
             $subscribeUrl       = $this->getSubscribeUrlByHash($hash);
             $unsubscribeUrl     = $this->getUnsubscribeUrlByHash($hash);

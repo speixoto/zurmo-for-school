@@ -100,71 +100,67 @@
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
             $personId                   = $contact->getClassId('Person');
-            $activityUtil               = static::resolveActivityUtilByModelType($modelType);
-            static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
-            static::resolveContentForGlobalFooter($textContent, $htmlContent, $modelId, $modelType, $personId,
-                                                    $marketingListId, $activityUtil);
-            // TODO: @Shoaibi: Critical: Get rid of it once we revise EmailMessageActivityUtil
-            static::resolveContentForMergeTags($textContent, $htmlContent, $contact);
+            static::resolveContentForGlobalFooter($textContent, $htmlContent);
+            static::resolveContentsForMergeTags($textContent, $htmlContent, $contact, $personId,
+                                                $marketingListId, $modelId, $modelType);
             static::resolveContentForTracking($textContent, $htmlContent, $enableTracking, $modelId,
-                                                $modelType, $personId, $activityUtil);
+                                                $modelType, $personId);
         }
 
-        public static function resolveContentForMergeTags(& $textContent, & $htmlContent, Contact $contact)
+        public static function resolveContentsForMergeTags(& $textContent, & $htmlContent, Contact $contact, $personId,
+                                                            $marketingListId, $modelId, $modelType)
+        {
+            static::resolveContentForMergeTags($textContent, $contact, false, $personId, $marketingListId, $modelId, $modelType);
+            static::resolveContentForMergeTags($htmlContent, $contact, true, $personId, $marketingListId, $modelId, $modelType);
+        }
+
+        protected static function resolveContentForMergeTags(& $content, Contact $contact, $isHtmlContent, $personId,
+                                                                $marketingListId, $modelId, $modelType)
         {
             // TODO: @Shoaibi/@Jason: Low: we might add support for language
             $language               = null;
             $errorOnFirstMissing    = true;
             $templateType           = EmailTemplate::TYPE_CONTACT;
             $invalidTags            = array();
-            $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $textContent);
-            $htmlMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $htmlContent);
-            $resolvedTextContent    = $textMergeTagsUtil->resolveMergeTags($contact,
+            $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $content);
+            $params                 = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray($personId, $marketingListId,
+                                                                                            $modelId, $modelType, true,
+                                                                                            false, $isHtmlContent);
+            $resolvedContent        = $textMergeTagsUtil->resolveMergeTags($contact,
                                                                             $invalidTags,
                                                                             $language,
-                                                                            $errorOnFirstMissing);
-            $resolvedHtmlContent    = $htmlMergeTagsUtil->resolveMergeTags($contact,
-                                                                            $invalidTags,
-                                                                            $language,
-                                                                            $errorOnFirstMissing);
-
-            if ($resolvedTextContent === false || $resolvedHtmlContent === false)
+                                                                            $errorOnFirstMissing,
+                                                                            $params);
+            if ($resolvedContent === false)
             {
                 throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
             }
-            else
-            {
-                $textContent    = $resolvedTextContent;
-                $htmlContent    = $resolvedHtmlContent;
-            }
+            $content    = $resolvedContent;
         }
 
-        protected static function resolveContentForGlobalFooter(& $textContent, & $htmlContent, $modelId, $modelType,
-                                                                $personId, $marketingListId, $activityUtil)
+        protected static function resolveContentForGlobalFooter(& $textContent, & $htmlContent)
         {
             if (!empty($textContent))
             {
-                $activityUtil::resolveContentGlobalFooter($textContent, $personId, $marketingListId, $modelId,
-                                                            $modelType, false);
+                GlobalMarketingFooterUtil::resolveContentGlobalFooter($textContent, false);
             }
             if (!empty($htmlContent))
             {
-                $activityUtil::resolveContentGlobalFooter($htmlContent, $personId, $marketingListId, $modelId,
-                                                            $modelType, true);
+                GlobalMarketingFooterUtil::resolveContentGlobalFooter($htmlContent, true);
             }
         }
 
         protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
-                                                            $modelType, $personId, $activityUtil)
+                                                            $modelType, $personId)
         {
             if (!empty($textContent))
             {
-                $activityUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
+                ContentTrackingUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
                                                             $personId, false);
             }
             if (!empty($htmlContent))
             {
-                $activityUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
+                ContentTrackingUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
                                                             $personId, true);
             }
         }
@@ -297,11 +293,6 @@
             {
                 return EmailBox::CAMPAIGNS_NAME;
             }
-        }
-
-        protected static function resolveActivityUtilByModelType($modelType)
-        {
-            return $modelType . 'ActivityUtil';
         }
     }
 ?>
