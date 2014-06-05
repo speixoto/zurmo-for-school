@@ -44,6 +44,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            UserTestHelper::createBasicUser('normal');
             $emailBox = EmailBoxUtil::getDefaultEmailBoxByUser(User::getByUsername('super'));
         }
 
@@ -113,6 +114,7 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Apr 1';
             $this->assertEquals($expectedArray, $campaignChartData[0]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider);
             $marketingListChartData                     = $marketingListChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 0;
@@ -120,6 +122,7 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Apr 1';
             $this->assertEquals($expectedArray, $marketingListChartData[0]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider);
             $combinedChartData                          = $combinedChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 100;
@@ -127,6 +130,7 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Apr 1';
             $this->assertEquals($expectedArray, $combinedChartData[0]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider);
 
             $this->addAutoresponderItem(
                     $contact,
@@ -145,6 +149,7 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Apr 1';
             $this->assertEquals($expectedArray, $campaignChartData[0]);
+            $this->assertChartDataForNormalUser($marketingListChartDataProvider);
             $marketingListChartData                     = $marketingListChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 100.0;
@@ -152,6 +157,7 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Apr 1';
             $this->assertEquals($expectedArray, $marketingListChartData[0]);
+            $this->assertChartDataForNormalUser($marketingListChartDataProvider);
             $combinedChartData                          = $combinedChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 100.0;
@@ -159,6 +165,7 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Apr 1';
             $this->assertEquals($expectedArray, $combinedChartData[0]);
+            $this->assertChartDataForNormalUser($marketingListChartDataProvider);
 
             $contact                = ContactTestHelper
                     ::createContactByNameForOwner('contact02', Yii::app()->user->userModel);
@@ -179,6 +186,7 @@
             $expectedArray['displayLabel']              = 'Apr 25';
             $expectedArray['dateBalloonLabel']          = 'Apr 25';
             $this->assertEquals($expectedArray, $campaignChartData[24]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider, 24);
             $marketingListChartData                     = $marketingListChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 0;
@@ -186,6 +194,7 @@
             $expectedArray['displayLabel']              = 'Apr 25';
             $expectedArray['dateBalloonLabel']          = 'Apr 25';
             $this->assertEquals($expectedArray, $marketingListChartData[24]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider, 24);
             $combinedChartData                          = $combinedChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 0;
@@ -193,6 +202,7 @@
             $expectedArray['displayLabel']              = 'Apr 25';
             $expectedArray['dateBalloonLabel']          = 'Apr 25';
             $this->assertEquals($expectedArray, $combinedChartData[24]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider, 24);
 
             $campaignChartDataProvider->setGroupBy           (MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
             $marketingListChartDataProvider->setGroupBy      (MarketingOverallMetricsForm::GROUPING_TYPE_WEEK);
@@ -204,12 +214,14 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Week of Apr 1';
             $this->assertEquals($expectedArray, $campaignChartData[0]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider);
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 0;
             $expectedArray['uniqueOpenRate']            = 0;
             $expectedArray['displayLabel']              = 'Apr 22';
             $expectedArray['dateBalloonLabel']          = 'Week of Apr 22';
             $this->assertEquals($expectedArray, $campaignChartData[3]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider, 3);
             $marketingListChartData                     = $marketingListChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 100;
@@ -217,12 +229,14 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Week of Apr 1';
             $this->assertEquals($expectedArray, $marketingListChartData[0]);
+            $this->assertChartDataForNormalUser($marketingListChartDataProvider);
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 0;
             $expectedArray['uniqueOpenRate']            = 0;
             $expectedArray['displayLabel']              = 'Apr 22';
             $expectedArray['dateBalloonLabel']          = 'Week of Apr 22';
             $this->assertEquals($expectedArray, $marketingListChartData[3]);
+            $this->assertChartDataForNormalUser($marketingListChartDataProvider, 3);
             $combinedChartData                          = $combinedChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 100;
@@ -230,12 +244,14 @@
             $expectedArray['displayLabel']              = 'Apr 1';
             $expectedArray['dateBalloonLabel']          = 'Week of Apr 1';
             $this->assertEquals($expectedArray, $combinedChartData[0]);
+            $this->assertChartDataForNormalUser($combinedChartDataProvider);
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 0;
             $expectedArray['uniqueOpenRate']            = 0;
             $expectedArray['displayLabel']              = 'Apr 22';
             $expectedArray['dateBalloonLabel']          = 'Week of Apr 22';
             $this->assertEquals($expectedArray, $combinedChartData[3]);
+            $this->assertChartDataForNormalUser($combinedChartDataProvider, 3);
 
             $campaignChartDataProvider->setGroupBy           (MarketingOverallMetricsForm::GROUPING_TYPE_MONTH);
             $marketingListChartDataProvider->setGroupBy      (MarketingOverallMetricsForm::GROUPING_TYPE_MONTH);
@@ -247,6 +263,7 @@
             $expectedArray['displayLabel']              = 'Apr';
             $expectedArray['dateBalloonLabel']          = 'Apr';
             $this->assertEquals($expectedArray, $campaignChartData[0]);
+            $this->assertChartDataForNormalUser($campaignChartDataProvider);
             $marketingListChartData                     = $marketingListChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 100;
@@ -254,6 +271,7 @@
             $expectedArray['displayLabel']              = 'Apr';
             $expectedArray['dateBalloonLabel']          = 'Apr';
             $this->assertEquals($expectedArray, $marketingListChartData[0]);
+            $this->assertChartDataForNormalUser($marketingListChartDataProvider);
             $combinedChartData                          = $combinedChartDataProvider->getChartData();
             $expectedArray                              = array();
             $expectedArray['uniqueClickThroughRate']    = 66.67;
@@ -261,6 +279,20 @@
             $expectedArray['displayLabel']              = 'Apr';
             $expectedArray['dateBalloonLabel']          = 'Apr';
             $this->assertEquals($expectedArray, $combinedChartData[0]);
+            $this->assertChartDataForNormalUser($combinedChartDataProvider);
+        }
+
+        private function assertChartDataForNormalUser($campaignChartDataProvider, $index = 0)
+        {
+            Yii::app()->user->userModel = User::getByUsername('normal');
+            $campaignChartData                          = $campaignChartDataProvider->getChartData();
+            unset($campaignChartData[$index]['displayLabel']);
+            unset($campaignChartData[$index]['dateBalloonLabel']);
+            $expectedArray                              = array();
+            $expectedArray['uniqueClickThroughRate']    = 0;
+            $expectedArray['uniqueOpenRate']            = 0;
+            $this->assertEquals($expectedArray, $campaignChartData[$index]);
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
         private function addCampaignItem($contact, $emailMessageSentDateTime, $creationArray)

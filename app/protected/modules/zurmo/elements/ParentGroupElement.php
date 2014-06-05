@@ -46,6 +46,11 @@
             return parent::renderControlEditable();
         }
 
+        protected function renderClearLink()
+        {
+            return true;
+        }
+
         /**
          * Override to ensure the text box is disabled.
          * This will force the select button to be utililzed

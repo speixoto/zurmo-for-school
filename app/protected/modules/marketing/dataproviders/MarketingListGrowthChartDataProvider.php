@@ -72,15 +72,15 @@
         protected static function makeColumnSqlQuery($beginDateTime, $searchAttributeData)
         {
             assert('is_string($beginDateTime)');
-            $quote                     = DatabaseCompatibilityUtil::getQuote();
-            $where                     = null;
-            $selectDistinct            = false;
-            $marketingListTableName    = MarketingList::getTableName();
-            $marketingListMemberTableName = MarketingListMember::getTableName();
-            $createdDateTimeColumnName = MarketingListMember::getColumnNameByAttribute('createdDateTime');
-            $unsubscribedColumnName    = MarketingListMember::getColumnNameByAttribute('unsubscribed');
-            $joinTablesAdapter         = new RedBeanModelJoinTablesQueryAdapter('MarketingList');
-            $where = RedBeanModelDataProvider::makeWhere('MarketingList', $searchAttributeData, $joinTablesAdapter);
+            $quote                          = DatabaseCompatibilityUtil::getQuote();
+            $where                          = null;
+            $selectDistinct                 = false;
+            $marketingListTableName         = MarketingList::getTableName();
+            $marketingListMemberTableName   = MarketingListMember::getTableName();
+            $createdDateTimeColumnName      = MarketingListMember::getColumnNameByAttribute('createdDateTime');
+            $unsubscribedColumnName         = MarketingListMember::getColumnNameByAttribute('unsubscribed');
+            $joinTablesAdapter              = new RedBeanModelJoinTablesQueryAdapter('MarketingList');
+            $where                          = RedBeanModelDataProvider::makeWhere('MarketingList', $searchAttributeData, $joinTablesAdapter);
             MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
                 $joinTablesAdapter,
                 $where,
