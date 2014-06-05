@@ -60,6 +60,14 @@
 
         const USER_CALENDAR_WRAPPER_ID                  = 'header-calendar-link-wrapper';
 
+        const USER_SWITCHER_LINK_ID                     = 'user-switcher-link';
+
+        const USER_SWITCHER_WRAPPER_ID                  = 'user-switcher-wrapper';
+
+        const USER_SWITCHER_WRAPPER_OPEN_CLASS          = 'switcher-open';
+
+        const USER_SWITCHER_WRAPPER_SWICHED_CLASS       = 'switched-user';
+
         /**
          * @param array $settingsMenuItems
          * @param array $userMenuItems
@@ -94,7 +102,108 @@
                 $content .= static::renderHeaderCalendarContent();
             }
             $content     .= static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID);
+	        $content     .= static::resolveUserSwitcher();
             return $content;
+        }
+
+	    protected static function resolveUserSwitcher()
+	    {
+            if (static::hasUserSwitcherAccess())
+            {
+                return static::renderUserSwitchControl();
+            }
+	    }
+
+        protected static function hasUserSwitcherAccess()
+        {
+            $filter         = new UserSwitcherRightsControllerFilter();
+            return $filter->hasAccess();
+        }
+
+        protected static function renderUserSwitchControl()
+        {
+            static::registerUserSwitcherScripts();
+            $primaryUser                = SwitchUserIdentity::getPrimaryUser();
+            $switchedUserContent        = '';
+            $userSwitcherWrapperClasses = 'user-menu-item';
+
+            if ($primaryUser)
+            {
+                $userSwitcherWrapperClasses     .= ' switched-user';
+                $switchedUserContent            = static::renderSwitchedUserContent($primaryUser);
+
+            }
+            $userSwitcherContainer  = static::renderUserSwitcherContainer($switchedUserContent);
+            $content                = ZurmoHtml::link('“', '#', array('id' => static::USER_SWITCHER_LINK_ID));
+            $content                .= $userSwitcherContainer;
+            $content                = ZurmoHtml::tag('div', array('id' => static::USER_SWITCHER_WRAPPER_ID, 'class' => $userSwitcherWrapperClasses), $content);
+            return $content;
+        }
+
+        protected static function renderUserSwitcherContainer($switchedUserContent)
+        {
+            $content    = ZurmoHtml::tag('h5', array(), Zurmo::t('Core', 'Use Zurmo as another User'));
+            $content    .= $switchedUserContent;
+            $content    .= static::renderUserSwitcherAutoCompleteControl();
+            $content    = ZurmoHtml::tag('div', array('id' => 'user-switcher'), $content);
+            return $content;
+        }
+
+        protected static function renderSwitchedUserContent($primaryUser)
+        {
+            $currentUserContent     = static::renderCurrentUserContent();
+            $primaryUserContent     = static::renderPrimaryUserContent($primaryUser);
+            $switchedUserContent    = $currentUserContent . ' ' . $primaryUserContent;
+            $switchedUserContent    = ZurmoHtml::tag('p', array('class' => 'clearfix'), $switchedUserContent);
+            return $switchedUserContent;
+        }
+
+        protected static function renderCurrentUserContent()
+        {
+            $currentUserContent     = Zurmo::t('Core', 'You are set to {currentUser}',
+                                                        array('{currentUser}' => ZurmoHtml::link(
+                                                                                    strval(Yii::app()->user->userModel) .
+                                                                                    ' (' .
+                                                                                    Yii::app()->user->userModel->username
+                                                                                    . ')', '#')));
+            return $currentUserContent;
+        }
+
+        protected static function renderPrimaryUserContent($primaryUser)
+        {
+            $primaryUserContent     = ZurmoHtml::tag('i', array('class' => 'icon-x'), '');
+            $primaryUserContent     .= Zurmo::t('Core', 'Reset to your User');
+            $primaryUserSwitchUrl   = static::resolveSwitchToUrlByUsername($primaryUser);
+            $primaryUserContent     = ZurmoHtml::link( $primaryUserContent, $primaryUserSwitchUrl , array('class' => 'reset-user'));
+            return $primaryUserContent;
+        }
+
+        protected static function renderUserSwitcherAutoCompleteControl()
+        {
+            $element  = new UserSwitcherElement(new User, 'username', new ZurmoActiveForm);
+            $element->editableTemplate = '{content}';
+            $content = $element->render();
+            return $content;
+        }
+
+        protected static function resolveSwitchToUrlByUsername($username)
+        {
+            return Yii::app()->createUrl('/users/default/switchTo', compact('username'));
+        }
+
+        protected static function registerUserSwitcherScripts()
+        {
+            static::registerUserSwitcherVisibilityScript();
+        }
+
+        protected static function registerUserSwitcherVisibilityScript()
+        {
+            Yii::app()->clientScript->registerScript('userSwitcherVisibilityScript', '
+                $("#' . static::USER_SWITCHER_LINK_ID . '").unbind("click.visibility").bind("click.visibility",  function(event)
+                 {
+                    $("#' . static::USER_SWITCHER_WRAPPER_ID .'").toggleClass("' . static::USER_SWITCHER_WRAPPER_OPEN_CLASS . '");
+                 });
+                ');
         }
 
         protected static function resolveUserMenuItemsWithTopLevelItem($menuItems)
@@ -143,12 +252,11 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("headerMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'items'                   => $menuItems,
-                'htmlOptions' => array('id'     => $menuId,
-                    'class'  => 'user-menu-item'),
+                'items'       => $menuItems,
+                'htmlOptions' => array('id' => $menuId, 'class'  => 'user-menu-item'),
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['headerMenu'];
+	        return $cClipWidget->getController()->clips['headerMenu'];
         }
 
         protected static function renderHeaderGameDashboardContent()

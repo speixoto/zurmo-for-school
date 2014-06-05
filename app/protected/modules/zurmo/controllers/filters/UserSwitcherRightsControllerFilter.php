@@ -34,31 +34,12 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Controller Class for managing currency actions.
-     *
-     */
-    class ZurmoReadPermissionsController extends Controller
+    class UserSwitcherRightsControllerFilter extends AccessControllerFilter
     {
-        public function filters()
+        public function hasAccess()
         {
-            return array(
-                array(
-                    ZurmoBaseController::RIGHTS_FILTER_PATH,
-                    'moduleClassName' => 'ZurmoModule',
-                    'rightName' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION, //Use this right until a more specific right is in place.
-               ),
-            );
-        }
-
-        public function actionRebuildMunge()
-        {
-            ReadPermissionsOptimizationUtil::rebuild();
-            echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.') . "<BR>";
-            if (SHOW_QUERY_DATA)
-            {
-                echo PageView::makeShowQueryDataContent();
-            }
+            $primaryUser = SwitchUserIdentity::getPrimaryUser();
+            return (isset($primaryUser) || Yii::app()->user->userModel->isSuperAdministrator());
         }
     }
 ?>

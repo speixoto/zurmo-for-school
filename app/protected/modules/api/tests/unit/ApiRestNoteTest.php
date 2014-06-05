@@ -534,11 +534,6 @@
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
             $this->assertEquals("Updated note description 2", $response['data']['description']);
 
-            $response = $this->createApiCallWithRelativeUrl('delete/' . $notes[0]->id, 'DELETE', $headers);
-            $response = json_decode($response, true);
-            $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals('You do not have permissions for this action.', $response['message']);
-
             // Test with privileged user
             $authenticationData = $this->login();
             $headers = array(

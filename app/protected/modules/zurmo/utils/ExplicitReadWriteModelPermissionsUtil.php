@@ -246,13 +246,13 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemGivenPermissionsForGroup($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemGivenReadPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemGivenPermissionsForUser($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemGivenReadPermissionsForUser($securableItem, $permitable);
                         }
                         else
                         {
@@ -271,12 +271,12 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemGivenPermissionsForUser($securableItem, $permitable);
                         }
                         else
@@ -296,13 +296,13 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemLostPermissionsForGroup($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemLostReadPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
-                            securableItemLostPermissionsForUser($securableItem, $permitable);
+                            AllPermissionsOptimizationUtil::
+                            securableItemLostReadPermissionsForUser($securableItem, $permitable);
                         }
                         else
                         {
@@ -322,12 +322,12 @@
                     {
                         if ($permitable instanceof Group)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemLostPermissionsForGroup($securableItem, $permitable);
                         }
                         elseif ($permitable instanceof User)
                         {
-                            ReadPermissionsOptimizationUtil::
+                            AllPermissionsOptimizationUtil::
                             securableItemLostPermissionsForUser($securableItem, $permitable);
                         }
                         else

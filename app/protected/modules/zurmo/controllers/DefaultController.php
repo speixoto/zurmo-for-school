@@ -81,6 +81,7 @@
 
         public function actionLogout()
         {
+            // TODO: @Shoaibi: Critical0: what if during switched he clicks logout? logout disabled for him if switched?
             Yii::app()->user->logout();
             $this->redirect(Yii::app()->homeUrl);
         }

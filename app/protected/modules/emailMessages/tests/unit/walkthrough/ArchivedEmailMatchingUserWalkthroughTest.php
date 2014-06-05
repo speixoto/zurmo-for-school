@@ -43,7 +43,7 @@
         {
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
             $super->primaryEmail->emailAddress = 'super@supertest.com';
             if (!$super->save())
             {

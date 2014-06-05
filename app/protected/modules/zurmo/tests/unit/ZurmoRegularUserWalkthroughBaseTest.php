@@ -39,6 +39,8 @@
      */
     class ZurmoRegularUserWalkthroughBaseTest extends ZurmoWalkthroughBaseTest
     {
+        protected $processReadMungeAsWriteMungeValue;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -50,6 +52,22 @@
             SecurityTestHelper::createUsers();
             $confused  = UserTestHelper::createBasicUser('confused');
             $nobody    = UserTestHelper::createBasicUser('nobody');
+        }
+
+        /**
+         * Set the processReadMungeAsWriteMungeValue as false, so we can do tests using permission READ
+         */
+        public function setUp()
+        {
+            parent::setUp();
+            $this->processReadMungeAsWriteMungeValue = Yii::app()->params['processReadMungeAsWriteMunge'];
+            Yii::app()->params['processReadMungeAsWriteMunge'] = false;
+        }
+
+        public function teardown()
+        {
+            parent::teardown();
+            Yii::app()->params['processReadMungeAsWriteMunge'] = $this->processReadMungeAsWriteMungeValue;
         }
     }
 ?>

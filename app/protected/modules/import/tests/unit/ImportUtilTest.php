@@ -62,7 +62,7 @@
             $saved = $customFieldData->save();
             assert($saved);    // Not Coding Standard
             ReadPermissionsOptimizationUtil::recreateTable(
-                    ReadPermissionsOptimizationUtil::getMungeTableName('ImportModelTestItem'));
+            ReadPermissionsOptimizationUtil::getMungeTableName('ImportModelTestItem'));
         }
 
         public static function getDependentTestModelClassNames()

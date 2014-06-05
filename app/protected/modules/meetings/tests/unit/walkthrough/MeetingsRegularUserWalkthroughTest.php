@@ -156,6 +156,7 @@
             Yii::app()->user->userModel = $super;
             $superAccount->addPermissions($nobody, Permission::READ);
             $this->assertTrue($superAccount->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($superAccount, $nobody);
 
             //Now the nobody user can access the details view.
             Yii::app()->user->userModel = $nobody;
@@ -182,6 +183,7 @@
             Yii::app()->user->userModel = $super;
             $meeting->addPermissions($nobody, Permission::READ);
             $this->assertTrue($meeting->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($meeting, $nobody);
 
             //Now access to meetings view by Nobody should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -201,6 +203,8 @@
             Yii::app()->user->userModel = $super;
             $meeting->addPermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($meeting->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($meeting, $nobody);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($meeting, $nobody);
 
             //Now access to meetings view and edit by Nobody should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -220,6 +224,7 @@
             Yii::app()->user->userModel = $super;
             $meeting->removePermissions($nobody, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($meeting->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($meeting, $nobody);
 
             //Now nobodys, access to edit, details and delete of meetings should fail.
             Yii::app()->user->userModel = $nobody;
@@ -237,6 +242,7 @@
             Yii::app()->user->userModel = $super;
             $meeting->addPermissions($nobody, Permission::READ_WRITE_DELETE);
             $this->assertTrue($meeting->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($meeting, $nobody);
 
             //Now nobodys, access to delete of meetings should not fail.
             Yii::app()->user->userModel = $nobody;
@@ -262,6 +268,16 @@
             $parentRole->users->add($userInParentRole);
             $parentRole->roles->add($childRole);
             $this->assertTrue($parentRole->save());
+            $userInChildRole->forget();
+            $userInChildRole = User::getByUsername('nobody');
+            $userInParentRole->forget();
+            $userInParentRole = User::getByUsername('confused');
+            $parentRoleId = $parentRole->id;
+            $parentRole->forget();
+            $parentRole = Role::getById($parentRoleId);
+            $childRoleId = $childRole->id;
+            $childRole->forget();
+            $childRole = Role::getById($childRoleId);
 
             //create account owned by super
             $account2 = AccountTestHelper::createAccountByNameForOwner('AccountsParentRolePermission', $super);
@@ -275,6 +291,7 @@
             Yii::app()->user->userModel = $super;
             $account2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($account2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($account2, $userInChildRole);
 
             //Test userInChildRole, access to details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -318,6 +335,7 @@
             Yii::app()->user->userModel = $super;
             $meeting2->addPermissions($userInChildRole, Permission::READ);
             $this->assertTrue($meeting2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForUser($meeting2, $userInChildRole);
 
             //Test userInChildRole, access to meetings details should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -351,6 +369,8 @@
             Yii::app()->user->userModel = $super;
             $meeting2->addPermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($meeting2->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForUser($meeting2, $userInChildRole);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($meeting2, $userInChildRole);
 
             //Test userInChildRole, access to meetings edit should not fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -378,6 +398,7 @@
             Yii::app()->user->userModel = $super;
             $meeting2->removePermissions($userInChildRole, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($meeting2->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForUser($meeting2, $userInChildRole);
 
             //Test userInChildRole, access to detail, edit and delete should fail.
             Yii::app()->user->userModel = $userInChildRole;
@@ -403,6 +424,7 @@
             Yii::app()->user->userModel = $super;
             $meeting2->addPermissions($userInChildRole, Permission::READ_WRITE_DELETE);
             $this->assertTrue($meeting2->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($meeting2, $userInChildRole);
 
             //Test userInParentRole, access to delete should not fail.
             Yii::app()->user->userModel = $userInParentRole;
@@ -461,6 +483,7 @@
             Yii::app()->user->userModel = $super;
             $account3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($account3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($account3, $parentGroup);
 
             //Test userInParentGroup, access to details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -508,6 +531,7 @@
             Yii::app()->user->userModel = $super;
             $meeting3->addPermissions($parentGroup, Permission::READ);
             $this->assertTrue($meeting3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenReadPermissionsForGroup($meeting3, $parentGroup);
 
             //Test userInParentGroup, access to meetings details should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -537,6 +561,8 @@
             Yii::app()->user->userModel = $super;
             $meeting3->addPermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($meeting3->save());
+            AllPermissionsOptimizationUtil::securableItemLostReadPermissionsForGroup($meeting3, $parentGroup);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($meeting3, $parentGroup);
 
             //Test userInParentGroup, access to edit meetings should not fail.
             Yii::app()->user->userModel = $userInParentGroup;
@@ -563,6 +589,7 @@
             Yii::app()->user->userModel = $super;
             $meeting3->removePermissions($parentGroup, Permission::READ_WRITE_CHANGE_PERMISSIONS);
             $this->assertTrue($meeting3->save());
+            AllPermissionsOptimizationUtil::securableItemLostPermissionsForGroup($meeting3, $parentGroup);
 
             //Test userInChildGroup, access to meetings detail, edit and delete should fail.
             Yii::app()->user->userModel = $userInChildGroup;
@@ -588,6 +615,7 @@
             Yii::app()->user->userModel = $super;
             $meeting3->addPermissions($parentGroup, Permission::READ_WRITE_DELETE);
             $this->assertTrue($meeting3->save());
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForGroup($meeting3, $parentGroup);
 
             //Test userInChildGroup, access to meetings delete should not fail.
             Yii::app()->user->userModel = $userInChildGroup;

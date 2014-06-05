@@ -61,6 +61,12 @@
                                           'descriptionLabel'    => Zurmo::t('ZurmoModule', 'Compile the .less files into CSS files'),
                                           'route'               => 'zurmo/development/compileCss' // Not Coding Standard
             );
+            $categories['misc'][] = array('titleLabel'          => Zurmo::t('ZurmoModule', 'Rebuild Security Cache'),
+                                          'descriptionLabel'    => Zurmo::t('ZurmoModule', 'When using complex roles/groups ' .
+                                                                            'with many users you can utilize this after ' .
+                                                                            'clearing the cache to improve performance'),
+                                          'route'               => 'zurmo/development/rebuildSecurityCache' // Not Coding Standard
+            );
             $this->setLinkText(Zurmo::t('ZurmoModule', 'Run'));
             return $categories;
         }

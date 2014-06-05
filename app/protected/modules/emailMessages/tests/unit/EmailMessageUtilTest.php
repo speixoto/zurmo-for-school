@@ -41,7 +41,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = User::getByUsername('super');
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
 
             SecurityTestHelper::createUsers();
 
@@ -64,7 +64,7 @@
             $molly->primaryEmail->emailAddress = 'molly@zurmoland.com';
             $molly->secondaryEmail->emailAddress = 'toMakeSureNoFreeze@works.zur';
             $contact->save();
-            ReadPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $billy);
+            AllPermissionsOptimizationUtil::securableItemGivenPermissionsForUser($contact, $billy);
         }
 
         public function testResolveEmailMessageFromPostData()

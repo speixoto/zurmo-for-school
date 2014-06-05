@@ -88,7 +88,7 @@
             $campaignItem                   = CampaignItemTestHelper::createCampaignItem($processed, $campaign, $contact);
             static::$campaignItemId         = $campaignItem->id;
 
-            ReadPermissionsOptimizationUtil::rebuild();
+            AllPermissionsOptimizationUtil::rebuild();
         }
 
         public function testGuestUserCanAccessTrackActionAndReturnsNothingWithoutHash()

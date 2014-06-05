@@ -501,7 +501,12 @@
          */
         protected function getOnSelectOptionForAutoComplete($idInputName)
         {
-            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]).trigger("change");}';
+            return 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["'. $this->resolveOnSelectionOptionAttributeNameForAutoComplete() .'"]).trigger("change");}';
+        }
+
+        protected function resolveOnSelectionOptionAttributeNameForAutoComplete()
+        {
+            return 'id';
         }
 
         /**
