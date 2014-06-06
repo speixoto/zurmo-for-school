@@ -57,6 +57,7 @@
             assert('is_object($itemOwnerModel)');
             assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
             if ($contact->primaryEmail->optOut ||
+                // TODO: @Shoaibi: Critical0: We could use SQL for getByMarketingListIdContactIdandUnsubscribed to save further performance here.
                (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed(
                                                                                 $itemOwnerModel->marketingList->id,
                                                                                 $contact->id,
@@ -229,6 +230,7 @@
                                                                                     $explicitReadWriteModelPermissions);
             print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
+            // TODO: @Shoaibi: Critical0: This should be refactored to pure sql
             if (!$emailMessage->save())
             {
                 throw new FailedToSaveModelException("Unable to save EmailMessage");
@@ -256,6 +258,9 @@
             }
             else
             {
+                // TODO: @Shoaibi: Critical0: This can come from job directly.
+                // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+                // then we would be spending 2Y seconds on this instead of X*Y.
                 $userToSendMessagesFrom         = BaseControlUserConfigUtil::getUserToRunAs();
                 $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName               = strval($userToSendMessagesFrom);
@@ -309,6 +314,9 @@
         protected static function resolveReturnPathHeaderValue()
         {
             $time = microtime(true);
+            // TODO: @Shoaibi: Critical0: This can come from job directly.
+            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+            // then we would be spending 2Y seconds on this instead of X*Y.
             $returnPath = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceReturnPath');
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $returnPath;
@@ -317,8 +325,15 @@
         protected static function markItemAsProcessed($itemId, $itemClass, $emailMessageId = null)
         {
             $time   = microtime(true);
+            // TODO: @Shoaibi: Critical0: This can come from job directly.
+            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+            // then we would be spending 2Y seconds on this instead of X*Y.
             $emailMessageForeignKey = RedBeanModel::getForeignKeyName($itemClass, 'emailMessage');
+            // TODO: @Shoaibi: Critical0: This can come from job directly.
+            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+            // then we would be spending 2Y seconds on this instead of X*Y.
             $itemTableName          = $itemClass::getTableName();
+
             $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString($itemTableName);
             $sql                    .= " SET " . DatabaseCompatibilityUtil::quoteString('processed') . ' = 1';
             if ($emailMessageId)
@@ -334,6 +349,9 @@
 
         protected static function resolveItemOwnerModelRelationName($itemClass)
         {
+            // TODO: @Shoaibi: Critical0: This can come from job directly.
+            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+            // then we would be spending 2Y seconds on this instead of X*Y.
             $relationName   = 'campaign';
             if ($itemClass == 'AutoresponderItem')
             {
@@ -344,6 +362,9 @@
 
         protected static function resolveEmailBoxName($itemOwnerModelClassName)
         {
+            // TODO: @Shoaibi: Critical0: This can come from job directly.
+            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+            // then we would be spending 2Y seconds on this instead of X*Y.
             $time   = microtime(true);
             $box    = EmailBox::CAMPAIGNS_NAME;
             if ($itemOwnerModelClassName == "Autoresponder")
