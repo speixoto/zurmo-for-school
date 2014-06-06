@@ -129,9 +129,12 @@
                 if ($configurationForm->validate())
                 {
                     EmailSmtpConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
-                    Yii::app()->user->setFlash('notification',
-                        Zurmo::t('EmailMessagesModule', 'Email configuration saved successfully.')
-                    );
+                    if (!Yii::app()->user->hasFlash('notification'))
+                    {
+                        Yii::app()->user->setFlash('notification',
+                            Zurmo::t('EmailMessagesModule', 'Email configuration saved successfully.')
+                        );
+                    }
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }

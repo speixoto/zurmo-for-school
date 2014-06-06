@@ -57,6 +57,7 @@
                 array('port',                              'numerical', 'min'  => 1),
                 array('username',                          'type',      'type' => 'string'),
                 array('username',                          'length',    'min'  => 1, 'max' => 64),
+                array('username',                          'smtpUsernameValidator'),
                 array('password',                          'type',      'type' => 'string'),
                 array('password',                          'length',    'min'  => 1, 'max' => 64),
                 array('security',                          'type',      'type' => 'string'),
@@ -75,6 +76,18 @@
                 'security'                             => Zurmo::t('EmailMessagesModule', 'Extra Mail Settings'),
                 'aTestToAddress'                       => Zurmo::t('EmailMessagesModule', 'Send a test email to')
             );
+        }
+
+        public function smtpUsernameValidator($attribute, $params)
+        {
+            assert('$attribute == "username"');
+            if (preg_match('/@gmail/', $this->$attribute) > 0 )
+            {
+                $message = Zurmo::t('EmailMessagesModule', 'Hang on there slick! Google SMTP policies prevent masking ' .
+                                                           'of the Google email address, your emails will be sent from {username}',
+                                                           array('{username}' => $this->$attribute));
+                Yii::app()->user->setFlash('notification', $message);
+            }
         }
     }
 ?>
