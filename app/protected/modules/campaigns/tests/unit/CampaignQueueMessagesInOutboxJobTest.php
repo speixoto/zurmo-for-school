@@ -271,7 +271,7 @@
         }
 
         /**
-         * @depends testRunWithInvalidMergeTags
+         * @//depends testRunWithInvalidMergeTags
          */
         public function testRunWithValidMergeTags()
         {
