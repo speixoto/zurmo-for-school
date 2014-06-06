@@ -228,7 +228,21 @@
          * @throws FailedToSaveModelException
          * @return boolean
          */
-        public function send(EmailMessage $emailMessage)
+        public function send(EmailMessage $emailMessage, $useSQL = false)
+        {
+            static::isValidFolderType($emailMessage);
+            $folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_OUTBOX);
+            static::updateFolderForEmailMessage($emailMessage, $useSQL, $folder);
+            Yii::app()->jobQueue->add('ProcessOutboundEmail');
+            return true;
+        }
+
+        /**
+         * Verify if folder type of an emailMessage is valid or not.
+         * @param EmailMessage $emailMessage
+         * @throws NotSupportedException
+         */
+        protected static function isValidFolderType(EmailMessage $emailMessage)
         {
             if ($emailMessage->folder->type == EmailFolder::TYPE_OUTBOX ||
                 $emailMessage->folder->type == EmailFolder::TYPE_SENT ||
@@ -237,14 +251,59 @@
             {
                 throw new NotSupportedException();
             }
-            $emailMessage->folder   = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_OUTBOX);
-            $saved                  = $emailMessage->save();
+        }
+
+        /**
+         * Update an email message's folder and save it
+         * @param EmailMessage $emailMessage
+         * @param $useSQL
+         * @param EmailFolder $folder
+         * @throws FailedToSaveModelException
+         */
+        protected static function updateFolderForEmailMessage(EmailMessage $emailMessage, $useSQL, EmailFolder $folder)
+        {
+            // we don't have syntax to support saving related records and other attributes for emailMessage, yet.
+            if ($useSQL && $emailMessage->id > 0)
+            {
+                static::updateFolderForEmailMessageWithSQL($emailMessage, $folder);
+            }
+            else
+            {
+                static::updateFolderForEmailMessageWithORM($emailMessage, $folder);
+            }
+        }
+
+        /**
+         * Update an email message's folder and save it using SQL
+         * @param EmailMessage $emailMessage
+         * @param EmailFolder $folder
+         * @throws NotSupportedException
+         */
+        protected static function updateFolderForEmailMessageWithSQL(EmailMessage $emailMessage, EmailFolder $folder)
+        {
+            $folderForeignKeyName   = RedBeanModel::getForeignKeyName('EmailMessage', 'folder');
+            $tableName              = EmailMessage::getTableName();
+            $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString($tableName);
+            $sql                    .= " SET " . DatabaseCompatibilityUtil::quoteString($folderForeignKeyName);
+            $sql                    .= " = " . $folder->id;
+            $sql                    .= " WHERE " . DatabaseCompatibilityUtil::quoteString('id') . " = ". $emailMessage->id;
+            ZurmoRedBean::exec($sql);
+        }
+
+        /**
+         * Update an email message's folder and save it using ORM
+         * @param EmailMessage $emailMessage
+         * @param EmailFolder $folder
+         * @throws FailedToSaveModelException
+         */
+        protected static function updateFolderForEmailMessageWithORM(EmailMessage $emailMessage, EmailFolder $folder)
+        {
+            $emailMessage->folder = $folder;
+            $saved = $emailMessage->save();
             if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }
-            Yii::app()->jobQueue->add('ProcessOutboundEmail');
-            return true;
         }
 
         /**
@@ -298,15 +357,10 @@
             return true;
         }
 
-        protected function processMessageAsFailure(EmailMessage $emailMessage)
+        protected function processMessageAsFailure(EmailMessage $emailMessage, $useSQL = false)
         {
-            $emailMessage->folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox,
-                                    EmailFolder::TYPE_OUTBOX_FAILURE);
-            $saved = $emailMessage->save();
-            if (!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
+            $folder = EmailFolder::getByBoxAndType($emailMessage->folder->emailBox, EmailFolder::TYPE_OUTBOX_FAILURE);
+            static::updateFolderForEmailMessage($emailMessage, $useSQL, $folder);
         }
 
         protected function populateMailer(Mailer $mailer, EmailMessage $emailMessage)

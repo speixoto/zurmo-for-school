@@ -211,13 +211,31 @@
             $boxName                            = static::resolveEmailBoxName(get_class($itemOwnerModel));
             print(PHP_EOL . "Resolving boxName: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
+            // TODO: @Shoaibi: Critical0: This can come from job directly.
+            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+            // then we would be spending 2Y seconds on this instead of X*Y.
             $box                                = EmailBox::resolveAndGetByName($boxName);
             print(PHP_EOL . "Resolving box: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
+            // TODO: @Shoaibi: Critical0: This can come from job directly.
+            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
+            // then we would be spending 2Y seconds on this instead of X*Y.
             $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
             print(PHP_EOL . "emailMessage population with folder: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
-            Yii::app()->emailHelper->send($emailMessage);
+            // TODO: @Shoaibi: Critical0: This should be refactored to pure sql
+            ZurmoRedBean::exec('SELECT "BEFORE SEND, BEFORE SAVE";');
+            if (!$emailMessage->save())
+            {
+                throw new FailedToSaveModelException("Unable to save EmailMessage");
+            }
+            ZurmoRedBean::exec('SELECT "BEFORE SEND, AFTER SAVE";');
+            print(PHP_EOL . "Saving Email Message before sending: " . (microtime(true) - $cTime));
+            $cTime = microtime(true);
+            $emailMessage   = EmailMessage::getById($emailMessage->id);
+            print(PHP_EOL . "Getting Email Message: " . (microtime(true) - $cTime));
+            $cTime = microtime(true);
+            Yii::app()->emailHelper->send($emailMessage, true);
             print(PHP_EOL . "emailMessage sending: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
             $emailMessage->owner                = $marketingList->owner;
@@ -231,10 +249,13 @@
             print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
             // TODO: @Shoaibi: Critical0: This should be refactored to pure sql
+            ZurmoRedBean::exec('SELECT "AFTER SEND, BEFORE SAVE";');
+
             if (!$emailMessage->save())
             {
                 throw new FailedToSaveModelException("Unable to save EmailMessage");
             }
+            ZurmoRedBean::exec('SELECT "AFTER SEND, AFTER SAVE";');
             print(PHP_EOL . "Saving Email Message: " . (microtime(true) - $cTime));
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
