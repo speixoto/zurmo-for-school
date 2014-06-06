@@ -39,34 +39,34 @@
      */
     abstract class AutoresponderAndCampaignItemsUtil
     {
+        public static $folder                   = null;
+
+        public static $returnPath               = null;
+
+        public static $ownerModelRelationName   = null;
+
+        public static $emailMessageForeignKey   = null;
+
+        public static $itemTableName            = null;
+
+        public static $itemClass                = null;
+
+        public static $personId                 = null;
+
         public static function processDueItem(OwnedModel $item)
         {
             $time = microtime(true);
             assert('is_object($item)');
             $emailMessageId             = null;
             $itemId                     = $item->id;
-            $itemClass                  = get_class($item);
-            assert('$itemClass === "AutoresponderItem" || $itemClass === "CampaignItem"');
-            $contact                    = $item->contact;
-            if (empty($contact) || $contact->id < 0)
+            assert('static::$itemClass === "AutoresponderItem" || static::$itemClass === "CampaignItem"');
+            $contact                    = static::resolveContact($item);
+            $itemOwnerModel             = static::resolveItemOwnerModel($item);
+            static::$personId           = $contact->getClassId('Person');
+
+            if (static::skipMessage($contact, $itemOwnerModel))
             {
-                throw new NotFoundException();
-            }
-            $ownerModelRelationName     = static::resolveItemOwnerModelRelationName($itemClass);
-            $itemOwnerModel             = $item->$ownerModelRelationName;
-            assert('is_object($itemOwnerModel)');
-            assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
-            if ($contact->primaryEmail->optOut ||
-                // TODO: @Shoaibi: Critical0: We could use SQL for getByMarketingListIdContactIdandUnsubscribed to save further performance here.
-               (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed(
-                                                                                $itemOwnerModel->marketingList->id,
-                                                                                $contact->id,
-                                                                                true) != false))
-            {
-                $activityClass  = $itemClass . 'Activity';
-                $personId       = $contact->getClassId('Person');
-                $type           = $activityClass::TYPE_SKIP;
-                $activityClass::createNewActivity($type, $itemId, $personId);
+               static::createSkipActivity($itemId);
             }
             else
             {
@@ -75,28 +75,60 @@
                 assert('get_class($marketingList) === "MarketingList"');
                 $textContent                = $itemOwnerModel->textContent;
                 $htmlContent                = null;
-                if (($itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) || ($itemClass == 'AutoresponderItem'))
+                if ((static::$itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) || (static::$itemClass == 'AutoresponderItem'))
                 {
                     $htmlContent = $itemOwnerModel->htmlContent;
                 }
                 static::resolveContent($textContent, $htmlContent, $contact, $itemOwnerModel->enableTracking,
-                                       (int)$itemId, $itemClass, (int)$marketingList->id);
+                                       (int)$itemId, static::$itemClass, (int)$marketingList->id);
                 try
                 {
                     $emailMessage   = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
-                                                                        $contact, $marketingList, $itemId, $itemClass);
+                                                                        $contact, $marketingList, $itemId);
                     $emailMessageId = $emailMessage->id;
                 }
                 catch (MissingRecipientsForEmailMessageException $e)
                 {
-                    $activityClass  = $itemClass . 'Activity';
-                    $personId       = $contact->getClassId('Person');
-                    $type           = $activityClass::TYPE_SKIP;
-                    $activityClass::createNewActivity($type, $itemId, $personId);
+                   static::createSkipActivity($itemId);
                 }
             }
-            static::markItemAsProcessed($itemId, $itemClass, $emailMessageId);
+            static::markItemAsProcessed($itemId, $emailMessageId);
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
+        }
+
+        protected static function resolveContact(OwnedModel $item)
+        {
+            $contact                    = $item->contact;
+            if (empty($contact) || $contact->id < 0)
+            {
+                throw new NotFoundException();
+            }
+            return $contact;
+        }
+
+        protected static function resolveItemOwnerModel(OwnedModel $item)
+        {
+            $itemOwnerModel             = $item->{static::$ownerModelRelationName};
+            assert('is_object($itemOwnerModel)');
+            assert('get_class($itemOwnerModel) === "Autoresponder" || get_class($itemOwnerModel) === "Campaign"');
+            return $itemOwnerModel;
+        }
+
+        protected static function skipMessage(Contact $contact, Item $itemOwnerModel)
+        {
+            return ($contact->primaryEmail->optOut ||
+                // TODO: @Shoaibi: Critical0: We could use SQL for getByMarketingListIdContactIdandUnsubscribed to save further performance here.
+                (get_class($itemOwnerModel) === "Campaign" && MarketingListMember::getByMarketingListIdContactIdAndUnsubscribed(
+                        $itemOwnerModel->marketingList->id,
+                        $contact->id,
+                        true) != false));
+        }
+
+        protected static function createSkipActivity($itemId)
+        {
+            $activityClass  = static::$itemClass . 'Activity';
+            $type           = $activityClass::TYPE_SKIP;
+            $activityClass::createNewActivity($type, $itemId, static::$personId);
         }
 
         protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact,
@@ -105,25 +137,24 @@
             $time = microtime(true);
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
-            $personId                   = $contact->getClassId('Person');
             static::resolveContentForGlobalFooter($textContent, $htmlContent);
-            static::resolveContentsForMergeTags($textContent, $htmlContent, $contact, $personId,
+            static::resolveContentsForMergeTags($textContent, $htmlContent, $contact,
                                                 $marketingListId, $modelId, $modelType);
             static::resolveContentForTracking($textContent, $htmlContent, $enableTracking, $modelId,
-                                                $modelType, $personId);
+                                                $modelType);
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
-        public static function resolveContentsForMergeTags(& $textContent, & $htmlContent, Contact $contact, $personId,
+        public static function resolveContentsForMergeTags(& $textContent, & $htmlContent, Contact $contact,
                                                             $marketingListId, $modelId, $modelType)
         {
             $time = microtime(true);
-            static::resolveContentForMergeTags($textContent, $contact, false, $personId, $marketingListId, $modelId, $modelType);
-            static::resolveContentForMergeTags($htmlContent, $contact, true, $personId, $marketingListId, $modelId, $modelType);
+            static::resolveContentForMergeTags($textContent, $contact, false, $marketingListId, $modelId, $modelType);
+            static::resolveContentForMergeTags($htmlContent, $contact, true, $marketingListId, $modelId, $modelType);
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
-        protected static function resolveContentForMergeTags(& $content, Contact $contact, $isHtmlContent, $personId,
+        protected static function resolveContentForMergeTags(& $content, Contact $contact, $isHtmlContent,
                                                                 $marketingListId, $modelId, $modelType)
         {
             $time = microtime(true);
@@ -133,7 +164,7 @@
             $templateType           = EmailTemplate::TYPE_CONTACT;
             $invalidTags            = array();
             $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $content);
-            $params                 = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray($personId, $marketingListId,
+            $params                 = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(static::$personId, $marketingListId,
                                                                                             $modelId, $modelType, true,
                                                                                             false, $isHtmlContent);
             $resolvedContent        = $textMergeTagsUtil->resolveMergeTags($contact,
@@ -168,28 +199,28 @@
         }
 
         protected static function resolveContentForTracking(& $textContent, & $htmlContent, $enableTracking, $modelId,
-                                                            $modelType, $personId)
+                                                            $modelType)
         {
             $time = microtime(true);
             if (!empty($textContent))
             {
                 $plain = microtime(true);
                 ContentTrackingUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
-                                                            $personId, false);
+                                                            static::$personId, false);
                 print(PHP_EOL . "ContentTrackingUtil::resolveContentForTracking/PlainText: " . (microtime(true) - $plain));
             }
             if (!empty($htmlContent))
             {
                 $rich = microtime(true);
                 ContentTrackingUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
-                                                            $personId, true);
+                                                            static::$personId, true);
                 print(PHP_EOL . "ContentTrackingUtil::resolveContentForTracking/Html: " . (microtime(true) - $rich));
             }
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
-                                                    Contact $contact, MarketingList $marketingList, $itemId, $itemClass)
+                                                    Contact $contact, MarketingList $marketingList, $itemId)
         {
             $time = microtime(true);
             $emailMessage                       = new EmailMessage();
@@ -202,25 +233,13 @@
             $emailMessage->sender               = static::resolveSender($marketingList, $itemOwnerModel);
             static::resolveRecipient($emailMessage, $contact);
             static::resolveAttachments($emailMessage, $itemOwnerModel);
-            static::resolveHeaders($emailMessage, $itemId, $itemClass, $contact->getClassId('Person'));
+            static::resolveHeaders($emailMessage, $itemId);
             if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
             }
             $cTime = microtime(true);
-            $boxName                            = static::resolveEmailBoxName(get_class($itemOwnerModel));
-            print(PHP_EOL . "Resolving boxName: " . (microtime(true) - $cTime));
-            $cTime = microtime(true);
-            // TODO: @Shoaibi: Critical0: This can come from job directly.
-            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-            // then we would be spending 2Y seconds on this instead of X*Y.
-            $box                                = EmailBox::resolveAndGetByName($boxName);
-            print(PHP_EOL . "Resolving box: " . (microtime(true) - $cTime));
-            $cTime = microtime(true);
-            // TODO: @Shoaibi: Critical0: This can come from job directly.
-            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-            // then we would be spending 2Y seconds on this instead of X*Y.
-            $emailMessage->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
+            $emailMessage->folder               = static::$folder;
             print(PHP_EOL . "emailMessage population with folder: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
             // TODO: @Shoaibi: Critical0: This should be refactored to pure sql
@@ -256,7 +275,7 @@
                 throw new FailedToSaveModelException("Unable to save EmailMessage");
             }
             ZurmoRedBean::exec('SELECT "AFTER SEND, AFTER SAVE";');
-            print(PHP_EOL . "Saving Email Message: " . (microtime(true) - $cTime));
+            print(PHP_EOL . "Saving Email Message after sending: " . (microtime(true) - $cTime));
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
         }
@@ -319,81 +338,34 @@
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
-        protected static function resolveHeaders(EmailMessage $emailMessage, $zurmoItemId, $zurmoItemClass, $zurmoPersonId)
+        protected static function resolveHeaders(EmailMessage $emailMessage, $zurmoItemId)
         {
             $time = microtime(true);
+            $zurmoItemClass     = static::$itemClass;
+            $zurmoPersonId      = static::$personId;
             $headers            = compact('zurmoItemId', 'zurmoItemClass', 'zurmoPersonId');
-            $returnPathHeader   = static::resolveReturnPathHeaderValue();
-            if ($returnPathHeader)
+            if (static::$returnPath)
             {
-                $headers['Return-Path'] = $returnPathHeader;
+                $headers['Return-Path'] = static::$returnPath;
             }
             $emailMessage->headers  = serialize($headers);
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
-        protected static function resolveReturnPathHeaderValue()
-        {
-            $time = microtime(true);
-            // TODO: @Shoaibi: Critical0: This can come from job directly.
-            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-            // then we would be spending 2Y seconds on this instead of X*Y.
-            $returnPath = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', 'bounceReturnPath');
-            print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
-            return $returnPath;
-        }
-
-        protected static function markItemAsProcessed($itemId, $itemClass, $emailMessageId = null)
+        protected static function markItemAsProcessed($itemId, $emailMessageId = null)
         {
             $time   = microtime(true);
-            // TODO: @Shoaibi: Critical0: This can come from job directly.
-            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-            // then we would be spending 2Y seconds on this instead of X*Y.
-            $emailMessageForeignKey = RedBeanModel::getForeignKeyName($itemClass, 'emailMessage');
-            // TODO: @Shoaibi: Critical0: This can come from job directly.
-            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-            // then we would be spending 2Y seconds on this instead of X*Y.
-            $itemTableName          = $itemClass::getTableName();
-
-            $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString($itemTableName);
+            $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString(static::$itemTableName);
             $sql                    .= " SET " . DatabaseCompatibilityUtil::quoteString('processed') . ' = 1';
             if ($emailMessageId)
             {
-                $sql .= ", " . DatabaseCompatibilityUtil::quoteString($emailMessageForeignKey);
+                $sql .= ", " . DatabaseCompatibilityUtil::quoteString(static::$emailMessageForeignKey);
                 $sql .= " = ${emailMessageId}";
             }
             $sql                    .= " WHERE " . DatabaseCompatibilityUtil::quoteString('id') . " = ${itemId};";
             ZurmoRedBean::exec($sql);
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return true;
-        }
-
-        protected static function resolveItemOwnerModelRelationName($itemClass)
-        {
-            // TODO: @Shoaibi: Critical0: This can come from job directly.
-            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-            // then we would be spending 2Y seconds on this instead of X*Y.
-            $relationName   = 'campaign';
-            if ($itemClass == 'AutoresponderItem')
-            {
-                $relationName = 'autoresponder';
-            }
-            return $relationName;
-        }
-
-        protected static function resolveEmailBoxName($itemOwnerModelClassName)
-        {
-            // TODO: @Shoaibi: Critical0: This can come from job directly.
-            // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-            // then we would be spending 2Y seconds on this instead of X*Y.
-            $time   = microtime(true);
-            $box    = EmailBox::CAMPAIGNS_NAME;
-            if ($itemOwnerModelClassName == "Autoresponder")
-            {
-                $box = EmailBox::AUTORESPONDERS_NAME;
-            }
-            print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
-            return $box;
         }
     }
 ?>
