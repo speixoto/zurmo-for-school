@@ -52,12 +52,12 @@
                 array('host',                              'required'),
                 array('host',                              'type',      'type' => 'string'),
                 array('host',                              'length',    'min'  => 1, 'max' => 64),
+                array('host',                              'smtpHostValidator'),
                 array('port',                              'required'),
                 array('port',                              'type',      'type' => 'integer'),
                 array('port',                              'numerical', 'min'  => 1),
                 array('username',                          'type',      'type' => 'string'),
                 array('username',                          'length',    'min'  => 1, 'max' => 64),
-                array('username',                          'smtpUsernameValidator'),
                 array('password',                          'type',      'type' => 'string'),
                 array('password',                          'length',    'min'  => 1, 'max' => 64),
                 array('security',                          'type',      'type' => 'string'),
@@ -78,14 +78,14 @@
             );
         }
 
-        public function smtpUsernameValidator($attribute, $params)
+        public function smtpHostValidator($attribute, $params)
         {
-            assert('$attribute == "username"');
-            if (preg_match('/@gmail/', $this->$attribute) > 0 )
+            assert('$attribute == "host"');
+            if (preg_match('/gmail.com/', $this->$attribute) > 0 )
             {
                 $message = Zurmo::t('EmailMessagesModule', 'Hang on there slick! Google SMTP policies prevent masking ' .
                                                            'of the Google email address, your emails will be sent from {username}',
-                                                           array('{username}' => $this->$attribute));
+                                                           array('{username}' => $this->username));
                 Yii::app()->user->setFlash('notification', $message);
             }
         }
