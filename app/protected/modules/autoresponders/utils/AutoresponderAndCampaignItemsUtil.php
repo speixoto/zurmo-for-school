@@ -189,13 +189,13 @@
             {
                 $plain = microtime(true);
                 GlobalMarketingFooterUtil::resolveContentGlobalFooter($textContent, false);
-                print(PHP_EOL . "GlobalMarketingFooterUtil::resolveContentGlobalFooter/PlainText: " . (microtime(true) - $plain));
+                print(PHP_EOL . "GlobalMarketingFooterUtil.resolveContentGlobalFooter/PlainText: " . (microtime(true) - $plain));
             }
             if (!empty($htmlContent))
             {
                 $rich = microtime(true);
                 GlobalMarketingFooterUtil::resolveContentGlobalFooter($htmlContent, true);
-                print(PHP_EOL . "GlobalMarketingFooterUtil::resolveContentGlobalFooter/Html: " . (microtime(true) - $rich));
+                print(PHP_EOL . "GlobalMarketingFooterUtil.resolveContentGlobalFooter/Html: " . (microtime(true) - $rich));
             }
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
@@ -209,14 +209,14 @@
                 $plain = microtime(true);
                 ContentTrackingUtil::resolveContentForTracking($enableTracking, $textContent, $modelId, $modelType,
                                                             static::$personId, false);
-                print(PHP_EOL . "ContentTrackingUtil::resolveContentForTracking/PlainText: " . (microtime(true) - $plain));
+                print(PHP_EOL . "ContentTrackingUtil.resolveContentForTracking/PlainText: " . (microtime(true) - $plain));
             }
             if (!empty($htmlContent))
             {
                 $rich = microtime(true);
                 ContentTrackingUtil::resolveContentForTracking($enableTracking, $htmlContent, $modelId, $modelType,
                                                             static::$personId, true);
-                print(PHP_EOL . "ContentTrackingUtil::resolveContentForTracking/Html: " . (microtime(true) - $rich));
+                print(PHP_EOL . "ContentTrackingUtil.resolveContentForTracking/Html: " . (microtime(true) - $rich));
             }
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
@@ -251,11 +251,11 @@
             print(PHP_EOL . "emailMessage sending: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
             $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
-            print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem: " . (microtime(true) - $cTime));
+            print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil.makeBySecurableItem: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                                                     $explicitReadWriteModelPermissions);
-            print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions: " . (microtime(true) - $cTime));
+            print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil.resolveExplicitReadWriteModelPermissions: " . (microtime(true) - $cTime));
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
         }

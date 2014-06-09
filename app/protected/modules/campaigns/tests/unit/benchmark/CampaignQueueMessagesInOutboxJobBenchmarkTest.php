@@ -134,14 +134,29 @@
                 $this->assertTrue($contact->save());
                 $contacts[]             = $contact;
             }
+            $content                    = <<<MTG
+[[TITLE]] [[LAST^NAME]], [[FIRST^NAME]]
+[[MODEL^URL]]
+[[OWNERS^AVATAR^MEDIUM]]
+[[DESCRIPTION]]
+[[JOB^TITLE]] @ [[DEPARTMENT]] / [[COMPANY^NAME]] ( [[INDUSTRY]] )
+[[WEBSITE]]
+[[OFFICE^PHONE]] , [[OFFICE^FAX]]
+[[MOBILE^PHONE]]
+[[OWNERS^EMAIL^SIGNATURE]]
+
+[[SOURCE]],  [[STATE]]
+[[APPLICATION^NAME]] [c] [[CURRENT^YEAR]]
+[[BASE^URL]]
+MTG;
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList Test',
                                                                                                 'description goes here',
                                                                                                 'fromName',
                                                                                                 'from@domain.com');
             $campaign                   = CampaignTestHelper::createCampaign('campaign Test',
                                                                                 'subject',
-                                                                                '[[FIRST^NAME]]',
-                                                                                '[[LAST^NAME]]',
+                                                                                $content,
+                                                                                $content,
                                                                                 null,
                                                                                 null,
                                                                                 null,
