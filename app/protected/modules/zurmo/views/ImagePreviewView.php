@@ -35,42 +35,24 @@
      ********************************************************************************/
 
     /**
-     * Adapts the
-     * Class ThumbnailListViewColumnAdapter
+     * Class ImagePreviewView
      */
-    class ImageListViewColumnAdapter  extends ListViewColumnAdapter
+    class ImagePreviewView extends View
     {
-        public function renderGridViewData()
+        protected $imageFileName;
+
+        public function __construct($imageFileName)
         {
-            return array(
-                'name'  => $this->attribute,
-                'value' => array($this, 'renderDataCellContent'),
-                'type'  => 'raw',
-            );
+            assert('is_string($imageFileName)');
+            $this->imageFileName = $imageFileName;
         }
 
-        public function renderDataCellContent($data, $row)
+        /**
+         * @inheritdoc
+         */
+        protected function renderContent()
         {
-            $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
-            $onLabel        = Zurmo::t('ZurmoModule', 'on');
-            $imageLink      = $this->getAjaxLinkForImagePreview($data);
-            $stringValue = $this->view->getLinkString($data, $this->attribute);
-            $layout = '<div class="builder-uploaded-image-thumb">' . $imageLink .
-                      '</div><div class="builder-image-details">' .
-                      $stringValue . '<br />{size} · {dimensions} · ' . $createdByLabel .
-                      ' {creator} ' . $onLabel . ' {createdTime}</div>';
-            return ImageFileModelUtil::getImageSummary($data, $layout);
+            return ZurmoHtml::image(ImageFileModelUtil::getUrlForGetImageFromImageFileName($this->imageFileName));
         }
-
-        protected function getAjaxLinkForImagePreview($data)
-        {
-            $modalTitle     = Zurmo::t('ZurmoModule', 'Image Preview');
-            $url            = Yii::app()->createAbsoluteUrl('zurmo/imageModel/modalPreview',
-                                                            array('fileName' => $data->getImageCacheFileName()));
-            $ajaxOptions    = ModalView::getAjaxOptionsForModalLink($modalTitle);
-            $htmlOptions    = array('id' => 'preview-image-' . $data->id, 'namespace' => 'previewImageLink');
-            return ZurmoHtml::ajaxLink('{image}', $url, $ajaxOptions, $htmlOptions);
-        }
-
     }
 ?>

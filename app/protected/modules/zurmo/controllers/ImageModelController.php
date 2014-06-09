@@ -186,7 +186,7 @@
                 'ImagesSearchView'
             );
 
-            $imageModalSearchAndListAndUploadVew = new ImageModalSearchAndListAndUploadView(
+            $imageModalSearchAndListAndUploadView = new ImageModalSearchAndListAndUploadView(
                                                             $this,
                                                             $this->module->id,
                                                             'modalList',
@@ -196,7 +196,15 @@
                                                             $dataProvider,
                                                             'modal'
                                                         );
-            $view = new ModalView($this, $imageModalSearchAndListAndUploadVew);
+            $view = new ModalView($this, $imageModalSearchAndListAndUploadView);
+            echo $view->render();
+        }
+
+        public function actionModalPreview($fileName)
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $imageModalPreview = new ImagePreviewView($fileName);
+            $view = new ModalView($this, $imageModalPreview);
             echo $view->render();
         }
 
