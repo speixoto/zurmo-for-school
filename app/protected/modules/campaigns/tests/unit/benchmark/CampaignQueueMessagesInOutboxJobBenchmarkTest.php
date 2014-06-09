@@ -117,7 +117,7 @@
 
         protected function testItems($count, $expectedRatio)
         {
-            $timeSpent  = $this->generateAndProcessCampaignItems(1000);
+            $timeSpent  = $this->generateAndProcessCampaignItems($count);
             echo PHP_EOL. $count . 'items took ' . $timeSpent . 'seconds';
             $this->assertTrue(($timeSpent/$count) <= $expectedRatio);
         }
