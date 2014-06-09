@@ -53,6 +53,8 @@
 
         public static $personId                 = null;
 
+        protected static $marketingListIdToSenderMapping    = array();
+
         public static function processDueItem(OwnedModel $item)
         {
             $time = microtime(true);
@@ -165,11 +167,11 @@
             $errorOnFirstMissing    = true;
             $templateType           = EmailTemplate::TYPE_CONTACT;
             $invalidTags            = array();
-            $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $content);
             $params                 = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(static::$personId, $marketingListId,
                                                                                             $modelId, $modelType, true,
                                                                                             false, $isHtmlContent);
-            $resolvedContent        = $textMergeTagsUtil->resolveMergeTags($contact,
+            $mergeTagsUtil          = MergeTagsUtilFactory::make($templateType, $language, $content);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags($contact,
                                                                             $invalidTags,
                                                                             $language,
                                                                             $errorOnFirstMissing,
@@ -180,6 +182,7 @@
             }
             $content    = $resolvedContent;
             print(PHP_EOL . __FUNCTION__ . '/isHtml=' . intval($isHtmlContent) . ': ' . (microtime(true) - $time));
+            //echo PHP_EOL . $content . PHP_EOL;
         }
 
         protected static function resolveContentForGlobalFooter(& $textContent, & $htmlContent)
@@ -262,28 +265,30 @@
 
         protected static function resolveSender(MarketingList $marketingList, $itemOwnerModel)
         {
-            $time = microtime(true);
-            $sender                         = new EmailMessageSender();
-            if (get_class($itemOwnerModel) == 'Campaign')
+            $time   = microtime(true);
+            $sender = null;
+            if (isset(static::$marketingListIdToSenderMapping[$marketingList->id]))
             {
-                $sender->fromAddress        = $itemOwnerModel->fromAddress;
-                $sender->fromName           = $itemOwnerModel->fromName;
-                print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
-                return $sender;
-            }
-            if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress))
-            {
-                $sender->fromAddress        = $marketingList->fromAddress;
-                $sender->fromName           = $marketingList->fromName;
+                $sender = static::$marketingListIdToSenderMapping[$marketingList->id];
             }
             else
             {
-                // TODO: @Shoaibi: Critical0: This can come from job directly.
-                // Say if there are X items and this takes Y seconds while job processes X/2 items per run
-                // then we would be spending 2Y seconds on this instead of X*Y.
-                $userToSendMessagesFrom         = BaseControlUserConfigUtil::getUserToRunAs();
-                $sender->fromAddress            = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-                $sender->fromName               = strval($userToSendMessagesFrom);
+                $sender = new EmailMessageSender();
+                if (get_class($itemOwnerModel) == 'Campaign') {
+                    $sender->fromAddress = $itemOwnerModel->fromAddress;
+                    $sender->fromName = $itemOwnerModel->fromName;
+                } else
+                {
+                    if (!empty($marketingList->fromName) && !empty($marketingList->fromAddress)) {
+                        $sender->fromAddress = $marketingList->fromAddress;
+                        $sender->fromName = $marketingList->fromName;
+                    } else {
+                        $userToSendMessagesFrom = BaseControlUserConfigUtil::getUserToRunAs();
+                        $sender->fromAddress = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
+                        $sender->fromName = strval($userToSendMessagesFrom);
+                    }
+                }
+                static::$marketingListIdToSenderMapping[$marketingList->id] = $sender;
             }
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $sender;
