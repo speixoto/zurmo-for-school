@@ -227,11 +227,12 @@
          * can effectively add permissions even if the current user is no longer the owner.
          * @param SecurableItem $securableItem
          * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
-         * @return boolean
-         * @throws NotSupportedException()
+         * @param bool $validate
+         * @return bool|void
+         * @throws NotSupportedException
          */
         public static function resolveExplicitReadWriteModelPermissions(SecurableItem $securableItem,
-                                  ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
+                                  ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions, $validate = false)
         {
             assert('$securableItem->id > 0');
             $optimizeReadPermissions = $securableItem::hasReadPermissionsOptimization();
@@ -345,7 +346,7 @@
                     $securableItem->setDoNotProcessWorkflowOnSave();
                     $setBackToProcess = true;
                 }
-                $saved = $securableItem->save();
+                $saved = $securableItem->save($validate);
                 if ($setBackToProcess)
                 {
                     $securableItem->setProcessWorkflowOnSave();

@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class CampaignsUtilTest extends ZurmoBaseTest
+    class CampaignsUtilTest extends AutoresponderOrCampaignBaseTest
     {
         protected $user;
 

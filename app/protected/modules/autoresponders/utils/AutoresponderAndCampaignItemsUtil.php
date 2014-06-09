@@ -83,17 +83,19 @@
                                        (int)$itemId, static::$itemClass, (int)$marketingList->id);
                 try
                 {
-                    $emailMessage   = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
+                    $item->emailMessage   = static::resolveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
                                                                         $contact, $marketingList, $itemId);
-                    $emailMessageId = $emailMessage->id;
                 }
                 catch (MissingRecipientsForEmailMessageException $e)
                 {
                    static::createSkipActivity($itemId);
                 }
             }
-            static::markItemAsProcessed($itemId, $emailMessageId);
+            //$marked = static::markItemAsProcessed($item);
+            $marked = static::markItemAsProcessedWithSQL($itemId, $item->emailMessage->id);
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
+            print(PHP_EOL . PHP_EOL . PHP_EOL );
+            return $marked;
         }
 
         protected static function resolveContact(OwnedModel $item)
@@ -224,6 +226,9 @@
         {
             $time = microtime(true);
             $emailMessage                       = new EmailMessage();
+            $cTime = microtime(true);
+            $emailMessage->owner                = $marketingList->owner;
+            print(PHP_EOL . "Resolving owner for emailMessage: " . (microtime(true) - $cTime));
             $emailMessage->subject              = $itemOwnerModel->subject;
             $emailContent                       = new EmailMessageContent();
             $emailContent->textContent          = $textContent;
@@ -242,23 +247,8 @@
             $emailMessage->folder               = static::$folder;
             print(PHP_EOL . "emailMessage population with folder: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
-            // TODO: @Shoaibi: Critical0: This should be refactored to pure sql
-            ZurmoRedBean::exec('SELECT "BEFORE SEND, BEFORE SAVE";');
-            if (!$emailMessage->save())
-            {
-                throw new FailedToSaveModelException("Unable to save EmailMessage");
-            }
-            ZurmoRedBean::exec('SELECT "BEFORE SEND, AFTER SAVE";');
-            print(PHP_EOL . "Saving Email Message before sending: " . (microtime(true) - $cTime));
-            $cTime = microtime(true);
-            $emailMessage   = EmailMessage::getById($emailMessage->id);
-            print(PHP_EOL . "Getting Email Message: " . (microtime(true) - $cTime));
-            $cTime = microtime(true);
-            Yii::app()->emailHelper->send($emailMessage, true);
+            Yii::app()->emailHelper->send($emailMessage, true, false);
             print(PHP_EOL . "emailMessage sending: " . (microtime(true) - $cTime));
-            $cTime = microtime(true);
-            $emailMessage->owner                = $marketingList->owner;
-            print(PHP_EOL . "Resolving owner for emailMessage: " . (microtime(true) - $cTime));
             $cTime = microtime(true);
             $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
             print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem: " . (microtime(true) - $cTime));
@@ -266,16 +256,6 @@
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                                                     $explicitReadWriteModelPermissions);
             print(PHP_EOL . "ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions: " . (microtime(true) - $cTime));
-            $cTime = microtime(true);
-            // TODO: @Shoaibi: Critical0: This should be refactored to pure sql
-            ZurmoRedBean::exec('SELECT "AFTER SEND, BEFORE SAVE";');
-
-            if (!$emailMessage->save())
-            {
-                throw new FailedToSaveModelException("Unable to save EmailMessage");
-            }
-            ZurmoRedBean::exec('SELECT "AFTER SEND, AFTER SAVE";');
-            print(PHP_EOL . "Saving Email Message after sending: " . (microtime(true) - $cTime));
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
         }
@@ -352,20 +332,35 @@
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
-        protected static function markItemAsProcessed($itemId, $emailMessageId = null)
+        protected static function markItemAsProcessed(OwnedModel $item)
         {
             $time   = microtime(true);
-            $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString(static::$itemTableName);
+            $item->processed    = 1;
+            if (!$item->unrestrictedSave())
+            {
+                throw new FailedToSaveModelException();
+            }
+            print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
+            return true;
+        }
+
+        protected static function markItemAsProcessedWithSQL($itemId, $emailMessageId = null)
+        {
+            $time   = microtime(true);
+            $class                  = static::$itemClass;
+            $emailMessageForeignKey = RedBeanModel::getForeignKeyName($class, 'emailMessage');
+            $itemTableName          = $class::getTableName();
+            $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString($itemTableName);
             $sql                    .= " SET " . DatabaseCompatibilityUtil::quoteString('processed') . ' = 1';
             if ($emailMessageId)
             {
-                $sql .= ", " . DatabaseCompatibilityUtil::quoteString(static::$emailMessageForeignKey);
+                $sql .= ", " . DatabaseCompatibilityUtil::quoteString($emailMessageForeignKey);
                 $sql .= " = ${emailMessageId}";
             }
             $sql                    .= " WHERE " . DatabaseCompatibilityUtil::quoteString('id') . " = ${itemId};";
-            ZurmoRedBean::exec($sql);
+            $effectedRows           = ZurmoRedBean::exec($sql);
             print(PHP_EOL . __FUNCTION__ . ': ' . (microtime(true) - $time));
-            return true;
+            return ($effectedRows == 1);
         }
     }
 ?>

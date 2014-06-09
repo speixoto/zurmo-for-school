@@ -33,7 +33,7 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-    class CampaignItemTest extends ZurmoBaseTest
+    class CampaignItemTest extends AutoresponderOrCampaignBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -498,7 +498,7 @@
             $campaignItem   = CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
             $this->assertNotNull($campaignItem);
             $this->assertFalse($campaignItem->isQueued());
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertTrue($campaignItem->isQueued());
         }
 
@@ -561,7 +561,7 @@
             $campaignItem   = CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
             $this->assertNotNull($campaignItem);
             $this->assertFalse($campaignItem->isSent());
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertFalse($campaignItem->isSent()); // Folder is outbox at the end of processDueItem and hence it fails
             $box                                    = EmailBox::resolveAndGetByName(EmailBox::CAMPAIGNS_NAME);
             $campaignItem->emailMessage->folder     = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_SENT);
@@ -596,7 +596,7 @@
             $campaignItem   = CampaignItemTestHelper::createCampaignItem(0, $campaign, $contact);
             $this->assertNotNull($campaignItem);
             $this->assertFalse($campaignItem->hasFailedToSend());
-            CampaignItemsUtil::processDueItem($campaignItem);
+            $this->processDueItem($campaignItem);
             $this->assertFalse($campaignItem->hasFailedToSend()); // Folder is outbox at the end of processDueItem and hence it fails
             $box                                    = EmailBox::resolveAndGetByName(EmailBox::CAMPAIGNS_NAME);
             $campaignItem->emailMessage->folder     = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX_FAILURE);
