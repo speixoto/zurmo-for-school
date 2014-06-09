@@ -77,7 +77,7 @@
                 assert('get_class($marketingList) === "MarketingList"');
                 $textContent                = $itemOwnerModel->textContent;
                 $htmlContent                = null;
-                if ((static::$itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) || (static::$itemClass == 'AutoresponderItem'))
+                if (static::supportsRichText($itemOwnerModel))
                 {
                     $htmlContent = $itemOwnerModel->htmlContent;
                 }
@@ -126,6 +126,12 @@
                         $itemOwnerModel->marketingList->id,
                         $contact->id,
                         true) != false));
+        }
+
+        protected static function supportsRichText(Item $itemOwnerModel)
+        {
+            return ((static::$itemClass == 'CampaignItem' && $itemOwnerModel->supportsRichText) ||
+                        (static::$itemClass == 'AutoresponderItem'));
         }
 
         protected static function createSkipActivity($itemId)
@@ -352,14 +358,11 @@
         protected static function markItemAsProcessedWithSQL($itemId, $emailMessageId = null)
         {
             $time   = microtime(true);
-            $class                  = static::$itemClass;
-            $emailMessageForeignKey = RedBeanModel::getForeignKeyName($class, 'emailMessage');
-            $itemTableName          = $class::getTableName();
-            $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString($itemTableName);
+            $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString(static::$itemTableName);
             $sql                    .= " SET " . DatabaseCompatibilityUtil::quoteString('processed') . ' = 1';
             if ($emailMessageId)
             {
-                $sql .= ", " . DatabaseCompatibilityUtil::quoteString($emailMessageForeignKey);
+                $sql .= ", " . DatabaseCompatibilityUtil::quoteString(static::$emailMessageForeignKey);
                 $sql .= " = ${emailMessageId}";
             }
             $sql                    .= " WHERE " . DatabaseCompatibilityUtil::quoteString('id') . " = ${itemId};";
