@@ -106,14 +106,14 @@
         // the extended User data. In this way in inheritance hierarchy from
         // model is normalized over several tables, one for each extending
         // class.
-        private $modelClassNameToBean                                        = array();
-        private $attributeNameToBeanAndClassName                             = array();
-        private $relationNameToRelatedModel                                  = array();
-        private $unlinkedRelationNames                                       = array();
-        private $unlinkedOwnedRelatedModelsToRemove                          = array();
-        private $validators                                                  = array();
-        private $attributeNameToErrors                                       = array();
-        private $scenarioName                                                = '';
+        protected $modelClassNameToBean                                        = array();
+        protected $attributeNameToBeanAndClassName                             = array();
+        protected $relationNameToRelatedModel                                  = array();
+        protected $unlinkedRelationNames                                       = array();
+        protected $unlinkedOwnedRelatedModelsToRemove                          = array();
+        protected $validators                                                  = array();
+        protected $attributeNameToErrors                                       = array();
+        protected $scenarioName                                                = '';
         // An object is automatically savable if it is new or contains
         // modified members or related objects.
         // If it is newly created and has never had any data put into it

@@ -129,7 +129,8 @@
             {
                 $email                  = new Email();
                 $email->emailAddress    = "demo$i@zurmo.com";
-                $contact                = ContactTestHelper::createContactByNameForOwner('contact 0' . ($i + 8), $this->user);
+                $account                = AccountTestHelper::createAccountByNameForOwner('account ' . $i, $this->user);
+                $contact                = ContactTestHelper::createContactWithAccountByNameForOwner('contact ' . $i , $this->user, $account);
                 $contact->primaryEmail  = $email;
                 $this->assertTrue($contact->save());
                 $contacts[]             = $contact;
