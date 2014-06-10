@@ -53,23 +53,17 @@
         {
             $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
             $onLabel        = Zurmo::t('ZurmoModule', 'on');
-            $imageLink      = $this->getAjaxLinkForImagePreview($data);
+            $imageContent   = $this->getImageContent($data);
             $stringValue = $this->view->getLinkString($data, $this->attribute);
-            $layout = '<div class="builder-uploaded-image-thumb">' . $imageLink .
-                      '</div><div class="builder-image-details">' .
+            $layout = $imageContent . '<div class="builder-image-details">' .
                       $stringValue . '<br />{size} · {dimensions} · ' . $createdByLabel .
                       ' {creator} ' . $onLabel . ' {createdTime}</div>';
             return ImageFileModelUtil::getImageSummary($data, $layout);
         }
 
-        protected function getAjaxLinkForImagePreview($data)
+        protected function getImageContent($data)
         {
-            $modalTitle     = Zurmo::t('ZurmoModule', 'Image Preview');
-            $url            = Yii::app()->createAbsoluteUrl('zurmo/imageModel/modalPreview',
-                                                            array('fileName' => $data->getImageCacheFileName()));
-            $ajaxOptions    = ModalView::getAjaxOptionsForModalLink($modalTitle);
-            $htmlOptions    = array('id' => 'preview-image-' . $data->id, 'namespace' => 'previewImageLink');
-            return ZurmoHtml::ajaxLink('{image}', $url, $ajaxOptions, $htmlOptions);
+            return '<div class="builder-uploaded-image-thumb"> {image} </div>';
         }
 
     }

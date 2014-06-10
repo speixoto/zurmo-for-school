@@ -75,6 +75,7 @@
                 ) . '/Modal.js',
                 CClientScript::POS_END
             );
+            $this->renderQtipForPreviewImage();
             $cs->registerScript(get_class($this), "
                         function replaceImageSummary(id, value)
                         {
@@ -85,6 +86,35 @@
             $content .= $this->renderReplaceOrBrowseLink();
             $content .= ZurmoHtml::hiddenField($this->getEditableInputName(), $this->model->{$this->attribute});
             return $content;
+        }
+
+        protected function renderQtipForPreviewImage()
+        {
+            $qtipOptions = array(
+                    'position' => array(
+                                    'my' => 'center',
+                                    'at' => 'center',
+                                    'target' => 'js:$("#' . $this->getModalContainerId() .'")',
+                    ),
+                    'show' => array(
+                        'solo' => true,
+                        'modal' => true,
+                        'ready' => true,
+                    ),
+                    'overwrite' => false,
+                    'content' => array('text' => "js:function(event, api) {
+                                                    $.ajax({
+                                                        url: $(this).data('url')
+                                                    })
+                                                    .then(function(content) {
+                                                        api.set('content.text', content);
+                                                    }, function(xhr, status, error) {
+                                                        api.set('content.text', status + ': ' + error);
+                                                    });
+                                                }",
+                                )
+            );
+            ZurmoTip::qtip2('.builder-uploaded-image-thumb > img', $qtipOptions, true, true);
         }
 
         protected function renderControlNonEditable()

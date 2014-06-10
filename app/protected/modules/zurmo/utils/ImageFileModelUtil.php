@@ -96,8 +96,9 @@
             {
                 $layout = static::getDefaultLayout();
             }
-            $url  = static::getUrlForGetImageFromImageFileName($imageFileModel->getImageCacheFileName(), true);
-            $data['{image}']       = ZurmoHtml::image($url);
+            $url                   = static::getUrlForGetImageFromImageFileName($imageFileModel->getImageCacheFileName(), true);
+            $urlForPreview         = Yii::app()->createAbsoluteUrl('zurmo/imageModel/modalPreview',array('fileName' => $imageFileModel->getImageCacheFileName()));
+            $data['{image}']       = ZurmoHtml::image($url, '', array('data-url' => $urlForPreview));
             $data['{name}']        = $imageFileModel->name;
             $data['{size}']        = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $imageFileModel->size);
             $data['{dimensions}']  = $imageFileModel->width . ' × ' . $imageFileModel->height;

@@ -204,8 +204,7 @@
         {
             Yii::app()->getClientScript()->setToAjaxMode();
             $imageModalPreview = new ImagePreviewView($fileName);
-            $view = new ModalView($this, $imageModalPreview);
-            echo $view->render();
+            echo $imageModalPreview->render();
         }
 
         protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
