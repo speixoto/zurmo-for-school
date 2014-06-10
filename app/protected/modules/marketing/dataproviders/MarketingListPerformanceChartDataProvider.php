@@ -159,13 +159,9 @@
             $emailMessageTableName      = EmailMessage::getTableName();
             $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
             $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
-            MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                                          $joinTablesAdapter,
-                                          $where,
-                                          $selectDistinct);
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectDistinct);
-            $uniqueOpensSelectPart  = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
-            $uniqueClicksSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
+            $selectQueryAdapter         = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $uniqueOpensSelectPart      = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $uniqueClicksSelectPart     = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
             static::addEmailMessageDayDateClause            ($selectQueryAdapter, $sentDateTimeColumnName);
             static::addEmailMessageFirstDayOfWeekDateClause ($selectQueryAdapter, $sentDateTimeColumnName);
             static::addEmailMessageFirstDayOfMonthDateClause($selectQueryAdapter, $sentDateTimeColumnName);
@@ -176,6 +172,10 @@
             $joinTablesAdapter->addLeftTableAndGetAliasName($autoresponderItemTableName, 'id', $autoresponderTableName, 'autoresponder_id');
             $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $autoresponderItemTableName, 'id');
             $where = RedBeanModelDataProvider::makeWhere('Autoresponder', $searchAttributeData, $joinTablesAdapter);
+            MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
+                        $joinTablesAdapter,
+                        $where,
+                        $selectDistinct);
             $sql   = SQLQueryUtil::makeQuery($autoresponderTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
             return $sql;
         }

@@ -102,11 +102,14 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            ListViewMergeUtil::resolveElementDuringFormLayoutRenderForListViewMerge($element,
+            if (!$element instanceof NullElement)
+            {
+                ListViewMergeUtil::resolveElementDuringFormLayoutRenderForListViewMerge($element,
                                                                                     'ModelAttributeElementPreContentView',
                                                                                     $this->selectedContacts,
                                                                                     $this->model,
                                                                                     'ContactModelAttributeAndElementDataToMergeItem');
+            }
         }
 
         /**

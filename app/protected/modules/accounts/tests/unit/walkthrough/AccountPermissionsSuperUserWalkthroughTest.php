@@ -45,6 +45,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            ContactsModule::loadStartingData();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -196,6 +197,60 @@
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertEquals(0, count($readOnlyPermitables));
             $this->assertEquals($group1, $readWritePermitables[$group1->getClassId('Permitable')]);
+        }
+
+        public function testWorkflowDoesLinkRelatedModelWhenPermissionsIsSetToOwner()
+        {
+            $super         = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $contactStates = ContactState::getAll();
+            $this->assertEquals(0, Contact::getCount());
+
+            //Create workflow
+            $workflow = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('AccountsModule');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
+            $workflow->setTriggersStructure('1');
+            //Add action
+            $action                       = new ActionForWorkflowForm('Account', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
+            $action->relation             = 'contacts';
+            $attributes                   = array(  'lastName' => array('shouldSetValue'    => '1',
+                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                'value'  => 'smith'),
+                'firstName' => array('shouldSetValue'    => '1',
+                    'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                    'value'    => 'john'),
+                'owner__User'     => array('shouldSetValue'    => '1',
+                    'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                    'value'    => Yii::app()->user->userModel->id),
+                'state'       => array('shouldSetValue'    => '1',
+                    'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                    'value'  => $contactStates[0]->id),
+            );
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            $account = new Account();
+            $account->name = 'myTestAccount';
+            $account->owner = $super;
+            $account->save();
+
+            RedBeanModel::forgetAll();
+            $contacts = Contact::getAll();
+            $this->assertCount(1, $contacts);
+            $this->assertEquals('myTestAccount', $contacts[0]->account->name);
+            $this->assertEquals('john smith', strval($account->contacts[0]));
+            $this->assertTrue($account->contacts[0]->id > 0);
         }
     }
 ?>

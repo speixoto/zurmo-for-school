@@ -1232,7 +1232,7 @@ body > .ui-autocomplete{
 		display:inline-block;
 		text-align:center;
 		position:relative;
-		top:1px;
+		top:2px;
 		left: 2px;
 	}
 	/*deafult for if an icon doesnt exist*/
@@ -1310,6 +1310,15 @@ body > .ui-autocomplete{
 	}
 	.toggle-hidden-nav-items:hover{
 		color: #333 !important;
+	}
+}
+
+#RecentlyViewedView {
+	height: 100%;
+	a:hover{
+		i{
+			.t-shadow( none ) !important;
+		}
 	}
 }
 
@@ -2695,9 +2704,8 @@ div.wide.form{
 		margin-left:30px;
 		margin-top:30px;
 		float:left;
-		.radius(3px);
+		//.radius(3px);
 		display:block;
-		overflow: hidden;
 		position: relative;
 		cursor:pointer;
 	}
