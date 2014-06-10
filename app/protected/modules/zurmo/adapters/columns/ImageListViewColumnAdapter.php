@@ -51,19 +51,24 @@
 
         public function renderDataCellContent($data, $row)
         {
-            $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
-            $onLabel        = Zurmo::t('ZurmoModule', 'on');
-            $imageContent   = $this->getImageContent($data);
-            $stringValue = $this->view->getLinkString($data, $this->attribute);
-            $layout = $imageContent . '<div class="builder-image-details">' .
-                      $stringValue . '<br />{size} · {dimensions} · ' . $createdByLabel .
-                      ' {creator} ' . $onLabel . ' {createdTime}</div>';
-            return ImageFileModelUtil::getImageSummary($data, $layout);
+
+            $imageContent   = $this->getImageContent();
+            $insertLink     = ZurmoHtml::tag('div', array('class' => 'insert-image'), $this->view->getLinkString($data, $this->attribute));
+            $layout = $imageContent . '<div class="builder-image-details">{name}<br />{size} · {dimensions} · ' . $this->getCreatorContent()  . ' </div>';
+            $imageSummary = ImageFileModelUtil::getImageSummary($data, $layout);
+            return $imageSummary . $insertLink;
         }
 
-        protected function getImageContent($data)
+        protected function getImageContent()
         {
             return '<div class="builder-uploaded-image-thumb"> {image} </div>';
+        }
+
+        protected function getCreatorContent()
+        {
+            $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
+            $onLabel        = Zurmo::t('ZurmoModule', 'on');
+            return $createdByLabel .' {creator} ' . $onLabel .  ' {createdTime}';
         }
 
     }

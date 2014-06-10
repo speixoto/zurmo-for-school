@@ -73,7 +73,8 @@
 
         public function getLinkString($model)
         {
-            return ZurmoHtml::link($model->name, $this->getScriptForClick($model));
+            $insertLabel = Zurmo::t('ZurmoModule', 'Insert Image');
+            return ZurmoHtml::link($insertLabel, $this->getScriptForClick($model));
         }
 
         protected function getScriptForClick($model)
