@@ -398,5 +398,30 @@
             $this->assertTrue($task->save());
             $this->assertCount(0, $task->getErrors());
         }
+
+        public function testAfterSaveForImportModel()
+        {
+            $testUser                   = UserTestHelper::createBasicUserWithEmailAddress('jimmy');
+            UserConfigurationFormAdapter::setValue($testUser, false, 'turnOffEmailNotifications');
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->assertCount(0, EmailMessage::getAll());
+            $task                       = new Task();
+            $task->name                 = 'MyTaskWithoutImport';
+            $task->owner                = $testUser;
+            $task->requestedByUser      = Yii::app()->user->userModel;
+            $this->assertTrue($task->save());
+            $this->assertEquals(2, count($task->notificationSubscribers));
+            $this->assertCount(1, EmailMessage::getAll());
+
+            //With import
+            $task                       = new Task();
+            $task->setScenario('importModel');
+            $task->name                 = 'MyTaskWithImport';
+            $task->owner                = $testUser;
+            $task->requestedByUser      = Yii::app()->user->userModel;
+            $this->assertTrue($task->save());
+            $this->assertEquals(2, count($task->notificationSubscribers));
+            $this->assertCount(1, EmailMessage::getAll());
+        }
     }
 ?>

@@ -1450,6 +1450,7 @@ table.configuration-list tr:last-child td {
   font-size: 12px;
   text-decoration: underline !important;
 }
+#GroupEditAndDetailsView .has-model-select input,
 #RoleEditAndDetailsView .has-model-select input {
   text-indent: 21px;
 }
@@ -7317,12 +7318,12 @@ a.user-link {
   position: relative;
   top: -1px;
 }
-.pillbox .active a,
+.pillbox .active > a,
 .pillbox .active span,
 .pillbox .active i[class^="icon"],
 .pillbox .active i[class^="icon"]:before,
 .pillbox .active i[class^="icon"]:after,
-.pillbox .nav-open a,
+.pillbox .nav-open > a,
 .pillbox .nav-open span,
 .pillbox .nav-open i[class^="icon"],
 .pillbox .nav-open i[class^="icon"]:before,

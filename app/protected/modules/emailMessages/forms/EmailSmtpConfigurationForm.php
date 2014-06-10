@@ -52,6 +52,7 @@
                 array('host',                              'required'),
                 array('host',                              'type',      'type' => 'string'),
                 array('host',                              'length',    'min'  => 1, 'max' => 64),
+                array('host',                              'smtpHostValidator'),
                 array('port',                              'required'),
                 array('port',                              'type',      'type' => 'integer'),
                 array('port',                              'numerical', 'min'  => 1),
@@ -75,6 +76,18 @@
                 'security'                             => Zurmo::t('EmailMessagesModule', 'Extra Mail Settings'),
                 'aTestToAddress'                       => Zurmo::t('EmailMessagesModule', 'Send a test email to')
             );
+        }
+
+        public function smtpHostValidator($attribute, $params)
+        {
+            assert('$attribute == "host"');
+            if (preg_match('/gmail.com/', $this->$attribute) > 0 )
+            {
+                $message = Zurmo::t('EmailMessagesModule', 'Hang on there slick! Google SMTP policies prevent masking ' .
+                                                           'of the Google email address, your emails will be sent from {username}',
+                                                           array('{username}' => $this->username));
+                Yii::app()->user->setFlash('notification', $message);
+            }
         }
     }
 ?>

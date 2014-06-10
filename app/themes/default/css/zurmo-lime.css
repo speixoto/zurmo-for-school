@@ -1569,7 +1569,7 @@ body > .ui-autocomplete {
   display: inline-block;
   text-align: center;
   position: relative;
-  top: 1px;
+  top: 2px;
   left: 2px;
 }
 #MenuView li i:before,
@@ -1773,6 +1773,16 @@ body > .ui-autocomplete {
 #MenuView .toggle-hidden-nav-items:hover,
 #RecentlyViewedView .toggle-hidden-nav-items:hover {
   color: #333 !important;
+}
+#RecentlyViewedView {
+  height: 100%;
+}
+#RecentlyViewedView a:hover i {
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  text-shadow: none !important;
 }
 #MenuView {
   border-bottom: 1px solid #cccccc;
@@ -3330,13 +3340,7 @@ div.wide.form label.hasCheckBox {
   margin-left: 30px;
   margin-top: 30px;
   float: left;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   display: block;
-  overflow: hidden;
   position: relative;
   cursor: pointer;
 }
