@@ -399,7 +399,7 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             $content  = '<div class="general-issue-notice no-subscribers-found"><span class="icon-notice"></span><p>';
-            $content .= Zurmo::t('CampaignsModule', 'No ContactsModulePluralLowerCaseLabel or LeadsModulePluralLowerCaseLabel subscribed', $params);
+            $content .= Zurmo::t('CampaignsModule', 'No ContactsModulePluralLowerCaseLabel or LeadsModulePluralLowerCaseLabel found', $params);
             $content .= '</p></div>';
             return $content;
         }

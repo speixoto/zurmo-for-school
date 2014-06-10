@@ -107,7 +107,7 @@
                 {
                     return static::PROPERTY_NOT_FOUND;
                 }
-                elseif (!$model->isAttribute($attributeName))
+                elseif (!method_exists($model, 'isAttribute') || !$model->isAttribute($attributeName))
                 {
                     if ($model instanceof Activity)
                     {
@@ -194,6 +194,19 @@
                         else
                         {
                             return static::PROPERTY_NOT_FOUND;
+                        }
+                    }
+                    if ($model instanceof RedBeanModels)
+                    {
+                        $modelClassName = $model->getModelClassName();
+                        if ($attributeAccessorString == lcfirst($modelClassName))
+                        {
+                            $values = array();
+                            foreach ($model as $relatedModel)
+                            {
+                                $values[] = strval($relatedModel);
+                            }
+                            return ArrayUtil::stringify($values);
                         }
                     }
                     return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);

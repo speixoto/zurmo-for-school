@@ -139,6 +139,10 @@
                                         $this->model->getAttributeLabel('subject'));
                 $element->editableTemplate = '<td><div class="overlay-label-field">' . $label . '{content}{error}</div></td>';
             }
+            elseif (get_class($element) == 'EmailMessageEmailTemplateElement')
+            {
+                $element->editableTemplate = '<td><div class="overlay-label-field"><div class="has-model-select">{label}{content}{error}</div></td>';
+            }
             else
             {
                 $element->editableTemplate = '<td>{content}{error}</td>';

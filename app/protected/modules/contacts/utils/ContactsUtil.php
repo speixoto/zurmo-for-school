@@ -370,7 +370,6 @@
          */
         public static function resolveMarketingListMembersByContact($contact)
         {
-            $contactId = $contact->id;
             if ($contact->id != null && $contact->id > 0)
             {
                 $marketingListMembers = MarketingListMember::getByContactId($contact->id);

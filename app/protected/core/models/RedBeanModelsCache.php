@@ -157,10 +157,9 @@
             {
                 static::$modelIdentifiersToModels = array();
             }
-            if (!$onlyForgetPhpCache &&  static::supportsAndAllowsMemcache())
+            if (!$onlyForgetPhpCache)
             {
-                static::incrementCacheIncrementValue(static::$cacheType);
-                //@Yii::app()->cache->flush();
+                static::clearMemcacheCache();
             }
         }
 

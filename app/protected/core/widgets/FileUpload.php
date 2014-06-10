@@ -238,7 +238,7 @@ EOD;
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
 
             $htmlOptions = array('id' => $this->inputId);
-            $html  = '<div id="dropzone' . $id . '">';
+            $html  = '<div id="dropzone' . $id . '"></div>';
             $html .= '<div id="fileUpload' . $id . '">';
             $html .= '<div class="fileupload-buttonbar clearfix">';
             $html .= '<div class="addfileinput-button"><span>Y</span>' . $addLabel;

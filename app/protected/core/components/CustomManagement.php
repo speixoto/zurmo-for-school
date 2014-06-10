@@ -87,6 +87,10 @@
         {
         }
 
+        public function resolveActionElementInformationDuringRender(MetadataView $view, & $elementInformation)
+        {
+        }
+
         /**
          * Called in CalendarUtil to set the title.
          * @param CalendarItem $calendarItem
@@ -95,6 +99,108 @@
         public function setCalendarItemTitle(CalendarItem $calendarItem, RedBeanModel $model)
         {
             $calendarItem->setTitle(StringUtil::getChoppedStringContent($model->name, CalendarItem::MAXIMUM_TITLE_LENGTH));
+        }
+
+        /**
+         * Resolve row menu column class for open task portlet.
+         * @param string $relationAttributeName
+         * @return string
+         */
+        public function resolveRowMenuColumnClassForOpenTaskPortlet($relationAttributeName)
+        {
+            return 'RowMenuColumn';
+        }
+
+        /**
+         * Register task modal detail script.
+         * @param string $gridViewId
+         */
+        public function registerTaskModalDetailsScript($gridViewId)
+        {
+            assert('is_string($gridViewId)');
+            TasksUtil::registerTaskModalDetailsScript($gridViewId);
+        }
+
+        /**
+         * Resolve data provider by search model.
+         * @param TasksByOpportunitySearchForm $searchModel
+         * @return string
+         */
+        public function resolveDataProviderClassNameForControllerBySearchModel($searchModel)
+        {
+            if ($searchModel->filterByStarred)
+            {
+                return 'StarredModelDataProvider';
+            }
+            return 'RedBeanModelDataProvider';
+        }
+
+        /**
+         * Register script for special task detail link. This is from a redirect of something like
+         * tasks/default/details and it should open up the task immediately.
+         * @param int $taskId
+         * @param string $sourceId
+         */
+        public function registerOpenToTaskModalDetailsScript($taskId, $sourceId)
+        {
+            TasksUtil::registerOpenToTaskModalDetailsScript($taskId, $sourceId);
+        }
+
+        /**
+         * Render kanban search view.
+         * @param TasksSearchForm $searchFormModel
+         * @param array $params
+         * @return string
+         */
+        public function renderKanbanSearchView($searchFormModel, $params)
+        {
+            return null;
+        }
+
+        /**
+         * Resolve kanban columns.
+         * @param array $columns
+         * @return array
+         */
+        public function resolveKanbanCardColumns($columns)
+        {
+            assert('is_array($columns)');
+            return $columns;
+        }
+
+        /**
+         * Renders extra attributes with name in kanban card.
+         * @param array $cardColumns
+         * @param Task $task
+         * @param int $row
+         */
+        public function renderExtraAttributesWithNameInKanbanCard($cardColumns, Task $task, $row)
+        {
+            return null;
+        }
+
+        /**
+         * Resolve task modal button column class for tasks my list view.
+         * @return string
+         */
+        public function resolveTaskModalButtonColumnClassNameForTasksMyListView()
+        {
+            return 'TaskModalButtonColumn';
+        }
+
+        /**
+         * @param $viewClassName string
+         * @param $params array
+         * @param $defaultOptionsContent string
+         * @param $parentContent string
+         * @return string
+         */
+        public function renderPortletHeadContentForOpenTaskPortletOnDetailsAndRelationsView($viewClassName,
+                                                                                            $params,
+                                                                                            $defaultOptionsContent,
+                                                                                            $parentContent)
+        {
+            return $parentContent;
         }
     }
 ?>

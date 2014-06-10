@@ -146,13 +146,7 @@
          */
         protected function registerScripts()
         {
-            /*@TODO Mayank: we need to integrate the drag/drop actions from KanbanUtils.js into your code, this is for the visual feedabck, see opps kanban when u drag/drop
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                Yii::getPathOfAlias('application.core.kanbanBoard.widgets.assets')) . '/KanbanUtils.js');
-            $script = 'setupKanbanDragDrop();';
-            Yii::app()->getClientScript()->registerScript('KanbanDragDropScript', $script);
-            */
+
         }
 
         /**
@@ -171,13 +165,6 @@
             TasksUtil::registerSubscriptionScript();
             TasksUtil::registerUnsubscriptionScript();
         }
-
-        /**
-         * Registers kanban column sortable script
-         * @param int $count
-         * @param int $type
-         * @return string
-         */
 
         /**
          * Registers kanban column sortable script. Also called to use on refresh of kanban board
@@ -427,6 +414,7 @@
 
             $content .= ZurmoHtml::openTag('div', array('class' => 'task-content clearfix'));
             $content .= $this->resolveAndRenderTaskCardDetailsStatusContent($task, $row);
+            $content .= Yii::app()->custom->renderExtraAttributesWithNameInKanbanCard($this->cardColumns, $task, $row);
             $content .= ZurmoHtml::openTag('h4');
             $content .= $this->renderCardDataContent($this->cardColumns['name'], $task, $row);
             $content .= ZurmoHtml::closeTag('h4');

@@ -21,8 +21,8 @@ div img {
     text-align: center;
 }
 .fancy-divider img{
-    margin: 0 auto !important;
-    float: none !important;
+    margin: 0 auto /*!important*/;
+    float: none /*!important*/;
 }
 
 table.header td.wrapper {
@@ -54,7 +54,7 @@ table.tiny-button[width="100%"],
 table.small-button[width="100%"],
 table.medium-button[width="100%"],
 table.large-button[width="100%"] {
-	width: 100% !important;
+	width: 100% /*!important*/;
 }
 
 table.button[align="center"],
@@ -62,7 +62,7 @@ table.tiny-button[align="center"],
 table.small-button[align="center"],
 table.medium-button[align="center"],
 table.large-button[align="center"] {
-    text-align:center !important;
+    text-align:center /*!important*/;
 }
 
 table.button[align="right"],
@@ -70,7 +70,7 @@ table.tiny-button[align="right"],
 table.small-button[align="right"],
 table.medium-button[align="right"],
 table.large-button[align="right"] {
-    text-align:right !important;
+    text-align:right /*!important*/;
 }
 
 table.button td,
@@ -100,7 +100,7 @@ table.large-button td.button-td {	padding: 21px 21px 18px 21px}
 .ExternalClass table.large-button td.button-td {   padding: 21px 21px 18px 21px;}
 
 td.button-td{
-    text-align: center !important;
+    text-align: center /*!important*/;
 }
 
 td.button-td a{
@@ -114,7 +114,7 @@ table.Facebook td {
 }
 
 table.Facebook:hover td {
-    background: #2d4473 !important;
+    background: #2d4473 /*!important*/;
 }
 
 table.Twitter td {
@@ -124,27 +124,27 @@ table.Twitter td {
 }
 
 table.Twitter:hover td {
-    background: #0087bb !important;
+    background: #0087bb /*!important*/;
 }
 
 table.GooglePlus td {
     color: #ffffff;
-    background-color: #DB4A39;
+    background: #DB4A39;
     border-color: #CC0000;
 }
 
 table.GooglePlus:hover td {
-    background: #CC0000 !important;
+    background: #CC0000 /*!important*/;
 }
 
 table.YouTube td {
     color: #ffffff;
-    background-color: #db1925;
+    background: #db1925;
     border-color: #cc0f29;
 }
 
 table.YouTube:hover td {
-    background: #cc0f29 !important;
+    background: #cc0f29 /*!important*/;
 }
 
 table.Instagram td {
@@ -154,7 +154,7 @@ table.Instagram td {
 }
 
 table.Instagram:hover td {
-    background: #773424 !important;
+    background: #773424 /*!important*/;
 }
 
 table.Website td {
@@ -164,7 +164,7 @@ table.Website td {
 }
 
 table.Website:hover td {
-    background: #560861 !important;
+    background: #560861 /*!important*/;
 }
 
 table.social-button strong{
@@ -185,7 +185,7 @@ table.vertical table {
 }
 
 table.vertical img {
-    width: 100% !important;
+    width: 100% /*!important*/;
     height: 15px;
     display: block;
 }
@@ -202,5 +202,5 @@ table.horizontal img {
 }
 
 td.social-horizontal-expander{
-    width:15px !important;
+    width:15px /*!important*/;
 }

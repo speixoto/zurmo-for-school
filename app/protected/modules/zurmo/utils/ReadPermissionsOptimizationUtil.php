@@ -691,7 +691,6 @@
 
                 // Handle groups for the users in $role. Increment for the parent's parent
                 // roles the models they have explicit permissions on.
-
                 if (count($role->users) > 0)
                 {
                     $permitableIds = array();
@@ -703,10 +702,17 @@
                         }
                     }
                     $permitableIds = array_unique($permitableIds);
-                    $sql = 'select securableitem_id
+                    if (count($permitableIds) > 0)
+                    {
+                        $sql = 'select securableitem_id
                             from   permission
                             where  permitable_id in (' . join(', ', $permitableIds) . ')';
-                    $securableItemIds = ZurmoRedBean::getCol($sql);
+                        $securableItemIds = ZurmoRedBean::getCol($sql);
+                    }
+                    else
+                    {
+                        $securableItemIds = array();
+                    }
                     self::$countMethod($mungeTableName, $securableItemIds, $role->role);
                 }
 

@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class TasksModuleForm extends ModuleForm
+    class TasksModuleForm extends GlobalSearchEnabledModuleForm
     {
     }
 ?>

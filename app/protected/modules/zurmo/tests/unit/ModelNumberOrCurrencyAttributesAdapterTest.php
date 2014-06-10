@@ -55,7 +55,7 @@
             $adapter     = new ModelNumberOrCurrencyAttributesAdapter(new CurrencyValueTestItem());
             $attributes  = $adapter->getAttributes();
             $compareData = array();
-            $this->assertEquals(1, count($attributes));
+            $this->assertEquals(2, count($attributes));
             $this->assertTrue(isset($attributes['amount']));
         }
     }

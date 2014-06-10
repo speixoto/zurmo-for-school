@@ -164,8 +164,13 @@
          */
         protected function getCreateLinkRouteParameters()
         {
-            return array_merge( array('sourceId' => $this->getGridViewId()),
-                                parent::getCreateLinkRouteParameters());
+            $routeParams = array_merge( array('sourceId' => $this->getGridViewId()),
+                                        parent::getCreateLinkRouteParameters());
+            if (($redirectUrl = ArrayUtil::getArrayValue($routeParams, 'redirectUrl')) != null)
+            {
+                $routeParams['redirectUrl'] = TasksUtil::resolveOpenTasksActionsRedirectUrlForDetailsAndRelationsView($redirectUrl);
+            }
+            return $routeParams;
         }
 
         /**
@@ -174,7 +179,7 @@
         protected function renderScripts()
         {
             parent::renderScripts();
-            TasksUtil::registerTaskModalDetailsScript($this->getGridViewId());
+            Yii::app()->custom->registerTaskModalDetailsScript($this->getGridViewId());
             TasksUtil::registerTaskModalEditScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
             TasksUtil::registerTaskModalCopyScript($this->getGridViewId(), $this->getCreateLinkRouteParameters());
             TasksUtil::registerTaskModalDeleteScript($this->getGridViewId());
@@ -197,9 +202,36 @@
             }
         }
 
+        /**
+         * Resolve row menu column class.
+         * @return string
+         */
+        protected function resolveRowMenuColumnClass()
+        {
+            return Yii::app()->custom->resolveRowMenuColumnClassForOpenTaskPortlet($this->getRelationAttributeName());
+        }
+
+        /**
+         * Gets sort attribute for data provider.
+         * @return string
+         */
         protected function getSortAttributeForDataProvider()
         {
             return 'dueDateTime';
+        }
+
+        /**
+         * @return string
+         */
+        public function renderPortletHeadContent()
+        {
+            $parentContent          = parent::renderPortletHeadContent();
+            $defaultOptionsContent  = $this->renderWrapperAndActionElementMenu(Zurmo::t('Core', 'Options'));
+            $wrappedContent         = Yii::app()->custom->renderPortletHeadContentForOpenTaskPortletOnDetailsAndRelationsView(get_class($this),
+                                                                                                                      $this->params,
+                                                                                                                      $defaultOptionsContent,
+                                                                                                                      $parentContent);
+            return $wrappedContent;
         }
     }
 ?>

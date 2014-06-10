@@ -394,15 +394,15 @@
             $this->serializedAvatarData = serialize($avatar);
         }
 
-        public function getAvatarImage($size = 250)
+        public function getAvatarImage($size = 250, $addScheme = false)
         {
-            $avatarUrl = $this->getAvatarImageUrl($size);
+            $avatarUrl = $this->getAvatarImageUrl($size, $addScheme);
             return ZurmoHtml::image($avatarUrl, $this->getFullName(), array('class'  => 'gravatar',
                                                                               'width'  => $size,
                                                                               'height' => $size));
         }
 
-        private function getAvatarImageUrl($size)
+        private function getAvatarImageUrl($size, $addScheme = false)
         {
             assert('is_int($size)');
             {
@@ -410,9 +410,11 @@
                 {
                     $avatar = unserialize($this->serializedAvatarData);
                 }
-                $baseGravatarUrl = 'http://www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
+                // Begin Not Coding Standard
+                $baseGravatarUrl = '//www.gravatar.com/avatar/%s?s=' . $size . '&r=g';
                 $gravatarUrlFormat        = $baseGravatarUrl . '&d=identicon';
                 $gravatarDefaultUrlFormat = $baseGravatarUrl . '&d=mm';
+                // End Not Coding Standard
                 if (isset($avatar['avatarType']) && $avatar['avatarType'] == User::AVATAR_TYPE_DEFAULT)
                 {
                     $avatarUrl = sprintf($gravatarDefaultUrlFormat, '');
@@ -440,7 +442,7 @@
                 else
                 {
                     //Check connection to gravatar and return offline picture
-                    $htmlHeaders = @get_headers($avatarUrl);
+                    $htmlHeaders = @get_headers('http:' . $avatarUrl);
                     if (preg_match("|200|", $htmlHeaders[0]))
                     {
                         $this->avatarImageUrl = $avatarUrl;
@@ -449,6 +451,10 @@
                     {
                         $this->avatarImageUrl = Yii::app()->theme->baseUrl . '/images/offline_user.png';
                     }
+                }
+                if ($addScheme)
+                {
+                    return 'http:' . $this->avatarImageUrl;
                 }
                 return $this->avatarImageUrl;
             }

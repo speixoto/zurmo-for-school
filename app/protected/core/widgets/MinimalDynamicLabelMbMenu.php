@@ -63,13 +63,5 @@
             }
             return $resolvedLabelContent;
         }
-
-        protected function resolveNavigationClass()
-        {
-            if (!Yii::app()->userInterface->isMobile())
-            {
-                parent::resolveNavigationClass();
-            }
-        }
     }
 ?>

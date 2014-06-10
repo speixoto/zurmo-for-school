@@ -84,7 +84,6 @@
          */
         public function getImageCachePath($shouldGetThumbnail = false)
         {
-            //TODO: @sergio: Add test
             if ($shouldGetThumbnail)
             {
                 return static::getPathToCachedFiles() . static::THUMB_FILE_NAME_PREFIX . $this->getImageCacheFileName();
@@ -178,6 +177,22 @@
             else
             {
                 file_put_contents($imageCachePath, $this->fileContent->content);
+            }
+        }
+
+        public function fileTypeValidator($attribute, $params)
+        {
+            if ($this->type == 'image/png' ||
+                 $this->type == 'image/jpg' ||
+                 $this->type == 'image/gif' ||
+                 $this->type == 'image/jpeg')
+            {
+                return true;
+            }
+            else
+            {
+                $this->addError($attribute, Zurmo::t('ZurmoModule', 'File type is not valid.'));
+                return false;
             }
         }
     }

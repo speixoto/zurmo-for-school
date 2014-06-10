@@ -87,6 +87,15 @@
             $this->resolveIsNew($formModel);
             $this->resolveExplicitReadWritePermissions($formModel);
             $this->resolveIsDraftDefault($formModel);
+            $this->resolveFiles($formModel);
+        }
+
+        protected function resolveFiles(EmailTemplateWizardForm $formModel)
+        {
+            foreach ($this->emailTemplate->files as $file)
+            {
+                $formModel->files[] = $file;
+            }
         }
 
         protected function resolveEmailTemplateMembers(EmailTemplateWizardForm $formModel)

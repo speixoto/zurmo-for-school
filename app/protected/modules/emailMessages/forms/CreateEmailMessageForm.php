@@ -41,6 +41,8 @@
     {
         public $recipientsData;
 
+        public $contactEmailTemplateNames;
+
         protected static function getRedBeanModelClassName()
         {
             return 'EmailMessage';

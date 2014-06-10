@@ -1030,7 +1030,7 @@
                 array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
             if (SHOW_QUERY_DATA)
             {
-                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                $messageStreamer->add(FooterView::getTotalAndDuplicateQueryCountContent());
                 $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
             }
             $messageStreamer->add(Zurmo::t('InstallModule', 'Database schema creation complete.'));
@@ -1170,7 +1170,7 @@
                                           array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
                     if (SHOW_QUERY_DATA)
                     {
-                        $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                        $messageStreamer->add(FooterView::getTotalAndDuplicateQueryCountContent());
                         $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
                     }
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Finished loading demo data.'));

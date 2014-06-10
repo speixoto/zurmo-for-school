@@ -176,16 +176,19 @@
                 $oldExpression            = $expression;
                 $pattern                  = '/\b' . $attribute . '\b/';
                 $expression               = preg_replace($pattern, $replacementValue, $expression);
-                $extraZerosForDecimalPart = '';
                 if ($expression !== $oldExpression)
                 {
                     self::resolveFormatTypeAndCurrencyCode($formatType, $currencyCode, $model, $attribute);
                 }
-                elseif (strpos($expression, '.') !== false)
+            }
+            $extraZerosForDecimalPart = '';
+            if (strpos($expression, '.') !== false && is_numeric($expression))
+            {
+                if ($formatType == self::FORMAT_TYPE_INTEGER)
                 {
-                    $formatType               = self::FORMAT_TYPE_DECIMAL;
-                    $extraZerosForDecimalPart = str_replace((float)$expression, '', $expression);
+                    $formatType = self::FORMAT_TYPE_DECIMAL;
                 }
+                $extraZerosForDecimalPart = str_replace((float)$expression, '', $expression);
             }
             $result = static::mathEval($expression);
             if ($result === false)
