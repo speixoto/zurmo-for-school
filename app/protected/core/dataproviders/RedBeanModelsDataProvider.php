@@ -98,7 +98,7 @@
             }
             if (count($this->modelClassNamesAndSearchAttributeData) == 0)
             {
-                return null;
+                return array();
             }
             $unionSql = static::makeUnionSql($this->modelClassNamesAndSearchAttributeData,
                                              $this->modelClassNamesAndSortAttributes,

@@ -65,6 +65,28 @@
             $this->assertEquals($project->name, unserialize($events[0]->serializedData));
         }
 
+        public function testCreateAuditEventWithInvalidProjectValidation()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $user                       = Yii::app()->user->userModel;
+
+            $project                  = new Project();
+            $project->name            = 'Project 1';
+            $project->owner           = $user;
+            $project->description     = 'Description';
+            $this->assertTrue($project->save());
+            ProjectAuditEvent::deleteAll();
+
+            $project->name            = null;
+            $projectAuditEvent = new ProjectAuditEvent();
+            $saved = $projectAuditEvent->logAuditEvent(ProjectAuditEvent::PROJECT_CREATED, $project,  'name', $user);
+            $this->assertTrue($saved);
+            $events = ProjectAuditEvent::getAll('dateTime', true);
+            $this->assertEquals(ProjectAuditEvent::PROJECT_CREATED, $events[0]->eventName);
+            $this->assertEquals($project->id, $events[0]->project->id);
+            $this->assertEquals('name', unserialize($events[0]->serializedData));
+        }
+
         public function testTimeDifference()
         {
             $time = date("Y-m-d H:i:s", strtotime('-5 hours', time()));

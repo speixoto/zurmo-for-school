@@ -38,7 +38,7 @@
      * Unit test for AuditEventsListControllerUtil
      * To-Do: walkthrough test for AuditEventsListControllerUtil::renderList() action
      */
-    class AuditEventsListControllerTest extends ZurmoBaseTest
+    class AuditEventsListControllerUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -93,6 +93,51 @@
             $this->assertEquals  (ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, $searchAttributeData['clauses']['3']['value']);
 
             $this->assertEquals  ('1 and 2 and 3', $searchAttributeData['structure']);
+
+            $searchAttributeData = AuditEventsListControllerUtil::makeModalSearchAttributeDataByAuditedModel($user);
+
+            $this->assertTrue    (is_array($searchAttributeData)                  );
+            $this->assertTrue    (is_array($searchAttributeData['clauses'])       );
+            $this->assertTrue    (is_string($searchAttributeData['structure'])    );
+            $this->assertTrue    (is_array($searchAttributeData['clauses']['1'])  );
+            $this->assertTrue    (is_array($searchAttributeData['clauses']['2'])  );
+            $this->assertTrue    (is_array($searchAttributeData['clauses']['3'])  );
+            $this->assertTrue    (is_array($searchAttributeData['clauses']['4'])  );
+            $this->assertTrue    (is_array($searchAttributeData['clauses']['5'])  );
+            $this->assertTrue    (is_array($searchAttributeData['clauses']['6'])  );
+            $this->assertEquals  (6, count($searchAttributeData['clauses'])       );
+            $this->assertEquals  (3, count($searchAttributeData['clauses']['1'])  );
+            $this->assertEquals  (3, count($searchAttributeData['clauses']['2'])  );
+            $this->assertEquals  (3, count($searchAttributeData['clauses']['3'])  );
+            $this->assertEquals  (3, count($searchAttributeData['clauses']['4'])  );
+            $this->assertEquals  (3, count($searchAttributeData['clauses']['5'])  );
+            $this->assertEquals  (3, count($searchAttributeData['clauses']['6'])  );
+
+            $this->assertEquals  ('modelClassName', $searchAttributeData['clauses']['1']['attributeName']);
+            $this->assertEquals  ('equals', $searchAttributeData['clauses']['1']['operatorType']         );
+            $this->assertEquals  (get_class($user), $searchAttributeData['clauses']['1']['value']     );
+
+            $this->assertEquals  ('modelId', $searchAttributeData['clauses']['2']['attributeName']       );
+            $this->assertEquals  ('equals', $searchAttributeData['clauses']['2']['operatorType']         );
+            $this->assertEquals  ($user->id, $searchAttributeData['clauses']['2']['value']            );
+
+            $this->assertEquals  ('eventName', $searchAttributeData['clauses']['3']['attributeName']     );
+            $this->assertEquals  ('doesNotEqual', $searchAttributeData['clauses']['3']['operatorType']   );
+            $this->assertEquals  (ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, $searchAttributeData['clauses']['3']['value']);
+
+            $this->assertEquals  ('eventName', $searchAttributeData['clauses']['4']['attributeName']);
+            $this->assertEquals  ('equals', $searchAttributeData['clauses']['4']['operatorType']         );
+            $this->assertEquals  (UsersModule::AUDIT_EVENT_USER_LOGGED_IN, $searchAttributeData['clauses']['4']['value']     );
+
+            $this->assertEquals  ('eventName', $searchAttributeData['clauses']['5']['attributeName']);
+            $this->assertEquals  ('equals', $searchAttributeData['clauses']['5']['operatorType']         );
+            $this->assertEquals  (UsersModule::AUDIT_EVENT_USER_LOGGED_OUT, $searchAttributeData['clauses']['5']['value']     );
+
+            $this->assertEquals  ('user', $searchAttributeData['clauses']['6']['attributeName']);
+            $this->assertEquals  ('equals', $searchAttributeData['clauses']['6']['operatorType']         );
+            $this->assertEquals  ($user->id, $searchAttributeData['clauses']['6']['value']     );
+
+            $this->assertEquals  ('1 and 2 and 3 or ((4 or 5) and 6)', $searchAttributeData['structure']);
         }
 
         public function testMakeDataProviderBySearchAttributeData()
@@ -113,6 +158,20 @@
             $firstAuditEvent = current($data);
             $accountName = unserialize($firstAuditEvent->serializedData);
             $this->assertEquals($account->name,     $accountName);
+
+            //For login/logout events
+            $searchAttributeData = AuditEventsListControllerUtil::makeModalSearchAttributeDataByAuditedModel($user);
+            $dataProvider = AuditEventsListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
+            $this->assertTrue($dataProvider instanceof RedBeanModelDataProvider);
+            $data = $dataProvider->getData();
+            $count = count($data);
+            AuditEvent::logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_LOGGED_IN, null, null, $user);
+            AuditEvent::logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_LOGGED_OUT, null, null, $user);
+            $searchAttributeData = AuditEventsListControllerUtil::makeModalSearchAttributeDataByAuditedModel($user);
+            $dataProvider = AuditEventsListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
+            $this->assertTrue($dataProvider instanceof RedBeanModelDataProvider);
+            $data = $dataProvider->getData();
+            $this->assertEquals($count + 2, count($data));
         }
     }
 ?>

@@ -75,6 +75,7 @@
                 'it' => 'ItalianSomethingElse',
             );
             Account::setMetadata($metadata);
+            RedBeanModel::forgetAll();
             //Set language back to english.
             Yii::app()->language = 'en';
             $this->assertEquals('EnglishSomething', $account->getAttributeLabel('officePhone'));

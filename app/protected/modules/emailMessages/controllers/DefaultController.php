@@ -129,9 +129,12 @@
                 if ($configurationForm->validate())
                 {
                     EmailSmtpConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
-                    Yii::app()->user->setFlash('notification',
-                        Zurmo::t('EmailMessagesModule', 'Email configuration saved successfully.')
-                    );
+                    if (!Yii::app()->user->hasFlash('notification'))
+                    {
+                        Yii::app()->user->setFlash('notification',
+                            Zurmo::t('EmailMessagesModule', 'Email configuration saved successfully.')
+                        );
+                    }
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
@@ -549,6 +552,7 @@
                 EmailMessageUtil::resolveEmailMessageFromPostData($postData, $emailMessageForm, Yii::app()->user->userModel);
                 $this->actionValidateCreateEmailMessage($postData, $emailMessageForm);
                 $this->attemptToSaveModelFromPost($emailMessageForm, null, false);
+
                 ZurmoControllerUtil::updatePermissionsWithDefaultForModelByCurrentUser($emailMessageForm->getModel());
                 Yii::app()->jobQueue->add('ProcessOutboundEmail');
             }
@@ -690,7 +694,7 @@
 
         protected static function getZurmoControllerUtil()
         {
-            return new FileZurmoControllerUtil();
+            return new EmailTemplateZurmoControllerUtil();
         }
     }
 ?>

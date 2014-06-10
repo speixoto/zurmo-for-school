@@ -45,7 +45,13 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof Role');
-            return parent::renderControlEditable();
+            $content  = parent::renderControlEditable();
+            return $content;
+        }
+
+        protected function renderClearLink()
+        {
+            return true;
         }
 
         /**

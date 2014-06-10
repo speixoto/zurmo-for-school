@@ -84,7 +84,14 @@
             if ($security->canUserPerformAction())
             {
                 $params              = array('label' => strval($model), 'wrapLabel' => false);
-                $moduleClassName     = $model->getModuleClassName();
+                if (get_class($model) == 'Contact')
+                {
+                    $moduleClassName = ContactsStateMetadataAdapter::getModuleClassNameByModel($model);
+                }
+                else
+                {
+                    $moduleClassName = $model->getModuleClassName();
+                }
                 $moduleId            = $moduleClassName::getDirectoryName();
                 $relatedModelElement = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
                 return $relatedModelElement->render();

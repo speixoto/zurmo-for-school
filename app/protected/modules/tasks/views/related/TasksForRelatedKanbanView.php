@@ -46,6 +46,8 @@
 
         protected static $defaultPageSize = 1000;
 
+        protected $searchFormModel;
+
         /**
          * @return array
          */
@@ -95,7 +97,8 @@
             $params,
             $gridIdSuffix = null,
             $gridViewPagerParams = array(),
-            $kanbanBoard            = null
+            $kanbanBoard            = null,
+            $searchModel            = null
         )
         {
             assert('is_string($modelClassName)');
@@ -111,6 +114,11 @@
             $this->setKanbanBoard($kanbanBoard);
             $this->params                 = $params;
             $this->modelId                = $params["relationModel"]->id;
+            $this->searchFormModel        = $searchModel;
+            if($this->searchFormModel !== null)
+            {
+                $this->searchFormModel->setKanbanBoard($kanbanBoard);
+            }
         }
 
         /**
@@ -126,6 +134,10 @@
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
             $content     = $this->renderKanbanViewTitleWithActionBars();
+            if($this->searchFormModel !== null)
+            {
+                $content    .= $this->renderSearchView();
+            }
             $this->registerKanbanGridScript();
             TasksUtil::resolveShouldOpenToTask($this->getGridId());
             $content    .= $cClipWidget->getController()->clips['ListView'] . "\n";
@@ -152,7 +164,7 @@
          */
         protected function getCardColumns()
         {
-            return array(
+            $columns = array(
                 'name'   => array('value'   => $this->getLinkString('$data->name', 'name'), 'class' => 'task-name'),
                 'status' => array('value'   => 'TasksUtil::resolveActionButtonForTaskByStatus(intval($data->status), "' .
                                                $this->controllerId . '", "' . $this->moduleId . '", $data->id)',
@@ -162,6 +174,7 @@
                 'completionBar' => array('value' => 'TasksUtil::renderCompletionProgressBarContent($data)',
                                                     'class' => 'task-completion')
             );
+            return Yii::app()->custom->resolveKanbanCardColumns($columns);
         }
 
         /**
@@ -457,6 +470,15 @@
         protected function getShowTableOnEmpty()
         {
             return true;
+        }
+
+        /**
+         * Renders search view.
+         * @return string
+         */
+        protected function renderSearchView()
+        {
+            return Yii::app()->custom->renderKanbanSearchView($this->searchFormModel, $this->params);
         }
     }
 ?>

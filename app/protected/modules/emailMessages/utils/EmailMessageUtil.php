@@ -91,10 +91,6 @@
             $sender->personsOrAccounts->add($userToSendMessagesFrom);
             $emailMessageForm->sender               = $sender;
             $emailMessageForm->account              = $emailAccount;
-            $emailMessageForm->content->textContent = EmailMessageUtil::resolveTextContent(
-                                                        ArrayUtil::getArrayValue(
-                                                            $postData[$postVariableName]['content'], 'htmlContent'),
-                                                            null);
             $box                                    = EmailBoxUtil::getDefaultEmailBoxByUser($userToSendMessagesFrom);
             $emailMessageForm->folder               = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_OUTBOX);
             return $emailMessageForm;

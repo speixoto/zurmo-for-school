@@ -164,6 +164,10 @@
             $emailTemplate              = new EmailTemplate();
             $emailTemplate->type        = $type;
             $emailTemplate->builtType   = $builtType;
+            if ($emailTemplate->isWorkflowTemplate())
+            {
+                $emailTemplate->modelClassName = 'Account';
+            }
             $breadCrumbLink             = Zurmo::t('Core', 'Create');
             if ($emailTemplate->isPlainTextTemplate()|| $emailTemplate->isPastedHtmlTemplate())
             {
@@ -369,10 +373,15 @@
         /**
          * @param null $uniqueId
          * @param null $nodeId
-         * @param string $moduleClassName
+         * @param string $modelClassName
          */
-        public function actionRelationsAndAttributesTreeForMergeTags($uniqueId = null, $nodeId = null, $moduleClassName = 'ContactsModule')
+        public function actionRelationsAndAttributesTreeForMergeTags($uniqueId = null, $nodeId = null, $modelClassName = 'Contact')
         {
+            if ($modelClassName == null)
+            {
+                $modelClassName = 'Contact';
+            }
+            $moduleClassName = $modelClassName::getModuleClassName();
             $type     = Report::TYPE_ROWS_AND_COLUMNS;
             $treeType = ComponentForReportForm::TYPE_FILTERS;
             $report   = new Report();

@@ -590,6 +590,7 @@
             $this->runControllerWithRedirectExceptionAndGetContent('designer/default/attributeEdit');
 
             //Now confirm everything did in fact save correctly.
+            RedBeanModel::forgetAll();
             $modelClassName = $moduleClassName::getPrimaryModelName();
             $newModel       = new $modelClassName(false);
             $compareData = array(
@@ -599,7 +600,6 @@
                 'en' => $name . ' en',
                 'fr' => $name . ' fr',
             );
-
             if ($isCustomField)
             {
                 $name = $name . 'Cstm';
@@ -609,7 +609,6 @@
                 $this->assertEquals(
                     $compareData, $newModel->getAttributeLabelsForAllActiveLanguagesByAttributeName($name));
             }
-
             if ($attributeTypeName != "CalculatedNumber" && $attributeTypeName != "DropDownDependency")
             {
                 //Now test going to the user interface edit view for the existing attribute.

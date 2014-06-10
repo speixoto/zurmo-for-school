@@ -58,7 +58,7 @@
                     array('type',        'required'),
                     array('type',        'type',    'type' => 'string'),
                     array('type',        'length',  'min'  => 1, 'max' => 128),
-                    array('type',        'fileType'),
+                    array('type',        'fileTypeValidator'),
 
                 ),
                 'defaultSortAttribute' => 'name',
@@ -69,7 +69,7 @@
             return $metadata;
         }
 
-        public function fileType($attribute, $params)
+        public function fileTypeValidator($attribute, $params)
         {
             return true;
         }

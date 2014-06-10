@@ -68,7 +68,6 @@
                                 'language',
                                 'locale',
                                 'manager',
-
                                 'role',
                                 'serializedAvatarData',
                                 'timeZone'),

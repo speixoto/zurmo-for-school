@@ -36,6 +36,13 @@
 
     class FooterView extends View
     {
+        protected  $startTime;
+
+        public function __construct()
+        {
+            $this->startTime = microtime(true);
+        }
+
         protected function renderContent()
         {
             //Do not remove the Zurmo logo or Zurmo Copyright notice.
@@ -47,8 +54,9 @@
             //logo and Zurmo copyright notice. If the display of the logo is not reasonably
             //feasible for technical reasons, the Appropriate Legal Notices must display the words
             //"Copyright Zurmo Inc. 2014. All rights reserved".
-            $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
+            $copyrightHtml  = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
                              'Copyright &#169; Zurmo Inc., 2014. All rights reserved.</span></a>';
+            $copyrightHtml .= $this->renderPerformance();
             $content = ZurmoHtml::tag('div', array('class' => 'container'), $copyrightHtml);
             return $content;
         }
@@ -56,6 +64,72 @@
         protected function getContainerWrapperTag()
         {
             return 'footer';
+        }
+
+        protected function renderPerformance()
+        {
+            $performanceMessage = null;
+            if (YII_DEBUG)
+            {
+                if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
+                {
+                    $endTime      = microtime(true);
+                    $endTotalTime = Yii::app()->performance->endClockAndGet();
+                    if (defined('XHTML_VALIDATION') && XHTML_VALIDATION)
+                    {
+                        $performanceMessage .= '<span>Total page view time including validation: <strong>' . number_format(($endTime - $this->startTime), 3) . ' seconds.</strong></span><br />';
+                    }
+                    else
+                    {
+                        $performanceMessage .= '<span>Total page view time: <strong>' . number_format(($endTime - $this->startTime), 3) . ' seconds.</strong></span><br />';
+                    }
+                    $performanceMessage .= '<span>Total page time: <strong>' . number_format(($endTotalTime), 3) . ' seconds.</strong></span><br />';
+                }
+            }
+            else
+            {
+                if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
+                {
+                    $endTime      = microtime(true);
+                    $endTotalTime = Yii::app()->performance->endClockAndGet();
+                    $performanceMessage .= 'Load time: <strong>' . number_format(($endTotalTime), 3) . ' seconds.</strong><br />';
+                }
+            }
+            if (SHOW_PERFORMANCE && Yii::app()->isApplicationInstalled())
+            {
+                if (SHOW_QUERY_DATA)
+                {
+                    $performanceMessage .= self::makeShowQueryDataContent();
+                }
+                foreach (Yii::app()->performance->getTimings() as $id => $time)
+                {
+                    $performanceMessage .= 'Timing: <strong>' . $id . '</strong> total time: <strong>' . number_format(($time), 3) . "</strong></br>";
+                }
+                $performanceMessage = '<div class="performance-info">' . $performanceMessage . '</div>';
+            }
+            return $performanceMessage;
+        }
+
+        public static function makeShowQueryDataContent()
+        {
+            $performanceMessage  = static::getTotalAndDuplicateQueryCountContent();
+            $duplicateData = Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesData();
+            if (count($duplicateData) > 0)
+            {
+                $performanceMessage .= '</br></br>' . '<h4>Duplicate Queries:</h4>' . '</br>';
+            }
+            foreach ($duplicateData as $query => $count)
+            {
+                $performanceMessage .= 'Count: <strong>' . $count . '</strong>&#160;&#160;&#160;Query: <strong>' . $query . '</strong></br>';
+            }
+            return $performanceMessage;
+        }
+
+        public static function getTotalAndDuplicateQueryCountContent()
+        {
+            $performanceMessage  = 'Total/Duplicate Queries: <strong>' . Yii::app()->performance->getRedBeanQueryLogger()->getQueriesCount();
+            $performanceMessage .= '/' . Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesCount() . '</strong>';
+            return $performanceMessage;
         }
     }
 ?>

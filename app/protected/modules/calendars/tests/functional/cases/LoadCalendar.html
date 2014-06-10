@@ -47,7 +47,7 @@
 <!--store current month name-->
 <tr>
 	<td>storeGlobal</td>
-	<td>javascript{var d = new Date().toLocaleString().split(/[ ,]+/); d[1];}</td>
+	<td>javascript{var d = new Date().toString().split(/[ ,]+/); d[1];}</td>
 	<td>monthName</td>
 </tr>
 <!--store current month short name-->
@@ -149,11 +149,11 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<tr>
+<!--tr>
 	<td>waitForText</td>
 	<td>//div[@id='calendar']/table/tbody/tr/td[2]/span/h2</td>
 	<td>${dayName}, ${monthShortName} ${date}, ${year}</td>
-</tr>
+</tr-->
 <tr>
 	<td>click</td>
 	<td>//div[@id='calendar']/table/tbody/tr/td[3]/span[1]</td>
@@ -189,11 +189,11 @@
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
 </tr>
-<tr>
+<!--tr>
 	<td>waitForText</td>
 	<td>//div[@id='calendar']/table/tbody/tr/td[2]/span/h2</td>
 	<td>${dayName}, ${monthShortName} ${date}, ${year}</td>
-</tr>
+</tr-->
 <tr>
 	<td>click</td>
 	<td>//div[@id='calendar']/table/tbody/tr/td[3]/span[2]</td>

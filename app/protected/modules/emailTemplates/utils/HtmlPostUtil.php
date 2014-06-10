@@ -39,6 +39,6 @@
      */
     class HtmlPostUtil extends PostUtil
     {
-        protected static $skippedAttributes = array('textContent', 'htmlContent');
+        protected static $skippedAttributes = array('textContent', 'htmlContent', 'content');
     }
 ?>

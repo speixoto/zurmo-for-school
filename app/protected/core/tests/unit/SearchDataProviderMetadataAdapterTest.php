@@ -811,6 +811,42 @@
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
 
+        public function testSearchFormDynamicAttributesTodayAndBeforeTodayDateSearch()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+
+            $searchAttributes = array(
+                'date__Date'      => array('type'          => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY),
+                'date2__Date'      => array('type'          => MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE_TODAY),
+            );
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
+            $metadataAdapter = new SearchDataProviderMetadataAdapter(
+                $searchForm,
+                $super->id,
+                $searchAttributes
+            );
+            $metadata           = $metadataAdapter->getAdaptedMetadata();
+            $today              = DateTimeCalculatorUtil::calculateNew(DateTimeCalculatorUtil::TODAY,
+                                        new DateTime(null, new DateTimeZone(Yii::app()->timeZoneHelper->getForCurrentUser())));
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'date',
+                    'operatorType'         => 'equals',
+                    'value'                => $today,
+                ),
+                2 => array(
+                    'attributeName'        => 'date2',
+                    'operatorType'         => 'lessThan',
+                    'value'                => $today,
+                ),
+            );
+
+            $compareStructure = '(1) and (2)';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
         public function testSearchFormDynamicAttributesBetweenAndOnDateTimeSearch()
         {
             $super                      = User::getByUsername('super');

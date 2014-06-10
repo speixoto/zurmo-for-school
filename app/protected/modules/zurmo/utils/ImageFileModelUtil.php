@@ -49,7 +49,6 @@
         {
             assert('is_string($fileName)');
             assert('is_bool($shouldGetThumbnail)');
-            //TODO: @sergio: Add tests
             $imagePath = ImageFileModel::getImageCachePathByFileName($fileName, $shouldGetThumbnail);
             if (!file_exists($imagePath))
             {

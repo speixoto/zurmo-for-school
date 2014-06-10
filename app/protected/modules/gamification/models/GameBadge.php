@@ -185,5 +185,21 @@
         {
             return Zurmo::t('GamificationModule', 'Game Badges', array(), null, $language);
         }
+
+        /**
+         * @see BeanModel::resolveCachedMetadataForIntegrity for a fun explanation of why this function exists.
+         * Hopefully at some point in the future we can ascertain why this is actually happening and fix this bug
+         * once and for all.
+         * @param $cachedData
+         * @throws NotFoundException
+         */
+        protected static function resolveCachedMetadataForIntegrity($cachedData)
+        {
+            if (empty($cachedData['attributeNamesToClassNames']) ||
+                empty($cachedData['attributeNamesToClassNames']['GameBadge']))
+            {
+                throw new NotFoundException();
+            }
+        }
     }
 ?>

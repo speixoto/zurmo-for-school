@@ -1121,7 +1121,7 @@
                                                 'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
@@ -1141,8 +1141,8 @@
                                                 'name="ClassicEmailTemplateWizardForm[language]"') !== false);
             $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_hiddenId" type="hidden" ' .
                                                 'value="0" name="ClassicEmailTemplateWizardForm[hiddenId]"') !== false);
-            $this->assertTrue(strpos($content, '<input id="moduleClassNameForMergeTagsViewId" type="hidden" ' .
-                                                'name="moduleClassNameForMergeTagsViewId"') !== false);
+            $this->assertTrue(strpos($content, '<input id="modelClassNameForMergeTagsViewId" type="hidden" ' .
+                                                'name="modelClassNameForMergeTagsViewId"') !== false);
             $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_modelClassName" ' .
                                                 'type="hidden" value="Contact" name="ClassicEmailTemplate' .
                                                 'WizardForm[modelClassName]"') !== false);
@@ -1290,7 +1290,7 @@
                                                 'subject" name="ClassicEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneClassicEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadClassicEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
@@ -1310,8 +1310,8 @@
                                                 'name="ClassicEmailTemplateWizardForm[language]"') !== false);
             $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_hiddenId" type="hidden" ' .
                                                 'value="0" name="ClassicEmailTemplateWizardForm[hiddenId]"') !== false);
-            $this->assertTrue(strpos($content, '<input id="moduleClassNameForMergeTagsViewId" type="hidden" ' .
-                                                'name="moduleClassNameForMergeTagsViewId"') !== false);
+            $this->assertTrue(strpos($content, '<input id="modelClassNameForMergeTagsViewId" type="hidden" ' .
+                                                'value="Account" name="modelClassNameForMergeTagsViewId"') !== false);
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
             $this->assertTrue(strpos($content, '<div class="right-side-edit-view-panel">') !== false);
             $this->assertTrue(strpos($content, '<h3>Rights and Permissions</h3><div id="owner-box">') !== false);
@@ -1466,7 +1466,7 @@
                                                 'subject" name="BuilderEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadBuilderEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
@@ -1486,8 +1486,8 @@
                                                 'name="BuilderEmailTemplateWizardForm[language]"') !== false);
             $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_hiddenId" type="hidden" ' .
                                                 'value="0" name="BuilderEmailTemplateWizardForm[hiddenId]"') !== false);
-            $this->assertTrue(strpos($content, '<input id="moduleClassNameForMergeTagsViewId" type="hidden" ' .
-                                                'name="moduleClassNameForMergeTagsViewId"') !== false);
+            $this->assertTrue(strpos($content, '<input id="modelClassNameForMergeTagsViewId" type="hidden" ' .
+                                                'value="Account" name="modelClassNameForMergeTagsViewId"') !== false);
             $this->assertTrue(strpos($content, '<div class="right-column">') !== false);
             $this->assertTrue(strpos($content, '<div class="right-side-edit-view-panel">') !== false);
             $this->assertTrue(strpos($content, '<h3>Rights and Permissions</h3><div id="owner-box">') !== false);
@@ -1791,7 +1791,7 @@
                                                 'subject" name="BuilderEmailTemplateWizardForm[subject]"' .
                                                 ' type="text" maxlength="64" value="builder 01"') !== false);
             $this->assertTrue(strpos($content, '<tr><th><label>Attachments</label></th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm">' .
+            $this->assertTrue(strpos($content, '<td colspan="1"><div id="dropzoneBuilderEmailTemplateWizardForm"></div>' .
                                                 '<div id="fileUploadBuilderEmailTemplateWizardForm">') !== false);
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
@@ -1812,8 +1812,8 @@
             $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_hiddenId" type="hidden" ' .
                                                 'value="' . $emailTemplateId . '" name="BuilderEmailTemplate' .
                                                 'WizardForm[hiddenId]"') !== false);
-            $this->assertTrue(strpos($content, '<input id="moduleClassNameForMergeTagsViewId" type="hidden" ' .
-                                                'value="ContactsModule" name="moduleClassNameFor' .
+            $this->assertTrue(strpos($content, '<input id="modelClassNameForMergeTagsViewId" type="hidden" ' .
+                                                'value="Contact" name="modelClassNameFor' .
                                                 'MergeTagsViewId"') !== false);
             $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_modelClassName" ' .
                                                 'type="hidden" value="Contact" name="BuilderEmailTemplate' .
@@ -2463,7 +2463,7 @@
             $availableModules   = EmailTemplateModelClassNameElement::getAvailableModelNamesArray();
             foreach ($availableModules as $key => $name)
             {
-                $this->assertTrue(strpos($content, '<option value="' . $key . '">' . $name. '</option>') !== false); // Not Coding Standard
+                $this->assertTrue(strpos($content, '<option value="' . $key) !== false); // Not Coding Standard
             }
         }
 
