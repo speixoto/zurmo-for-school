@@ -163,15 +163,14 @@
             $this->assertTrue(strpos($content, '<option value="2">Unsubscribed from list</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" ' .
                                                 'type="text" maxlength="64"') !== false);
-            $this->assertTrue(strpos($content, '<tr><th>Select a template</th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><input name="Autoresponder[contactEmailTemplateNames][id]"' .
-                                                ' id="Autoresponder_contactEmailTemplateNames_id"' .
+            $this->assertTrue(strpos($content, '<tr><th><label for="Autoresponder_contactEmailTemplateNames_name">Select a template</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div class="has-model-select">' .
+                                                '<input name="" id="Autoresponder_contactEmailTemplateNames_id"' .
                                                 ' value="" type="hidden" />') !== false);
-            $this->assertTrue(strpos($content, '<div class="has-model-select">') !== false);
             $this->assertTrue(strpos($content, '<input onblur="clearIdFromAutoCompleteField($(this).val(), &#039;' .
                                                 'Autoresponder_contactEmailTemplateNames_id&#039;);" id="Autoresponder_contact' .
                                                 'EmailTemplateNames_name" type="text" value="" ' .
-                                                'name="Autoresponder_contactEmailTemplateNames_name" />') !== false);
+                                                'name="" />') !== false);
             $this->assertTrue(strpos($content, '<a id="Autoresponder_contactEmailTemplateNames_SelectLink" href="#">' .
                                                 '<span class="model-select-icon"></span><span class="z-spinner">' .
                                                 '</span></a></div></td></tr>') !== false);
@@ -367,15 +366,15 @@
             $this->assertTrue(strpos($content, '<option value="2" selected="selected">Unsubscribed from list</option>') !== false);
             $this->assertTrue(strpos($content, '<input id="Autoresponder_subject" name="Autoresponder[subject]" ' .
                                                 'type="text" maxlength="64" value="Subject 04"') !== false);
-            $this->assertTrue(strpos($content, '<tr><th>Select a template</th>') !== false);
-            $this->assertTrue(strpos($content, '<td colspan="1"><input name="Autoresponder[contactEmailTemplateNames][id]"' .
+            $this->assertTrue(strpos($content, '<tr><th><label for="Autoresponder_contactEmailTemplateNames_name">Select a template</label></th>') !== false);
+            $this->assertTrue(strpos($content, '<td colspan="1"><div class="has-model-select"><input name=""' .
                                                 ' id="Autoresponder_contactEmailTemplateNames_id"' .
                                                 ' value="" type="hidden" />') !== false);
             $this->assertTrue(strpos($content, '<div class="has-model-select">') !== false);
             $this->assertTrue(strpos($content, '<input onblur="clearIdFromAutoCompleteField($(this).val(), &#039;' .
                                                 'Autoresponder_contactEmailTemplateNames_id&#039;);" id="Autoresponder_contact' .
                                                 'EmailTemplateNames_name" type="text" value="" ' .
-                                                'name="Autoresponder_contactEmailTemplateNames_name" />') !== false);
+                                                'name="" />') !== false);
             $this->assertTrue(strpos($content, '<a id="Autoresponder_contactEmailTemplateNames_SelectLink" href="#">' .
                                                 '<span class="model-select-icon"></span><span class="z-spinner">' .
                                                 '</span></a></div></td></tr>') !== false);

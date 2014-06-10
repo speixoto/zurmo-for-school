@@ -323,6 +323,7 @@
                 $relationModelClassName = $model->getRelationModelClassName($relation);
                 $newModel               = new $relationModelClassName();
                 self::processActionAttributesForActionBeforeSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel, true);
+                $this->resolveOneToManyPostCreateActionSaveModelCache($model, $relation, $newModel);
                 $saved = $newModel->save();
                 if (!$saved)
                 {
@@ -330,7 +331,6 @@
                 }
                 self::processActionAttributesForActionAfterSave($this->action, $newModel, $this->triggeredByUser, $this->triggeredModel);
                 $model->{$relation}->add($newModel);
-                $this->resolveOneToManyPostCreateActionSaveModelCache($model, $relation, $newModel);
                 $modelToForgetCache = $newModel;
                 return true;
             }

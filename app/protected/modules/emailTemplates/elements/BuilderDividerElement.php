@@ -147,7 +147,7 @@
             }
             $imageOptions   = array('height' => $height);
             $content        = ZurmoHtml::image($src, $alt, $imageOptions);
-            $content        = ZurmoHtml::tag('td', array(), $content);
+            $content        = ZurmoHtml::tag('tr', array(), ZurmoHtml::tag('td', array(), $content));
             return $content;
         }
 
@@ -165,6 +165,16 @@
         protected function resolveDividerCssClassNames()
         {
             return 'simple-divider';
+        }
+
+        /**
+         * Overrinding since in the dividerElement we wrap each td in a tr
+         * @param $content
+         * @return string
+         */
+        protected function resolveWrapperTrNonEditableByContent($content)
+        {
+            return $content;
         }
     }
 ?>

@@ -107,10 +107,6 @@
                     if (isset($inlineStyles[$style]))
                     {
                         $usableInlineStyles[$style] = $inlineStyles[$style];
-                        if ($style == 'color')
-                        {
-                            $usableInlineStyles[$style] .= ' !important';
-                        }
                         unset($mergedProperties['inlineStyles'][$style]);
                     }
                 }
@@ -132,7 +128,7 @@
             }
             foreach ($this->inlineStylesToKeepOnATag as $style)
             {
-                if (isset($properties['inlineStyles']) && isset($properties['inlineStyles'][$style]))
+                if (isset($properties['inlineStyles']) && isset($properties['inlineStyles'][$style]) && $style != 'color')
                 {
                     unset($properties['inlineStyles'][$style]);
                 }

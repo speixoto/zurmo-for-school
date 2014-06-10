@@ -98,51 +98,56 @@
             */
         }
 
-        public static function createCheckBoxAttribute(RedBeanModel $model, $name)
+        public static function createCheckBoxAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new CheckBoxAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createCurrencyValueAttribute(RedBeanModel $model, $name)
+        public static function createCurrencyValueAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new CurrencyValueAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createDateAttribute(RedBeanModel $model, $name)
+        public static function createDateAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new DateAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createDateTimeAttribute(RedBeanModel $model, $name)
+        public static function createDateTimeAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new DateTimeAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createDecimalAttribute(RedBeanModel $model, $name)
+        public static function createDecimalAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new DecimalAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired          = $isRequired;
             $attributeForm->maxLength        = 6;
             $attributeForm->precisionLength  = 2;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -150,11 +155,12 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createDropDownAttribute(RedBeanModel $model, $name)
+        public static function createDropDownAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new DropDownAttributeForm();
             $attributeForm->attributeName       = $name;
             $attributeForm->attributeLabels     = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired          = $isRequired;
             $attributeForm->customFieldDataData = self::createCustomFieldData($name . 'List');
             $attributeForm->customFieldDataName = $name . 'List';
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -162,11 +168,12 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createIntegerAttribute(RedBeanModel $model, $name)
+        public static function createIntegerAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new IntegerAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $attributeForm->maxLength        = 11;
             $attributeForm->minValue         = -500000;
             $attributeForm->maxValue          = 500000;
@@ -180,22 +187,24 @@
             //todo: once multiSelect is completed.
         }
 
-        public static function createPhoneAttribute(RedBeanModel $model, $name)
+        public static function createPhoneAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new PhoneAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $attributeForm->maxLength        = 20;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createRadioDropDownAttribute(RedBeanModel $model, $name)
+        public static function createRadioDropDownAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new RadioDropDownAttributeForm();
             $attributeForm->attributeName       = $name;
             $attributeForm->attributeLabels     = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired          = $isRequired;
             $attributeForm->customFieldDataData = self::createCustomFieldData($name . 'List');
             $attributeForm->customFieldDataName = $name . 'List';
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
@@ -203,32 +212,35 @@
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createTextAttribute(RedBeanModel $model, $name)
+        public static function createTextAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new TextAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $attributeForm->maxLength        = 50;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createTextAreaAttribute(RedBeanModel $model, $name)
+        public static function createTextAreaAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new TextAreaAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);
             $adapter->setAttributeMetadataFromForm($attributeForm);
         }
 
-        public static function createUrlAttribute(RedBeanModel $model, $name)
+        public static function createUrlAttribute(RedBeanModel $model, $name, $isRequired = false)
         {
             $attributeForm = new UrlAttributeForm();
             $attributeForm->attributeName    = $name;
             $attributeForm->attributeLabels  = self::generateAtrributeLabelsByName($name);
+            $attributeForm->isRequired       = $isRequired;
             $attributeForm->maxLength        = 50;
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName($model);

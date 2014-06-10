@@ -103,6 +103,9 @@
             $everyone->setRight('ProjectsModule',      ProjectsModule::RIGHT_ACCESS_PROJECTS, Right::ALLOW);
             $everyone->setRight('ProjectsModule',      ProjectsModule::RIGHT_CREATE_PROJECTS, Right::ALLOW);
             $everyone->setRight('ProjectsModule',      ProjectsModule::RIGHT_DELETE_PROJECTS, Right::ALLOW);
+            $everyone->setRight('CalendarsModule',     CalendarsModule::RIGHT_ACCESS_CALENDAR, Right::ALLOW);
+            $everyone->setRight('CalendarsModule',     CalendarsModule::RIGHT_CREATE_CALENDAR, Right::ALLOW);
+            $everyone->setRight('CalendarsModule',     CalendarsModule::RIGHT_DELETE_CALENDAR, Right::ALLOW);
             $saved = $everyone->save();
             assert('$saved');
         }

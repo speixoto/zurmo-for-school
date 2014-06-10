@@ -97,6 +97,7 @@
                     ),
                 ),
                 'globalSearchAttributeNames' => array(
+                    'uniqueIdentifier',
                     'name',
                 ),
             );

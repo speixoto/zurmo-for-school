@@ -1180,7 +1180,7 @@
             $getData = GetUtil::getData();
             if (null != $taskId = ArrayUtil::getArrayValue($getData, 'openToTaskId'))
             {
-                TasksUtil::registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
+                Yii::app()->custom->registerOpenToTaskModalDetailsScript((int)$taskId, $gridId);
             }
         }
 
@@ -1200,6 +1200,46 @@
                          Zurmo::t('ZurmoModule', 'Status',  array(), null, $language)       => $status,
                          $translatedAttributeLabels['requestedByUser']                      => $requestedByUser,
                          $translatedAttributeLabels['owner']                                => $owner);
+        }
+
+        /**
+         * Resolve that should a task be opened on details and relations view.
+         */
+        public static function resolveShouldOpenToTaskForDetailsAndRelationsView()
+        {
+            $getData = GetUtil::getData();
+            //This would be required in case edit of task navigates to a new page and not modal
+            if (null != $gridId = ArrayUtil::getArrayValue($getData, 'sourceId'))
+            {
+                TasksUtil::resolveShouldOpenToTask($gridId);
+            }
+        }
+
+        /**
+         * Resolve redirect url in case of open task actions on details and relations view.
+         * This is required else same params get added to create url.
+         * @param string redirect url
+         */
+        public static function resolveOpenTasksActionsRedirectUrlForDetailsAndRelationsView($redirectUrl)
+        {
+            if ($redirectUrl != null)
+            {
+                $routeData      = explode('?', $redirectUrl);
+                if (count($routeData) > 1)
+                {
+                    $queryData      = explode('&', $routeData[1]);
+                    foreach ($queryData as $val)
+                    {
+                        if (strpos($val, 'id=') !== false)
+                        {
+                            $routeData[1] = $val;
+                            break;
+                        }
+                    }
+                }
+                $redirectUrl = implode('?', $routeData);
+            }
+            return $redirectUrl;
         }
     }
 ?>

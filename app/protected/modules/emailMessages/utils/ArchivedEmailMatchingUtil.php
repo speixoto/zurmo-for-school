@@ -187,7 +187,7 @@
             throw new NotSupportedException();
         }
 
-        /** 
+        /**
          * Resolves full name with space in the middle to first and last name
          * Removes excess white-space and cleans surrounding quotes left over from imap
          * @param Full name of a person/contact $name
