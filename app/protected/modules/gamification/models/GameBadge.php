@@ -195,7 +195,7 @@
          */
         protected static function resolveCachedMetadataForIntegrity($cachedData)
         {
-            if(empty($cachedData['attributeNamesToClassNames']) ||
+            if (empty($cachedData['attributeNamesToClassNames']) ||
                 empty($cachedData['attributeNamesToClassNames']['GameBadge']))
             {
                 throw new NotFoundException();

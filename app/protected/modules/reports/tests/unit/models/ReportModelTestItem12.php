@@ -34,45 +34,51 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Display the role selection.  This is specifically
-     * for selecting a parent role.
-     */
-    class ParentRoleElement extends RoleElement
+    class ReportModelTestItem12 extends OwnedSecurableItem
     {
-        protected static $modalActionId = 'modalParentList';
-
-        protected function renderControlEditable()
+        public static function getDefaultMetadata()
         {
-            assert('$this->model instanceof Role');
-            $content  = parent::renderControlEditable();
-            return $content;
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                    'emailAddress',
+                ),
+                'rules' => array(
+                    array('emailAddress', 'email'),
+                ),
+            );
+            return $metadata;
         }
 
-        protected function renderClearLink()
+        public static function isTypeDeletable()
         {
             return true;
         }
 
-        /**
-         * Override to ensure the text box is disabled.
-         * This will force the select button to be utililzed
-         * instead of type-ahead.
-         * @return The element's content as a string.
-         */
-        protected function renderTextField($idInputName)
+        public static function getModuleClassName()
         {
-            $htmlOptions               = array();
-            $htmlOptions['disabled']   = 'disabled';
-            $htmlOptions['id']         = $this->getIdForTextField();
-            $htmlOptions['name']       = $this->getNameForTextField();
-            $htmlOptions['value']      = $this->getName();
-            return $this->form->textField($this->model, $this->attribute, $htmlOptions);
+            return 'ReportsTestModule';
         }
 
-        protected function getModalTitleForSelectingModel()
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
-            return Zurmo::t('ZurmoModule', 'Select a Parent Role');
+            return 'ReportModelTestItem12';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ReportModelTestItem12s';
         }
     }
 ?>

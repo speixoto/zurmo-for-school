@@ -229,5 +229,25 @@ class Account extends OwnedSecurableItem implements StarredInterface
             assert('is_string($dateTime)');
             $this->unrestrictedSet('latestActivityDateTime', $dateTime);
         }
+
+        /**
+         * Override to handle the set read-only latestActivityDateTime attribute on the import scenario.
+         * (non-PHPdoc)
+         * @see RedBeanModel::isAllowedToSetReadOnlyAttribute()
+         */
+        public function isAllowedToSetReadOnlyAttribute($attributeName)
+        {
+            if ($this->getScenario() == 'importModel' || $this->getScenario() == 'searchModel')
+            {
+                if ( $attributeName == 'latestActivityDateTime')
+                {
+                    return true;
+                }
+                else
+                {
+                    return parent::isAllowedToSetReadOnlyAttribute($attributeName);
+                }
+            }
+        }
     }
 ?>

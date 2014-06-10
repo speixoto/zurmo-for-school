@@ -38,6 +38,8 @@
       */
     class TasksSearchForm extends OwnedSearchForm
     {
+        public $uniqueIdentifier;
+
         /**
          * @return string
          */
@@ -49,6 +51,29 @@
         public function __construct(Task $model)
         {
             parent::__construct($model);
+        }
+
+        public function rules()
+        {
+            return array_merge(parent::rules(), array(
+                array('uniqueIdentifier', 'safe'),
+            ));
+        }
+
+        public function attributeLabels()
+        {
+            return array_merge(parent::attributeLabels(), array(
+                'uniqueIdentifier' => Zurmo::t('Core', 'Id'),
+            ));
+        }
+
+        public function getAttributesMappedToRealAttributesMetadata()
+        {
+            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
+                'uniqueIdentifier' => array(
+                    array('id')
+                ),
+            ));
         }
     }
 ?>

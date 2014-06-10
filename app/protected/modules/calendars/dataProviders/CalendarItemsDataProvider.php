@@ -215,6 +215,25 @@
             $moduleClassName  = $savedCalendar->moduleClassName;
             $report           = SavedCalendarToReportAdapter::makeReportBySavedCalendar($savedCalendar);
             $existingFilters  = $report->getFilters();
+            //Before and after dates
+            $startFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
+            $startFilter->attributeIndexOrDerivedType = $savedCalendar->startAttributeName;
+            $startFilter->value                       = $this->startDate;
+            $startFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE;
+            $report->addFilter($startFilter);
+            $endFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
+            if ($savedCalendar->endAttributeName != null)
+            {
+                $endFilter->attributeIndexOrDerivedType = $savedCalendar->endAttributeName;
+            }
+            else
+            {
+                $endFilter->attributeIndexOrDerivedType = $savedCalendar->startAttributeName;
+            }
+            $endFilter->value                       = $this->endDate;
+            $endFilter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER;
+            $report->addFilter($endFilter);
+            //In between dates
             $startFilter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(), $report->getType());
             $startFilter->attributeIndexOrDerivedType = $savedCalendar->startAttributeName;
             $startFilter->value                       = $this->startDate;
@@ -236,11 +255,11 @@
             {
                 $filtersCount = count($existingFilters);
                 $report->setFiltersStructure($report->getFiltersStructure() .
-                                             ' AND ' . ($filtersCount + 1) . ' AND ' . ($filtersCount + 2));
+                                             ' AND (' . ($filtersCount + 1) . ' OR ' . ($filtersCount + 2) . ' OR (' . ($filtersCount + 3) . ' AND ' . ($filtersCount + 4) . '))');
             }
             else
             {
-                $report->setFiltersStructure('1 AND 2');
+                $report->setFiltersStructure('1 OR 2 OR (3 AND 4)');
             }
             $displayAttribute = new DisplayAttributeForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                     $report->getType());

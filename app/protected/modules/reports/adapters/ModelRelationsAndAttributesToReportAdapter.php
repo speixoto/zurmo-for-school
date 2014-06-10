@@ -709,6 +709,13 @@
                               false,
                               true,
                               false);
+                foreach ($rules as $key => $rule)
+                {
+                    if (in_array('email', $rule))
+                    {
+                        $rules[$key] = array($ruleAttributeName, 'type', 'type' => 'string');
+                    }
+                }
             }
             return $rules;
         }

@@ -34,45 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Display the role selection.  This is specifically
-     * for selecting a parent role.
-     */
-    class ParentRoleElement extends RoleElement
+    class UniqueIdentifierRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
-        protected static $modalActionId = 'modalParentList';
-
-        protected function renderControlEditable()
-        {
-            assert('$this->model instanceof Role');
-            $content  = parent::renderControlEditable();
-            return $content;
-        }
-
-        protected function renderClearLink()
-        {
-            return true;
-        }
-
-        /**
-         * Override to ensure the text box is disabled.
-         * This will force the select button to be utililzed
-         * instead of type-ahead.
-         * @return The element's content as a string.
-         */
-        protected function renderTextField($idInputName)
-        {
-            $htmlOptions               = array();
-            $htmlOptions['disabled']   = 'disabled';
-            $htmlOptions['id']         = $this->getIdForTextField();
-            $htmlOptions['name']       = $this->getNameForTextField();
-            $htmlOptions['value']      = $this->getName();
-            return $this->form->textField($this->model, $this->attribute, $htmlOptions);
-        }
-
-        protected function getModalTitleForSelectingModel()
-        {
-            return Zurmo::t('ZurmoModule', 'Select a Parent Role');
-        }
     }
 ?>

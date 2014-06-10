@@ -98,7 +98,7 @@
                 {
                     throw new NotSupportedException();
                 }
-                if ($value['type'] == self::TYPE_TODAY)
+                if ($value['type'] == self::TYPE_TODAY || $value['type'] == self::TYPE_BEFORE_TODAY)
                 {
                     return   DateTimeCalculatorUtil::
                              calculateNew(DateTimeCalculatorUtil::TODAY,
@@ -211,9 +211,9 @@
                          self::TYPE_NEXT_7_DAYS  => Zurmo::t('Core', 'Next 7 Days'),
                          self::TYPE_LAST_7_DAYS  => Zurmo::t('Core', 'Last 7 Days'),
                          self::TYPE_LAST_30_DAYS => Zurmo::t('Core', 'Last 30 Days'),
-                         self::TYPE_THIS_MONTH => Zurmo::t('Core', 'This Month'),
-                         self::TYPE_LAST_MONTH => Zurmo::t('Core', 'Last Month'),
-                         self::TYPE_NEXT_MONTH => Zurmo::t('Core', 'Next Month'),
+                         self::TYPE_THIS_MONTH   => Zurmo::t('Core', 'This Month'),
+                         self::TYPE_LAST_MONTH   => Zurmo::t('Core', 'Last Month'),
+                         self::TYPE_NEXT_MONTH   => Zurmo::t('Core', 'Next Month'),
                          self::TYPE_BEFORE_TODAY => Zurmo::t('Core', 'Before Today'),
             );
         }
@@ -363,7 +363,7 @@
                 }
                 elseif ($value['type'] == self::TYPE_BEFORE_TODAY)
                 {
-                    $attributeAndRelations = array(array($realAttributeName, null, 'lessThanOrEqualTo', 'resolveValueByRules'));
+                    $attributeAndRelations = array(array($realAttributeName, null, 'lessThan', 'resolveValueByRules'));
                 }
                 else
                 {

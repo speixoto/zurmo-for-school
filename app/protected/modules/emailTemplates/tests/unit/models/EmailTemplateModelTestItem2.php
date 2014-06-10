@@ -34,45 +34,61 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Display the role selection.  This is specifically
-     * for selecting a parent role.
-     */
-    class ParentRoleElement extends RoleElement
+    class EmailTemplateModelTestItem2 extends Item
     {
-        protected static $modalActionId = 'modalParentList';
-
-        protected function renderControlEditable()
+        public function __toString()
         {
-            assert('$this->model instanceof Role');
-            $content  = parent::renderControlEditable();
-            return $content;
+            return $this->name;
         }
 
-        protected function renderClearLink()
+        public static function getByName($name)
+        {
+            return self::getByNameOrEquivalent('name', $name);
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
         {
             return true;
         }
 
-        /**
-         * Override to ensure the text box is disabled.
-         * This will force the select button to be utililzed
-         * instead of type-ahead.
-         * @return The element's content as a string.
-         */
-        protected function renderTextField($idInputName)
+        public static function getModuleClassName()
         {
-            $htmlOptions               = array();
-            $htmlOptions['disabled']   = 'disabled';
-            $htmlOptions['id']         = $this->getIdForTextField();
-            $htmlOptions['name']       = $this->getNameForTextField();
-            $htmlOptions['value']      = $this->getName();
-            return $this->form->textField($this->model, $this->attribute, $htmlOptions);
+            return 'EmailTemplatesModule';
         }
 
-        protected function getModalTitleForSelectingModel()
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
-            return Zurmo::t('ZurmoModule', 'Select a Parent Role');
+            return 'ImportModelTestItem2';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'ImportModelTestItem2s';
         }
     }
 ?>

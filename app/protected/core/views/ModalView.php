@@ -52,6 +52,9 @@
         public function render()
         {
             $content = parent::render();
+            Yii::app()->clientScript->scriptMap = array(
+                'jquery-ui.min.js' => false,
+            );
             Yii::app()->getClientScript()->render($content);
             return $content;
         }
