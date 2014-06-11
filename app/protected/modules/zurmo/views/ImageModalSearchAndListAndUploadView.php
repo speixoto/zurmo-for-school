@@ -53,7 +53,7 @@
             );
             $this->setView($searchAndListView, 0,0);
 
-            $imageUploadView = new ImageFilesUploadView();
+            $imageUploadView = new ImageFilesUploadView($searchAndListView->getListViewGridId());
             $this->setView($imageUploadView, 1, 0);
 
             $imageFilesImportFromUrlView = new ImageFilesImportFromUrlView($controller, new ImportImageFromUrlForm());

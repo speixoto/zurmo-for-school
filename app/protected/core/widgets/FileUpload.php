@@ -134,6 +134,12 @@
         public $afterDeleteAction;
 
         /**
+         * Javascript string of an action to be performed after a file is uploaded.
+         * @var string
+         */
+        public $onSuccessAction;
+
+        /**
          * Whether to show the max size for an upload.
          * @var boolean
          */
@@ -231,6 +237,7 @@ $(function () {
             }, 1000);
         }
     });
+    $('#fileUpload{$id}').bind('done', function (e, data) { {$this->onSuccessAction} });
     //load existing files
     var existingFiles = {$jsonEncodedExistingFiles};
     var fu = $('#fileUpload{$id}').data('fileupload');

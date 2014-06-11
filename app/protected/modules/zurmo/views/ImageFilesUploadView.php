@@ -40,6 +40,18 @@
      */
     class ImageFilesUploadView extends View
     {
+
+        protected $listViewGridId;
+
+        /**
+         * @param string $listViewGridId
+         */
+        public function __construct($listViewGridId)
+        {
+            assert('is_string($listViewGridId)');
+            $this->listViewGridId         = $listViewGridId;
+        }
+
         /**
          * Renders the view content.
          */
@@ -65,6 +77,7 @@
                 'maxSize'              => (int)InstallUtil::getMaxAllowedFileSize(),
                 'showMaxSize'          => true,
                 'id'                   => __CLASS__,
+                'onSuccessAction'      => "$('#{$this->listViewGridId}').yiiGridView('update');",
             ));
 
             $cClipWidget->endClip();
