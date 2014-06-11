@@ -638,6 +638,52 @@
                 call any_user_in_a_sub_role_has_read_permission(securableitem_id, role_id, class_name, module_name, has_read);
                 return has_read;
             end;',
+
+            'create function create_item(user_id int)
+            returns int
+            begin
+              insert into `item` ( `id`, `createddatetime`,`modifieddatetime`,
+                    `createdbyuser__user_id`, `modifiedbyuser__user_id` )
+                    VALUES ( NULL,  NOW() , NOW(), user_id, user_id  );
+               return last_insert_id();
+            end;',
+
+            'create function create_email_message(text_content text, html_content text, from_name varchar(128),
+                                                    from_address varchar(255), user_id int, owner_id int,
+                                                    subject varchar(255), headers text, folder_id int,
+                                                    serialized_data text, to_address varchar(255), to_name varchar(128),
+                                                    recipient_type int, contact_item_id int,
+                                                    related_model_type varchar(255), related_model_id int)
+            returns int
+            begin
+                insert into `emailmessagecontent` ( `textcontent`, `htmlcontent` )
+                            values ( text_content, html_content );
+                set @contentId = last_insert_id();
+                insert into `emailmessagesender` ( `fromname`, `fromaddress` )
+                            values ( from_name, from_address );
+                set @senderId = last_insert_id();
+                set @emailMessageItemId = create_item(1);
+                insert into `securableitem` ( `item_id` )
+                            values ( @emailMessageItemId );
+                insert into `ownedsecurableitem` ( `securableitem_id`, `owner__user_id` )
+                            values ( last_insert_id(), owner_id );
+                insert into `emailmessage` ( `subject`, `headers`, `ownedsecurableitem_id`,
+                                                `content_emailmessagecontent_id`, `sender_emailmessagesender_id`,
+                                                 `folder_emailfolder_id` )
+                             values ( subject, headers, last_insert_id(), @contentId, @senderId, folder_id);
+                set @emailMessageId = LAST_INSERT_ID();
+                insert into `auditevent` ( `datetime`, `modulename`, `eventname`, `_user_id`,
+                                            `modelclassname`, `modelid`, `serializeddata` )
+                            values ( NOW(), "ZurmoModule", "Item Created", user_id,
+                                    "EmailMessage", @emailMessageId, serialized_data );
+                insert into `emailmessagerecipient` ( `toaddress`, `toname`, `type`, `emailmessage_id` )
+                            values ( to_address, to_name, recipient_type, @emailMessageId );
+                set @recipientId = last_insert_id();
+                insert into `emailmessagerecipient_item` ( `emailmessagerecipient_id`, `item_id` )
+                            values ( @recipientId, contact_item_id );
+                call duplicate_filemodels(related_model_type, related_model_id, "emailmessage", @emailMessageId, user_id);
+                return @emailMessageId;
+            end;',
         );
 
         // MySQL functions cannot be recursive so we have
@@ -1597,6 +1643,19 @@
                     call decrement_count              (munge_table_name, securableitem_id, parent_role_id);
                     call decrement_parent_roles_counts(munge_table_name, securableitem_id, parent_role_id);
                 end if;
+            end;',
+
+            // Misc
+
+            'create procedure duplicate_filemodels(related_model_type varchar(255), related_model_id int,
+                                                new_model_type varchar(255), new_model_id int, user_id int)
+            begin
+                insert into `filemodel` (`id`, `name`, `size`, `type`, `item_id`,
+                                                    `filecontent_id`, `relatedmodel_id`, `relatedmodel_type`)
+                    select null as `id`, `name`, `size`, `type`, (select create_item(user_id)) as `item_id`, `filecontent_id`,
+                        new_model_id as `relatedmodel_id`, new_model_type as `relatedmodel_type`
+                    from `filemodel`
+                    where `relatedmodel_type` = related_model_type and `relatedmodel_id` = related_model_id;
             end;',
         );
 

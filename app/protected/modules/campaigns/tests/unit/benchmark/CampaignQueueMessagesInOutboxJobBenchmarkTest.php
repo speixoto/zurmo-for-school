@@ -60,7 +60,7 @@
         }
 
         /**
-         * @depends testSingleItem
+         * @//depends testSingleItem
          */
         public function testFiveItems()
         {
@@ -68,7 +68,7 @@
         }
 
         /**
-         * @depends testFiveItems
+         * @//depends testFiveItems
          */
         public function testTenItems()
         {
@@ -76,7 +76,7 @@
         }
 
         /**
-         * @depends testTenItems
+         * @//depends testTenItems
          */
         public function testFiftyItems()
         {
@@ -84,7 +84,7 @@
         }
 
         /**
-         * @depends testFiftyItems
+         * @//depends testFiftyItems
          */
         public function testHundredItems()
         {
@@ -148,7 +148,7 @@
 
 [[SOURCE]],  [[STATE]]
 [[APPLICATION^NAME]] [c] [[CURRENT^YEAR]]
-[[BASE^URL]]
+[[BASE^URL]] ' " ` " '
 MTG;
             $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList Test',
                                                                                                 'description goes here',
@@ -199,15 +199,40 @@ MTG;
             foreach ($campaignItemsProcessed as $campaignItem)
             {
                 $emailMessage               = $campaignItem->emailMessage;
+                $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
+                $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
+                $emailMessagePermissions    = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($emailMessage);
+                $this->assertEquals($marketingListPermissions, $emailMessagePermissions);
+                $this->assertEquals($campaign->subject, $emailMessage->subject);
+                $this->assertNotEquals($campaign->textContent, $emailMessage->content->textContent);
+                $this->assertNotEquals($campaign->htmlContent, $emailMessage->content->htmlContent);
+                $this->assertEquals(2, substr_count($emailMessage->content->textContent, '/marketingLists/external/'));
+                $this->assertTrue(strpos($emailMessage->content->htmlContent, '/marketingLists/external/') !== false);
+                $this->assertEquals(2, substr_count($emailMessage->content->htmlContent, '/marketingLists/external/'));
+                $this->assertEquals('support@zurmo.com', $emailMessage->sender->fromAddress);
+                $this->assertEquals('Support Team',      $emailMessage->sender->fromName);
+                $this->assertEquals(1, $emailMessage->recipients->count());
+                $recipients                 = $emailMessage->recipients;
+                $this->assertEquals(strval($contact), $recipients[0]->toName);
+                $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
+                $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+                return;
+                $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
                 $this->assertNotEmpty($emailMessage->files);
                 $this->assertCount(count($files), $emailMessage->files);
-                foreach ($files as $index => $file)
+                foreach ($campaign->files as $index => $file)
                 {
-                    $this->assertEquals($files[$index]['name'], $emailMessage->files[$index]->name);
-                    $this->assertEquals($files[$index]['type'], $emailMessage->files[$index]->type);
-                    $this->assertEquals($files[$index]['size'], $emailMessage->files[$index]->size);
-                    $this->assertEquals($files[$index]['contents'], $emailMessage->files[$index]->fileContent->content);
+                    $this->assertEquals($file->name, $emailMessage->files[$index]->name);
+                    $this->assertEquals($file->type, $emailMessage->files[$index]->type);
+                    $this->assertEquals($file->size, $emailMessage->files[$index]->size);
+                    //CampaingItem should share the Attachments content from Campaign
+                    $this->assertEquals($file->fileContent->content->id, $emailMessage->files[$index]->fileContent->content->id);
                 }
+                $headersArray               = array('zurmoItemId' => $campaignItem->id,
+                                                    'zurmoItemClass' => get_class($campaignItem),
+                                                    'zurmoPersonId' => $contact->getClassId('Person'));
+                $expectedHeaders            = serialize($headersArray);
+                $this->assertEquals($expectedHeaders, $emailMessage->headers);
             }
             return $timeTaken;
         }

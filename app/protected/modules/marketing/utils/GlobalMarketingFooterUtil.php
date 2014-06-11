@@ -128,6 +128,18 @@
             return static::resolveManageSubscriptionsUrl($hash, $preview);
         }
 
+        public static function resolveContentsForGlobalFooter(& $textContent, & $htmlContent)
+        {
+            if (!empty($textContent))
+            {
+                static::resolveContentGlobalFooter($textContent, false);
+            }
+            if (!empty($htmlContent))
+            {
+                static::resolveContentGlobalFooter($htmlContent, true);
+            }
+        }
+
         public static function resolveContentGlobalFooter(& $content, $isHtmlContent)
         {
             static::resolveContentForUnsubscribeAndManageSubscriptionsUrls($content, $isHtmlContent);
