@@ -63,6 +63,11 @@
                                                     Contact $contact, MarketingList $marketingList, $itemId, $folderId)
         {
             $time = microtime(true);
+            $recipient              = static::resolveRecipient($contact);
+            if (empty($recipient))
+            {
+                throw new MissingRecipientsForEmailMessageException();
+            }
             $userId                 = static::resolveCurrentUserId();
             $ownerId                = $marketingList->owner->id;
             $subject                = $itemOwnerModel->subject;
@@ -73,7 +78,6 @@
             $attachments            = array('relatedModelType' => strtolower(get_class($itemOwnerModel)),
                                             'relatedModelId' => $itemOwnerModel->id);
             $sender                 = static::resolveSender($marketingList, $itemOwnerModel);
-            $recipient              = static::resolveRecipient($contact);
             $emailMessageData       = CMap::mergeArray($emailMessageData, $sender, $recipient, $attachments);
             $cTime = microtime(true);
             $emailMessageId         = static::saveEmailMessageWithRelated($emailMessageData);
