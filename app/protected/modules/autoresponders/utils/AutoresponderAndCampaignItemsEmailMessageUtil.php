@@ -41,13 +41,13 @@
      */
     abstract class AutoresponderAndCampaignItemsEmailMessageUtil
     {
-        public static $marketingListIdToSenderMapping    = array();
+        public static $marketingListIdToSenderMapping   = array();
 
-        public static $itemClass                         = null;
+        public static $itemClass                        = null;
 
-        public static $returnPath                        = null;
+        public static $returnPath                       = null;
 
-        public static $personId                          = null;
+        public static $personId                         = null;
 
         const CONTENT_ID                                = "@contentId";
 
@@ -90,7 +90,7 @@
         protected static function resolveSender(MarketingList $marketingList, $itemOwnerModel)
         {
             $time   = microtime(true);
-            $sender = null;
+            $sender = array();
             $marketingListId    = intval($marketingList->id);
             if (isset(static::$marketingListIdToSenderMapping[$marketingListId]))
             {
@@ -125,7 +125,7 @@
         protected static function resolveRecipient(Contact $contact)
         {
             $time       = microtime(true);
-            $recipient  = null;
+            $recipient  = array();
             if ($contact->primaryEmail->emailAddress != null)
             {
                 $toAddress      = $contact->primaryEmail->emailAddress;

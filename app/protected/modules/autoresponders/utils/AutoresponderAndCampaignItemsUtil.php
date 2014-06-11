@@ -197,16 +197,8 @@
                                                     Contact $contact, MarketingList $marketingList, $itemId)
         {
             $time = microtime(true);
-            AutoresponderAndCampaignItemsEmailMessageUtil::$itemClass   = static::$itemClass;
-            AutoresponderAndCampaignItemsEmailMessageUtil::$personId    = static::$personId;
-            AutoresponderAndCampaignItemsEmailMessageUtil::$returnPath  = static::$returnPath;
-            $emailMessage   = AutoresponderAndCampaignItemsEmailMessageUtil::resolveAndSaveEmailMessage($textContent,
-                                                                                                        $htmlContent,
-                                                                                                        $itemOwnerModel,
-                                                                                                        $contact,
-                                                                                                        $marketingList,
-                                                                                                        $itemId,
-                                                                                                        static::$folder->id);
+            $emailMessage   = static::saveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
+                                                        $contact, $marketingList, $itemId);
             $cTime = microtime(true);
             ZurmoRedBean::exec("SELECT 'SHOAIBI: Sending emailMessage'");
             Yii::app()->emailHelper->send($emailMessage, true, false);
@@ -219,6 +211,24 @@
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                                                     $explicitReadWriteModelPermissions);
             print(PHP_EOL . __CLASS__ . "/ExplicitReadWriteModelPermissionsUtil.resolveExplicitReadWriteModelPermissions: " . (microtime(true) - $cTime));
+            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
+            return $emailMessage;
+        }
+
+        protected static function saveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
+                                                    Contact $contact, MarketingList $marketingList, $itemId)
+        {
+            $time = microtime(true);
+            AutoresponderAndCampaignItemsEmailMessageUtil::$itemClass   = static::$itemClass;
+            AutoresponderAndCampaignItemsEmailMessageUtil::$personId    = static::$personId;
+            AutoresponderAndCampaignItemsEmailMessageUtil::$returnPath  = static::$returnPath;
+            $emailMessage   = AutoresponderAndCampaignItemsEmailMessageUtil::resolveAndSaveEmailMessage($textContent,
+                                                                                                    $htmlContent,
+                                                                                                    $itemOwnerModel,
+                                                                                                    $contact,
+                                                                                                    $marketingList,
+                                                                                                    $itemId,
+                                                                                                    static::$folder->id);
             print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
         }

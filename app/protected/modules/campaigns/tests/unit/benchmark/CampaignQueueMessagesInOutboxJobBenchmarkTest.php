@@ -125,15 +125,16 @@
         public function generateAndProcessCampaignItems($count)
         {
             $contacts                   = array();
+            $emails                     = array();
             for ($i = 0; $i < $count; $i++)
             {
-                $email                  = new Email();
-                $email->emailAddress    = "demo$i@zurmo.com";
-                $account                = AccountTestHelper::createAccountByNameForOwner('account ' . $i, $this->user);
-                $contact                = ContactTestHelper::createContactWithAccountByNameForOwner('contact ' . $i , $this->user, $account);
-                $contact->primaryEmail  = $email;
+                $emails[$i]                 = new Email();
+                $emails[$i]->emailAddress   = "demo$i@zurmo.com";
+                $account                    = AccountTestHelper::createAccountByNameForOwner('account ' . $i, $this->user);
+                $contact                    = ContactTestHelper::createContactWithAccountByNameForOwner('contact ' . $i , $this->user, $account);
+                $contact->primaryEmail      = $emails[$i];
                 $this->assertTrue($contact->save());
-                $contacts[]             = $contact;
+                $contacts[$i]               = $contact;
             }
             $content                    = <<<MTG
 [[TITLE]] [[LAST^NAME]], [[FIRST^NAME]]
@@ -196,8 +197,10 @@ MTG;
             $this->assertEquals($campaignItemsCountExpected, $campaignItemsCountAfter);
             $campaignItemsProcessed = CampaignItem::getByProcessedAndCampaignId(1, $campaign->id);
             $this->assertCount($count, $campaignItemsProcessed);
-            foreach ($campaignItemsProcessed as $campaignItem)
+            foreach ($campaignItemsProcessed as $i => $campaignItem)
             {
+                $contact                    = $contacts[$i];
+                $email                      = $emails[$i];
                 $emailMessage               = $campaignItem->emailMessage;
                 $this->assertEquals($marketingList->owner->id, $emailMessage->owner->id);
                 $marketingListPermissions   = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
@@ -226,6 +229,7 @@ MTG;
                     $this->assertEquals($file->size, $emailMessage->files[$index]->size);
                     //CampaingItem should share the Attachments content from Campaign
                     $this->assertEquals($file->fileContent->content, $emailMessage->files[$index]->fileContent->content);
+                    $this->assertEquals($file->fileContent->id, $emailMessage->files[$index]->fileContent->id);
                 }
                 $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                     'zurmoItemClass' => get_class($campaignItem),
