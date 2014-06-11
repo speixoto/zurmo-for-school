@@ -216,7 +216,6 @@ MTG;
                 $this->assertEquals(strval($contact), $recipients[0]->toName);
                 $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-                return;
                 $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
                 $this->assertNotEmpty($emailMessage->files);
                 $this->assertCount(count($files), $emailMessage->files);
@@ -226,7 +225,7 @@ MTG;
                     $this->assertEquals($file->type, $emailMessage->files[$index]->type);
                     $this->assertEquals($file->size, $emailMessage->files[$index]->size);
                     //CampaingItem should share the Attachments content from Campaign
-                    $this->assertEquals($file->fileContent->content->id, $emailMessage->files[$index]->fileContent->content->id);
+                    $this->assertEquals($file->fileContent->content, $emailMessage->files[$index]->fileContent->content);
                 }
                 $headersArray               = array('zurmoItemId' => $campaignItem->id,
                                                     'zurmoItemClass' => get_class($campaignItem),
