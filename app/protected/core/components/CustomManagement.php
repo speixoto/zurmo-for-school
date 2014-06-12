@@ -202,5 +202,13 @@
         {
             return $parentContent;
         }
+
+        /**
+         * Resolve rules class name
+         */
+        public function resolveComponentRulesClassNameByModule($moduleClassName, $rulesName)
+        {
+            return $moduleClassName::getPluralCamelCasedName() . $rulesName;
+        }
     }
 ?>

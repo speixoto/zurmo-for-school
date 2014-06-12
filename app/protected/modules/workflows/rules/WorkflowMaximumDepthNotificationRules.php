@@ -61,7 +61,7 @@
          */
         protected function loadUsers()
         {
-            foreach (User::getAll() as $user)
+            foreach (User::getActiveUsers() as $user)
             {
                 if ($user->getEffectiveRight('WorkflowsModule', WorkflowsModule::RIGHT_ACCESS_WORKFLOWS) ==
                     Right::ALLOW)
