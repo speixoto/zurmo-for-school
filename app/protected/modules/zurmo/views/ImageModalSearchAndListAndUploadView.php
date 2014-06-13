@@ -86,6 +86,18 @@
 
         protected function registerScripts($modalListLinkProvider)
         {
+            $transferModalJavascriptFunction = null;
+            if ($modalListLinkProvider->getSourceIdFieldId() !== null)
+            {
+                $transferModalJavascriptFunction = "function transferModalImageValues(id, summary)
+                                    {
+                                        data = {
+                                        {$modalListLinkProvider->getSourceIdFieldId()} : id,
+                                        }
+                                        transferModalValues('#{$modalListLinkProvider->getModalId()}', data);
+                                        replaceImageSummary('{$modalListLinkProvider->getSourcesNameFieldId()}', summary);
+                                    };";
+            }
             $javaScript = "
                 $('div.image-tabs > a').click(function(){
                     $('div.image-tabbed-content > div').hide();
@@ -93,14 +105,7 @@
                     $(this).addClass('active');
                     $('#' + $(this).data('view')).show();
                 });
-                function transferModalImageValues(id, summary)
-                {
-                    data = {
-                        {$modalListLinkProvider->getSourceIdFieldId()} : id,
-                    }
-                    transferModalValues('#{$modalListLinkProvider->getModalId()}', data);
-                    replaceImageSummary('{$modalListLinkProvider->getSourcesNameFieldId()}', summary);
-                };
+                {$transferModalJavascriptFunction}
             ";
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
         }

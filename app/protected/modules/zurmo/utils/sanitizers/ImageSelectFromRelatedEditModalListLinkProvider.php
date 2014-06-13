@@ -64,8 +64,8 @@
          */
         public function __construct($sourceIdFieldId, $sourceNameFieldId, $modalId = ModelElement::MODAL_CONTAINER_PREFIX)
         {
-            assert('is_string($sourceIdFieldId)');
-            assert('is_string($sourceNameFieldId)');
+            assert('is_string($sourceIdFieldId) || $sourceIdFieldId == null');
+            assert('is_string($sourceNameFieldId) || $sourceNameFieldId == null');
             $this->sourceIdFieldId   = $sourceIdFieldId;
             $this->sourceNameFieldId = $sourceNameFieldId;
             $this->modalId           = $modalId;
@@ -74,6 +74,11 @@
         public function getLinkString($model)
         {
             $insertLabel = Zurmo::t('ZurmoModule', 'Insert Image');
+            if ($this->sourceIdFieldId == null)
+            {
+                $url = ImageFileModelUtil::getUrlForGetImageFromImageFileName($model->getImageCacheFileName());
+                return ZurmoHtml::link($insertLabel, '#', array('class' => Redactor::LINK_FOR_INSERT_CLASS, 'data-url' => $url));
+            }
             return ZurmoHtml::link($insertLabel, $this->getScriptForClick($model));
         }
 

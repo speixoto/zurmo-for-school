@@ -156,11 +156,20 @@
 
         public function actionModalList()
         {
-            $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(
-                $_GET['modalTransferInformation']['sourceIdFieldId'],
-                $_GET['modalTransferInformation']['sourceNameFieldId'],
-                $_GET['modalTransferInformation']['modalId']
-            );
+            $getData = GetUtil::getData();
+            $modalTransferInformation = ArrayUtil::getArrayValue($getData, 'modalTransferInformation');
+            if ($modalTransferInformation != null)
+            {
+                $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(
+                    $modalTransferInformation['sourceIdFieldId'],
+                    $modalTransferInformation['sourceNameFieldId'],
+                    $modalTransferInformation['modalId']
+                );
+            }
+            else
+            {
+                $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(null, null);
+            }
             Yii::app()->getClientScript()->setToAjaxMode();
             $className           = 'ImageModalSearchAndListView';
             $modelClassName      = 'ImageFileModel';
