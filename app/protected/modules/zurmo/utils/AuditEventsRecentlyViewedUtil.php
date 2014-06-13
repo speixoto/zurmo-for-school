@@ -94,7 +94,7 @@
                     $recentlyViewedItem                    = array();
                     $moduleClassName                       = $recentlyViewed[0];
                     $modelId                               = $recentlyViewed[1];
-                    //Used to take care of multibyte characters.
+                    //Used to take care of multibyte characters(http://hg.zurmo.org/zurmo/issue/263/empty-campaign-title-in-recently-viewed).
                     //@see http://stackoverflow.com/questions/5123638/how-to-convert-some-multibyte-characters-into-its-numeric-html-entity-using-php
                     $modelName                             = mb_convert_encoding(StringUtil::getChoppedStringContent($recentlyViewed[2], 40, ''), 'HTML-ENTITIES', 'UTF-8');
                     $recentlyViewedItem['link']            = ZurmoHtml::link(
