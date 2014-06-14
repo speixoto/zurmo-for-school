@@ -86,7 +86,7 @@
 
         protected function registerScripts($modalListLinkProvider)
         {
-            $transferModalJavascriptFunction = null;
+            $transferModalJavascriptFunction = "function transferModalImageValues(id, summary){ }";
             if ($modalListLinkProvider->getSourceIdFieldId() !== null)
             {
                 $transferModalJavascriptFunction = "function transferModalImageValues(id, summary)

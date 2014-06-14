@@ -83,15 +83,21 @@
             $content .= $form->labelEx ($this->formModel, 'url');
             $content .= $form->urlField($this->formModel, 'url');
             $content .= $form->error   ($this->formModel, 'url');
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('ZurmoModule', 'Import')), "#",
-	                    array('onclick' => "$(this).closest('form').submit()", 'class' => 'secondary-button'));
+            $linkOptions = array('onclick'  => "$(this).addClass('attachLoadingTarget').closest('form').submit()",
+                                 'class'    => 'secondary-button');
+            $content .= ZurmoHtml::tag('div', array('id'    => 'import-image-hidden-div',
+                                                    'class' => Redactor::LINK_FOR_INSERT_CLASS,
+                                                    'style' => 'display:none;'), '');
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('ZurmoModule', 'Import')),
+                                        "#", $linkOptions);
             $content .= $this->controller->renderEndWidget();
             return $content;
         }
 
         protected function renderPreviewImportedImageScript()
         {
-            return "transferModalImageValues(data.id, data.summary)";
+            return "transferModalImageValues(data.id, data.summary); " .
+                   "$('#import-image-hidden-div').data('url', data.filelink).click(); ";
         }
 
         protected function getViewStyle()

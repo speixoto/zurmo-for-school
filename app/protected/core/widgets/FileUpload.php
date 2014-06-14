@@ -285,6 +285,7 @@ EOD;
             $deleteLabel = 'Delete';
             $removeLabel = Zurmo::t('Core', 'Remove');
             $insertLabel = Zurmo::t('ZurmoModule', 'Insert Image');
+            $linkForInsertClass = Redactor::LINK_FOR_INSERT_CLASS;
 $scriptContent = <<<EOD
 <script id="{$this->getDownloadTemplateId()}" type="text/x-jquery-tmpl">
     <tr class="{$this->getDownloadTemplateId()}{{if error}} ui-state-error{{/if}}">
@@ -296,7 +297,7 @@ $scriptContent = <<<EOD
                     {{if thumbnail_url}} <span class="uploaded-logo"><img src="\${thumbnail_url}"/></span>{{/if}}
                     <span class="file-size">(\${size})</span>
                     <span class="file-name">\${name}</span>
-                    <span class="insert-link"><a href="\${insert_link}">{$insertLabel}</a></span>
+                    <span class="insert-link"><a href="\${insert_link}" class="{$linkForInsertClass}" data-url="\${filelink}">{$insertLabel}</a></span>
                 {{else}}
                     \${name} <span class="file-size">(\${size})</span>
                     <span class="upload-actions delete">
