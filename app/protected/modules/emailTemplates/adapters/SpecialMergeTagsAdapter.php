@@ -108,7 +108,7 @@
 
         protected static function resolveLastYear()
         {
-            return date('Y') - 1 ;
+            return static::resolveCurrentYear() - 1 ;
         }
 
         /**
@@ -116,10 +116,7 @@
          */
         protected static function resolveOwnersAvatarSmall($model)
         {
-            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
-            {
-                return $model->owner->getAvatarImage(32, true);
-            }
+            return static::resolveOwnersAvatar($model, 32);
         }
 
         /**
@@ -127,10 +124,7 @@
          */
         protected static function resolveOwnersAvatarMedium($model)
         {
-            if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
-            {
-                return $model->owner->getAvatarImage(64, true);
-            }
+            return static::resolveOwnersAvatar($model, 64);
         }
 
         /**
@@ -139,9 +133,14 @@
          */
         protected static function resolveOwnersAvatarLarge($model)
         {
+            return static::resolveOwnersAvatar($model, 128);
+        }
+
+        protected static function resolveOwnersAvatar($model, $size)
+        {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
-                return $model->owner->getAvatarImage(128, true);
+                return $model->owner->getAvatarImage($size, true);
             }
         }
 
@@ -149,13 +148,21 @@
          * Will only grab first available email signature for user if available
          * @param $model
          */
-        protected static function resolveOwnersEmailSignature($model)
+        protected static function resolveOwnersEmailSignature($model, $params = array())
         {
             if ($model instanceof OwnedSecurableItem && $model->owner->id > 0)
             {
                 if ($model->owner->emailSignatures->count() > 0)
                 {
-                    return $model->owner->emailSignatures[0]->htmlContent;
+                    $isHtmlContent  = ArrayUtil::getArrayValue($params, 'isHtmlContent', true);
+                    if ($isHtmlContent)
+                    {
+                        return $model->owner->emailSignatures[0]->htmlContent;
+                    }
+                    else
+                    {
+                        return $model->owner->emailSignatures[0]->textContent;
+                    }
                 }
             }
         }

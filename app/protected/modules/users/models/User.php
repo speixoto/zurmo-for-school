@@ -471,9 +471,7 @@
                 }
                 else
                 {
-                    //Check connection to gravatar and return offline picture
-                    $htmlHeaders = @get_headers('http:' . $avatarUrl);
-                    if (preg_match("|200|", $htmlHeaders[0]))
+                    if (CurlUtil::urlExists('http:' . $avatarUrl))
                     {
                         $this->avatarImageUrl = $avatarUrl;
                     }
