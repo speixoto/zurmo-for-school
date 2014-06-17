@@ -167,9 +167,25 @@
 	                        '<span class="z-spinner"></span>' . ZurmoHtml::tag('span', array('class' => 'z-label'), $linkText),
                             Yii::app()->createUrl('zurmo/imageModel/modalList/', $this->getSelectLinkUrlParams()),
                             $this->resolveAjaxOptionsForSelectingModel($id),
-                            array('id' => $id, 'namespace' => 'selectLink', 'class' => 'secondary-button')
-            );
+                            array('id' => $id, 'namespace' => 'selectLink', 'class' => 'secondary-button'));
+            $content .= $this->renderEditImageLink();
             return $title . $content;
+        }
+
+        protected function renderEditImageLink()
+        {
+            $id = $this->getIdForEditLink();
+            if ($this->image != null)
+            {
+                $editText = Zurmo::t('Core', 'Edit');
+                $linkParams = array_merge(array('id' => $this->image->id), $this->getSelectLinkUrlParams());
+                $content  = ZurmoHtml::ajaxLink(
+                    '<span class="z-spinner"></span>' . ZurmoHtml::tag('span', array('class' => 'z-label'), $editText),
+                    Yii::app()->createUrl('zurmo/imageModel/modalEdit/', $linkParams),
+                    $this->resolveAjaxOptionsForEditingModel($id),
+                    array('id' => $id, 'namespace' => 'editLink', 'class' => 'secondary-button'));
+                return $content;
+            }
         }
 
         protected function renderImage($isThumb = false)
@@ -214,6 +230,11 @@
             return $this->getEditableInputId($this->attribute, 'SelectLink');
         }
 
+        protected function getIdForEditLink()
+        {
+            return $this->getEditableInputId($this->attribute, 'EditLink');
+        }
+
         protected function getSelectLinkUrlParams()
         {
             return array(
@@ -238,9 +259,21 @@
             return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
         }
 
+        protected function resolveAjaxOptionsForEditingModel($formId)
+        {
+            assert('is_string($formId)');
+            $title = $this->getModalTitleForEditingModel();
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
+        }
+
         protected function getModalTitleForSelectingModel()
         {
             return Zurmo::t('ZurmoModule', 'Select an Image');
+        }
+
+        protected function getModalTitleForEditingModel()
+        {
+            return Zurmo::t('ZurmoModule', 'Edit Image');
         }
 
         protected function getModalContainerId()

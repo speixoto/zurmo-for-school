@@ -68,5 +68,30 @@
             );
             return $metadata;
         }
+        protected function getCGridViewLastColumn()
+        {
+            $url  = 'Yii::app()->createUrl("' . $this->getGridViewActionRoute('delete');
+            $url .= '", array("id" => $data->id))';
+            return array(
+                'class'           => 'ButtonColumn',
+                'template'        => '{delete}',
+                'buttons' => array(
+                    'delete' => array(
+                        'url'             => $url,
+                        'imageUrl'        => false,
+                        'label'           => '<i class="icon-delete"></i>',
+                        'options'         => array('title' => 'Delete',
+                                                   'id' => get_class($this) . '-delete-' . $this->getLinkId(),
+                        ),
+                        'visible'         => '$data->canDelete()',
+                    ),
+                ),
+            );
+        }
+
+        protected function getLinkId()
+        {
+            return ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++;;
+        }
     }
 ?>

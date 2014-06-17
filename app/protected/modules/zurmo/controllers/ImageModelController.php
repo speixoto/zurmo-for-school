@@ -151,7 +151,8 @@
             {
                 throw new NotSupportedException();
             }
-            $imageFileModel->delete();
+            $imageFileModel->inactive = true;
+            $imageFileModel->save();
         }
 
         public function actionModalList()
@@ -216,23 +217,45 @@
             echo $imageModalPreview->render();
         }
 
+        public function actionModalEdit($id)
+        {
+            $imageFileModel = ImageFileModel::getById((int)$id);
+            if ($imageFileModel->isEditableByCurrentUser())
+            {
+                echo $imageFileModel->name;
+            }
+            else
+            {
+                $messageView = new AccessFailureView();
+                echo $messageView->render();
+            }
+        }
+
         protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
         {
             $userId = Yii::app()->user->userModel->id;
+            $clauseNumber = count($metadata['clauses']) + 1;
+            $metadata['clauses'][$clauseNumber] = array('attributeName' => 'inactive',
+                                                        'operatorType'  => 'equals',
+                                                        'value'         => 0);
+            $metadata['clauses'][$clauseNumber + 1] = array('attributeName' => 'inactive',
+                                                            'operatorType'  => 'isNull',
+                                                            'value'         => null);
+            if ($metadata['structure'] == '')
+            {
+                $metadata['structure'] = '(' . $clauseNumber . ' OR ' . ($clauseNumber + 1) . ')';
+            }
+            else
+            {
+                $metadata['structure'] .= ' AND (' . $clauseNumber . ' OR ' . ($clauseNumber + 1) . ')';
+            }
             if ($searchForm->filteredBy == ImagesSearchForm::FILTERED_BY_I_CREATED)
             {
                 $clauseNumber = count($metadata['clauses']) + 1;
                 $metadata['clauses'][$clauseNumber] = array('attributeName' => 'createdByUser',
                                                             'operatorType'  => 'equals',
                                                             'value'         => $userId);
-                if ($metadata['structure'] == '')
-                {
-                    $metadata['structure'] = '(' . $clauseNumber . ')';
-                }
-                else
-                {
-                    $metadata['structure'] .= ' AND (' . $clauseNumber . ')';
-                }
+                $metadata['structure'] .= ' AND (' . $clauseNumber . ')';
             }
             elseif ($searchForm->filteredBy == ImagesSearchForm::FILTERED_BY_SHARED)
             {
@@ -243,14 +266,7 @@
                 $metadata['clauses'][$clauseNumber + 1] = array('attributeName' => 'isShared',
                                                                 'operatorType'  => 'equals',
                                                                 'value'         => true);
-                if ($metadata['structure'] == '')
-                {
-                    $metadata['structure'] = '(' . $clauseNumber . ' AND ' . ($clauseNumber + 1) . ')';
-                }
-                else
-                {
-                    $metadata['structure'] .= ' AND (' . $clauseNumber . ' AND ' . ($clauseNumber + 1) . ')';
-                }
+                $metadata['structure'] .= ' AND (' . $clauseNumber . ' AND ' . ($clauseNumber + 1) . ')';
             }
             else
             {
@@ -261,14 +277,7 @@
                 $metadata['clauses'][$clauseNumber + 1] = array('attributeName' => 'isShared',
                                                                 'operatorType'  => 'equals',
                                                                 'value'         => 1);
-                if ($metadata['structure'] == '')
-                {
-                    $metadata['structure'] = '(' . $clauseNumber . ' OR ' . ($clauseNumber + 1) . ')';
-                }
-                else
-                {
-                    $metadata['structure'] .= ' AND (' . $clauseNumber . ' OR ' . ($clauseNumber + 1) . ')';
-                }
+                $metadata['structure'] .= ' AND (' . $clauseNumber . ' OR ' . ($clauseNumber + 1) . ')';
             }
         }
 
