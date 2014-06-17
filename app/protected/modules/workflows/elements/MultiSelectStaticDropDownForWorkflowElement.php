@@ -58,5 +58,12 @@
         {
             return 'getCustomFieldDataAndLabels';
         }
+
+        protected function getEditableHtmlOptions()
+        {
+            $htmlOptions = parent::getHtmlOptions();
+            $htmlOptions['multiple'] = true;
+            return $htmlOptions;
+        }
     }
 ?>
