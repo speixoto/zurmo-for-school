@@ -181,6 +181,13 @@
 
             $resource = imap_open($hostname, $this->imapUsername, $this->imapPassword, null, 1);
 
+            // Fix for Exchange server
+            if (!is_resource($resource))
+            {
+                $resource = imap_open($hostname, $this->imapUsername, $this->imapPassword, null, 1,
+                    array('DISABLE_AUTHENTICATOR' => 'GSSAPI'));
+            }
+
             $errors = imap_errors();
             error_reporting($errorReporting);
             if (!$errors && is_resource($resource))
