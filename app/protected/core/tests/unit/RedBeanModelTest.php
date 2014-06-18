@@ -83,6 +83,7 @@
                         'TestSelfRelatingModel',
                         'TestSimplestModel',
                         'Y',
+                        'X'
                         );
         }
 
@@ -1568,6 +1569,44 @@
             $i     = I::getById($iId);
             $this->assertEquals($i->j, $jSame);
             $this->assertEquals($i->j, J::getById($jId));
+        }
+
+        public function testRelatedValidation()
+        {
+            $x          = new X();
+            $a          = new A();
+            $b          = new A();
+            $x->A       = $a;
+            $x->B       = $b;
+            $this->assertFalse($x->validate());
+            $this->assertEquals(
+                array('A' =>
+                    array(
+                        ' A cannot be blank.'
+                    ),
+                    'B' =>
+                    array(
+                        ' B cannot be blank.'
+                    )
+                ),
+                $x->getErrors()
+            );
+            $a->a = 1;
+            $this->assertTrue($a->save(false));
+            $id = $a->id;
+            unset($a);
+            $a = A::getById($id);
+            $x->A       = $a;
+
+            $b          = new A();
+            $b->a = 1;
+            $b->uniqueRequiredEmail = 'a@zurmoinc1.com';
+            $this->assertTrue($b->save());
+            $id = $b->id;
+            unset($b);
+            $b = A::getById($id);
+            $x->B       = $b;
+            $this->assertFalse($x->validate());
         }
     }
 ?>

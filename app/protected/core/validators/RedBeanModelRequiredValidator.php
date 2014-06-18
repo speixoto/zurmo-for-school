@@ -95,8 +95,7 @@
                         $this->addError($model, $attributeName, $message);
                     }
                 }
-                elseif ( $model->$attributeName->id <= 0 && !$model->$attributeName->isModified() ||
-                        !$model->$attributeName->validate())
+                elseif ($model->$attributeName->id <= 0 && !$model->$attributeName->isModified())
                 {
                     if ($this->message !== null)
                     {
@@ -105,6 +104,18 @@
                     else
                     {
                         $message = Zurmo::t('Core', '{attribute} cannot be blank.');
+                    }
+                    $this->addError($model, $attributeName, $message);
+                }
+                elseif(!$model->$attributeName->validate())
+                {
+                    if ($this->message !== null)
+                    {
+                        $message = $this->message;
+                    }
+                    else
+                    {
+                        $message = Zurmo::t('Core', 'There was a problem validating {attribute}.');
                     }
                     $this->addError($model, $attributeName, $message);
                 }

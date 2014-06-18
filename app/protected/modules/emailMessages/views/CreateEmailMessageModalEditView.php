@@ -192,5 +192,16 @@
                         });}"
                 ));
         }
+
+        protected function renderAfterFormLayout($form)
+        {
+            parent::renderAfterFormLayout($form);
+            Yii::app()->clientScript->registerScript('emailModalSubmitOnEnter',
+                                                    '$("input").keypress(function(event) {
+                                                    if (event.which == 13) {
+                                                       $("#saveyt1").click();
+                                                    }
+                                                });');
+        }
     }
 ?>
