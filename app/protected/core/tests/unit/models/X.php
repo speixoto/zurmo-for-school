@@ -63,11 +63,11 @@
                 'members' => array(
                 ),
                 'rules' => array(
-                    array('A', 'required'),
+                    array('P', 'required'),
                     array('B', 'required'),
                 ),
                 'relations' => array(
-                    'A'   => array(static::HAS_ONE, 'A', static::NOT_OWNED,
+                    'P'   => array(static::HAS_ONE, 'P', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'AAffiliation'),
                     'B' => array(static::HAS_ONE, 'B', static::NOT_OWNED,
                                                 static::LINK_TYPE_SPECIFIC, 'BAffiliation'),
