@@ -178,18 +178,44 @@
             return $title . $content;
         }
 
+
+        protected function registerImageModalEditScript()
+        {
+            $sourceId = BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER_ID;
+            $modalId = $this->getModalContainerId();
+            $url = Yii::app()->createUrl('zurmo/imageModel/modalEdit/');
+            $ajaxOptions = $this->resolveAjaxOptionsForEditingModel();
+
+            $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
+            $script = " $(document).off('click.imageEditLink', '#{$sourceId} .image-detail-link');
+                        $(document).on('click.imageEditLink',  '#{$sourceId} .image-detail-link', function()
+                        {
+                            var id = $('#{$this->getEditableInputId()}').val();
+                            $.ajax(
+                            {
+                                'type' : 'GET',
+                                'url'  : '{$url}' + '?id=' + id,
+                                'beforeSend' : {$ajaxOptions['beforeSend']},
+                                'update'     : '{$ajaxOptions['update']}',
+                                'success': function(html){jQuery('#{$modalId}').html(html)}
+                            });
+                            return false;
+                          }
+                        );";
+            Yii::app()->clientScript->registerScript('imageModalEditScript' . $sourceId, $script);
+        }
+
         protected function renderEditImageLink()
         {
+            $this->registerImageModalEditScript();
             $id = $this->getIdForEditLink();
             if ($this->image != null)
             {
                 $editText = Zurmo::t('Core', 'Edit');
-                $linkParams = array_merge(array('id' => $this->image->id), $this->getSelectLinkUrlParams());
-                $content  = ZurmoHtml::ajaxLink(
+                $content  = ZurmoHtml::link(
                     '<span class="z-spinner"></span>' . ZurmoHtml::tag('span', array('class' => 'z-label'), $editText),
-                    Yii::app()->createUrl('zurmo/imageModel/modalEdit/', $linkParams),
-                    $this->resolveAjaxOptionsForEditingModel($id),
-                    array('id' => $id, 'namespace' => 'editLink', 'class' => 'secondary-button'));
+                    '#',
+                    array('id' => $id, 'namespace' => 'editLink', 'class' => 'secondary-button image-detail-link'));
                 return $content;
             }
         }
@@ -265,11 +291,11 @@
             return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
         }
 
-        protected function resolveAjaxOptionsForEditingModel($formId)
+        protected function resolveAjaxOptionsForEditingModel()
         {
-            assert('is_string($formId)');
             $title = $this->getModalTitleForEditingModel();
-            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId());
+            return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId(), 'auto',
+                                                           600, 'center top+25', "'image-edit-modal'");
         }
 
         protected function getModalTitleForSelectingModel()

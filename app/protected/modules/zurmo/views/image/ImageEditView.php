@@ -96,6 +96,7 @@
             $assetsPath = Yii::getPathOfAlias('application.modules.zurmo.views.image.assets');
             $assetsUrl = Yii::app()->assetManager->publish($assetsPath);
             Yii::app()->getClientScript()->registerScriptFile($assetsUrl . "/jquery.jrac.js");
+            Yii::app()->getClientScript()->registerCssFile($assetsUrl . "/style.jrac.css");
             $javaScript = "$('img.crop-and-resize').jrac();";
             Yii::app()->clientScript->registerScript(__CLASS__, $javaScript);
         }
