@@ -219,16 +219,26 @@
 
         public function actionModalEdit($id)
         {
+            Yii::app()->getClientScript()->setToAjaxMode();
             $imageFileModel = ImageFileModel::getById((int)$id);
+            $form = new ImageEditForm();
+            $form->id = $imageFileModel->id;
+            $form->imageWidth = $imageFileModel->width;
+            $form->imageHeight = $imageFileModel->height;
+            $form->cropX = 0;
+            $form->cropY = 0;
+            $form->cropWidth = $imageFileModel->width;
+            $form->cropHeight = $imageFileModel->height;
             if ($imageFileModel->isEditableByCurrentUser())
             {
-                echo $imageFileModel->name;
+                $view = new ImageEditView($this, $form, $imageFileModel);
+                $view = new ModalView($this, $view);
             }
             else
             {
-                $messageView = new AccessFailureView();
-                echo $messageView->render();
+                $view = new AccessFailureView();
             }
+            echo $view->render();
         }
 
         protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
