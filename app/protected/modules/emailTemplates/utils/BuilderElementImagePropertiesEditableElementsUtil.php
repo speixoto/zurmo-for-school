@@ -48,18 +48,6 @@
             $configurationItems[]       = static::resolveConfigurationItem(
                 'BuilderElementFrontendPropertiesEditableElementUtil',
                 'TextElement',
-                'height',
-                static::resolveDefaultParams(
-                    Zurmo::t('EmailTemplatesModule', 'Height')));
-            $configurationItems[]       = static::resolveConfigurationItem(
-                'BuilderElementFrontendPropertiesEditableElementUtil',
-                'TextElement',
-                'width',
-                static::resolveDefaultParams(
-                    Zurmo::t('EmailTemplatesModule', 'Width')));
-            $configurationItems[]       = static::resolveConfigurationItem(
-                'BuilderElementFrontendPropertiesEditableElementUtil',
-                'TextElement',
                 'alt',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Alt Text')));

@@ -102,7 +102,7 @@
 
         protected function getViewStyle()
         {
-            return " style=' display:none;'";
+            return " style='display:none;'";
         }
     }
 ?>

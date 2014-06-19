@@ -72,6 +72,7 @@
         protected function resolveContentElementParams()
         {
             $params                     = parent::resolveContentElementParams();
+            $params['applyLinkId']      = $this->resolveApplyLinkId();
             $params['labelHtmlOptions'] = array('label' => 'Image');
             $frontendOptions            = $this->resolveContentElementParamsFromFrontendOptions();
             return array_merge($params, $frontendOptions);

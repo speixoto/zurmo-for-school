@@ -76,10 +76,16 @@
                 CClientScript::POS_END
             );
             $this->renderQtipForPreviewImage();
+            $applyScript = null;
+            if ($this->getApplyLinkId() != null)
+            {
+                $applyScript = "$('#{$this->getApplyLinkId()}').click();";
+            }
             $cs->registerScript(get_class($this), "
                         function replaceImageSummary(id, value)
                         {
                             $('#' + id).html(value);
+                            {$applyScript}
                         };
                     ");
             $content  = ZurmoHtml::tag('div', array('id' => $this->getIdForPreviewDiv()), $this->renderImageDetails());
@@ -293,6 +299,15 @@
         protected function getIdForPreviewDiv()
         {
             return $this->getEditableInputId($this->attribute, 'preview');
+        }
+
+        protected function getApplyLinkId()
+        {
+            if (!isset($this->params['applyLinkId']))
+            {
+                return null;
+            }
+            return $this->params['applyLinkId'];
         }
     }
 ?>
