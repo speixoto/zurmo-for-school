@@ -12219,6 +12219,15 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   background-image: -o-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: -moz-linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
   background-image: linear-gradient(#ffffff,#f5f5f5 80%,#f5f5f5) ;
+  *zoom: 1;
+}
+#image-import-form:before,
+#image-import-form:after {
+  content: " ";
+  display: table;
+}
+#image-import-form:after {
+  clear: both;
 }
 #image-import-form label {
   width: 15%;
@@ -12258,6 +12267,100 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 .element-edit-form-content-tab .builder-image-details a,
 .element-edit-form-content-tab .builder-image-details strong {
   font-weight: bold;
+}
+.jrac_viewport .ui-resizable {
+  position: relative;
+}
+.jrac_viewport .ui-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+}
+.jrac_viewport .ui-resizable-disabled .ui-resizable-handle,
+.jrac_viewport .ui-resizable-autohide .ui-resizable-handle {
+  display: none;
+}
+.jrac_viewport .ui-resizable-n {
+  cursor: n-resize;
+  height: 7px;
+  width: 100%;
+  top: -5px;
+  left: 0;
+}
+.jrac_viewport .ui-resizable-s {
+  cursor: s-resize;
+  height: 7px;
+  width: 100%;
+  bottom: -5px;
+  left: 0;
+}
+.jrac_viewport .ui-resizable-e {
+  cursor: e-resize;
+  width: 7px;
+  right: -5px;
+  top: 0;
+  height: 100%;
+}
+.jrac_viewport .ui-resizable-w {
+  cursor: w-resize;
+  width: 7px;
+  left: -5px;
+  top: 0;
+  height: 100%;
+}
+.jrac_viewport .ui-resizable-se {
+  cursor: se-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  bottom: 1px;
+}
+.jrac_viewport .ui-resizable-sw {
+  cursor: sw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  bottom: -5px;
+}
+.jrac_viewport .ui-resizable-nw {
+  cursor: nw-resize;
+  width: 9px;
+  height: 9px;
+  left: -5px;
+  top: -5px;
+}
+.jrac_viewport .ui-resizable-ne {
+  cursor: ne-resize;
+  width: 9px;
+  height: 9px;
+  right: -5px;
+  top: -5px;
+}
+.jrac_zoom_slider {
+  margin-top: 15px;
+  height: 2px;
+  background: #ccc;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  -ms-border-radius: 1px;
+  -o-border-radius: 1px;
+  border-radius: 1px;
+}
+.ui-slider-handle {
+  position: relative;
+  top: -4px;
+  height: 10px;
+  width: 10px;
+  background: #545454;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  cursor: ew-resize;
+}
+.ui-icon-gripsmall-diagonal-se {
+  background: url("../images/icon-resize.png") right top no-repeat;
 }
 .merge-view {
   width: 100% !important;
