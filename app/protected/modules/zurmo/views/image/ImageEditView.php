@@ -82,6 +82,26 @@
             );
             $src      = ImageFileModelUtil::getUrlForGetImageFromImageFileName($this->model->getImageCacheFileName());
             $content  = $formStart;
+            $content .= ZurmoHtml::openTag('div', array('class' => 'form-inputs'));
+            $content .= $form->labelEx ($this->formModel, 'cropX');
+            $content .= $form->urlField($this->formModel, 'cropX');
+            $content .= $form->error   ($this->formModel, 'cropX');
+            $content .= $form->labelEx ($this->formModel, 'cropY');
+            $content .= $form->urlField($this->formModel, 'cropY');
+            $content .= $form->error   ($this->formModel, 'cropY');
+            $content .= $form->labelEx ($this->formModel, 'cropWidth');
+            $content .= $form->urlField($this->formModel, 'cropWidth');
+            $content .= $form->error   ($this->formModel, 'cropWidth');
+            $content .= $form->labelEx ($this->formModel, 'cropHeight');
+            $content .= $form->urlField($this->formModel, 'cropHeight');
+            $content .= $form->error   ($this->formModel, 'cropHeight');
+            $content .= $form->labelEx ($this->formModel, 'imageWidth');
+            $content .= $form->urlField($this->formModel, 'imageWidth');
+            $content .= $form->error   ($this->formModel, 'imageWidth');
+            $content .= $form->labelEx ($this->formModel, 'imageHeight');
+            $content .= $form->urlField($this->formModel, 'imageHeight');
+            $content .= $form->error   ($this->formModel, 'imageHeight');
+            $content .= ZurmoHtml::closeTag('div');
             $content .= ZurmoHtml::image($src, '', array('class' => 'crop-and-resize'));
             $linkOptions = array('onclick'  => "$(this).addClass('attachLoadingTarget').closest('form').submit()",
                                  'class'    => 'secondary-button');
@@ -97,7 +117,36 @@
             $assetsUrl = Yii::app()->assetManager->publish($assetsPath);
             Yii::app()->getClientScript()->registerScriptFile($assetsUrl . "/jquery.jrac.js");
             Yii::app()->getClientScript()->registerCssFile($assetsUrl . "/style.jrac.css");
-            $javaScript = "$('img.crop-and-resize').jrac();";
+            $javaScript = "$('img.crop-and-resize').jrac({
+                'crop_width': {$this->formModel->cropWidth},
+                'crop_height': {$this->formModel->cropHeight},
+                'crop_left': {$this->formModel->cropX},
+                'crop_top': {$this->formModel->cropY},
+                'image_width': {$this->formModel->imageWidth},
+                'image_height': {$this->formModel->imageHeight},
+                'zoom_min': 10,
+                'viewport_onload': function() {
+                  var \$viewport = this;
+                  var inputs = $('#ImageEditView').find('.form-inputs input');
+                  var events = ['jrac_crop_x','jrac_crop_y','jrac_crop_width','jrac_crop_height','jrac_image_width','jrac_image_height'];
+                  for (var i = 0; i < events.length; i++) {
+                    var event_name = events[i];
+                    // Register an event with an element.
+                    \$viewport.observator.register(event_name, inputs.eq(i));
+                    // Attach a handler to that event for the element.
+                    inputs.eq(i).bind(event_name, function(event, \$viewport, value) {
+                      $(this).val(value);
+                    })
+                    // Attach a handler for the built-in jQuery change event, handler
+                    // which read user input and apply it to relevent viewport object.
+                    .change(event_name, function(event) {
+                      var event_name = event.data;
+                      \$viewport.\$image.scale_proportion_locked = \$viewport.\$container.parent('.pane').find('.coords input:checkbox').is(':checked');
+                      \$viewport.observator.set_property(event_name,$(this).val());
+                    })
+                  }
+                }
+            });";
             Yii::app()->clientScript->registerScript(__CLASS__, $javaScript);
         }
     }
