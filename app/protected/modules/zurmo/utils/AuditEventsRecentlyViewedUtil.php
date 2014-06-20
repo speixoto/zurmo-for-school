@@ -94,7 +94,8 @@
                     $recentlyViewedItem                    = array();
                     $moduleClassName                       = $recentlyViewed[0];
                     $modelId                               = $recentlyViewed[1];
-                    $modelName                             = strip_tags(StringUtil::getChoppedStringContent($recentlyViewed[2], 40, ''));
+                    $modelName                             = strip_tags($recentlyViewed[2]);
+                    $modelName                             = mb_convert_encoding(StringUtil::getChoppedStringContent($modelName, 40, ''), 'HTML-ENTITIES', 'UTF-8');
                     $recentlyViewedItem['link']            = ZurmoHtml::link(
                                                                 $itemLinkPrefix . ZurmoHtml::tag('span', array(), $modelName),
                                                                 self::getRouteByRecentlyViewed($moduleClassName, $modelId));
