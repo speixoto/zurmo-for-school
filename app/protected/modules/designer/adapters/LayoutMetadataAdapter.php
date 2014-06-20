@@ -152,7 +152,7 @@
             {
                 $viewClassName::setMetadata($this->makeMergedSaveableMetadata($viewClassName, $savableMetadata));
             }
-            $this->message = $this->resolveSaveLayoutSuccessMessage();
+            $this->message = Zurmo::t('DesignerModule', 'Layout saved successfully.');
             return true;
         }
 
@@ -380,15 +380,6 @@
                 }
             }
             return true;
-        }
-
-        /**
-         * Resolves save layout success message.
-         */
-        protected function resolveSaveLayoutSuccessMessage()
-        {
-            $designerRulesClass = get_class($this->designerRules);
-            return $designerRulesClass::getSavedLayoutSuccessMessage();
         }
     }
 ?>

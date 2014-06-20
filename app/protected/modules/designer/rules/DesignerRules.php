@@ -282,14 +282,5 @@
         {
             return true;
         }
-
-        /**
-         * Gets saved layout success message.
-         * @return array
-         */
-        public static function getSavedLayoutSuccessMessage()
-        {
-            return Zurmo::t('DesignerModule', 'Layout saved successfully.');
-        }
     }
 ?>
