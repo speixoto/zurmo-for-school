@@ -95,7 +95,7 @@
                                         {$modalListLinkProvider->getSourceIdFieldId()} : id,
                                         }
                                         transferModalValues('#{$modalListLinkProvider->getModalId()}', data);
-                                        replaceImageSummary('{$modalListLinkProvider->getSourcesNameFieldId()}', summary);
+                                        replaceImageSummary('{$modalListLinkProvider->getSourceNameFieldId()}', summary);
                                     };";
             }
             $javaScript = "

@@ -183,7 +183,7 @@
         {
             $sourceId = BuilderCanvasWizardView::ELEMENT_EDIT_CONTAINER_ID;
             $modalId = $this->getModalContainerId();
-            $url = Yii::app()->createUrl('zurmo/imageModel/modalEdit/');
+            $url = Yii::app()->createUrl('zurmo/imageModel/modalEdit/', $this->getSelectLinkUrlParams());
             $ajaxOptions = $this->resolveAjaxOptionsForEditingModel();
 
             $ajaxOptions['beforeSend'] = new CJavaScriptExpression($ajaxOptions['beforeSend']);
@@ -194,7 +194,7 @@
                             $.ajax(
                             {
                                 'type' : 'GET',
-                                'url'  : '{$url}' + '?id=' + id,
+                                'url'  : '{$url}' + '&id=' + id,
                                 'beforeSend' : {$ajaxOptions['beforeSend']},
                                 'update'     : '{$ajaxOptions['update']}',
                                 'success': function(html){jQuery('#{$modalId}').html(html)}

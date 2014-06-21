@@ -77,7 +77,6 @@
 
         public static function getUrlForGetImageFromImageFileName($fileName, $shouldReturnForThumbnail = false)
         {
-            //TODO: @sergio: Add test
             assert('is_string($fileName)');
             assert('is_bool($shouldReturnForThumbnail)');
             $path = 'zurmo/imageModel/getImage';
@@ -90,7 +89,6 @@
 
         public static function getImageSummary(ImageFileModel $imageFileModel, $layout = null)
         {
-            //TODO: @sergio: Add test
             $data = array();
             if ($layout == null)
             {
@@ -114,6 +112,16 @@
             return '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details">' .
                    '<strong>{name}</strong><br />{size} · {dimensions} · ' . $createdByLabel .
                    ' {creator} ' . $onLabel . ' {createdTime}</div>';
+        }
+
+        public static function getImageFileNameWithDimensions($imageFileName, $width, $height)
+        {
+            assert('is_string($imageFileName)');
+            assert('is_int($width)');
+            assert('is_int($height)');
+            $imageFileName = preg_replace("/^\d.*x\d.*\s/", "", $imageFileName);
+            $imageFileName = $width . 'x' . $height . ' ' . $imageFileName;
+            return $imageFileName;
         }
     }
 ?>

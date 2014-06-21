@@ -157,20 +157,7 @@
 
         public function actionModalList()
         {
-            $getData = GetUtil::getData();
-            $modalTransferInformation = ArrayUtil::getArrayValue($getData, 'modalTransferInformation');
-            if ($modalTransferInformation != null)
-            {
-                $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(
-                    $modalTransferInformation['sourceIdFieldId'],
-                    $modalTransferInformation['sourceNameFieldId'],
-                    $modalTransferInformation['modalId']
-                );
-            }
-            else
-            {
-                $modalListLinkProvider = new ImageSelectFromRelatedEditModalListLinkProvider(null, null);
-            }
+            $modalListLinkProvider =  $this->getModalListLinkProvider();
             Yii::app()->getClientScript()->setToAjaxMode();
             $className           = 'ImageModalSearchAndListView';
             $modelClassName      = 'ImageFileModel';
@@ -219,26 +206,60 @@
 
         public function actionModalEdit($id)
         {
-            Yii::app()->getClientScript()->setToAjaxMode();
-            $imageFileModel = ImageFileModel::getById((int)$id);
-            $form = new ImageEditForm();
-            $form->id = $imageFileModel->id;
-            $form->imageWidth = $imageFileModel->width;
-            $form->imageHeight = $imageFileModel->height;
-            $form->cropX = 0;
-            $form->cropY = 0;
-            $form->cropWidth = $imageFileModel->width;
-            $form->cropHeight = $imageFileModel->height;
-            if ($imageFileModel->isEditableByCurrentUser())
+            if (!Yii::app()->request->isAjaxRequest)
             {
-                $view = new ImageEditView($this, $form, $imageFileModel);
-                $view = new ModalView($this, $view);
+                throw new NotSupportedException();
+            }
+            $form           = new ImageEditForm();
+            $imageFileModel = ImageFileModel::getById((int)$id);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            if (isset($_POST['ajax']) && $_POST['ajax'] == 'image-edit-form')
+            {
+                $errors = ZurmoActiveForm::validate($form);
+                if ($form->hasErrors())
+                {
+                    echo $errors;
+                    Yii::app()->end();
+                }
+            }
+            elseif (isset($_POST['ImageEditForm']))
+            {
+                $tempFilePath = tempnam(sys_get_temp_dir(), 'edit_image_');
+                $form->attributes = $_POST['ImageEditForm'];
+                $originalImageFileModel = ImageFileModel::getById((int) $id);
+                $contents = WideImage::load($originalImageFileModel->fileContent->content)
+                            ->resize($form->imageWidth, $form->imageHeight)
+                            ->crop($form->cropX, $form->cropY, $form->cropWidth, $form->cropHeight)
+                            ->asString(str_replace('image/', '', $originalImageFileModel->type));
+                file_put_contents($tempFilePath, $contents);
+                $imageProperties = getimagesize($tempFilePath);
+                $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath,
+                                                 ImageFileModelUtil::getImageFileNameWithDimensions($originalImageFileModel->name,
+                                                                                                    (int) $imageProperties[0],
+                                                                                                    (int) $imageProperties[1]));
+                echo CJSON::encode($fileUploadData);
             }
             else
             {
-                $view = new AccessFailureView();
+                $modalListLinkProvider =  $this->getModalListLinkProvider();
+                $form->id = $imageFileModel->id;
+                $form->imageWidth = $imageFileModel->width;
+                $form->imageHeight = $imageFileModel->height;
+                $form->cropX = 0;
+                $form->cropY = 0;
+                $form->cropWidth = $imageFileModel->width;
+                $form->cropHeight = $imageFileModel->height;
+                if ($imageFileModel->isEditableByCurrentUser())
+                {
+                    $view = new ImageEditView($this, $form, $imageFileModel, $modalListLinkProvider);
+                    $view = new ModalView($this, $view);
+                }
+                else
+                {
+                    $view = new AccessFailureView();
+                }
+                echo $view->render();
             }
-            echo $view->render();
         }
 
         protected function resolveFilteredByMetadataBeforeMakingDataProvider($searchForm, & $metadata)
@@ -297,6 +318,24 @@
             {
                 $imageFile = ImageFileModel::getById((int) $id);
                 $imageFile->toggle($attribute);
+            }
+        }
+
+        protected function getModalListLinkProvider()
+        {
+            $getData = GetUtil::getData();
+            $modalTransferInformation = ArrayUtil::getArrayValue($getData, 'modalTransferInformation');
+            if ($modalTransferInformation != null)
+            {
+                return new ImageSelectFromRelatedEditModalListLinkProvider(
+                    $modalTransferInformation['sourceIdFieldId'],
+                    $modalTransferInformation['sourceNameFieldId'],
+                    $modalTransferInformation['modalId']
+                );
+            }
+            else
+            {
+                return new ImageSelectFromRelatedEditModalListLinkProvider(null, null);
             }
         }
     }

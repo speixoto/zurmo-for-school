@@ -45,15 +45,18 @@
 
         private $model;
 
+        private $modalListLinkProvider;
+
         /**
          * @param CController $controller
          * @param CFormModel $formModel
          */
-        public function __construct(CController $controller, ImageEditForm $formModel, ImageFileModel $model)
+        public function __construct(CController $controller, ImageEditForm $formModel, ImageFileModel $model, $modalListLinkProvider)
         {
-            $this->controller   = $controller;
-            $this->formModel    = $formModel;
-            $this->model        = $model;
+            $this->controller               = $controller;
+            $this->formModel                = $formModel;
+            $this->model                    = $model;
+            $this->modalListLinkProvider    = $modalListLinkProvider;
         }
 
         /**
@@ -71,12 +74,14 @@
             list($form, $formStart) = $this->controller->renderBeginWidget(
                 'ZurmoActiveForm',
                 array(
-                    'id'                   => 'image-import-form',
-                    'action'               => Yii::app()->controller->createUrl('imageModel/modalEdit', GetUtil::getData()),
+                    'id'                   => 'image-edit-form',
                     'enableAjaxValidation' => true,
                     'clientOptions' => array(
-                        'validateOnSubmit' => true,
-                        'validateOnChange' => false,
+                        'validateOnSubmit'  => true,
+                        'validateOnChange'  => false,
+                        'beforeValidate'    => 'js:$(this).beforeValidateAction',
+                        'afterValidate'     => 'js:$(this).afterValidateAjaxAction',
+                        'afterValidateAjax' => $this->renderConfigSaveAjax(),
                     ),
                 )
             );
@@ -109,6 +114,22 @@
                                         "#", $linkOptions);
             $content .= $this->controller->renderEndWidget();
             return $content;
+        }
+
+        protected function renderConfigSaveAjax()
+        {
+            return ZurmoHtml::ajax(array(
+                'url'      => "js:$('#image-edit-form').attr('action')",
+                'type'     => 'POST',
+                'data'     => "js:$('#image-edit-form').serialize()",
+                'success'  => "function(data)
+                              {
+                                var dataObject = jQuery.parseJSON(data);
+                                transferModalValues('#{$this->modalListLinkProvider->getModalId()}',
+                                                    { {$this->modalListLinkProvider->getSourceIdFieldId()}: dataObject.id});
+                                replaceImageSummary('{$this->modalListLinkProvider->getSourceNameFieldId()}', dataObject.summary);
+                              }",
+            ));
         }
 
         protected function renderScripts()

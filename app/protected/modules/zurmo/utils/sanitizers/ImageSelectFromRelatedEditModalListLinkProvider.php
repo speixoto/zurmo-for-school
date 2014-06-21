@@ -95,7 +95,7 @@
             return $this->sourceIdFieldId;
         }
 
-        public function getSourcesNameFieldId()
+        public function getSourceNameFieldId()
         {
             return $this->sourceNameFieldId;
         }

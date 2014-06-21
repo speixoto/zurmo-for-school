@@ -56,7 +56,7 @@
         public function rules()
         {
             return array(
-                array('id, cropX, cropY, cropWidth, cropHeight, imageWidth, imageHeight', 'required'),
+                array('cropX, cropY, cropWidth, cropHeight, imageWidth, imageHeight', 'required'),
                 array('id',             'type',    'type' => 'integer'),
                 array('cropX',          'type',    'type' => 'integer'),
                 array('cropY',          'type',    'type' => 'integer'),
