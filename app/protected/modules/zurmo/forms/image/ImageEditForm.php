@@ -53,6 +53,8 @@
 
         public $imageHeight;
 
+        public $lockImageProportion;
+
         public function rules()
         {
             return array(
@@ -64,6 +66,7 @@
                 array('cropHeight',     'type',    'type' => 'integer'),
                 array('imageWidth',     'type',    'type' => 'integer'),
                 array('imageHeight',    'type',    'type' => 'integer'),
+                array('lockImageProportion', 'boolean'),
             );
         }
     }

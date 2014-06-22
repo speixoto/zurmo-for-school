@@ -249,6 +249,7 @@
                 $form->cropY = 0;
                 $form->cropWidth = $imageFileModel->width;
                 $form->cropHeight = $imageFileModel->height;
+                $form->lockImageProportion = true;
                 if ($imageFileModel->isEditableByCurrentUser())
                 {
                     $view = new ImageEditView($this, $form, $imageFileModel, $modalListLinkProvider);
