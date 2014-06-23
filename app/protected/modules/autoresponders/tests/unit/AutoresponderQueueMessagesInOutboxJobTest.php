@@ -308,8 +308,8 @@
             $this->assertCount(5, $unprocessedItems);
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(2, $jobs);
-            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]);
-            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[5][0]);
+            $this->assertEquals('ProcessOutboundEmail', $jobs[0][0]['jobType']);
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[5][0]['jobType']);
             AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize(3);
             $this->assertTrue($job->run());
             $unprocessedItems               = AutoresponderItem::getByProcessedAndAutoresponderId(

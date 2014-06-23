@@ -59,7 +59,7 @@
             $this->assertTrue($autoresponderItem->unrestrictedSave());
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[$timeStamp - time() + 5][0]);
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[$timeStamp - time() + 5][0]['jobType']);
             $id = $autoresponderItem->id;
             unset($autoresponderItem);
             $autoresponderItem = AutoresponderItem::getById($id);
@@ -74,7 +74,7 @@
             $this->assertTrue($autoresponderItem->unrestrictedSave());
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[$timeStamp - time() + 5][0]);
+            $this->assertEquals('AutoresponderQueueMessagesInOutbox', $jobs[$timeStamp - time() + 5][0]['jobType']);
         }
 
         /**

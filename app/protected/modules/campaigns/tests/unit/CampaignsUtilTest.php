@@ -175,7 +175,7 @@
             $this->assertTrue(CampaignsUtil::markProcessedCampaignsAsCompleted(1));
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignMarkCompleted', $jobs[5][0]);
+            $this->assertEquals('CampaignMarkCompleted', $jobs[5][0]['jobType']);
             $campaign01 = Campaign::getById($campaign01Id);
             $this->assertNotNull($campaign01);
             $this->assertEquals(Campaign::STATUS_COMPLETED, $campaign01->status);
