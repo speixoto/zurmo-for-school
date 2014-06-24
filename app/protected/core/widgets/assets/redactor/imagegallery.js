@@ -18,6 +18,7 @@ RedactorPlugins.imagegallery = {
                 $('#redactor_modal_inner').empty().append(data);
                 $('#redactor_modal').off('click', linkForInsertSelector);
                 $('#redactor_modal').on('click', linkForInsertSelector, callback);
+                $('#redactor_modal').addClass('ui-dialog redactor-image-modal');
             },
             error: function (xhr, status) {
                 alert("Sorry, there was a problem!");
