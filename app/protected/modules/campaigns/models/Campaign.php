@@ -306,11 +306,9 @@
         protected function afterDelete()
         {
             parent::afterDelete();
-            //delete all related campaignitem, campaignitemactivity
-            $sql = "SELECT * FROM campaignitem where processed=0 and campaign_id = ".$this->id;
-            $campaignitems = ZurmoRedBean::getAll($sql);
+            $campaignitems = CampaignItem::getByProcessedAndCampaignId(0,$this->id);
             foreach($campaignitems as $campaignitem){
-                ZurmoRedBean::exec("DELETE FROM campaignitemactivity WHERE campaignitem_id = ".$campaignitem['id']);
+                ZurmoRedBean::exec("DELETE FROM campaignitemactivity WHERE campaignitem_id = ".$campaignitem->id);
             }
             ZurmoRedBean::exec("DELETE FROM campaignitem WHERE processed = 0 and campaign_id = ".$this->id);
         }

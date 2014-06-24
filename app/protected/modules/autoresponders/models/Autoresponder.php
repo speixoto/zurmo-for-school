@@ -213,11 +213,9 @@
         protected function afterDelete()
         {
             parent::afterDelete();
-            //delete all related autoresponderitem, autoresponderitemactivity
-            $sql = "SELECT * FROM autoresponderitem where processed=0 and autoresponder_id = ".$this->id;
-            $autoresponderitems = ZurmoRedBean::getAll($sql);
+            $autoresponderitems = AutoresponderItem::getByProcessedAndAutoresponderId(0,$this->id);
             foreach($autoresponderitems as $autoresponderitem){
-                ZurmoRedBean::exec("DELETE FROM autoresponderitemactivity WHERE autoresponderitem_id = ".$autoresponderitem['id']);
+                ZurmoRedBean::exec("DELETE FROM autoresponderitemactivity WHERE autoresponderitem_id = ".$autoresponderitem->id);
             }
             ZurmoRedBean::exec("DELETE FROM autoresponderitem WHERE processed = 0 and autoresponder_id = ".$this->id);
         }
