@@ -58,7 +58,8 @@
          */
         protected function renderContent()
         {
-            $content = $this->renderForm();
+            $this->setCssClasses(array('form'));
+	        $content = $this->renderForm();
             return $content;
         }
 
@@ -81,15 +82,18 @@
             );
             $content  = $formStart;
             $content .= $form->labelEx ($this->formModel, 'url');
+	        $content .= ZurmoHtml::openTag('div', array('class' => 'import-url-field'));
             $content .= $form->urlField($this->formModel, 'url');
             $content .= $form->error   ($this->formModel, 'url');
-            $linkOptions = array('onclick'  => "$(this).addClass('attachLoadingTarget').closest('form').submit()",
-                                 'class'    => 'secondary-button');
+	        $content .= ZurmoHtml::closeTag('div');
+            $linkOptions = array('onclick'  => "$(this).addClass('attachLoadingTarget').closest('form').submit();" .
+                                               "$(this).makeOrRemoveLoadingSpinner(true, $(this), 'dark');",                                 'class'    => 'secondary-button');
             $content .= ZurmoHtml::tag('div', array('id'    => 'import-image-hidden-div',
                                                     'class' => Redactor::LINK_FOR_INSERT_CLASS,
                                                     'style' => 'display:none;'), '');
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('ZurmoModule', 'Import')),
-                                        "#", $linkOptions);
+	        $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'));
+	        $label = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('ZurmoModule', 'Import'));
+            $content .= ZurmoHtml::link($spinner . $label, "#", $linkOptions);
             $content .= $this->controller->renderEndWidget();
             return $content;
         }

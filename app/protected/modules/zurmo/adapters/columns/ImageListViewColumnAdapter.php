@@ -54,14 +54,14 @@
 
             $imageContent   = $this->getImageContent();
             $insertLink     = ZurmoHtml::tag('div', array('class' => 'insert-image'), $this->view->getLinkString($data, $this->attribute));
-            $layout = $imageContent . '<div class="builder-image-details">{name}<br />{size} · {dimensions} · ' . $this->getCreatorContent()  . ' </div>';
+            $layout = $imageContent . '<div class="builder-image-details"><strong>{name}</strong><br />{size} · {dimensions} · ' . $this->getCreatorContent()  . ' </div>';
             $imageSummary = ImageFileModelUtil::getImageSummary($data, $layout);
             return $imageSummary . $insertLink;
         }
 
         protected function getImageContent()
         {
-            return '<div class="builder-uploaded-image-thumb"> {image} </div>';
+            return '<div class="builder-uploaded-image-thumb">{image}</div>';
         }
 
         protected function getCreatorContent()

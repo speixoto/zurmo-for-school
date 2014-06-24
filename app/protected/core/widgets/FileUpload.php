@@ -296,8 +296,8 @@ $scriptContent = <<<EOD
                 {{if insert_link}}
                     {{if thumbnail_url}} <span class="uploaded-logo"><img src="\${thumbnail_url}"/></span>{{/if}}
                     <span class="file-size">(\${size})</span>
-                    <span class="file-name">\${name}</span>
-                    <span class="insert-link"><a href="\${insert_link}" class="{$linkForInsertClass}" data-url="\${filelink}">{$insertLabel}</a></span>
+                    <span class="file-name"><strong>\${name}</strong></span>
+                    <span class="insert-link"><a href="\${insert_link}" class="mini-button {$linkForInsertClass}" data-url="\${filelink}">{$insertLabel}</a></span>
                 {{else}}
                     \${name} <span class="file-size">(\${size})</span>
                     <span class="upload-actions delete">

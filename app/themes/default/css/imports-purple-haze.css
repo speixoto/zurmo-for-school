@@ -12158,6 +12158,9 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 #fileUploadImageFilesUploadView .fileupload-content {
   width: 100%;
 }
+#fileUploadImageFilesUploadView .insert-link {
+  margin-left: 8px;
+}
 #ImagesModalSearchView #search-formmodal {
   padding-bottom: 0;
   border-right: none;
@@ -12205,6 +12208,7 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 }
 #image-import-form {
   padding: 15px 15px 30px 15px;
+  border: none;
   border-top: 1px solid #DFDFDF;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff;
   -moz-box-shadow: inset 0 0 0 2px #ffffff;
@@ -12230,15 +12234,24 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   clear: both;
 }
 #image-import-form label {
+  float: left;
   width: 15%;
   display: inline-block;
 }
-#image-import-form input[type="url"] {
+#image-import-form .import-url-field {
+  float: left;
   width: 65%;
   margin-right: 15px;
 }
+#image-import-form input[type="url"] {
+  width: 100%;
+}
 #image-import-form .secondary-button {
   float: right;
+}
+#image-import-form .secondary-button .z-spinner {
+  display: block;
+  left: 6px;
 }
 .builder-uploaded-image-thumb {
   float: left;
@@ -12252,6 +12265,11 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 }
 .builder-image-details a {
   font-weight: bold;
+}
+.insert-image {
+  margin-left: 20%;
+  padding: 5px 0 0 15px;
+  clear: left;
 }
 .element-edit-form-content-tab .builder-uploaded-image-thumb {
   float: none;
@@ -12267,6 +12285,14 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
 .element-edit-form-content-tab .builder-image-details a,
 .element-edit-form-content-tab .builder-image-details strong {
   font-weight: bold;
+}
+.builder-image-element-qtip {
+  max-width: none !important;
+  line-height: 1;
+}
+.builder-image-element-qtip .ui-tooltip-content {
+  padding: 9px;
+  line-height: 1;
 }
 .jrac_viewport .ui-resizable {
   position: relative;

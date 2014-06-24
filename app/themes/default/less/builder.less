@@ -699,6 +699,9 @@ div[id^="builderimageelement"]{
 	.fileupload-content{
 		width: 100%;
 	}
+	.insert-link{
+		margin-left: 8px;
+	}
 }
 
 #ImagesModalSearchView{
@@ -752,19 +755,29 @@ div[id^="builderimageelement"]{
 
 #image-import-form{
 	padding:15px 15px 30px 15px;
+	border:none;
 	border-top:1px solid #DFDFDF;
 	.portlet-gradient();
 	.clearfix();
 	label{
+		float: left;
 		width: 15%;
 		display: inline-block;
 	}
-	input[type="url"]{
+	.import-url-field{
+		float: left;
 		width: 65%;
 		margin-right: 15px;
 	}
+	input[type="url"]{
+		width: 100%;
+	}
 	.secondary-button{
 		float: right;
+		.z-spinner{
+			display: block;
+			left: 6px;
+		}
 	}
 }
 
@@ -783,6 +796,12 @@ div[id^="builderimageelement"]{
 	}
 }
 
+.insert-image{
+	margin-left: 20%;
+	padding: 5px 0 0 15px;
+	clear: left;
+}
+
 .element-edit-form-content-tab{
 	.builder-uploaded-image-thumb{
 		float: none;
@@ -797,6 +816,15 @@ div[id^="builderimageelement"]{
 		a, strong{
 			font-weight: bold;
 		}
+	}
+}
+
+.builder-image-element-qtip{
+	max-width: none !important;
+	line-height: 1;
+	.ui-tooltip-content {
+		padding: 9px;
+		line-height: 1;
 	}
 }
 

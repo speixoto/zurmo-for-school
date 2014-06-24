@@ -77,9 +77,9 @@
             if ($this->sourceIdFieldId == null)
             {
                 $url = ImageFileModelUtil::getUrlForGetImageFromImageFileName($model->getImageCacheFileName());
-                return ZurmoHtml::link($insertLabel, '#', array('class' => Redactor::LINK_FOR_INSERT_CLASS, 'data-url' => $url));
+                return ZurmoHtml::link($insertLabel, '#', array('class' => Redactor::LINK_FOR_INSERT_CLASS . 'mini-button', 'data-url' => $url));
             }
-            return ZurmoHtml::link($insertLabel, $this->getScriptForClick($model));
+            return ZurmoHtml::link($insertLabel, $this->getScriptForClick($model), array('class' => 'mini-button'));
         }
 
         protected function getScriptForClick($model)

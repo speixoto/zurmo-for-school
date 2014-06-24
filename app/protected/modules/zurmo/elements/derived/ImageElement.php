@@ -98,27 +98,38 @@
         {
             $qtipOptions = array(
                     'position' => array(
-                                    'my' => 'center',
-                                    'at' => 'center',
-                                    'target' => 'js:$("#' . $this->getModalContainerId() .'")',
+                        'my' => 'center left',
+                        'at' => 'top right',
+                        'target' => 'mouse',
+	                    'adjust' => array(
+		                    'x' => 10
+	                    )
                     ),
                     'show' => array(
                         'solo' => true,
-                        'modal' => true,
+                        'modal' => false,
                         'ready' => true,
+	                    'effect' => 'js:function(offset){$(this).fadeIn(200);}'
                     ),
+	                'hide' => array(
+		                'effect' => 'js:function(offset){$(this).fadeOut(200);}'
+	                ),
+	                'style' => array(
+		                'classes' => 'builder-image-element-qtip'
+	                ),
                     'overwrite' => false,
-                    'content' => array('text' => "js:function(event, api) {
-                                                    $.ajax({
-                                                        url: $(this).data('url')
-                                                    })
-                                                    .then(function(content) {
-                                                        api.set('content.text', content);
-                                                    }, function(xhr, status, error) {
-                                                        api.set('content.text', status + ': ' + error);
-                                                    });
-                                                }",
-                                )
+                    'content' => array(
+	                    'text' => "js:function(event, api) {
+                                $.ajax({
+                                    url: $(this).data('url')
+                                })
+                                .then(function(content) {
+                                    api.set('content.text', content);
+                                }, function(xhr, status, error) {
+                                    api.set('content.text', status + ': ' + error);
+                                });
+                            }",
+                    )
             );
             ZurmoTip::qtip2('.builder-uploaded-image-thumb > img', $qtipOptions, true, true);
         }
@@ -149,8 +160,8 @@
         {
             if ($this->image != null)
             {
-                $summary = ImageFileModelUtil::getImageSummary($this->image);
-                return ZurmoHtml::tag('div', array(), $summary);
+                $summary = ImageFileModelUtil::getImageSummary($this->image, $this->getDefaultLayout());
+                return $summary;//ZurmoHtml::tag('div', array(), $summary);
             }
             else
             {
@@ -158,6 +169,17 @@
                 return $content;
             }
         }
+
+	    protected function getDefaultLayout()
+	    {
+		    $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
+		    $onLabel        = Zurmo::t('ZurmoModule', 'on');
+		    return '<div class="builder-uploaded-image-thumb">{image}'.$this->renderReplaceOrBrowseLink().'</div><div class="builder-image-details">' .
+		           '<strong>{name}</strong><br />{size} · {dimensions} · ' . $createdByLabel .
+		           ' {creator} ' . $onLabel . ' {createdTime}</div>';
+	    }
+
+
 
         protected function renderReplaceOrBrowseLink()
         {
