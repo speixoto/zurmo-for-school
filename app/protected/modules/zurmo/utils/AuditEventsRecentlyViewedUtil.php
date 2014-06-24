@@ -94,8 +94,7 @@
                     $recentlyViewedItem                    = array();
                     $moduleClassName                       = $recentlyViewed[0];
                     $modelId                               = $recentlyViewed[1];
-                    $modelName                             = strip_tags($recentlyViewed[2]);
-                    $modelName                             = mb_convert_encoding(StringUtil::getChoppedStringContent($modelName, 40, ''), 'HTML-ENTITIES', 'UTF-8');
+                    $modelName                             = self::stripTagsAndMultipleByteEncode($recentlyViewed[2]);
                     $recentlyViewedItem['link']            = ZurmoHtml::link(
                                                                 $itemLinkPrefix . ZurmoHtml::tag('span', array(), $modelName),
                                                                 self::getRouteByRecentlyViewed($moduleClassName, $modelId));
@@ -222,6 +221,15 @@
             }
             ZurmoConfigurationUtil::
                     setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
+        }
+        
+        protected static function stripTagsAndMultipleByteEncode($moduleName){
+            if(!isset($moduleName)){
+                return;
+            }
+            $modelName                             = strip_tags($moduleName);
+            $modelName                             = mb_convert_encoding(StringUtil::getChoppedStringContent($modelName, 40, ''), 'HTML-ENTITIES', 'UTF-8');
+            return $modelName;
         }
     }
 ?>
