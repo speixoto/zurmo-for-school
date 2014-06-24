@@ -101,11 +101,11 @@
             assert('is_int($taskId)');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('TaskCheckListItem');
             $orderByColumnNameFallback = RedBeanModelDataProvider::
-                                 resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'id');
+                                resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'id');
             $orderBySortColumnName = RedBeanModelDataProvider::
-                resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'sort');
-            $where             = "task_id = '" . $taskId . "'";
-            $orderBy           = $orderBySortColumnName . 'asc, ' . $orderByColumnNameFallback . ' desc';
+                                resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'sort');
+            $where              = "task_id = '" . $taskId . "'";
+            $orderBy            = $orderBySortColumnName . 'asc, ' . $orderByColumnNameFallback . ' desc';
             return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
         }
     }

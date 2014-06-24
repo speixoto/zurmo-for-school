@@ -142,7 +142,6 @@
             $taskCheckListItem->unrestrictedSave();
         }
 
-
         /**
          * Update checklist item name
          */
