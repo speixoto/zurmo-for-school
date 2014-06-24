@@ -50,6 +50,7 @@
             {
                 $taskCheckListItem            = new TaskCheckListItem();
                 $taskCheckListItem->name      = $checkListItem->name;
+                $taskCheckListItem->sort      = $checkListItem->sort;
                 $copyToModel->checkListItems->add($taskCheckListItem);
             }
         }
