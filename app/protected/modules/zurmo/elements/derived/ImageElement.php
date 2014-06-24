@@ -171,8 +171,8 @@
             {
                 $linkText = Zurmo::t('ZurmoModule', 'Browse');
                 $content  = $this->renderImage(true);
-                $content .= ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image')) . '<br>';
-                $content .= ImageFileModelUtil::getLink($linkText, static::IMAGE_SELECT_LINK_CLASS_NAME);
+                $content .= ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image'));
+                $content .= ImageFileModelUtil::getLink($linkText, static::IMAGE_SELECT_LINK_CLASS_NAME, 'secondary-button');
                 return $content;
             }
         }

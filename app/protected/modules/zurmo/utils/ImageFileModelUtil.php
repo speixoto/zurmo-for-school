@@ -110,21 +110,29 @@
         protected static function getEditLink()
         {
             $editText = Zurmo::t('Core', 'Edit');
-            return static::getLink($editText, ImageElement::IMAGE_EDIT_LINK_CLASS_NAME);
+            return static::getLink($editText, ImageElement::IMAGE_EDIT_LINK_CLASS_NAME, 'simple-link');
         }
 
         protected static function getSelectLink()
         {
             $linkText = Zurmo::t('ZurmoModule', 'Change');
-            return static::getLink($linkText, ImageElement::IMAGE_SELECT_LINK_CLASS_NAME);
+            return static::getLink($linkText, ImageElement::IMAGE_SELECT_LINK_CLASS_NAME, 'simple-link');
         }
 
-        public static function getLink($linkText, $class)
+        public static function getLink($linkText, $class, $type)
         {
-            $content = ZurmoHtml::link(
-                '<span class="z-spinner"></span>' . ZurmoHtml::tag('span', array('class' => 'z-label'), $linkText),
-                '#',
-                array('class' => 'secondary-button ' . $class));
+	        assert('is_string($type)');
+	        if($type == 'simple-link')
+	        {
+		        $content = ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . $class));
+	        }
+	        else
+	        {
+		        $content = ZurmoHtml::link(
+			        '<span class="z-spinner"></span>' . ZurmoHtml::tag( 'span', array( 'class' => 'z-label' ), $linkText ),
+			        '#',
+			        array( 'class' => 'secondary-button ' . $class ) );
+	        }
             return $content;
         }
 
@@ -132,10 +140,11 @@
         {
             $createdByLabel = Zurmo::t('ZurmoModule', 'Created by');
             $onLabel        = Zurmo::t('ZurmoModule', 'on');
-            return '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details">' .
+            return '<div class="builder-uploaded-image-thumb">{image}</div>'.
+                   '<div class="image-links">{selectLink} · {editLink}</div>'.
+                   '<div class="builder-image-details">' .
                    '<strong>{name}</strong><br />{size} · {dimensions} · ' . $createdByLabel .
-                   ' {creator} ' . $onLabel . ' {createdTime}</div>' .
-                   '<div class="image-links">{selectLink}{editLink}</div>';
+                   ' {creator} ' . $onLabel . ' {createdTime}</div>';
         }
 
         public static function getImageFileNameWithDimensions($imageFileName, $width, $height)

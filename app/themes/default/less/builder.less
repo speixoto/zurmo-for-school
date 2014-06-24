@@ -630,8 +630,6 @@ div[id^="builderimageelement"]{
 }
 
 .image-tabs{
-	//border-left:1px solid #DFDFDF;
-	//border-right: 1px solid #DFDFDF;
 	> a{
 		display:block;
 		width: 33.33333333%;
@@ -645,11 +643,9 @@ div[id^="builderimageelement"]{
 		border-left: 1px solid #dfdfdf;
 	}
 	> a:first-child{
-		//border-right:1px solid #dfdfdf;
 		border-left: none;
 	}
 	> a + a{
-		//border-left: 1px solid #fff;
 	}
 	.active{
 		color: #fff;
@@ -682,11 +678,9 @@ div[id^="builderimageelement"]{
 	border: 2px dashed @themeColor;
 	font-size: 18px;
 	font-weight: bold;
-	//min-height: 100px;
 	line-height: 100px;
 	text-align: center;
 	color: @themeColor;
-
 	width: 100%;
 	display: block;
 	margin-bottom: 15px;
@@ -804,18 +798,30 @@ div[id^="builderimageelement"]{
 
 .element-edit-form-content-tab{
 	.builder-uploaded-image-thumb{
-		float: none;
-		width: 100%;
-		padding: 0 0 15px 0;
+		padding: 0 15px 15px 0;
+		width: auto;
+	}
+	.image-links{
+		padding-top: 5px;
+		a + a{
+		}
 	}
 	.builder-image-details{
 		width: 100%;
 		padding: 0 0 15px 0;
 		line-height: 1.5;
 		float: none;
+		clear: left;
 		a, strong{
 			font-weight: bold;
 		}
+	}
+}
+
+#BuilderElementEditableModelForm_content_image_preview{
+	strong{
+		margin: 5px 0;
+		display: block;
 	}
 }
 
@@ -829,7 +835,48 @@ div[id^="builderimageelement"]{
 }
 
 /*Image Resizer*/
+#ImageEditView{
+	.view-toolbar-container{
+		border-top:1px solid #CCCCCC;
+	}
+}
+
+#image-edit-form{
+	border: none;
+	padding:0 15px 15px 15px;
+	.left-column{
+		padding-left: 0;
+	}
+	.right-column{
+		padding-right: 0;
+	}
+}
+
+.image-edit-modal{
+	max-width: 80%;
+	min-width: 1000px;
+}
+
+.image-resize-field{
+	margin-bottom: 15px;
+	label{
+		width: 35%;
+		display: block;
+		float: left;
+	}
+	input[type="number"]{
+		width: 65%;
+	}
+	input{
+		float: left;
+	}
+	.errorMessage{
+		margin-left: 20%
+	}
+}
+
 .jrac_viewport{
+	width: 100% !important;
 	.ui-resizable {
 		position: relative;
 	}
@@ -918,4 +965,8 @@ div[id^="builderimageelement"]{
 
 .ui-icon-gripsmall-diagonal-se{
 	background: url("@{path}icon-resize.png") right top no-repeat;
+}
+
+#redactor_modal_header{
+	//display: none;
 }
