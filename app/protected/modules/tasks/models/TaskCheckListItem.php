@@ -105,7 +105,7 @@
             $orderBySortColumnName = RedBeanModelDataProvider::
                 resolveSortAttributeColumnName('TaskCheckListItem', $joinTablesAdapter, 'sort');
             $where             = "task_id = '" . $taskId . "'";
-            $orderBy           = $orderBySortColumnName . 'asc, ' . $orderByColumnNameFallback . ' asc';
+            $orderBy           = $orderBySortColumnName . 'asc, ' . $orderByColumnNameFallback . ' desc';
             return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
         }
     }
