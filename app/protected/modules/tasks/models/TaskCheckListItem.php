@@ -66,7 +66,7 @@
                 'rules' => array(
                     array('name',       'required'),
                     array('name',       'type', 'type' => 'string'),
-                    array('sort',       'type', 'type' => 'sort'),
+                    array('sort',       'type', 'type' => 'integer'),
                     array('completed',  'type', 'type' => 'boolean'),
                 ),
                 'defaultSortAttribute' => 'name',

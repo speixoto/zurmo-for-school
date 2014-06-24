@@ -272,12 +272,36 @@
          */
         protected function registerSortableScript()
         {
+            $url     =   Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/updateSortViaAjax');
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('checklistitemsSortablescript',"
-                                                           $('.taskcheckitemslist').sortable
-                                                           ({
-                                                                 items: 'li'
-                                                           });
+                                                            $('.taskcheckitemslist').sortable
+                                                            ({
+                                                                items: 'li',
+                                                                update: function(event, ui)
+                                                                {
+                                                                    $('.taskcheckitemslist li').each
+                                                                    (function(index)
+                                                                    {
+                                                                        $.ajax(
+                                                                        {
+                                                                            url : '" . $url . "?id=' + $(this).find('.checkListItem').val(),
+                                                                            type : 'GET',
+                                                                            data : {
+                                                                                        sort : $(this).offset().top
+                                                                                   },
+                                                                            dataType: 'json',
+                                                                            success : function(data)
+                                                                            {
+                                                                                //console.log('success');
+                                                                            },
+                                                                            error : function()
+                                                                            {
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                }
+                                                            });
                                                       ");
             // End Not Coding Standard
         }
