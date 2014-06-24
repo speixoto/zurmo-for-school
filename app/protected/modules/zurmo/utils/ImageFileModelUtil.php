@@ -102,7 +102,30 @@
             $data['{dimensions}']  = $imageFileModel->width . ' × ' . $imageFileModel->height;
             $data['{creator}']     = $imageFileModel->createdByUser;
             $data['{createdTime}'] = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($imageFileModel->createdDateTime);
+            $data['{selectLink}']  = static::getSelectLink();
+            $data['{editLink}']    = static::getEditLink();
             return strtr($layout, $data);
+        }
+
+        protected static function getEditLink()
+        {
+            $editText = Zurmo::t('Core', 'Edit');
+            return static::getLink($editText, ImageElement::IMAGE_EDIT_LINK_CLASS_NAME);
+        }
+
+        protected static function getSelectLink()
+        {
+            $linkText = Zurmo::t('ZurmoModule', 'Change');
+            return static::getLink($linkText, ImageElement::IMAGE_SELECT_LINK_CLASS_NAME);
+        }
+
+        public static function getLink($linkText, $class)
+        {
+            $content = ZurmoHtml::link(
+                '<span class="z-spinner"></span>' . ZurmoHtml::tag('span', array('class' => 'z-label'), $linkText),
+                '#',
+                array('class' => 'secondary-button ' . $class));
+            return $content;
         }
 
         protected static function getDefaultLayout()
@@ -111,7 +134,8 @@
             $onLabel        = Zurmo::t('ZurmoModule', 'on');
             return '<div class="builder-uploaded-image-thumb">{image}</div><div class="builder-image-details">' .
                    '<strong>{name}</strong><br />{size} · {dimensions} · ' . $createdByLabel .
-                   ' {creator} ' . $onLabel . ' {createdTime}</div>';
+                   ' {creator} ' . $onLabel . ' {createdTime}</div>' .
+                   '<div class="image-links">{selectLink}{editLink}</div>';
         }
 
         public static function getImageFileNameWithDimensions($imageFileName, $width, $height)
