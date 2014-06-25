@@ -72,5 +72,14 @@
                 'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
                 'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
         }
+        
+    	/**
+         * Get fields for which dedupe rules will be executed
+         * @return array
+         */
+        public static function getDedupeAttributes()
+        {
+            return array('primaryEmail__emailAddress', 'secondaryEmail__emailAddress', 'FullName');
+        }
     }
 ?>
