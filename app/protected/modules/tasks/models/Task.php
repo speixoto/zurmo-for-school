@@ -295,7 +295,7 @@
 
         protected function afterSave()
         {
-            if($this->getScenario() != 'importModel')
+            if ($this->getScenario() != 'importModel')
             {
                 $this->processNotificationsToBeSent();
             }

@@ -102,7 +102,7 @@
          */
         protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            if(!$element instanceof NullElement)
+            if (!$element instanceof NullElement)
             {
                 ListViewMergeUtil::resolveElementDuringFormLayoutRenderForListViewMerge($element,
                                                                                     'ModelAttributeElementPreContentView',
