@@ -253,14 +253,6 @@
             
             $autoresponders[0]->delete();
             
-            $autoresponderitems = AutoresponderItem::getByProcessedAndAutoresponderId(0,$autoresponderId);
-            $autoresponderItemArray = array();
-            foreach($autoresponderitems as $autoresponderitem){
-                $autoresponderItemArray[] = $autoresponderitem->id;
-                ZurmoRedBean::exec("DELETE FROM autoresponderitemactivity WHERE autoresponderitem_id = ".$autoresponderitem->id);
-            }
-            ZurmoRedBean::exec("DELETE FROM autoresponderitem WHERE processed = 0 and autoresponder_id = ".$autoresponderId);
-            
             $autoresponders = Autoresponder::getAll();
             $this->assertEquals(6, count($autoresponders));
             

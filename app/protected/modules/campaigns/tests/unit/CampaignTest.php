@@ -342,12 +342,6 @@
             $campaignItemActivities = CampaignItemActivity::getAll();
             $this->assertCount(1,$campaignItemActivities);
             
-            $campaignitems = CampaignItem::getByProcessedAndCampaignId(0,$campaigns[0]->id);
-            foreach($campaignitems as $campaignitem){
-                ZurmoRedBean::exec("DELETE FROM campaignitemactivity WHERE campaignitem_id = ".$campaignitems[0]->id);
-            }
-            ZurmoRedBean::exec("DELETE FROM campaignitem WHERE processed = 0 and campaign_id = ".$campaigns[0]->id);
-            
             $campaigns[0]->delete();
             
             $campaigns = Campaign::getAll();

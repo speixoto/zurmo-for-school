@@ -224,7 +224,7 @@
         }
         
         protected static function stripTagsAndMultipleByteEncode($moduleName){
-            if(!isset($moduleName)){
+            if($moduleName == null){
                 return;
             }
             $modelName                             = strip_tags($moduleName);
