@@ -257,7 +257,7 @@
             $ajaxArray['error']       = "js:function(data)
                                         {
                                             $('#FlashMessageBar').jnotifyAddMessage({
-                                                text: '" . $message . "',
+                                                text: \"" . $message . "\",
                                                 permanent: true,
                                                 clickOverlay : true,
                                                 showIcon: false,
