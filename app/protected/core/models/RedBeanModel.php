@@ -1256,6 +1256,7 @@
          */
         public function __get($attributeName)
         {
+
             return $this->unrestrictedGet($attributeName);
         }
 
@@ -1268,7 +1269,7 @@
         {
             assert('is_string($attributeName)');
             assert('$attributeName != ""');
-            assert("property_exists(\$this, '$attributeName') || \$this->isAttribute('$attributeName')");
+            assert("property_exists(\$this, '$attributeName') || \$this->isAttribute('$attributeName') || method_exists(\$this, 'get$attributeName')");
             if (property_exists($this, $attributeName))
             {
                 return $this->$attributeName;
@@ -1381,6 +1382,11 @@
             }
             else
             {
+                $getter = 'get' . $attributeName;
+                if(method_exists($this,$getter))
+                {
+                    return $this->$getter();
+                }
                 throw new NotSupportedException('Invalid Attribute: ' . $attributeName);
             }
         }

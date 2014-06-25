@@ -39,9 +39,6 @@
      */
     class FullNameForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
-        /**
-         * @return array
-         */
         public function renderGridViewData()
         {
             if ($this->getIsLink())
@@ -50,7 +47,7 @@
                     'name' => 'lastName',
                     'header' => Zurmo::t('Core', 'Name'),
                     'type' => 'raw',
-                    'value' => $this->view->getLinkString('$data->getModel("' . $this->attribute . '")', $this->attribute),
+                    'value' => $this->view->getLinkString('$data->' . $this->attribute, $this->attribute),
                 );
             }
             else
@@ -58,7 +55,7 @@
                 return array(
                     'name' => 'lastName',
                     'header' => Zurmo::t('Core', 'Name'),
-                    'value'  => 'strval($data->getModel("' . $this->attribute . '"))',
+                    'value'  => '$data->' . $this->attribute,
                 );
             }
         }
