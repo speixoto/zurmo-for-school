@@ -3149,9 +3149,28 @@ input[type="button"]:hover:after {
   height: 31px !important;
   text-indent: -9999px;
   display: block;
+  -webkit-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
 }
 .ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick:hover {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
   background: transparent url("../images/widget-close-btn.png") left top no-repeat;
+}
+.ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick:active {
+  -webkit-transform: scale(.9);
+  -moz-transform: scale(.9);
+  -ms-transform: scale(.9);
+  transform: scale(.9);
 }
 .big-spinner {
   margin: 15px 50%;

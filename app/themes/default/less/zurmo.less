@@ -2362,8 +2362,19 @@ body div.form-toolbar{
 			height: 31px !important;
 			text-indent: -9999px;
 			display: block;
+			.animateAll(0.15s);
 			&:hover{
+				-webkit-transform: scale(1.2);
+				-moz-transform: scale(1.2);
+				-ms-transform: scale(1.2);
+				transform: scale(1.2);
 				background: transparent url("@{path}widget-close-btn.png") left top no-repeat;
+			}
+			&:active{
+				-webkit-transform: scale(.9);
+				-moz-transform: scale(.9);
+				-ms-transform: scale(.9);
+				transform: scale(.9);
 			}
 		}
 	}

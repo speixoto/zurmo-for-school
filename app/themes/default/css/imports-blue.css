@@ -7909,6 +7909,7 @@ body .overlay-view .after-form-details-content a:hover {
 }
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
+  line-height: 1;
 }
 .tabs-nav a {
   display: inline-block;
@@ -7931,6 +7932,7 @@ body .overlay-view .after-form-details-content a:hover {
   -ms-text-shadow: 0 1px 0 #fff;
   -o-text-shadow: 0 1px 0 #fff;
   text-shadow: 0 1px 0 #fff;
+  vertical-align: bottom;
 }
 .tabs-nav a:hover,
 .tabs-nav a.active-tab {
@@ -7943,6 +7945,12 @@ body .overlay-view .after-form-details-content a:hover {
 .tabs-nav .simple-link {
   position: relative;
   bottom: -9px;
+}
+.tabs-nav label {
+  float: none;
+  line-height: 26px;
+  margin: 0;
+  cursor: pointer;
 }
 .mergetag-guide-modal {
   padding: 15px;
@@ -12469,6 +12477,15 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   display: block;
 }
 #redactor_modal.redactor-image-modal #redactor_modal_close {
+  -webkit-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
   position: absolute;
   right: -15px;
   top: -15px;
@@ -12480,6 +12497,21 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   opacity: 1;
   display: block;
   z-index: 11000;
+  text-indent: -9999px;
+  background: transparent url("../images/widget-close-btn.png") left top no-repeat;
+}
+#redactor_modal.redactor-image-modal #redactor_modal_close:hover {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+  background: transparent url("../images/widget-close-btn.png") left top no-repeat;
+}
+#redactor_modal.redactor-image-modal #redactor_modal_close:active {
+  -webkit-transform: scale(.9);
+  -moz-transform: scale(.9);
+  -ms-transform: scale(.9);
+  transform: scale(.9);
 }
 #redactor_modal.redactor-image-modal .filters-bar label {
   width: auto !important;
