@@ -93,5 +93,10 @@
         {
             return ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++;;
         }
+
+        protected function getTypeCssClassForCGridView()
+        {
+            return 'type-images';
+        }
     }
 ?>
