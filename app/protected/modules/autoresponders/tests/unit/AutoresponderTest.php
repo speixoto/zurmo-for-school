@@ -229,9 +229,39 @@
         {
             $autoresponders = Autoresponder::getAll();
             $this->assertCount(7, $autoresponders);
+            $autoresponderId = $autoresponders[0]->id;
+            $processDateTime    = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $contact            = ContactTestHelper::createContactByNameForOwner('autoresponderContact', Yii::app()->user->userModel);
+            $saved              = AutoresponderItem::addNewItem(0, $processDateTime, $contact, $autoresponders[0]);
+            $this->assertTrue($saved);
+            $autoresponderItems = AutoresponderItem::getByProcessedAndAutoresponderId(0,
+                                                                                        $autoresponderId);
+            //print_r($autoresponderItems[0]->id);
+            $this->assertNotEmpty($autoresponderItems);
+            $this->assertCount(1, $autoresponderItems);
+            
+            $autoresponderItemActivity                  = new AutoresponderItemActivity();
+            $autoresponderItemActivity->type            = AutoresponderItemActivity::TYPE_OPEN;
+            $autoresponderItemActivity->quantity        = 10;
+            $autoresponderItemActivity->latestSourceIP  = '10.11.12.13';
+            $autoresponderItemActivity->autoresponderItem = $autoresponderItems[0];
+            $this->assertTrue($autoresponderItemActivity->save());
+            //print_r($autoresponderItemActivity->id);
+            
+            $autoresponderItemActivities = AutoresponderItemActivity::getAll();
+            $this->assertCount(1, $autoresponderItemActivities);
+            
             $autoresponders[0]->delete();
+            
             $autoresponders = Autoresponder::getAll();
             $this->assertEquals(6, count($autoresponders));
+            
+            $autoresponderitems = AutoresponderItem::getByProcessedAndAutoresponderId(0,$autoresponderId);
+            $this->assertEquals(0, count($autoresponderitems));
+            
+            $autoresponderItemActivities = AutoresponderItemActivity::getAll();
+            $this->assertCount(0, $autoresponderItemActivities);
+            
         }
 
         public function testResolveNewTimeStampForDuration()

@@ -94,10 +94,7 @@
                     $recentlyViewedItem                    = array();
                     $moduleClassName                       = $recentlyViewed[0];
                     $modelId                               = $recentlyViewed[1];
-                    //Used to take care of multibyte characters(http://hg.zurmo.org/zurmo/issue/263/empty-campaign-title-in-recently-viewed).
-                    //@see http://stackoverflow.com/questions/5123638/how-to-convert-some-multibyte-characters-into-its-numeric-html-entity-using-php
-                    $modelName                             = strip_tags($recentlyViewed[2]);
-                    $modelName                             = mb_convert_encoding(StringUtil::getChoppedStringContent($modelName, 40, ''), 'HTML-ENTITIES', 'UTF-8');
+                    $modelName                             = self::stripTagsAndMultipleByteEncode($recentlyViewed[2]);
                     $recentlyViewedItem['link']            = ZurmoHtml::link(
                                                                 $itemLinkPrefix . ZurmoHtml::tag('span', array(), $modelName),
                                                                 self::getRouteByRecentlyViewed($moduleClassName, $modelId));
@@ -224,6 +221,15 @@
             }
             ZurmoConfigurationUtil::
                     setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
+        }
+        
+        protected static function stripTagsAndMultipleByteEncode($moduleName){
+            if($moduleName == null){
+                return;
+            }
+            $modelName                             = strip_tags($moduleName);
+            $modelName                             = mb_convert_encoding(StringUtil::getChoppedStringContent($modelName, 40, ''), 'HTML-ENTITIES', 'UTF-8');
+            return $modelName;
         }
     }
 ?>
