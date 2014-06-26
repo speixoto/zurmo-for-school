@@ -653,9 +653,11 @@ div[id^="builderimageelement"]{
 		#gradient > .vertical( @themeColorBtnDefault, @themeColorBtn2Default );
 	}
 	> a:hover{
-		color: darken(@themeColorBtnDefault, 40%) !important;
+		color: #fff;
+		.t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
 		#gradient > .vertical( @themeColorBtn2Default, @themeColorBtnDefault);
-		.t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
+		//color: darken(@themeColorBtnDefault, 40%) !important;
+		//.t-shadow( 0px 1px 0 lighten(@themeColorBtnDefault, 15%) ) !important;
 	}
 }
 
