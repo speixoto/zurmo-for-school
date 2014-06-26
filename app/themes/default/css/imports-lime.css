@@ -12108,7 +12108,12 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   background-image: linear-gradient(top,#BCC98E,#a8b96b);
 }
 .image-tabs > a:hover {
-  color: #535e2d !important;
+  color: #fff;
+  -webkit-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -moz-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -ms-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  -o-text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
+  text-shadow: 0px -1px 0 rgba(0,0,0,0.2) !important;
   background-color: #BCC98E;
   background-repeat: repeat-x;
   background-image: -ms-linear-gradient(top,#a8b96b,#BCC98E);
@@ -12117,11 +12122,6 @@ div[id^="builderimageelement"] ~ .redactor_box iframe {
   background-image: -o-linear-gradient(top,#a8b96b,#BCC98E);
   background-image: -moz-linear-gradient(top,#a8b96b,#BCC98E);
   background-image: linear-gradient(top,#a8b96b,#BCC98E);
-  -webkit-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -moz-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -ms-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  -o-text-shadow: 0px 1px 0 #dbe2c2 !important;
-  text-shadow: 0px 1px 0 #dbe2c2 !important;
 }
 #ImageFilesUploadView {
   -webkit-box-shadow: inset 0 0 0 2px #ffffff;

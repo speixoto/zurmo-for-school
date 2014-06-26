@@ -1656,6 +1656,10 @@ body > .ui-autocomplete {
 #RecentlyViewedView .type-reports         i:before {
   content: "V";
 }
+#MenuView .type-images          i:before,
+#RecentlyViewedView .type-images          i:before {
+  content: '\0112';
+}
 #MenuView .type-UsersModule            i:before,
 #RecentlyViewedView .type-UsersModule            i:before {
   content: "e";
@@ -8451,6 +8455,16 @@ a.simple-link .icon-x {
 }
 .type-users .icon-empty:before {
   content: '\0066';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-images .icon-empty:before {
+  content: '\0112';
   font-weight: normal !important;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";
