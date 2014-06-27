@@ -94,7 +94,8 @@
                     ");
             $content  = ZurmoHtml::tag('div', array('id' => $this->getIdForPreviewDiv()), $this->renderImageDetails());
             $content .= $this->registerScriptsForEditAndSelectLinks();
-            $content .= ZurmoHtml::hiddenField($this->getEditableInputName(), $this->model->{$this->attribute});
+            $value    = $this->image == null ? null : $this->image->id;
+            $content .= ZurmoHtml::hiddenField($this->getEditableInputName(), $value);
             return $content;
         }
 
