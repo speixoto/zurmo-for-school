@@ -196,12 +196,13 @@
         protected function renderAfterFormLayout($form)
         {
             parent::renderAfterFormLayout($form);
+            $formId = static::getFormId();
             Yii::app()->clientScript->registerScript('emailModalSubmitOnEnter',
-                                                    '$("input").keypress(function(event) {
+                                                    "$('input').keypress(function(event) {
                                                     if (event.which == 13) {
-                                                       $("#saveyt1").click();
+                                                       $('#{$formId}').find('.form-toolbar').find('a:first').click();
                                                     }
-                                                });');
+                                                });");
         }
     }
 ?>
