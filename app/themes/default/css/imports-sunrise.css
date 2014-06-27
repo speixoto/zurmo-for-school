@@ -9596,6 +9596,25 @@ div.showing-panel {
   float: right;
   line-height: 150%;
 }
+.business-card .social-details a {
+  display: inline-block;
+  margin-right: 6px;
+  height: 24px;
+  width: 24px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.business-card .social-details a:hover {
+  -webkit-box-shadow: 0 0 7px 0 #999;
+  -moz-box-shadow: 0 0 7px 0 #999;
+  -ms-box-shadow: 0 0 7px 0 #999;
+  -o-box-shadow: 0 0 7px 0 #999;
+  box-shadow: 0 0 7px 0 #999;
+}
 #business-card-buttons {
   display: none !important;
   display: inline-block;
