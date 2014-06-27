@@ -83,5 +83,44 @@
             $filename = '4512x12 test.png';
             $this->assertEquals('123x321 test.png', ImageFileModelUtil::getImageFileNameWithDimensions($filename, 123, 321));
         }
+
+        public function testGetImageFromHtmlImgTag()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $expectedValue = 'You were using an image directly from url: http://testimagelink.png. ' .
+                             'Please upload your image using the upload from url feature to use it with the new image element';
+            $returnedValue = ImageFileModelUtil::getImageFromHtmlImgTag('<img src="http://testimagelink.png">');
+            $this->assertEquals($expectedValue, $returnedValue);
+
+            $imageFileModel = new ImageFileModel();
+            $imageFileModel->name = 'test.gif';
+            $imageFileModel->width = 100;
+            $imageFileModel->height = 300;
+            $imageFileModel->type = 'image/gif';
+            $imageFileModel->size = 1234;
+            $imageFileModel->fileContent->content = '122';
+            $this->assertTrue($imageFileModel->save());
+
+            $url = Yii::app()->createAbsoluteUrl('zurmo/imageModel/getImage',
+                                    array('fileName' => $imageFileModel->getImageCacheFileName()));
+            $returnedValue = ImageFileModelUtil::getImageFromHtmlImgTag('<img src="'. $url .'">');
+            $this->assertSame($imageFileModel, $returnedValue);
+        }
+
+        public function testSaveImageFromTemporaryFile()
+        {
+            $id = ImageFileModel::getCount() + 1;
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $pathToFiles = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
+            $filePath    = $pathToFiles . DIRECTORY_SEPARATOR . 'testImage.png';
+            $fileUploadData = ImageFileModelUtil::saveImageFromTemporaryFile($filePath, 'fileNameTest');
+            $this->assertEquals     ($id,                                           $fileUploadData['id']);
+            $this->assertEquals     ('fileNameTest.png',                            $fileUploadData['name']);
+            $this->assertContains   ('<img data-url=',                              $fileUploadData['summary']);
+            $this->assertEquals     ('3.25KB',                                      $fileUploadData['size']);
+            $this->assertContains   ("getThumb?fileName={$id}_fileNameTest.png",    $fileUploadData['thumbnail_url']);
+            $this->assertContains   ("getImage?fileName={$id}_fileNameTest.png",    $fileUploadData['filelink']);
+            $this->assertContains   ('javascript:parent.transferModalImageValues',  $fileUploadData['insert_link']);
+        }
     }
 ?>

@@ -54,7 +54,7 @@
                 $tempFilePath = tempnam(sys_get_temp_dir(), 'upload_image_from_url_');
                 $name = preg_replace("#.*\/#", '', $url);
                 file_put_contents($tempFilePath, file_get_contents($url));
-                $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath, $name);
+                $fileUploadData = ImageFileModelUtil::saveImageFromTemporaryFile($tempFilePath, $name);
                 if (isset($fileUploadData['error']))
                 {
                     $result[CHtml::activeId($form, 'url')] = array($fileUploadData['error']);
@@ -72,50 +72,8 @@
         {
             $uploadedFile   = UploadedFileUtil::getByNameAndCatchError('file');
             $tempFilePath   = $uploadedFile->getTempName();
-            $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath,
-                                                                $uploadedFile->getName());
+            $fileUploadData = ImageFileModelUtil::saveImageFromTemporaryFile($tempFilePath, $uploadedFile->getName());
             echo CJSON::encode(array($fileUploadData));
-        }
-
-        protected function saveImageFromTemporaryFile($tempFilePath, $name)
-        {
-            $fileContent  = new FileContent();
-            $fileContent->content = file_get_contents($tempFilePath);
-            $imageProperties = getimagesize($tempFilePath);
-            $imageFileModel  = new ImageFileModel();
-            $imageFileModel->name        = $name;
-            $imageFileModel->size        = filesize($tempFilePath);
-            $imageFileModel->type        = $imageProperties['mime'];
-            $imageFileModel->width       = $imageProperties[0];
-            $imageFileModel->height      = $imageProperties[1];
-            $imageFileModel->fileContent = $fileContent;
-            if ($imageFileModel->save())
-            {
-                $imageFileModel->createImageCache();
-                $fileUploadData = array(
-                    'id'   => $imageFileModel->id,
-                    'name' => $imageFileModel->name,
-                    'summary' => ImageFileModelUtil::getImageSummary($imageFileModel),
-                    'size' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($imageFileModel->size),
-                    'thumbnail_url' => $this->createAbsoluteUrl('imageModel/getThumb',
-                            array('fileName' => $imageFileModel->getImageCacheFileName())),
-                    'filelink' => $this->createAbsoluteUrl('imageModel/getImage',
-                            array('fileName' => $imageFileModel->getImageCacheFileName())),
-                    'insert_link' => $this->resolveInsertLink($imageFileModel),
-                );
-            }
-            else
-            {
-                $message = Zurmo::t('ZurmoModule', 'Error uploading the image');
-                $fileUploadData = array('error' => $message);
-            }
-            return $fileUploadData;
-        }
-
-        protected function resolveInsertLink($imageFileModel)
-        {
-            $summary = ImageFileModelUtil::getImageSummary($imageFileModel);
-            return "javascript:parent.transferModalImageValues({$imageFileModel->id}, '{$summary}')";
         }
 
         public function actionGetUploaded()
@@ -233,7 +191,7 @@
                             ->asString(str_replace('image/', '', $originalImageFileModel->type));
                 file_put_contents($tempFilePath, $contents);
                 $imageProperties = getimagesize($tempFilePath);
-                $fileUploadData = $this->saveImageFromTemporaryFile($tempFilePath,
+                $fileUploadData = ImageFileModelUtil::saveImageFromTemporaryFile($tempFilePath,
                                                  ImageFileModelUtil::getImageFileNameWithDimensions($originalImageFileModel->name,
                                                                                                     (int) $imageProperties[0],
                                                                                                     (int) $imageProperties[1]));

@@ -119,6 +119,12 @@
             return static::getLink($linkText, ImageElement::IMAGE_SELECT_LINK_CLASS_NAME, 'simple-link');
         }
 
+        protected static function resolveInsertLink($imageFileModel)
+        {
+            $summary = static::getImageSummary($imageFileModel);
+            return "javascript:parent.transferModalImageValues({$imageFileModel->id}, '{$summary}')";
+        }
+
         public static function getLink($linkText, $class, $type)
         {
 	        assert('is_string($type)');
@@ -155,6 +161,70 @@
             $imageFileName = preg_replace("/^\d.*x\d.*\s/", "", $imageFileName);
             $imageFileName = $width . 'x' . $height . ' ' . $imageFileName;
             return $imageFileName;
+        }
+
+        public static function getImageFromHtmlImgTag($htmlContent)
+        {
+            assert('is_string($htmlContent)');
+            $matches = array();
+            preg_match("/<img.*src=[\"'](.*)[\"']/i", $htmlContent, $matches);
+            $url = $matches[1];
+            $matches = array();
+            if (preg_match("/\?fileName\=(.*)/i", $url, $matches) == 1)
+            {
+                return ImageFileModel::getByFileName($matches[1]);
+            }
+            else
+            {
+                return Zurmo::t('ZurmoModule', 'You were using an image directly from url: {url}. ' .
+                                               'Please upload your image using the upload from url feature to use it with the new image element',
+                                array('{url}' => $url));
+            }
+        }
+
+        public static function saveImageFromTemporaryFile($tempFilePath, $name)
+        {
+            $fileContent                 = new FileContent();
+            $fileContent->content        = file_get_contents($tempFilePath);
+            $imageProperties             = getimagesize($tempFilePath);
+            $imageFileModel              = new ImageFileModel();
+            static::resolveImageName($name, $imageProperties['mime']);
+            $imageFileModel->name        = $name;
+            $imageFileModel->size        = filesize($tempFilePath);
+            $imageFileModel->type        = $imageProperties['mime'];
+            $imageFileModel->width       = $imageProperties[0];
+            $imageFileModel->height      = $imageProperties[1];
+            $imageFileModel->fileContent = $fileContent;
+            if ($imageFileModel->save())
+            {
+                $imageFileModel->createImageCache();
+                $fileUploadData = array(
+                    'id'   => $imageFileModel->id,
+                    'name' => $imageFileModel->name,
+                    'summary' => ImageFileModelUtil::getImageSummary($imageFileModel),
+                    'size' => FileModelDisplayUtil::convertSizeToHumanReadableAndGet($imageFileModel->size),
+                    'thumbnail_url' => Yii::app()->createAbsoluteUrl('zurmo/imageModel/getThumb',
+                            array('fileName' => $imageFileModel->getImageCacheFileName())),
+                    'filelink' => Yii::app()->createAbsoluteUrl('zurmo/imageModel/getImage',
+                            array('fileName' => $imageFileModel->getImageCacheFileName())),
+                    'insert_link' => static::resolveInsertLink($imageFileModel),
+                );
+            }
+            else
+            {
+                $message = Zurmo::t('ZurmoModule', 'Error uploading the image');
+                $fileUploadData = array('error' => $message);
+            }
+            return $fileUploadData;
+        }
+
+        protected static function resolveImageName(& $name, $mimeType)
+        {
+            if (preg_match("/\..{3,4}\z/i", $name) == 0)
+            {
+                $extension = str_replace('image/', '', $mimeType);
+                $name .= $extension == 'jpeg' ? '.jpg' : '.' . $extension;
+            }
         }
     }
 ?>

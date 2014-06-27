@@ -165,7 +165,23 @@
             if ($this->image != null)
             {
                 return ImageFileModelUtil::getImageSummary($this->image);
-                return $summary;
+            }
+            elseif ($this->model->{$this->attribute} != null)
+            {
+                $image = ImageFileModelUtil::getImageFromHtmlImgTag($this->model->{$this->attribute});
+                if ($image instanceof ImageFileModel)
+                {
+                    $this->image = $image;
+                    return ImageFileModelUtil::getImageSummary($this->image);
+                }
+                elseif ($image != null)
+                {
+                    $linkText = Zurmo::t('ZurmoModule', 'Browse');
+                    $content  = $image;
+                    $content .= ZurmoHtml::tag('strong', array(), Zurmo::t('ZurmoModule', 'Upload an Image'));
+                    $content .= ImageFileModelUtil::getLink($linkText, static::IMAGE_SELECT_LINK_CLASS_NAME, 'secondary-button');
+                    return $content;
+                }
             }
             else
             {
