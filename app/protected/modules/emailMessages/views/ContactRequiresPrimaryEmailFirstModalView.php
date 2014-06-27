@@ -127,8 +127,6 @@
             Yii::app()->clientScript->registerScript('emailModalSubmitOnEnter',
                                                     "$('input').keypress(function(event) {
                                                     if (event.which == 13) {
-                                                       console.log('i am here');
-                                                       console.log($('#{$formId}').find('.form-toolbar').find('a:first'));
                                                        $('#{$formId}').find('.form-toolbar').find('a:first').click();
                                                     }
                                                 });");
