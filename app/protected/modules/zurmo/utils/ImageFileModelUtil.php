@@ -94,6 +94,7 @@
             {
                 $layout = static::getDefaultLayout();
             }
+            static::resolveWidthAndHeightAttributesIfTheyAreMissing($imageFileModel);
             $url                   = static::getUrlForGetImageFromImageFileName($imageFileModel->getImageCacheFileName(), true);
             $urlForPreview         = Yii::app()->createAbsoluteUrl('zurmo/imageModel/modalPreview',array('fileName' => $imageFileModel->getImageCacheFileName()));
             $data['{image}']       = ZurmoHtml::image($url, '', array('data-url' => $urlForPreview));
@@ -105,6 +106,17 @@
             $data['{selectLink}']  = static::getSelectLink();
             $data['{editLink}']    = static::getEditLink();
             return strtr($layout, $data);
+        }
+
+        protected static function resolveWidthAndHeightAttributesIfTheyAreMissing(ImageFileModel $imageFileModel)
+        {
+            if ($imageFileModel->width == null && $imageFileModel->height == null)
+            {
+                $imageProperties        = getimagesize($imageFileModel->getImageCachePath());
+                $imageFileModel->width  = $imageProperties[0];
+                $imageFileModel->height = $imageProperties[1];
+                $imageFileModel->save();
+            }
         }
 
         protected static function getEditLink()
@@ -173,10 +185,6 @@
             if (preg_match("/\?fileName\=(.*)/i", $url, $matches) == 1)
             {
                 $imageFileModel         = ImageFileModel::getByFileName($matches[1]);
-                $imageProperties        = getimagesize($imageFileModel->getImageCachePath());
-                $imageFileModel->width  = $imageProperties[0];
-                $imageFileModel->height = $imageProperties[1];
-                $imageFileModel->save();
                 return $imageFileModel;
             }
             else
