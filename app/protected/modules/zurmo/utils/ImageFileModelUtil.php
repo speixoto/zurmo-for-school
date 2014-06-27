@@ -172,7 +172,12 @@
             $matches = array();
             if (preg_match("/\?fileName\=(.*)/i", $url, $matches) == 1)
             {
-                return ImageFileModel::getByFileName($matches[1]);
+                $imageFileModel         = ImageFileModel::getByFileName($matches[1]);
+                $imageProperties        = getimagesize($image->getImageCachePath());
+                $imageFileModel->width  = $imageProperties[0];
+                $imageFileModel->height = $imageProperties[1];
+                $imageFileModel->save();
+                return $image;
             }
             else
             {
