@@ -100,5 +100,14 @@
         {
             return false;
         }
+
+        /**
+         * Gets saved layout success message.
+         * @return array
+         */
+        public static function getSavedLayoutSuccessMessage()
+        {
+            return Zurmo::t('DesignerModule', 'Layout saved successfully. You may need to log out and back in to see your changes');
+        }
     }
 ?>

@@ -62,7 +62,7 @@
         public static function makeByModuleClassName($moduleClassName)
         {
             assert('is_string($moduleClassName)');
-            $rulesClassName = $moduleClassName::getPluralCamelCasedName() . static::getRulesName();
+            $rulesClassName = Yii::app()->custom->resolveComponentRulesClassNameByModule($moduleClassName, static::getRulesName());
             return new $rulesClassName();
         }
 
