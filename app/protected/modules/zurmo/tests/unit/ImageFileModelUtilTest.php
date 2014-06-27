@@ -87,8 +87,10 @@
         public function testGetImageFromHtmlImgTag()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $expectedValue = 'You were using an image directly from url: http://testimagelink.png. ' .
-                             'Please upload your image using the upload from url feature to use it with the new image element';
+            $expectedValue = 'We have evolved and stopped using external images. ' .
+                             'This element was using an image from http://testimagelink.png. ' .
+                             'Be a good buy by importing this image using the import from url feature or ' .
+                             'just use the gallery to replace it.';
             $returnedValue = ImageFileModelUtil::getImageFromHtmlImgTag('<img src="http://testimagelink.png">');
             $this->assertEquals($expectedValue, $returnedValue);
 

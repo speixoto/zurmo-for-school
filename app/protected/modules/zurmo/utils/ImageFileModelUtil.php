@@ -189,8 +189,11 @@
             }
             else
             {
-                return Zurmo::t('ZurmoModule', 'You were using an image directly from url: {url}. ' .
-                                               'Please upload your image using the upload from url feature to use it with the new image element',
+                return Zurmo::t('ZurmoModule',
+                                'We have evolved and stopped using external images. ' .
+                                    'This element was using an image from {url}. ' .
+                                    'Be a good buy by importing this image using the import from url feature or ' .
+                                    'just use the gallery to replace it.',
                                 array('{url}' => $url));
             }
         }
