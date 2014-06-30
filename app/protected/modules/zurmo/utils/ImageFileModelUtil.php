@@ -190,10 +190,9 @@
             else
             {
                 return Zurmo::t('ZurmoModule',
-                                'We have evolved and stopped using external images. ' .
-                                    'This element was using an image from {url}. ' .
-                                    'Be a good buy by importing this image using the import from url feature or ' .
-                                    'just use the gallery to replace it.',
+                                'Due to recent improvements in the Zurmo email template builder, you are required ' .
+                                    'to re-import the image from the external URL. The image currently in use is located ' .
+                                    'here {url}. You can also select from an existing image in the gallery.',
                                 array('{url}' => $url));
             }
         }

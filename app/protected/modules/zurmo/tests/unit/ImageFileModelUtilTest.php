@@ -87,10 +87,9 @@
         public function testGetImageFromHtmlImgTag()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $expectedValue = 'We have evolved and stopped using external images. ' .
-                             'This element was using an image from http://testimagelink.png. ' .
-                             'Be a good buy by importing this image using the import from url feature or ' .
-                             'just use the gallery to replace it.';
+            $expectedValue = 'Due to recent improvements in the Zurmo email template builder, you are required ' .
+                                'to re-import the image from the external URL. The image currently in use is located ' .
+                                'here http://testimagelink.png. You can also select from an existing image in the gallery.';
             $returnedValue = ImageFileModelUtil::getImageFromHtmlImgTag('<img src="http://testimagelink.png">');
             $this->assertEquals($expectedValue, $returnedValue);
 
