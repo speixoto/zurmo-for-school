@@ -189,11 +189,14 @@
             }
             else
             {
-                return Zurmo::t('ZurmoModule',
-                                'Due to recent improvements in the Zurmo email template builder, you are required ' .
-                                    'to re-import the image from the external URL. The image currently in use is located ' .
-                                    'here {url}. You can also select from an existing image in the gallery.',
-                                array('{url}' => $url));
+	            $icon = ZurmoHtml::tag('i', array('class' => 'icon-notice'), '');
+	            $message =  Zurmo::t('ZurmoModule',
+		            'Due to recent improvements in the Zurmo email template builder, you are required ' .
+		            'to re-import the image from the external URL. The image currently in use is located ' .
+		            'here {url}. You can also select from an existing image in the gallery.',
+		            array('{url}' => $url));
+	            $message = ZurmoHtml::tag('p', array(), $message);
+	            return ZurmoHtml::tag('div', array('class' => 'image-legacy-message general-issue-notice'), $icon . $message);
             }
         }
 
