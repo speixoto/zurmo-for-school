@@ -1136,6 +1136,7 @@ body > .ui-autocomplete{
 	.type-mashableInbox   i:before{ content:  "g"; }
 	.type-marketing       i:before{ content:  '\2021'; }
 	.type-reports         i:before{ content:  "V"; }
+	.type-images          i:before{ content:  '\0112'; }
 	.type-UsersModule            i:before{ content: "e"; }
 	.type-AccountsModule         i:before{ content: "P"; }
 	.type-ContactsModule         i:before{ content: "y"; }
@@ -2080,6 +2081,8 @@ td.empty{
 
 input[type="text"],
 input[type="password"],
+input[type="url"],
+input[type="number"],
 select.multiple,
 textarea{
 	.text-input();
@@ -2360,8 +2363,19 @@ body div.form-toolbar{
 			height: 31px !important;
 			text-indent: -9999px;
 			display: block;
+			.animateAll(0.15s);
 			&:hover{
+				-webkit-transform: scale(1.2);
+				-moz-transform: scale(1.2);
+				-ms-transform: scale(1.2);
+				transform: scale(1.2);
 				background: transparent url("@{path}widget-close-btn.png") left top no-repeat;
+			}
+			&:active{
+				-webkit-transform: scale(.9);
+				-moz-transform: scale(.9);
+				-ms-transform: scale(.9);
+				transform: scale(.9);
 			}
 		}
 	}
