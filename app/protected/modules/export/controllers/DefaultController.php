@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class ExportDefaultController extends Controller
+    class ExportDefaultController extends ZurmoModuleController
     {
         public function filters()
         {
@@ -65,6 +65,37 @@
                 );
                 $this->redirect(Yii::app()->createUrl('home/default/index'));
             }
+        }
+
+        public function actionList()
+        {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $exportItem                     = new ExportItem(false);
+            $searchForm                     = new ExportSearchForm($exportItem);
+            $listAttributesSelector         = new ListAttributesSelector('ExportListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider = $this->resolveSearchDataProvider(
+                $searchForm,
+                $pageSize,
+                null,
+                'ExportItemSearchView'
+            );
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView = $this->makeListView(
+                    $searchForm,
+                    $dataProvider
+                );
+                $view = new ExportPageView($mixedView);
+            }
+            else
+            {
+                $mixedView = $this->makeSearchAndListView($searchForm, 'Export', $dataProvider);
+                $view = new ExportPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $mixedView));
+            }
+            echo $view->render();
         }
     }
 ?>

@@ -90,7 +90,10 @@
                     'processOffset',
                     'serializedData',
                     'exportFileModel',
-                )
+                ),
+                'globalSearchAttributeNames' => array(
+                    'exportFileName',
+                ),
             );
             return $metadata;
         }

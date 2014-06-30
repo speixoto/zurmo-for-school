@@ -46,19 +46,19 @@
          * or to be exported via asynchronous via background job.
          * @var int
          */
-        public static $asynchronousThreshold = 1000;
+        public static $asynchronousThreshold = 50;
 
         /**
          * Page size for asynchronus paging when processing export
          * @var int
          */
-        public static $asynchronousPageSize  = 250;
+        public static $asynchronousPageSize  = 10;
 
         /**
          * How many total models to process in a given export job run
          * @var int
          */
-        public static $asynchronousMaximumModelsToProcess = 2500;
+        public static $asynchronousMaximumModelsToProcess = 20;
 
         public static function getTranslatedRightsLabels()
         {
@@ -90,6 +90,49 @@
         protected static function getPluralModuleLabel($language)
         {
             return Zurmo::t('ExportModule', 'Exports', array(), null, $language);
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array();
+            $metadata['global'] = array(
+                'adminTabMenuItems' => array(
+                    array(
+                        'label' => "eval:Zurmo::t('ExportModule', 'Export Items')",
+                        'url'   => array('/export/default/list'),
+                        'right' => self::RIGHT_ACCESS_EXPORT,
+                    ),
+                ),
+                'configureMenuItems' => array(
+                    array(
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => "eval:Zurmo::t('ExportModule', 'Export Items')",
+                        'descriptionLabel' => "eval:Zurmo::t('ExportModule', 'Export Status.')",
+                        'route'            => '/export/default/list',
+                        'right'            => self::RIGHT_ACCESS_EXPORT,
+                    ),
+                ),
+                'globalSearchAttributeNames' => array(
+                    'exportFileName',
+                ),
+            );
+            return $metadata;
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPrimaryModelName()
+        {
+            return 'ExportItem';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'ExportSearchForm';
         }
     }
 ?>
