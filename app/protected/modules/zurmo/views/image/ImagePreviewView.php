@@ -34,46 +34,25 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    class BuilderImageRedactorElement extends RedactorElement
+    /**
+     * Class ImagePreviewView
+     */
+    class ImagePreviewView extends View
     {
-        protected function resolveRedactorOptions()
+        protected $imageFileName;
+
+        public function __construct($imageFileName)
         {
-            $parentOptions          = parent::resolveRedactorOptions();
-            $options                = array(
-                'observeImages'             => 'true',
-                'allowedTags'               => $this->resolveAllowedTags(),
-                'buttons'                   => $this->resolveRedactorButtons(),
-                'imageUpload'               => ImageFileModelUtil::getUrlForActionUpload(),
-                'imageUploadErrorCallback'  => 'function(json)
-                                                {
-                                                    alert(json.error);
-                                                }',
-                'imageGetJson'              => ImageFileModelUtil::getUrlForActionGetUploaded(),
-                'syncBeforeCallback'        => $this->renderSyncBeforeCallbackScript()
-            );
-            $options            = CMap::mergeArray($parentOptions, $options);
-            return $options;
+            assert('is_string($imageFileName)');
+            $this->imageFileName = $imageFileName;
         }
 
-        protected function resolveAllowedTags()
+        /**
+         * @inheritdoc
+         */
+        protected function renderContent()
         {
-            return CJSON::encode(array('img', 'p'));
-        }
-
-        protected function resolveRedactorButtons()
-        {
-            $buttons         = array('zurmoImage');
-            return CJSON::encode($buttons);
-        }
-
-        protected function renderSyncBeforeCallbackScript()
-        {
-            // Begin Not Coding Standard
-            return "function(html)
-                    {
-                        return this.getEditor().contents().find('img:first').wrap('<p/>').parent().html();
-                    }";
-            // End Not Coding Standard
+            return ZurmoHtml::image(ImageFileModelUtil::getUrlForGetImageFromImageFileName($this->imageFileName));
         }
     }
 ?>

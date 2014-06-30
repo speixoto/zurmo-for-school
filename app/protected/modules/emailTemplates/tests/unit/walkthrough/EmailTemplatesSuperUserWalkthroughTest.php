@@ -1126,7 +1126,7 @@
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
             $this->assertTrue(strpos($content, '<span>Y</span><strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_files" type="file"' .
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_files" multiple="multiple" type="file"' .
                                                 ' name="ClassicEmailTemplateWizardForm_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="max-upload-size">') !== false);
             $this->assertTrue(strpos($content, '</div><div class="fileupload-content"><table class="files">') !== false);
@@ -1295,7 +1295,7 @@
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
             $this->assertTrue(strpos($content, '<span>Y</span><strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_files" type="file"' .
+            $this->assertTrue(strpos($content, '<input id="ClassicEmailTemplateWizardForm_files" multiple="multiple" type="file"' .
                                                 ' name="ClassicEmailTemplateWizardForm_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="max-upload-size">') !== false);
             $this->assertTrue(strpos($content, '</div><div class="fileupload-content"><table class="files">') !== false);
@@ -1471,7 +1471,7 @@
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
             $this->assertTrue(strpos($content, '<span>Y</span><strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_files" type="file"' .
+            $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_files" multiple="multiple" type="file"' .
                                                 ' name="BuilderEmailTemplateWizardForm_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="max-upload-size">') !== false);
             $this->assertTrue(strpos($content, '</div><div class="fileupload-content"><table class="files">') !== false);
@@ -1796,7 +1796,7 @@
             $this->assertTrue(strpos($content, '<div class="fileupload-buttonbar clearfix"><div ' .
                                                 'class="addfileinput-button">') !== false);
             $this->assertTrue(strpos($content, '<span>Y</span><strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_files" type="file"' .
+            $this->assertTrue(strpos($content, '<input id="BuilderEmailTemplateWizardForm_files" multiple="multiple" type="file"' .
                                                 ' name="BuilderEmailTemplateWizardForm_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="max-upload-size">') !== false);
             $this->assertTrue(strpos($content, '</div><div class="fileupload-content"><table class="files">') !== false);

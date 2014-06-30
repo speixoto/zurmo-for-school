@@ -44,5 +44,70 @@
         {
             $this->renderDataCellContent($row, $data);
         }
+
+        /**
+         * Render the link or ajax link
+         * @param string $id the ID of the button
+         * @param array $button the button configuration which may contain 'label', 'url', 'imageUrl' and 'options' elements.
+         * See {@link buttons} for more details.
+         * @param integer $row the row number (zero-based)
+         * @param mixed $data the data object associated with the row
+         */
+        protected function renderButton($id, $button, $row, $data)
+        {
+            if (isset($button['visible']) && !$this->evaluateExpression($button['visible'],
+                    array('row' => $row, 'data' => $data)))
+            {
+                return;
+            }
+            $label = isset($button['label']) ? $button['label'] : $id;
+            if (isset($button['url']))
+            {
+                $url = $this->evaluateExpression($button['url'], array('data'=>$data, 'row'=>$row)); // Not Coding Standard
+            }
+            else
+            {
+                $url = '#';
+            }
+            $options = isset($button['options']) ? $button['options'] : array();
+            if (!isset($options['title']))
+            {
+                $options['title'] = $label;
+            }
+            if (isset($button['ajaxOptions']))
+            {
+                unset($options['ajaxOptions']);
+                echo ZurmoHtml::ajaxLink($label, $url, $button['ajaxOptions'], $options);
+            }
+            else
+            {
+                if(isset($button['imageUrl']) && is_string($button['imageUrl']))
+                {
+                    echo ZurmoHtml::link(CHtml::image($button['imageUrl'],$label),$url,$options);
+                }
+                else
+                {
+                    echo ZurmoHtml::link($label,$url,$options);
+                }
+            }
+        }
+
+        protected function registerClientScript()
+        {
+            $js=array();
+            foreach($this->buttons as $id=>$button)
+            {
+                if(isset($button['click']))
+                {
+                    $function=CJavaScript::encode($button['click']);
+                    $class=preg_replace('/\s+/','.',$button['options']['class']);
+                    $js[]="jQuery(document).off('click','#{$this->grid->id} a.{$class}');";
+                    $js[]="jQuery(document).on('click','#{$this->grid->id} a.{$class}',$function);";
+                }
+            }
+
+            if($js!==array())
+                Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id, implode("\n",$js));
+        }
     }
 ?>

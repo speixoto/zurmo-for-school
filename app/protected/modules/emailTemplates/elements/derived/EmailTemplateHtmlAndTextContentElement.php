@@ -46,7 +46,7 @@
 
         const TEXT_CONTENT_INPUT_NAME   = 'textContent';
 
-        public $plugins = array('fontfamily', 'fontsize', 'fontcolor', 'mergetags');
+        public $plugins = array('fontfamily', 'fontsize', 'fontcolor', 'mergetags', 'imagegallery');
 
         public static function getModelAttributeNames()
         {

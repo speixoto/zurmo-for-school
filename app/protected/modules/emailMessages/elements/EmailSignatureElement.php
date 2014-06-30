@@ -54,8 +54,10 @@
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
-                                        'htmlOptions' => $htmlOptions,
-                                        'content'     => $this->model->{$this->attribute},
+                                        'htmlOptions'   => $htmlOptions,
+                                        'content'       => $this->model->{$this->attribute},
+                                        'plugins'       => CJSON::encode(array('imagegallery')),
+                                        'observeImages' => 'true',
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];

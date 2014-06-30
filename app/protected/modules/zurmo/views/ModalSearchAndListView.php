@@ -39,6 +39,8 @@
      */
     abstract class ModalSearchAndListView extends GridView
     {
+        protected $listViewGridId;
+
         public function __construct($controllerId, $moduleId, $actionId, $modalListLinkProvider,
                                     ModelForm $searchForm,  RedBeanModel $model, CDataProvider $dataProvider, $gridIdSuffix = null)
         {
@@ -46,9 +48,11 @@
             parent::__construct(2, 1);
             $searchViewClassName = static::getSearchViewClassName();
             $listViewClassName   = static::getListViewClassName();
+            $listView = new $listViewClassName($controllerId, $moduleId, $actionId, get_class($model),
+                                               $modalListLinkProvider, $dataProvider, $gridIdSuffix);
             $this->setView(new $searchViewClassName($searchForm, get_class($model), $gridIdSuffix), 0, 0);
-            $this->setView(new $listViewClassName(   $controllerId, $moduleId, $actionId, get_class($model),
-                                                        $modalListLinkProvider, $dataProvider, $gridIdSuffix), 1, 0);
+            $this->setView($listView, 1, 0);
+            $this->listViewGridId = $listView->getGridViewId();
         }
 
         public function isUniqueToAPage()
@@ -64,6 +68,11 @@
         public static function getSearchViewClassName()
         {
             return NotImplementedException();
+        }
+
+        public function getListViewGridId()
+        {
+            return $this->listViewGridId;
         }
     }
 ?>

@@ -81,9 +81,12 @@
             if ($this->type == static::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute}->values->removeAll();
-                $value        = new CustomFieldValue();
-                $value->value = $this->value;
-                $adapter->getModel()->{$attribute}->values->add($value);
+                foreach ($this->value as $valueToAdd)
+                {
+                    $value = new CustomFieldValue();
+                    $value->value = $valueToAdd;
+                    $adapter->getModel()->{$attribute}->values->add($value);
+                }
             }
             else
             {

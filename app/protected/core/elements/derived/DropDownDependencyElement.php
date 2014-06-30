@@ -122,8 +122,8 @@
             $dependencyData['valueToAlwaysShow']    = $existingValue;
             if ($parentAttributeLabel != null)
             {
-                $dependencyData['notReadyToSelectText'] = Zurmo::t('Core', 'First select the {attributeLabel}',
-                                                                 array('{attributeLabel}' => $parentAttributeLabel));
+                $dependencyData['notReadyToSelectText'] = ZurmoHtml::encode(Zurmo::t('Core', 'First select the {attributeLabel}',
+                                                                 array('{attributeLabel}' => $parentAttributeLabel)));
             }
             else
             {

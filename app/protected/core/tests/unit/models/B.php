@@ -33,7 +33,6 @@
      * feasible for technical reasons, the Appropriate Legal Notices must display the words
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
-
     class B extends A
     {
         public static function getDefaultMetadata()

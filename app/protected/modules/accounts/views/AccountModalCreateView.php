@@ -90,7 +90,6 @@
                                 }
                                 else
                                 {
-                                    console.log("no error");
                                 ' . $this->saveAccountViaAjax() . '
                                 }
                                 return false;
@@ -132,7 +131,6 @@
                                 'url'      => $url,
                                 'data'     => 'js:$("#' . $formId . '").serialize()',
                                 'success'  => "function(data){
-                                                console.log('i am here' + data);
                                                 $('#{$sourceIdFieldId}').val(data.id).trigger('change');
                                                 $('#{$sourceNameFieldId}').val(data.name).trigger('change');
                                                 $('#{$modalId}').dialog('close');

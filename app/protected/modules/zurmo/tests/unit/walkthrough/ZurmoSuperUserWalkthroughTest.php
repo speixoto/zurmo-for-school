@@ -183,7 +183,7 @@
             //Confirm the file has actually been uploaded
             $files = FileModel::getAll();
             $compareJsonString = '[{"name":"testNote.txt","type":"text\/plain","size":"6.34KB","id":' . // Not Coding Standard
-                                    $files[0]->id . '}]';
+                                    $files[0]->id . ',"thumbnail_url":null}]';
             $this->assertEquals($compareJsonString, $content);
             $fileModels = FileModel::getAll();
             $this->assertEquals(1, count($fileModels));
