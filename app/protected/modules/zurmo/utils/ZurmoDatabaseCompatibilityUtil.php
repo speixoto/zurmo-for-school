@@ -1657,6 +1657,39 @@
                     from `filemodel`
                     where `relatedmodel_type` = related_model_type and `relatedmodel_id` = related_model_id;
             end;',
+
+            'create procedure create_campaign_items(campaign_id int, marketing_list_id int, processed int)
+            begin
+                insert into `campaignitem` (`id`, `processed`, `campaign_id`, `contact_id`)
+                    select null as id, processed as `processed`, campaign_id as `campaign_id`, `marketinglistmember`.`contact_id`
+                        from `marketinglistmember`
+                            left join `campaignitem` on `campaignitem`.`contact_id` = `marketinglistmember`.`contact_id`
+                                and `campaignitem`.`campaign_id` = campaign_id
+                            left join `contact` on `contact`.`id` = `marketinglistmember`.`contact_id`
+                        where (`marketinglistmember`.`marketinglist_id` = marketing_list_id
+                                and `campaignitem`.`id` is null and `contact`.`id` is not null);
+            end;',
+
+            'create procedure generate_campaign_items(active_status int, processing_status int)
+            begin
+                  declare loop0_eof boolean default false;
+                  declare campaign_id int(11);
+                  declare marketinglist_id int(11);
+
+                  declare cursor0 cursor for select `campaign`.`id`, `campaign`.`marketinglist_id` from `campaign`
+                        where ((`campaign`.`status` = active_status) and (`campaign`.`sendondatetime` < NOW()));
+                  declare continue handler for not found set loop0_eof = TRUE;
+                  open cursor0;
+                        loop0: loop
+                              fetch cursor0 into campaign_id, marketinglist_id;
+                              if loop0_eof then
+                                    leave loop0;
+                              end if;
+                              call create_campaign_items(campaign_id, marketinglist_id, 0);
+                              update `campaign` set `status` = processing_status where id = campaign_id;
+                        end loop loop0;
+                  close cursor0;
+            end;',
         );
 
         // End Not Coding Standard

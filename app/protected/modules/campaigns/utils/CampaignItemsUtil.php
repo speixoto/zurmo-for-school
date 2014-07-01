@@ -57,6 +57,9 @@
         {
             assert('is_int($pageSize) || $pageSize == null');
             assert('is_int($campaignPageSize)');
+            $sql                    = 'call `generate_campaign_items`(' . Campaign::STATUS_ACTIVE . ', ' . Campaign::STATUS_PROCESSING . ');';
+            $effectedRows           = ZurmoRedBean::exec($sql);
+            return ($effectedRows > 0);
             $dueCampaigns   = Campaign::getByStatusAndSendingTime(Campaign::STATUS_ACTIVE, time(), $campaignPageSize);
             foreach ($dueCampaigns as $dueCampaign)
             {

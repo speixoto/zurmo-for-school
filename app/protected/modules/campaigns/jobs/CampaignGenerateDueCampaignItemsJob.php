@@ -84,7 +84,7 @@
          */
         public function run()
         {
-            $batchSize = $this->resolveBatchSize();
+            $batchSize              = $this->resolveBatchSize();
             return CampaignItemsUtil::generateCampaignItemsForDueCampaigns($batchSize);
         }
     }
