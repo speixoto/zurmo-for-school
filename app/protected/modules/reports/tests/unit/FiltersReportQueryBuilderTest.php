@@ -1049,7 +1049,7 @@
             $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
             $content                               = $builder->makeQueryContent(array($filter, $filter2));
             $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
-                                                     "({$q}customfield1{$q}.{$q}value{$q} = 'blue'))";
+                                                     "({$q}customfield1{$q}.{$q}value{$q} = 'blue')))";
             $this->assertEquals($compareContent, $content);
         }
 
@@ -1270,7 +1270,7 @@
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
             $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
             $content                               = $builder->makeQueryContent(array($filter));
-            $compareContent                        = "(not (({$q}customfield{$q}.{$q}value{$q} = 'green')))";
+            $compareContent                        = "(not ({$q}customfield{$q}.{$q}value{$q} = 'green'))";
             $this->assertEquals($compareContent, $content);
         }
 
@@ -1391,7 +1391,7 @@
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
             $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT 1');
             $content                               = $builder->makeQueryContent(array($filter));
-            $compareContent                        = "(NOT (({$q}activity{$q}.{$q}latestdatetime{$q} >= '1991-03-04 00:00:00') and " .
+            $compareContent                        = "(not (({$q}activity{$q}.{$q}latestdatetime{$q} >= '1991-03-04 00:00:00') and " .
                                                      "({$q}activity{$q}.{$q}latestdatetime{$q} <= '1991-03-04 23:59:59')))";
             $this->assertEquals($compareContent, $content);
         }
