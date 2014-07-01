@@ -91,7 +91,7 @@
                                 'to re-import the image from the external URL. The image currently in use is located ' .
                                 'here http://testimagelink.png. You can also select from an existing image in the gallery.';
             $returnedValue = ImageFileModelUtil::getImageFromHtmlImgTag('<img src="http://testimagelink.png">');
-            $this->assertEquals($expectedValue, $returnedValue);
+            $this->assertContains($expectedValue, $returnedValue);
 
             $imageFileModel = new ImageFileModel();
             $imageFileModel->name = 'test.gif';
