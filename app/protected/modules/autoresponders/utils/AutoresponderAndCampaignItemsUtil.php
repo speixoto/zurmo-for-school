@@ -110,11 +110,11 @@
         public static function resolveContentsForMergeTags(& $textContent, & $htmlContent, Contact $contact, $personId,
                                                             $marketingListId, $modelId, $modelType)
         {
-            static::resolveContentForMergeTags($textContent, $contact, false, $personId, $marketingListId, $modelId, $modelType);
-            static::resolveContentForMergeTags($htmlContent, $contact, true, $personId, $marketingListId, $modelId, $modelType);
+            static::resolveContentForMergeTags($textContent, $contact, $personId, $marketingListId, $modelId, $modelType);
+            static::resolveContentForMergeTags($htmlContent, $contact, $personId, $marketingListId, $modelId, $modelType);
         }
 
-        protected static function resolveContentForMergeTags(& $content, Contact $contact, $isHtmlContent, $personId,
+        protected static function resolveContentForMergeTags(& $content, Contact $contact, $personId,
                                                                 $marketingListId, $modelId, $modelType)
         {
             // TODO: @Shoaibi/@Jason: Low: we might add support for language
@@ -125,7 +125,7 @@
             $textMergeTagsUtil      = MergeTagsUtilFactory::make($templateType, $language, $content);
             $params                 = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray($personId, $marketingListId,
                                                                                             $modelId, $modelType, true,
-                                                                                            false, $isHtmlContent);
+                                                                                            false);
             $resolvedContent        = $textMergeTagsUtil->resolveMergeTags($contact,
                                                                             $invalidTags,
                                                                             $language,

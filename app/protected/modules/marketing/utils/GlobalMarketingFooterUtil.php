@@ -95,10 +95,10 @@
         }
 
         public static function resolveFooterMergeTagsArray($personId, $marketingListId, $modelId, $modelType,
-                                                $createNewActivity = true, $preview = false, $isHtmlContent = false)
+                                                $createNewActivity = true, $preview = false)
         {
             $hashArray              = static::resolveHashArray($personId, $marketingListId, $modelId, $modelType, $createNewActivity);
-            $queryStringArray       = CMap::mergeArray($hashArray, compact('preview', 'isHtmlContent'));
+            $queryStringArray       = CMap::mergeArray($hashArray, compact('preview'));
             return $queryStringArray;
         }
 
