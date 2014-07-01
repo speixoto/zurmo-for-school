@@ -180,10 +180,18 @@
 
         protected static function renderUserSwitcherAutoCompleteControl()
         {
-            $element  = new UserSwitcherElement(new User, 'username', new ZurmoActiveForm);
+            $form       = new ZurmoActiveForm();
+            $form->id   = 'user-switcher';
+            $element    = new UserSwitcherElement(new User, 'username', $form);
             $element->editableTemplate = '{content}';
-            $content = $element->render();
+            $content    = $element->render();
+            $content    .= static::renderModalContainer($form->id);
             return $content;
+        }
+
+        protected static function renderModalContainer($formId)
+        {
+            return ZurmoHtml::tag('div', array('id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $formId), '');
         }
 
         protected static function resolveSwitchToUrlByUsername($username)
