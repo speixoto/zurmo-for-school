@@ -180,20 +180,16 @@
             $sentDateTimeColumnName     = EmailMessage::getColumnNameByAttribute('sentDateTime');
             $createdDateTimeColumnName  = Item::getColumnNameByAttribute('createdDateTime');
             $joinTablesAdapter          = new RedBeanModelJoinTablesQueryAdapter('Autoresponder');
-            MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
-                $joinTablesAdapter,
-                $where,
-                $selectDistinct);
-            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectDistinct);
-            $queuedEmailsSelectPart = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
-                                      $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
-                                      ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)"; // Not Coding Standard
-            $sentEmailsSelectPart   = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
-                                      $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
-            $uniqueOpensSelectPart  = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
-            $uniqueClicksSelectPart = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
-            $bouncedSelectPart      = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_BOUNCE);
-            $optedOutSelectPart     = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_UNSUBSCRIBE);
+            $selectQueryAdapter         = new RedBeanModelSelectQueryAdapter($selectDistinct);
+            $queuedEmailsSelectPart     = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+                                          $quote . " = '0000-00-00 00:00:00' OR {$quote}{$emailMessageTableName}{$quote}" .
+                                          ".{$quote}{$sentDateTimeColumnName}{$quote} IS NULL THEN 1 ELSE 0 END)"; // Not Coding Standard
+            $sentEmailsSelectPart       = "sum(CASE WHEN {$quote}{$emailMessageTableName}{$quote}.{$quote}{$sentDateTimeColumnName}" .
+                                          $quote . " > '0000-00-00 00:00:00' THEN 1 ELSE 0 END)";
+            $uniqueOpensSelectPart      = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_OPEN);
+            $uniqueClicksSelectPart     = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_CLICK);
+            $bouncedSelectPart          = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_BOUNCE);
+            $optedOutSelectPart         = static::resolveAutoresponderTypeSubQuery(EmailMessageActivity::TYPE_UNSUBSCRIBE);
             $selectQueryAdapter->addDayDateClause($itemTableName, $createdDateTimeColumnName, static::DAY_DATE);
             $selectQueryAdapter->addFirstDayOfWeekDateClause($itemTableName, $createdDateTimeColumnName, static::FIRST_DAY_OF_WEEK_DATE);
             $selectQueryAdapter->addFirstDayOfMonthDateClause($itemTableName, $createdDateTimeColumnName, static::FIRST_DAY_OF_MONTH_DATE);
@@ -208,6 +204,10 @@
             $joinTablesAdapter->addLeftTableAndGetAliasName($autoresponderItemTableName, 'id', $autoresponderTableName, 'autoresponder_id');
             $joinTablesAdapter->addLeftTableAndGetAliasName($emailMessageTableName, 'emailmessage_id', $autoresponderItemTableName, 'id');
             $where = RedBeanModelDataProvider::makeWhere('Autoresponder', $searchAttributeData, $joinTablesAdapter);
+            MarketingList::resolveReadPermissionsOptimizationToSqlQuery(Yii::app()->user->userModel,
+                                    $joinTablesAdapter,
+                                    $where,
+                                    $selectDistinct);
             $sql   = SQLQueryUtil::makeQuery($autoresponderTableName, $selectQueryAdapter, $joinTablesAdapter, null, null, $where, null, $groupBy);
             return $sql;
         }

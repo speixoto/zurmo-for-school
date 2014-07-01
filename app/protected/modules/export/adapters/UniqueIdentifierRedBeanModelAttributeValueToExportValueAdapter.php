@@ -34,41 +34,7 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Class used to define notification when a workflow process hits the maximum depth processing.
-     */
-    class WorkflowMaximumDepthNotificationRules extends NotificationRules
+    class UniqueIdentifierRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
-        /**
-         * @return string|The
-         */
-        public static function getType()
-        {
-            return 'WorkflowMaximumDepth';
-        }
-
-        /**
-         * @return string|void
-         */
-        public static function getDisplayName()
-        {
-            return Zurmo::t('WorkflowsModule', 'Maximum depth reached for workflow processing.');
-        }
-
-        /**
-         * Any user who has access to the workflows module is added to receive a
-         * notification.
-         */
-        protected function loadUsers()
-        {
-            foreach (User::getActiveUsers() as $user)
-            {
-                if ($user->getEffectiveRight('WorkflowsModule', WorkflowsModule::RIGHT_ACCESS_WORKFLOWS) ==
-                    Right::ALLOW)
-                {
-                    $this->addUser($user);
-                }
-            }
-        }
     }
 ?>

@@ -51,7 +51,7 @@
         protected function renderControlEditable()
         {
             $this->registerSwitchUserScript();
-            return parent::renderControlEditable();
+            return $this->renderEditableContent();
         }
 
         protected function registerSwitchUserScript()

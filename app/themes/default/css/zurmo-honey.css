@@ -671,8 +671,7 @@ section {
 #settings-header-menu ul,
 #header-calendar-link-wrapper ul,
 #header-game-dashboard-link-wrapper ul {
-  display: block;
-  width: 110px;
+  min-width: 110px;
 }
 #user-header-menu {
   margin-right: -1px;
@@ -783,14 +782,14 @@ section {
   -o-box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
   box-shadow: 0 0 2px 1px rgba(255,255,255,0.9);
 }
-#user-switcher-wrapper a,
-#header-calendar-link-wrapper a,
-#header-game-dashboard-link-wrapper a {
+#user-switcher-wrapper > a,
+#header-calendar-link-wrapper > a,
+#header-game-dashboard-link-wrapper > a {
   color: #ddd;
 }
-#user-switcher-wrapper a:hover,
-#header-calendar-link-wrapper a:hover,
-#header-game-dashboard-link-wrapper a:hover {
+#user-switcher-wrapper > a:hover,
+#header-calendar-link-wrapper > a:hover,
+#header-game-dashboard-link-wrapper > a:hover {
   color: #fff;
 }
 #user-switcher-wrapper {
@@ -898,19 +897,6 @@ section {
   padding-top: 15px;
   border-top: 1px solid #353535;
   border-bottom: none;
-}
-#user-switcher a {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  line-height: 1;
-  display: inline;
-  margin: 0;
-  padding: 0;
-  text-decoration: underline;
-}
-#user-switcher input {
-  width: 80%;
-  float: left;
 }
 #user-switcher .mini-button {
   top: 7px;
@@ -1228,7 +1214,7 @@ body > .ui-autocomplete {
 .user-menu-item li a:hover {
   color: #fff !important;
 }
-.user-menu-item ul {
+.user-menu-item li ul {
   z-index: 1;
   min-width: 110px;
   display: none;
@@ -1241,19 +1227,18 @@ body > .ui-autocomplete {
   -ms-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   -o-box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
   box-shadow: 0 0 10px 2px rgba(53, 53, 53, 0.5);
-  display: none !important;
   list-style: none;
 }
-.user-menu-item ul li {
+.user-menu-item li ul li {
   line-height: 100%;
 }
-.user-menu-item ul li:first-child a {
+.user-menu-item li ul li:first-child a {
   border-top: none;
 }
-.user-menu-item ul li:last-child a {
+.user-menu-item li ul li:last-child a {
   border-bottom: none;
 }
-.user-menu-item ul a {
+.user-menu-item li ul a {
   border-top: 1px solid #323232;
   border-bottom: 1px solid #181818;
   color: #EFEFEF;
@@ -1263,7 +1248,7 @@ body > .ui-autocomplete {
   padding: 6px 10px 6px 10px;
   margin: 0;
 }
-.user-menu-item ul a:hover {
+.user-menu-item li ul a:hover {
   color: #ffffff !important;
   background-color: #667127 !important;
   background-repeat: repeat-x !important;
@@ -1702,7 +1687,7 @@ body > .ui-autocomplete {
   display: inline-block;
   text-align: center;
   position: relative;
-  top: 1px;
+  top: 2px;
   left: 2px;
 }
 #MenuView li i:before,
@@ -1906,6 +1891,16 @@ body > .ui-autocomplete {
 #MenuView .toggle-hidden-nav-items:hover,
 #RecentlyViewedView .toggle-hidden-nav-items:hover {
   color: #333 !important;
+}
+#RecentlyViewedView {
+  height: 100%;
+}
+#RecentlyViewedView a:hover i {
+  -webkit-text-shadow: none !important;
+  -moz-text-shadow: none !important;
+  -ms-text-shadow: none !important;
+  -o-text-shadow: none !important;
+  text-shadow: none !important;
 }
 #MenuView {
   border-bottom: 1px solid #cccccc;
@@ -3460,13 +3455,7 @@ div.wide.form label.hasCheckBox {
   margin-left: 30px;
   margin-top: 30px;
   float: left;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   display: block;
-  overflow: hidden;
   position: relative;
   cursor: pointer;
 }

@@ -180,10 +180,18 @@
 
         protected static function renderUserSwitcherAutoCompleteControl()
         {
-            $element  = new UserSwitcherElement(new User, 'username', new ZurmoActiveForm);
+            $form       = new ZurmoActiveForm();
+            $form->id   = 'user-switcher';
+            $element    = new UserSwitcherElement(new User, 'username', $form);
             $element->editableTemplate = '{content}';
-            $content = $element->render();
+            $content    = $element->render();
+            $content    .= static::renderModalContainer($form->id);
             return $content;
+        }
+
+        protected static function renderModalContainer($formId)
+        {
+            return ZurmoHtml::tag('div', array('id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $formId), '');
         }
 
         protected static function resolveSwitchToUrlByUsername($username)
@@ -386,10 +394,13 @@
          */
         protected static function renderHeaderCalendarContent()
         {
-            $url     = Yii::app()->createUrl('calendars/default/details/');
-            $content = ZurmoHtml::link('U', $url, array('id' => 'header-calendar-link'));
-            return ZurmoHtml::tag('div', array('id' => static::USER_CALENDAR_WRAPPER_ID,
-                'class' => 'user-menu-item'), $content);
+            if (RightsUtil::canUserAccessModule('CalendarsModule', Yii::app()->user->userModel))
+            {
+                $url     = Yii::app()->createUrl('calendars/default/details/');
+                $content = ZurmoHtml::link('U', $url, array('id' => 'header-calendar-link'));
+                return ZurmoHtml::tag('div', array('id' => static::USER_CALENDAR_WRAPPER_ID,
+                    'class' => 'user-menu-item'), $content);
+            }
         }
 
         protected function getContainerWrapperTag()

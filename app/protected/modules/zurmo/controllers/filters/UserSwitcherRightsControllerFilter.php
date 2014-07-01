@@ -39,7 +39,9 @@
         public function hasAccess()
         {
             $primaryUser = SwitchUserIdentity::getPrimaryUser();
-            return (isset($primaryUser) || Yii::app()->user->userModel->isSuperAdministrator());
+            //to allow super admins to switch user change the following to
+            // Yii::app()->user->userModel->isSuperAdministrator());
+            return (isset($primaryUser) || Yii::app()->user->userModel->isRootUser);
         }
     }
 ?>

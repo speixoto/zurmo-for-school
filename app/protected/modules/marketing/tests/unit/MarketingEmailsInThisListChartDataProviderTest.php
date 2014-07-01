@@ -44,6 +44,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            UserTestHelper::createBasicUser('normal');
 
             EmailBoxUtil::getDefaultEmailBoxByUser(User::getByUsername('super'));
             ContactTestHelper::createContactByNameForOwner('contact01', Yii::app()->user->userModel);
@@ -299,6 +300,9 @@
             $chartDateProviderForMarketingList = clone $chartDataProvider;
 
             $combinedChartData          = $chartDataProvider->getChartData();
+            Yii::app()->user->userModel = User::getByUsername('normal');
+            $combinedChartDataForOtherUser = $chartDataProvider->getChartData();
+            Yii::app()->user->userModel = User::getByUsername('super');
             $chartDataProvider->setCampaign($this->campaign);
             $campaignChartData          = $chartDataProvider->getChartData();
 
@@ -389,6 +393,7 @@
                 $this->assertChartDataColumnAsExpected($expectedArray, $marketingListChartData[1]);
             }
             $this->assertCombinedChartDataAsExpected($combinedChartData, $campaignChartData, $marketingListChartData);
+            $this->assertCombinedChartDataAsExpectedForNormalUser($combinedChartDataForOtherUser, $campaignChartData, $marketingListChartData);
         }
 
         private function getBeginDateByConditionAndGroupingBy($emailMessageSentDateTime, $condition, $groupingBy)
@@ -480,6 +485,18 @@
                                     $campaignChartData[$key]['bounced'] + $marketingListChartData[$key]['bounced']);
                 $this->assertEquals($combinedChartData[$key]['optedOut'],
                                     $campaignChartData[$key]['optedOut'] + $marketingListChartData[$key]['optedOut']);
+            }
+        }
+
+        private function assertCombinedChartDataAsExpectedForNormalUser($combinedChartData, $campaignChartData, $marketingListChartData)
+        {
+            foreach ($combinedChartData as $key => $chartColumn)
+            {
+                $this->assertEquals(0, $combinedChartData[$key]['queued']);
+                $this->assertEquals(0, $combinedChartData[$key]['sent']);
+                $this->assertEquals(0, $combinedChartData[$key]['uniqueClicks']);
+                $this->assertEquals(0, $combinedChartData[$key]['bounced']);
+                $this->assertEquals(0, $combinedChartData[$key]['optedOut']);
             }
         }
 

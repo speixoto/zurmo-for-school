@@ -185,7 +185,7 @@
         {
             if ($exclude)
             {
-                $where  = "  ((_user.isrootuser is null OR _user.isrootuser = 1) and (${where}))";
+                $where  = "  ((_user.isrootuser is null OR _user.isrootuser = 0) and (${where}))";
             }
         }
     }
