@@ -79,7 +79,7 @@
 
         protected function resolveMergeTagParams()
         {
-            return GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(1, 2, 3, 'AutoresponderItem', false, true, $this->isHtmlContent);
+            return GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(1, 2, 3, 'AutoresponderItem', false, true);
         }
     }
 ?>
