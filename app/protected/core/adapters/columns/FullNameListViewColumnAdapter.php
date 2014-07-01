@@ -41,10 +41,10 @@
             if ($this->getIsLink())
             {
                 return array(
-                'name' => 'firstName',
-                'header' => Zurmo::t('Core', 'Name'),
-                'type' => 'raw',
-                'value' => $this->view->getLinkString('$data', $this->attribute),
+                    'name' => 'firstName',
+                    'header' => Zurmo::t('Core', 'Name'),
+                    'type' => 'raw',
+                    'value' => $this->view->getLinkString('$data->FullName', 'FullName'),
                 );
             }
             else
@@ -52,7 +52,7 @@
                 return array(
                     'name' => 'firstName',
                     'header' => Zurmo::t('Core', 'Name'),
-                    'value'  => 'strval($data)',
+                    'value'  => '$data->FullName',
                 );
             }
         }

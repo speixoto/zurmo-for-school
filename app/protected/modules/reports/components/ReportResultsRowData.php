@@ -417,17 +417,17 @@
             {
                 return $model->id;
             }
-            if ($model->isAttribute($attribute) &&
+            if ($model->isAttribute($attribute) ||  method_exists($model, "get{$attribute}") &&
                 !is_subclass_of($displayAttribute->getResolvedAttributeModelClassName(), 'OwnedModel'))
             {
                 return $model->$attribute;
             }
             $penultimateRelation = $displayAttribute->getPenultimateRelation();
-            if (!$model->isAttribute($penultimateRelation))
+            if (!$model->isAttribute($penultimateRelation) && !method_exists($model, "get{$penultimateRelation}"))
             {
                 //Fallback. For some reason this could in fact reference the original $model attribute, but because it is
                 //not owned, it gets confused. todo: need to investigate this further because this is not proper.
-                if ($model->isAttribute($attribute))
+                if ($model->isAttribute($attribute) || method_exists($model, "get{$attribute}"))
                 {
                     return $model->$attribute;
                 }
