@@ -119,8 +119,8 @@
             $this->assertEquals     ('fileNameTest.png',                            $fileUploadData['name']);
             $this->assertContains   ('<img data-url=',                              $fileUploadData['summary']);
             $this->assertEquals     ('3.25KB',                                      $fileUploadData['size']);
-            $this->assertContains   ("getThumb?fileName={$id}_fileNameTest.png",    $fileUploadData['thumbnail_url']);
-            $this->assertContains   ("getImage?fileName={$id}_fileNameTest.png",    $fileUploadData['filelink']);
+            $this->assertContains   ("getThumb?fileName={$id}_fileNameTest.png",    $fileUploadData['thumbnail_url']); // Not Coding Standard
+            $this->assertContains   ("getImage?fileName={$id}_fileNameTest.png",    $fileUploadData['filelink']); // Not Coding Standard
             $this->assertContains   ('javascript:parent.transferModalImageValues',  $fileUploadData['insert_link']);
         }
     }

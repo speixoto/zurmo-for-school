@@ -64,8 +64,8 @@
          */
         protected function renderContent()
         {
-	        $this->setCssClasses(array('form'));
-	        $content = $this->renderForm();
+            $this->setCssClasses(array('form'));
+            $content = $this->renderForm();
             return $content;
         }
 
@@ -89,51 +89,51 @@
             $src      = ImageFileModelUtil::getUrlForGetImageFromImageFileName($this->model->getImageCacheFileName());
             $content  = $formStart;
             $content .= ZurmoHtml::openTag('div', array('class' => 'form-inputs right-column'));
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
+            $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
             $content .= $form->labelEx      ($this->formModel, 'cropX');
             $content .= $form->numberField  ($this->formModel, 'cropX');
             $content .= $form->error        ($this->formModel, 'cropX');
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
-	        $content .= $form->labelEx      ($this->formModel, 'cropY');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
+            $content .= $form->labelEx      ($this->formModel, 'cropY');
             $content .= $form->numberField  ($this->formModel, 'cropY');
             $content .= $form->error        ($this->formModel, 'cropY');
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
-	        $content .= $form->labelEx      ($this->formModel, 'cropWidth');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
+            $content .= $form->labelEx      ($this->formModel, 'cropWidth');
             $content .= $form->numberField  ($this->formModel, 'cropWidth');
             $content .= $form->error        ($this->formModel, 'cropWidth');
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
-	        $content .= $form->labelEx      ($this->formModel, 'cropHeight');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
+            $content .= $form->labelEx      ($this->formModel, 'cropHeight');
             $content .= $form->numberField  ($this->formModel, 'cropHeight');
             $content .= $form->error        ($this->formModel, 'cropHeight');
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
-	        $content .= $form->labelEx      ($this->formModel, 'imageWidth');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
+            $content .= $form->labelEx      ($this->formModel, 'imageWidth');
             $content .= $form->numberField  ($this->formModel, 'imageWidth');
             $content .= $form->error        ($this->formModel, 'imageWidth');
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
-	        $content .= $form->labelEx      ($this->formModel, 'imageHeight');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
+            $content .= $form->labelEx      ($this->formModel, 'imageHeight');
             $content .= $form->numberField  ($this->formModel, 'imageHeight');
             $content .= $form->error        ($this->formModel, 'imageHeight');
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
-	        $content .= $form->labelEx      ($this->formModel, 'lockImageProportion');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::openTag('div', array('class' => 'image-resize-field clearfix'));
+            $content .= $form->labelEx      ($this->formModel, 'lockImageProportion');
             $content .= $form->checkBox     ($this->formModel, 'lockImageProportion');
             $content .= $form->error        ($this->formModel, 'lockImageProportion');
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('div');
             $content .= ZurmoHtml::tag('div', array('class' => 'left-column'), ZurmoHtml::image($src, '', array('class' => 'crop-and-resize')));
             $linkOptions = array('onclick'  => "$(this).addClass('attachLoadingTarget').closest('form').submit()",
                                  'class'    => 'z-button');
-		    $content .= ZurmoHtml::openTag('div', array('class' => 'view-toolbar-container clearfix'));
-	        $content .= ZurmoHtml::openTag('div', array('class' => 'form-toolbar'));
+            $content .= ZurmoHtml::openTag('div', array('class' => 'view-toolbar-container clearfix'));
+            $content .= ZurmoHtml::openTag('div', array('class' => 'form-toolbar'));
             $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('Core', 'Save')),
                                         "#", $linkOptions);
-	        $content .= ZurmoHtml::closeTag('div');
-	        $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('div');
+            $content .= ZurmoHtml::closeTag('div');
             $content .= $this->controller->renderEndWidget();
             return $content;
         }
@@ -160,6 +160,7 @@
             $assetsUrl = Yii::app()->assetManager->publish($assetsPath);
             Yii::app()->getClientScript()->registerScriptFile($assetsUrl . "/jquery.jrac.js");
             Yii::app()->getClientScript()->registerCssFile($assetsUrl . "/style.jrac.css");
+            // Begin Not Coding Standard
             $javaScript = "$('img.crop-and-resize').jrac({
                 'crop_width': {$this->formModel->cropWidth},
                 'crop_height': {$this->formModel->cropHeight},
@@ -186,6 +187,7 @@
                   }
                 }
             });";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript(__CLASS__, $javaScript);
         }
     }

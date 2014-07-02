@@ -51,7 +51,6 @@
 
         public function renderDataCellContent($data, $row)
         {
-
             $imageContent   = $this->getImageContent();
             $insertLink     = ZurmoHtml::tag('div', array('class' => 'insert-image'), $this->view->getLinkString($data, $this->attribute));
             $layout = $imageContent . '<div class="builder-image-details"><strong>{name}</strong><br />{size} · {dimensions} · ' . $this->getCreatorContent()  . ' </div>';
@@ -70,6 +69,5 @@
             $onLabel        = Zurmo::t('ZurmoModule', 'on');
             return $createdByLabel .' {creator} ' . $onLabel .  ' {createdTime}';
         }
-
     }
 ?>
