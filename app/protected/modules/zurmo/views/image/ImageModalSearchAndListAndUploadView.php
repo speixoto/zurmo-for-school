@@ -51,7 +51,7 @@
                 $dataProvider,
                 $gridIdSuffix
             );
-            $this->setView($searchAndListView, 0,0);
+            $this->setView($searchAndListView, 0, 0);
 
             $imageUploadView = new ImageFilesUploadView($searchAndListView->getListViewGridId());
             $this->setView($imageUploadView, 1, 0);
@@ -86,9 +86,10 @@
 
         protected function registerScripts($modalListLinkProvider)
         {
-            $transferModalJavascriptFunction = "function transferModalImageValues(id, summary){ }";
+            $transferModalJavascriptFunction = "function transferModalImageValues(id, summary){ }"; // Not Coding Standard
             if ($modalListLinkProvider->getSourceIdFieldId() !== null)
             {
+                // Begin Not Coding Standard
                 $transferModalJavascriptFunction = "function transferModalImageValues(id, summary)
                                     {
                                         data = {
@@ -97,7 +98,9 @@
                                         transferModalValues('#{$modalListLinkProvider->getModalId()}', data);
                                         replaceImageSummary('{$modalListLinkProvider->getSourceNameFieldId()}', summary);
                                     };";
+                // End Not Coding Standard
             }
+            // Begin Not Coding Standard
             $javaScript = "
                 $('div.image-tabs > a').click(function(){
                     $('div.image-tabbed-content > div').hide();
@@ -107,6 +110,7 @@
                 });
                 {$transferModalJavascriptFunction}
             ";
+            // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), $javaScript);
         }
     }

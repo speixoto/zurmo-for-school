@@ -81,13 +81,13 @@
             }
             else
             {
-                if(isset($button['imageUrl']) && is_string($button['imageUrl']))
+                if (isset($button['imageUrl']) && is_string($button['imageUrl']))
                 {
-                    echo ZurmoHtml::link(CHtml::image($button['imageUrl'],$label),$url,$options);
+                    echo ZurmoHtml::link(CHtml::image($button['imageUrl'], $label), $url, $options);
                 }
                 else
                 {
-                    echo ZurmoHtml::link($label,$url,$options);
+                    echo ZurmoHtml::link($label, $url, $options);
                 }
             }
         }
@@ -95,19 +95,23 @@
         protected function registerClientScript()
         {
             $js=array();
-            foreach($this->buttons as $id=>$button)
+            foreach ($this->buttons as $id=>$button)
             {
-                if(isset($button['click']))
+                if (isset($button['click']))
                 {
                     $function=CJavaScript::encode($button['click']);
+                    // Begin Not Coding Standard
                     $class=preg_replace('/\s+/','.',$button['options']['class']);
                     $js[]="jQuery(document).off('click','#{$this->grid->id} a.{$class}');";
                     $js[]="jQuery(document).on('click','#{$this->grid->id} a.{$class}',$function);";
+                    // End Not Coding Standard
                 }
             }
 
-            if($js!==array())
-                Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id, implode("\n",$js));
+            if ($js !== array())
+            {
+                Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id, implode("\n", $js)); // Not Coding Standard
+            }
         }
     }
 ?>

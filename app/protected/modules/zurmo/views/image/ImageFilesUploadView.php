@@ -40,7 +40,6 @@
      */
     class ImageFilesUploadView extends View
     {
-
         protected $listViewGridId;
 
         /**

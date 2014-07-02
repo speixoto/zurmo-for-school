@@ -107,7 +107,7 @@
                     }
                     $this->addError($model, $attributeName, $message);
                 }
-                elseif(!$model->$attributeName->validate())
+                elseif (!$model->$attributeName->validate())
                 {
                     if ($this->message !== null)
                     {

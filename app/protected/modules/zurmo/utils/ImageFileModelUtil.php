@@ -96,7 +96,7 @@
             }
             static::resolveWidthAndHeightAttributesIfTheyAreMissing($imageFileModel);
             $url                   = static::getUrlForGetImageFromImageFileName($imageFileModel->getImageCacheFileName(), true);
-            $urlForPreview         = Yii::app()->createAbsoluteUrl('zurmo/imageModel/modalPreview',array('fileName' => $imageFileModel->getImageCacheFileName()));
+            $urlForPreview         = Yii::app()->createAbsoluteUrl('zurmo/imageModel/modalPreview', array('fileName' => $imageFileModel->getImageCacheFileName()));
             $data['{image}']       = ZurmoHtml::image($url, '', array('data-url' => $urlForPreview));
             $data['{name}']        = $imageFileModel->name;
             $data['{size}']        = FileModelDisplayUtil::convertSizeToHumanReadableAndGet((int) $imageFileModel->size);
@@ -139,18 +139,18 @@
 
         public static function getLink($linkText, $class, $type)
         {
-	        assert('is_string($type)');
-	        if($type == 'simple-link')
-	        {
-		        $content = ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . $class));
-	        }
-	        else
-	        {
-		        $content = ZurmoHtml::link(
-			        '<span class="z-spinner"></span>' . ZurmoHtml::tag( 'span', array( 'class' => 'z-label' ), $linkText ),
-			        '#',
-			        array( 'class' => 'secondary-button ' . $class ) );
-	        }
+            assert('is_string($type)');
+            if ($type == 'simple-link')
+            {
+                $content = ZurmoHtml::link($linkText, '#', array('class' => 'simple-link ' . $class));
+            }
+            else
+            {
+                $content = ZurmoHtml::link(
+                    '<span class="z-spinner"></span>' . ZurmoHtml::tag( 'span', array( 'class' => 'z-label' ), $linkText ),
+                    '#',
+                    array( 'class' => 'secondary-button ' . $class ) );
+            }
             return $content;
         }
 
@@ -179,24 +179,24 @@
         {
             assert('is_string($htmlContent)');
             $matches = array();
-            preg_match("/<img.*src=[\"'](.*)[\"']/i", $htmlContent, $matches);
+            preg_match("/<img.*src=[\"'](.*)[\"']/i", $htmlContent, $matches); // Not Coding Standard
             $url = $matches[1];
             $matches = array();
-            if (preg_match("/\?fileName\=(.*)/i", $url, $matches) == 1)
+            if (preg_match("/\?fileName\=(.*)/i", $url, $matches) == 1) // Not Coding Standard
             {
                 $imageFileModel         = ImageFileModel::getByFileName($matches[1]);
                 return $imageFileModel;
             }
             else
             {
-	            $icon = ZurmoHtml::tag('i', array('class' => 'icon-notice'), '');
-	            $message =  Zurmo::t('ZurmoModule',
-		            'Due to recent improvements in the Zurmo email template builder, you are required ' .
-		            'to re-import the image from the external URL. The image currently in use is located ' .
-		            'here {url}. You can also select from an existing image in the gallery.',
-		            array('{url}' => $url));
-	            $message = ZurmoHtml::tag('p', array(), $message);
-	            return ZurmoHtml::tag('div', array('class' => 'image-legacy-message general-issue-notice'), $icon . $message);
+                $icon = ZurmoHtml::tag('i', array('class' => 'icon-notice'), '');
+                $message =  Zurmo::t('ZurmoModule',
+                    'Due to recent improvements in the Zurmo email template builder, you are required ' .
+                    'to re-import the image from the external URL. The image currently in use is located ' .
+                    'here {url}. You can also select from an existing image in the gallery.',
+                    array('{url}' => $url));
+                $message = ZurmoHtml::tag('p', array(), $message);
+                return ZurmoHtml::tag('div', array('class' => 'image-legacy-message general-issue-notice'), $icon . $message);
             }
         }
 
@@ -238,7 +238,7 @@
 
         protected static function resolveImageName(& $name, $mimeType)
         {
-            if (preg_match("/\..{3,4}\z/i", $name) == 0)
+            if (preg_match("/\..{3,4}\z/i", $name) == 0) // Not Coding Standard
             {
                 $extension = str_replace('image/', '', $mimeType);
                 $name .= $extension == 'jpeg' ? '.jpg' : '.' . $extension;

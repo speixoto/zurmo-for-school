@@ -110,8 +110,8 @@
             $js=array();
             $function = CJavaScript::encode($this->getClickScript());
             $class = preg_replace('/\s+/', '.', $htmlOptions['class']);
-            $js[] = "jQuery(document).off('click','#{$this->grid->id} a.{$class}');";
-            $js[] = "jQuery(document).on('click', '#{$this->grid->id} a.{$class}', $function);";
+            $js[] = "jQuery(document).off('click','#{$this->grid->id} a.{$class}');"; // Not Coding Standard
+            $js[] = "jQuery(document).on('click', '#{$this->grid->id} a.{$class}', $function);"; // Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id, implode("\n",$js));
         }
 
@@ -120,7 +120,7 @@
             if (Yii::app()->request->enableCsrfValidation) {
                 $csrfTokenName = Yii::app()->request->csrfTokenName;
                 $csrfToken = Yii::app()->request->csrfToken;
-                $csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },";
+                $csrf = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },"; // Not Coding Standard
             } else {
                 $csrf = '';
             }
@@ -128,7 +128,7 @@
             if ($this->afterToggle === null) {
                 $this->afterToggle = 'function(){}';
             }
-
+            // Begin Not Coding Standard
             return "js:
                 function() {
                     var th=this;
@@ -146,6 +146,7 @@
                     });
                     return false;
                 }";
+            // End Not Coding Standard
         }
     }
 ?>
