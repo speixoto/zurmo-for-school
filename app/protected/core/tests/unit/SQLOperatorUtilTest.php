@@ -161,5 +161,26 @@
             $this->assertEquals('%',  SQLOperatorUtil::resolveValueRightSideLikePartByOperatorType('doesNotContains'));
             $this->assertEquals('%',  SQLOperatorUtil::resolveValueRightSideLikePartByOperatorType('contains'));
         }
+
+        public function testResolveValidationForATemplateSqlStatementAndReturnErrorMessage()
+        {
+            $this->assertEquals('The structure is invalid. Please fix conditions.', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('', 1));
+            $this->assertEquals('The structure is invalid. Please fix conditions.', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('dumb structure', 1));
+            $this->assertEquals('The structure is invalid. Please use only integers less than 2.', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('4', 1));
+            $this->assertEquals('The structure is invalid. Please fix your parenthesis.', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('()))', 1));
+            $this->assertEquals('The structure is invalid. Please fix your parenthesis around the not operator.', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('(not) 2 and 1', 2));
+            $this->assertEquals('The structure is invalid. Please fix conditions.', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('or 2 and 1', 2));
+            $this->assertEquals('The structure is invalid. Please, only use one of the operators: not, and, or.', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('1 e 2 ou 1', 2));
+            $this->assertEquals('', SQLOperatorUtil::
+                                    resolveValidationForATemplateSqlStatementAndReturnErrorMessage('not (not (2 and 4) or 1 and not 4)', 4));
+
+        }
     }
 ?>

@@ -61,7 +61,7 @@
 
         protected function getEditableHtmlOptions()
         {
-            $htmlOptions = parent::getHtmlOptions();
+            $htmlOptions = parent::getEditableHtmlOptions();
             $htmlOptions['multiple'] = true;
             return $htmlOptions;
         }

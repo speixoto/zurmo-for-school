@@ -1774,6 +1774,10 @@ body > .ui-autocomplete {
 #RecentlyViewedView .type-reports         i:before {
   content: "V";
 }
+#MenuView .type-images          i:before,
+#RecentlyViewedView .type-images          i:before {
+  content: '\0112';
+}
 #MenuView .type-UsersModule            i:before,
 #RecentlyViewedView .type-UsersModule            i:before {
   content: "e";
@@ -2953,6 +2957,8 @@ td.empty {
 }
 input[type="text"],
 input[type="password"],
+input[type="url"],
+input[type="number"],
 select.multiple,
 textarea {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -2979,6 +2985,8 @@ textarea {
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
 select.multiple:focus,
 textarea:focus {
   -webkit-box-shadow: 0 0 1px 1px #282A76;
@@ -2989,6 +2997,8 @@ textarea:focus {
 }
 input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
 select.multiple:focus,
 textarea:focus {
   -webkit-box-shadow: 0 0 1px 1px #282A76;
@@ -3261,9 +3271,28 @@ input[type="button"]:hover:after {
   height: 31px !important;
   text-indent: -9999px;
   display: block;
+  -webkit-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -moz-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -o-transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  transition: all 0.15s cubic-bezier(0.390,0.575,0.565,1.000);
+  -ms-transform: translate(0px,0);
+  -moz-transform: translate(0px,0);
+  -webkit-transform: translate3d(0px,0,0);
+  transform: translate(0px,0);
 }
 .ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick:hover {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
   background: transparent url("../images/widget-close-btn.png") left top no-repeat;
+}
+.ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick:active {
+  -webkit-transform: scale(.9);
+  -moz-transform: scale(.9);
+  -ms-transform: scale(.9);
+  transform: scale(.9);
 }
 .big-spinner {
   margin: 15px 50%;
@@ -6531,6 +6560,10 @@ div.radio-input .hasDropDown {
   position: relative;
   margin: 0 20px 20px 0;
   padding: 10px;
+  -webkit-border-radius: 5px !important;
+  -moz-border-radius: 5px !important;
+  -ms-border-radius: 5px !important;
+  -o-border-radius: 5px !important;
   border-radius: 5px !important;
   border: 1px solid #FFCC00;
   background: #FFFCB5;
@@ -8544,6 +8577,16 @@ a.simple-link .icon-x {
 }
 .type-users .icon-empty:before {
   content: '\0066';
+  font-weight: normal !important;
+  font-size: 45px;
+  font-family: "zurmo_gamification_symbly_rRg";
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+  position: relative;
+}
+.type-images .icon-empty:before {
+  content: '\0112';
   font-weight: normal !important;
   font-size: 45px;
   font-family: "zurmo_gamification_symbly_rRg";

@@ -45,6 +45,40 @@
         const THUMB_FILE_NAME_PREFIX   = 'thumb_';
         const FILE_NAME_SEPARATOR      = '_';
 
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'isShared',
+                    'width',
+                    'height',
+                    'inactive'
+                ),
+                'rules' => array(
+                    array('isShared', 'boolean'),
+                    array('isShared', 'default', 'value' => false),
+                    array('width',    'type',    'type' => 'integer'),
+                    array('height',   'type',    'type' => 'integer'),
+                    array('inactive', 'boolean'),
+                    array('inactive', 'default', 'value' => false),
+                ),
+            );
+            return $metadata;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'isShared'  => Zurmo::t('ZurmoModule', 'Shared',    array(), null, $language),
+                    'width'     => Zurmo::t('ZurmoModule', 'Width',     array(), null, $language),
+                    'height'    => Zurmo::t('ZurmoModule', 'Height',    array(), null, $language),
+                    'inactive'  => Zurmo::t('ZurmoModule', 'Inactive',  array(), null, $language),
+                )
+            );
+        }
+
         /**
          * Get the model by the fileName
          * @param $fileName The filename of the model
@@ -194,6 +228,47 @@
                 $this->addError($attribute, Zurmo::t('ZurmoModule', 'File type is not valid.'));
                 return false;
             }
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'ImagesModule';
+        }
+
+        public function toggle($attribute)
+        {
+            if ($this->isToggleable($attribute))
+            {
+                $this->{$attribute} = !$this->{$attribute};
+                $this->save();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public function isToggleable($attribute)
+        {
+            if (Yii::app()->user->userModel->isSame($this->createdByUser) && $attribute == 'isShared')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function canDelete()
+        {
+            if (Yii::app()->user->userModel->isSame($this->createdByUser))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function isEditableByCurrentUser()
+        {
+            return (Yii::app()->user->userModel->isSame($this->createdByUser) || $this->isShared);
         }
     }
 ?>

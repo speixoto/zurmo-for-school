@@ -459,6 +459,14 @@
             $displayAttribute19->attributeIndexOrDerivedType = 'hasMany2___owner__User';
             $report->addDisplayAttribute($displayAttribute19);
 
+            //for dynamic user fullName attribute
+            $reportModelTestItem->owner   = Yii::app()->user->userModel;
+            $displayAttribute20           = new DisplayAttributeForReportForm('ReportsTest2Module', 'ReportModelTestItem2',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute20->setModelAliasUsingTableAliasName('relatedModel');
+            $displayAttribute20->attributeIndexOrDerivedType = 'hasMany2___owner___FullName';
+            $report->addDisplayAttribute($displayAttribute20);
+
             $reportModelTestItem2            = new ReportModelTestItem2();
             $reportModelTestItem2->owner     = Yii::app()->user->userModel;
             $reportModelTestItem2->hasMany2->add($reportModelTestItem);
@@ -485,11 +493,12 @@
                                         'Reports Tests >> Tag Cloud',
                                         'Reports Tests >> Radio Drop Down',
                                         'Reports Tests >> A name for a state',
-                                        'Reports Tests >> Owner');
+                                        'Reports Tests >> Owner',
+                                        'Reports Tests >> User >> Full Name');
             $compareRowData     = array(array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                         10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                         'http://www.test.com', 'Test2', '100.00', 'USD', 'someString', 'test@someString.com',
-                                        'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'Clark Kent')); // Not Coding Standard
+                                        'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'Clark Kent', 'Clark Kent')); // Not Coding Standard
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
 

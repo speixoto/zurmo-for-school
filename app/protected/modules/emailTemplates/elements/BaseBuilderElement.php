@@ -573,7 +573,15 @@
             $content               .= $formEnd;
             $content                = ZurmoHtml::tag('div', array('class' => 'wide form'), $content);
             $content                = ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
+            $content               .= $this->renderModalContainer($form);
             return $content;
+        }
+
+        protected function renderModalContainer($form)
+        {
+            return ZurmoHtml::tag('div', array(
+                'id' => ModelElement::MODAL_CONTAINER_PREFIX . '-' . $form->id
+            ), '');
         }
 
         /**
@@ -1366,6 +1374,8 @@
                 'border-width'      => 'px',
                 'border-top-width'  => 'px',
                 'divider-padding'   => 'px',
+                'height'            => 'px',
+                'width'             => 'px',
             );
             return $mappedArray;
         }

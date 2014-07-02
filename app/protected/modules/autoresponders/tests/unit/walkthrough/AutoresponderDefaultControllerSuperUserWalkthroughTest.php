@@ -184,7 +184,7 @@
                                                 'name="Autoresponder[htmlContent]"') !== false);
             $this->assertTrue(strpos($content, '<label>Attachments</label>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="Autoresponder_files" type="file" ' .
+            $this->assertTrue(strpos($content, '<input id="Autoresponder_files" multiple="multiple" type="file" ' .
                                                 'name="Autoresponder_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Cancel</span>') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Save</span>') !== false);
@@ -388,7 +388,7 @@
                                                 'name="Autoresponder[htmlContent]"') !== false);
             $this->assertTrue(strpos($content, '<label>Attachments</label>') !== false);
             $this->assertTrue(strpos($content, '<strong class="add-label">Add Files</strong>') !== false);
-            $this->assertTrue(strpos($content, '<input id="Autoresponder_files" type="file" ' .
+            $this->assertTrue(strpos($content, '<input id="Autoresponder_files" multiple="multiple" type="file" ' .
                                                 'name="Autoresponder_files"') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Cancel</span>') !== false);
             $this->assertTrue(strpos($content, '<span class="z-label">Save</span>') !== false);

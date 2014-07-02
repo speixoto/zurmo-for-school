@@ -93,7 +93,7 @@
             self::resetAndPopulateFilesArrayByFilePathAndName('file', $filePath, 'testNote.txt');
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/imageModel/upload');
             $returnedObject = CJSON::decode($content);
-            $this->assertEquals('Error uploading the image', $returnedObject['error']);
+            $this->assertEquals('Error uploading the image', $returnedObject[0]['error']);
             //Test uploading valid image
             $pathToFiles  = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files');
             $fileContents = file_get_contents($pathToFiles . DIRECTORY_SEPARATOR . 'testImage.png');
@@ -101,9 +101,16 @@
             self::resetAndPopulateFilesArrayByFilePathAndName('file', $filePath, 'testImage.png');
             $content        = $this->runControllerWithNoExceptionsAndGetContent('zurmo/imageModel/upload');
             $returnedObject = CJSON::decode($content);
-            $this->assertContains('zurmo/imageModel/getImage?fileName=2_testImage.png', $returnedObject['filelink']); // Not Coding Standard
+            $this->assertContains('zurmo/imageModel/getImage?fileName=2_testImage.png', $returnedObject[0]['filelink']); // Not Coding Standard
             $createdImageFile = ImageFileModel::getById(2);
             $this->assertEquals($fileContents, $createdImageFile->fileContent->content);
+            //Test deleting image
+            $createdImageFile->inactive = false;
+            $this->setGetArray(array('id' => 2));
+            $this->runControllerWithNoExceptionsAndGetContent('zurmo/imageModel/delete', true);
+            RedBeanModel::forgetAll();
+            $deletedImageFile = ImageFileModel::getById(2);
+            $deletedImageFile->inactive = true;
         }
     }
 ?>
