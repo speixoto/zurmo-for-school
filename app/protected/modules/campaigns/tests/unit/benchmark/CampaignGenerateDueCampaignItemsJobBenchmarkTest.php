@@ -37,6 +37,8 @@
     {
         protected $user;
 
+        protected $singleItemExpectedTime   = 0.007;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -57,31 +59,31 @@
 
         public function testSingleItem()
         {
-            $this->testItems(1, 1);
+            $this->testItems(1);
         }
 
         /**
-         * @//depends testSingleItem
+         * @depends testSingleItem
          */
         public function testTenItems()
         {
-            $this->testItems(10, 1);
+            $this->testItems(10);
         }
 
         /**
-         * @//depends testTenItems
+         * @depends testTenItems
          */
         public function testFiftyItems()
         {
-            $this->testItems(50, 1);
+            $this->testItems(50);
         }
 
         /**
-         * @//depends testFiftyItems
+         * @depends testFiftyItems
          */
         public function testHundredItems()
         {
-            $this->testItems(100, 1);
+            $this->testItems(100);
         }
 
         /**
@@ -89,7 +91,7 @@
          */
         public function testTwoFiftyItems()
         {
-            $this->testItems(250, 1);
+            $this->testItems(250);
         }
 
         /**
@@ -97,7 +99,7 @@
          */
         public function testFiveHundredItems()
         {
-            $this->testItems(500, 1);
+            $this->testItems(500);
         }
 
         /**
@@ -105,14 +107,17 @@
          */
         public function testThousandItems()
         {
-            $this->testItems(1000, 1);
+            $this->testItems(1000);
         }
 
-        protected function testItems($count, $expectedRatio)
+        protected function testItems($count)
         {
-            $timeSpent  = $this->testGenerateCampaignItemsForDueCampaigns($count);
+            $timeSpent      = $this->testGenerateCampaignItemsForDueCampaigns($count);
             echo PHP_EOL. $count . ' items took ' . $timeSpent . ' seconds';
-            $this->assertTrue(($timeSpent/$count) <= $expectedRatio);
+            // no need to multiply by $count
+            // this is all sql with no php in the core logic of generation so the time spent
+            // remains constant for the most part.
+            $this->assertTrue($timeSpent <= $this->singleItemExpectedTime);
         }
 
         public function testGenerateCampaignItemsForDueCampaigns($count)

@@ -240,6 +240,7 @@
             $this->assertEquals(strval($contact), $recipients[0]->toName);
             $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
             $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
+            /*
             var_dump("Contact:");
             var_dump(get_class($contact));
             var_dump("Contact's Id / Item's Id");
@@ -251,6 +252,7 @@
             var_dump("emailmessagerecipient_item for emailmessagerecipient_id");
             var_dump(ZurmoRedBean::getAll("SELECT * FROM emailmessagerecipient_item WHERE emailmessagerecipient_id = " . $recipients[0]->id));
             exit;
+            */
 
             $this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
             $headersArray               = array('zurmoItemId' => $campaignItem->id,

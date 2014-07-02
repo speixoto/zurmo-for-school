@@ -56,39 +56,39 @@
 
         public function testSingleItem()
         {
-            $this->testItems(1, 1);
+            $this->testItems(1, 2);
         }
 
         /**
-         * @//depends testSingleItem
+         * @depends testSingleItem
          */
         public function testFiveItems()
         {
-            $this->testItems(5, 1);
+            $this->testItems(5, 5);
         }
 
         /**
-         * @//depends testFiveItems
+         * @depends testFiveItems
          */
         public function testTenItems()
         {
-            $this->testItems(10, 1);
+            $this->testItems(10, 9);
         }
 
         /**
-         * @//depends testTenItems
+         * @depends testTenItems
          */
         public function testFiftyItems()
         {
-            $this->testItems(50, 1);
+            $this->testItems(50, 46);
         }
 
         /**
-         * @//depends testFiftyItems
+         * @depends testFiftyItems
          */
         public function testHundredItems()
         {
-            $this->testItems(100, 1);
+            $this->testItems(100, 95);
         }
 
         /**
@@ -96,7 +96,7 @@
          */
         public function testTwoFiftyItems()
         {
-            $this->testItems(250, 1);
+            $this->testItems(250, 240);
         }
 
         /**
@@ -104,7 +104,7 @@
          */
         public function testFiveHundredItems()
         {
-            $this->testItems(500, 1);
+            $this->testItems(500, 490);
         }
 
         /**
@@ -112,14 +112,14 @@
          */
         public function testThousandItems()
         {
-            $this->testItems(1000, 1);
+            $this->testItems(1000, 950);
         }
 
-        protected function testItems($count, $expectedRatio)
+        protected function testItems($count, $expectedTime)
         {
             $timeSpent  = $this->generateAndProcessCampaignItems($count);
             echo PHP_EOL. $count . ' items took ' . $timeSpent . ' seconds';
-            $this->assertTrue(($timeSpent/$count) <= $expectedRatio);
+            $this->assertTrue($timeSpent <= $expectedTime);
         }
 
         public function generateAndProcessCampaignItems($count)
@@ -266,7 +266,7 @@ MTG;
                 $this->assertEquals(strval($contact), $recipients[0]->toName);
                 $this->assertEquals($email->emailAddress, $recipients[0]->toAddress);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipients[0]->type);
-                // TODO: @Shoaibi: Critical0: come back and fix it.
+                // TODO: @Shoaibi/@Sergio: Critical0: come back and fix it.
                 //$this->assertEquals($contact, $recipients[0]->personsOrAccounts[0]);
                 $this->assertNotEmpty($emailMessage->files);
                 $this->assertCount(count($files), $emailMessage->files);
