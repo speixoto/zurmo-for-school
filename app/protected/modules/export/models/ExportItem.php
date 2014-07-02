@@ -66,7 +66,9 @@
                     'exportFileName',
                     'modelClassName',
                     'processOffset',
-                    'serializedData'
+                    'serializedData',
+                    'isJobRunning',
+                    'cancelExport'
                 ),
                 'relations' => array(
                     'exportFileModel' => array(static::HAS_ONE,  'ExportFileModel', static::OWNED),
@@ -83,6 +85,8 @@
                     array('processOffset',    'default',    'value' => 0),
                     array('serializedData',   'required'),
                     array('serializedData',   'type', 'type' => 'string'),
+                    array('isJobRunning',     'boolean'),
+                    array('cancelExport',     'boolean'),
                 ),
                 'defaultSortAttribute' => 'modifiedDateTime',
                 'noAudit' => array(
@@ -110,6 +114,8 @@
                     'isCompleted'    => Zurmo::t('ExportModule', 'Is Completed',     array(), null, $language),
                     'exportFileName' => Zurmo::t('ExportModule', 'Export File Name', array(), null, $language),
                     'exportFileType' => Zurmo::t('ExportModule', 'Export File Type', array(), null, $language),
+                    'isJobRunning'   => Zurmo::t('ExportModule', 'Is Job Running',   array(), null, $language),
+                    'cancelExport'   => Zurmo::t('ExportModule', 'Cancel Export',   array(), null, $language),
                 )
             );
         }
@@ -121,6 +127,11 @@
                 Yii::app()->jobQueue->add('Export');
             }
             parent::afterSave();
+        }
+
+        public static function getCancelledItems()
+        {
+            return self::getSubset(null, null, null, "cancelExport = 1");
         }
     }
 ?>

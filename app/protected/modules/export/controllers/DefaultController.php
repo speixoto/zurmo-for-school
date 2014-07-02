@@ -67,6 +67,9 @@
             }
         }
 
+        /**
+         * Lists export items.
+         */
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -92,10 +95,25 @@
             else
             {
                 $mixedView = $this->makeSearchAndListView($searchForm, 'Export', $dataProvider);
-                $view = new ExportPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $mixedView));
+                $breadCrumbLinks = array(
+                                            Zurmo::t('ExportModule', 'Export')
+                                        );
+                $view = new ExportPageView(ZurmoDefaultAdminViewUtil::
+                                            makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadCrumbLinks, 'SettingsBreadCrumbView'));
             }
             echo $view->render();
+        }
+
+        /**
+         * Cancels export.
+         * @param int $id
+         */
+        public function actionCancel($id)
+        {
+            $exportItem                 = ExportItem::getById(intval($id));
+            $exportItem->cancelExport   = true;
+            $exportItem->save();
+            $this->redirect(Yii::app()->createUrl('export/default/list'));
         }
     }
 ?>

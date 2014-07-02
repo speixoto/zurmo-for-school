@@ -341,6 +341,8 @@
                     $exportItem->exportFileName  = $this->getModule()->getName();
                     $exportItem->modelClassName = $modelClassName;
                     $exportItem->serializedData  = $serializedData;
+                    $exportItem->isJobRunning    = 0;
+                    $exportItem->cancelExport    = 0;
                     $exportItem->save();
                     $exportItem->forget();
                     Yii::app()->user->setFlash('notification',

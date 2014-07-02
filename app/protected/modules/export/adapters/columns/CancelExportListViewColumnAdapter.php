@@ -34,28 +34,39 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     /**
-     * Column adapter for status value for export list view.
+     * Column adapter for cancel of job for the export item.
      */
-    class ExportStatusListViewColumnAdapter extends IntegerListViewColumnAdapter
+    class CancelExportListViewColumnAdapter extends IntegerListViewColumnAdapter
     {
         public function renderGridViewData()
         {
             return array(
                     'name'  => $this->attribute,
-                    'value' => 'ExportStatusListViewColumnAdapter::renderCompletedStatus((int)$data->isCompleted)',
+                    'value' => 'CancelExportListViewColumnAdapter::renderStatus($data)',
                     'type'  => 'raw',
             );
         }
 
-        public static function renderCompletedStatus($value)
+        public static function renderStatus($data)
         {
-            if($value == 1)
+            $value = (int)$data->isJobRunning;
+            $url   = Yii::app()->createUrl('export/default/cancel', array('id' => $data->id));
+            if($value == 0)
             {
-                return Zurmo::t('ExportModule', 'Completed');
+                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button disabled'));
+                if((int)$data->cancelExport == 0)
+                {
+                    return $cancelBtn;
+                }
+                else
+                {
+                    return Zurmo::t('ExportModule', 'Cancel Pending');
+                }
             }
-            elseif($value == 0)
+            elseif($value == 1)
             {
-                return Zurmo::t('ExportModule', 'Pending');
+                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button disabled'));
+                return $cancelBtn;
             }
             else
             {

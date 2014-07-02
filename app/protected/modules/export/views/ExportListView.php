@@ -41,7 +41,10 @@
             $metadata = array(
                 'global' => array(
                     'nonPlaceableAttributeNames' => array(
-
+                        'processOffset',
+                        'serializedData',
+                        'exportFileModel',
+                        'modelClassName'
                     ),
                     'panels' => array(
                         array(
@@ -68,15 +71,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'modelClassName', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'isCompleted', 'type' => 'ExportStatus'),
                                             ),
                                         ),
@@ -86,7 +80,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'processOffset', 'type' => 'Integer'),
+                                                array('attributeName' => 'isJobRunning', 'type' => 'ExportJobStatus'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'cancelExport', 'type' => 'CancelExport'),
                                             ),
                                         ),
                                     )
@@ -98,6 +101,14 @@
 
             );
             return $metadata;
+        }
+
+        /**
+         * @return bool
+         */
+        public function getRowsAreSelectable()
+        {
+            return false;
         }
     }
 ?>

@@ -34,28 +34,31 @@
      * "Copyright Zurmo Inc. 2014. All rights reserved".
      ********************************************************************************/
     /**
-     * Column adapter for status value for export list view.
+     * Column adapter for status value for job status for the export item.
      */
-    class ExportStatusListViewColumnAdapter extends IntegerListViewColumnAdapter
+    class ExportJobStatusListViewColumnAdapter extends IntegerListViewColumnAdapter
     {
         public function renderGridViewData()
         {
             return array(
                     'name'  => $this->attribute,
-                    'value' => 'ExportStatusListViewColumnAdapter::renderCompletedStatus((int)$data->isCompleted)',
+                    'value' => 'ExportJobStatusListViewColumnAdapter::renderStatus($data)',
                     'type'  => 'raw',
             );
         }
 
-        public static function renderCompletedStatus($value)
+        public static function renderStatus($data)
         {
-            if($value == 1)
+            $value = (int)$data->isJobRunning;
+            if($value == 0)
             {
-                return Zurmo::t('ExportModule', 'Completed');
+                $url        = Yii::app()->createUrl('export/default/cancel', array('id' => $data->id));
+                $cancelBtn  = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Cancel')), $url, array('class' => 'white-button'));
+                return Zurmo::t('ExportModule', 'Not Running');
             }
-            elseif($value == 0)
+            elseif($value == 1)
             {
-                return Zurmo::t('ExportModule', 'Pending');
+                return Zurmo::t('ExportModule', 'In Progress');
             }
             else
             {
