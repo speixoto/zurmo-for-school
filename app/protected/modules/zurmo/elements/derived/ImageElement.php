@@ -103,28 +103,29 @@
         {
             $qtipOptions = array(
                     'position' => array(
-                        'my' => 'center left',
-                        'at' => 'top right',
+                        'my'     => 'center left',
+                        'at'     => 'top right',
                         'target' => 'mouse',
-	                    'adjust' => array(
-		                    'x' => 10
-	                    )
+                        'adjust' => array(
+                            'x' => 10
+                        )
                     ),
                     'show' => array(
-                        'solo' => true,
-                        'modal' => false,
-                        'ready' => true,
-	                    'effect' => 'js:function(offset){$(this).fadeIn(200);}'
+                        'solo'   => true,
+                        'modal'  => false,
+                        'ready'  => true,
+                        'effect' => 'js:function(offset){$(this).fadeIn(200);}'
                     ),
-	                'hide' => array(
-		                'effect' => 'js:function(offset){$(this).fadeOut(200);}'
-	                ),
-	                'style' => array(
-		                'classes' => 'builder-image-element-qtip'
-	                ),
+                    'hide' => array(
+                        'effect' => 'js:function(offset){$(this).fadeOut(200);}'
+                    ),
+                    'style' => array(
+                        'classes' => 'builder-image-element-qtip'
+                    ),
                     'overwrite' => false,
                     'content' => array(
-	                    'text' => "js:function(event, api) {
+                        // Begin Not Coding Standard
+                        'text' => "js:function(event, api) {
                                 $.ajax({
                                     url: $(this).data('url')
                                 })
@@ -134,6 +135,7 @@
                                     api.set('content.text', status + ': ' + error);
                                 });
                             }",
+                        // End Not Coding Standard
                     )
             );
             ZurmoTip::qtip2('.builder-uploaded-image-thumb > img', $qtipOptions, true, true);
@@ -199,7 +201,6 @@
             $this->registerImageModalSelectScript();
             $this->registerImageModalEditScript();
         }
-
 
         protected function registerImageModalSelectScript()
         {
@@ -331,7 +332,7 @@
         {
             $title = $this->getModalTitleForEditingModel();
             return   ModalView::getAjaxOptionsForModalLink($title, $this->getModalContainerId(), 'auto',
-                                                           600, 'center top+25', "'image-edit-modal'");
+                                                           600, 'center top+25', "'image-edit-modal'"); // Not Coding Standard
         }
 
         protected function getModalTitleForSelectingModel()

@@ -68,6 +68,7 @@
             );
             return $metadata;
         }
+
         protected function getCGridViewLastColumn()
         {
             $url  = 'Yii::app()->createUrl("' . $this->getGridViewActionRoute('delete');

@@ -48,7 +48,7 @@
                     Yii::app()->end();
                 }
             }
-            if(isset($_POST['ImportImageFromUrlForm']))
+            if (isset($_POST['ImportImageFromUrlForm']))
             {
                 $url = $_POST['ImportImageFromUrlForm']['url'];
                 $tempFilePath = tempnam(sys_get_temp_dir(), 'upload_image_from_url_');

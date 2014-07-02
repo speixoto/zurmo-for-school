@@ -222,9 +222,11 @@
             ZurmoConfigurationUtil::
                     setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
         }
-        
-        protected static function stripTagsAndMultipleByteEncode($moduleName){
-            if($moduleName == null){
+
+        protected static function stripTagsAndMultipleByteEncode($moduleName)
+        {
+            if ($moduleName == null)
+            {
                 return;
             }
             $modelName                             = strip_tags($moduleName);
