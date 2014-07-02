@@ -279,22 +279,35 @@
             assert('is_string($structure)');
             assert('is_int($clauseCount)');
             $formula = strtolower($structure);
-            if (!self::validateParenthesis($formula))
+            if (!self::validateParenthesis($formula) )
             {
                 $errorContent = Zurmo::t('Core', 'Please fix your parenthesis.');
             }
             else
             {
-                $formula = str_replace("(", "", $formula);
-                $formula = str_replace(")", "", $formula);
                 $arguments = preg_split("/or|and/", $formula);
                 foreach ($arguments as $argument)
                 {
-                    $argument = trim($argument);
-                    if (!is_numeric($argument) ||
-                        !(intval($argument) <= $clauseCount) ||
-                        !(intval($argument) > 0) ||
-                        !(preg_match("/\./", $argument) === 0) )
+                    if (preg_match("/\(\s*not\s*\)/", $argument))
+                    {
+                        $errorContent = Zurmo::t('Core', 'Please fix your parenthesis around the {not} operator.',
+                                                         array('{not}' => 'not'));
+                    }
+                    $argument = str_replace("(", "", $argument);
+                    $argument = str_replace(")", "", $argument);
+                    $argument = trim(str_replace('not', '', $argument));
+                    if (intval($argument) === 0)
+                    {
+                        $errorContent = Zurmo::t('Core', 'Please fix conditions.');
+                    }
+                    elseif (!is_numeric($argument))
+                    {
+                        $errorContent = Zurmo::t('Core', 'Please, only use one of the operators: {operators}.',
+                                                  array('{operators}' => 'not, and, or'));
+                    }
+                    elseif (!(intval($argument) <= $clauseCount) ||
+                            !(intval($argument) > 0) ||
+                            !(preg_match("/\./", $argument) === 0) )
                     {
                         $errorContent = Zurmo::t('Core', 'Please use only integers less than {max}.',
                                                           array('{max}' => $clauseCount + 1));

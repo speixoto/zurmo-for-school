@@ -64,6 +64,10 @@
             $this->assertEquals("(({$q}reportmodeltestitem{$q}.{$q}string{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}reportmodeltestitem{$q}.{$q}string{$q} = 'a value'))", $content);
         }
 
         public function testASingleAttributeThatHasAModifier()
@@ -88,6 +92,10 @@
                                 abs($offsetInSeconds) . " SECOND) = 'a value'))", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not (day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs($offsetInSeconds) . " SECOND) = 'a value'))", $content);
             Yii::app()->user->userModel->timeZone = $tempTimeZone;
         }
 
@@ -113,6 +121,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1 AND NOT 2');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(({$q}reportmodeltestitem{$q}.{$q}string{$q} = 'a value') and not " .
+                                                     "({$q}reportmodeltestitem{$q}.{$q}integer{$q} = '54.24'))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testLikeContactState()
@@ -130,6 +143,9 @@
             $this->assertEquals("(({$q}reportmodeltestitem{$q}.{$q}likecontactstate_reportmodeltestitem7_id{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}reportmodeltestitem{$q}.{$q}likecontactstate_reportmodeltestitem7_id{$q} = 'a value'))", $content);
         }
 
         public function testCurrencyValueAttributeWithoutCurrencyIdSpecified()
@@ -147,6 +163,9 @@
             $this->assertEquals("(({$q}currencyvalue{$q}.{$q}value{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}currencyvalue{$q}.{$q}value{$q} = 'a value'))", $content);
         }
 
         public function testCurrencyValueAttributeWithCurrencyIdSpecified()
@@ -167,6 +186,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not (({$q}currencyvalue{$q}.{$q}value{$q} = 'a value') and " .
+                                                     "({$q}currencyvalue{$q}.{$q}currency_id{$q} = '6')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testLikeContactStateWhenRelated()
@@ -184,6 +208,9 @@
             $this->assertEquals("(({$q}reportmodeltestitem{$q}.{$q}likecontactstate_reportmodeltestitem7_id{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}reportmodeltestitem{$q}.{$q}likecontactstate_reportmodeltestitem7_id{$q} = 'a value'))", $content);
         }
 
         public function testAttributeOnOwnedModelWithNoBeanSkips()
@@ -201,6 +228,9 @@
             $this->assertEquals("(({$q}address{$q}.{$q}street1{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}address{$q}.{$q}street1{$q} = 'a value'))", $content);
         }
 
         public function testAttributeOnOwnedModelWithBeanSkip()
@@ -218,6 +248,9 @@
             $this->assertEquals("(({$q}customfield{$q}.{$q}value{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}customfield{$q}.{$q}value{$q} = 'a value'))", $content);
         }
 
         public function testNonRelatedNonDerivedCastedUpAttribute()
@@ -236,7 +269,12 @@
                                                      "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')))";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());;
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not (({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')))";
+            $this->assertEquals($compareContent, $content);
 
             //Two filter attributes that are casted up several levels
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -259,6 +297,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testNonRelatedNonDerivedCastedUpAttributeThatIsAUserRelation()
@@ -276,7 +321,11 @@
             $compareContent                        = "(({$q}person{$q}.{$q}lastname{$q} = 'green'))";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());;
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not ({$q}person{$q}.{$q}lastname{$q} = 'green'))";
+            $this->assertEquals($compareContent, $content);
 
             //Two filter attributes that are casted up several levels
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -297,6 +346,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1 AND 2');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not ({$q}person{$q}.{$q}lastname{$q} = 'green') and " .
+                                                     "({$q}person1{$q}.{$q}lastname{$q} = 'blue'))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testNonRelatedNonDerivedAttributeNested()
@@ -314,6 +368,9 @@
             $this->assertEquals("(({$q}reportmodeltestitem2{$q}.{$q}phone{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}reportmodeltestitem2{$q}.{$q}phone{$q} = 'a value'))", $content);
 
             //Add a second attribute
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -329,6 +386,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not (1 and 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not (({$q}reportmodeltestitem2{$q}.{$q}phone{$q} = 'a value') and " .
+                                                     "({$q}reportmodeltestitem{$q}.{$q}integer{$q} = 'a value')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testAttributeOnOwnedModelWithNoBeanSkipsThatIsNested()
@@ -346,6 +408,9 @@
             $this->assertEquals("(({$q}address{$q}.{$q}street1{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}address{$q}.{$q}street1{$q} = 'a value'))", $content);
         }
 
         public function testNonRelatedNonDerivedCastedUpAttributeThatIsAUserRelationWhenNested()
@@ -363,6 +428,9 @@
             $this->assertEquals("(({$q}person{$q}.{$q}lastname{$q} = 'a value'))", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}person{$q}.{$q}lastname{$q} = 'a value'))", $content);
 
             //Two display attributes that are casted up several levels
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -383,6 +451,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not (1 and 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not (({$q}person{$q}.{$q}lastname{$q} = 'a value') and " .
+                                                     "({$q}person1{$q}.{$q}lastname{$q} = 'a value 2')))";
+            $this->assertEquals($compareContent, $content);
 
             //Add third display attribute on the base model
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -409,6 +482,12 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(10, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1 and not 2 and 3');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2, $filter3));
+            $compareContent                        = "(({$q}person{$q}.{$q}lastname{$q} = 'a value') and " .
+                                                     "not ({$q}person1{$q}.{$q}lastname{$q} = 'a value 2') and " .
+                                                     "({$q}person2{$q}.{$q}lastname{$q} = 'a value 3'))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasOneRelation()
@@ -435,6 +514,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1 AND 2');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not (({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasManyRelation()
@@ -462,6 +548,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasManyBelongsToRelation()
@@ -489,6 +582,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAManyManyRelation()
@@ -516,6 +616,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAHasOneRelation()
@@ -543,6 +650,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAHasManyRelation()
@@ -570,6 +684,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAHasManyBelongsToRelation()
@@ -597,6 +718,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithBothOnAManyManyRelation()
@@ -624,6 +752,13 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-05 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAHasOneRelationAndOneOnSelf()
@@ -658,6 +793,15 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1 AND 2 AND NOT(3)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2, $filter3));
+            $compareContent                        = "((({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-03-05 23:59:59')) and " .
+                                                     "not((({$q}item1{$q}.{$q}modifieddatetime{$q} >= '1991-03-06 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}modifieddatetime{$q} <= '1991-03-06 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAHasManyRelationAndOneOnSelf()
@@ -692,6 +836,15 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2 AND 3)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2, $filter3));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-03-05 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}modifieddatetime{$q} >= '1991-03-06 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}modifieddatetime{$q} <= '1991-03-06 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAHasManyBelongsToRelationAndOneOnSelf()
@@ -726,6 +879,15 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not(1 AND 2 AND 3)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2, $filter3));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-03-05 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}modifieddatetime{$q} >= '1991-03-06 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}modifieddatetime{$q} <= '1991-03-06 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testThreeNonRelatedNonDerivedCastedUpAttributeWithTwoOnAManyManyRelationAndOneOnSelf()
@@ -760,6 +922,15 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2 AND 3)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2, $filter3));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}modifieddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}modifieddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-03-05 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-03-05 23:59:59')) and " .
+                                                     "(({$q}item1{$q}.{$q}modifieddatetime{$q} >= '1991-03-06 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}modifieddatetime{$q} <= '1991-03-06 23:59:59'))))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoCustomFieldsWhenOneIsOnRelatedModelAndOneIsOnSelf()
@@ -785,6 +956,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}customfield1{$q}.{$q}value{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModelButDifferentRelations()
@@ -810,6 +986,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}customfield1{$q}.{$q}value{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoCustomFieldsWhenBothAreOnRelatedModelsThatAreDifferent()
@@ -835,6 +1016,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}customfield1{$q}.{$q}value{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModel()
@@ -860,6 +1046,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}customfield1{$q}.{$q}value{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDynamicallyDerivedAttributeOnSelf()
@@ -884,6 +1075,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}item{$q}.{$q}createdbyuser__user_id{$q} = 'green') and " .
+                                                     "({$q}item{$q}.{$q}modifiedbyuser__user_id{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
 
             //2 __User attributes on the same model, one is owned, so not originating both from Item
             $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1 AND 2');
@@ -903,6 +1099,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}item{$q}.{$q}createdbyuser__user_id{$q} = 'green') and " .
+                                                     "({$q}ownedsecurableitem{$q}.{$q}owner__user_id{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereSameAttribute()
@@ -927,6 +1128,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}item{$q}.{$q}createdbyuser__user_id{$q} = 'green') and " .
+                                                     "({$q}item1{$q}.{$q}modifiedbyuser__user_id{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereDifferentAttributes()
@@ -951,6 +1157,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}item{$q}.{$q}createdbyuser__user_id{$q} = 'green') and " .
+                                                     "({$q}ownedsecurableitem1{$q}.{$q}owner__user_id{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDynamicallyDerivedAttributeBothOnRelatedModelWhereDifferentAttributes()
@@ -975,6 +1186,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}item{$q}.{$q}createdbyuser__user_id{$q} = 'green') and " .
+                                                     "({$q}ownedsecurableitem{$q}.{$q}owner__user_id{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testNestedRelationsThatComeBackOnTheBaseModel()
@@ -993,6 +1209,10 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not ({$q}account1{$q}.{$q}name{$q} = 'green'))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testThreeTestedRelationsWhereTheyBothGoToTheSameModelButAtDifferentNestingPoints()
@@ -1025,6 +1245,12 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2 AND 3)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2, $filter3));
+            $compareContent                        = "(not(({$q}opportunity{$q}.{$q}name{$q} = 'green') and " .
+                                                     "({$q}opportunity1{$q}.{$q}name{$q} = 'blue') and " .
+                                                     "({$q}account1{$q}.{$q}name{$q} = 'yellow')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelOne()
@@ -1042,6 +1268,10 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not ({$q}customfield{$q}.{$q}value{$q} = 'green'))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModelTwo()
@@ -1060,6 +1290,10 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not ({$q}meeting{$q}.{$q}name{$q} = 'green'))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testTwoAttributesDerivedRelationViaCastedUpModelAttributeThatCastsDownAndSkipsAModel()
@@ -1083,6 +1317,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}meeting{$q}.{$q}name{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatDoesNotCastDown()
@@ -1100,6 +1339,9 @@
             $this->assertEquals("(({$q}reportmodeltestitem5{$q}.{$q}name{$q} = 'a value'))", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}reportmodeltestitem5{$q}.{$q}name{$q} = 'a value'))", $content);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeWhenThroughARelation()
@@ -1124,6 +1366,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}meeting{$q}.{$q}name{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFar()
@@ -1142,6 +1389,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not (({$q}activity{$q}.{$q}latestdatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}activity{$q}.{$q}latestdatetime{$q} <= '1991-03-04 23:59:59')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeWithCastingHintToNotCastDownSoFarAndCastUpBackIntoItem()
@@ -1172,6 +1424,11 @@
             $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[3]['onTableAliasName']);
             $this->assertEquals('item1',                 $leftTablesAndAliases[4]['tableAliasName']);
             $this->assertEquals('securableitem1',        $leftTablesAndAliases[4]['onTableAliasName']);
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not (({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributes()
@@ -1196,6 +1453,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}account{$q}.{$q}name{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesNestedTwoLevelsDeep()
@@ -1219,6 +1481,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}customfield{$q}.{$q}value{$q} = 'green') and " .
+                                                     "({$q}opportunity{$q}.{$q}name{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesComingAtItFromANestedPoint()
@@ -1259,6 +1526,11 @@
             $this->assertEquals('ownedsecurableitem',          $leftTablesAndAliases[5]['onTableAliasName']);
             $this->assertEquals('customfield',                 $leftTablesAndAliases[6]['tableAliasName']);
             $this->assertEquals('reportmodeltestitem',         $leftTablesAndAliases[6]['onTableAliasName']);
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 AND 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not(({$q}reportmodeltestitem{$q}.{$q}phone{$q} = 'green') and " .
+                                                     "({$q}customfield{$q}.{$q}value{$q} = 'blue')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithItemAttribute()
@@ -1277,6 +1549,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not (({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithMixedInAttribute()
@@ -1293,6 +1570,9 @@
             $this->assertEquals("(({$q}ownedsecurableitem{$q}.{$q}owner__user_id{$q} = 'a value'))", $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $this->assertEquals("(not ({$q}ownedsecurableitem{$q}.{$q}owner__user_id{$q} = 'a value'))", $content);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDowButAlsoWithFullCastDown()
@@ -1329,6 +1609,12 @@
             $this->assertEquals('securableitem',           $leftTablesAndAliases[3]['onTableAliasName']);
             $this->assertEquals('account',                 $leftTablesAndAliases[4]['tableAliasName']);
             $this->assertEquals('ownedsecurableitem',      $leftTablesAndAliases[4]['onTableAliasName']);
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'NOT(1 and 2)');
+            $content                               = $builder->makeQueryContent(array($filter, $filter2));
+            $compareContent                        = "(not((({$q}item{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59')) and " .
+                                                     "({$q}account{$q}.{$q}name{$q} = 'a value')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         /**
@@ -1358,6 +1644,13 @@
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
             $this->assertEquals('multiplevaluescustomfield',  $leftTablesAndAliases[0]['tableAliasName']);
             $this->assertEquals('reportmodeltestitem',        $leftTablesAndAliases[0]['onTableAliasName']);
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent = "(not (1 = (select 1 from {$q}customfieldvalue{$q} customfieldvalue where " .
+                              "{$q}customfieldvalue{$q}.{$q}multiplevaluescustomfield_id{$q} = {$q}" .
+                              "multiplevaluescustomfield{$q}.id and {$q}customfieldvalue{$q}.{$q}value{$q}" .
+                              " IN('a','b') limit 1)))"; // Not Coding Standard
+            $this->assertEquals($compareContent, $content);
         }
 
         /**
@@ -1386,6 +1679,13 @@
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
             $this->assertEquals('multiplevaluescustomfield',  $leftTablesAndAliases[0]['tableAliasName']);
             $this->assertEquals('reportmodeltestitem',        $leftTablesAndAliases[0]['onTableAliasName']);
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent =   "(not (1 = (select 1 from {$q}customfieldvalue{$q} customfieldvalue where " .
+                                "{$q}customfieldvalue{$q}.{$q}multiplevaluescustomfield_id{$q} = {$q}" .
+                                "multiplevaluescustomfield{$q}.id and {$q}customfieldvalue{$q}.{$q}value{$q}" .
+                                " = 'a' limit 1)))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testCreatedDateTimeFilterWithInferredRelationModelAttributeAsDisplay()
@@ -1413,6 +1713,11 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(4, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, 'not 1');
+            $content                               = $builder->makeQueryContent(array($filter));
+            $compareContent                        = "(not (({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-05-05 00:00:00') " .
+                                                     "and ({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-06-05 23:59:59')))";
+            $this->assertEquals($compareContent, $content);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
