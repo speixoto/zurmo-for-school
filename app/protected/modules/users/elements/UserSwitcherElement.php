@@ -101,5 +101,12 @@
             );
             return CMap::mergeArray($options, $autoCompleteOptions);
         }
+
+        protected function renderSelectLink()
+        {
+            // disabled the select link due to: https://www.pivotaltracker.com/n/projects/380027/stories/66773464
+            // update of: 1st July 12:24pm
+            return null;
+        }
     }
 ?>
