@@ -38,7 +38,15 @@
     {
         public function resolveData(& $data)
         {
-            $data[] = $this->model->{$this->attribute};
+            $model = $this->model->getModel($this->attribute);
+            if ($model !== null && $model->id > 0)
+            {
+                $data[] = strval($model);
+            }
+            else
+            {
+                $data[] = null;
+            }
         }
 
         /**
