@@ -409,70 +409,7 @@
         }
 
         /**
-         * @depends testCreateAndGetCampaignItemById
-         */
-        public function testAddNewItem()
-        {
-            $processed          = 0;
-            $contact            = ContactTestHelper::createContactByNameForOwner('campaignContact', Yii::app()->user->userModel);
-            $marketingList      = MarketingListTestHelper::createMarketingListByName('marketingList 04');
-            $campaign           = CampaignTestHelper::createCampaign('campaign 03',
-                                                                        'subject 03',
-                                                                        'text 03',
-                                                                        'html 03',
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        $marketingList);
-            $saved              = CampaignItem::addNewItem($processed, $contact, $campaign);
-            $this->assertTrue($saved);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0,
-                                                                                        $campaign->id);
-            $this->assertNotEmpty($campaignItems);
-            $this->assertCount(1, $campaignItems);
-        }
-
-        /**
-         * @depends testAddNewItem
-         */
-        public function testRegisterCampaignItemsByCampaign()
-        {
-            $marketingList              = MarketingListTestHelper::createMarketingListByName('marketingList 05');
-            $campaign                   = CampaignTestHelper::createCampaign('campaign 04',
-                                                                                'subject 04',
-                                                                                'text 04',
-                                                                                'html 04',
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                $marketingList);
-            $this->assertNotNull($campaign);
-            $contacts           = array();
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 01',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 02',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 03',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 04',
-                                                                                        Yii::app()->user->userModel);
-            $contacts[]         = ContactTestHelper::createContactByNameForOwner('campaignContact 05',
-                                                                                        Yii::app()->user->userModel);
-
-            CampaignItem::registerCampaignItemsByCampaign($campaign, $contacts);
-            $campaignItems      = CampaignItem::getByProcessedAndCampaignId(0, $campaign->id);
-            $this->assertNotEmpty($campaignItems);
-            $this->assertCount(5, $campaignItems);
-        }
-
-        /**
-         * @depends testRegisterCampaignItemsByCampaign
+         * @depends testDeleteCampaignItem
          */
         public function testIsQueued()
         {

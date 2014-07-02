@@ -48,7 +48,6 @@
         {
             $form                                         = new MarketingConfigurationForm();
             $form->autoresponderOrCampaignBatchSize       = AutoresponderOrCampaignBatchSizeConfigUtil::getBatchSize();
-            $form->campaignItemsToCreatePageSize          = CampaignItemsUtil::getCreatePageSize();
             $form->autoresponderOrCampaignFooterPlainText = GlobalMarketingFooterUtil::getContentByType(false);
             $form->autoresponderOrCampaignFooterRichText  = GlobalMarketingFooterUtil::getContentByType(true);
             return $form;
@@ -62,7 +61,6 @@
             if (Yii::app()->user->userModel->isRootUser)
             {
                 AutoresponderOrCampaignBatchSizeConfigUtil::setBatchSize((int)$form->autoresponderOrCampaignBatchSize);
-                CampaignItemsUtil::setCreatePageSize((int)$form->campaignItemsToCreatePageSize);
             }
             GlobalMarketingFooterUtil::setContentByType($form->autoresponderOrCampaignFooterPlainText, false);
             GlobalMarketingFooterUtil::setContentByType($form->autoresponderOrCampaignFooterRichText, true);
