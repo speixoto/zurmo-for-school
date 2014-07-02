@@ -281,7 +281,8 @@
             }
             //if a User relation
             elseif ($modelAttributeToDataProviderAdapter->isRelation() &&
-                   $modelAttributeToDataProviderAdapter->getRelationModelClassName() == 'User')
+                    $modelAttributeToDataProviderAdapter->getRelationModelClassName() == 'User' &&
+                    $modelAttributeToDataProviderAdapter->getRelatedAttribute() == 'id')
             {
                 return true;
             }

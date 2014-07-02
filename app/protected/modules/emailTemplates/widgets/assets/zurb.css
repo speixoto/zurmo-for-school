@@ -41,7 +41,7 @@ img {
     outline:none;
     text-decoration:none;
     -ms-interpolation-mode: bicubic;
-    width: auto;
+    /*width: auto;*/
     max-width: 100%;
     float: left;
     clear: both;

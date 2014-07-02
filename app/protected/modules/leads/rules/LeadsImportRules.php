@@ -72,8 +72,8 @@
                 'primaryAddress__latitude', 'primaryAddress__longitude', 'primaryAddress__invalid',
                 'secondaryAddress__latitude', 'secondaryAddress__longitude', 'secondaryAddress__invalid'));
         }
-        
-    	/**
+
+        /**
          * Get fields for which dedupe rules will be executed
          * @return array
          */
