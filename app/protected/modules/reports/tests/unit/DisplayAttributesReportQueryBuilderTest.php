@@ -316,9 +316,9 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'owner___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
-            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals("select {$q}_user{$q}.{$q}id{$q} _userid ", $content);
+            $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
 
             //Two display attributes that are casted up several levels
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -331,9 +331,9 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'modifiedByUser___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $this->assertEquals("select {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ", $content);
-            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals("select {$q}_user{$q}.{$q}id{$q} _userid, {$q}_user1{$q}.{$q}id{$q} _user1id ", $content);
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testNonRelatedNonDerivedAttributeNested()
@@ -395,9 +395,9 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'hasOne___owner___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ", $content);
+            $this->assertEquals("select {$q}_user{$q}.{$q}id{$q} _userid ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
 
             //Two display attributes that are casted up several levels
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -410,9 +410,9 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'hasOne___modifiedByUser___lastName';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $this->assertEquals("select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id ", $content);
+            $this->assertEquals("select {$q}_user{$q}.{$q}id{$q} _userid, {$q}_user1{$q}.{$q}id{$q} _user1id ", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
             //Add third display attribute on the base model
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
@@ -427,10 +427,10 @@
                 Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute3->attributeIndexOrDerivedType = 'modifiedByUser___lastName';
             $content        = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent = "select {$q}reportmodeltestitem2{$q}.{$q}id{$q} reportmodeltestitem2id, {$q}reportmodeltestitem{$q}.{$q}id{$q} reportmodeltestitemid ";
+            $compareContent = "select {$q}_user{$q}.{$q}id{$q} _userid, {$q}_user1{$q}.{$q}id{$q} _user1id, {$q}_user2{$q}.{$q}id{$q} _user2id ";
             $this->assertEquals($compareContent, $content);
-            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
         public function testDisplayCalculationAttributes()
