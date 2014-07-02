@@ -57,7 +57,6 @@
 
         public static function processDueItem(OwnedModel $item)
         {
-            $time = microtime(true);
             assert('is_object($item)');
             $emailMessageId             = null;
             $itemId                     = $item->id;
@@ -95,8 +94,6 @@
             }
             //$marked = static::markItemAsProcessed($item);
             $marked = static::markItemAsProcessedWithSQL($itemId, $item->emailMessage->id);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
-            print(PHP_EOL . PHP_EOL . PHP_EOL );
             return $marked;
         }
 
@@ -144,7 +141,6 @@
         protected static function resolveContent(& $textContent, & $htmlContent, Contact $contact,
                                                             $enableTracking, $modelId, $modelType, $marketingListId)
         {
-            $time = microtime(true);
             assert('is_int($modelId)');
             assert('is_int($marketingListId)');
             GlobalMarketingFooterUtil::resolveContentsForGlobalFooter($textContent, $htmlContent);
@@ -152,30 +148,24 @@
                                                 $marketingListId, $modelId, $modelType);
             ContentTrackingUtil::resolveContentsForTracking($textContent, $htmlContent, $enableTracking,
                                                             $modelId, $modelType, static::$personId);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
         public static function resolveContentsForMergeTags(& $textContent, & $htmlContent, Contact $contact,
                                                             $marketingListId, $modelId, $modelType)
         {
-            $time = microtime(true);
             static::resolveContentForMergeTags($textContent, $contact, false, $marketingListId, $modelId, $modelType);
             static::resolveContentForMergeTags($htmlContent, $contact, true, $marketingListId, $modelId, $modelType);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
         protected static function resolveContentForMergeTags(& $content, Contact $contact, $isHtmlContent,
                                                                 $marketingListId, $modelId, $modelType)
         {
-            $time = microtime(true);
             $resolved   = static::resolveMergeTags($content, $contact, $isHtmlContent,
                                                     $marketingListId, $modelId, $modelType);
             if ($resolved === false)
             {
                 throw new NotSupportedException(Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
             }
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . '/isHtml=' . intval($isHtmlContent) . ': ' . (microtime(true) - $time));
-            //echo PHP_EOL . $content . PHP_EOL;
         }
 
         protected static function resolveLanguageForContent()
@@ -196,28 +186,23 @@
 
         protected static function resolveMergeTagsParams($marketingListId, $modelId, $modelType, $isHtmlContent = false)
         {
-            $time = microtime(true);
             $params     = GlobalMarketingFooterUtil::resolveFooterMergeTagsArray(static::$personId, $marketingListId,
                                                                             $modelId, $modelType, true,
                                                                             false, $isHtmlContent);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . '/isHtml=' . intval($isHtmlContent) . ': ' . (microtime(true) - $time));
             return $params;
         }
 
         protected static function resolveMergeTagsUtil($content)
         {
-            $time = microtime(true);
             $language       = static::resolveLanguageForContent();
             $templateType   = static::resolveEmailTemplateType();
             $util           = MergeTagsUtilFactory::make($templateType, $language, $content);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $util;
         }
 
         protected static function resolveMergeTags(& $content, Contact $contact, $isHtmlContent,
                                                    $marketingListId, $modelId, $modelType)
         {
-            $time = microtime(true);
             $invalidTags            = array();
             $language               = static::resolveLanguageForContent();
             $errorOnFirstMissing    = static::resolveErrorOnFirstMissingMergeTag();
@@ -228,29 +213,24 @@
             if ($resolvedContent !== false)
             {
                 $content    = $resolvedContent;
-                print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . '/isHtml=' . intval($isHtmlContent) . ': ' . (microtime(true) - $time));
                 return true;
             }
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . '/isHtml=' . intval($isHtmlContent) . ': ' . (microtime(true) - $time));
             return false;
         }
 
         protected static function resolveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
                                                     Contact $contact, MarketingList $marketingList, $itemId)
         {
-            $time = microtime(true);
             $emailMessage   = static::saveEmailMessage($textContent, $htmlContent, $itemOwnerModel,
                                                         $contact, $marketingList, $itemId);
             static::sendEmailMessage($emailMessage);
             static::resolveExplicitPermissionsForEmailMessage($emailMessage, $marketingList);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
         }
 
         protected static function saveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
                                                     Contact $contact, MarketingList $marketingList, $itemId)
         {
-            $time = microtime(true);
             AutoresponderAndCampaignItemsEmailMessageUtil::$itemClass   = static::$itemClass;
             AutoresponderAndCampaignItemsEmailMessageUtil::$personId    = static::$personId;
             AutoresponderAndCampaignItemsEmailMessageUtil::$returnPath  = static::$returnPath;
@@ -261,45 +241,33 @@
                                                                                                     $marketingList,
                                                                                                     $itemId,
                                                                                                     static::$folder->id);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
         }
 
         protected static function sendEmailMessage(EmailMessage & $emailMessage)
         {
-            $time = microtime(true);
             Yii::app()->emailHelper->send($emailMessage, true, false);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
         protected static function resolveExplicitPermissionsForEmailMessage(EmailMessage & $emailMessage, MarketingList $marketingList)
         {
-            $time = microtime(true);
-            $cTime = microtime(true);
             $explicitReadWriteModelPermissions  = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($marketingList);
-            print(PHP_EOL . __CLASS__ . "/ExplicitReadWriteModelPermissionsUtil.makeBySecurableItem: " . (microtime(true) - $cTime));
-            $cTime = microtime(true);
             ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($emailMessage,
                                                                                     $explicitReadWriteModelPermissions);
-            print(PHP_EOL . __CLASS__ . "/ExplicitReadWriteModelPermissionsUtil.resolveExplicitReadWriteModelPermissions: " . (microtime(true) - $cTime));
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
         }
 
         protected static function markItemAsProcessed(OwnedModel $item)
         {
-            $time   = microtime(true);
             $item->processed    = 1;
             if (!$item->unrestrictedSave(false))
             {
                 throw new FailedToSaveModelException();
             }
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return true;
         }
 
         protected static function markItemAsProcessedWithSQL($itemId, $emailMessageId = null)
         {
-            $time   = microtime(true);
             $sql                    = "UPDATE " . DatabaseCompatibilityUtil::quoteString(static::$itemTableName);
             $sql                    .= " SET " . DatabaseCompatibilityUtil::quoteString('processed') . ' = 1';
             if ($emailMessageId)
@@ -309,7 +277,6 @@
             }
             $sql                    .= " WHERE " . DatabaseCompatibilityUtil::quoteString('id') . " = ${itemId};";
             $effectedRows           = ZurmoRedBean::exec($sql);
-            print(PHP_EOL . __CLASS__ . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return ($effectedRows == 1);
         }
     }

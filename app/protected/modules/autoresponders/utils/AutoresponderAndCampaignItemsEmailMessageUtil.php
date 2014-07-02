@@ -62,7 +62,6 @@
         public static function resolveAndSaveEmailMessage($textContent, $htmlContent, Item $itemOwnerModel,
                                                     Contact $contact, MarketingList $marketingList, $itemId, $folderId)
         {
-            $time = microtime(true);
             $recipient              = static::resolveRecipient($contact);
             if (empty($recipient))
             {
@@ -79,22 +78,17 @@
                                             'relatedModelId' => $itemOwnerModel->id);
             $sender                 = static::resolveSender($marketingList, $itemOwnerModel);
             $emailMessageData       = CMap::mergeArray($emailMessageData, $sender, $recipient, $attachments);
-            $cTime = microtime(true);
             $emailMessageId         = static::saveEmailMessageWithRelated($emailMessageData);
             if (empty($emailMessageId))
             {
                 throw new FailedToSaveModelException();
             }
-            print(PHP_EOL . __CLASS__  . "/saving EmailMessage: " . (microtime(true) - $cTime));
             $emailMessage           = EmailMessage::getById($emailMessageId);
-            print(PHP_EOL . __CLASS__  . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessage;
         }
 
         protected static function resolveSender(MarketingList $marketingList, $itemOwnerModel)
         {
-            $time   = microtime(true);
-            $sender = array();
             $marketingListId    = intval($marketingList->id);
             if (isset(static::$marketingListIdToSenderMapping[$marketingListId]))
             {
@@ -122,13 +116,11 @@
                 $sender                                                     = compact('fromName', 'fromAddress');
                 static::$marketingListIdToSenderMapping[$marketingListId]   = $sender;
             }
-            print(PHP_EOL . __CLASS__  . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $sender;
         }
 
         protected static function resolveRecipient(Contact $contact)
         {
-            $time       = microtime(true);
             $recipient  = array();
             if ($contact->primaryEmail->emailAddress != null)
             {
@@ -138,13 +130,11 @@
                 $contactItemId  = $contact->getClassId('Item');
                 $recipient      = compact('toAddress', 'toName', 'recipientType', 'contactItemId');
             }
-            print(PHP_EOL . __CLASS__  . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $recipient;
         }
 
         protected static function resolveHeaders($zurmoItemId)
         {
-            $time               = microtime(true);
             $zurmoItemClass     = static::$itemClass;
             $zurmoPersonId      = static::$personId;
             $headers            = compact('zurmoItemId', 'zurmoItemClass', 'zurmoPersonId');
@@ -153,38 +143,31 @@
                 $headers['Return-Path'] = static::$returnPath;
             }
             $headers            = serialize($headers);
-            print(PHP_EOL . __CLASS__  . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $headers;
         }
 
         protected static function saveEmailMessageWithRelated(array $emailMessageData)
         {
-            $time           = microtime(true);
             $query          = static::resolveEmailMessageCreationFunctionQuery($emailMessageData);
             $emailMessageId = static::getCell($query);
-            print(PHP_EOL . __CLASS__  . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $emailMessageId;
         }
 
         protected static function resolveEmailMessageCreationFunctionQueryWithPlaceholders()
         {
-            $time       = microtime(true);
             $query      = "SELECT create_email_message(textContent, htmlContent, fromName,fromAddress , userId,
                                                     ownerId, subject, headers, folderId, serializedData, toAddress,
                                                     toName, recipientType, contactItemId, relatedModelType,
                                                     relatedModelId)";
-            print(PHP_EOL . __CLASS__  . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $query;
         }
 
         protected static function resolveEmailMessageCreationFunctionQuery(array $emailMessageData)
         {
-            $time       = microtime(true);
             $query                  = static::resolveEmailMessageCreationFunctionQueryWithPlaceholders();
             $emailMessageData       = static::escapeValues($emailMessageData);
             static::quoteValues($emailMessageData);
             $query                  = strtr($query, $emailMessageData);
-            print(PHP_EOL . __CLASS__  . '.' . __FUNCTION__ . ': ' . (microtime(true) - $time));
             return $query;
         }
 
