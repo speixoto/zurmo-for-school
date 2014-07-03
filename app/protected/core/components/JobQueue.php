@@ -44,15 +44,47 @@
         /**
          * @param string $jobType
          * @param int $delay - seconds to delay job
+         * @param array $params
          */
-        public function add($jobType, $delay = 0)
+        public function add($jobType, $delay = 0, $params = array())
         {
             assert('is_string($jobType)');
             assert('is_int($delay)');
-            if (!isset($this->queuedJobs[$delay]) || !in_array($jobType, $this->queuedJobs[$delay]))
+            assert('is_array($params)');
+            if (!isset($this->queuedJobs[$delay]) ||
+                !$this->isJobTypeWithDelayAndParamsAlreadyExistInQueue($jobType, $delay, $params))
             {
-                $this->queuedJobs[$delay][] = $jobType;
+                $this->queuedJobs[$delay][] = array(
+                    'jobType' => $jobType,
+                    'params' => $params
+                );
             }
+        }
+
+        /**
+         * Check if job type already exist in job queue, with same delay and params
+         * @param string $jobType
+         * @param int $delay
+         * @param array $params
+         * @return bool
+         */
+        protected function isJobTypeWithDelayAndParamsAlreadyExistInQueue($jobType, $delay, $params)
+        {
+            assert('is_string($jobType)');
+            assert('is_int($delay)');
+            assert('is_array($params)');
+            foreach ($this->queuedJobs[$delay] as $queuedJob)
+            {
+                if ($queuedJob['jobType'] == $jobType)
+                {
+                    // add code to check case when params are empty
+                    if ($queuedJob['params'] == $params)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public function getAll()
