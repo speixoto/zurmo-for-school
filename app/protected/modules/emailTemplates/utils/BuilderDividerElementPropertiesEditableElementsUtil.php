@@ -44,7 +44,7 @@
                                             'TextElement',
                                             'border-top-width',
                                             static::resolveDefaultParams(
-                                                Zurmo::t('EmailTemplatesModule', 'Height')));
+                                                Zurmo::t('Core', 'Height')));
             $configurationItems[]       = static::resolveConfigurationItem(
                                             'BuilderElementInlineStylePropertiesEditableElementUtil',
                                             'BorderStyleStaticDropDownFormElement',

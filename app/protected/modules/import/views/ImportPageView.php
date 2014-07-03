@@ -38,7 +38,7 @@
     {
         protected function getSubtitle()
         {
-            return Zurmo::t('ImportModule', 'Import');
+            return Zurmo::t('ZurmoModule', 'Import');
         }
     }
 ?>
