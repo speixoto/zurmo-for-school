@@ -80,7 +80,7 @@
             $this->assertTrue($campaign->save());
             $jobs = Yii::app()->jobQueue->getAll();
             $this->assertCount(1, $jobs);
-            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]);
+            $this->assertEquals('CampaignGenerateDueCampaignItems', $jobs[5][0]['jobType']);
             $id                         = $campaign->id;
             unset($campaign);
             $campaign                   = Campaign::getById($id);
