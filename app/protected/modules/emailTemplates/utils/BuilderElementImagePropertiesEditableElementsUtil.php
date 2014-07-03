@@ -40,11 +40,35 @@
         {
             $configurationItems         = array();
             $configurationItems[]       = static::resolveConfigurationItem(
-                'BuilderElementInlineStylePropertiesEditableElementUtil',
+                'BuilderElementFrontendPropertiesEditableElementUtil',
                 'ImageAlignmentStaticDropDownFormElement',
                 'float',
                 static::resolveDefaultParams(
                     Zurmo::t('EmailTemplatesModule', 'Image Alignment')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementFrontendPropertiesEditableElementUtil',
+                'TextElement',
+                'alt',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Alt Text')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementFrontendPropertiesEditableElementUtil',
+                'TextElement',
+                'title',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Title')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementFrontendPropertiesEditableElementUtil',
+                'TextElement',
+                'href',
+                static::resolveDefaultParams(
+                    Zurmo::t('Core', 'URL')));
+            $configurationItems[]       = static::resolveConfigurationItem(
+                'BuilderElementFrontendPropertiesEditableElementUtil',
+                'ButtonTargetStaticDropDownFormElement',
+                'target',
+                static::resolveDefaultParams(
+                    Zurmo::t('EmailTemplatesModule', 'Open in')));
             return $configurationItems;
         }
     }

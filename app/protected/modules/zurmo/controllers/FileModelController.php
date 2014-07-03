@@ -48,7 +48,8 @@
                                         'type' => $fileModel->type,
                                         'size' =>
                                         FileModelDisplayUtil::convertSizeToHumanReadableAndGet($fileModel->size),
-                                        'id' => $fileModel->id);
+                                        'id' => $fileModel->id,
+                                        'thumbnail_url' => null);
             }
             catch (FailedFileUploadException $e)
             {

@@ -327,9 +327,31 @@
         {
             $campaigns = Campaign::getAll();
             $this->assertEquals(4, count($campaigns));
+
+            CampaignItemTestHelper::createCampaignItem(0, $campaigns[0]);
+            $campaignItems = CampaignItem::getAll();
+            $this->assertCount(1, $campaignItems);
+
+            $campaignItemActivity                           = new CampaignItemActivity();
+            $campaignItemActivity->type                     = CampaignItemActivity::TYPE_CLICK;
+            $campaignItemActivity->quantity                 = 1;
+            $campaignItemActivity->campaignItem             = $campaignItems[0];
+            $campaignItemActivity->latestSourceIP           = '121.212.122.112';
+            $this->assertTrue($campaignItemActivity->save());
+
+            $campaignItemActivities = CampaignItemActivity::getAll();
+            $this->assertCount(1, $campaignItemActivities);
+
             $campaigns[0]->delete();
+
             $campaigns = Campaign::getAll();
             $this->assertEquals(3, count($campaigns));
+
+            $campaignItems = CampaignItem::getAll();
+            $this->assertCount(0, $campaignItems);
+
+            $campaignItemActivities = CampaignItemActivity::getAll();
+            $this->assertCount(0, $campaignItemActivities);
         }
     }
 ?>
